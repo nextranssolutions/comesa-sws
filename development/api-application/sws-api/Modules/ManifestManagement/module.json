@@ -1,0 +1,11 @@
+{
+    "name": "ManifestManagement",
+    "alias": "manifestmanagement",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\ManifestManagement\\Providers\\ManifestManagementServiceProvider"
+    ],
+    "files": []
+}

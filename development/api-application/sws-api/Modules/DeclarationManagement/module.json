@@ -1,0 +1,11 @@
+{
+    "name": "DeclarationManagement",
+    "alias": "declarationmanagement",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\DeclarationManagement\\Providers\\DeclarationManagementServiceProvider"
+    ],
+    "files": []
+}

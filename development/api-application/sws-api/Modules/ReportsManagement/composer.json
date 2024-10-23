@@ -1,0 +1,30 @@
+{
+    "name": "nwidart/reportsmanagement",
+    "description": "",
+    "authors": [
+        {
+            "name": "Nicolas Widart",
+            "email": "n.widart@gmail.com"
+        }
+    ],
+    "extra": {
+        "laravel": {
+            "providers": [],
+            "aliases": {
+
+            }
+        }
+    },
+    "autoload": {
+        "psr-4": {
+            "Modules\\ReportsManagement\\": "app/",
+            "Modules\\ReportsManagement\\Database\\Factories\\": "database/factories/",
+            "Modules\\ReportsManagement\\Database\\Seeders\\": "database/seeders/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Modules\\ReportsManagement\\Tests\\": "tests/"
+        }
+    }
+}

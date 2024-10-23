@@ -1,0 +1,11 @@
+{
+    "name": "LicensingManagement",
+    "alias": "licensingmanagement",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\LicensingManagement\\Providers\\LicensingManagementServiceProvider"
+    ],
+    "files": []
+}
