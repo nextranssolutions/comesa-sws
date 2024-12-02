@@ -1,0 +1,82 @@
+<div class="content-wrapper">
+  <div class="content-header">
+    <div class="container-fluid">
+      <div class="row mb-2">
+        <div class="col-sm-6">
+          <span class="">{{'dashboard' | translate}}</span>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
+  <section class="content">
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-lg-3 col-6">
+          <div class="small-box bg-infopnl">
+            <div class="inner">
+              <p>{{'experts_profiles_dashboard' | translate}}</p>
+            </div>
+            <div class="icon">
+              <i class="fa fa-user"></i>
+            </div>
+            <a routerLink="/admin-ecres/app-expertsprofilemanagement" class="small-box-footer">{{'More info' |
+              translate}}<i class="fas fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-6">
+          <!-- small box -->
+          <div class="small-box bg-primarypnl">
+            <div class="inner">
+              <p>{{'expression_of_interest' | translate}}</p>
+            </div>
+            <div class="icon">
+              <i class="fa fa-table"></i>
+            </div>
+            <a routerLink="/admin-ecres/app-expression-ofinterestdashboard" class="small-box-footer">{{'More info' |
+              translate}} <i class="fas fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+        <!-- ./col -->
+        <div class="col-lg-3 col-6">
+          <!-- small box -->
+          <div class="small-box bg-warningpnl">
+            <div class="inner">
+              <p>{{'task_posting_and_assignment' | translate}}</p>
+            </div>
+            <div class="icon">
+              <i class="fa fa-tasks fa-1x"></i>
+            </div>
+            <a routerLink="/admin-ecres/app-workallocations-registerdashboard" class="small-box-footer">{{'More info' |
+              translate}} <i class="fas fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+        <div class="col-lg-3 col-6">
+          <div class="small-box bg-successpnl">
+            <div class="inner">
+              <p>{{'experts_claim_requests' | translate}}</p>
+            </div>
+            <div class="icon">
+              <i class="fa fa-check fa-3x"></i>
+            </div>
+            <a routerLink="/admin-ecres/app-claimsmanagementdashboard" class="small-box-footer">{{'More info' |
+              translate}} <i class="fas fa-arrow-circle-right"></i></a>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+
+      
+
+      </div>
+
+    </div><!-- /.container-fluid -->
+  </section>
+  <!-- /.content -->
+</div>
+
+<dx-load-panel #loadPanel shadingColor="rgba(0,0,0,0.4)" [position]="{ of: '#employee' }" [(visible)]="loadingVisible"
+  [showIndicator]="true" [showPane]="true" [shading]="true" [message]="spinnerMessage" [hideOnOutsideClick]="false">
+</dx-load-panel>

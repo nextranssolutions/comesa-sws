@@ -1,0 +1,31 @@
+<div class="content-wrapper">
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h5 class="m-0">{{'product_configurations' | translate}}</h5>
+                </div>
+                
+            </div>
+        </div>
+    </div>
+
+    <section class="content">
+        <div class="container-fluid">
+            <dx-tab-panel id="supplierPanel" [swipeEnabled]="false" [showNavButtons]="true" [animationEnabled]="true" [tabsPosition]="tabsPosition">
+                <dxi-item title="{{'generic_name' | translate}}" icon="group">
+                    <app-genericnames></app-genericnames>
+                </dxi-item>
+
+                <dxi-item title="{{'dosage_form' | translate}}" icon="group">
+                    <app-app-dosageforms></app-app-dosageforms>
+                </dxi-item>
+
+                <dxi-item title="{{'product_application_types' | translate}}" icon="group">
+                    <app-app-applicationtypes></app-app-applicationtypes>
+                </dxi-item>
+
+            </dx-tab-panel>
+        </div>
+    </section>
+</div>
