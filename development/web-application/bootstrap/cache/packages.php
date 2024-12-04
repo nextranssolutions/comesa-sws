@@ -8,13 +8,13 @@
   ),
   'carlos-meneses/laravel-mpdf' => 
   array (
-    'providers' => 
-    array (
-      0 => 'Mccarlosen\\LaravelMpdf\\LaravelMpdfServiceProvider',
-    ),
     'aliases' => 
     array (
       'PDF' => 'Mccarlosen\\LaravelMpdf\\Facades\\LaravelMpdf',
+    ),
+    'providers' => 
+    array (
+      0 => 'Mccarlosen\\LaravelMpdf\\LaravelMpdfServiceProvider',
     ),
   ),
   'elibyy/tcpdf-laravel' => 
@@ -108,13 +108,13 @@
   ),
   'nwidart/laravel-modules' => 
   array (
-    'providers' => 
-    array (
-      0 => 'Nwidart\\Modules\\LaravelModulesServiceProvider',
-    ),
     'aliases' => 
     array (
       'Module' => 'Nwidart\\Modules\\Facades\\Module',
+    ),
+    'providers' => 
+    array (
+      0 => 'Nwidart\\Modules\\LaravelModulesServiceProvider',
     ),
   ),
   'propaganistas/laravel-disposable-email' => 
@@ -133,13 +133,13 @@
   ),
   'spatie/laravel-ignition' => 
   array (
-    'providers' => 
-    array (
-      0 => 'Spatie\\LaravelIgnition\\IgnitionServiceProvider',
-    ),
     'aliases' => 
     array (
       'Flare' => 'Spatie\\LaravelIgnition\\Facades\\Flare',
+    ),
+    'providers' => 
+    array (
+      0 => 'Spatie\\LaravelIgnition\\IgnitionServiceProvider',
     ),
   ),
   'tymon/jwt-auth' => 

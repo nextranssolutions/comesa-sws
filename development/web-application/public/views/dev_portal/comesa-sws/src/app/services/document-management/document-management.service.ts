@@ -74,6 +74,7 @@ export class DocumentManagementService {
 
   onLoadDocumentData(data) {
     data.table_name = btoa(data.table_name);
+    // data.table_name=this.encryptionService.OnEncryptData(data.table_name);
     this.document = {
       params: data,
       headers: { 'Accept': 'application/json' }

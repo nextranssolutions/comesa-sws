@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { AuthService } from './services/auth.service';
 import { AuthenticationService } from './services/authentication/authentication.service';
@@ -11,13 +11,14 @@ import Popup from "devextreme/ui/popup";
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'auda-ecressolution';
+  title = 'COMESA IMPORT AND EXPORT SYSTEM';
   translations: any;
   idleState: string;
   constructor(
     public translate: TranslateService,
     public authService:AuthService,
     private authenticationService:AuthenticationService,
+    private _elementRef: ElementRef,
     private idleService: IdleService
     ) { Popup.defaultOptions({
       device: { deviceType: "desktop" },
@@ -40,6 +41,7 @@ export class AppComponent {
         }
       });
     }
+    this._elementRef.nativeElement.removeAttribute("ng-version");
   }
   
 }

@@ -1,6 +1,5 @@
 import { Component, OnInit, ViewContainerRef } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
-import { AppSettings } from 'src/app/app-settings';
 import { ToastrService } from 'ngx-toastr';
 import { UserManagementService } from 'src/app/services/user-management/user-management.service';
 import { SpinnerVisibilityService } from 'ng-http-loader';
@@ -10,7 +9,7 @@ import { UtilityService } from 'src/app/services/utilities/utility.service';
 import { NgxSmartModalService } from 'ngx-smart-modal';
 import { DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
 import { ReportsService } from 'src/app/services/reports/reports.service';
-import { ExpressionOfInterestManagementService } from 'src/app/services/expresion-of-interest-management/expression-of-interest-management.service';
+
 @Component({
   selector: 'app-shareusermanagement-class',
   templateUrl: './shareusermanagement-class.component.html',
@@ -52,7 +51,6 @@ export class ShareusermanagementClassComponent {
   partnerStatesData: any;
   userAccountTypeData: any;
   InstitutionDepartments: any;
-  expertSelectionAndAppointmentForm: FormGroup;
   secretariateAccountss: any;
   Institutions: any;
   IdentificationType: any;
@@ -114,7 +112,7 @@ export class ShareusermanagementClassComponent {
     private userManagementService: UserManagementService,
     private userservice:UserManagementService,
     private reportingAnalytics: ReportsService,
-    private eoiService: ExpressionOfInterestManagementService
+ 
   ) {
     
     // this.table_name = 'exp_expertsprofile_information';
@@ -160,9 +158,6 @@ export class ShareusermanagementClassComponent {
       phone_number: new FormControl('', Validators.compose([Validators.required])),
     });
 
-    this.expertSelectionAndAppointmentForm = new FormGroup({
-      user_information_id: new FormControl('', Validators.compose([])),
-    })
 
     this.onLoadAccountTypesData();
     this.onLoadinstituionTypeData();
@@ -702,69 +697,9 @@ export class ShareusermanagementClassComponent {
     this.approvalPopupVisible = false;
   }
 
-  // onconfirmInitiateSelectionAndAppoitment() {
-  //   // Save the details
-  //   this.expertSelectionAndAppointmentForm.get('user_information_id')?.setValue(this.user_information_id)
-
-  //   // Show spinner while processing
-  //   this.spinnerShow('Initiating Selection and Appointment of Experts ');
-
-  //   this.eoiService.onSaveExpressionOfInterestSDetails(this.table_name, this.expertSelectionAndAppointmentForm.value, 'onInitiateExpertsSelectionAndAppointment')
-  //     .subscribe(
-  //       response => {
-  //         this.response = response;
-  //         if (this.response.success) {
-  //           this.application_code = this.response.application_code;
-  //           this.eoiService.setApplicationDetail(this.response.record);
-  //           const targetRoute = '/admin-ecres/expert-selectionandappointment';
-  //           this.router.navigate([targetRoute])
-  //             .then(navigationSuccess => {
-  //               if (navigationSuccess) {
-  //                 this.toastr.success(this.response.message, 'Response');
-  //               } else {
-  //                 this.toastr.error('Navigation to the route failed', 'Alert');
-  //               }
-  //             })
-  //             .catch(error => {
-  //               this.toastr.error('Navigation error: ' + error.message, 'Alert');
-  //             });
-  //         } else {
-  //           this.toastr.error(this.response.message, 'Alert');
-  //         }
-  //         this.spinnerHide();
-  //       },
-  //       error => {
-  //         this.toastr.error('Error Occurred: ' + error.message, 'Alert');
-  //         this.spinnerHide();
-  //       });
-  // }
 
 
-  onconfirmInitiateSelectionAndAppoitment() {
-    this.spinnerShow(this.decision_description + ' Expert Account.......................... ');
 
-    this.userManagementService.onconfirmInitiateSelectionAndAppoitment(this.userAccountFrm.value, this.appworkflow_status_id, this.decision_description)
-      .subscribe(
-        response => {
-          
-          this.response = response;
-          if (this.response.success) {
-            this.fetchExpertDetails(0, this.is_eacsecretariat);
-            this.appointPopupVisible = false;
-            this.toastr.success(this.response.message, 'Response');
-          }
-          else {
-
-            this.toastr.success(this.response.message, 'Response');
-
-          }
-          this.spinnerHide();
-        },
-        error => {
-          this.loading = false;
-        });
-
-  }
 
 
   onDeleteUserData() {

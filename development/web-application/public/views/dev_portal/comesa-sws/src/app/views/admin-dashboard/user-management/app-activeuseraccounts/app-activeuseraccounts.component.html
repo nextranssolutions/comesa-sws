@@ -400,23 +400,6 @@
 
     </dx-popup>
 
-    <dx-popup [visible]="appointPopupVisible" [width]="funcpopWidth(65)" [height]="funcpopHeight(55)"
-        [showTitle]="true" [title]="'appointment_of_experts' | translate"
-        (onHidden)="appointPopupVisible = false">
-
-        <div *dxTemplate="let data of 'content'">
-            <div class="popup-content">
-                <h2>{{'experts_selection_and_appoitment' | translate}}</h2>
-                <p>{{ 'do_you_want_to_initiate_appointment_of_experts' | translate }}
-                </p>
-                <dx-button text="{{ 'yes' | translate }}" type="danger"
-                    (onClick)="onconfirmInitiateSelectionAndAppoitment()">
-                </dx-button>
-                <dx-button text="{{ 'no' | translate }}" (onClick)="onCancelPopupClick()">
-                </dx-button>
-            </div>
-        </div>
-    </dx-popup>
 
 
     <dx-popup [visible]="usrrejectionPopupVisible" [width]="funcpopWidth(30)" [height]="funcpopHeight(25)"
