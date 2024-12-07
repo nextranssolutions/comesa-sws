@@ -1,0 +1,53 @@
+<nav class="navbar nav-bgimage navbar-expand-lg navbar-dark bg-dark text-light p-0 m-0">
+  <div class="container">
+    <a class="navbar-brand" href="#"></a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavDropdown"
+      aria-controls="navbarNavDropdown" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class=" collapse navbar-collapse" id="navbarNavDropdown">
+    
+    <ul class="navbar-nav ms-auto">
+      <li class="nav-item">
+        <a routerLink="/public/index" class="nav-item nav-link mx-2 active">
+          <i class="fa fa-home" ></i>{{ 'home' | translate }}</a>
+      </li>
+      <li class="nav-item">
+        <a routerLink="/public/procedures" class="nav-item nav-link">
+          <i class="fa fa-users" ></i>{{ 'procedures' | translate }}</a>
+      </li>
+     
+     <li class="nav-item">
+        <a routerLink="/public/producthscodes_info" class="nav-item nav-link">
+          <i class="fa fa-book" ></i>{{ 'products_information' | translate }}</a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+          data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="fa fa-book" ></i> {{ 'trade_facilitation_repository' | translate }}
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <li><a routerLink="/public/general_guidelinesforimport" class="dropdown-item" href="#">{{ 'general_guidelinesforimport' | translate }}</a></li>
+          <li><a routerLink="/public/costs_associatedwith_importexport" class="dropdown-item" href="#">{{ 'costs_associatedwith_importexport' | translate }}</a></li>
+          <li><a routerLink="/public/trader_restrictionsprohibits" class="dropdown-item" href="#">{{ 'restrictions_prohibitsguidelines' | translate }}</a></li>
+        
+          
+        </ul>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+          data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="fa fa-book" ></i> {{ 'knowledge_center' | translate }}
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <li><a routerLink="/public/knowledge-center" class="dropdown-item" href="#">{{ 'knowledge_center' | translate }}</a></li>
+          <li><a routerLink="/public/faqs" class="dropdown-item" href="#">{{ 'faqs' | translate }}</a></li>
+        </ul>
+      </li>
+      
+    </ul>
+    
+    </div>
+  </div>
+</nav>

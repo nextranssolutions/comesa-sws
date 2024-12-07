@@ -1,0 +1,74 @@
+<a *ngIf="process_id ==0" class="nav-link" role="button" data-toggle="tooltip" data-placement="bottom"
+    (click)="funcViewHowToAccessSystem()">
+    <span class="pr-2"><i class="fa fa-book"></i> {{ 'system_manual_title' | translate }}</span>
+</a>
+
+<dx-button *ngIf="process_id >0 " text="{{ 'process_guidelines_title' | translate }}" type="normal"
+    icon="fa fa-book" [elementAttr]="{ id: 'elementId', class: 'pull-right' }" (onClick)="funcViewHowToAccessSystem()">
+</dx-button>
+<dx-popup class="popup" [width]="funcpopWidth(60)" [height]="funcpopHeight(85)" [showTitle]="true"
+    title="{{ parameter_name | translate }}" [dragEnabled]="false" [hideOnOutsideClick]="false"
+    [(visible)]="is_viewhowtonavigation">
+    <div *dxTemplate="let data of 'content'">
+        <dx-scroll-view>
+
+
+            <div class="row">
+                <div class="col-lg-12 align-center step-box">
+                    <h4>{{"system_title"}}</h4>
+                    <h5>{{'user_manual' | translate}}</h5>
+                </div>
+
+                <div class="row">
+                    <div class="col-lg-5">
+                        <label>{{ 'system_process' | translate }}</label>
+                        <dx-select-box [searchEnabled]="true" (onSelectionChanged)="onSystemProcessChange($event)"
+                            [showClearButton]="true" [dataSource]="systemGuidelinesProcesses" valueExpr="id"
+                            displayExpr="name">
+                        </dx-select-box>
+                    </div>
+                    <div class="col-lg-5">
+                        <label>{{ 'system_functionalities' | translate }}</label>
+                        <dx-select-box [searchEnabled]="true" (onSelectionChanged)="onSystemFunctionalityChange($event)"
+                            [showClearButton]="true" [dataSource]="systemGuidelinesProcesses" valueExpr="id"
+                            displayExpr="name">
+                        </dx-select-box>
+                    </div>
+                    <div class="col-lg-2">
+
+                        <dx-button text="{{'reset_systemguidelines_filter' | translate}}" type="danger"
+                            icon="fa fa-eraser" [elementAttr]="{ id: 'elementId', class: 'col-lg-12' }"
+                            (onClick)="onSystemGuidelinesRest()">
+                        </dx-button>
+                    </div>
+                </div>
+                <div *ngFor="let item of systemGuidelineData">
+
+                    <div class="col-lg-12" *ngFor="let function of item.functionaly_data">
+                        <h4>{{function.functionality_name}}</h4>
+                        <div class="row manual" *ngFor="let guide of function.guideline_data">
+                            <div class="step-box row align-items-center mb-4">
+                                <div class="col-auto step-arrow col-lg-3">
+                                    <div class="step-number">
+                                        <span class="step-text">{{'step' | translate}}</span> {{guide.guideline_step_no}}
+                                    </div>
+                                </div>
+                                <div class="col step-content col-lg-9" [innerHTML]="guide.guidelines">
+
+                                </div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+
+        </dx-scroll-view>
+    </div>
+</dx-popup>
+
+
+<dx-load-panel #loadPanel shadingColor="rgba(0,0,0,0.4)" [position]="{ of: '#employee' }" [(visible)]="loadingVisible"
+    [showIndicator]="true" [showPane]="true" [shading]="true" [message]="spinnerMessage" [hideOnOutsideClick]="false">
+</dx-load-panel>

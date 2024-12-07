@@ -1,0 +1,118 @@
+<div style="background-color: #fff;">
+    <div class="p-2 pt-2">
+        <div class="row col-lg-12 row div-home pull-right">
+            <div class="col-lg-6 tophidden-none">
+
+                <img style="margin: 8% 20% 5% 15% !important; width: 50%; height: 60%;" class="img-fluid"
+                    src="../../../../assets/dist/img/sign-upimage.png" alt="" />
+
+            </div>
+            <div class="col-lg-6 col-md-12 div-eacdescriptionbg ">
+
+                <h5>{{'sign_up' | translate}}</h5>
+
+                <form [formGroup]="signUpFrm" role="form" enctype="multipart/form-data" role="form"
+                    (ngSubmit)="onSignUp()" class="row text-left">
+
+                    <div class="row">
+
+
+                        <div class="col-lg-12">
+
+                            <label>{{'country_of_residence' | translate}}</label>
+                            <dx-select-box [dataSource]="Countries" formControlName="country_of_origin_id"
+                                (onSelectionChanged)="onCountrySelection($event)" [showClearButton]="true"
+                                valueExpr="id" [searchEnabled]="true" displayExpr="name">
+                            </dx-select-box>
+                        </div>
+                        
+                        <div class="col-lg-6">
+                            <label>{{'email_address' | translate}}</label>
+                            <dx-text-box formControlName="email_address" placeholder=""
+                                [showClearButton]="true"></dx-text-box>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <label>{{ 'phone_no' | translate }}</label>
+                            <dx-text-box formControlName="phone_number">
+
+                            </dx-text-box>
+                        </div>
+
+                        <!-- Security Stamp -->
+                        <div class="col-lg-3">
+                            
+                            <dx-button text="{{'send_otp' | translate}}" type="default" icon="fa fa-key"
+                                [elementAttr]="{ id: 'elementId', class: 'col-lg-12' }" (onClick)="onOtpRequest()">
+                            </dx-button>
+                        </div>
+                        <div class="col-lg-12">
+                            <label>{{ 'otp' | translate }}</label>
+                            <dx-number-box [step]=0 formControlName="otp_value" placeholder="OTP"
+                                [showClearButton]="true">
+                                <dx-validator>
+                                    <dxi-validation-rule type="required"
+                                        message="OTP is required"></dxi-validation-rule>
+                                </dx-validator>
+                            </dx-number-box>
+                        </div>
+
+
+                    </div>
+
+
+                    <div class="col-lg-12 pull-right" style="margin-top: 10px;">
+                        <dx-button text="{{'sign_up' | translate}}" type="success" icon="fa fa-arrow-right"
+                            [elementAttr]="{ id: 'elementId', class: 'col-lg-12' }" (onClick)="onSignUp()">
+                        </dx-button>
+                    </div>
+                    <div class="col-lg-12" style="margin-top: 10px; font-size:14px !important">
+                        <dx-button text="{{ 'already_have_an_account' | translate }}" type="default"
+                            icon="fa fa-arrow-right" [elementAttr]="{ id: 'elementId', class: 'col-lg-12' }"
+                            (onClick)="onSignInLink()">
+                        </dx-button>
+                    </div>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+
+    <dx-popup class="popup" [width]="funcpopWidth(65)" [height]="funcpopHeight(65)" [showTitle]="true"
+        title="{{'sign_up_guuidelines' | translate}}" [dragEnabled]="false" [hideOnOutsideClick]="false"
+        [(visible)]="on_showsigninguidelines">
+        <div *dxTemplate="let data of 'content'">
+            <dx-scroll-view>
+                <dx-data-grid [allowColumnReordering]="true" class="table row-border hover"
+                    (onExporting)="onExporting($event)" [wordWrapEnabled]="true" [dataSource]="systemGuidelines"
+                    [remoteOperations]="true" [showBorders]="true" [allowColumnResizing]="false"
+                    [columnHidingEnabled]="true" keyExpr="id">
+
+                    <dxi-column [width]="100" dataField="guideline_step_no"
+                        caption="{{ 'guideline_step_no' | translate }}"></dxi-column>
+                    <dxi-column dataField="guideline_label" caption="{{ 'guideline_label' | translate }}"
+                        cellTemplate="guideline_labels">
+                        <div *dxTemplate="let d of 'guideline_labels'">
+                            {{ d.data.guideline_label | translate }}
+                        </div>
+
+                    </dxi-column>
+
+                    <dxi-column dataField="guideline_description" caption="{{ 'guideline_description' | translate }}"
+                        cellTemplate="objectives">
+                        <div *dxTemplate="let d of 'objectives'">
+                            {{ d.data.guideline_description | translate }}
+                        </div>
+                    </dxi-column>
+
+                </dx-data-grid>
+
+            </dx-scroll-view>
+        </div>
+    </dx-popup>
+
+    <dx-load-panel #loadPanel shadingColor="rgba(0,0,0,0.4)" [position]="{ of: '#employee' }"
+        [(visible)]="loadingVisible" [showIndicator]="true" [showPane]="true" [shading]="true"
+        [message]="spinnerMessage" [hideOnOutsideClick]="false">
+    </dx-load-panel>

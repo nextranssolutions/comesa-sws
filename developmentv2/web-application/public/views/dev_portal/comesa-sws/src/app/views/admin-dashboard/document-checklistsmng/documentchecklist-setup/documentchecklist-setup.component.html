@@ -1,0 +1,46 @@
+<div class="content-wrapper">
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h5 class="m-0">{{ parameter_name | translate }}</h5>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a routerLink="/admin-ecres/app-dashboard">{{ 'home' | translate
+                                }}</a></li>
+                        <li class="breadcrumb-item active">{{ parameter_name | translate }}</li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="content">
+        <div class="container-fluid">
+            <dx-tab-panel id="Navigation Tab" [swipeEnabled]="false" [showNavButtons]="true" [animationEnabled]="true" [stylingMode]="stylingMode" [tabsPosition]="tabsPosition">
+                
+                <dxi-item title="{{ 'dmsdocument-sites' | translate }}" icon="fa fa-setup">
+                    <app-dms-dmsdocument-sites></app-dms-dmsdocument-sites>
+                </dxi-item>
+                <dxi-item title="{{ 'processes-docdefination' | translate }}" icon="fa fa-setup">
+                    <app-dms-processes-docdefination></app-dms-processes-docdefination>
+                </dxi-item>
+                <dxi-item title="{{ 'nonstructured-docrequirement' | translate }}" icon="fa fa-setup">
+                    <app-dms-nonstructured-docrequirement></app-dms-nonstructured-docrequirement>
+                </dxi-item>
+                
+                <dxi-item title="{{ 'document_types' | translate }}" icon="fa fa-setup">
+                    <app-app-document-types></app-app-document-types>
+                </dxi-item>
+
+                <dxi-item title="{{ 'document_requirements' | translate }}" icon="fa fa-table">
+                    <app-app-document-requirements></app-app-document-requirements>
+                </dxi-item>
+
+                <dxi-item title="{{ 'docrequirements-appstatus' | translate }}" icon="fa fa-setup">
+                    <app-dms-docrequirements-appstatus></app-dms-docrequirements-appstatus>
+                </dxi-item>
+            </dx-tab-panel>
+        </div>
+    </section>
