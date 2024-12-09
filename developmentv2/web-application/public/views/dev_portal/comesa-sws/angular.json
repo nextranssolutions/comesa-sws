@@ -34,18 +34,12 @@
               "devextreme-angular"
             ],
             "styles": [
-              
               "src/dist/css/bootstrap.min.css",
-              "src/dist/css/ace.min.css",
               "src/dist/font-awesome/4.5.0/css/font-awesome.min.css",
+              "src/dist/css/ace.min.css",
               "node_modules/ngx-toastr/toastr.css",
-              
-              "src/plugins/fontawesome-free/css/all.min.css",
-              
-              "src/plugins/fontawesome-free/css/fontawesome.min.css",
               "src/styles.css",
               "node_modules/devextreme/dist/css/dx.fluent.blue.light.css"
-              
             ],
             
             "scripts": [
@@ -53,7 +47,6 @@
               "src/dist/js/ace.min.js",
               "src/dist/js/ace-extra.min.js",
               "src/dist/js/ace-elements.min.js",
-              
               "src/main.js"
             ]
           },
