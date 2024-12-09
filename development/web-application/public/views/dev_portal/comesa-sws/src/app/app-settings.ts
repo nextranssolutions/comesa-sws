@@ -10,8 +10,8 @@ if (window.location.hostname == 'localhost') {
 }
 if (app_connection == 'development') {
   //nextrans-solutions\comesa-sws\development\web-application
-  base_url = 'http://localhost:82/nextrans-solutions/comesa-sws/development/web-application/public/index.php';
-  assets_url = 'http://localhost:82/nextrans-solutions/comesa-sws/development/web-application/public/index.php';
+  base_url = 'http://localhost:82/COMESA/comesa-sws/development/web-application/public/index.php';
+  assets_url = 'http://localhost:82/COMESA/comesa-sws/development/web-application/public/index.php';
   // siteKey = '6LcoH54UAAAAAOqpAGCXC4cmup6N2c5KseVHmv1c';
 }
 else if (app_connection == 'fixed_acess') {
@@ -33,11 +33,11 @@ export class AppSettings {
   public static assets_url = assets_url;
   public static mis_url = mis_url;
   public static siteKey = "6LdIjbsUAAAAAOhQtlHVuK8kpSdbBXAtX3K5pYQb";
-  public static system_title = 'CONTINENTAL REGULATORY EXPERTS SOLUTION (E-CRES) ';
+  public static system_title = 'COMESA IMPORT AND EXPORT SYSTEM ';
   public static system_website = '';
   public static system_version = 'E-CRES 1.0';
   public static session_timeoutcheck = 4800000;
-  public static SecureKey = "CqCcUxA0fb9hFCASWtJCjpq4uhUY5mMN9noVgDlQ8Yg="
+  public static SecureKey = "YlQmlm1gTRvVGAz5a4pXgVmSltFIj1BPtl5Y8IXQ7Pg="
   public static idleTimeout = 6000;
   public static timeoutWarning = 6000;
   public static encryptSecretKey = 'kPJks1MrdXE03n8H';

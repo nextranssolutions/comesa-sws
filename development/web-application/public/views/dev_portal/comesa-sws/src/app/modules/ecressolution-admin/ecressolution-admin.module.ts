@@ -41,7 +41,7 @@ import { NavigationsComponent } from 'src/app/views/admin-dashboard/workflow-man
 import { NavigationLevelsComponent } from 'src/app/views/admin-dashboard/workflow-management/navigation/navigation-levels/navigation-levels.component';
 import { NavigationTypesComponent } from 'src/app/views/admin-dashboard/workflow-management/navigation/navigation-types/navigation-types.component';
 import { NavigationInterfacesComponent } from 'src/app/views/admin-dashboard/workflow-management/navigation/navigation-interfaces/navigation-interfaces.component';
-import { AppExchangeratesComponent } from 'src/app/views/admin-dashboard/configurations/app-exchangerates/app-exchangerates.component';
+
 import { AppProcessworkflowstatusesComponent } from 'src/app/views/admin-dashboard/workflow-management/workflows/app-processworkflowstatuses/app-processworkflowstatuses.component';
 import { AppSystemprocessesComponent } from 'src/app/views/admin-dashboard/workflow-management/workflows/app-systemprocesses/app-systemprocesses.component';
 import { AppProcessworkflowtransitionsComponent } from 'src/app/views/admin-dashboard/workflow-management/workflows/app-processworkflowtransitions/app-processworkflowtransitions.component';
@@ -72,10 +72,7 @@ import { ShareusermanagementClassComponent } from 'src/app/views/admin-dashboard
 import { ApplicationDocumentuploadsComponent } from 'src/app/views/admin-dashboard/utilities/application-documentuploads/application-documentuploads.component';
 import { ApplicationWorkflowsubmissionsComponent } from 'src/app/views/admin-dashboard/utilities/application-workflowsubmissions/application-workflowsubmissions.component';
 import { PublicationDashboardComponent } from 'src/app/views/admin-dashboard/information-sharing/publication-dashboard/publication-dashboard.component';
-import { EcredResourcesmanagementComponent } from 'src/app/views/admin-dashboard/information-sharing/ecred-resourcesmanagement/ecred-resourcesmanagement.component';
 import { AppNationalitiesComponent } from 'src/app/views/admin-dashboard/configurations/app-nationalities/app-nationalities.component';
-import { AppGenderComponent } from 'src/app/views/admin-dashboard/configurations/app-gender/app-gender.component';
-import { AppPublicationTypesComponent } from 'src/app/views/admin-dashboard/configurations/app-publication-types/app-publication-types.component';
 import { AppSubmissionmethodsComponent } from 'src/app/views/admin-dashboard/configurations/app-submissionmethods/app-submissionmethods.component';
 import { DisclaimerStatementTypesComponent } from 'src/app/views/admin-dashboard/configurations/disclaimer-statement-types/disclaimer-statement-types.component';
 import { DisclaimerStatementsComponent } from 'src/app/views/admin-dashboard/configurations/disclaimer-statements/disclaimer-statements.component';
@@ -84,10 +81,9 @@ import { AppProcesssubmissionComponent } from 'src/app/views/admin-dashboard/uti
 
 
 import { DmsDocrequirementsAppstatusComponent } from 'src/app/views/admin-dashboard/document-checklistsmng/document_management/dms-docrequirements-appstatus/dms-docrequirements-appstatus.component';
-import { AppDosageformsComponent } from 'src/app/views/admin-dashboard/configurations/app-dosageforms/app-dosageforms.component';
-import { AppApplicationtypesComponent } from 'src/app/views/admin-dashboard/configurations/app-applicationtypes/app-applicationtypes.component';
+
+
 import { AppFirewallipsComponent } from 'src/app/views/admin-dashboard/configurations/app-firewallips/app-firewallips.component';
-import { EcredResourcedashboardComponent } from 'src/app/views/admin-dashboard/information-sharing/ecred-resourcedashboard/ecred-resourcedashboard.component';
 import { KnowledgecenterDashboardComponent } from 'src/app/views/admin-dashboard/information-sharing/knowledgecenter-dashboard/knowledgecenter-dashboard.component';
 import { SystemsFunctionalitiesComponent } from 'src/app/views/admin-dashboard/system-administration/system-guidelines/systems-functionalities/systems-functionalities.component';
 import { SystemguidelinesDetailComponent } from 'src/app/views/admin-dashboard/system-administration/system-guidelines/systemguidelines-detail/systemguidelines-detail.component';
@@ -116,7 +112,7 @@ import { WorkflowsSetupComponent } from 'src/app/views/admin-dashboard/workflow-
 import { NotificationManagementComponent } from 'src/app/views/admin-dashboard/document-checklistsmng/notification-mng/notification-management/notification-management.component';
 import { ProductConfigurationComponent } from 'src/app/views/admin-dashboard/configurations/product-configuration/product-configuration.component';
 import { DocumentchecklistSetupComponent } from 'src/app/views/admin-dashboard/document-checklistsmng/documentchecklist-setup/documentchecklist-setup.component';
-import { ExpertprofileSetupComponent } from 'src/app/views/admin-dashboard/configurations/expertprofile-setup/expertprofile-setup.component';
+
 import { InstitutionsInformationComponent } from 'src/app/views/admin-dashboard/system-administration/institutions-information/institutions-information.component';
 
 import { NotSlidesInformationsComponent } from 'src/app/views/admin-dashboard/system-administration/not-slides-informations/not-slides-informations.component';
@@ -131,7 +127,6 @@ import { AppSignatoriesComponent } from 'src/app/views/admin-dashboard/system-ad
 import { AppWorkflowactiontypesComponent } from 'src/app/views/admin-dashboard/workflow-management/workflows/app-workflowactiontypes/app-workflowactiontypes.component';
 import { AppWorkflowstatusesinterfacesComponent } from 'src/app/views/admin-dashboard/workflow-management/workflows/app-workflowstatusesinterfaces/app-workflowstatusesinterfaces.component';
 import { KnowledgeCenterinfomanagementComponent } from 'src/app/views/admin-dashboard/information-sharing/knowledge-centerinfomanagement/knowledge-centerinfomanagement.component';
-import { AppGenericnamesComponent } from 'src/app/views/admin-dashboard/configurations/app-genericnames/app-genericnames.component';
 
 
 @NgModule({
@@ -153,8 +148,7 @@ import { AppGenericnamesComponent } from 'src/app/views/admin-dashboard/configur
     SharedconfigurationsComponent,
     AppActiveUserAccounts,
     RecursiveMenuDirective,
-    AppGenericnamesComponent,
-    
+
     AppCurrenciesComponent,
     AppAuditTrail,
 
@@ -172,7 +166,7 @@ import { AppGenericnamesComponent } from 'src/app/views/admin-dashboard/configur
     NotSlidesInformationsComponent,
     SharedNavigationsComponent,
     NavigationsComponent, AppSharedworkflowComponent,
-    NavigationTypesComponent, AppExchangeratesComponent,
+    NavigationTypesComponent,
     KnowledgeCenterinfomanagementComponent,
     AppProcessworkflowstatusesComponent,
     AppSystemprocessesComponent,
@@ -195,20 +189,18 @@ import { AppGenericnamesComponent } from 'src/app/views/admin-dashboard/configur
     AppProcesssubmissionComponent,
     AppSubmissionmethodsComponent,
 
-    EcredResourcesmanagementComponent,
-
     AppTranslationmanagementComponent, AppSystemlanguagesComponent,
     AppSystemlabelsmanagementComponent, InstitutionsDetailsComponent,
     AppSystemlabelsmanagementComponent, InstitutionsDetailsComponent,
     SystemsFunctionalitiesComponent,
 
 
-    InstitutionsTypesComponent, AppNationalitiesComponent, AppGenderComponent, AppPublicationTypesComponent,
-     DmsDocrequirementsAppstatusComponent,
+    InstitutionsTypesComponent, AppNationalitiesComponent,
+    DmsDocrequirementsAppstatusComponent,
 
-    AppDosageformsComponent, AppApplicationtypesComponent, AppFirewallipsComponent,
-    EcredResourcedashboardComponent,
-    KnowledgecenterDashboardComponent, 
+    AppFirewallipsComponent,
+
+    KnowledgecenterDashboardComponent,
     SystemguidelinesDetailComponent,
     SystemguidelinesDashComponent, AdminsystemguudelinesDetailsComponent,
     AppWorkflowsubmissionactionsComponent,
@@ -240,10 +232,9 @@ import { AppGenericnamesComponent } from 'src/app/views/admin-dashboard/configur
     NotificationManagementComponent,
     ProductConfigurationComponent,
     DocumentchecklistSetupComponent,
-    
-    ExpertprofileSetupComponent,
+
     InstitutionsInformationComponent,
-    
+
 
     ChecklistmanagementSetupComponent,
     DmsDmsdocumentSitesComponent,
@@ -288,7 +279,7 @@ import { AppGenericnamesComponent } from 'src/app/views/admin-dashboard/configur
     AppCountriesComponent,
     AppUserTitle,
     AppUserIdentificationType,
-    AppInstitution,KnowledgeCenterinfomanagementComponent,
+    AppInstitution, KnowledgeCenterinfomanagementComponent,
     AppInstitutionDepartments,
     AppActiveUserAccounts,
     RecursiveMenuDirective,
@@ -310,17 +301,13 @@ import { AppGenericnamesComponent } from 'src/app/views/admin-dashboard/configur
 
     NotificationTypesComponent, EmailTemplatesComponent,
     SharedusermanagementComponent,
-    EcredResourcedashboardComponent,
+
     TranslateModule,
     SharedSysAdministrationComponent, InstitutionsDepartmentsComponent, InstitutionsDetailsComponent, InstitutionsTypesComponent,
     TranslateModule,
-    SharedSysAdministrationComponent, InstitutionsDepartmentsComponent, 
-    InstitutionsDetailsComponent, InstitutionsTypesComponent, AppNationalitiesComponent, AppGenderComponent,
-    AppPublicationTypesComponent,
-     DmsDocrequirementsAppstatusComponent,
-
-    AppDosageformsComponent,
-    AppApplicationtypesComponent,
+    SharedSysAdministrationComponent, InstitutionsDepartmentsComponent,
+    InstitutionsDetailsComponent, InstitutionsTypesComponent, AppNationalitiesComponent,
+    DmsDocrequirementsAppstatusComponent,
     AppFirewallipsComponent,
     KnowledgecenterDashboardComponent,
     SystemsFunctionalitiesComponent,

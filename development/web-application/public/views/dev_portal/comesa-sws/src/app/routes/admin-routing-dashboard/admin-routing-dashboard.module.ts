@@ -14,7 +14,7 @@ import { AppUserTitle } from 'src/app/views/admin-dashboard/configurations/app-u
 import { AppUserIdentificationType } from 'src/app/views/admin-dashboard/configurations/app-useridentificationtype/app-useridentificationtype.component';
 import { AppInstitution } from 'src/app/views/admin-dashboard/configurations/app-institution/app-institution.component';
 import { AppInstitutionDepartments } from 'src/app/views/admin-dashboard/app-institutiondepartments/app-institutiondepartments.component';
-import { AppGenericnamesComponent } from 'src/app/views/admin-dashboard/configurations/app-genericnames/app-genericnames.component';
+
 import { AppAuditTrail } from 'src/app/views/admin-dashboard/app-misaudittrail/app-misaudittrail.component';
 import { AppPartnerStates } from 'src/app/views/admin-dashboard/configurations/app-partnerstates/app-partnerstates.component';
 import { SystemAdministratorsComponent } from 'src/app/views/admin-dashboard/user-management/admins/system-administrators/system-administrators.component';
@@ -22,7 +22,7 @@ import { NavigationsComponent } from 'src/app/views/admin-dashboard/workflow-man
 import { NavigationLevelsComponent } from 'src/app/views/admin-dashboard/workflow-management/navigation/navigation-levels/navigation-levels.component';
 import { NavigationInterfacesComponent } from 'src/app/views/admin-dashboard/workflow-management/navigation/navigation-interfaces/navigation-interfaces.component';
 import { NavigationTypesComponent } from 'src/app/views/admin-dashboard/workflow-management/navigation/navigation-types/navigation-types.component';
-import { AppExchangeratesComponent } from 'src/app/views/admin-dashboard/configurations/app-exchangerates/app-exchangerates.component';
+
 import { AppProcessworkflowstatusesComponent } from 'src/app/views/admin-dashboard/workflow-management/workflows/app-processworkflowstatuses/app-processworkflowstatuses.component';
 import { AppSystemprocessesComponent } from 'src/app/views/admin-dashboard/workflow-management/workflows/app-systemprocesses/app-systemprocesses.component';
 import { AppProcessworkflowtransitionsComponent } from 'src/app/views/admin-dashboard/workflow-management/workflows/app-processworkflowtransitions/app-processworkflowtransitions.component';
@@ -48,16 +48,13 @@ import { UsermanagementDashboardComponent } from 'src/app/views/admin-dashboard/
 import { PublicationDashboardComponent } from 'src/app/views/admin-dashboard/information-sharing/publication-dashboard/publication-dashboard.component';
 import { KnowledgeCenterinfomanagementComponent } from 'src/app/views/admin-dashboard/information-sharing/knowledge-centerinfomanagement/knowledge-centerinfomanagement.component';
 import { AppNationalitiesComponent } from 'src/app/views/admin-dashboard/configurations/app-nationalities/app-nationalities.component';
-import { AppGenderComponent } from 'src/app/views/admin-dashboard/configurations/app-gender/app-gender.component';
-import { AppPublicationTypesComponent } from 'src/app/views/admin-dashboard/configurations/app-publication-types/app-publication-types.component';
 import { AppSubmissionmethodsComponent } from 'src/app/views/admin-dashboard/configurations/app-submissionmethods/app-submissionmethods.component';
 import { DisclaimerStatementsComponent } from 'src/app/views/admin-dashboard/configurations/disclaimer-statements/disclaimer-statements.component';
 import { DisclaimerStatementTypesComponent } from 'src/app/views/admin-dashboard/configurations/disclaimer-statement-types/disclaimer-statement-types.component';
 
 import { DmsDocrequirementsAppstatusComponent } from 'src/app/views/admin-dashboard/document-checklistsmng/document_management/dms-docrequirements-appstatus/dms-docrequirements-appstatus.component';
-import { AppApplicationtypesComponent } from 'src/app/views/admin-dashboard/configurations/app-applicationtypes/app-applicationtypes.component';
 import { AppFirewallipsComponent } from 'src/app/views/admin-dashboard/configurations/app-firewallips/app-firewallips.component';
-import { EcredResourcedashboardComponent } from 'src/app/views/admin-dashboard/information-sharing/ecred-resourcedashboard/ecred-resourcedashboard.component';
+
 import { KnowledgecenterDashboardComponent } from 'src/app/views/admin-dashboard/information-sharing/knowledgecenter-dashboard/knowledgecenter-dashboard.component';
 import { SubscriptionDashComponent } from 'src/app/views/admin-dashboard/system-administration/subscription-dash/subscription-dash.component';
 import { AppMyprofileComponent } from 'src/app/views/admin-dashboard/user-management/app-myprofile/app-myprofile.component';
@@ -118,9 +115,6 @@ const routes: Routes = [{
     path: 'app-currencies',
     component: AppCurrenciesComponent
   }, {
-    path: 'app-currenciesexchange-rates',
-    component: AppExchangeratesComponent
-  }, {
     path: 'app-navigation-items',
     component: NavigationsComponent
   }, {
@@ -163,10 +157,7 @@ const routes: Routes = [{
   {
     path: 'app-institutions-departments',
     component: InstitutionsDepartmentsComponent
-  }, {
-    path: 'app-product-genericnames',
-    component: AppGenericnamesComponent
-  }, {
+  },{
     path: "app-mis-audit-trail",
     component: AppAuditTrail
   }, {
@@ -242,10 +233,7 @@ const routes: Routes = [{
   }, {
     path: "app-usermanagement-dashboard",
     component: UsermanagementDashboardComponent
-  }, {
-    path: "app-ecredresource-dashboard",
-    component: EcredResourcedashboardComponent
-  }, {
+  },{
     path: "app-knowledge-centerinfo",
     component: KnowledgeCenterinfomanagementComponent
   }, {
@@ -259,16 +247,6 @@ const routes: Routes = [{
     component: AppNationalitiesComponent
   },
   {
-    path: "app-gender",
-    component: AppGenderComponent
-
-  }, 
-  {
-    path: "app-publication-types",
-    component: AppPublicationTypesComponent
-  },
-  
-  {
     path: "app-submissionmethods",
     component: AppSubmissionmethodsComponent
   },  {
@@ -281,9 +259,6 @@ const routes: Routes = [{
    {
     path: "dms-docrequirements-appstatus",
     component: DmsDocrequirementsAppstatusComponent
-  }, {
-    path: 'app-applicationtypes',
-    component: AppApplicationtypesComponent
   }, {
     path: "app-firewallips",
     component: AppFirewallipsComponent

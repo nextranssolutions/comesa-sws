@@ -5,7 +5,7 @@ import { ToastrService } from 'ngx-toastr';
 import { AppSettings } from 'src/app/app-settings';
 import { DocumentManagementService } from 'src/app/services/document-management/document-management.service';
 import { EncryptionService } from 'src/app/services/encryption/encryption.service';
-import { ExpressionOfInterestManagementService } from 'src/app/services/expresion-of-interest-management/expression-of-interest-management.service';
+
 import { ReportsService } from 'src/app/services/reports/reports.service';
 
 @Component({
@@ -20,7 +20,7 @@ export class SharedapplicationdocumentuploadsComponent implements OnChanges {
   @Input() document_type_id: number;
   @Input() appworkflow_status_id: number;
   @Input() uploaded_by: number;
-  @Input() workallocations_assignment_id: number;
+  // @Input() workallocations_assignment_id: number;
  
   
   workflow_stage_id: number;
@@ -75,7 +75,6 @@ export class SharedapplicationdocumentuploadsComponent implements OnChanges {
   constructor(
     private documentService: DocumentManagementService,
     public toastr: ToastrService,
-    public eoiService: ExpressionOfInterestManagementService,
     private reportingAnalytics: ReportsService,
     private encryptionService: EncryptionService
   ) {
@@ -95,7 +94,7 @@ export class SharedapplicationdocumentuploadsComponent implements OnChanges {
       process_id: new FormControl(this.process_id, Validators.compose([])),
       uploadeddocuments_id: new FormControl(this.process_id, Validators.compose([])),
       file_name: new FormControl(false, Validators.compose([])),
-      workallocations_assignment_id: new FormControl(false, Validators.compose([])),
+      // workallocations_assignment_id: new FormControl(false, Validators.compose([])),
       
     });
     // this.onLoadApplicationUploadeddocument(this.application_code);
@@ -186,27 +185,7 @@ export class SharedapplicationdocumentuploadsComponent implements OnChanges {
         });
   }
 
-  onLoadEoiSupportingDocumentsConfig(eoi_id = 0) {
-    this.spinnerShow('Loading EOI documents...........');
-    var data_submit = {
-      'table_name': 'eoi_documents_tosubmit',
-      'eoi_id': eoi_id
-    }
-    this.eoiService.onLoadExpressionOfInterestDataUrl(data_submit, 'onLoadEoiSupportingDocuments')
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
-            this.supportingDocumentsData = this.decryptedPayload;
-          }
-          this.spinnerHide();
-        },
-        error => {
-
-          this.spinnerHide();
-        });
-  }
+ 
   onLoaddocumentTypeRequirements() {
     var data_submit = {
       'table_name': 'dms_document_requirements',
@@ -308,6 +287,8 @@ export class SharedapplicationdocumentuploadsComponent implements OnChanges {
         data => {
           this.data_record = data;
           if (this.data_record.success) {
+            // this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
+            // this.documentTypeData = this.decryptedPayload;
             this.documentTypeData = this.data_record.data;
           }
 
@@ -322,7 +303,7 @@ export class SharedapplicationdocumentuploadsComponent implements OnChanges {
     var data_submit = {
       'table_name': 'dms_document_requirements',
       'application_code': application_code,
-      'workallocations_assignment_id':this.workallocations_assignment_id,
+      // 'workallocations_assignment_id':this.workallocations_assignment_id,
       'uploaded_by': this.uploaded_by
     }
     this.documentService.onConfigurationItemswithUrl(data_submit, 'onLoaddocumentPreviewUploadedData')
@@ -349,7 +330,7 @@ export class SharedapplicationdocumentuploadsComponent implements OnChanges {
       'application_code': application_code,
       'uploaded_by': this.uploaded_by,
       'workflow_stage_id': this.workflow_stage_id,
-      'workallocations_assignment_id':this.workallocations_assignment_id,
+      // 'workallocations_assignment_id':this.workallocations_assignment_id,
       'appworkflow_status_id': this.appworkflow_status_id
     }
     this.documentService.onConfigurationItemswithUrl(data_submit, 'onLoadApplicationUploadeddocument')
@@ -382,7 +363,7 @@ export class SharedapplicationdocumentuploadsComponent implements OnChanges {
     input.append('document_type_id', this.onApplicationUploadFrm.get('document_type_id')?.value);
     input.append('application_code', this.onApplicationUploadFrm.get('application_code')?.value);
     input.append('process_id', this.onApplicationUploadFrm.get('process_id')?.value);
-    input.append('workallocations_assignment_id', this.onApplicationUploadFrm.get('workallocations_assignment_id')?.value);
+    // input.append('workallocations_assignment_id', this.onApplicationUploadFrm.get('workallocations_assignment_id')?.value);
 
     return input;
   }
@@ -426,7 +407,7 @@ export class SharedapplicationdocumentuploadsComponent implements OnChanges {
     this.onApplicationUploadFrm.get('document_requirement_id')?.setValue(data.document_requirement_id);
     this.onApplicationUploadFrm.get('process_id')?.setValue(this.process_id);
 
-    this.onApplicationUploadFrm.get('workallocations_assignment_id')?.setValue(this.workallocations_assignment_id)
+    // this.onApplicationUploadFrm.get('workallocations_assignment_id')?.setValue(this.workallocations_assignment_id)
   }
 
   onExporting(e: DxDataGridTypes.ExportingEvent) {

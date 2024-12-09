@@ -122,7 +122,7 @@ class ConfigurationsController extends Controller
             $sql->orderBy('t1.name', 'asc'); 
             $data = $sql->get();
             // Encryption
-            $data=encrypt_data($data);
+            // $data=encrypt_data($data);
 
             $res = array('success' => true, 'data' => $data);
 

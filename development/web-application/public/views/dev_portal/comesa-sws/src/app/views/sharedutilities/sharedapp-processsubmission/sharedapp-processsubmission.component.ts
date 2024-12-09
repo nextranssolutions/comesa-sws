@@ -3,7 +3,6 @@ import { Component, Input, SimpleChanges } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
-import { ExpertsprofileserviceService } from 'src/app/services/expertprofile/expertsprofileservice.service';
 import { WokflowManagementService } from 'src/app/services/workflow-management/wokflow-management.service';
 
 @Component({
@@ -31,7 +30,6 @@ export class SharedappProcesssubmissionComponent {
   constructor(
     private router: Router, 
     public toastr: ToastrService, http: HttpClient,
-    public expertService: ExpertsprofileserviceService, 
     public workflowService: WokflowManagementService
   ) {
 
@@ -223,17 +221,17 @@ export class SharedappProcesssubmissionComponent {
       'table_name': 'usr_users_information'
     }
     //  this.spinnerShow('Loading User Information') 
-    this.expertService.getProcessessFilteredUsers(workflow_stage_id)
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            this.userInformationData = this.data_record.data;
-          }
-        },
-        error => {
+    // this.expertService.getProcessessFilteredUsers(workflow_stage_id)
+    //   .subscribe(
+    //     data => {
+    //       this.data_record = data;
+    //       if (this.data_record.success) {
+    //         this.userInformationData = this.data_record.data;
+    //       }
+    //     },
+    //     error => {
           
-        });
+    //     });
   }
   onApplicationProcessSubmission() {
 

@@ -10,9 +10,7 @@ import { ShareusermanagementClassComponent } from '../shareusermanagement-class/
 export class AppActiveUserAccounts extends ShareusermanagementClassComponent implements OnInit    {
  
   ngOnInit() {
-    this.is_eacsecretariat =false;
-
-    this.fetchExpertDetails(0, this.is_eacsecretariat);
+   
   }
 
   
