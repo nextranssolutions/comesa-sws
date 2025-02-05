@@ -100,9 +100,9 @@ class ConfigurationsController extends Controller
             $requestData =$req->all();
             $filter = $req->filter;
             //Decryption 
-            $table_name_data=decrypt_data($req->table_name);
-            $table_name = base64_decode($table_name_data);
-            // $table_name = base64_decode($req->table_name);
+            // $table_name_data=decrypt_data($req->table_name);
+            // $table_name = base64_decode($table_name_data);
+            $table_name = base64_decode($req->table_name);
 
             $sectionSelection = $req->sectionSelection;
             unset($requestData['table_name']);
@@ -122,7 +122,7 @@ class ConfigurationsController extends Controller
             $sql->orderBy('t1.name', 'asc'); 
             $data = $sql->get();
             // Encryption
-            $data=encrypt_data($data);
+            // $data=encrypt_data($data);
 
             $res = array('success' => true, 'data' => $data);
 
