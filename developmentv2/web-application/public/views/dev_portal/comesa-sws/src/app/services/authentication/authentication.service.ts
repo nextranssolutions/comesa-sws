@@ -395,7 +395,7 @@ export class AuthenticationService {
   requestToken() {
     // Simulate token request logic
     this.tokenRequestCount++;
-    console.log(`Token requested ${this.tokenRequestCount} times.`);
+    ;
     // Here you would typically make an HTTP request to your backend
     // to request a verification token.
   }

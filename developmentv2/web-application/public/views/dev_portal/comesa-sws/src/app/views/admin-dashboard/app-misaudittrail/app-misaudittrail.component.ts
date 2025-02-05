@@ -53,7 +53,7 @@ export class AppAuditTrail {
     this.auditService.onLoadAuditTrailDataUrl(data_submit, 'getAuditTrailInfo')
       .subscribe(
         data => {
-          console.log(data);
+          ;
           this.data_record = data;
           if (this.data_record.success) {
             this.AuditTrailData = this.data_record.data;
@@ -80,7 +80,7 @@ export class AppAuditTrail {
     this.auditService.onLoadAuditTrailDataUrl(data_submit, 'onGetAuditTrailPrevCurrentData')
       .subscribe(
         data => {
-          console.log(data);
+          ;
           this.data_record = data;
           if (this.data_record.success) {
             this.auditTrailDtaDetails = this.data_record.current_tabledata;

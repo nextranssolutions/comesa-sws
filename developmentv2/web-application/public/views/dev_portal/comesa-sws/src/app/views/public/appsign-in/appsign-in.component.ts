@@ -211,12 +211,12 @@ export class AppsignInComponent {
       this.toastr.error('Please fill in a valid email address.', 'Error');
       return;
     }
-    // console.log(this.signInFrm.get('email_address')?.value);
+    // ;
     this.spinnerShow('Requesting OTP...');
 
     this.otpservice.onUserLoginOtpRequest(this.signInFrm.value, 'requestLoginOtp').subscribe(
       (data) => {
-        // console.log(data);
+        // ;
         this.response = data;
         if (this.response.success) {
           this.toastr.info(this.response.message, 'Info');

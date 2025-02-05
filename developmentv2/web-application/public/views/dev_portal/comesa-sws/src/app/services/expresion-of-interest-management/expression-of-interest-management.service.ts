@@ -28,12 +28,12 @@ export class ExpressionOfInterestManagementService {
   }
   // setApplicationDetail(data: any[]) {
   //   this.application_details = data;
-  //   console.log(this.application_details);
+  //   ;
   // }
 
   setApplicationDetail(data: any[]) {
     this.application_details = data;
-    // console.log(this.application_details);
+    // ;
     return this.application_details;  // Ensure to return the data here.
   }
   

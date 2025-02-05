@@ -154,7 +154,7 @@ export class AppOrganizationinformationComponent {
   //   this.admnistrationService.onSaveSystemAdministrationDetails(this.table_name, formData, 'onSaveSystemAdminWithImage')
   // .subscribe(
   //   response => {
-  //     console.log('Backend response:', response); // Log the response
+  //     ; // Log the response
   //     this.response = response;
   //     if (this.response.success) {
   //       this.fetchsystemInformation();

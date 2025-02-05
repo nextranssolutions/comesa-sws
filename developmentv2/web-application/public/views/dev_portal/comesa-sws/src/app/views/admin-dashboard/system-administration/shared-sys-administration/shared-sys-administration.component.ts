@@ -196,7 +196,7 @@ export class SharedSysAdministrationComponent {
             this.response = response;
             if (this.response.success) {
               this.fetchAppNavigationMenus(user_group_id);
-              console.log(this.response)
+              
               this.toastr.success(this.response.message, 'Response');
               this.spinnerHide();
 
