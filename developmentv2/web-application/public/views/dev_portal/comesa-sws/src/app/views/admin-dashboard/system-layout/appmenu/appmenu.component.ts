@@ -42,7 +42,12 @@ export class AppmenuComponent {
   ngOnInit(): void {
     this.getUserNavigationItems();
   }
-
+  scrollToTop(): void {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth' // Smooth scrolling for better UX
+    });
+  }
   toggleSubMenu(menu) {
     menu.open = !menu.open;
   }
@@ -84,6 +89,7 @@ export class AppmenuComponent {
 
     // this.utilityService.setNavigationData(this.nav_data);
     this.router.navigate(['./admin-cimex/' + routerlink]);
+    this.scrollToTop();
   }
 
 

@@ -84,7 +84,12 @@ dashboard_link: string;
     
      
     }
-
+    scrollToTop(): void {
+      window.scrollTo({
+        top: 0,
+        behavior: 'smooth' // Smooth scrolling for better UX
+      });
+    }
     spinnerShow(spinnerMessage) {
       this.loadingVisible = true;
       this.spinnerMessage = spinnerMessage;
@@ -166,7 +171,7 @@ dashboard_link: string;
   
                 this.isLoggedIn = true;
                 this.router.navigate([this.dashboard_link]);
-  
+                this.scrollToTop();
                 this.authService.isLoggedIn = true;
   
               } else {
@@ -181,6 +186,7 @@ dashboard_link: string;
             this.spinnerHide();
           });
       //this.router.navigate(['/online-services']);
+      //this.scrollToTop();
     }
   
     
@@ -262,7 +268,7 @@ fetchCountryOfOriginwithPartnerState() {
   }
   funcCreateCustomerAccount(){
     this.router.navigate(['/sign-up']);
-  
+    this.scrollToTop();
   }//
   funcPublicNavigation(){
 
@@ -315,5 +321,6 @@ funcLostPassord(){
 funcRedirectToDashboard(){
     // Handle other status conditions if needed
     this.router.navigate(['./admin-ecres/app-dashboard']);
+    this.scrollToTop();
   }
 }

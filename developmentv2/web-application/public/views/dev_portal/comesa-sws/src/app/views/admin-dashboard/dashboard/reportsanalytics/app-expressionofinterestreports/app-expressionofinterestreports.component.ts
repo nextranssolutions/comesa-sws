@@ -194,7 +194,12 @@ export class AppExpressionofinterestreportsComponent {
   spinnerHide() {
     this.loadingVisible = false;
   }
-
+  scrollToTop(): void {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth' // Smooth scrolling for better UX
+    });
+  }
   onLoadExpressionOfInterestGeneralInfoData() {
     this.spinnerShow('Loading Information ...........');
 
@@ -351,6 +356,7 @@ export class AppExpressionofinterestreportsComponent {
 
   funcRedirectToEOIRequest() {
     this.router.navigate(['/admin-ecres/eoi-reports']);
+    this.scrollToTop();
   }
 
   onLoadPeriodSpanData() {

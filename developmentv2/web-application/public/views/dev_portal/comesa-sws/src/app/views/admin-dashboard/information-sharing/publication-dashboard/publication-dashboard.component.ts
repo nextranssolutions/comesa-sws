@@ -62,7 +62,12 @@ export class PublicationDashboardComponent {
     this.funcFetchExpertPublicationsCounter();
     this.onLoadEoiStatuseData()
   }
-
+  scrollToTop(): void {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth' // Smooth scrolling for better UX
+    });
+  }
   funcFetchExpertPublicationsCounter() {
 
     this.infoService.funcFetchExpertPublicationsCounter()
@@ -175,6 +180,8 @@ export class PublicationDashboardComponent {
     }
     this.infoService.setApplicationDetail(this.data_resp);
     this.router.navigate(['/admin-ecres/app-experts-publicationsmanagament']);
+    this.scrollToTop();
+    
   }
 
   onLoadExpertsPublicationManagementData(appworkflow_status_id = 0) {
@@ -237,6 +244,7 @@ export class PublicationDashboardComponent {
   funcPreviewExpertCredentials(data) {
     this.infoService.setApplicationDetail(data);
     this.router.navigate(['./admin-ecres/app-experts-publicationsmanagament']);
+    this.scrollToTop();
   }
 
   onExporting(e: DxDataGridTypes.ExportingEvent) {

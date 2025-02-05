@@ -120,7 +120,12 @@ export class AppsignInComponent {
     // this.spinner.hide();
   }
 
-
+  scrollToTop(): void {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth' // Smooth scrolling for better UX
+    });
+  }
   onLoadSlides_information() {
     this.spinnerShow('');
     var data_submit = {
@@ -304,6 +309,7 @@ export class AppsignInComponent {
               this.isLoggedIn = true;
 
               this.router.navigate([this.dashboard_link]);
+              this.scrollToTop();
               
             } else {
               this.toastr.error(this.message, 'Alert!');
@@ -317,6 +323,7 @@ export class AppsignInComponent {
           this.spinnerHide();
         });
     //this.router.navigate(['/online-services']);
+    //this.scrollToTop();
   }
 
   funcReloadCapture() {
@@ -329,6 +336,7 @@ export class AppsignInComponent {
   }
   funcCreateCustomerAccount() {
     this.router.navigate(['public/sign-up']);
+    this.scrollToTop();
   }//
 
   onSignOnKeyPress(event) {
@@ -353,6 +361,7 @@ export class AppsignInComponent {
     let user_data = JSON.parse(this.userData);
     //experts-operations
     this.router.navigate([user_data.dashboard_link]);
+    this.scrollToTop();
   }
   spinnerShow(spinnerMessage) {
     this.loadingVisible = true;

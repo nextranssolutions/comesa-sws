@@ -128,7 +128,12 @@ export class AppsignUpComponent {
     this.onLoadsystemSignInUpGuidelines()
   }
 
-
+  scrollToTop(): void {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth' // Smooth scrolling for better UX
+    });
+  }
   funcLoginCapture() {
     this.var_1 = Math.floor(Math.random() * 11);
     this.var_2 = Math.floor(Math.random() * 11);
@@ -470,6 +475,7 @@ export class AppsignUpComponent {
           if (this.response.success) {
             this.toastr.info(this.response.message, 'Info');
             this.router.navigate(['/public/index']);
+            this.scrollToTop();
           } else {
             this.toastr.success(this.response.message, 'Success');
           }
@@ -524,6 +530,7 @@ export class AppsignUpComponent {
 
   onSignInLink() {
     this.router.navigate(['/public/sign-in']);
+    this.scrollToTop();
   }
 
   onViewsignInGuidelines() {

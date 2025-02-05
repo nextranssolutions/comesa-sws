@@ -62,7 +62,12 @@ export class KnowledgecenterDashboardComponent {
     this.funcFetchKnowledgeCenterCounter();
     this.onLoadEoiStatuseData()
   }
-
+  scrollToTop(): void {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth' // Smooth scrolling for better UX
+    });
+  }
   funcFetchKnowledgeCenterCounter() {
 
     this.infoService.funcFetchKnowledgeCenterCounter()
@@ -171,6 +176,7 @@ export class KnowledgecenterDashboardComponent {
     }
     this.infoService.setApplicationDetail(this.data_resp);
     this.router.navigate(['/admin-ecres/app-knowledge-centerinfo']);
+    this.scrollToTop();
   }
 
 
@@ -238,6 +244,7 @@ export class KnowledgecenterDashboardComponent {
   funcPreviewKnowledgeCenterInfo(data) {
     this.infoService.setApplicationDetail(data);
     this.router.navigate(['/admin-ecres/app-knowledge-centerinfo']);
+    this.scrollToTop();
   }
 
   onExporting(e: DxDataGridTypes.ExportingEvent) {

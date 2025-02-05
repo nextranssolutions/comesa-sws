@@ -38,7 +38,12 @@ export class TopSectionComponent {
     this.loadTranslations(this.translate.currentLang || 'English');
     // this.selectionLanguage('English');
   }
-
+  scrollToTop(): void {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth' // Smooth scrolling for better UX
+    });
+  }
   selectionLanguage(locale: string) {
     // this.translate.addLangs(['English', 'French', 'Swahili']);
     this.translationService.getTranslations(locale).subscribe(
@@ -80,12 +85,15 @@ export class TopSectionComponent {
     let user_data = JSON.parse(this.userData);
 
     this.router.navigate([user_data.dashboard_link]);
+    this.scrollToTop();
   }
   funcRedirectSignIn(){
     this.router.navigate(['./sign-in']);
+    this.scrollToTop();
   }
   funcRedirectSignUp(){
     this.router.navigate(['./sign-up']);
+    this.scrollToTop();
   }
   funcUserLogOut() {
     this.spinnerShow('Logging Out');

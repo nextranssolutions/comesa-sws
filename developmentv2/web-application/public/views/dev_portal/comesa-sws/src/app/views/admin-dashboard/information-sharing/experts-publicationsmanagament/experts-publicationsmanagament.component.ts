@@ -113,6 +113,7 @@ export class ExpertsPublicationsmanagamentComponent {
     else {
 
       this.router.navigate([this.dashboard_url]);
+      this.scrollToTop();
     }
 
     this.checkScreenSize();
@@ -122,7 +123,12 @@ export class ExpertsPublicationsmanagamentComponent {
   ngOnInit() {
     this.onLoadconfirmationData();
   }
-
+  scrollToTop(): void {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth' // Smooth scrolling for better UX
+    });
+  }
   @HostListener('window:resize', ['$event'])
   onResize(event: Event): void{
     this.screenWidth = window.innerWidth;
@@ -235,6 +241,7 @@ export class ExpertsPublicationsmanagamentComponent {
 
   onFuncReturntoDashboard() {
     this.router.navigate(['./admin-ecres/app-publication-dashboard']);
+    this.scrollToTop();
   }
 
   onLoadExpertsPublicationManagementData(appworkflow_status_id = 0) {

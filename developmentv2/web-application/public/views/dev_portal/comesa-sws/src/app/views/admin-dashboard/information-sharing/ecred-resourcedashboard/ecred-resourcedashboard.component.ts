@@ -60,7 +60,12 @@ export class EcredResourcedashboardComponent {
     this.funcFetchResourcesCounter();
     this.onLoadEoiStatuseData()
   }
- 
+  scrollToTop(): void {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth' // Smooth scrolling for better UX
+    });
+  }
   funcFetchResourcesCounter() {
 
     this.infoService.funcFetchResourcesCounter()
@@ -147,6 +152,7 @@ export class EcredResourcedashboardComponent {
     }
     this.infoService.setApplicationDetail(this.data_resp);
     this.router.navigate(['/admin-ecres/app-ecred-resources']);
+    this.scrollToTop();
   }
 
   onLoadResourceManagementData(appworkflow_status_id = 0) {
@@ -235,6 +241,7 @@ export class EcredResourcedashboardComponent {
   funcEditResource(data) {
     this.infoService.setApplicationDetail(data);
     this.router.navigate(['./admin-ecres/app-ecred-resources']);
+    this.scrollToTop();
   }
 
   onExporting(e: DxDataGridTypes.ExportingEvent) {

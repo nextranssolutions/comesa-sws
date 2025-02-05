@@ -261,10 +261,16 @@ export class SharedpreviewexpertprofiledetailsComponent {
       else {
     
         this.router.navigate(['/experts-operations/app-expertsprofile-dash']);
+        this.scrollToTop();
       }
   
   }
-
+  scrollToTop(): void {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth' // Smooth scrolling for better UX
+    });
+  }
   funcpopWidth(percentage_width: number) {
     return window.innerWidth * percentage_width / 100;
   }
@@ -749,6 +755,7 @@ loadData(message, tableName, id, dataVariable) {
   }
   onFuncReturntoDashboard(){
     this.router.navigate([this.dashboard_url]);
+    this.scrollToTop();
   }
   onSaveExpertsRegulatoryCompetence() {
     const formData = new FormData();

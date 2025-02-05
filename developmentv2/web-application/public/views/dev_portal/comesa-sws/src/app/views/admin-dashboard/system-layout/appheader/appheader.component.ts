@@ -85,7 +85,12 @@ export class AppheaderComponent {
     this.onCheckUserPWDRequestDetails();
 
   }
-
+  scrollToTop(): void {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth' // Smooth scrolling for better UX
+    });
+  }
   selectionLanguage(locale: string) {
     // this.translate.use(lang);
     this.translate.addLangs(['English', 'French', 'Swahili', 'Arabic', 'Portuguese']);
@@ -139,6 +144,7 @@ export class AppheaderComponent {
 
   funcViewUserProfiledetails() {
     this.router.navigate(['./admin-ecres/app-myprofile']);
+    this.scrollToTop();
   }
 
   funcpopWidth(percentage_width) {

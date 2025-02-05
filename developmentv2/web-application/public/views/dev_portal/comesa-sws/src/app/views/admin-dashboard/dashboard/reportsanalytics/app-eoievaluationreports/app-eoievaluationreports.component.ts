@@ -91,6 +91,12 @@ export class AppEoievaluationreportsComponent {
     //this.onLoadEoiMyApplicationsCounters();
     //this.onLoadexpressionOfInteretsApplications()
   }
+  scrollToTop(): void {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth' // Smooth scrolling for better UX
+    });
+  }
   onCellPrepared(e) {
     if (e.rowType === "data" && e.column.dataField === "appworkflow_status_id") {
       let appworkflow_status_id = e.data.appworkflow_status_id;
@@ -126,6 +132,7 @@ export class AppEoievaluationreportsComponent {
     this.eoiService.setApplicationDetail(this.currentData);
     const targetRoute = '/admin-ecres/expressionofinterest-evaluation';
     this.router.navigate([targetRoute])
+    this.scrollToTop();
   }
   onReviewExpressionofEvaluations(data) {
     this.currentData = data;
@@ -135,6 +142,7 @@ export class AppEoievaluationreportsComponent {
     this.eoiService.setApplicationDetail(this.currentData);
     const targetRoute = '/admin-ecres/expressionofinterest-evalreview';
     this.router.navigate([targetRoute])
+    this.scrollToTop();
   }
   onReviewEvaluationsonExpertsAppoinment(data) {
     this.currentData = data;
@@ -144,6 +152,7 @@ export class AppEoievaluationreportsComponent {
     this.eoiService.setApplicationDetail(this.currentData);
     const targetRoute = '/admin-ecres/eoievalreviewappointment';
     this.router.navigate([targetRoute])
+    this.scrollToTop();
   }
   onPreviewExpressionofEvaluations(data) {
     this.currentData = data;
@@ -153,6 +162,7 @@ export class AppEoievaluationreportsComponent {
     this.eoiService.setApplicationDetail(this.currentData);
     const targetRoute = '/admin-ecres/previeweoievaluationsappointment';
     this.router.navigate([targetRoute])
+    this.scrollToTop();
   }
 
   funcActionsProcess(action_btn, data) {
@@ -164,12 +174,14 @@ export class AppEoievaluationreportsComponent {
       this.eoiService.setApplicationDetail(this.currentData);
       const targetRoute = '/admin-ecres/expressionofinterest-evaluation';
       this.router.navigate([targetRoute])
+      this.scrollToTop();
     }
   }
 
   funcEditDetails(data) {
     this.eoiService.setApplicationDetail(data);
     this.router.navigate(['./admin-ecres/app-expert-selectionandappointment']);
+    this.scrollToTop();
   }
 
 
@@ -399,7 +411,7 @@ export class AppEoievaluationreportsComponent {
   //   //
   //   this.eoiService.setApplicationDetail(data);
   //   this.router.navigate(['/ecres/preview-expertcredentials']);
-
+  // this.scrollToTop();
   // }
 
   onCancelApply() {

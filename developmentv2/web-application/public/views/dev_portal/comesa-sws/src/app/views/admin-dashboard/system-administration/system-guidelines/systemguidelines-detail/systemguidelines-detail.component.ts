@@ -85,6 +85,7 @@ export class SystemguidelinesDetailComponent {
     }
     else {
       this.router.navigate([this.dashboard_url]);
+      this.scrollToTop();
     }
   }
 
@@ -93,7 +94,12 @@ export class SystemguidelinesDetailComponent {
     this.onloaddashboardTypeData();
     this.fetchSysGuidelinesDetails();
   }
-
+  scrollToTop(): void {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth' // Smooth scrolling for better UX
+    });
+  }
   funcInfoTabClick(e) {
     let tab_index = e.itemIndex;
 
@@ -130,6 +136,7 @@ export class SystemguidelinesDetailComponent {
 
   funcRedirectToDashboard() {
     this.router.navigate([this.dashboard_url]);
+    this.scrollToTop();
   }
 
   spinnerShow(spinnerMessage) {

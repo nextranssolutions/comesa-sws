@@ -72,7 +72,12 @@ export class SystemguidelinesDashComponent {
     this.onLoadSystemGuideline();
     this.onLoadEoiStatusData(); 
   }
-
+  scrollToTop(): void {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth' // Smooth scrolling for better UX
+    });
+  }
   onCellPrepared(e) {
     if (e.rowType === "data" && e.column.dataField === "appworkflow_status_id") {
       let appworkflow_status_id = e.data.appworkflow_status_id;
@@ -215,6 +220,7 @@ export class SystemguidelinesDashComponent {
   funcPreviewExpertCredentials(data: any) { // Added type annotation
     this.admnistrationService.setApplicationDetail(data);
     this.router.navigate(['./admin-ecres/app-systemguidelines-detail']);
+    this.scrollToTop();
   }
 
   funcDeleteDetails(data: any) { // Added type annotation
@@ -230,6 +236,7 @@ export class SystemguidelinesDashComponent {
     }
     this.admnistrationService.setApplicationDetail(this.data_resp);
     this.router.navigate(['/admin-ecres/app-systemguidelines-detail']);
+    this.scrollToTop();
   }
 
   funcPreviewData(data: any) { // Added type annotation

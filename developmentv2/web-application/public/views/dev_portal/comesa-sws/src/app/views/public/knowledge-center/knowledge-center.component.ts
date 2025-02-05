@@ -52,7 +52,12 @@ export class KnowledgeCenterComponent {
   ngOnInit() {
     this.onLoadKnowledgeCenterData()
   }
-
+  scrollToTop(): void {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth' // Smooth scrolling for better UX
+    });
+  }
   funcRedirectToKnowledgeCenterManagement() {
     this.data_resp = {
       process_id: 15,
@@ -60,6 +65,7 @@ export class KnowledgeCenterComponent {
     }
     this.publicservice.setApplicationDetail(this.data_resp);
     // this.router.navigate(['/admin-ecres/app-knowledge-centerinfo']);
+    //this.scrollToTop();
   }
 
   onLoadKnowledgeCenterData(appworkflow_status_id = 0) {
@@ -137,6 +143,7 @@ export class KnowledgeCenterComponent {
   funcPreviewKnowledgeCenterInfo(data) {
     this.publicservice.setApplicationDetail(data);
     // this.router.navigate(['./admin-ecres/app-knowledge-centerinfo']);
+    //this.scrollToTop();
   }
 
   singleApplicationActionColClick(data) {

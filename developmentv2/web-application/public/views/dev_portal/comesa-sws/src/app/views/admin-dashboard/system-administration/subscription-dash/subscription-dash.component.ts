@@ -84,7 +84,12 @@ export class SubscriptionDashComponent {
   //       });
 
   // }
-
+  scrollToTop(): void {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth' // Smooth scrolling for better UX
+    });
+  }
   onloadSubscriptionFields() {
 
     var data_submit = {
@@ -135,6 +140,7 @@ export class SubscriptionDashComponent {
   //   }
   //   this.infoService.setApplicationDetail(this.data_resp);
   //   this.router.navigate(['/admin-ecres/app-publicationrepo-management']);
+  //  this.scrollToTop();
   // }
 
   onLoadSubscriptionData(appworkflow_status_id = 0) {
@@ -245,6 +251,7 @@ export class SubscriptionDashComponent {
   funcPreviewExpertCredentials(data) {
     this.infoService.setApplicationDetail(data);
     this.router.navigate(['./admin-ecres/app-publicationrepo-management']);
+    this.scrollToTop();
   }
 
 

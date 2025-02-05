@@ -95,6 +95,8 @@ export class EcredResourcesmanagementComponent {
     else {
 
       this.router.navigate([this.dashboard_url]);
+      this.scrollToTop();
+
     } 
 
 
@@ -115,12 +117,18 @@ export class EcredResourcesmanagementComponent {
     }
   }
 
-  
+    scrollToTop(): void {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth' // Smooth scrolling for better UX
+    });
+  }
   onFuncSubmitResource() {
     this.isShowAppProcessSubmission= true;
   }
   onFuncReturntoDashboard() {
     this.router.navigate(['./admin-ecres/app-ecredresource-dashboard']);
+    this.scrollToTop();
   }
   onLoadconfirmationData() {
     let data_submit = {

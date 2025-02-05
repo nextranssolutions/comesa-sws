@@ -88,6 +88,7 @@ export class KnowledgeCenterinfomanagementComponent {
     else {
 
       this.router.navigate([this.dashboard_url]);
+      this.scrollToTop();
     }
 
 
@@ -98,7 +99,12 @@ export class KnowledgeCenterinfomanagementComponent {
   ngOnInit() {
     
   }
-
+  scrollToTop(): void {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth' // Smooth scrolling for better UX
+    });
+  }
   @HostListener('window:resize', ['$event'])
   onResize(event: Event): void{
     this.screenWidth = window.innerWidth;
@@ -146,6 +152,7 @@ export class KnowledgeCenterinfomanagementComponent {
 
   onFuncReturntoDashboard() {
     this.router.navigate(['./admin-ecres/app-knowledgecenter-dashboard']);
+    this.scrollToTop();
   }
 
   onLoadKnowledgeCenterManagementData(appworkflow_status_id = 0) {

@@ -125,7 +125,12 @@ export class HomePageComponent {
     this.onLoadSlides_information();
 
   }
-
+  scrollToTop(): void {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth' // Smooth scrolling for better UX
+    });
+  }
   onLoadregulatoryFunctionData() {
 
     var data_submit = {
@@ -221,6 +226,7 @@ export class HomePageComponent {
   }
   funcCreateAccount() {
     this.router.navigate(['/public/sign-up']);
+    this.scrollToTop();
   }//
   
   funcPublicNavigation() {
@@ -294,10 +300,11 @@ export class HomePageComponent {
   // console.log(user_data.dashboard_link)
     // let dashboard_linktest = './partnerstates-ppm';
     this.router.navigate([user_data.dashboard_link]);
+    this.scrollToTop();
 
 
   //  this.router.navigate(['./admin-ecres/app-dashboard']);
-
+  //  this.scrollToTop();
   }
 
   funcUserLogOut() {
@@ -322,7 +329,7 @@ onSearchExpertsProfile(selectedTabIndex){
     this.publicservice.setApplicationDetail(this.searchExpertsProfileFrm.value);
     //reroute
     this.router.navigate(['./experts-profiles']);
-
+    this.scrollToTop();
 }
 
 }

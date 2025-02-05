@@ -68,7 +68,12 @@ export class SharedappProcesssubmissionComponent {
     this.onLoadWorkflowStatusActions();
 
   }
-
+  scrollToTop(): void {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth' // Smooth scrolling for better UX
+    });
+  }
   ngOnChanges(changes: SimpleChanges) {
     if (changes['application_code']) {
     // if(this.application_code >0){
@@ -260,6 +265,7 @@ export class SharedappProcesssubmissionComponent {
           if (this.response.success) {
             this.toastr.success(this.response.message, 'Response');
             this.router.navigate([this.dashboard_url]);
+            this.scrollToTop();
             this.spinnerHide();
           } else {
             this.toastr.error(this.response.message, 'Alert');
