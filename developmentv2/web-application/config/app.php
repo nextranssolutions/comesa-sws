@@ -169,7 +169,6 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        App\Providers\TelescopeServiceProvider::class,
         Propaganistas\LaravelDisposableEmail\DisposableEmailServiceProvider::class,
         // Maatwebsite\Excel\ExcelServiceProvider::class, // for handling excel files
         Elibyy\TCPDF\ServiceProvider::class,

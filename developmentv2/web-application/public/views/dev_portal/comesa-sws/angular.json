@@ -3,7 +3,7 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "eac-ppmsolution": {
+    "comesa-impexpsolution": {
       "projectType": "application",
       "schematics": {},
       "root": "",
@@ -35,11 +35,12 @@
             ],
             "styles": [
               "src/dist/css/bootstrap.min.css",
+              "node_modules/devextreme/dist/css/dx.material.teal.light.compact.css",
               "src/dist/font-awesome/4.5.0/css/font-awesome.min.css",
               "src/dist/css/ace.min.css",
               "node_modules/ngx-toastr/toastr.css",
-              "src/styles.css",
-              "node_modules/devextreme/dist/css/dx.fluent.blue.light.css"
+              "src/styles.css"
+              
             ],
             
             "scripts": [
@@ -83,7 +84,6 @@
             "development": {
               "buildOptimizer": false,
               "optimization": false,
-              "vendorChunk": true,
               "extractLicenses": false,
               "sourceMap": true,
               "namedChunks": true
@@ -95,10 +95,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "buildTarget": "eac-ppmsolution:build:production"
+              "buildTarget": "comesa-impexpsolution:build:production"
             },
             "development": {
-              "buildTarget": "eac-ppmsolution:build:development"
+              "buildTarget": "comesa-impexpsolution:build:development"
             }
           },
           "defaultConfiguration": "development"
@@ -106,7 +106,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "buildTarget": "eac-ppmsolution:build"
+            "buildTarget": "comesa-impexpsolution:build"
           }
         },
         "test": {

@@ -8,35 +8,35 @@
   ),
   'carlos-meneses/laravel-mpdf' => 
   array (
-    'providers' => 
-    array (
-      0 => 'Mccarlosen\\LaravelMpdf\\LaravelMpdfServiceProvider',
-    ),
     'aliases' => 
     array (
       'PDF' => 'Mccarlosen\\LaravelMpdf\\Facades\\LaravelMpdf',
     ),
+    'providers' => 
+    array (
+      0 => 'Mccarlosen\\LaravelMpdf\\LaravelMpdfServiceProvider',
+    ),
   ),
   'elibyy/tcpdf-laravel' => 
   array (
-    'providers' => 
-    array (
-      0 => 'Elibyy\\TCPDF\\ServiceProvider',
-    ),
     'aliases' => 
     array (
       'PDF' => 'Elibyy\\TCPDF\\Facades\\TCPDF',
     ),
+    'providers' => 
+    array (
+      0 => 'Elibyy\\TCPDF\\ServiceProvider',
+    ),
   ),
   'jenssegers/agent' => 
   array (
-    'providers' => 
-    array (
-      0 => 'Jenssegers\\Agent\\AgentServiceProvider',
-    ),
     'aliases' => 
     array (
       'Agent' => 'Jenssegers\\Agent\\Facades\\Agent',
+    ),
+    'providers' => 
+    array (
+      0 => 'Jenssegers\\Agent\\AgentServiceProvider',
     ),
   ),
   'knuckleswtf/scribe' => 
@@ -60,13 +60,6 @@
       0 => 'Laravel\\Sanctum\\SanctumServiceProvider',
     ),
   ),
-  'laravel/telescope' => 
-  array (
-    'providers' => 
-    array (
-      0 => 'Laravel\\Telescope\\TelescopeServiceProvider',
-    ),
-  ),
   'laravel/tinker' => 
   array (
     'providers' => 
@@ -76,13 +69,13 @@
   ),
   'maatwebsite/excel' => 
   array (
-    'providers' => 
-    array (
-      0 => 'Maatwebsite\\Excel\\ExcelServiceProvider',
-    ),
     'aliases' => 
     array (
       'Excel' => 'Maatwebsite\\Excel\\Facades\\Excel',
+    ),
+    'providers' => 
+    array (
+      0 => 'Maatwebsite\\Excel\\ExcelServiceProvider',
     ),
   ),
   'nesbot/carbon' => 
@@ -108,13 +101,13 @@
   ),
   'nwidart/laravel-modules' => 
   array (
-    'providers' => 
-    array (
-      0 => 'Nwidart\\Modules\\LaravelModulesServiceProvider',
-    ),
     'aliases' => 
     array (
       'Module' => 'Nwidart\\Modules\\Facades\\Module',
+    ),
+    'providers' => 
+    array (
+      0 => 'Nwidart\\Modules\\LaravelModulesServiceProvider',
     ),
   ),
   'propaganistas/laravel-disposable-email' => 
@@ -133,13 +126,13 @@
   ),
   'spatie/laravel-ignition' => 
   array (
-    'providers' => 
-    array (
-      0 => 'Spatie\\LaravelIgnition\\IgnitionServiceProvider',
-    ),
     'aliases' => 
     array (
       'Flare' => 'Spatie\\LaravelIgnition\\Facades\\Flare',
+    ),
+    'providers' => 
+    array (
+      0 => 'Spatie\\LaravelIgnition\\IgnitionServiceProvider',
     ),
   ),
   'tymon/jwt-auth' => 

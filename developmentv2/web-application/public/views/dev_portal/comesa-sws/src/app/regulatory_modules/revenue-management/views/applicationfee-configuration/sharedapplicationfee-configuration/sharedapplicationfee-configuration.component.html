@@ -1,0 +1,347 @@
+<h5 class="m-0">{{ parameter_name | translate }}</h5>
+
+
+<div class="row col-lg-12">
+    <dx-button text="{{ 'add_new' | translate }} {{ parameter_name | translate }}" type="default" icon="fa fa-save"
+        [elementAttr]="{ id: 'elementId', class: 'pull-right' }" (onClick)="hasReadpermissions=false;onAddNewProduct()">
+    </dx-button>
+
+    <dx-data-grid (onCellPrepared)="onCellPrepared($event)" class="col-lg-12 table row-border hover"
+        (onExporting)="onExporting($event)" [wordWrapEnabled]="true" [dataSource]="applicationFeeConfigData"
+        [remoteOperations]="true" [showBorders]="true" [allowColumnResizing]="true" [columnHidingEnabled]="true"
+        keyExpr="id" (onToolbarPreparing)="onAdvanceProductRegistrySearch($event)">
+
+        <dxo-export [enabled]="true" [fileName]="'records' | translate" [formats]="['pdf', 'xlsx']"
+            [allowExportSelectedData]="true">
+        </dxo-export>
+        <dxo-search-panel [visible]="true"></dxo-search-panel>
+
+        <dxo-filter-row [visible]="show_advancesearch"></dxo-filter-row>
+        <dxo-paging [enabled]="true">
+            <dxo-pager [showInfo]="true" infoText="Page #{0}. Total: {1} ({2} items)" [showPageSizeSelector]="true"
+                [allowedPageSizes]="[20,50,100]"></dxo-pager>
+        </dxo-paging>
+
+        <dxi-column [width]="100" caption="{{ 'action' | translate }}" name="command-editing" [allowFiltering]="false"
+            [allowSorting]="false" cellTemplate="cellTemplate">
+            <div *dxTemplate="let data of 'cellTemplate'">
+                <dx-menu (onItemClick)="funcActionColClick($event,data)" [items]="actionsMenuItems"></dx-menu>
+            </div>
+        </dxi-column>
+        <dxi-column dataField="regulatory_function" caption="{{ 'regulatory_function' | translate }}">
+        </dxi-column>
+
+        <dxi-column dataField="regulatory_subfunction" caption="{{ 'regulatory_subfunction' | translate }}">
+        </dxi-column>
+        
+        <dxi-column dataField="product_type" caption="{{ 'product_type' | translate }}">
+        </dxi-column>
+
+        <dxi-column dataField="assessment_proceduretype" caption="{{ 'assessment_proceduretype' | translate }}">
+        </dxi-column>
+
+        <dxi-column dataField="prodclass_category" caption="{{ 'prodclass_category' | translate }}">
+        </dxi-column>
+
+        <dxi-column dataField="product_subcategory" caption="{{ 'product_subcategory' | translate }}">
+        </dxi-column>
+
+        <dxi-column dataField="product_origin" caption="{{ 'product_origin' | translate }}">
+        </dxi-column>
+
+        <dxi-column dataField="classification_name" caption="{{ 'classification_name' | translate }}">
+        </dxi-column>
+
+        <dxi-column dataField="applicationfeetype" caption="{{ 'applicationfeetype' | translate }}">
+        </dxi-column>
+
+        <dxi-column [groupIndex]="0" dataField="fee_type" caption="{{ 'fee_type' | translate }}">
+        </dxi-column>
+
+        <dxi-column dataField="cost_category" caption="{{ 'cost_category' | translate }}">
+        </dxi-column>
+
+        <dxi-column dataField="cost_sub_category" caption="{{ 'cost_sub_category' | translate }}">
+        </dxi-column>
+
+        <dxi-column dataField="cost_element" caption="{{ 'cost_element' | translate }}">
+        </dxi-column>
+
+        <dxi-column dataField="element_cost" caption="{{ 'element_cost' | translate }}">
+        </dxi-column>
+
+        <dxi-column dataField="business_type" caption="{{ 'business_type' | translate }}">
+        </dxi-column>
+
+        <dxi-column dataField="gmpcountries_region" caption="{{ 'gmpcountries_region' | translate }}">
+        </dxi-column>
+
+        <dxi-column dataField="variation_type" caption="{{ 'variation_type' | translate }}">
+        </dxi-column>
+
+        <dxi-column dataField="importexport_permittype" caption="{{ 'importexport_permittype' | translate }}">
+        </dxi-column>
+
+        <dxi-column dataField="is_registered_product"
+            caption="{{ 'is_registered_product' | translate }}">
+        </dxi-column>
+
+        <dxi-column dataField="investigationproduct_section" caption="{{ 'investigationproduct_section' | translate }}">
+        </dxi-column>
+
+        <dxi-column dataField="investigationprod_classification" caption="{{ 'investigationprod_classification' | translate }}">
+        </dxi-column>
+
+        <dxi-column dataField="fasttrack_option" caption="{{ 'fasttrack_option' | translate }}">
+        </dxi-column>
+
+        <dxi-column dataField="gmp_type" caption="{{ 'gmp_type' | translate }}">
+        </dxi-column>
+        <dxi-column dataField="cost_element" caption="{{ 'cost_element' | translate }}">
+        </dxi-column>
+
+        <dxi-column dataField="advertisement_type" caption="{{ 'advertisement_type' | translate }}">
+        </dxi-column>
+        
+        <dxi-column dataField="premise_type" caption="{{ 'premise_type' | translate }}">
+        </dxi-column>
+
+        <dxi-column [width]="100" dataField="is_enabled" caption="{{ 'enabled_disabledoption' | translate }}">
+        </dxi-column>
+
+        <dxo-selection mode="multiple"></dxo-selection>
+        <dxo-group-panel [visible]="true"></dxo-group-panel>
+
+        <dxo-paging [pageSize]="10"></dxo-paging>
+
+    </dx-data-grid>
+
+</div>
+<!-- </div> -->
+
+<dx-load-panel #loadPanel shadingColor="rgba(0,0,0,0.4)" [position]="{ of: '#employee' }" [(visible)]="loadingVisible"
+    [showIndicator]="true" [showPane]="true" [shading]="true" [message]="spinnerMessage" [hideOnOutsideClick]="false">
+</dx-load-panel>
+
+<dx-popup class="popup" [width]="funcpopWidth(75)" [height]="440" [showTitle]="true" [@flyInOut]
+    title="{{ 'add' | translate }} {{parameter_name | translate }}" [dragEnabled]="false"
+    [hideOnOutsideClick]="true" [(visible)]="isnewproduct">
+
+    <div *dxTemplate="let data of 'content'">
+        <dx-scroll-view>
+
+            <form role="form" enctype="multipart/form-data" role="form" [formGroup]="createNewDataFrm"
+                (ngSubmit)="onFuncSaveCountriesData()">
+
+                <div class="row">
+                
+                    <div class="col-lg-6">
+                        <label>{{ 'regulatory_function' | translate }}</label>
+                     <dx-select-box [dataSource]="regulatoryFunctionData" valueExpr="id" displayExpr="name" [readOnly]="isReadOnly"
+                        [searchEnabled]="true" (onSelectionChanged)="onRegulatoryFunctionDataChange($event)"
+                        placeholder="{{'select_regulatory_function' | translate}}" formControlName="regulatory_function_id">
+                        <div *dxTemplate="let name of 'item'">
+                            <p>{{name.name}} </p>
+                        </div>
+                    </dx-select-box>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <label>{{ 'regulatory_subfunction' | translate }}</label>
+                        <dx-select-box [dataSource]="regulatorySubFunctionData" formControlName="regulatory_subfunction_id" valueExpr="id" [readOnly]="isReadOnly"
+                            [searchEnabled]="true" displayExpr="name">
+                        </dx-select-box>
+                    </div>
+                    <div class="col-lg-6">
+                        <label>{{ 'product_type' | translate }}</label>
+                        <dx-select-box [dataSource]="productTypesData" formControlName="product_type_id" valueExpr="id"
+                            [searchEnabled]="true" displayExpr="name">
+                        </dx-select-box>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <label>{{ 'business_type' | translate }}</label>
+                        <dx-select-box [dataSource]="businessTypeData" formControlName="business_type_id" valueExpr="id"
+                            [searchEnabled]="true" displayExpr="name">
+                        </dx-select-box>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <label>{{ 'gmpcountries_region' | translate }}</label>
+                        <dx-select-box [dataSource]="Countries" formControlName="gmpcountries_region_id" valueExpr="id"
+                            [searchEnabled]="true" displayExpr="name">
+                        </dx-select-box>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <label>{{ 'variation_type' | translate }}</label>
+                        <dx-select-box [dataSource]="variationTypeData" formControlName="variation_type_id" valueExpr="id"
+                            [searchEnabled]="true" displayExpr="name">
+                        </dx-select-box>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <label>{{ 'assessment_proceduretype' | translate }}</label>
+                        <dx-select-box [dataSource]="assessmentProcedureTypeData" formControlName="assessment_proceduretype_id" valueExpr="id"
+                            [searchEnabled]="true" displayExpr="name">
+                        </dx-select-box>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <label>{{ 'importexport_permittype' | translate }}</label>
+                        <dx-select-box [dataSource]="importExportPermitTypeData" formControlName="importexport_permittype_id" valueExpr="id"
+                            [searchEnabled]="true" displayExpr="name">
+                        </dx-select-box>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <label>{{ 'classification_name' | translate }}</label>
+                        <dx-select-box [dataSource]="classificationData" formControlName="classification_id" valueExpr="id"
+                            [searchEnabled]="true" displayExpr="name">
+                        </dx-select-box>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <label>{{ 'is_registered_product' | translate }}</label>
+                        <dx-select-box [dataSource]="regStatusOptions" formControlName="is_registered_product" valueExpr="id"
+                            [searchEnabled]="true" displayExpr="name">
+                        </dx-select-box>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <label>{{ 'investigationproduct_section' | translate }}</label>
+                        <dx-select-box [dataSource]="investigationProductSectionData" formControlName="investigationproduct_section_id" valueExpr="id"
+                            [searchEnabled]="true" displayExpr="name">
+                        </dx-select-box>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <label>{{ 'investigationprod_classification' | translate }}</label>
+                        <dx-select-box [dataSource]="investigationProdClassificationData" formControlName="investigationprod_classification_id" valueExpr="id"
+                            [searchEnabled]="true" displayExpr="name">
+                        </dx-select-box>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <label>{{ 'fasttrack_option' | translate }}</label>
+                        <dx-select-box [dataSource]="regStatusOptions" formControlName="fasttrack_option_id" valueExpr="id"
+                            [searchEnabled]="true" displayExpr="name">
+                        </dx-select-box>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <label>{{ 'prodclass_category' | translate }}</label>
+                        <dx-select-box [dataSource]="prodClassCategoryData" formControlName="prodclass_category_id" valueExpr="id"
+                            [searchEnabled]="true" displayExpr="name">
+                        </dx-select-box>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <label>{{ 'product_subcategory' | translate }}</label>
+                        <dx-select-box [dataSource]="productSubCategoryData" formControlName="product_subcategory_id" valueExpr="id"
+                            [searchEnabled]="true" displayExpr="name">
+                        </dx-select-box>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <label>{{ 'gmp_type' | translate }}</label>
+                        <dx-select-box [dataSource]="gmpTypeData" formControlName="gmp_type_id" valueExpr="id"
+                            [searchEnabled]="true" displayExpr="name">
+                        </dx-select-box>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <label>{{ 'cost_element' | translate }}</label>
+                        <dx-select-box [dataSource]="costElementData" formControlName="element_costs_id" valueExpr="id"
+                            [searchEnabled]="true" displayExpr="name">
+                        </dx-select-box>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <label>{{ 'product_origin' | translate }}</label>
+                        <dx-select-box [dataSource]="productOriginData" formControlName="product_origin_id" valueExpr="id"
+                            [searchEnabled]="true" displayExpr="name">
+                        </dx-select-box>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <label>{{ 'applicationfeetype' | translate }}</label>
+                        <dx-select-box [dataSource]="applicationFeeTypeData" formControlName="application_feetype_id" valueExpr="id"
+                            [searchEnabled]="true" displayExpr="name">
+                        </dx-select-box>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <label>{{ 'advertisement_type' | translate }}</label>
+                        <dx-select-box [dataSource]="advertisementTypeData" formControlName="advertisement_type_id" valueExpr="id"
+                            [searchEnabled]="true" displayExpr="name">
+                        </dx-select-box>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <label>{{ 'premise_type' | translate }}</label>
+                        <dx-select-box [dataSource]="premiseTypeData" formControlName="premise_type_id" valueExpr="id"
+                            [searchEnabled]="true" displayExpr="name">
+                        </dx-select-box>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <label>{{ 'is_enabled' | translate }}</label>
+                        <dx-select-box [dataSource]="regStatusOptions" formControlName="is_enabled" valueExpr="id"
+                            [searchEnabled]="true" displayExpr="name">
+                        </dx-select-box>
+                    </div>
+
+                   
+                    
+                </div>
+            </form>
+            <div class="col-lg-8 pull-right">
+
+            </div><br>
+            <div class="col-lg-4 pull-right">
+                <dx-button text="{{ 'save' | translate }} {{ parameter_name | translate }}" type="default"
+                    icon="fa fa-save" [elementAttr]="{ id: 'elementId', class: 'pull-right' }"
+                    (onClick)="onFuncSaveCountriesData()">
+                </dx-button>
+
+            </div>
+        </dx-scroll-view>
+    </div>
+</dx-popup>
+
+<dx-popup [visible]="deletePopupVisible" [width]="funcpopWidth(30)" [height]="funcpopHeight(25)" [showTitle]="true"
+    title="{{ 'delete_confirmation_of'+parameter_name | translate }}" (onHidden)="deletePopupVisible = false">
+
+    <div>
+        <p class="confirmation-text">
+            {{ 'are_you_sure_you_want_to_delete' | translate }}
+            "<strong>{{config_record}}</strong>"?
+        </p>
+        <div class="button-container">
+            <dx-button text="{{ 'yes' | translate }}" type="danger" (onClick)="onDeleteConfigurationsDetails()">
+            </dx-button>
+            <dx-button text="{{ 'no' | translate }}" (onClick)="deletePopupVisible = false">
+            </dx-button>
+        </div>
+    </div>
+
+</dx-popup>
+
+<dx-popup [visible]="enablePopupVisible" [width]="funcpopWidth(30)" [height]="funcpopHeight(25)" [showTitle]="true"
+    title="{{ enabledisable_tracer | translate }}" (onHidden)="enablePopupVisible = false">
+
+    <div>
+        <p class="confirmation-text">
+            {{ enabledisable_tracerdescription | translate }}
+            "<strong>{{config_record}}</strong>"?
+        </p>
+        <div class="button-container">
+            <dx-button text="{{ 'yes' | translate }}" type="danger" (onClick)="iniateEnableDisableRecord()">
+            </dx-button>
+            <dx-button text="{{ 'no' | translate }}" (onClick)="enablePopupVisible = false">
+            </dx-button>
+        </div>
+    </div>
+
+</dx-popup>

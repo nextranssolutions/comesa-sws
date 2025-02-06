@@ -23,7 +23,7 @@ Route::middleware(['XssSanitizer','clear_cache_config','firewall.all'])->prefix(
     Route::get('onLoadUserData', [UserManagementController::class, 'onLoadUserData']);
     Route::get('onLoadUserAccountStatusCounters', [UserManagementController::class, 'onLoadUserAccountStatusCounters']);
     Route::get('onGetUserInformation', [UserManagementController::class, 'onGetUserInformation']);
-    Route::get('onGetExpertInformation', [UserManagementController::class, 'onGetExpertInformation']);
+    Route::get('onGetTraderInformation', [UserManagementController::class, 'onGetTraderInformation']);
     Route::post('onsaveUserData', [UserManagementController::class, 'onsaveUserData']);
 	Route::post('onDeleteUserData', [UserManagementController::class, 'onDeleteUserData']);
     Route::post('onUserAccountRegistration', [UserManagementController::class, 'onUserAccountRegistration']);
@@ -38,5 +38,9 @@ Route::middleware(['XssSanitizer','clear_cache_config','firewall.all'])->prefix(
      Route::get('onGetSingleUserProfileDetails', [UserManagementController::class, 'onGetSingleUserProfileDetails']);
         Route::post('onUserChangePassword', [UserManagementController::class, 'onUserChangePassword']);
      Route::post('onCheckUserPWDRequestDetails', [UserManagementController::class, 'onCheckUserPWDRequestDetails']);
-     
+     Route::get('onLoadPortalUserData', [UserManagementController::class, 'onLoadPortalUserData']);
+     Route::get('onGetApiUserInformation', [UserManagementController::class, 'onGetApiUserInformation']);
+     Route::get('onGetExternalUserInformation', [UserManagementController::class, 'onGetExternalUserInformation']);
+     Route::post('onsaveTraderData', [UserManagementController::class, 'onsaveTraderData']);
 });
+

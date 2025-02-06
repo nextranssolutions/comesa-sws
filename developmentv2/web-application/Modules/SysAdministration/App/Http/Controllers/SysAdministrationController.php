@@ -565,6 +565,7 @@ class SysAdministrationController extends Controller
                     $join->on('t1.id', '=', 't4.navigation_item_id')
                         ->on('t4.user_group_id', '=', DB::raw($user_group_id));
                 })
+                ->leftjoin( 'wf_navigation_types as t5', 't1.navigation_type_id', 't5.id')
                 ->select('t1.*', 't3.routerlink', 't1.iconsCls', 't4.user_access_levels_id', 't4.navigation_item_id', 't4.user_group_id')
                 ->orderBy('t1.order_no')
                 ->where(array('level' => $level))
@@ -741,6 +742,33 @@ class SysAdministrationController extends Controller
         return response()->json($res, 200);
     }
 
+
+    public function getAppUserGroupRegulatoryFunctions(Request $req)
+    {
+        try {
+            $user_group_id = $req->user_group_id;
+
+            $data = DB::table('par_regulatory_functions as t1')
+                ->leftJoin('par_regulatoryfunctionaccess_groups as t2', function ($join) use ($user_group_id) {
+                    $join->on('t1.id', '=', 't2.regulatory_function_id')
+                        ->on('t2.user_group_id', '=', DB::raw($user_group_id));
+                })
+                ->select('t1.*')
+                ->orderBy('t1.order_no')
+                ->get();
+
+            $res = array('success' => true, 'data' => $data);
+
+        } catch (\Exception $exception) {
+            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        } catch (\Throwable $throwable) {
+            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        }
+        return response()->json($res, 200);
+    }
+
+    
+
     public function onSaveSystemGuideline(Request $req)
     {
         try {
@@ -846,7 +874,7 @@ class SysAdministrationController extends Controller
                 ->leftJoin('wf_workflow_statuses as t8', 't1.appworkflow_status_id', 't8.id')
                 ->leftJoin('par_systems_functionalities as t11', 't1.systems_functionality_id', 't11.id')
                 ->leftJoin('sys_dashboard_types as t9', 't1.dashboard_type_id', 't9.id')
-                ->select('t1.id as systemguide_id', 't8.name as appworkflow_status', 't11.name as systems_functionality', 't9.name as dashboard_type', 't1.*', 't7.name as action_name', 't7.iconcls', 't7.action');
+                ->select('t1.id as systemguide_id', 't8.name as appworkflow_status', 't11.name as systems_functionality', 't9.name as dashboard_type', 't1.*', 't7.name as action_name', 't7.iconCls', 't7.action');
 
             if (validateIsNumeric($appworkflow_status_id)) {
                 $sql->where('t1.appworkflow_status_id', $appworkflow_status_id);
@@ -870,7 +898,7 @@ class SysAdministrationController extends Controller
                     'dashboard_type' => $rec->dashboard_type,
                     'appworkflow_status' => $rec->appworkflow_status,
                     'action' => $rec->action,
-                    'iconcls' => $rec->iconcls,
+                    'iconCls' => $rec->iconCls,
                     'contextMenu' => returnActionColumn($rec->appworkflow_status_id, $actionColumnData)
                 ];
             }
@@ -1064,6 +1092,77 @@ class SysAdministrationController extends Controller
                         $previous_data = getPreviousRecords($table_name, $where);
 
                         $resp = updateRecord($table_name, $previous_data['results'], $where, $data, $user_name);
+                    } else {
+
+                        $data['created_by'] = $user_id;
+                        $data['created_on'] = Carbon::now();
+                        $resp = insertRecord($table_name, $data, $user_name);
+                    }
+
+                }
+            }
+
+
+            if ($resp['success']) {
+
+                $res = array(
+                    'success' => true,
+                    'record_id' => $resp['record_id'],
+                    'message' => 'Saved Successfully'
+                );
+            } else {
+                $res = array(
+                    'success' => false,
+                    'message' => $resp['message']
+                );
+            }
+        } catch (\Exception $exception) {
+            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        } catch (\Throwable $throwable) {
+            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        }
+        return response()->json($res, 200);
+    }
+
+
+    public function onSavingRegulatoryFunctionPermissions(Request $req)
+    {
+        try {
+            $resp = "";
+            $user_id = $req->user_id;
+            $user_name = $req->user_name;
+
+            $data = $req->all();
+
+            $table_name = $req->table_name;
+            $permission_data = $req->permission_data;
+            $record_id = $req->id;
+
+            $permission_data = json_decode($permission_data);
+            if (is_array($permission_data)) {
+
+                foreach ($permission_data as $rec) {
+
+                    $regulatory_function_id = $rec->regulatory_function_id;
+                    $user_group_id = $rec->user_group_id;
+                    $user_access_levels_id = $rec->user_access_levels_id;
+                    $where = array('regulatory_function_id' => $regulatory_function_id, 'user_group_id' => $user_group_id);
+
+                    $records = DB::table($table_name)->where($where)->get();
+                    $data = array(
+                        'regulatory_function_id' => $regulatory_function_id,
+                        'user_access_levels_id' => $user_access_levels_id,
+                        'user_group_id' => $user_group_id
+                    );
+
+                    if (count($records) > 0) {
+                        $data['dola'] = Carbon::now();
+                        $data['altered_by'] = $user_id;
+
+                        $previous_data = getPreviousRecords($table_name, $where);
+
+                        $resp = updateRecord($table_name, $previous_data['results'], $where, $data, $user_name);
+                    
                     } else {
 
                         $data['created_by'] = $user_id;

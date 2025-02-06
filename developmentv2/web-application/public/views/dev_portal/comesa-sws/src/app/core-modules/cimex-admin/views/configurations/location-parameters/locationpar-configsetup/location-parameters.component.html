@@ -1,0 +1,41 @@
+<div class="content-wrapper">
+    <div class="content-header">
+        <div class="container-fluid">
+            <div class="row mb-2">
+                <div class="col-sm-6">
+                    <h5 class="m-0">{{'location_parameters' | translate}}</h5>
+                </div>
+                <div class="col-sm-6">
+                    <ol class="breadcrumb float-sm-right">
+                        <li class="breadcrumb-item"><a href="#">{{'home' | translate}}</a></li>
+                        <li class="breadcrumb-item active">{{'location_parameters' | translate}}
+                        <li>
+                    </ol>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <section class="content">
+        <div class="container-fluid">
+            <dx-tab-panel id="supplierPanel" [swipeEnabled]="false" [showNavButtons]="true" [animationEnabled]="true" [tabsPosition]="tabsPosition">
+
+                <dxi-item title="{{'countries' | translate}}" icon="group">
+                    <app-location-countries></app-location-countries>
+                </dxi-item>
+                <dxi-item title="{{'district_council_definations' | translate}}" icon="group">
+                    <app-districtcouncil-defination></app-districtcouncil-defination>
+                </dxi-item>
+                <dxi-item title="{{'regions_provinces' | translate}}" icon="group">
+                    <app-provinces></app-provinces>
+                </dxi-item>
+                <dxi-item title="{{'districts' | translate}}" icon="group">
+                    <app-districts></app-districts>
+                </dxi-item>
+                <dxi-item title="{{'country_regions' | translate}}" icon="group">
+                    <app-country-regions></app-country-regions>
+                </dxi-item>
+            </dx-tab-panel>
+        </div>
+    </section>
+</div>

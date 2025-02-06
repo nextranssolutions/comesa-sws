@@ -2,22 +2,21 @@ import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
 import { AppComponent } from './app.component';
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
+import { DxTabPanelModule } from 'devextreme-angular';
 
-import {  DxActionSheetModule,  DxTabsModule,DxButtonModule, DxFormModule, DxCheckBoxModule, DxContextMenuModule, DxDataGridModule, DxDateBoxModule, DxFileUploaderModule, DxMenuModule, DxNumberBoxModule, DxPopupModule, DxProgressBarModule, DxRadioGroupModule, DxScrollViewModule, DxSelectBoxModule, DxTagBoxModule, DxTextAreaModule, DxTextBoxModule, DxTreeListModule, DxChartModule, DxGalleryModule } from 'devextreme-angular';
+import { DxActionSheetModule, DxTabsModule, DxButtonModule, DxFormModule, DxCheckBoxModule, DxContextMenuModule, DxDataGridModule, DxDateBoxModule, DxFileUploaderModule, DxMenuModule, DxNumberBoxModule, DxPopupModule, DxProgressBarModule, DxRadioGroupModule, DxScrollViewModule, DxSelectBoxModule, DxTagBoxModule, DxTextAreaModule, DxTextBoxModule, DxTreeListModule, DxChartModule, DxGalleryModule } from 'devextreme-angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { ToastrModule } from 'ngx-toastr';
-import { HttpClientModule, HttpClient,HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxPermissionsModule } from 'ngx-permissions';
 
-import { AuthInterceptor } from './services/http.interceptor';
+import { AuthInterceptor } from './core-services/http.interceptor';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
-import { PublicModule } from './modules/public/public.module';
 
 import { CompositeTranslateLoader } from './composite-translate-loader';
 import { AppRoutingModule } from './app-routing.module';
-import { TimeoutWarningComponent } from './views/utilitiescomponents/timeout-warning/timeout-warning.component';
 
 @NgModule({
   declarations: [
@@ -34,7 +33,6 @@ import { TimeoutWarningComponent } from './views/utilitiescomponents/timeout-war
     ReactiveFormsModule,
     AppRoutingModule,
     NgbModule,
-    PublicModule,
     DxActionSheetModule,
     DxFileUploaderModule,
     DxNumberBoxModule,
@@ -54,7 +52,7 @@ import { TimeoutWarningComponent } from './views/utilitiescomponents/timeout-war
     DxTagBoxModule,
     DxScrollViewModule,
     DxProgressBarModule,
-    
+    DxTabPanelModule,
     ToastrModule.forRoot({
       positionClass: 'toast-bottom-right'
     }),
@@ -71,7 +69,8 @@ import { TimeoutWarningComponent } from './views/utilitiescomponents/timeout-war
     CommonModule,
     FormsModule,
     ReactiveFormsModule,
-    TranslateModule
+    TranslateModule,
+    BrowserAnimationsModule
   ],
   providers: [
     {

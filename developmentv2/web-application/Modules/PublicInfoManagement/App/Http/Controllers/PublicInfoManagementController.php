@@ -177,7 +177,7 @@ class PublicInfoManagementController extends Controller
                 ->leftJoin('par_regulatory_functions as t13', 't1.coreregulatory_function_id', 't13.id')
                 ->leftJoin('par_areasof_expertises as t14', 't1.area_of_expertise_id', 't14.id')
             
-                ->select('t1.*', 't7.name as action_name', 't7.iconcls', 't7.action', 't9.name as institution_type', 't10.name as institution', 't11.name as identification_type', 't12.name as country_of_origin', 't13.name as coreregulatory_function', 't14.name as area_of_expertise');
+                ->select('t1.*', 't7.name as action_name', 't7.iconCls', 't7.action', 't9.name as institution_type', 't10.name as institution', 't11.name as identification_type', 't12.name as country_of_origin', 't13.name as coreregulatory_function', 't14.name as area_of_expertise');
               
             if (validateIsNumeric($appworkflow_status_id)) {
                 $sql->where('appworkflow_status_id', $appworkflow_status_id);
@@ -228,7 +228,7 @@ class PublicInfoManagementController extends Controller
                     'coreregulatory_function' => $rec->coreregulatory_function,
                     'appworkflow_status' => $rec->appworkflow_status,
                     'action' => $rec->action,
-                    'iconcls' => $rec->iconcls,
+                    'iconCls' => $rec->iconCls,
                     'contextMenu' => returnActionColumn($rec->appworkflow_status_id, $actionColumnData)
                 );
             }
@@ -275,7 +275,7 @@ class PublicInfoManagementController extends Controller
                         $rootItems[] = $item;
                     }
                 }
-                $rootItems=encrypt_data($rootItems);
+                // $rootItems=encrypt_data($rootItems);
            
             
             $res = array(
@@ -367,7 +367,7 @@ class PublicInfoManagementController extends Controller
                 })
                 ->leftJoin('wf_statuses_actions as t3', 't2.statuses_action_id', 't3.id')
                 ->leftJoin('wf_workflow_statuses as t4', 't1.appworkflow_status_id', 't4.id')
-                ->select('t1.id as publication_management_id', 't4.name as appworkflow_status', 't1.*', 't3.name as action_name', 't3.iconcls', 't3.action');
+                ->select('t1.id as publication_management_id', 't4.name as appworkflow_status', 't1.*', 't3.name as action_name', 't3.iconCls', 't3.action');
 
             if (validateIsNumeric($appworkflow_status_id)) {
                 $sql->where('appworkflow_status_id', $appworkflow_status_id);
@@ -397,7 +397,7 @@ class PublicInfoManagementController extends Controller
                     'action_name' => $rec->action_name,
                     'appworkflow_status' => $rec->appworkflow_status,
                     'action' => $rec->action,
-                    'iconcls' => $rec->iconcls,
+                    'iconCls' => $rec->iconCls,
                     'contextMenu' => returnActionColumn($rec->appworkflow_status_id, $actionColumnData)
                 );
             }
@@ -428,7 +428,7 @@ class PublicInfoManagementController extends Controller
                 })
                 ->leftJoin('wf_statuses_actions as t3', 't2.statuses_action_id', 't3.id')
                 ->leftJoin('wf_workflow_statuses as t4', 't1.appworkflow_status_id', 't4.id')
-                ->select('t1.id as resource_id', 't4.name as appworkflow_status', 't1.*', 't3.name as action_name', 't3.iconcls', 't3.action');
+                ->select('t1.id as resource_id', 't4.name as appworkflow_status', 't1.*', 't3.name as action_name', 't3.iconCls', 't3.action');
 
             if (validateIsNumeric($appworkflow_status_id)) {
                 $sql->where('appworkflow_status_id', $appworkflow_status_id);
@@ -452,7 +452,7 @@ class PublicInfoManagementController extends Controller
                     'action_name' => $rec->action_name,
                     'appworkflow_status' => $rec->appworkflow_status,
                     'action' => $rec->action,
-                    'iconcls' => $rec->iconcls,
+                    'iconCls' => $rec->iconCls,
                     'contextMenu' => returnActionColumn($rec->appworkflow_status_id, $actionColumnData)
                 );
             }
@@ -483,7 +483,7 @@ class PublicInfoManagementController extends Controller
                 })
                 ->leftJoin('wf_statuses_actions as t3', 't2.statuses_action_id', 't3.id')
                 ->leftJoin('wf_workflow_statuses as t4', 't1.appworkflow_status_id', 't4.id')
-                ->select('t1.id as knowledgecenter_id', 't4.name as appworkflow_status', 't1.*', 't3.name as action_name', 't3.iconcls', 't3.action');
+                ->select('t1.id as knowledgecenter_id', 't4.name as appworkflow_status', 't1.*', 't3.name as action_name', 't3.iconCls', 't3.action');
 
             if (validateIsNumeric($appworkflow_status_id)) {
                 $sql->where('appworkflow_status_id', $appworkflow_status_id);
@@ -507,7 +507,7 @@ class PublicInfoManagementController extends Controller
                     'action_name' => $rec->action_name,
                     'appworkflow_status' => $rec->appworkflow_status,
                     'action' => $rec->action,
-                    'iconcls' => $rec->iconcls,
+                    'iconCls' => $rec->iconCls,
                     'contextMenu' => returnActionColumn($rec->appworkflow_status_id, $actionColumnData)
                 );
             }

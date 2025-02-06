@@ -1,0 +1,52 @@
+<div class="main-content-inner">
+    <div class="breadcrumbs ace-save-state" id="breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="ace-icon fa fa-home home-icon"></i>
+                <a href="#">Home</a>
+            </li>
+            <li class="active">{{parameter_name | translate}}</li>
+        </ul>
+
+    </div>
+
+
+    <div class="page-content">
+        <div class="page-header">
+            <h1>
+                {{parameter_name | translate}}
+                <small>
+                    <i class="ace-icon fa fa-angle-double-right"></i>
+                    overview &amp; stats
+                </small>
+            </h1>
+        </div>
+
+
+        <div class="container-fluid">
+            <dx-tab-panel class="fullpage-tab" id="Navigation Tab" [stylingMode]="stylingMode"
+                [tabsPosition]="tabsPosition" [swipeEnabled]="false" [showNavButtons]="true" [animationEnabled]="true">
+
+                <dxi-item title="{{ 'ref_number_types' | translate }}" icon="fa fa-th-list">
+
+                    <app-ref-numbertypes></app-ref-numbertypes>
+                </dxi-item>
+
+                <dxi-item title="{{ 'ref_number_variable' | translate }}" icon="fa fa-th-list">
+                    <app-ref-numbervariables></app-ref-numbervariables>
+
+                </dxi-item>
+
+                <dxi-item title="{{ 'ref_number_format' | translate }}" icon="fa fa-th-list">
+
+                    <app-ref-numberformats></app-ref-numberformats>
+                </dxi-item>
+
+                <dxi-item title="{{ 'ref_sub_modules' | translate }}" icon="fa fa-th-list">
+                    <app-ref-submodules></app-ref-submodules>
+                </dxi-item>
+
+            </dx-tab-panel>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,11 @@
+{
+    "name": "PremisesLicensing",
+    "alias": "premiseslicensing",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\PremisesLicensing\\App\\Providers\\PremisesLicensingServiceProvider"
+    ],
+    "files": []
+}

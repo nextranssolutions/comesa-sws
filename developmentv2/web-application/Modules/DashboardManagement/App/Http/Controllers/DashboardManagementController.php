@@ -93,7 +93,7 @@ class DashboardManagementController extends Controller
                     $join->on('t6.is_default_action', '=', DB::raw(True));
                 })
                 ->leftJoin('wf_statuses_actions as t7', 't6.statuses_action_id', 't7.id')
-                ->select(DB::raw("t1.*, EXTRACT(DAY FROM AGE(date_released, date_received)) AS time_span,t7.name as action_name, t7.iconcls, t7.action, t2.name as current_stage, t3.name as previous_stage, t4.name as application_status, t5.name as process_name"));
+                ->select(DB::raw("t1.*, EXTRACT(DAY FROM AGE(date_released, date_received)) AS time_span,t7.name as action_name, t7.iconCls, t7.action, t2.name as current_stage, t3.name as previous_stage, t4.name as application_status, t5.name as process_name"));
                 
                 //previous_user
             $records->whereNotIn('t1.process_id', [2]);

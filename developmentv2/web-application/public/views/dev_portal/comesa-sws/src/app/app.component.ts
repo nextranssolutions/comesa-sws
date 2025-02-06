@@ -1,8 +1,8 @@
-import { Component } from '@angular/core';
+import { Component, ElementRef } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { AuthService } from './services/auth.service';
-import { AuthenticationService } from './services/authentication/authentication.service';
-import { IdleService } from './services/idleService/idle.service';
+import { AuthService } from './core-services/auth.service';
+import { AuthenticationService } from './core-services/authentication/authentication.service';
+import { IdleService } from './core-services/idleService/idle.service';
 import Popup from "devextreme/ui/popup";
 
 @Component({
@@ -11,12 +11,13 @@ import Popup from "devextreme/ui/popup";
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'auda-ecressolution';
+  title = 'comesa-impexpsolution';
   translations: any;
   idleState: string;
   constructor(
     public translate: TranslateService,
     public authService:AuthService,
+    private _elementRef: ElementRef,
     private authenticationService:AuthenticationService,
     private idleService: IdleService
     ) { Popup.defaultOptions({
@@ -40,6 +41,7 @@ export class AppComponent {
         }
       });
     }
+    this._elementRef.nativeElement.removeAttribute("ng-version");
   }
   
 }

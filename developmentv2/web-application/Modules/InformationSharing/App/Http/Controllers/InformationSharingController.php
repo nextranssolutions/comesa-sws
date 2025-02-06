@@ -160,7 +160,7 @@ class InformationSharingController extends Controller
                 })
                 ->leftJoin('wf_statuses_actions as t3', 't2.statuses_action_id', 't3.id')
                 ->leftJoin('wf_workflow_statuses as t4', 't1.appworkflow_status_id', 't4.id')
-                ->select('t1.id as publication_management_id', 't4.name as appworkflow_status', 't1.*', 't3.name as action_name', 't3.iconcls', 't3.action');
+                ->select('t1.id as publication_management_id', 't4.name as appworkflow_status', 't1.*', 't3.name as action_name', 't3.iconCls', 't3.action');
 
             if (validateIsNumeric($appworkflow_status_id)) {
                 $sql->where('appworkflow_status_id', $appworkflow_status_id);
@@ -196,7 +196,7 @@ class InformationSharingController extends Controller
                     'action_name' => $rec->action_name,
                     'appworkflow_status' => $rec->appworkflow_status,
                     'action' => $rec->action,
-                    'iconcls' => $rec->iconcls,
+                    'iconCls' => $rec->iconCls,
                     'contextMenu' => returnActionColumn($rec->appworkflow_status_id, $actionColumnData)
                 );
             }
@@ -311,7 +311,7 @@ class InformationSharingController extends Controller
                 })
                 ->leftJoin('wf_statuses_actions as t3', 't2.statuses_action_id', 't3.id')
                 ->leftJoin('wf_workflow_statuses as t4', 't1.appworkflow_status_id', 't4.id')
-                ->select('t1.id as resource_id', 't4.name as appworkflow_status', 't1.*', 't3.name as action_name', 't3.iconcls', 't3.action');
+                ->select('t1.id as resource_id', 't4.name as appworkflow_status', 't1.*', 't3.name as action_name', 't3.iconCls', 't3.action');
 
             if (validateIsNumeric($appworkflow_status_id)) {
                 $sql->where('appworkflow_status_id', $appworkflow_status_id);
@@ -335,7 +335,7 @@ class InformationSharingController extends Controller
                     'action_name' => $rec->action_name,
                     'appworkflow_status' => $rec->appworkflow_status,
                     'action' => $rec->action,
-                    'iconcls' => $rec->iconcls,
+                    'iconCls' => $rec->iconCls,
                     'contextMenu' => returnActionColumn($rec->appworkflow_status_id, $actionColumnData)
                 );
             }
@@ -452,7 +452,7 @@ class InformationSharingController extends Controller
                 })
                 ->leftJoin('wf_statuses_actions as t3', 't2.statuses_action_id', 't3.id')
                 ->leftJoin('wf_workflow_statuses as t4', 't1.appworkflow_status_id', 't4.id')
-                ->select('t1.id as knowledgecenter_id', 't4.name as appworkflow_status', 't1.*', 't3.name as action_name', 't3.iconcls', 't3.action');
+                ->select('t1.id as knowledgecenter_id', 't4.name as appworkflow_status', 't1.*', 't3.name as action_name', 't3.iconCls', 't3.action');
 
             if (validateIsNumeric($appworkflow_status_id)) {
                 $sql->where('appworkflow_status_id', $appworkflow_status_id);
@@ -476,7 +476,7 @@ class InformationSharingController extends Controller
                     'action_name' => $rec->action_name,
                     'appworkflow_status' => $rec->appworkflow_status,
                     'action' => $rec->action,
-                    'iconcls' => $rec->iconcls,
+                    'iconCls' => $rec->iconCls,
                     'contextMenu' => returnActionColumn($rec->appworkflow_status_id, $actionColumnData)
                 );
             }

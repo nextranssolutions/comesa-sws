@@ -1,0 +1,309 @@
+<dx-button text="{{ 'add_new' | translate }} {{ parameter_name | translate}}" type="default" icon="fa fa-plus"
+  [elementAttr]="{ class: '' }" (onClick)="hasReadpermissions=false;onAddNewConfig()">
+</dx-button>
+
+<dx-data-grid (onCellPrepared)="onCellPrepared($event)" class="col-lg-12 table row-border hover"
+  (onExporting)="onExporting($event)" [wordWrapEnabled]="true" [dataSource]="NewConfigData"
+  [remoteOperations]="true" [showBorders]="true" [allowColumnResizing]="true" [columnHidingEnabled]="true" keyExpr="id"
+  (onToolbarPreparing)="onAdvanceProductRegistrySearch($event)">
+
+  <dxo-export [enabled]="true" [fileName]="'records' | translate" [formats]="['pdf', 'xlsx']"
+    [allowExportSelectedData]="true">
+  </dxo-export>
+  <dxo-search-panel [visible]="true"></dxo-search-panel>
+
+  <dxo-filter-row [visible]="show_advancesearch"></dxo-filter-row>
+  <dxo-paging [enabled]="true">
+    <dxo-pager [showInfo]="true" infoText="Page #{0}. Total: {1} ({2} items)" [showPageSizeSelector]="true"
+      [allowedPageSizes]="[50,100]"></dxo-pager>
+  </dxo-paging>
+
+  <dxi-column [width]="100" caption="{{ 'action' | translate }}" name="command-editing" [allowFiltering]="false"
+    [allowSorting]="false" cellTemplate="cellTemplate">
+    <div *dxTemplate="let data of 'cellTemplate'">
+      <dx-menu (onItemClick)="funcActionColClick($event,data)" [items]="actionsMenuItems"></dx-menu>
+    </div>
+  </dxi-column>
+
+  <dxi-column dataField="name" caption="{{ 'name' | translate }}"></dxi-column>
+  <dxi-column dataField="description" caption="{{ 'description' | translate }}"></dxi-column>
+
+  <dxi-column *ngIf="table_name == 'par_master_ingredients'" dataField="prohibited" caption="{{ 'prohibited' | translate }}"></dxi-column>
+  <dxi-column *ngIf="table_name == 'par_master_ingredients'" dataField="last_update_date" caption="{{ 'last_update_date' | translate }}"></dxi-column>
+  <dxi-column *ngIf="table_name == 'par_master_ingredients'" dataField="migration_code" caption="{{ 'migration_code' | translate }}"></dxi-column>
+  <dxi-column *ngIf="table_name == 'par_inclusions_reasons'" dataField="is_active_reason" caption="{{ 'is_active_reason' | translate }}"></dxi-column>
+  <dxi-column *ngIf="table_name == 'cf_prodclass_categories'" dataField="product_category_title" caption="{{ 'product_category_title' | translate }}"></dxi-column>
+  <dxi-column *ngIf="table_name == 'cf_prodclass_categories'" dataField="graph_abr" caption="{{ 'graph_abr' | translate }}"></dxi-column>
+  
+
+
+
+  
+
+  <dxi-column *ngIf="table_name == 'par_common_names' || table_name == 'par_master_ingredients' || table_name == 'par_inclusions_reasons' || table_name == 'par_distribution_categories' || table_name == 'cf_prodclass_categories' || table_name == 'par_route_of_administration'
+  || table_name == 'par_productspecial_categories' || table_name == 'par_intended_enduser' || table_name == 'par_intended_enduser' || table_name == 'par_intendedend_use' || table_name == 'par_ingredients_types' || table_name == 'par_ingredients_category'
+  || table_name == 'par_nutrients' || table_name == 'par_classifications' || table_name == 'par_assessment_procedures' || table_name == 'par_si_units' || table_name == 'par_storage_conditions' 
+  || table_name == 'par_dosage_forms' || table_name == 'par_gmdn_categories' || table_name == 'par_gmdn_codes' || table_name == 'par_device_types' || table_name == 'par_ingredients_specifications'" dataField="product_type_id"
+      caption="{{ 'product_type' | translate }}">
+      <dxo-lookup [dataSource]="productTypeData" displayExpr="name" valueExpr="id">
+      </dxo-lookup>
+  </dxi-column>
+
+  <dxi-column *ngIf="table_name == 'par_common_names'" dataField="atc_code_id"
+      caption="{{ 'atc_code' | translate }}">
+      <dxo-lookup [dataSource]="atcCodeData" displayExpr="name" valueExpr="id">
+      </dxo-lookup>
+  </dxi-column>
+
+  <dxi-column *ngIf="table_name == 'par_atc_codes'" dataField="common_name_id"
+  caption="{{ 'common_name' | translate }}">
+  <dxo-lookup [dataSource]="commonNameData" displayExpr="name" valueExpr="id">
+  </dxo-lookup>
+</dxi-column>
+
+<dxi-column *ngIf="table_name == 'par_prodclass_subcategories'" dataField="product_subcategory_id"
+  caption="{{ 'product_subcategory' | translate }}">
+  <dxo-lookup [dataSource]="prodSubCategoryData" displayExpr="name" valueExpr="id">
+  </dxo-lookup>
+</dxi-column>
+
+<dxi-column *ngIf="table_name == 'par_prodclass_subcategories'" dataField="prodclass_category_id"
+  caption="{{ 'prodclass_category' | translate }}">
+  <dxo-lookup [dataSource]="prodClassCategoryData" displayExpr="name" valueExpr="id">
+  </dxo-lookup>
+</dxi-column>
+
+<dxi-column *ngIf="table_name == 'par_assessment_procedures'" dataField="has_fast_track"
+  caption="{{ 'has_fast_track' | translate }}">
+  <dxo-lookup [dataSource]="fastTrackData" displayExpr="name" valueExpr="id">
+  </dxo-lookup>
+</dxi-column>
+
+<dxi-column *ngIf="table_name == 'par_classification_rules'" dataField="device_type_id"
+  caption="{{ 'device_type' | translate }}">
+  <dxo-lookup [dataSource]="deviceTypeData" displayExpr="name" valueExpr="id">
+  </dxo-lookup>
+</dxi-column>
+
+<dxi-column *ngIf="table_name == 'par_device_types'" dataField="cost_category_id"
+  caption="{{ 'cost_category' | translate }}">
+  <dxo-lookup [dataSource]="costCategoryData" displayExpr="name" valueExpr="id">
+  </dxo-lookup>
+</dxi-column>
+
+<dxi-column *ngIf="table_name == 'par_device_types'" dataField="cost_type_id"
+  caption="{{ 'cost_type' | translate }}">
+  <dxo-lookup [dataSource]="costTypeData" displayExpr="name" valueExpr="id">
+  </dxo-lookup>
+</dxi-column>
+
+
+  <dxi-column *ngIf="table_name == 'par_gmdn_categories' || table_name == 'par_gmdn_codes' || table_name == 'par_classification_rules'" dataField="code"
+  caption="{{ 'code' | translate }}">
+  </dxi-column>
+  <dxi-column dataField="is_enabled" caption="{{ 'is_enabled' | translate }}" [dataType]="'boolean'" [width]="100">
+      <dxo-editing [allowUpdating]="true" [allowDeleting]="true" [allowAdding]="true"></dxo-editing>
+  </dxi-column>
+
+</dx-data-grid>
+
+
+<dx-load-panel #loadPanel shadingColor="rgba(0,0,0,0.4)" [position]="{ of: '#employee' }" [(visible)]="loadingVisible"
+  [showIndicator]="true" [showPane]="true" [shading]="true" [message]="spinnerMessage" [hideOnOutsideClick]="false">
+</dx-load-panel>
+
+<dx-popup class="popup" [width]="funcpopWidth(75)" [height]="440" [showTitle]="true" [@flyInOut]
+  title="{{ 'add_new' | translate }} {{parameter_name | translate }}" [dragEnabled]="false" [hideOnOutsideClick]="true"
+  [(visible)]="onAddNewConfiVisible">
+
+  <div *dxTemplate="let data of 'content'">
+    <dx-scroll-view>
+
+      <form role="form" enctype="multipart/form-data" [formGroup]="createNewDataFrm" (ngSubmit)="onFuncSaveNewConfigData()">
+        <div class="col-lg-6">
+          <label>{{ 'name' | translate }}</label>
+          <dx-text-box formControlName="name" [showClearButton]="true"></dx-text-box>
+        </div>
+      
+        <div class="col-lg-6">
+          <label>{{ 'description' | translate }}</label>
+          <dx-text-box formControlName="description" [showClearButton]="true"></dx-text-box>
+        </div>
+
+        <div *ngIf="table_name == 'par_master_ingredients'" class="col-lg-6">
+            <label>{{ 'prohibited' | translate }}</label>
+            <dx-text-box formControlName="prohibited" [showClearButton]="true"></dx-text-box>
+          </div>
+
+          <div *ngIf="table_name == 'par_master_ingredients'" class="col-lg-6">
+            <label>{{ 'last_update_date' | translate }}</label>
+            <dx-text-box formControlName="last_update_date" [showClearButton]="true"></dx-text-box>
+          </div>
+
+          <div *ngIf="table_name == 'par_master_ingredients'" class="col-lg-6">
+            <label>{{ 'migration_code' | translate }}</label>
+            <dx-text-box formControlName="migration_code" [showClearButton]="true"></dx-text-box>
+          </div>
+
+          <div *ngIf="table_name == 'par_inclusions_reasons'" class="col-lg-6">
+            <label>{{ 'is_active_reason' | translate }}</label>
+            <dx-text-box formControlName="is_active_reason" [showClearButton]="true"></dx-text-box>
+          </div>
+
+          <div *ngIf="table_name == 'cf_prodclass_categories'" class="col-lg-6">
+            <label>{{ 'product_category_title' | translate }}</label>
+            <dx-text-box formControlName="product_category_title" [showClearButton]="true"></dx-text-box>
+          </div>
+
+          <div *ngIf="table_name == 'cf_prodclass_categories'" class="col-lg-6">
+            <label>{{ 'graph_abr' | translate }}</label>
+            <dx-text-box formControlName="graph_abr" [showClearButton]="true"></dx-text-box>
+          </div>
+      
+      
+        <div class="row">
+
+            <div *ngIf="table_name == 'par_common_names' || table_name == 'par_master_ingredients' || table_name == 'par_inclusions_reasons' || table_name == 'par_distribution_categories' || table_name == 'cf_prodclass_categories' || table_name == 'par_route_of_administration'
+            || table_name == 'par_productspecial_categories' || table_name == 'par_intended_enduser' || table_name == 'par_intended_enduser' || table_name == 'par_intendedend_use' || table_name == 'par_ingredients_types' || table_name == 'par_ingredients_category'
+            || table_name == 'par_nutrients' || table_name == 'par_classifications' || table_name == 'par_assessment_procedures' || table_name == 'par_si_units' || table_name == 'par_storage_conditions' 
+            || table_name == 'par_dosage_forms' || table_name == 'par_gmdn_categories' || table_name == 'par_gmdn_codes' || table_name == 'par_device_types' || table_name == 'par_ingredients_specifications'" class="col-lg-6">
+                <label>{{ 'product_type' | translate }}</label>
+                <dx-select-box [dataSource]="productTypeData" formControlName="product_type_id" valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
+              </div>
+
+            <div *ngIf="table_name == 'par_common_names'" class="col-lg-6">
+                <label>{{ 'atc_code' | translate }}</label>
+                <dx-select-box [dataSource]="atcCodeData" formControlName="atc_code_id" valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
+              </div>
+
+          <div *ngIf="table_name == 'par_atc_codes'" class="col-lg-6">
+            <label>{{ 'common_name' | translate }}</label>
+            <dx-select-box [dataSource]="commonNameData" formControlName="common_name_id" valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
+          </div>
+
+       
+          <div *ngIf="table_name == 'par_prodclass_subcategories'" class="col-lg-6">
+            <label>{{ 'product_subcategory' | translate }}</label>
+            <dx-select-box [dataSource]="prodSubCategoryData" formControlName="product_subcategory_id" valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
+          </div>
+
+          
+          <div *ngIf="table_name == 'par_prodclass_subcategories'" class="col-lg-6">
+            <label>{{ 'prodclass_category' | translate }}</label>
+            <dx-select-box [dataSource]="prodClassCategoryData" formControlName="prodclass_category_id" valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
+          </div>
+
+          
+          <div *ngIf="table_name == 'par_assessment_procedures'" class="col-lg-6">
+            <label>{{ 'has_fast_track' | translate }}</label>
+            <dx-select-box [dataSource]="fastTrackData" formControlName="has_fast_track" valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
+          </div>
+
+          
+          <div *ngIf="table_name == 'par_classification_rules'" class="col-lg-6">
+            <label>{{ 'device_type' | translate }}</label>
+            <dx-select-box [dataSource]="deviceTypeData" formControlName="device_type_id" valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
+          </div>
+
+          <div *ngIf="table_name == 'par_device_types'" class="col-lg-6">
+            <label>{{ 'cost_category' | translate }}</label>
+            <dx-select-box [dataSource]="costCategoryData" formControlName="cost_category_id" valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
+          </div>
+
+          <div *ngIf="table_name == 'par_device_types'" class="col-lg-6">
+            <label>{{ 'cost_type' | translate }}</label>
+            <dx-select-box [dataSource]="costTypeData" formControlName="cost_type_id" valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
+          </div>
+       
+          <div *ngIf="table_name == 'par_gmdn_categories' || table_name == 'par_gmdn_codes' || table_name == 'par_classification_rules'" class="col-lg-6">
+            <label>{{ 'code' | translate }}</label>
+            <dx-text-box formControlName="code" [showClearButton]="true"></dx-text-box>
+          </div>
+      
+          <div class="col-lg-6">
+            <label>{{ "is_enabled" | translate }}</label>
+            <dx-select-box [searchEnabled]="true" formControlName="is_enabled" [dataSource]="regStatusOptions" valueExpr="value" displayExpr="text"></dx-select-box>
+          </div>
+        </div>
+      
+        <div class="row">
+          <div class="col-lg-4 pull-right">
+            <dx-button text="{{ 'save' | translate }} {{ parameter_name | translate }}" type="default" icon="fa fa-save"
+              [elementAttr]="{ id: 'elementId', class: 'pull-right' }" (onClick)="onFuncSaveNewConfigData()">
+            </dx-button>
+          </div>
+        </div>
+      </form>      
+    </dx-scroll-view>
+  </div>
+</dx-popup>
+
+
+<dx-popup [visible]="deletePopupVisible" [width]="funcpopWidth(30)" [height]="funcpopHeight(25)" [showTitle]="true"
+  title="{{ 'delete_confirmation_of'+parameter_name | translate }}" (onHidden)="deletePopupVisible = false">
+
+  <div>
+    <p class="confirmation-text">
+      {{ 'are_you_sure_you_want_to_delete' | translate }}
+      "<strong>{{config_record}}</strong>"?
+    </p>
+    <div class="button-container">
+      <dx-button text="{{ 'yes' | translate }}" type="danger" (onClick)="onDeleteConfigurationsDetails()">
+      </dx-button>
+      <dx-button text="{{ 'no' | translate }}" (onClick)="deletePopupVisible = false">
+      </dx-button>
+    </div>
+  </div>
+
+</dx-popup>
+
+<dx-popup [visible]="enablePopupVisible" [width]="funcpopWidth(30)" [height]="funcpopHeight(25)" [showTitle]="true"
+  title="{{ enabledisable_tracer | translate }}" (onHidden)="enablePopupVisible = false">
+
+  <div>
+    <p class="confirmation-text">
+      {{ enabledisable_tracerdescription | translate }}
+      "<strong>{{config_record}}</strong>"?
+    </p>
+    <div class="button-container">
+      <dx-button text="{{ 'yes' | translate }}" type="danger" (onClick)="iniateEnableDisableRecord()">
+      </dx-button>
+      <dx-button text="{{ 'no' | translate }}" (onClick)="enablePopupVisible = false">
+      </dx-button>
+    </div>
+  </div>
+
+</dx-popup>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

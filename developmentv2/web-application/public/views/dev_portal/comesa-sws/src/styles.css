@@ -77,15 +77,17 @@ html, body {
   font-size: 18px !important;
   font-weight: bold !important;
 }
-.dx-widget {
+/* .dx-widget {
   -webkit-text-size-adjust: none;
   print-color-adjust: exact;
-  /* color: #28484f  !important; */
+  color: #28484f  !important;
   font-weight: 400  !important;
   font-size: 12px !important;
   font-family: 'Nunito Sans',sans-serif  !important;
   line-height: 1.15715  !important;
-}
+} */
+
+
 .topfirst-panel{
   min-height: 5vh !important;
 }

@@ -21,7 +21,7 @@ class WorkflowManagementController extends Controller
                 ->leftJoin('sys_usergroup_navpermissions as t2', 't1.id', 't2.navigation_item_id')
                 ->leftJoin('wf_system_interfaces as t3', 't1.system_interface_id', 't3.id')
                 ->select('t1.*', 't3.routerlink', 't1.iconsCls')
-                ->orderBy('t1.order_no');
+                ->orderBy('t1.description');
             if (validateIsNumeric($level)) {
                 $navigationItems->where(array('level' => $level));
             }
@@ -143,6 +143,47 @@ class WorkflowManagementController extends Controller
 
         return response()->json($res, 200);
     }
+    public function getRegultoryFunctionUserAccess(Request $req)
+    {
+        try {
+            $user_id = $req->user_id;
+            $usergroups = 0;
+            //note one user can have more than one user group
+            if (validateIsNumeric($user_id)) {
+                $usergroups = DB::table(table: 'txn_user_group as t1')
+                    ->select('group_id')
+                    ->where(array('user_id' => $user_id))
+                    ->get();
+
+
+                $usergroups = convertStdClassObjToArray($usergroups);
+
+                $usergroups = convertAssArrayToSimpleArray($usergroups, 'group_id');
+            }
+            //  $is_super_admin = false;
+            // $is_super_admin = getRecordValFromWhere('usr_users_groups', array('id' => $userGroupId), 'is_super_admin');
+
+            $level = 0;
+            $regulatory_functions = DB::table('par_regulatory_functions as t1')
+                ->leftJoin('par_regulatoryfunctionaccess_groups as t2', 't1.id', 't2.regulatory_function_id')
+                ->select('t1.*', 't1.iconsCls', 't2.user_access_levels_id')
+                ->orderBy('t1.order_no');
+
+            $regulatory_functions->whereIn('user_group_id', $usergroups);
+
+            $res = array(
+                'success' => true,
+                'data' => $regulatory_functions->get()
+            );
+
+        } catch (\Exception $exception) {
+            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        } catch (\Throwable $throwable) {
+            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        }
+
+        return response()->json($res, 200);
+    }
 
 
     public function getUserNavigationItems(Request $req)
@@ -153,18 +194,23 @@ class WorkflowManagementController extends Controller
             $navigation_type_id = $req->navigation_type_id;
             $userGroupId = $req->userGroupId;
             $user_id = $req->user_id;
-
-            if (validateIsNumeric($userGroupId) || $navigation_type_id != 2) {
+            $regulatory_function_id = $req->regulatory_function_id;
+            // $regulatory_function_id =1;
+            if (validateIsNumeric($user_id) || $navigation_type_id != 2) {
                 //get the table data ,'user_group_id' => $userGroupId
+
                 if (validateIsNumeric($user_id)) {
                     $users_groups = getSingleRecord('usr_users_information', array('id' => $user_id));
-                    $userGroupId = $users_groups->user_group_id;
-                }
+                    $is_super_admin = $users_groups->is_super_admin;
+                    $usergroups = DB::table(table: 'txn_user_group as t1')
+                        ->select('group_id')
+                        ->where(array('user_id' => $user_id))
+                        ->get();
 
 
-                $is_super_admin = false;
-                if ($navigation_type_id == 2) {
-                    $is_super_admin = getRecordValFromWhere('usr_users_groups', array('id' => $userGroupId), 'is_super_admin');
+                    $usergroups = convertStdClassObjToArray($usergroups);
+
+                    $usergroups = convertAssArrayToSimpleArray($usergroups, 'group_id');
                 }
 
                 $level = 0;
@@ -174,9 +220,12 @@ class WorkflowManagementController extends Controller
                     ->select('t1.*', 't3.routerlink', 't1.iconsCls', 't2.user_access_levels_id')
                     ->orderBy('t1.order_no')->where(array('level' => $level, 't1.navigation_type_id' => $navigation_type_id));
                 if (!$is_super_admin && $navigation_type_id == 2) {
-                    $navigationItems->where(array('user_group_id' => $userGroupId));
+                    $navigationItems->whereIn('user_group_id', $usergroups);
                 }
+                if (validateIsNumeric($regulatory_function_id)) {
+                    $navigationItems->where('t1.regulatory_function_id', $regulatory_function_id);
 
+                }
                 $navigationItems = $navigationItems->get();
 
                 $rootItems = array();
@@ -188,7 +237,7 @@ class WorkflowManagementController extends Controller
 
                     $parent_id = $item->id;
                     $level = 1;
-                    $childrens = $this->getNavigationChildrens($parent_id, $level, $userGroupId, $is_super_admin, $navigation_type_id);
+                    $childrens = $this->getNavigationChildrens($parent_id, $level, $usergroups, $is_super_admin, $navigation_type_id);
                     if (!empty($childrens)) {
                         $item->children = $childrens;
                         $rootItems[] = $item;
@@ -197,12 +246,13 @@ class WorkflowManagementController extends Controller
                     }
                 }
             }
-            $rootItems=encrypt_data($rootItems);
+            // $rootItems=encrypt_data($rootItems);
 
             $res = array(
                 'success' => true,
                 'navigation_items' => $rootItems
             );
+            // print_r($res);
         } catch (\Exception $exception) {
             $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
         } catch (\Throwable $throwable) {
@@ -211,7 +261,7 @@ class WorkflowManagementController extends Controller
         return response()->json($res, 200);
     }
 
-    function getNavigationChildrens($parent_id, $level, $userGroupId, $is_super_admin, $navigation_type_id)
+    function getNavigationChildrens($parent_id, $level, $usergroups, $is_super_admin, $navigation_type_id)
     {
         $childrens = array();
         $navigationItems = DB::table('wf_navigation_items as t1')
@@ -221,8 +271,9 @@ class WorkflowManagementController extends Controller
             ->select('t1.*', 't3.routerlink', 't1.iconsCls', 't2.user_access_levels_id')
             ->orderBy('order_no', 'asc')
             ->where(array('level' => $level, 'parent_id' => $parent_id, 't1.navigation_type_id' => $navigation_type_id));
+
         if (!$is_super_admin && $navigation_type_id == 2) {
-            $navigationItems->where(array('user_group_id' => $userGroupId));
+            $navigationItems->whereIn('user_group_id', $usergroups);
         }
         $navigationItems = $navigationItems->get();
         foreach ($navigationItems as $item) {
@@ -230,7 +281,7 @@ class WorkflowManagementController extends Controller
             $child_id = $item->id;
             $level_child = 2;
             //check for the next level 
-            $grand_children = $this->grandchildfunction($child_id, $level_child, $userGroupId, $is_super_admin, $navigation_type_id);
+            $grand_children = $this->grandchildfunction($child_id, $level_child, $usergroups, $is_super_admin, $navigation_type_id);
             if (!empty($grand_children)) {
 
                 $item->children = $grand_children;
@@ -242,7 +293,7 @@ class WorkflowManagementController extends Controller
 
         return $childrens;
     }
-    function grandchildfunction($parent_id, $level, $userGroupId, $is_super_admin, $navigation_type_id)
+    function grandchildfunction($parent_id, $level, $usergroups, $is_super_admin, $navigation_type_id)
     {
 
         $childrens = array();
@@ -253,7 +304,7 @@ class WorkflowManagementController extends Controller
             ->orderBy('order_no')
             ->where(array('level' => $level, 'parent_id' => $parent_id, 't1.navigation_type_id' => $navigation_type_id));
         if (!$is_super_admin && $navigation_type_id == 2) {
-            $navigationItems->where(array('user_group_id' => $userGroupId));
+            $navigationItems->whereIn('user_group_id', $usergroups);
         }
 
         // $navigationItems = $navigationItems->get();
@@ -289,6 +340,51 @@ class WorkflowManagementController extends Controller
             }
 
             if ($table_name == 'wf_workflow_stages') {
+                $sql->orderBy('t1.id', 'asc');
+            } else {
+                $sql->orderBy('t1.name', 'asc');
+            }
+            $data = $sql->get();
+           
+            // Get pagination parameters from request
+            // $page = $req->input('page', 1); // default to page 1
+            // $perPage = $req->input('per_page', 10); // default to 10 items per page
+
+            // Apply pagination
+            //  $data = $sql->paginate($perPage, ['*'], 'page', $page);
+
+            $res = array('success' => true, 'data' => $data);
+        } catch (\Exception $exception) {
+            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        } catch (\Throwable $throwable) {
+            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        }
+
+        return response()->json($res, 200);
+    }
+    public function getPortalWorkflowConfigs(Request $req)
+    {
+        try {
+            $requestData = $req->all();
+            $table_name = $req->table_name;
+            $table_name = base64_decode($table_name);
+
+            unset($requestData['table_name']);
+
+            $check_exempt = DB::connection('portal')->table('ptl_exemptedpublic_tables')
+                ->where(array('table_name' => $table_name))
+                ->count();
+            $sql = DB::connection('portal')->table($table_name . ' as t1');
+
+            if ($check_exempt > 0 || $table_name == null || $table_name == '') {
+                $res = array('success' => false, 'message' => 'Table has been blocked for access');
+                return response()->json($res);
+            }
+            if (!empty($requestData)) {
+                $sql->where($requestData);
+            }
+
+            if ($table_name == 'ptl_workflowprocesses_stages') {
                 $sql->orderBy('t1.id', 'asc');
             } else {
                 $sql->orderBy('t1.name', 'asc');
@@ -353,7 +449,9 @@ class WorkflowManagementController extends Controller
         $childrens = array();
         $navigationItems = DB::table('wf_navigation_items as t1')
             ->leftJoin('wf_system_interfaces as t3', 't1.system_interface_id', 't3.id')
-            ->select('t1.*', 't3.routerlink', 't1.iconsCls')
+            ->leftJoin('par_regulatory_functions as t4', 't4.id', 't1.regulatory_function_id')
+            ->leftJoin('par_regulatory_subfunctions as t5', 't5.id', 't4.regulatory_function_id')
+            ->select('t1.*', 't3.routerlink', 't1.iconsCls', 't4.name', 't5.name')
             ->orderBy('order_no')
             ->where(array('level' => $level, 'parent_id' => $parent_id))->get();
         foreach ($navigationItems as $item) {
@@ -376,7 +474,7 @@ class WorkflowManagementController extends Controller
     function grandNavigationschildfunction($parent_id, $level)
     {
         $childrens = array();
-        $navigationItems = DB::table('wf_navigation_items as t1')
+        $navigationItems = DB::connection('portal')->table(', ,m,ck_navigation_items as t1')
             ->leftJoin('wf_system_interfaces as t3', 't1.system_interface_id', 't3.id')
             ->select('t1.*', 't3.routerlink', 't1.iconsCls')
             ->where(array('level' => $level, 'parent_id' => $parent_id))->get();
@@ -395,6 +493,7 @@ class WorkflowManagementController extends Controller
             $resp = "";
             $user_id = $req->user_id;
             $user_name = $req->user_name;
+            $workflow_id = $req->workflow_id;
 
             $data = $req->all();
 
@@ -452,6 +551,107 @@ class WorkflowManagementController extends Controller
         }
         return response()->json($res, 200);
     }
+
+
+    // public function onsavePortalWorkflowConfigData(Request $req)
+    // {
+    //     try {
+    //         $resp = "";
+    //         $user_id = $req->user_id;
+    //         $user_name = $req->user_name;
+
+    //         $data = $req->all();
+    //         $resetcolumns = $req->resetcolumns;
+
+    //         $table_name = $req->table_name;
+    //         $record_id = $req->id;
+    //         unset($data['user_id']);
+    //         unset($data['user_name']);
+    //         unset($data['table_name']);
+    //         unset($data['resetcolumns']);
+    //         if ($resetcolumns != '') {
+    //             $restcolumn_array = explode(',', $resetcolumns);
+    //             $data = unsetArrayData($data, $restcolumn_array);
+    //         }
+    //         if (validateIsNumeric($record_id)) {
+    //             $where = array('id' => $record_id);
+    //             if (recordExists($table_name, $where)) {
+
+    //                 $data['dola'] = Carbon::now();
+    //                 $data['altered_by'] = $user_id;
+
+    //                 $previous_data = getPreviousRecords($table_name, $where);
+
+    //                 $resp = updatePortalRecord($table_name, $previous_data['results'], $where, $data, $user_name);
+    //             }
+    //         } else {
+    //             unset($data['id']);
+    //             $data['created_by'] = $user_id;
+    //             $data['created_on'] = Carbon::now();
+    //             $resp = insertRecord($table_name, $data, $user_name);
+    //         }
+
+    //         $res = getGenericResponsewithRercId($resp);
+
+    //     } catch (\Exception $exception) {
+    //         $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+    //     } catch (\Throwable $throwable) {
+    //         $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+    //     }
+    //     return response()->json($res, 200);
+    // }
+
+
+
+    public function onsavePortalWorkflowConfigData(Request $req)
+    {
+        try {
+            $resp = "";
+            $user_id = $req->user_id;
+            $user_name = $req->user_name;
+
+            $data = $req->all();
+            $resetcolumns = $req->resetcolumns;
+
+            $table_name = $req->table_name;
+            $record_id = $req->id;
+            unset($data['user_id']);
+            unset($data['user_name']);
+            unset($data['table_name']);
+            unset($data['resetcolumns']);
+            if ($resetcolumns != '') {
+                $restcolumn_array = explode(',', $resetcolumns);
+                $data = unsetArrayData($data, $restcolumn_array);
+            }
+            if (validateIsNumeric($record_id)) {
+                $where = array('id' => $record_id);
+                if (recordExists($table_name, $where, 'portal')) {
+
+                    $data['dola'] = Carbon::now();
+                    $data['altered_by'] = $user_id;
+
+                    $previous_data = getPreviousRecords($table_name, $where, 'portal');
+
+                    $resp = updateRecord($table_name, $previous_data['results'], $where, $data, $user_name, 'portal');
+                }
+            } else {
+                unset($data['id']);
+                $data['created_by'] = $user_id;
+                $data['created_on'] = Carbon::now();
+                $resp = insertRecord($table_name, $data, $user_name, 'portal');
+            }
+
+            $res = getGenericResponsewithRercId($resp);
+
+        } catch (\Exception $exception) {
+            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        } catch (\Throwable $throwable) {
+            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        }
+        return response()->json($res, 200);
+    }
+
+
     public function onsaveNavigationItemsConfigData(Request $req)
     {
         try {
@@ -545,8 +745,124 @@ class WorkflowManagementController extends Controller
         return response()->json($res);
     }
 
+    // public function onDeletePortalWorkflowsDetails(Request $req)
+    // {
+    //     try {
+    //         $record_id = $req->record_id;
+    //         $table_name = $req->table_name;
+    //         $title = $req->title;
+    //         $user_id = $req->user_id;
+    //         $data = array();
+    //         //get the records 
+    //         $resp = false;
+    //         if (validateIsNumeric($req->id)) {
+    //             $record_id = $req->id;
+    //         }
+
+    //         $where_state = array('id' => $record_id);
+    //         // print_r($where_state);
+    //         $records = DB::connection('portal')->table($table_name)
+    //             ->where($where_state)
+    //             ->get();
+    //         print_r($records);
+    //         if (count($records) > 0) {
+    //             $previous_data = getPreviousRecords($table_name, $where_state, 'portal');
+    //             $resp = deleteRecordNoTransaction($table_name, $previous_data['results'], $where_state, $user_id);
+    //         }
 
 
+    //         if ($resp) {
+    //             $res = array('success' => true, 'message' => $title . ' deleted successfully');
+    //         } else {
+    //             $res = array('success' => false, 'message' => $title . ' delete failed, contact the system admin if this persists');
+    //         }
+    //     } catch (\Exception $exception) {
+    //         $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+    //     } catch (\Throwable $throwable) {
+    //         $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+    //     }
+
+    //     return response()->json($res);
+    // }
+
+
+    public function onDeletePortalWorkflowsDetails(Request $req)
+    {
+        try {
+            $record_id = $req->record_id;
+            $table_name = $req->table_name;
+            $title = $req->title;
+            $user_id = $req->user_id;
+            if ($req->has(['table_name',])) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'One or more required parameters are missing.',
+                ]);
+            }
+
+            print_r($req->table_name);
+            // Validate inputs
+            if (!$record_id || !$table_name || !$title || !$user_id) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Missing required parameters: record_id, table_name, title, or user_id.',
+                ]);
+            }
+    
+            // Check if 'id' is provided in the request
+            if (validateIsNumeric($req->id)) {
+                $record_id = $req->id;
+            }
+    
+            // Define the where condition
+            $where_state = ['id' => $record_id];
+    
+            // Fetch the record to confirm existence
+            $records = DB::connection('portal')->table($table_name)
+                ->where($where_state)
+                ->get();
+    
+            if ($records->isEmpty()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => "Record not found in the table: $table_name.",
+                ]);
+            }
+    
+            // Get previous record data
+            $previous_data = getPreviousRecords($table_name, $where_state, 'portal');
+    
+            // Attempt to delete the record
+            $resp = deleteRecordNoTransaction($table_name, $previous_data['results'], $where_state, $user_id);
+    
+            if ($resp) {
+                return response()->json([
+                    'success' => true,
+                    'message' => "$title deleted successfully.",
+                ]);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => "$title deletion failed. Contact the system admin if this persists.",
+                ]);
+            }
+        } catch (\Exception $exception) {
+            return response()->json(sys_error_handler(
+                $exception->getMessage(),
+                2,
+                debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1),
+                explode('\\', __CLASS__)
+            ));
+        } catch (\Throwable $throwable) {
+            return response()->json(sys_error_handler(
+                $throwable->getMessage(),
+                2,
+                debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1),
+                explode('\\', __CLASS__)
+            ));
+        }
+    }
+    
     public function onLoadworkflowStageData(Request $req)
     {
         try {
@@ -660,7 +976,7 @@ class WorkflowManagementController extends Controller
             $app_details = getTableData($apptable_name, array('app_reference_no' => $app_reference_no));
             $app_reference_no = $app_details->app_reference_no;
 
-            
+
 
 
             //check if there is an exiting record  nextworkflow_status_id app_reference_no
@@ -722,7 +1038,7 @@ class WorkflowManagementController extends Controller
                     'success' => true,
                     'message' => 'Application Submitted Successfully'
                 );
-                
+
             } else {
                 $res = array(
                     'success' => false,
@@ -740,7 +1056,7 @@ class WorkflowManagementController extends Controller
 
         return response()->json($res);
     }
-    
+
     public function funcWorkflowActionProcesses($application_code, $req, $workflow_actionstype_id, $user_id)
     {
         $expertsprofile_information_id = 0;
@@ -803,4 +1119,251 @@ class WorkflowManagementController extends Controller
     {
 
     }
+
+    
+    public function getAppWorkflowStages(Request $req)
+    {
+        try {
+            // Retrieve the workflow_id from the request
+            $workflow_id = $req->workflow_id;
+
+            // Fetch data from the wkf_workflow_stages table where workflow_id matches
+            $data = DB::table('wf_workflow_stages')
+                ->where('workflow_id', $workflow_id)
+                ->orderBy('order_no')
+                ->get();
+
+            // Prepare the success response
+            $res = [
+                'success' => true,
+                'data' => $data
+            ];
+
+        } catch (\Exception $exception) {
+            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        } catch (\Throwable $throwable) {
+            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        }
+        return response()->json($res, 200);
+    }
+
+    public function getAppWorkflowStageActions(Request $req)
+    {
+        try {
+            // Retrieve the workflow_id from the request
+            $workflow_id = $req->workflow_id;
+    
+            // Fetch data from the wkf_workflow_stages table where workflow_id matches
+            $data = DB::table('wkf_workflow_actions')
+                ->where('workflow_id', $workflow_id)
+                ->orderBy('order_no')
+                ->get();
+    
+            // Prepare the success response
+            $res = [
+                'success' => true,
+                'data' => $data
+            ];
+
+        } catch (\Exception $exception) {
+            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        } catch (\Throwable $throwable) {
+            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        }
+        return response()->json($res, 200);
+    }
+
+    
+
+  
+
+    public function getAppPortalWorkflowStages(Request $req)
+    {
+        try {
+            // Retrieve the workflowprocesses_id from the request
+            $workflowprocesses_id = $req->workflowprocesses_id;
+
+            // Fetch data from the ptl_workflowprocesses_stages table where workflow_id matches
+            $data = DB::connection('portal')->table('ptl_workflowprocesses_stages')
+                ->where('workflowprocesses_id', $workflowprocesses_id)
+                ->orderBy('order_no')
+                ->get();
+
+            // Prepare the success response
+            $res = [
+                'success' => true,
+                'data' => $data
+            ];
+
+        } catch (\Exception $exception) {
+            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        } catch (\Throwable $throwable) {
+            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        }
+        return response()->json($res, 200);
+    }
+
+    public function getAppProtalWorkflowTransitions(Request $req)
+    {
+        try {
+            // Retrieve the workflow_id from the request
+            $workflowprocesses_id = $req->workflowprocesses_id;
+
+            // Fetch data from the wkf_workflow_stages table where workflow_id matches
+            $data = DB::connection('portal')->table('ptl_workflowprocesses_transitions')
+                ->where('workflowprocesses_id', $workflowprocesses_id)
+                ->orderBy('order_no')
+                ->get();
+
+            // Prepare the success response
+            $res = [
+                'success' => true,
+                'data' => $data
+            ];
+
+        } catch (\Exception $exception) {
+            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        } catch (\Throwable $throwable) {
+            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        }
+        return response()->json($res, 200);
+    }
+    public function getAppWorkflowTransitions(Request $req)
+    {
+        try {
+            // Retrieve the workflow_id from the request
+            $workflow_id = $req->workflow_id;
+
+            // Fetch data from the wf_workflow_transitions table where workflow_id matches
+            $data = DB::table('wf_workflow_transitions')
+                ->where('workflow_id', $workflow_id)
+                ->orderBy('order_no')
+                ->get();
+
+            // Prepare the success response
+            $res = [
+                'success' => true,
+                'data' => $data
+            ];
+
+
+
+        } catch (\Exception $exception) {
+            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        } catch (\Throwable $throwable) {
+            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        }
+        return response()->json($res, 200);
+    }
+
+    public function onEnablePortalWorkflowDetails(Request $req)
+    {
+        try {
+            $record_id = $req->record_id;
+            $table_name = $req->table_name;
+            $title = $req->title;
+            $user_id = $req->user_id;
+            $data = array();
+
+            $user_name = $req->user_name;
+            //get the records 
+            $resp = false;
+            if (validateIsNumeric($req->id)) {
+                $record_id = $req->id;
+            }
+
+            $where_state = array('id' => $record_id);
+
+            $record = DB::connection('portal')->table($table_name)
+                ->where($where_state)
+                ->first();
+            if ($record) {
+                $is_enabled = $record->is_enabled;
+                if ($is_enabled) {
+                    $is_enabled = false;
+                    $enabling_string = "Disabled Successfully";
+                } else {
+                    $is_enabled = true;
+                    $enabling_string = "Enabled Successfully";
+                }
+                $data = array('is_enabled' => $is_enabled);
+
+                $previous_data = getPreviousPortalRecords($table_name, $where_state);
+
+                $data['dola'] = Carbon::now();
+                $data['altered_by'] = $user_id;
+
+                $previous_data = getPreviousPortalRecords($table_name, $where_state);
+                $resp = updatePortalRecord($table_name, $previous_data['results'], $where_state, $data, $user_name);
+            }
+
+            if ($resp) {
+                $res = array('success' => true, 'message' => $title . $enabling_string);
+            } else {
+                $res = array('success' => false, 'message' => $title . ' ' . $enabling_string . ' , contact the system admin if this persists');
+            }
+        } catch (\Exception $exception) {
+            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        } catch (\Throwable $throwable) {
+            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        }
+
+        return response()->json($res);
+    }
+
+    public function onEnableWorkflowDetails(Request $req)
+    {
+        try {
+            $record_id = $req->record_id;
+            $table_name = $req->table_name;
+            $title = $req->title;
+            $user_id = $req->user_id;
+            $data = array();
+
+            $user_name = $req->user_name;
+            //get the records 
+            $resp = false;
+            if (validateIsNumeric($req->id)) {
+                $record_id = $req->id;
+            }
+
+            $where_state = array('id' => $record_id);
+
+            $record = DB::table($table_name)
+                ->where($where_state)
+                ->first();
+            if ($record) {
+                $is_enabled = $record->is_enabled;
+                if ($is_enabled) {
+                    $is_enabled = false;
+                    $enabling_string = "Disabled Successfully";
+                } else {
+                    $is_enabled = true;
+                    $enabling_string = "Enabled Successfully";
+                }
+                $data = array('is_enabled' => $is_enabled);
+
+                $previous_data = getPreviousRecords($table_name, $where_state);
+
+                $data['dola'] = Carbon::now();
+                $data['altered_by'] = $user_id;
+
+                $previous_data = getPreviousRecords($table_name, $where_state);
+                $resp = updateRecord($table_name, $previous_data['results'], $where_state, $data, $user_name);
+            }
+
+            if ($resp) {
+                $res = array('success' => true, 'message' => $title . $enabling_string);
+            } else {
+                $res = array('success' => false, 'message' => $title . ' ' . $enabling_string . ' , contact the system admin if this persists');
+            }
+        } catch (\Exception $exception) {
+            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        } catch (\Throwable $throwable) {
+            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        }
+
+        return response()->json($res);
+    }
+
 }

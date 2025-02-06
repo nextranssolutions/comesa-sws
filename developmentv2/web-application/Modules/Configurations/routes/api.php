@@ -16,10 +16,14 @@ Route::middleware(['XssSanitizer','clear_cache_config','firewall.all'])->prefix(
     Route::post('onSavingLanguageTranslationManagement', [ConfigurationsController::class, 'onSavingLanguageTranslationManagement']);
     Route::post('onsaveConfigData', [ConfigurationsController::class, 'onsaveConfigData']);
 	Route::post('onDeleteConfigData', [ConfigurationsController::class, 'onDeleteConfigData']);
-    Route::post('onDeleteConfigurationsDetails', [ConfigurationsController::class, 'onDeleteConfigData']);
+    Route::post('onDeleteWorkflowsDetails', [ConfigurationsController::class, 'onDeleteConfigData']);
+    Route::post('onDeleteConfigurationsDetails', [ConfigurationsController::class, 'onDeleteConfigurationsDetails']);
 
-    
-	//fetInforamtion get.....
+    Route::get('onLoadRegulatoryFunctions', [ConfigurationsController::class, 'onLoadRegulatoryFunctions']);
+	Route::get('onLoadApplicationtablsList', [ConfigurationsController::class, 'onLoadApplicationtablsList']);
+	Route::get('getAppRegulatoryFunctionFeeConfig', [ConfigurationsController::class, 'getAppRegulatoryFunctionFeeConfig']);
+    Route::get('getFeesChargesConfigurations', [ConfigurationsController::class, 'getFeesChargesConfigurations']);
+    //fetInforamtion get.....
     //save information save....
-    //delete onDelete....
+    //delete onDelete....  
 });

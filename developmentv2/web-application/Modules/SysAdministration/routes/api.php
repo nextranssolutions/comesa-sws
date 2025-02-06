@@ -28,5 +28,6 @@ Route::middleware(['XssSanitizer','clear_cache_config','firewall.all'])->prefix(
     Route::get('getAppUserGroupWorkflowPermission', [SysAdministrationController::class, 'getAppUserGroupWorkflowPermission']);
     Route::post('onSaveSignatories', [SysAdministrationController::class, 'onSaveSignatories']);
     Route::post('onSaveSystemAdminWithImage', [SysAdministrationController::class, 'onSaveSystemAdminWithImage']);
-    
+    Route::get('getAppUserGroupRegulatoryFunctions', [SysAdministrationController::class, 'getAppUserGroupRegulatoryFunctions']);
+    Route::post('onSavingRegulatoryFunctionPermissions', [SysAdministrationController::class, 'onSavingRegulatoryFunctionPermissions']);
 });

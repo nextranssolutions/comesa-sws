@@ -1,5 +1,5 @@
 {
-  "name": "eac-ppmsolution",
+  "name": "comesa-impexpsolution",
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
@@ -14,7 +14,7 @@
     "@angular/cdk": "^17.1.0",
     "@angular/common": "^17.1.0",
     "@angular/compiler": "^17.1.0",
-    "@angular/core": "^17.2.3",
+    "@angular/core": "^17.3.12",
     "@angular/forms": "^17.1.0",
     "@angular/material": "^17.1.0",
     "@angular/platform-browser": "^17.2.3",
@@ -35,10 +35,10 @@
     "bootstrap": "^5.3.2",
     "bootstrap-icons": "^1.11.1",
     "crypto-js": "^4.2.0",
-    "devextreme": "23.2.10",
-    "devextreme-angular": "23.2.10",
+    "devextreme": "^23.2.11",
+    "devextreme-angular": "^23.2.10",
     "devextreme-quill": "^1.7.1",
-    "exceljs": "^4.2.0",
+    "exceljs": "^4.4.0",
     "file-saver": "^2.0.5",
     "google-libphonenumber": "^3.2.34",
     "intl-tel-input": "^17.0.3",
@@ -66,11 +66,11 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "^17.1.0",
-    "@angular/cli": "^17.2.2",
+    "@angular/cli": "^17.3.11",
     "@angular/compiler-cli": "^17.1.0",
     "@types/angular": "^1.8.9",
     "@types/jasmine": "~4.3.0",
-    "@types/node": "^20.14.11",
+    "@types/node": "^20.17.16",
     "devextreme-cldr-data": "^1.0.3",
     "globalize": "^1.7.0",
     "jasmine-core": "~4.6.0",
@@ -79,6 +79,6 @@
     "karma-coverage": "~2.2.0",
     "karma-jasmine": "~5.1.0",
     "karma-jasmine-html-reporter": "~2.1.0",
-    "typescript": "^5.3.3"
+    "typescript": "^5.4.4"
   }
 }

@@ -1,0 +1,11 @@
+{
+    "name": "RevenueManagement",
+    "alias": "revenuemanagement",
+    "description": "",
+    "keywords": [],
+    "priority": 0,
+    "providers": [
+        "Modules\\RevenueManagement\\App\\Providers\\RevenueManagementServiceProvider"
+    ],
+    "files": []
+}
