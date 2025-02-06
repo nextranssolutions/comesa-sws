@@ -123,7 +123,7 @@ class ReportsHelper
   //add heading title
         $sheet->mergeCells('A1:'.$letter.'6')
             ->getCell('A1')
-			->setValue("ECRES".$heading."\t\t printed on ".Carbon::now());
+			->setValue("uRIMS".$heading."\t\t printed on ".Carbon::now());
 			
 
         $sheet->getStyle('A1:'.$letter.'6')->applyFromArray($styleArray);

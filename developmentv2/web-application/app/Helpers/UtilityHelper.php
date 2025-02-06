@@ -299,11 +299,11 @@ class UtilityHelper
 
     public static function generateRefNumber($codes_array, $ref_id)
     {
-        $serial_format = DB::table('refnumbers_formats')
+        $serial_format = DB::table('cfg_refnumbers_formats')
             ->where('id', $ref_id)
             ->value('ref_format');
         $arr = explode("|", $serial_format);
-        $serial_variables = $serial_format = DB::table('refnumbers_variables')
+        $serial_variables = $serial_format = DB::table('cfg_refnumbers_variables')
             ->select('identifier')
             ->get();
         $serial_variables = convertStdClassObjToArray($serial_variables);
@@ -580,7 +580,7 @@ class UtilityHelper
     {
         //return records
         $records = DB::table('wf_workflowstatuses_actions as t1')
-            ->select('t2.*', 't1.workflow_status_id as appworkflow_status_id', 't2.name as text', 't2.iconcls as icon')
+            ->select('t2.*', 't1.workflow_status_id as appworkflow_status_id', 't2.name as text', 't2.iconCls as icon')
             ->join('wf_statuses_actions as t2', 't1.statuses_action_id', '=', 't2.id')
             ->where('t1.process_id', $process_id)
             ->get();
@@ -590,7 +590,7 @@ class UtilityHelper
     {
         //return records
         $records = DB::table('wf_workflowstatuses_actions as t1')
-            ->select('t2.*', 't1.workflow_status_id as appworkflow_status_id', 't2.name as text', 't2.iconcls as icon')
+            ->select('t2.*', 't1.workflow_status_id as appworkflow_status_id', 't2.name as text', 't2.iconCls as icon')
             ->join('wf_statuses_actions as t2', 't1.statuses_action_id', '=', 't2.id')
             ->get();
         return convertStdClassObjToArray($records);
@@ -627,14 +627,14 @@ class UtilityHelper
     }
     public static function generateUserRegistrationNo($table_name)
     {
-        $experts_profile_no = mt_rand(1000, 99999);
+        $identification_no = mt_rand(1000, 99999);
 
-        $where = array('experts_profile_no' => $experts_profile_no);
+        $where = array('identification_no' => $identification_no);
         $check = recordExists($table_name, $where);
         if ($check) {
             return generateUserRegistrationNo($table_name);
         } else {
-            return $experts_profile_no;
+            return $identification_no;
         }
     }
 

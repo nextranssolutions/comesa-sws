@@ -166,7 +166,7 @@ class WorkflowManagementController extends Controller
             $level = 0;
             $regulatory_functions = DB::table('par_regulatory_functions as t1')
                 ->leftJoin('par_regulatoryfunctionaccess_groups as t2', 't1.id', 't2.regulatory_function_id')
-                ->select('t1.*', 't1.iconsCls', 't2.user_access_levels_id')
+                ->select('t1.*', 't1.iconsCls', 't2.user_access_level_id')
                 ->orderBy('t1.order_no');
 
             $regulatory_functions->whereIn('user_group_id', $usergroups);
@@ -345,7 +345,7 @@ class WorkflowManagementController extends Controller
                 $sql->orderBy('t1.name', 'asc');
             }
             $data = $sql->get();
-           
+
             // Get pagination parameters from request
             // $page = $req->input('page', 1); // default to page 1
             // $perPage = $req->input('per_page', 10); // default to 10 items per page
@@ -808,33 +808,33 @@ class WorkflowManagementController extends Controller
                     'message' => 'Missing required parameters: record_id, table_name, title, or user_id.',
                 ]);
             }
-    
+
             // Check if 'id' is provided in the request
             if (validateIsNumeric($req->id)) {
                 $record_id = $req->id;
             }
-    
+
             // Define the where condition
             $where_state = ['id' => $record_id];
-    
+
             // Fetch the record to confirm existence
             $records = DB::connection('portal')->table($table_name)
                 ->where($where_state)
                 ->get();
-    
+
             if ($records->isEmpty()) {
                 return response()->json([
                     'success' => false,
                     'message' => "Record not found in the table: $table_name.",
                 ]);
             }
-    
+
             // Get previous record data
             $previous_data = getPreviousRecords($table_name, $where_state, 'portal');
-    
+
             // Attempt to delete the record
             $resp = deleteRecordNoTransaction($table_name, $previous_data['results'], $where_state, $user_id);
-    
+
             if ($resp) {
                 return response()->json([
                     'success' => true,
@@ -862,7 +862,7 @@ class WorkflowManagementController extends Controller
             ));
         }
     }
-    
+
     public function onLoadworkflowStageData(Request $req)
     {
         try {
@@ -1120,7 +1120,7 @@ class WorkflowManagementController extends Controller
 
     }
 
-    
+
     public function getAppWorkflowStages(Request $req)
     {
         try {
@@ -1152,13 +1152,13 @@ class WorkflowManagementController extends Controller
         try {
             // Retrieve the workflow_id from the request
             $workflow_id = $req->workflow_id;
-    
+
             // Fetch data from the wkf_workflow_stages table where workflow_id matches
             $data = DB::table('wkf_workflow_actions')
                 ->where('workflow_id', $workflow_id)
                 ->orderBy('order_no')
                 ->get();
-    
+
             // Prepare the success response
             $res = [
                 'success' => true,
@@ -1173,9 +1173,9 @@ class WorkflowManagementController extends Controller
         return response()->json($res, 200);
     }
 
-    
 
-  
+
+
 
     public function getAppPortalWorkflowStages(Request $req)
     {

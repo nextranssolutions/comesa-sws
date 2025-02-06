@@ -16,13 +16,11 @@ import { ReportsService } from 'src/app/core-services/reports/reports.service';
 import { ServiceAdmnistrationService } from 'src/app/core-services/system-admnistration/system-admnistration.service';
 import { EncryptionService } from 'src/app/core-services/encryption/encryption.service';
 
-
 @Component({
   selector: 'app-appsign-in',
   templateUrl: './appsign-in.component.html',
-  styleUrls: ['./appsign-in.component.css', './appsign-in.component.scss']
+  styleUrls: ['./appsign-in.component.css', './appsign-in.component.scss'],
 })
-
 export class AppsignInComponent {
   response: any;
   systemGuidelines: any;
@@ -61,7 +59,7 @@ export class AppsignInComponent {
   valueChanged(e) {
     this.slideshowDelay = e.value ? 2000 : 0;
   }
-  slides_information:any;
+  slides_information: any;
   passwordMode: DxTextBoxTypes.TextBoxType = 'password';
   passwordButton: DxButtonTypes.Properties = {
     icon: 'eyeopen',
@@ -76,7 +74,7 @@ export class AppsignInComponent {
   var_1: number;
   var_2: number;
   sum_var: number;
-  decryptedPayload:any;
+  decryptedPayload: any;
 
   constructor(
     public translate: TranslateService,
@@ -94,28 +92,30 @@ export class AppsignInComponent {
     // translate.addLangs(['English', 'French', 'Swahili']);
     // translate.setDefaultLang('English');
     const base_url = AppSettings.base_url;
-
   }
   ngOnInit() {
-
-    
-
     this.forgotPasswordFrm = new FormGroup({
-      email_address: new FormControl('', Validators.compose([Validators.required])),
+      email_address: new FormControl(
+        '',
+        Validators.compose([Validators.required])
+      ),
       experts_profile_no: new FormControl('', Validators.compose([])),
     });
 
     this.signInFrm = new FormGroup({
       password: new FormControl('', Validators.compose([Validators.required])),
-      email_address: new FormControl('', Validators.compose([Validators.required])),
+      email_address: new FormControl(
+        '',
+        Validators.compose([Validators.required])
+      ),
       // language: new FormControl('', Validators.compose([])),
       // sum_input: new FormControl('', Validators.compose([Validators.required])),
-      otp_value: new FormControl('', Validators.compose([]))
+      otp_value: new FormControl('', Validators.compose([])),
     });
 
     // this.funcLoginCapture();
     // this.onLoadAccountTypesData();
-  //  this.onLoadsystemSignInUpGuidelines();
+    //  this.onLoadsystemSignInUpGuidelines();
     //this.onLoadSlides_information();
     // this.spinner.hide();
   }
@@ -123,33 +123,28 @@ export class AppsignInComponent {
   scrollToTop(): void {
     window.scrollTo({
       top: 0,
-      behavior: 'smooth' // Smooth scrolling for better UX
+      behavior: 'smooth', // Smooth scrolling for better UX
     });
   }
   onLoadSlides_information() {
     this.spinnerShow('');
     var data_submit = {
-      'table_name': 'not_slides_informations',
-      'is_enabled': 1
-    }
-    this.configService.onLoadConfigurationData(data_submit)
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            // this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
-            // this.slides_information = this.decryptedPayload;
-            this.slides_information = this.data_record.data;
-          }
-
-        },
-        error => {
-
-        });
-
-  } 
+      table_name: 'not_slides_informations',
+      is_enabled: 1,
+    };
+    this.configService.onLoadConfigurationData(data_submit).subscribe(
+      (data) => {
+        this.data_record = data;
+        if (this.data_record.success) {
+          // this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
+          // this.slides_information = this.decryptedPayload;
+          this.slides_information = this.data_record.data;
+        }
+      },
+      (error) => {}
+    );
+  }
   onAccountTypeSelection($event) {
-
     if ($event.selectedItem) {
       let account_type = $event.selectedItem;
       this.dashboard_type_id = account_type.dashboard_type_id;
@@ -162,7 +157,9 @@ export class AppsignInComponent {
     if (!this.is_expertsprofile) {
       this.signInFrm.get('experts_profile_no')?.clearValidators();
     } else {
-      this.signInFrm.get('experts_profile_no')?.setValidators([Validators.required]); // Add any other validators you need
+      this.signInFrm
+        .get('experts_profile_no')
+        ?.setValidators([Validators.required]); // Add any other validators you need
     }
   }
 
@@ -171,14 +168,15 @@ export class AppsignInComponent {
   }
   onLoadsystemSignInUpGuidelines() {
     var data_submit = {
-      'table_name': 'sys_signinsignup_guidelines',
-      'guideline_option_id': this.guideline_option_id
-    }
+      table_name: 'sys_signinsignup_guidelines',
+      guideline_option_id: this.guideline_option_id,
+    };
     // this.spinnerShow('Loading guidelines...');
 
-    this.admnistrationService.onLoadDataUrl(data_submit, 'onLoadsystemSignInUpGuidelines')
+    this.admnistrationService
+      .onLoadDataUrl(data_submit, 'onLoadsystemSignInUpGuidelines')
       .subscribe(
-        data => {
+        (data) => {
           this.data_record = data;
           if (this.data_record.success) {
             // this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
@@ -186,7 +184,7 @@ export class AppsignInComponent {
           }
           // this.spinnerHide();
         },
-        error => {
+        (error) => {
           // this.spinnerHide();
         }
       );
@@ -199,7 +197,7 @@ export class AppsignInComponent {
     }
   }
   funcpopHeight(percentage_height) {
-    return window.innerHeight * percentage_height / 100;
+    return (window.innerHeight * percentage_height) / 100;
   }
 
   onOtpRequest() {
@@ -214,35 +212,39 @@ export class AppsignInComponent {
     // ;
     this.spinnerShow('Requesting OTP...');
 
-    this.otpservice.onUserLoginOtpRequest(this.signInFrm.value, 'requestLoginOtp').subscribe(
-      (data) => {
-        // ;
-        this.response = data;
-        if (this.response.success) {
-          this.toastr.info(this.response.message, 'Info');
-          this.is_otpdisabled = false;
-        } else {
-          this.toastr.error(this.response.message, 'Error');
+    this.otpservice
+      .onUserLoginOtpRequest(this.signInFrm.value, 'requestLoginOtp')
+      .subscribe(
+        (data) => {
+          // ;
+          this.response = data;
+          if (this.response.success) {
+            this.toastr.info(this.response.message, 'Info');
+            this.is_otpdisabled = false;
+          } else {
+            this.toastr.error(this.response.message, 'Error');
+          }
+          this.spinnerHide();
+        },
+        (error) => {
+          this.toastr.error(
+            'Failed to request OTP: ' +
+              (error.error?.message || 'Unknown error'),
+            'Error'
+          );
+          this.spinnerHide();
         }
-        this.spinnerHide();
-      },
-      (error) => {
-        this.toastr.error('Failed to request OTP: ' + (error.error?.message || 'Unknown error'), 'Error');
-        this.spinnerHide();
-      }
-    );
+      );
   }
   funcLoginCapture() {
     this.var_1 = Math.floor(Math.random() * 11);
     this.var_2 = Math.floor(Math.random() * 11);
 
     this.sum_var = this.var_1 + this.var_2;
-
   }
 
-
   onSignIn() {
-    // Clear localStorage before logging in 
+    // Clear localStorage before logging in
     localStorage.clear();
 
     this.email = this.signInFrm.get('email_address')?.value;
@@ -254,7 +256,11 @@ export class AppsignInComponent {
     const controls = this.signInFrm.controls;
     for (const name in controls) {
       if (controls[name].invalid) {
-        this.toastr.error('Fill In All Mandatory fields with (*), missing value on ' + name.replace('_id', ''), 'Alert');
+        this.toastr.error(
+          'Fill In All Mandatory fields with (*), missing value on ' +
+            name.replace('_id', ''),
+          'Alert'
+        );
         return;
       }
     }
@@ -264,91 +270,119 @@ export class AppsignInComponent {
 
     this.loading = true;
     this.spinnerShow('User Login........');
-    this.authService.login(btoa(this.email), btoa(this.password), (otp_value))
-      
-      .subscribe(
-        response => {
-          this.auth_response = response;
-          this.message = this.auth_response.message;
-          this.success = this.auth_response.success;
+    this.authService
+      .login(btoa(this.email), btoa(this.password), otp_value)
 
-          if (this.success) {
-            let access_token = this.auth_response.access_token;
-            let isLoggedIn = this.auth_response.isLoggedIn;
-            if (access_token != '' && isLoggedIn) {
-              
+      .subscribe((response) => {
+        this.auth_response = response;
+        this.message = this.auth_response.message;
+        this.success = this.auth_response.success;
 
-              this.toastr.success(this.message, 'Success!');
-              // this.isLoggedIn = this.auth_response.isLoggedIn;
-              this.dashboard_name = this.auth_response.dashboard_name;
-              this.dashboard_link = this.auth_response.dashboard_link;
-           
-              const token = this.auth_response.authorisation.token;
-              this.authService.storeToken(token);
-              localStorage.setItem('isLoggedIn', this.auth_response.isLoggedIn);
-              localStorage.setItem('user', JSON.stringify(this.auth_response));
-              localStorage.setItem('token', this.auth_response.authorisation.token);
-              
-              localStorage.setItem('id', this.auth_response.expertsprofile_information_id);
-              localStorage.setItem('id', this.auth_response.id);
-              localStorage.setItem('user_group_name', this.auth_response.user_group_name);
-              localStorage.setItem('first_name', this.auth_response.first_name);
-              localStorage.setItem('country_of_origin_id', this.auth_response.country_of_origin);
-              localStorage.setItem('other_names', this.auth_response.other_names);
-              localStorage.setItem('email_address', this.auth_response.email_address);
-              localStorage.setItem('userGroupId', this.auth_response.userGroupId);
-              localStorage.setItem('account_type_name', this.auth_response.account_type_name);
-              localStorage.setItem('account_type_id', this.auth_response.account_type_id);
-              localStorage.setItem('user_group_id', this.auth_response.user_group_id);
-              localStorage.setItem('userCountryOfOrigin', this.auth_response.countryName);
-              localStorage.setItem('usr_loggedin_id', this.auth_response.usr_loggedin_id);
-              localStorage.setItem('dashboard_link', this.auth_response.dashboard_link);
-              localStorage.setItem('dashboard_name', this.auth_response.dashboard_name);
+        if (this.success) {
+          let access_token = this.auth_response.access_token;
+          let isLoggedIn = this.auth_response.isLoggedIn;
+          if (access_token != '' && isLoggedIn) {
+            this.toastr.success(this.message, 'Success!');
+            // this.isLoggedIn = this.auth_response.isLoggedIn;
+            this.dashboard_name = this.auth_response.dashboard_name;
+            this.dashboard_link = this.auth_response.dashboard_link;
 
-              this.authService.isLoggedIn = true;
-              this.isLoggedIn = true;
+            const token = this.auth_response.authorisation.token;
+            this.authService.storeToken(token);
+            localStorage.setItem('isLoggedIn', this.auth_response.isLoggedIn);
+            localStorage.setItem('user', JSON.stringify(this.auth_response));
+            localStorage.setItem(
+              'token',
+              this.auth_response.authorisation.token
+            );
 
-              this.router.navigate([this.dashboard_link]);
-              this.scrollToTop();
-              
-            } else {
-              this.toastr.error(this.message, 'Alert!');
-            }
-            this.spinnerHide();
-          }
-          else {
-            this.spinnerHide();
+            localStorage.setItem(
+              'id',
+              this.auth_response.expertsprofile_information_id
+            );
+            localStorage.setItem('id', this.auth_response.id);
+            localStorage.setItem(
+              'user_group_name',
+              this.auth_response.user_group_name
+            );
+            localStorage.setItem('first_name', this.auth_response.first_name);
+            localStorage.setItem(
+              'country_of_origin_id',
+              this.auth_response.country_of_origin
+            );
+            localStorage.setItem('other_names', this.auth_response.other_names);
+            localStorage.setItem(
+              'email_address',
+              this.auth_response.email_address
+            );
+            localStorage.setItem('userGroupId', this.auth_response.userGroupId);
+            localStorage.setItem(
+              'account_type_name',
+              this.auth_response.account_type_name
+            );
+            localStorage.setItem(
+              'account_type_id',
+              this.auth_response.account_type_id
+            );
+            localStorage.setItem(
+              'user_group_id',
+              this.auth_response.user_group_id
+            );
+            localStorage.setItem(
+              'userCountryOfOrigin',
+              this.auth_response.countryName
+            );
+            localStorage.setItem(
+              'usr_loggedin_id',
+              this.auth_response.usr_loggedin_id
+            );
+            localStorage.setItem(
+              'dashboard_link',
+              this.auth_response.dashboard_link
+            );
+            localStorage.setItem(
+              'dashboard_name',
+              this.auth_response.dashboard_name
+            );
+
+            this.authService.isLoggedIn = true;
+            this.isLoggedIn = true;
+
+            this.router.navigate([this.dashboard_link]);
+            this.scrollToTop();
+          } else {
             this.toastr.error(this.message, 'Alert!');
           }
           this.spinnerHide();
-        });
+        } else {
+          this.spinnerHide();
+          this.toastr.error(this.message, 'Alert!');
+        }
+        this.spinnerHide();
+      });
     //this.router.navigate(['/online-services']);
     //this.scrollToTop();
   }
 
   funcReloadCapture() {
     this.funcLoginCapture();
-
   }
 
   funcpopWidth(percentage_width) {
-    return window.innerWidth * percentage_width / 100;
+    return (window.innerWidth * percentage_width) / 100;
   }
   funcCreateCustomerAccount() {
     this.router.navigate(['public/sign-up']);
     this.scrollToTop();
-  }//
+  } //
 
   onSignOnKeyPress(event) {
-
     if (event.key === 'Enter') {
-
       this.onSignIn();
     }
-
-  } handleReset() {
-
-  } onEmailValueChange($event) {
+  }
+  handleReset() {}
+  onEmailValueChange($event) {
     this.email_address = $event.value;
   }
   funcLostPassord() {
@@ -379,7 +413,6 @@ export class AppsignInComponent {
     this.on_showsigninguidelines = true;
   }
   onFuncRecoverPasswordRequest() {
-
     const summation = this.forgotPasswordFrm.get('sum_input')?.value;
 
     const formData = new FormData();
@@ -387,7 +420,11 @@ export class AppsignInComponent {
     const controls = this.forgotPasswordFrm.controls;
     for (const name in controls) {
       if (controls[name].invalid) {
-        this.toastr.error('Fill In All Mandatory fields with (*), missing value on ' + name.replace('_id', ''), 'Alert');
+        this.toastr.error(
+          'Fill In All Mandatory fields with (*), missing value on ' +
+            name.replace('_id', ''),
+          'Alert'
+        );
         return;
       }
     }
@@ -400,43 +437,49 @@ export class AppsignInComponent {
     this.loading = true;
     this.spinnerShow('User Login........');
 
-    this.userservice.onUserAccountRegistration(this.forgotPasswordFrm.value, 'onUserPasswordRequestRecovery').subscribe(
-      (data) => {
-        this.response = data;
-        if (this.response.success) {
-          // Inform the user about association with a sidebar group
-          this.toastr.info(this.response.message, 'Info');
-          this.islostpassword = false;
-        } else {
-          this.toastr.success(this.response.message, 'Success');
+    this.userservice
+      .onUserAccountRegistration(
+        this.forgotPasswordFrm.value,
+        'onUserPasswordRequestRecovery'
+      )
+      .subscribe(
+        (data) => {
+          this.response = data;
+          if (this.response.success) {
+            // Inform the user about association with a sidebar group
+            this.toastr.info(this.response.message, 'Info');
+            this.islostpassword = false;
+          } else {
+            this.toastr.success(this.response.message, 'Success');
+          }
 
+          this.spinnerHide();
+        },
+        (error) => {
+          this.toastr.error(
+            'Registration failed: ' + error.error.message,
+            'Error',
+            { timeOut: 10000 }
+          );
+          this.spinnerHide();
         }
-
-        this.spinnerHide()
-      },
-      (error) => {
-        this.toastr.error('Registration failed: ' + error.error.message, 'Error', { timeOut: 10000 });
-        this.spinnerHide()
-      }
-    );
+      );
     //
   }
   onLoadAccountTypesData() {
     let data_submit = {
-      'table_name': 'sys_account_types'
-    }
-    this.configService.onLoadConfigurationData(data_submit)
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            // this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
-            this.userAccountTypeData = this.data_record.data;
-          }
-        },
-        error => {
-
-        });
+      table_name: 'sys_account_types',
+    };
+    this.configService.onLoadConfigurationData(data_submit).subscribe(
+      (data) => {
+        this.data_record = data;
+        if (this.data_record.success) {
+          // this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
+          this.userAccountTypeData = this.data_record.data;
+        }
+      },
+      (error) => {}
+    );
   }
 
   onFuncreturntoDashboard() {
@@ -444,12 +487,10 @@ export class AppsignInComponent {
   }
 
   onExporting(e: DxDataGridTypes.ExportingEvent) {
-
     if (e.format == 'pdf') {
-      this.reportingAnalytics.onExportingPDF(e)
-    }
-    else {
-      this.reportingAnalytics.onExportingExcelData(e)
+      this.reportingAnalytics.onExportingPDF(e);
+    } else {
+      this.reportingAnalytics.onExportingExcelData(e);
     }
   }
-} 
+}
