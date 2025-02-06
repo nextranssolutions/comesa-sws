@@ -53,12 +53,6 @@ export class SubscriptionDashComponent {
     this.onloadSubscriptionFields();
     this.onloadPublicationInformation();
   }
-  scrollToTop(): void {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth' // Smooth scrolling for better UX
-    });
-  }
   // funcFetchExpertPublicationsCounter() {
 
   //   this.infoService.funcFetchExpertPublicationsCounter()
@@ -89,7 +83,12 @@ export class SubscriptionDashComponent {
   //       });
 
   // }
-
+  scrollToTop(): void {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth' // Smooth scrolling for better UX
+    });
+  }
   onloadSubscriptionFields() {
 
     var data_submit = {

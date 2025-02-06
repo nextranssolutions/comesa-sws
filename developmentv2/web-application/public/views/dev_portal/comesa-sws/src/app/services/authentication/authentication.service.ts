@@ -31,6 +31,12 @@ export class AuthenticationService {
     this.userData = JSON.parse(this.userData);
     this.base_url = AppSettings.base_url+ '/api/authentication';
   }
+  scrollToTop(): void {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth' // Smooth scrolling for better UX
+    });
+  }
   getAccessToken() {
     let userDetails = this.userData;
     if (userDetails) {
@@ -92,6 +98,7 @@ export class AuthenticationService {
         map(() => {
           this.clearSession();
           this.router.navigate(["../"]);
+          this.scrollToTop();
         }),
         catchError(error => {
           this.toastr.error('Logout failed. Please try again.');
@@ -188,9 +195,11 @@ export class AuthenticationService {
 
       this.isLoggedIn = true;
       this.router.navigate(['./admin-ecres/app-dashboard']);
+      this.scrollToTop();
     } else {
       // Handle other status conditions if needed
       this.router.navigate(['./admin-ecres/app-dashboard']);
+      this.scrollToTop();
     }
   }
 
@@ -246,6 +255,7 @@ export class AuthenticationService {
     this.toastr.success('Logged out successfully');
     this.isLoggedIn = false;
     this.router.navigate(['/']);
+    this.scrollToTop();
   }
 
 
@@ -385,7 +395,7 @@ export class AuthenticationService {
   requestToken() {
     // Simulate token request logic
     this.tokenRequestCount++;
-    console.log(`Token requested ${this.tokenRequestCount} times.`);
+    ;
     // Here you would typically make an HTTP request to your backend
     // to request a verification token.
   }

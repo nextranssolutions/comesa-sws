@@ -779,6 +779,7 @@ export class ShareusermanagementClassComponent {
   //           this.eoiService.setApplicationDetail(this.response.record);
   //           const targetRoute = '/admin-ecres/expert-selectionandappointment';
   //           this.router.navigate([targetRoute])
+  //            this.scrollToTop();
   //             .then(navigationSuccess => {
   //               if (navigationSuccess) {
   //                 this.toastr.success(this.response.message, 'Response');

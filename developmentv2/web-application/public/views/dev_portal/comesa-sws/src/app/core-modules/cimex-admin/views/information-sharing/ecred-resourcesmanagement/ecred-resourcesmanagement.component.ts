@@ -100,12 +100,7 @@ export class EcredResourcesmanagementComponent {
 
     this.checkScreenSize();
   }
-  scrollToTop(): void {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth' // Smooth scrolling for better UX
-    });
-  }
+
   @HostListener('window:resize', ['$event'])
   onResize(event: Event): void{
     this.screenWidth = window.innerWidth;
@@ -119,7 +114,12 @@ export class EcredResourcesmanagementComponent {
     }
   }
 
-  
+    scrollToTop(): void {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth' // Smooth scrolling for better UX
+    });
+  }
   onFuncSubmitResource() {
     this.isShowAppProcessSubmission= true;
   }

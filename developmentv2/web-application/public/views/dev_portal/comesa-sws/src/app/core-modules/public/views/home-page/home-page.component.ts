@@ -297,7 +297,7 @@ export class HomePageComponent {
     this.userData = localStorage.getItem('user');
     let user_data = JSON.parse(this.userData);
     // 
-  // console.log(user_data.dashboard_link)
+  // 
     // let dashboard_linktest = './partnerstates-ppm';
     this.router.navigate([user_data.dashboard_link]);
     this.scrollToTop();

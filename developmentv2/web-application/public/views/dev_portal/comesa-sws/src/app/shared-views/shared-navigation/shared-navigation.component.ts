@@ -85,7 +85,7 @@ export class SharedNavigationComponent {
     localStorage.setItem('nav_data', JSON.stringify(this.nav_data));
 
     // this.utilityService.setNavigationData(this.nav_data);
-    this.router.navigate(['./admin-portal/' + routerlink]);
+    this.router.navigate(['./admin-cimex/' + routerlink]);
     this.scrollToTop();
     this.router.navigate(['./online-services/' + routerlink]);
     this.scrollToTop();
