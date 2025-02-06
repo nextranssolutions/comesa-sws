@@ -3,9 +3,9 @@ import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms'
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-import { ConfigurationsService } from 'src/app/services/configurations/configurations.service';
-import { PublicDashboardService } from 'src/app/services/public-dashboard/public-dashboard.service';
-import { UserManagementService } from 'src/app/services/user-management/user-management.service';
+import { ConfigurationsService } from 'src/app/core-services/configurations/configurations.service';
+import { PublicDashboardService } from 'src/app/core-services/public-dashboard/public-dashboard.service';
+import { UserManagementService } from 'src/app/core-services/user-management/user-management.service';
 
 @Component({
   selector: 'app-subscription',

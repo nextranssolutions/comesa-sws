@@ -4,17 +4,17 @@ import { Router } from '@angular/router';
 import { SpinnerVisibilityService } from 'ng-http-loader';
 import { ToastrService } from 'ngx-toastr';
 import { AppSettings } from 'src/app/app-settings';
-import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
-import { UserManagementService } from 'src/app/services/user-management/user-management.service';
 import { TranslateService } from '@ngx-translate/core';
-import { ConfigurationsService } from 'src/app/services/configurations/configurations.service';
 import { DxTextBoxTypes } from 'devextreme-angular/ui/text-box';
 import { DxButtonTypes } from 'devextreme-angular/ui/button';
-import { OtpService } from 'src/app/services/otp/otp.service';
-import { ServiceAdmnistrationService } from 'src/app/services/system-admnistration/system-admnistration.service';
-import { ReportsService } from 'src/app/services/reports/reports.service';
 import { DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
-import { EncryptionService } from 'src/app/services/encryption/encryption.service';
+import { AuthenticationService } from 'src/app/core-services/authentication/authentication.service';
+import { UserManagementService } from 'src/app/core-services/user-management/user-management.service';
+import { ConfigurationsService } from 'src/app/core-services/configurations/configurations.service';
+import { OtpService } from 'src/app/core-services/otp/otp.service';
+import { ReportsService } from 'src/app/core-services/reports/reports.service';
+import { ServiceAdmnistrationService } from 'src/app/core-services/system-admnistration/system-admnistration.service';
+import { EncryptionService } from 'src/app/core-services/encryption/encryption.service';
 
 
 @Component({
@@ -137,9 +137,9 @@ export class AppsignInComponent {
         data => {
           this.data_record = data;
           if (this.data_record.success) {
-            this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
-            this.slides_information = this.decryptedPayload;
-            // this.slides_information = this.data_record.data;
+            // this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
+            // this.slides_information = this.decryptedPayload;
+            this.slides_information = this.data_record.data;
           }
 
         },
@@ -181,8 +181,8 @@ export class AppsignInComponent {
         data => {
           this.data_record = data;
           if (this.data_record.success) {
-            this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
-            this.systemGuidelines = this.decryptedPayload;
+            // this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
+            this.systemGuidelines = this.data_record.data;
           }
           // this.spinnerHide();
         },
@@ -430,8 +430,8 @@ export class AppsignInComponent {
         data => {
           this.data_record = data;
           if (this.data_record.success) {
-            this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
-            this.userAccountTypeData = this.decryptedPayload;
+            // this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
+            this.userAccountTypeData = this.data_record.data;
           }
         },
         error => {

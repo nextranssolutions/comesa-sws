@@ -1,11 +1,10 @@
 import { Component } from '@angular/core';
-import { AuthService } from 'src/app/services/auth.service';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { TranslateService } from '@ngx-translate/core';
-import { PublicDashboardService } from 'src/app/services/public-dashboard/public-dashboard.service';
-import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
-import { EncryptionService } from 'src/app/services/encryption/encryption.service';
+import { AuthenticationService } from 'src/app/core-services/authentication/authentication.service';
+import { PublicDashboardService } from 'src/app/core-services/public-dashboard/public-dashboard.service';
+import { EncryptionService } from 'src/app/core-services/encryption/encryption.service';
 
 @Component({
   selector: 'app-navigation',

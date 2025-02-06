@@ -2,8 +2,8 @@ import { Component } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { TranslateService } from '@ngx-translate/core';
 import { ToastrService } from 'ngx-toastr';
-import { PublicDashboardService } from 'src/app/services/public-dashboard/public-dashboard.service';
-import { UserManagementService } from 'src/app/services/user-management/user-management.service';
+import { PublicDashboardService } from 'src/app/core-services/public-dashboard/public-dashboard.service';
+import { UserManagementService } from 'src/app/core-services/user-management/user-management.service';
 
 @Component({
   selector: 'app-footer',

@@ -1,9 +1,9 @@
 import { Component } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { LanguagesService } from 'src/app/services/languages/languages.service';
 import { Router } from '@angular/router';
-import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
 import { SpinnerVisibilityService } from 'ng-http-loader';
+import { AuthenticationService } from 'src/app/core-services/authentication/authentication.service';
+import { LanguagesService } from 'src/app/core-services/languages/languages.service';
 
 @Component({
   selector: 'app-top-section',

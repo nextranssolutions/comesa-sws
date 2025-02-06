@@ -5,12 +5,12 @@ import { DxButtonTypes } from 'devextreme-angular/ui/button';
 import { DxTextBoxTypes } from 'devextreme-angular/ui/text-box';
 import { ToastrService } from 'ngx-toastr';
 import { AppSettings } from 'src/app/app-settings';
-import { AuthenticationService } from 'src/app/services/authentication/authentication.service';
-import { ConfigurationsService } from 'src/app/services/configurations/configurations.service';
-import { DashbordManagementService } from 'src/app/services/dashboard-management/dashbord-management.service';
-import { PublicDashboardService } from 'src/app/services/public-dashboard/public-dashboard.service';
-import { UserManagementService } from 'src/app/services/user-management/user-management.service';
-import {EncryptionService} from 'src/app/services/encryption/encryption.service';
+import { AuthenticationService } from 'src/app/core-services/authentication/authentication.service';
+import { ConfigurationsService } from 'src/app/core-services/configurations/configurations.service';
+import { DashbordManagementService } from 'src/app/core-services/dashboard-management/dashbord-management.service';
+import { EncryptionService } from 'src/app/core-services/encryption/encryption.service';
+import { PublicDashboardService } from 'src/app/core-services/public-dashboard/public-dashboard.service';
+import { UserManagementService } from 'src/app/core-services/user-management/user-management.service';
 
 @Component({
   selector: 'app-home-page',

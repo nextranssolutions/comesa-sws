@@ -150,7 +150,7 @@ class WorkflowManagementController extends Controller
             $usergroups = 0;
             //note one user can have more than one user group
             if (validateIsNumeric($user_id)) {
-                $usergroups = DB::table(table: 'txn_user_group as t1')
+                $usergroups = DB::table(table: 'tra_user_group as t1')
                     ->select('group_id')
                     ->where(array('user_id' => $user_id))
                     ->get();
@@ -202,7 +202,7 @@ class WorkflowManagementController extends Controller
                 if (validateIsNumeric($user_id)) {
                     $users_groups = getSingleRecord('usr_users_information', array('id' => $user_id));
                     $is_super_admin = $users_groups->is_super_admin;
-                    $usergroups = DB::table(table: 'txn_user_group as t1')
+                    $usergroups = DB::table(table: 'tra_user_group as t1')
                         ->select('group_id')
                         ->where(array('user_id' => $user_id))
                         ->get();

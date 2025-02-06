@@ -1,11 +1,5 @@
 import { Component } from '@angular/core';
-import { Router } from '@angular/router';
-import { SpinnerVisibilityService } from 'ng-http-loader';
 import { ToastrService } from 'ngx-toastr';
-import { AuthService } from 'src/app/services/auth.service';
-
-
-
 
 @Component({
   selector: 'app-reporting-and-analytics',
@@ -15,9 +9,6 @@ import { AuthService } from 'src/app/services/auth.service';
 export class ReportingAndAnalyticsComponent {
 
   constructor(
-    private spinner: SpinnerVisibilityService,
-    private router: Router,
-    private AuthService: AuthService,
     public toastr: ToastrService,
     // private http: HttpClient,
   ) {

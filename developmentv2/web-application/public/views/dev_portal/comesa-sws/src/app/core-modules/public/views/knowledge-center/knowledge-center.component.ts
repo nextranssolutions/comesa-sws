@@ -2,11 +2,11 @@ import { Component, Input, ViewContainerRef } from '@angular/core';
 import { Router } from '@angular/router';
 import { SpinnerVisibilityService } from 'ng-http-loader';
 import { ToastrService } from 'ngx-toastr';
-import { PublicDashboardService } from 'src/app/services/public-dashboard/public-dashboard.service';
-import { ReportsService } from 'src/app/services/reports/reports.service';
-import { UtilityService } from 'src/app/services/utilities/utility.service';
 import { DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
-import { EncryptionService } from 'src/app/services/encryption/encryption.service';
+import { UtilityService } from 'src/app/core-services/utilities/utility.service';
+import { PublicDashboardService } from 'src/app/core-services/public-dashboard/public-dashboard.service';
+import { ReportsService } from 'src/app/core-services/reports/reports.service';
+import { EncryptionService } from 'src/app/core-services/encryption/encryption.service';
 @Component({
   selector: 'app-knowledge-center',
   templateUrl: './knowledge-center.component.html',
