@@ -128,25 +128,14 @@ import { AppGenericnamesComponent } from './views/configurations/app-genericname
 import { UserDashboardComponent } from './views/dashboard/user-dashboard/user-dashboard.component';
 import { FinanceDashboardComponent } from './views/dashboard/finance-dashboard/finance-dashboard.component';
 import { ExternalDashboardComponent } from './views/dashboard/external-dashboard/external-dashboard.component';
-import { SharedPortalNavigationsComponent } from './views/workflow-management/portal-navigations/shared-portal-navigations/shared-portal-navigations.component';
-import { PortalNavigationComponent } from './views/workflow-management/portal-navigations/portal-navigations/portal-navigations.component';
-import { PortalNavigationTypesComponent } from './views/workflow-management/portal-navigations/portal-navigation-types/portal-navigation-types.component';
-import { PortalNavigationSetupComponent } from './views/workflow-management/portal-navigations/portal-navigation-setup/portal-navigation-setup.component';
-import { PortalNavigationLevelsComponent } from './views/workflow-management/portal-navigations/portal-navigation-levels/portal-navigation-levels.component';
-import { PortalNavigationInterfacesComponent } from './views/workflow-management/portal-navigations/portal-navigation-interfaces/portal-navigation-interfaces.component';
+
 import { CertificateConditionComponent } from './views/quality_auditmanagement/certificate-condition/certificate-condition.component';
 import { ControlDocmasterlistComponent } from './views/quality_auditmanagement/control-docmasterlist/control-docmasterlist.component';
 import { ControlDocumentmanagementComponent } from './views/quality_auditmanagement/control-documentmanagement/control-documentmanagement.component';
 import { DocumentControlsetupComponent } from './views/quality_auditmanagement/document-controlsetup/document-controlsetup.component';
 import { RegistrationConditionComponent } from './views/quality_auditmanagement/registration-condition/registration-condition.component';
 import { RegistrationRegulationComponent } from './views/quality_auditmanagement/registration-regulation/registration-regulation.component';
-import { PortalTermsComponent } from './views/workflow-management/portal-modules/portal-terms/portal-terms.component';
-import { PortalProcessesComponent } from './views/workflow-management/portal-modules/portal-processes/portal-processes.component';
-import { PortalProcessguidelinesComponent } from './views/workflow-management/portal-modules/portal-processguidelines/portal-processguidelines.component';
-import { PortalStatusactionsComponent } from './views/workflow-management/portal-modules/portal-statusactions/portal-statusactions.component';
-import { PortalServicesComponent } from './views/workflow-management/portal-modules/portal-services/portal-services.component';
-import { PortalProcesstransitionComponent } from './views/workflow-management/portal-modules/portal-processtransition/portal-processtransition.component';
-import { PortalDocdefinationComponent } from './views/workflow-management/portal-modules/portal-docdefination/portal-docdefination.component';
+
 import { AppFormsComponent } from './views/configurations/forms/app-forms-setup/app-forms.component';
 import { DynamicFormComponent } from './views/configurations/forms/dynamic-form/dynamic-form.component';
 import { FormFieldsComponent } from './views/configurations/forms/form-fields/form-fields.component';
@@ -210,9 +199,7 @@ import { PmstcmeetingDecisionComponent } from './views/configurations/pms-config
 import { SampleApplicationtypesComponent } from './views/configurations/pms-configurations/sample-applicationtypes/sample-applicationtypes.component';
 import { SamplingReasonComponent } from './views/configurations/pms-configurations/sampling-reason/sampling-reason.component';
 import { SharedPmsconfigurationsComponent } from './views/configurations/pms-configurations/shared-pmsconfigurations/shared-pmsconfigurations.component';
-import { PortalworkflowsComponent } from './views/workflow-management/portal-workflows/portalworkflows/portalworkflows.component';
-import { PortalWorkflowsetupComponent } from './views/workflow-management/portal-workflows/portal-workflowsetup/portal-workflowsetup.component';
-import { PortalInterfacesComponent } from './views/workflow-management/portal-workflows/portal-interfaces/portal-interfaces.component';
+
 import { AgeGroupsComponent } from './views/configurations/clinical-trialconfigurations/age-groups/age-groups.component';
 import { ClinicalTrialpersonnelComponent } from './views/configurations/clinical-trialconfigurations/clinical-trialpersonnel/clinical-trialpersonnel.component';
 import { ClinicalallocationSequenceComponent } from './views/configurations/clinical-trialconfigurations/clinicalallocation-sequence/clinicalallocation-sequence.component';
@@ -309,7 +296,6 @@ import { PromotionmaterialCategoriesComponent } from './views/configurations/pro
     AppUserTitle, DisclaimerStatementTypesComponent, DisclaimerStatementsComponent,
     AppUserIdentificationType,
     AppInstitution,
-    PortalworkflowsComponent,
     ApiUsersComponent,
     AppInstitutionDepartments,
     SharedconfigurationsComponent,
@@ -323,20 +309,15 @@ import { PromotionmaterialCategoriesComponent } from './views/configurations/pro
     AppAuditTrail,
     WorkflowsComponent,
     GeneralApplicationFormComponent,
-    SharedPortalNavigationsComponent,
-    PortalNavigationComponent,
+ 
     SystemProcessesComponent,
-    PortalNavigationTypesComponent,
-    PortalNavigationSetupComponent,
-    PortalNavigationLevelsComponent,
-    PortalNavigationInterfacesComponent,
-    PortalTermsComponent,
+
     TraderAccountManagementComponent,
     AppSectionsComponent,
     AppealTypesComponent,
-    PortalWorkflowsetupComponent,
+ 
     ModulesComponent,
-    PortalInterfacesComponent,
+  
     SectionsComponent,
     AnnualCeilconfComponent,
     CtrlDrugsbasesaltsComponent,
@@ -570,18 +551,6 @@ import { PromotionmaterialCategoriesComponent } from './views/configurations/pro
     UserDashboardComponent,
     FinanceDashboardComponent,
     ExternalDashboardComponent,
-    SharedPortalNavigationsComponent,
-    PortalNavigationComponent,
-    PortalNavigationTypesComponent,
-    PortalNavigationSetupComponent,
-    PortalNavigationLevelsComponent,
-    PortalNavigationInterfacesComponent,
-    PortalProcessesComponent,
-    PortalProcessguidelinesComponent,
-    PortalStatusactionsComponent,
-    PortalServicesComponent,
-    PortalProcesstransitionComponent,
-    PortalDocdefinationComponent,
     IntegrationManagementComponent,
     
 
@@ -642,7 +611,7 @@ import { PromotionmaterialCategoriesComponent } from './views/configurations/pro
     PrommaterialBookcataloguesComponent,
     PromotionadvertChannelsComponent,
     PromotionmaterialCategoriesComponent,
-    PortalTermsComponent,
+  
     FormsModule,
     ReactiveFormsModule,
     FormsModule,
@@ -671,19 +640,6 @@ import { PromotionmaterialCategoriesComponent } from './views/configurations/pro
     AppWorkflowstatusesactionsComponent,
     AppStatusesactionsComponent,
     SyserrorLogsComponent,
-    SharedPortalNavigationsComponent,
-    PortalNavigationComponent,
-    PortalNavigationTypesComponent,
-    PortalNavigationSetupComponent,
-    PortalNavigationLevelsComponent,
-    PortalNavigationInterfacesComponent,
-    PortalProcessesComponent,
-    PortalProcessguidelinesComponent,
-    PortalStatusactionsComponent,
-    PortalServicesComponent,
-    PortalWorkflowsetupComponent,
-    PortalProcesstransitionComponent,
-    PortalDocdefinationComponent,
     AppFormsComponent,
     InterfacesComponent,
     SharedconfigurationsComponent,
@@ -692,9 +648,9 @@ import { PromotionmaterialCategoriesComponent } from './views/configurations/pro
     UserpwdchangerequestLogsComponent,
     UsermaliciousaccessComponent,
     SyslogsUsersaccessComponent,
-    PortalInterfacesComponent,
+
     SyslogsComponent,
-    PortalworkflowsComponent,
+
     UserloginoutLogsComponent,
     UserfaildloginsLogsComponent,
     SigninSignupGuidelinesComponent,
@@ -702,14 +658,11 @@ import { PromotionmaterialCategoriesComponent } from './views/configurations/pro
     GuidelinesoptionsComponent,
     UserSetupComponent,
     NotSlidesInformationsComponent,
-    SharedPortalNavigationsComponent,
+
     ControlleddrugsConfsetupComponent,
-    PortalNavigationComponent,
-    PortalNavigationTypesComponent,
+  
     ProcessConfsetupComponent,
-    PortalNavigationSetupComponent,
-    PortalNavigationLevelsComponent,
-    PortalNavigationInterfacesComponent,
+
     DataEntryFormSetupComponent,
     CertificateConditionComponent,
     ControlDocmasterlistComponent,
