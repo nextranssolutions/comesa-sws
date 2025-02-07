@@ -92,7 +92,7 @@ export class ImportNavigationComponent {
     localStorage.setItem('nav_data', JSON.stringify(this.nav_data));
 
     // this.utilityService.setNavigationData(this.nav_data);
-    this.router.navigate(['./marketing-authorisation/' + routerlink]);
+    this.router.navigate(['./importexport-control/' + routerlink]);
    this.scrollToTop();
   }
 
