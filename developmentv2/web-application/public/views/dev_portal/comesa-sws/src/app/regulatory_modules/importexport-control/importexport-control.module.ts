@@ -18,7 +18,7 @@ import { PermitproductdetailsComponent } from './views/impexpdata_entry/permitpr
 import { InitiateImportappComponent } from './views/import-license/initiate-importapp/initiate-importapp.component';
 import { PermitgeneraldetailsComponent } from './views/impexpdata_entry/permitgeneraldetails/permitgeneraldetails.component';
 // import { SharedImpexpApplicationClass } from './views/shared-impexpapplicationclass/shared-impexpapplicationclass';
-import { NgWizardConfig, NgWizardModule, THEME } from 'ng-wizard'
+import { NgWizardConfig, NgWizardModule, THEME } from 'ng-wizard';
 import { SafePipeModule } from 'src/app/safe-pipe/safe-pipe.module';
 
 const ngWizardConfig: NgWizardConfig = {
