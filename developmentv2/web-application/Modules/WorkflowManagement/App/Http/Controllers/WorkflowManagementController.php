@@ -166,7 +166,7 @@ class WorkflowManagementController extends Controller
             $level = 0;
             $regulatory_functions = DB::table('par_regulatory_functions as t1')
                 ->leftJoin('par_regulatoryfunctionaccess_groups as t2', 't1.id', 't2.regulatory_function_id')
-                ->select('t1.*', 't1.iconsCls', 't2.user_access_level_id')
+                ->select('t1.*', 't1.iconsCls', 't2.user_access_levels_id', 't1.id as regulatory_function')
                 ->orderBy('t1.order_no');
 
             $regulatory_functions->whereIn('user_group_id', $usergroups);
@@ -224,7 +224,6 @@ class WorkflowManagementController extends Controller
                 }
                 if (validateIsNumeric($regulatory_function_id)) {
                     $navigationItems->where('t1.regulatory_function_id', $regulatory_function_id);
-
                 }
                 $navigationItems = $navigationItems->get();
 

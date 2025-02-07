@@ -1,0 +1,113 @@
+<div class=" wizard-content">
+
+    <dx-data-grid class="table row-border hover" [dataSource]="premisesStoreLocationDetailsData" keyExpr="id"
+        (onToolbarPreparing)="onPremisesStoreLocationToolbar($event,'')">
+
+        <dxo-paging [enabled]="true">
+        </dxo-paging>
+        <dxo-pager [showInfo]="true" infoText="Page #{0}. Total: {1} ({2} items)">
+        </dxo-pager>
+        <dxo-export [enabled]="true" fileName="premPersonnelDetailsData" [allowExportSelectedData]="true"></dxo-export>
+
+        <dxo-selection mode="multiple"></dxo-selection>
+        <dxo-group-panel [visible]="true"></dxo-group-panel>
+        <dxi-column [width]="200" caption="{{'action' | translate}}" name="command-editing" [allowFiltering]="false"
+            [allowSorting]="false" cellTemplate="cellTemplate">
+            <div *dxTemplate="let data of 'cellTemplate'">
+                <dx-button text="{{'edit' | translate}}" (click)="funcEditLocationDetails(data)" type="danger" icon="edit">
+                </dx-button>
+                <dx-button text="{{'delete' | translate}}" (click)="funcDeleteLocationDetails(data)" type="danger" icon="delete">
+                </dx-button>
+            </div>
+        </dxi-column>
+        <dxi-column dataField="region_name" caption="{{'province' | translate}}"></dxi-column>
+        <dxi-column dataField="district_name" caption="{{'district_name' | translate}}"></dxi-column>
+        <dxi-column dataField="sector_name" caption="{{'sector' | translate}}"></dxi-column>
+        <dxi-column dataField="cell_name" caption="{{'cell' | translate}}"></dxi-column>
+        <dxi-column dataField="physical_address" caption="{{'physical_address' | translate}}"></dxi-column>
+
+    </dx-data-grid>
+</div>
+
+
+<dx-popup class="popup" [width]="funcpopWidth(80)" [showTitle]="true" title="{{'premises_store_location' | translate}}"
+    [dragEnabled]="false" [hideOnOutsideClick]="false" [(visible)]="isStoreLocationPopupVisible">
+    <div *dxTemplate="let data of 'content'" class="row">
+        <dx-scroll-view></dx-scroll-view>
+        <div class="col-lg-12">
+            <form role="form" enctype="multipart/form-data" role="form" [formGroup]="premisesStoreslocationFrm"
+                class="col-lg-12" (ngSubmit)="onSavePremisesStoreLocationDetails()">
+                <div class="row wizard-contentwin">
+                    <fieldset class="col-lg-12 row">
+                        <legend class="contentfieldset">"{{'physical_location_information' | translate}}"</legend>
+                        <div class="col-lg-4">
+                            <label class="control-label">"{{'country' | translate}}"</label>
+                            
+                            <dx-select-box [readOnly]="is_readonly" [dataSource]="countries" valueExpr="id"
+                                displayExpr="name" placeholder="{{'select_country' | translate}}"
+                                (onSelectionChanged)="onCoutryCboSelect($event)" [searchEnabled]="true"
+                                formControlName="country_id">
+                            </dx-select-box>
+
+                        </div>
+                        <div class="col-lg-4">
+                            <label for="ti" class="control-label">"{{'province' | translate}}"</label>
+
+                            <dx-select-box [readOnly]="is_readonly" [dataSource]="regions" valueExpr="id"
+                                displayExpr="name" (onSelectionChanged)="onRegionsCboSelect($event)"
+                                [searchEnabled]="true" formControlName="region_id" placeholder="{{'province' | translate}}">
+                            </dx-select-box>
+                        </div>
+                        <div class="col-lg-4">
+                            <label for="ti" class="control-label">"{{'district' | translate}}"</label>
+                            
+                            <dx-select-box [dataSource]="districts" valueExpr="id" placeholder="{{'select_district' | translate}}"
+                                displayExpr="name" [searchEnabled]="true" formControlName="district_id"
+                                (onSelectionChanged)="oDistrictsCboSelect($event)">
+                            </dx-select-box>
+                        </div>
+                        <div class="col-lg-4">
+                            <label for="ti" class="control-label">"{{'sector' | translate}}"</label>
+                            <dx-select-box [dataSource]="sectorsData" valueExpr="id" placeholder="{{'select_sector' | translate}}"
+                                displayExpr="name" [searchEnabled]="true" formControlName="sector_id"
+                                (onSelectionChanged)="oSectorsCboSelect($event)">
+                            </dx-select-box>
+                        </div>
+                        <div class="col-lg-4">
+                            <label for="ti" class="control-label">"{{'cell' | translate}}"</label>
+                            <dx-select-box [dataSource]="cellsData" valueExpr="id" placeholder="{{'select_cell' | translate}}"
+                                displayExpr="name" [searchEnabled]="true" formControlName="cell_id">
+                            </dx-select-box>
+                        </div>
+                        <div class="col-lg-4">
+                            <label for="ti" class="control-label">"{{'village' | translate}}"</label>
+                            <dx-text-box formControlName="village" placeholder="{{'enter_village' | translate}}" [showClearButton]="true">
+                            </dx-text-box>
+                        </div>
+
+                        <div class="col-lg-12">
+                            <label class="control-label">"{{'physical_address' | translate}}"</label>
+
+                            <dx-text-area [height]="60" formControlName="physical_address"
+                                placeholder="{{'physical_address' | translate}}">
+                            </dx-text-area>
+                        </div>
+
+                    </fieldset>
+                    <div class="col-lg-12">
+                        <input type="hidden" formControlName="id" />
+                    </div>
+
+                </div>
+                <div style="border-top: 1px solid #ccc; min-height: 100px !important;">
+                    
+                    <dx-button text="{{'save_premises_location_details' | translate}}" [disabled]="!premisesStoreslocationFrm.valid"
+                        (onClick)="onSavePremisesStoreLocationDetails()" type="success" class="btn" icon="save"
+                        [elementAttr]="{ class: 'btn btn-primary; pull-right' }">
+                    </dx-button>
+                </div>
+            </form>
+
+        </div>
+    </div>
+</dx-popup>
