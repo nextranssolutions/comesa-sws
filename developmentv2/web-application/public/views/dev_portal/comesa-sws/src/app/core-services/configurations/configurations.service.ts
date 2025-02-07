@@ -225,50 +225,5 @@ export class ConfigurationsService {
         return data;
       }));
   }
-  returnReportIframe(report_url){
-    let iframe = '<iframe class="w-100 h-100" style="height:650px !important" src="'+report_url+'" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>Data</iframe>';
-    return iframe;
-    
-  }
-  
-  returnFixedHeightReportIframe(report_url,height){
-    let iframe = '<iframe class="w-100 h-100" style="height:"'+height+'" !important" src="'+report_url+'" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>Data</iframe>';
-    return iframe;
-    
-  }
-  returnReportIframeFill(report_url){
-    let iframe = '<iframe class="col-lg-12 row" style="height:750px !important" src="'+report_url+'" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>Data</iframe>';
-    return iframe;
-    
-  }
-  getSectionUniformApplicationProcesWithValidation(regulatory_subfunction_id, status_id, regulated_productstype_id= null,prodclass_category_id= null,reg_id=null,reg_iddefination=null,appsubmissions_type_id=null) {
-    
-    var headers = new Headers({
-      "Accept": "application/json",
-      "Authorization": "Bearer " + this.authService.getAccessToken(),
-    });
-    this.config = {
-      params: { status_id: status_id, regulatory_subfunction_id: regulatory_subfunction_id,regulated_productstype_id:regulated_productstype_id,prodclass_category_id:prodclass_category_id,reg_id:reg_id,reg_iddefination:reg_iddefination,appsubmissions_type_id:appsubmissions_type_id},
-      headers: headers
-    };
-    return this.HttpClient.get(this.baseUrl + '/getSectionUniformApplicationProcesWithValidation', this.config)
-      .pipe(map(data => {
-        return <any>data;
-      }));
-  } 
-  getSectionUniformApplicationProces(regulatory_subfunction_id, status_id, regulated_productstype_id= 0,prodclass_category_id= 0,appsubmissions_type_id= null, gmp_type_id=0) {
-    
-    var headers = new Headers({
-      "Accept": "application/json",
-      "Authorization": "Bearer " + this.authService.getAccessToken(),
-    });
-    this.config = {
-      params: { regulatory_subfunction_id: regulatory_subfunction_id,regulated_productstype_id:regulated_productstype_id,prodclass_category_id:prodclass_category_id,appsubmissions_type_id:appsubmissions_type_id,gmp_type_id:gmp_type_id},
-      headers: headers
-    };
-    return this.HttpClient.get(this.baseUrl + '/getUniformSectionApplicationProcess', this.config)
-      .pipe(map(data => {
-        return <any>data;
-      }));
-  } 
+
 }

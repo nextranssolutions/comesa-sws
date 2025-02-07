@@ -14,8 +14,6 @@ export class DocumentManagementService {
   private baseUrl;
   document: any;
   data: any;
-  trader_id: any;
-  email_address: any;
   key: string = 'kPJks1MrdXE03n8H';
 
   application_details: any;
@@ -147,32 +145,17 @@ export class DocumentManagementService {
         return data;
       }));
   }
+  uploadApplicationDMSDocument(uploadData, application_code, action_url) {
 
-  
+    const loggedInUserId = localStorage.getItem('id');
+    const loggedInUserName = localStorage.getItem('first_name');
+    this.document = {
+      params: { 'user_id': loggedInUserId, 'user_name': loggedInUserName, application_code: application_code },
 
-  // uploadApplicationDMSDocument(uploadData, application_code, action_url) {
+      headers: { 'Accept': 'application/json', "Authorization": "Bearer " + this.authService.getAccessToken(), }
+    };
 
-  //   const loggedInUserId = localStorage.getItem('id');
-  //   const loggedInUserName = localStorage.getItem('first_name');
-  //   this.document = {
-  //     params: { 'user_id': loggedInUserId, 'user_name': loggedInUserName, application_code: application_code },
-
-  //     headers: { 'Accept': 'application/json', "Authorization": "Bearer " + this.authService.getAccessToken(), }
-  //   };
-
-  //   return this.http.post(this.baseUrl + '/' + action_url, uploadData, this.document)
-  //     .pipe(map(data => {
-  //       return data;
-  //     }));
-  // }
-
-  uploadApplicationDMSDocument(uploadData, regulatory_function_id, regulatory_subfunction_id, product_type_id, application_code, document_type_id, action_url) {
-    var headers = new Headers({
-      "Content-Type": "application/x-www-form-urlencoded",
-      "Authorization": 'Bearer ' + this.authService.getAccessToken(),
-    });
-    let user = this.authService.getUserDetails();
-    return this.http.post(AppSettings.base_url + 'documentmanagement/' + action_url, uploadData, { params: { 'trader_id': this.trader_id, 'email_address': this.email_address, regulatory_subfunction_id: regulatory_subfunction_id, regulatory_function_id: regulatory_function_id, application_code: application_code, document_type_id: document_type_id } })
+    return this.http.post(this.baseUrl + '/' + action_url, uploadData, this.document)
       .pipe(map(data => {
         return data;
       }));
