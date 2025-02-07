@@ -318,11 +318,8 @@ export class WokflowManagementService {
 
     return this.http.get(this.baseUrl + '/getRegultoryFunctionUserAccess', this.config)
       .pipe(map(regulatory_function => {
-
         return regulatory_function;
       }));
-
-
   }
 
 

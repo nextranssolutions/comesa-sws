@@ -30,6 +30,7 @@ export class ImportNavigationComponent {
   isDrawerOpen: boolean = true;
   regulatory_data:any;
   regulatory_function_id:number;
+  
   constructor(
     private router: Router,
     private translate: TranslateService,
@@ -40,9 +41,9 @@ export class ImportNavigationComponent {
   ) { 
     this.regulatory_data = localStorage.getItem('regulatory_function');
     this.regulatory_data = JSON.parse(this.regulatory_data);
-    this.regulatory_function_id = this.regulatory_data.id.regulatory_function_id;
-    this.getUserNavigationItems(this.regulatory_function_id);
+    this.regulatory_function_id = this.regulatory_data.id;
 
+    this.getUserNavigationItems(this.regulatory_function_id);
   }
 
 
@@ -92,7 +93,7 @@ export class ImportNavigationComponent {
     localStorage.setItem('nav_data', JSON.stringify(this.nav_data));
 
     // this.utilityService.setNavigationData(this.nav_data);
-    this.router.navigate(['./marketing-authorisation/' + routerlink]);
+    this.router.navigate(['./importexport-control/' + routerlink]);
    this.scrollToTop();
   }
 

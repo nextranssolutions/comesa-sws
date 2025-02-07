@@ -39,6 +39,7 @@ export class AppmenuComponent {
     public encryptionService: EncryptionService
   ) {
     this.regulatory_data = localStorage.getItem('regulatory_function');
+ console.log(this.regulatory_data);
     this.regulatory_data = JSON.parse(this.regulatory_data);
     this.regulatory_function_id = this.regulatory_data.id;
     this.getUserNavigationItems(this.regulatory_function_id);

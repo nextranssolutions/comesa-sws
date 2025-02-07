@@ -86,12 +86,7 @@ import { AppWorkflowstatusesinterfacesComponent } from 'src/app/core-modules/cim
 import { UserDashboardComponent } from 'src/app/core-modules/cimex-admin/views/dashboard/user-dashboard/user-dashboard.component';
 import { FinanceDashboardComponent } from 'src/app/core-modules/cimex-admin/views/dashboard/finance-dashboard/finance-dashboard.component';
 import { ExternalDashboardComponent } from 'src/app/core-modules/cimex-admin/views/dashboard/external-dashboard/external-dashboard.component';
-import { SharedPortalNavigationsComponent } from 'src/app/core-modules/cimex-admin/views/workflow-management/portal-navigations/shared-portal-navigations/shared-portal-navigations.component';
-import { PortalNavigationLevelsComponent } from 'src/app/core-modules/cimex-admin/views/workflow-management/portal-navigations/portal-navigation-levels/portal-navigation-levels.component';
-import { PortalNavigationInterfacesComponent } from 'src/app/core-modules/cimex-admin/views/workflow-management/portal-navigations/portal-navigation-interfaces/portal-navigation-interfaces.component';
-import { PortalNavigationSetupComponent } from 'src/app/core-modules/cimex-admin/views/workflow-management/portal-navigations/portal-navigation-setup/portal-navigation-setup.component';
-import { PortalNavigationTypesComponent } from 'src/app/core-modules/cimex-admin/views/workflow-management/portal-navigations/portal-navigation-types/portal-navigation-types.component';
-import { PortalNavigationComponent } from 'src/app/core-modules/cimex-admin/views/workflow-management/portal-navigations/portal-navigations/portal-navigations.component';
+
 import { CertificateConditionComponent } from 'src/app/core-modules/cimex-admin/views/quality_auditmanagement/certificate-condition/certificate-condition.component';
 import { ControlDocmasterlistComponent } from 'src/app/core-modules/cimex-admin/views/quality_auditmanagement/control-docmasterlist/control-docmasterlist.component';
 import { ControlDocumentmanagementComponent } from 'src/app/core-modules/cimex-admin/views/quality_auditmanagement/control-documentmanagement/control-documentmanagement.component';
@@ -99,13 +94,7 @@ import { DocumentControlsetupComponent } from 'src/app/core-modules/cimex-admin/
 import { RegistrationConditionComponent } from 'src/app/core-modules/cimex-admin/views/quality_auditmanagement/registration-condition/registration-condition.component';
 import { RegistrationRegulationComponent } from 'src/app/core-modules/cimex-admin/views/quality_auditmanagement/registration-regulation/registration-regulation.component';
 import { SopGuidlinesComponent } from 'src/app/core-modules/cimex-admin/views/quality_auditmanagement/sop-guidlines/sop-guidlines.component';
-import { PortalTermsComponent } from 'src/app/core-modules/cimex-admin/views/workflow-management/portal-modules/portal-terms/portal-terms.component';
-import { PortalProcessesComponent } from 'src/app/core-modules/cimex-admin/views/workflow-management/portal-modules/portal-processes/portal-processes.component';
-import { PortalProcessguidelinesComponent } from 'src/app/core-modules/cimex-admin/views/workflow-management/portal-modules/portal-processguidelines/portal-processguidelines.component';
-import { PortalStatusactionsComponent } from 'src/app/core-modules/cimex-admin/views/workflow-management/portal-modules/portal-statusactions/portal-statusactions.component';
-import { PortalServicesComponent } from 'src/app/core-modules/cimex-admin/views/workflow-management/portal-modules/portal-services/portal-services.component';
-import { PortalProcesstransitionComponent } from 'src/app/core-modules/cimex-admin/views/workflow-management/portal-modules/portal-processtransition/portal-processtransition.component';
-import { PortalDocdefinationComponent } from 'src/app/core-modules/cimex-admin/views/workflow-management/portal-modules/portal-docdefination/portal-docdefination.component';
+
 import { AppLayoutComponent } from 'src/app/core-modules/cimex-admin/views/system-layout/app-layout/app-layout.component';
 import { AppFormsComponent } from './views/configurations/forms/app-forms-setup/app-forms.component';
 import { FormTypesComponent } from './views/configurations/forms/form-types/form-types.component';
@@ -168,9 +157,7 @@ import { PmstcmeetingDecisionComponent } from './views/configurations/pms-config
 import { SampleApplicationtypesComponent } from './views/configurations/pms-configurations/sample-applicationtypes/sample-applicationtypes.component';
 import { SamplingReasonComponent } from './views/configurations/pms-configurations/sampling-reason/sampling-reason.component';
 import { SharedPmsconfigurationsComponent } from './views/configurations/pms-configurations/shared-pmsconfigurations/shared-pmsconfigurations.component';
-import { PortalworkflowsComponent } from './views/workflow-management/portal-workflows/portalworkflows/portalworkflows.component';
-import { PortalWorkflowsetupComponent } from './views/workflow-management/portal-workflows/portal-workflowsetup/portal-workflowsetup.component';
-import { PortalInterfacesComponent } from './views/workflow-management/portal-workflows/portal-interfaces/portal-interfaces.component';
+
 import { AgeGroupsComponent } from './views/configurations/clinical-trialconfigurations/age-groups/age-groups.component';
 import { ClinicalTrialpersonnelComponent } from './views/configurations/clinical-trialconfigurations/clinical-trialpersonnel/clinical-trialpersonnel.component';
 import { ClinicalallocationSequenceComponent } from './views/configurations/clinical-trialconfigurations/clinicalallocation-sequence/clinicalallocation-sequence.component';
@@ -298,30 +285,10 @@ const routes: Routes = [{
   },
 
   {
-    path: "app-portal-navigation-interfaces",
-    component: PortalNavigationInterfacesComponent
-  },
-  {
-    path: "app-portalworkflows",
-    component: PortalworkflowsComponent
-  },
-
-  {
     path: "app-system-processes",
     component: SystemProcessesComponent
   },
-  {
-    path: "app-portal-interfaces",
-    component: PortalInterfacesComponent
-  },
-  {
-    path: "app-portal-workflowsetup",
-    component: PortalWorkflowsetupComponent
-  },
-  {
-    path: "app-portal-navigation-levels",
-    component: PortalNavigationLevelsComponent
-  },
+
   {
     path: "app-interfaces",
     component: InterfacesComponent
@@ -330,18 +297,7 @@ const routes: Routes = [{
     path: "app-workflows",
     component: WorkflowsComponent
   },
-  {
-    path: "app-portal-navigation-types",
-    component: PortalNavigationTypesComponent
-  },
-  {
-    path: "app-portal-navigation-setup",
-    component: PortalNavigationSetupComponent
-  },
-  {
-    path: "app-portal-navigations",
-    component: PortalNavigationComponent
-  },
+ 
   {
     path: 'app-user-access-levels',
     component: UserAccessLevelsComponent
@@ -435,10 +391,7 @@ const routes: Routes = [{
     path: 'app-form-types',
     component: FormTypesComponent
   },
-  {
-    path: 'app-shared-portal-navigations',
-    component: SharedPortalNavigationsComponent
-  },
+
   {
     path: 'app-shared-portal-navigations',
     component: NavigationInterfacesComponent,
@@ -1151,34 +1104,7 @@ const routes: Routes = [{
     path: 'app-sop-guidlines',
     component: SopGuidlinesComponent
   },
-  {
-    path: 'app-portal-terms',
-    component: PortalTermsComponent
-  },
-  {
-    path: 'app-portal-processes',
-    component: PortalProcessesComponent
-  },
-  {
-    path: 'app-portal-processguidelines',
-    component: PortalProcessguidelinesComponent
-  },
-  {
-    path: 'app-portal-statusactions',
-    component: PortalStatusactionsComponent
-  },
-  {
-    path: 'app-portal-services',
-    component: PortalServicesComponent
-  },
-  {
-    path: 'app-portal-processtransition',
-    component: PortalProcesstransitionComponent
-  },
-  {
-    path: 'app-portal-docdefination',
-    component: PortalDocdefinationComponent
-  },
+ 
   {
     path: 'app-integration-management',
     component: IntegrationManagementComponent
