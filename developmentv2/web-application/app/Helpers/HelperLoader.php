@@ -209,6 +209,14 @@ if (!function_exists('insertRecord')) {
     }
 }
 
+if (!function_exists('insertPortalRecord')) {
+    function insertPortalRecord($table_name, $table_data, $user_id= 0, $con = 'portal')
+    {
+
+        return DbHelper::insertRecord($table_name, $table_data, $user_id, $con);
+    }
+}
+
 if(!function_exists('sendMailNotification')){
 	function sendMailNotification($to,$subject,$message,$cc=null,$bcc=null,$attachement=null,$attachement_name = null,$template_id =null, $vars=null) {
 		 return EmailHelper::sendMailNotification( $to,$subject,$message,$cc,$bcc,$attachement,$attachement_name,$template_id, $vars);
@@ -230,6 +238,20 @@ if (!function_exists('updateRecord')) {
     }
 }
 
+if (!function_exists('updatePortalRecord')) {
+    function updatePortalRecord($table_name, $previous_data, $where, $table_data, $user_id, $con = 'portal')
+    {
+        return DbHelper::updateRecord($table_name, $previous_data, $where, $table_data, $user_id, $con);
+    }
+}
+
+if (!function_exists('getPreviousPortalRecords')) {
+    function getPreviousPortalRecords($table_name, $where, $con = 'portal')
+    {
+        return DbHelper::getPreviousRecords($table_name, $where, $con);
+    }
+}
+
 
 if (!function_exists('deleteRecord')) {
     function deleteRecord($table_name, $previous_data, $where_data, $user_id, $con = 'pgsql')
@@ -240,6 +262,13 @@ if (!function_exists('deleteRecord')) {
 
 if (!function_exists('deleteRecordNoTransaction')) {
     function deleteRecordNoTransaction($table_name, $previous_data, $where_data, $user_id, $con = 'pgsql')
+    {
+        return DbHelper::deleteRecordNoTransaction($table_name, $previous_data, $where_data, $user_id, $con);
+    }
+}
+
+if (!function_exists('deletePortalRecordNoTransaction')) {
+    function deletePortalRecordNoTransaction($table_name, $previous_data, $where_data, $user_id, $con = 'portal')
     {
         return DbHelper::deleteRecordNoTransaction($table_name, $previous_data, $where_data, $user_id, $con);
     }

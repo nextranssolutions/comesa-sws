@@ -22,7 +22,7 @@ class DbHelper
        return $filteredData;
 
     }
-    public static function insertRecordNoTransaction($table_name, $table_data, $user_id, $con = 'mysql')
+    public static function insertRecordNoTransaction($table_name, $table_data, $user_id, $con = 'pgsql')
     {
         $table_data = self::clearEmptyValues($table_data);
         $record_id = DB::connection($con)->table($table_name)->insertGetId($table_data);
@@ -100,6 +100,30 @@ class DbHelper
             return false;
         }
     }
+
+    public static function deletePortalRecordNoTransaction($table_name, $previous_data, $where_data, $user_id, $con)
+    {
+        $affectedRows = DB::connection($con)->table($table_name)->where($where_data)->delete();
+        if ($affectedRows) {
+            $record_id = $previous_data[0]['id'];
+            $data_previous = serialize($previous_data);
+            $audit_detail = array(
+                'table_name' => $table_name,
+                'table_action' => 'delete',
+                'record_id' => $record_id,
+                'prev_tabledata' => $data_previous,
+                'ip_address' => self::getIPAddress(),
+                'created_by' => $user_id,
+                'created_at' => date('Y-m-d H:i:s')
+            );
+            DB::table('aud_audit_trail')->insert($audit_detail);
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    
     public static function softDeleteRecordNoTransaction($table_name, $previous_data, $where_data, $user_id)
     {
         $deletion_update = array(
