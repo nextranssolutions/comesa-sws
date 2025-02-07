@@ -1,0 +1,335 @@
+<div class="page-header">
+    <h1>{{'draft_applications' | translate}} </h1>
+</div><!-- /.page-header -->
+<div class="row">
+    <div class="col-xs-12">
+        <!-- PAGE CONTENT BEGINS -->
+        <div class="sidebar h-sidebar navbar-collapse ace-save-state">
+            <ul class="nav nav-list">
+                <li class="link-bggreen">
+                    <a (click)="onInitiatenewPremisesApplications()" href="javascript:void(0)"><span class=""> <i
+                                class="menu-icon fa fa-plus"></i> &nbsp;{{'initiate_premises_applications' |
+                            translate}}</span>
+                    </a> <b class="arrow"></b>
+                </li>
+                <li class="link-bgorange">
+                    <a href="javascript:void(0)"><span class=""> <i class="menu-icon fa fa-money"></i>
+                            &nbsp;{{'fees_&_charges' | translate}}</span></a>
+                    <b class="arrow"></b>
+                </li>
+                <li class="link-bgblue">
+                    <a href="javascript:void(0)"><span class=""> <i class="menu-icon fa fa-money"></i>
+                            &nbsp;{{'process_flow_&_service_delivery_timeline' | translate}}</span> </a>
+                    <b class="arrow"></b>
+                </li>
+                <li class="link-bgcyan">
+                    <a href="javascript:void(0)"><span class=""> <i class="menu-icon fa fa-book"></i>
+                            &nbsp;{{'tracking_applications' | translate}}</span>
+                    </a><b class="arrow"></b>
+                </li>
+                <li class="spacer"></li>
+                <li class="link-bggray">
+                    <a href="javascript:void(0)"><span> <i class="menu-icon fa fa-book"></i>&nbsp;{{'manual' |
+                            translate}}</span></a>
+                </li>
+                <li class="link-bgyellow">
+                    <a href="javascript:void(0)"><span><i class="menu-icon fa fa-book"></i>&nbsp;{{'faqs'
+                    | translate}}</span></a>
+                </li>
+
+            </ul><!-- /.nav-list -->
+        </div><!-- .sidebar -->
+
+    </div><!-- /.col -->
+</div><!-- /.row -->
+
+<div class="col-lg-12 div-backwhite no-padding">
+    <dx-data-grid class="table row-border hover div-backwhite" [allowColumnResizing]="true" [wordWrapEnabled]="true"
+        [columnHidingEnabled]="false" [dataSource]="dtPremisesApplicationData" [wordWrapEnabled]="true"
+        (onCellPrepared)="onCellPrepared($event)" [showBorders]="true" [showRowLines]="true"
+        (onToolbarPreparing)="onPremisesappsToolbarPreparing($event)" keyExpr="id">
+        <dxo-filter-row [visible]="false"></dxo-filter-row>
+        <dxo-load-panel [enabled]="true">
+        </dxo-load-panel>
+        <dxo-paging [enabled]="true">
+        </dxo-paging>
+        <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[10, 20]" [showNavigationButtons]="true"
+            [showInfo]="true" infoText="Page #{0}. Total: {1} ({2} items)">
+        </dxo-pager>
+        <dxo-search-panel [visible]="true">
+        </dxo-search-panel>
+        <dxo-export [enabled]="true" fileName="PremisesApplications" [allowExportSelectedData]="true"></dxo-export>
+
+        <dxo-selection mode="single"></dxo-selection>
+        <dxi-column [width]=200 caption="{{ 'Actions' | translate }}" name="command-editing" [allowFiltering]="false"
+            [allowSorting]="false" cellTemplate="cellTemplateSingle">
+            <div *dxTemplate="let d of 'cellTemplateSingle'">
+                <dx-button text="{{d.data.action_name}}" (click)="singleApplicationActionColClick(d.data)"
+                    type="success" icon="{{d.data.iconCls}}">
+                </dx-button>
+            </div>
+        </dxi-column>
+        <dxi-column [width]=110 caption="{{ 'Actions' | translate }}" name="command-editing" [allowFiltering]="false"
+            [allowSorting]="false" cellTemplate="cellTemplate">
+            <div *dxTemplate="let d of 'cellTemplate'">
+                <dx-menu [items]="d.data.contextMenu" displayExpr="text" (onItemClick)="premActionColClick($event,d)">
+                </dx-menu>
+            </div>
+        </dxi-column>
+
+        <dxi-column dataField="reference_no" caption="{{ 'reference_no' | translate }}"></dxi-column>
+
+        <dxi-column dataField="section" caption="{{'section' | translate}}"></dxi-column>
+        <dxi-column [groupIndex]="0" dataField="application_type" caption="{{ 'application_type' | translate }}"></dxi-column>
+        <dxi-column dataField="premises_name" caption="{{ 'premises_name' | translate }}"></dxi-column>
+        <dxi-column dataField="physical_address" caption="{{ 'physical_address' | translate }}"></dxi-column>
+        <dxi-column dataField="region_name" caption="{{ 'region_name' | translate }}"></dxi-column>
+        <dxi-column [allowFiltering]="false" dataField="date_added" caption="{{ 'date_added' | translate }}"></dxi-column>
+        <dxi-column [allowFiltering]="false" dataField="submission_date" caption="{{ 'submission_date' | translate }}"></dxi-column>
+        <dxi-column [groupIndex]="1" dataField="status" caption="{{ 'status' | translate }}"></dxi-column>
+        <dxi-column dataField="status_name" caption="{{ 'status_name' | translate }}"></dxi-column>
+
+        <dxo-grouping #expand [autoExpandAll]="true"></dxo-grouping>
+    </dx-data-grid>
+</div>
+
+
+<dx-popup class="popup" [width]="funcpopWidth(80)" [height]="700" [showTitle]="true" title="{{printReportTitle}}"
+    [dragEnabled]="false" [hideOnOutsideClick]="true" [(visible)]="isPrintReportVisible">
+    <div *dxTemplate="let data of 'content'">
+        <div class="col-lg-12" [innerHTML]="printiframeUrl | safe: 'html'"></div>
+    </div>
+</dx-popup>
+
+<dx-popup class="popup" [width]="funcpopWidth(80)" [height]="550" [showTitle]="true"
+    title="{{'application_rejection_details' | translate}}" [dragEnabled]="false" [hideOnOutsideClick]="true"
+    [(visible)]="isApplicationRejectionVisible">
+    <div *dxTemplate="let data of 'content'">
+        <dx-data-grid class="table row-border hover " [wordWrapEnabled]="true" [columnHidingEnabled]="false"
+            [dataSource]="applicationRejectionData" [showBorders]="true">
+            <dxo-filter-row [visible]="false"></dxo-filter-row>
+            <dxo-load-panel [enabled]="true">
+            </dxo-load-panel>
+            <dxo-paging [enabled]="true">
+            </dxo-paging>
+            <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[10, 20]" [showNavigationButtons]="true"
+                [showInfo]="true" infoText="Page #{0}. Total: {1} ({2} items)">
+            </dxo-pager>
+            <dxo-search-panel [visible]="true">
+            </dxo-search-panel>
+            <dxo-export [enabled]="true" fileName="Rejection Details" [allowExportSelectedData]="true"></dxo-export>
+
+            <dxi-column [width]=100 dataField="tracking_no" caption="{{'tracking_no' | translate}}"></dxi-column>
+            <dxi-column [width]=90 dataField="added_on" caption="{{'added_on' | translate}}"></dxi-column>
+            <dxi-column [width]=200 cssClass='WrappedColumnClass' dataField="rejection_remarks"
+                caption="{{'rejection_remarks' | translate}}"></dxi-column>
+
+
+        </dx-data-grid>
+    </div>
+</dx-popup>
+
+
+<dx-popup class="popup" [width]="funcpopWidth(80)" [height]="450" [showTitle]="true"
+    title="{{'preview_application_processing' | translate}}" [dragEnabled]="false" [hideOnOutsideClick]="true"
+    [(visible)]="isPreviewApplicationProcessing">
+
+    <div *dxTemplate="let data of 'content'" style="background:#fff;">
+        <div class="row">
+            <dx-data-grid class="table row-border hover div-backwhite" [wordWrapEnabled]="true"
+                [columnHidingEnabled]="false" [dataSource]="productApplicationProcessingData" [showBorders]="true"
+                [allowColumnResizing]="true" keyExpr="id">
+                <dxo-filter-row [visible]="false"></dxo-filter-row>
+                <dxo-load-panel [enabled]="true">
+                </dxo-load-panel>
+                <dxo-paging [enabled]="true">
+                </dxo-paging>
+                <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[10, 20]" [showNavigationButtons]="true"
+                    [showInfo]="true" infoText="Page #{0}. Total: {1} ({2} items)">
+                </dxo-pager>
+                <dxo-search-panel [visible]="true">
+                </dxo-search-panel>
+                <dxo-export [enabled]="true" fileName="ProductApplications"
+                    [allowExportSelectedData]="true"></dxo-export>
+
+                <dxo-selection mode="single"></dxo-selection>
+                <dxi-column dataField="tracking_no" caption="{{'tracking_no' | translate}}"></dxi-column>
+                <dxi-column dataField="reference_no" caption="{{'reference_no' | translate}}"></dxi-column>
+                <dxi-column dataField="process_name" caption="{{'process_name' | translate}}"></dxi-column>
+                <dxi-column dataField="prev_stage" caption="{{'prev_stage' | translate}}"></dxi-column>
+                <dxi-column dataField="current_stage" caption="{{'current_stage' | translate}}"></dxi-column>
+                <dxi-column dataField="processing_date" caption="{{'processing_date' | translate}}"></dxi-column>
+                <dxo-grouping #expand [autoExpandAll]="true"></dxo-grouping>
+            </dx-data-grid>
+        </div>
+    </div>
+</dx-popup>
+
+
+
+<dx-popup class="popup" [width]="funcpopWidth(80)" [height]="450" [showTitle]="true"
+    title="{{'dismiss_application' | translate}}" [dragEnabled]="false" [hideOnOutsideClick]="true"
+    [(visible)]="isDismissApplicationWin">
+    <div *dxTemplate="let data of 'content'" style="background:#fff;">
+        <div class="row">
+            <form enctype="multipart/form-data" role="form" [formGroup]="applicationDismissalFrm"
+                (ngSubmit)="onSubmitApplicationDismissal('')">
+
+                <div class="row">
+
+                    <div class="col-xs-12 col-md-12 col-lg-12 col-xl-12">
+                        <label class="control-label">{{'reason_for_dismissal' | translate}}</label>
+                        <dx-select-box [dataSource]="reasonForDismissalData" valueExpr="id"
+                            placeholder="{{'select_reason_for_dismissal' | translate}}" displayExpr="name"
+                            [searchEnabled]="true" formControlName="dismissal_reason_id">
+                        </dx-select-box>
+                    </div>
+
+                    <div class="col-xs-12 col-md-12 col-lg-12 col-xl-12">
+                        <label for="ti" class="control-label">{{'dismissal_remarks' | translate}}</label>
+
+                        <dx-text-box formControlName="dismissal_remarks" placeholder="{{'remarks' | translate}}">
+                        </dx-text-box>
+                        <input type="hidden" name="application_code" formControlName="application_code" />
+
+                    </div>
+                    <div class="col-lg-12 btn-margin-5">
+                        <br />
+                        <button type="submit" (submit)="onSubmitApplicationDismissal('')"
+                            [disabled]="!applicationDismissalFrm.valid" class="btn btn-primary"><i
+                                class="fa fa-user"></i>{{'submit_application_dismissal_request' | translate}}</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</dx-popup>
+
+
+<dx-popup class="popup" [width]="funcpopWidth(80)" [height]="450" [showTitle]="true"
+    title="{{'preview_application_details' | translate}}" [dragEnabled]="false" [hideOnOutsideClick]="true"
+    [(visible)]="isPreviewApplicationsDetails">
+    <div *dxTemplate="let data of 'content'" style="background:#fff;">
+        <form role="form" class="col-lg-12" enctype="multipart/form-data" role="form"
+            [formGroup]="frmPreviewApplicationssDetails">
+            <div class="row">
+                <div class="col-lg-12">
+                    <label class="control-label">{{'tracking_no' | translate}}</label>
+                    <dx-text-box formControlName="tracking_no" [readOnly]=true [showClearButton]="true"
+                        placeholder="{{'tracking_no' | translate}}">
+                    </dx-text-box>
+                </div>
+                <div class="col-lg-12 ">
+                    <label for="ti" class="control-label">{{'premises_name' | translate}}</label>
+
+                    <dx-text-box formControlName="premises_name" [readOnly]=true
+                        placeholder="{{'premises_name' | translate}}" [showClearButton]="true">
+                    </dx-text-box>
+                </div>
+                <div class="col-lg-12">
+                    <label class="control-label">{{'physical_address' | translate}}</label>
+                    <dx-text-box formControlName="physical_address" placeholder="{{'physical_address' | translate}}"
+                        [readOnly]=true [showClearButton]="true">
+                    </dx-text-box>
+                </div>
+                <div class="col-lg-12">
+                    <label class="control-label">{{'application_type' | translate}}</label>
+
+                    <dx-text-box formControlName="application_type" [readOnly]=true
+                        placeholder="{{'application_type' | translate}}" [showClearButton]="true">
+                    </dx-text-box>
+                </div>
+                <div class="col-lg-12">
+                    <label class="control-label">{{'current_status' | translate}}</label>
+
+                    <dx-text-box formControlName="status_name" [readOnly]=true [showClearButton]="true"
+                        placeholder="{{'current_status' | translate}}">
+                    </dx-text-box>
+                </div>
+            </div>
+        </form>
+    </div>
+</dx-popup>
+<dx-popup class="popup" [width]="funcpopWidth(80)" [height]="450" [showTitle]="true"
+    title="{{'preview_application_due_for_renewal' | translate}}" [dragEnabled]="false" [hideOnOutsideClick]="true"
+    [(visible)]="isViewApplicationDueforRenewal">
+
+    <div *dxTemplate="let data of 'content'" style="background:#fff;">
+        <div class="row">
+            <dx-data-grid class="table row-border hover div-backwhite" [height]=380 [wordWrapEnabled]="true"
+                [columnHidingEnabled]="false" [dataSource]="app_renewalduenotificationsdetails" [showBorders]="true"
+                [allowColumnResizing]="true" keyExpr="id">
+                <dxo-filter-row [visible]="false"></dxo-filter-row>
+                <dxo-load-panel [enabled]="true">
+                </dxo-load-panel>
+                <dxo-paging [enabled]="true">
+                </dxo-paging>
+                <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[10, 20]" [showNavigationButtons]="true"
+                    [showInfo]="true" infoText="Page #{0}. Total: {1} ({2} items)">
+                </dxo-pager>
+                <dxo-search-panel [visible]="true">
+                </dxo-search-panel>
+                <dxo-export [enabled]="true" fileName="ProductApplications"
+                    [allowExportSelectedData]="true"></dxo-export>
+
+                <dxo-selection mode="single"></dxo-selection>
+                <dxi-column dataField="module_name" caption="{{'module_name' | translate}}"></dxi-column>
+                <dxi-column dataField="certificate_no" caption="{{'permit_no' | translate}}"></dxi-column>
+                <dxi-column dataField="expiry_date" caption="{{'expiry_date' | translate}}"></dxi-column>
+                <dxi-column width=200 dataField="days_span"
+                    caption="{{'remaining_days_to_expiry' | translate}}"></dxi-column>
+
+                <dxo-grouping #expand [autoExpandAll]="true"></dxo-grouping>
+            </dx-data-grid>
+        </div>
+    </div>
+</dx-popup>
+
+
+
+<dx-popup class="popup" [width]="funcpopWidth(45)" [height]="funcpopHeight(45)" [showTitle]="true"
+    title="{{'new_premises_application' | translate}}" [dragEnabled]="false" [hideOnOutsideClick]="false"
+    [(visible)]="isPremisesApplicationInitialisation">
+    <div *dxTemplate="let data of 'content'">
+        <dx-scroll-view>
+            <form enctype="multipart/form-data" style="margin:0.5px" class="row div-whiteback  div-nopadding "
+                role="form" [formGroup]="premisesAppSelectionfrm" (ngSubmit)="onPremisesAppSelection()">
+                <div class="col-lg-12">
+                    <h6 class="main-title ">{{'guideline_to_start_application_of_new_premises' | translate}}</h6>
+
+                    <span>{{'select_the_premises_types_category_and_main_activities_to_initiate_the_application_process'
+                        | translate}}</span>
+                    <br />
+                </div>
+                <div class="col-lg-12">
+                    <label>{{'select_type' | translate}}</label>
+
+                    <dx-select-box [dataSource]="prodProductTypeData" valueExpr="id" displayExpr="name"
+                        [searchEnabled]="true" (onSelectionChanged)="onSectionsCboSelect($event)"
+                        placeholder="{{'select_type_operating_product_categories' | translate}}"
+                        formControlName="regulated_productstype_id">
+                        <div *dxTemplate="let name of 'item'">
+                            <p>{{name.name}} </p>
+                        </div>
+                    </dx-select-box>
+
+                </div>
+
+                <div class="col-lg-12 apptype-selection apptype-selection bg-light text-dark">
+                    <label>{{'select_premises_main_activity' | translate}}</label>
+                    <dx-select-box [dataSource]="businessTypesData" valueExpr="id" displayExpr="name"
+                        placeholder="{{'select_premises_main_activity' | translate}}" [searchEnabled]="true"
+                        formControlName="business_type_id">
+                    </dx-select-box>
+                </div>
+
+                <div class="col-lg-12  pull-right row" style="text-align: center;">
+                    <input type="hidden" formControlName="regulatory_subfunction_id" />
+                    <dx-button icon="fa fa-arrow-right" text="{{'initiate_new_product_application' | translate}}"
+                        type="success" (onClick)="onPremisesAppSelection()">
+                    </dx-button>
+                </div>
+            </form>
+        </dx-scroll-view>
+    </div>
+</dx-popup>

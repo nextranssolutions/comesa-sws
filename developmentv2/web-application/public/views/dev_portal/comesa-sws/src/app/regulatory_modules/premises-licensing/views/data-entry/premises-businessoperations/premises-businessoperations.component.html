@@ -1,0 +1,87 @@
+<div class="wizard-content">
+
+    <dx-data-grid class="table row-border hover" [allowColumnResizing]="true" [columnHidingEnabled]="false"
+        (onToolbarPreparing)="onPremisesBusinesDetailsToolbar($event,'')" [dataSource]="premisesOtherDetailsRows"
+        keyExpr="id">
+        <dxo-filter-row [visible]="false"></dxo-filter-row>
+
+        <dxo-paging [enabled]="true">
+        </dxo-paging>
+        <dxo-pager [showInfo]="true" infoText="Page #{0}. Total: {1} ({2} items)">
+        </dxo-pager>
+        <dxo-export [enabled]="true" fileName="dtpremOtherDetailsData" [allowExportSelectedData]="true"></dxo-export>
+
+        <dxo-group-panel [visible]="true"></dxo-group-panel>
+        <dxi-column [width]="200" caption="{{'action' | translate}}" name="command-editing" [allowFiltering]="false"
+            [allowSorting]="false" cellTemplate="cellTemplate">
+            <div *dxTemplate="let data of 'cellTemplate'">
+
+                <dx-button text="{{'edit' | translate}}" (click)="funcEditPremisesDetails(data)" type="danger" icon="edit">
+                </dx-button>
+                <dx-button text="{{'delete' | translate}}" (click)="funcDeletePremisesBusinessDetails(data)" type="danger" icon="delete">
+                </dx-button>
+            </div>
+        </dxi-column>
+        <dxi-column dataField="business_type" caption="{{'premises_business_type' | translate}}"></dxi-column>
+        <dxi-column dataField="business_type_details" caption="{{'premises_business_type_details' | translate}}"></dxi-column>
+        <dxi-column dataField="product_category" caption="{{'product_category' | translate}}" [(visible)]="isFoodPremises"></dxi-column>
+        <dxi-column dataField="product_details" caption="{{'product_details' | translate}}"></dxi-column>
+        <dxi-column dataField="manufacturing_activities" caption="{{'manufacturing_activities' | translate}}">
+
+        </dxi-column>
+
+    </dx-data-grid>
+</div>
+
+<!-- modal structure-->
+<dx-popup class="popup" [width]="funcpopWidth(45)" height='auto' [showTitle]="true" title="{{premises_typetitle}}"
+    [dragEnabled]="false" [hideOnOutsideClick]="false" [(visible)]="isBusinessTypePopupVisible">
+    <div *dxTemplate="let data of 'content'">
+        <dx-scroll-view>
+            <form role="form" class="col-lg-12 row" enctype="multipart/form-data" role="form"
+                [formGroup]="premisesOtherDetailsfrm" (ngSubmit)="onSavePremisesOtherDetails()">
+                <div class="col-lg-12">
+                    <label>"{{'premises_business_type' | translate}}"</label>
+                    <dx-select-box [dataSource]="businessTypesData" valueExpr="id" displayExpr="name" [readOnly]=true
+                        placeholder="{{'select_business_types' | translate}}" [value]='business_type_id' [searchEnabled]="true"
+                        formControlName="business_type_id">
+                    </dx-select-box>
+
+                </div>
+                <div class="col-lg-12" *ngIf="!isFoodPremises">
+                    <label>"{{'premises_main_activity_details' | translate}}"</label>
+                    
+                    <dx-select-box [dataSource]="businessTypeDetailsData" valueExpr="id" displayExpr="name"
+                        placeholder="{{'select_business_type_details' | translate}}" [searchEnabled]="true"
+                        formControlName="business_type_detail_id">
+                    </dx-select-box>
+                    <input type="hidden" formControlName="id" />
+                </div>
+                <div class="col-lg-12" *ngIf="isFoodPremises">
+                    <label>"{{'product_category' | translate}}"</label>
+                    <dx-select-box [dataSource]="productCategoryData" valueExpr="id" displayExpr="name"
+                        placeholder="{{'product_category' | translate}}" (onSelectionChanged)="onProductCategoryCboSelect($event)"
+                        [searchEnabled]="true" formControlName="product_category_id">
+                    </dx-select-box>
+                    <input type="hidden" formControlName="id" />
+                </div>
+
+                <div class="col-lg-12">
+                    <label class="control-label">"{{'manufacturing_activities' | translate}}"</label>
+                    <dx-text-area formControlName="manufacturing_activities" placeholder="{{'manufacturing_activities' | translate}}">
+                    </dx-text-area>
+                </div>
+                <div class="col-lg-12">
+                    <label class="control-label">"{{'product_details' | translate}}"</label>
+                    <dx-text-area formControlName="product_details" placeholder="{{'product_details' | translate}}">
+                    </dx-text-area>
+                </div>
+                <div class="col-lg-12">
+                    <dx-button text="{{'save' | translate}} {{premises_typetitle}}" (onClick)="onSavePremisesOtherDetails()"
+                        type="success" icon="save" [elementAttr]="{ class: 'btn btn-primary; pull-right' }">
+                    </dx-button>
+                </div>
+            </form>
+        </dx-scroll-view>
+    </div>
+</dx-popup>
