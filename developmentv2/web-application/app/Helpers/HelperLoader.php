@@ -737,3 +737,17 @@ if (!function_exists('decrypt_data')) {
     }
 }
 
+if (!function_exists('getApplicationGeneralFormsFields')) {
+    function getApplicationGeneralFormsFields($req)
+    {
+        return UtilityHelper::getApplicationGeneralFormsFields($req);
+    }
+}
+
+if (!function_exists('getApplicationDataEntryFormsFields')) {
+    function getApplicationDataEntryFormsFields($req,$form_type_id)
+    {
+        return UtilityHelper::getApplicationDataEntryFormsFields($req,$form_type_id);
+    }
+}
+

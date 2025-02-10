@@ -19,6 +19,8 @@ export class SharedImpExpdashboardClass {
   queried_applications: number = 0;
   rejected_applications: number = 0;
   submitted_application: number = 0;
+  productsapp_details: any;
+  prodClassCategoryItem: any;
   release_underseal: number = 0;
   dtImportExpApplicationData: any = [];
   expanded: boolean = false;
@@ -44,6 +46,7 @@ export class SharedImpExpdashboardClass {
   FilterDetailsFrm: FormGroup;
   productappTypeData: any;
   applicationStatusData: any;
+  importexport_permittype_id: number;
   productTypeData: any;
   data_record: any;
   guidelines_title: string;
@@ -72,13 +75,11 @@ export class SharedImpExpdashboardClass {
   onApplicationSubmissionFrm: FormGroup;
   hasFinishedProducts: boolean;
   producttype_defination_id: number;
-  importExportPermitTypesData:any;
+  importExportPermitTypesData: any;
+  processingData: any;
 
   constructor(public utilityService: UtilityService, public viewRef: ViewContainerRef, public spinner: SpinnerVisibilityService, public toastr: ToastrService, public router: Router, public configService: ConfigurationsService, public appService: ImportExportService) { // this.onLoadApplicationCounterDetails();
-    this.onLoadProductTypes();
-    this.onLoadconfirmDataParam();
-    this.onLoadproducttypeDefinationData();
-    this.onLoadimportExportPermitTypesData();
+
 
     this.applicationSelectionfrm = new FormGroup({
       regulated_productstype_id: new FormControl(this.productTypeData, Validators.compose([Validators.required])),
@@ -116,7 +117,7 @@ export class SharedImpExpdashboardClass {
       top: 0,
       behavior: 'smooth' // Smooth scrolling for better UX
     });
-  } 
+  }
   onSelectionHasRegistered($event) {
     let confirm_id = $event.selectedItem.id;
     if (confirm_id == 1) {
@@ -138,56 +139,151 @@ export class SharedImpExpdashboardClass {
       this.hasFinishedProducts = false;
     }
   }
-  
+
+  onInitiatenewImportExpApplications() {
+    this.onClickSubModuleAppSelection(1, 'New Import Application')
+    this.app_route = ['./importexport-control/initiate-importapp'];
+
+    // this.router.navigate(this.app_route);
+  }
+
   //is_approvedVisaPermit
+
+  onClickSubModuleAppSelection(regulatory_subfunction_id, sub_module_name) {
+
+    if (regulatory_subfunction_id == 1 || regulatory_subfunction_id == 91) {
+      this.isPermitInitialisation = true;
+      this.applicationSelectionfrm.get('regulatory_subfunction_id')?.setValue(regulatory_subfunction_id);
+
+    } else if (regulatory_subfunction_id == 30) {
+      this.isPermitInitialisation = true;
+      this.applicationSelectionfrm.get('regulatory_subfunction_id')?.setValue(regulatory_subfunction_id);
+
+    } else if (regulatory_subfunction_id == 94) {
+
+      this.application_details = { regulatory_function_id: this.regulatory_function_id, process_title: sub_module_name, regulatory_subfunction_id: regulatory_subfunction_id };
+      this.appService.setApplicationDetail(this.application_details);
+
+      this.app_route = ['./importexport-control/product-variantapp-selection'];
+
+      this.router.navigate(this.app_route);
+      this.scrollToTop();
+    } else {
+
+      this.application_details = { regulatory_function_id: this.regulatory_function_id, process_title: sub_module_name, regulatory_subfunction_id: regulatory_subfunction_id };
+      this.appService.setApplicationDetail(this.application_details);
+
+      this.app_route = ['./importexport-control/registered-product-selection'];
+
+      this.router.navigate(this.app_route);
+      this.scrollToTop();
+    }
+
+  }
+
+  // onApplicationSelection() {
+
+  //   if (this.applicationSelectionfrm.invalid) {
+  //     return;
+  //   }
+
+  //   this.spinner.show();
+  //   this.sectionItem = this.applicationSelectionfrm.controls['regulated_productstype_id'];
+  //   let has_registered_products = this.applicationSelectionfrm.get('has_registered_products')?.value;
+  //   let has_approved_visa = this.applicationSelectionfrm.get('has_approved_visa')?.value;
+  //   this.producttype_defination_id = this.applicationSelectionfrm.get('producttype_defination_id')?.value;
+
+  //   if (has_registered_products == 1) {
+  //     this.regulatory_subfunction_idsel = 78;
+  //   }
+  //   else {
+  //     if (has_approved_visa == 1) {
+  //       this.app_route = ['./importexport-control/import-licensesappselection'];
+  //       this.router.navigate(this.app_route);
+  //       this.scrollToTop();
+  //       this.spinner.hide();
+  //       return;
+  //     }
+  //     else {
+  //       this.regulatory_subfunction_idsel = 12;
+  //     }
+  //   }
+
+  //   this.regulated_productstype_id = this.sectionItem.value;
+
+  //   if (this.regulated_productstype_id < 1) {
+  //     this.toastr.error('Select Product Type to proceed', 'Alert!');
+
+  //     return;
+  //   }
+  //   this.configService.getSectionUniformApplicationProces(this.regulatory_subfunction_id, 1)
+  //     .subscribe(
+  //       data => {
+  //         this.processData = data;
+  //         console.log(this.processData);
+  //         this.spinner.hide();
+  //         if (this.processData.success) {
+  //           this.title = this.processData[0].name;
+  //           this.router_link = this.processData[0].router_link;
+
+  //           this.application_details = { producttype_defination_id: this.producttype_defination_id, regulatory_function_id: this.regulatory_function_id, process_title: this.title, regulatory_subfunction_id: this.regulatory_subfunction_idsel, regulated_productstype_id: this.regulated_productstype_id, application_status_id: 1, status_name: 'New' };
+  //           this.appService.setApplicationDetail(this.application_details);
+
+  //           this.app_route = ['./importexport-control/' + this.router_link];
+
+  //           this.router.navigate(this.app_route);
+  //           this.scrollToTop();
+
+  //         }
+  //         else {
+  //           this.toastr.error(this.processData.message, 'Alert!');
+
+  //         }
+
+
+  //       });
+  //   return false;
+  // }
+
+
+  
   onApplicationSelection() {
 
     if (this.applicationSelectionfrm.invalid) {
+      this.toastr.error('Fill in all the Mandatory Fields', 'Alert!');
+
       return;
     }
-
     this.spinner.show();
-    this.sectionItem = this.applicationSelectionfrm.controls['regulated_productstype_id'];
-    let has_registered_products = this.applicationSelectionfrm.get('has_registered_products')?.value;
-    let has_approved_visa = this.applicationSelectionfrm.get('has_approved_visa')?.value;
-    this.producttype_defination_id = this.applicationSelectionfrm.get('producttype_defination_id')?.value;
+    this.sectionItem = this.applicationSelectionfrm.controls['importexport_permittype_id'];
+    this.app_typeItem = this.applicationSelectionfrm.controls['regulatory_subfunction_id'];
+    this.prodClassCategoryItem = this.applicationSelectionfrm.controls['producttype_defination_id'];
+    let appsubmissions_type_id = this.applicationSelectionfrm.get('appsubmissions_type_id')?.value;
 
-    if (has_registered_products == 1) {
-      this.regulatory_subfunction_idsel = 78;
-    }
-    else {
-      if (has_approved_visa == 1) {
-        this.app_route = ['./online-services/import-licensesappselection'];
-        this.router.navigate(this.app_route);
-        this.scrollToTop();
-        this.spinner.hide();
-        return;
-      }
-      else {
-        this.regulatory_subfunction_idsel = 12;
-      }
-    }
-
-    this.regulated_productstype_id = this.sectionItem.value;
-
-    if (this.regulated_productstype_id < 1) {
-      this.toastr.error('Select Product Type to proceed', 'Alert!');
-
-      return;
-    }
-    this.configService.getSectionUniformApplicationProces(this.regulatory_subfunction_idsel, 1)
+    this.importexport_permittype_id = this.sectionItem.value;
+    this.regulatory_subfunction_id = this.app_typeItem.value;
+   
+    this.producttype_defination_id = this.prodClassCategoryItem.value;
+    this.configService.getSectionUniformApplicationProces(this.regulatory_subfunction_id, this.importexport_permittype_id, this.producttype_defination_id, appsubmissions_type_id)
       .subscribe(
         data => {
-          this.processData = data;
           this.spinner.hide();
-          if (this.processData.success) {
-            this.title = this.processData[0].name;
-            this.router_link = this.processData[0].router_link;
+          if (data.success) {
+            this.processData = data.data.process_infor;
+            
+            // this.processData = data;
+            this.processingData = data.data.application_form;
 
-            this.application_details = { producttype_defination_id: this.producttype_defination_id, regulatory_function_id: this.regulatory_function_id, process_title: this.title, regulatory_subfunction_id: this.regulatory_subfunction_idsel, regulated_productstype_id: this.regulated_productstype_id, application_status_id: 1, status_name: 'New' };
-            this.appService.setApplicationDetail(this.application_details);
-
-            this.app_route = ['./online-services/' + this.router_link];
+            this.title = this.processingData.field_name;
+       
+            this.router_link = this.processData.router_link;
+            // this.productsapp_details = { regulatory_function_id: this.regulatory_function_id, prodclass_category_id: this.prodclass_category_id, process_title: this.title, regulatory_subfunction_id: this.regulatory_subfunction_id, product_type_id: this.product_type_id, status_id: 1, status_name: 'New', form_fields: this.processData.form_fields, appsubmissions_type_id: appsubmissions_type_id };
+          
+            this.productsapp_details = this.processData;
+            this.appService.setApplicationDetail(data.data);
+            localStorage.setItem('application_details', JSON.stringify(data.data));
+            // this.appService.setProductApplicationDetail(data.data);
+            this.app_route = ['./importexport-control/' + this.router_link];
 
             this.router.navigate(this.app_route);
             this.scrollToTop();
@@ -223,94 +319,94 @@ export class SharedImpExpdashboardClass {
         });
   }
 
-  
+
   onLoadimportExportPermitTypesData() {
     var data = {
-      table_name: 'cfg_importexport_permittypes',
-      is_enabled:1
-    };
-
-    this.configService.onLoadConfigurationData(data)
-        .subscribe(
-          data => {
-            this.data_record = data;
-            
-            if (this.data_record.success) {
-              this.importExportPermitTypesData = this.data_record.data;
-              ;
-            }
-          });
-        
-  }
-  onLoadProductTypes() {
-    var data = {
-      table_name: 'cfg_regulated_productstypes',
+      table_name: 'par_importexport_permittypes',
       is_enabled: 1
     };
 
     this.configService.onLoadConfigurationData(data)
-        .subscribe(
-          data => {
-            this.data_record = data;
-            
-            if (this.data_record.success) {
-              this.productTypeData = this.data_record.data;
-              ;
-            }
-          });
-  }
+      .subscribe(
+        data => {
+          this.data_record = data;
 
-  
-  onLoadconfirmDataParam() {
+          if (this.data_record.success) {
+            this.importExportPermitTypesData = this.data_record.data;
+            ;
+          }
+        });
+
+  }
+  onLoadProductTypes() {
     var data = {
-      table_name: 'cfg_confirmations'
+      table_name: 'par_regulated_productstypes',
+      is_enabled: 1
     };
 
     this.configService.onLoadConfigurationData(data)
-        .subscribe(
-          data => {
-            this.data_record = data;
-            
-            if (this.data_record.success) {
-              this.confirmDataParam = this.data_record.data;
-            }
-          });
-        
+      .subscribe(
+        data => {
+          this.data_record = data;
+
+          if (this.data_record.success) {
+            this.productTypeData = this.data_record.data;
+            ;
+          }
+        });
+  }
+
+
+  onLoadconfirmDataParam() {
+    var data = {
+      table_name: 'par_confirmations'
+    };
+
+    this.configService.onLoadConfigurationData(data)
+      .subscribe(
+        data => {
+          this.data_record = data;
+
+          if (this.data_record.success) {
+            this.confirmDataParam = this.data_record.data;
+          }
+        });
+
   }
 
   onLoadProductAppType(regulatory_subfunction_id) {
 
     var data = {
-      table_name: 'cfg_regulatory_subfunctions',
+      table_name: 'par_regulatory_subfunctions',
       regulatory_function_id: 4,
       regulatory_subfunction_id: regulatory_subfunction_id
     };
     this.configService.onLoadConfigurationData(data)
-        .subscribe(
-          data => {
-            this.data_record = data;
-            
-            if (this.data_record.success) {
-              this.productappTypeData = this.data_record.data;
-              ;
-            }
-          });
+      .subscribe(
+        data => {
+          this.data_record = data;
+
+          if (this.data_record.success) {
+            this.productappTypeData = this.data_record.data;
+            ;
+          }
+        });
   }
   onLoadproducttypeDefinationData() {
     var data = {
-      table_name: 'cfg_producttype_definations',
+      table_name: 'par_producttype_definations',
     };
     this.configService.onLoadConfigurationData(data)
-        .subscribe(
-          data => {
-            this.data_record = data;
-            
-            if (this.data_record.success) {
-              this.producttypeDefinationData = this.data_record.data;
-              ;
-            }
-          });
-        
+      .subscribe(
+        data => {
+          this.data_record = data;
+
+          if (this.data_record.success) {
+            this.producttypeDefinationData = this.data_record.data;
+            ;
+          }
+        });
+
   }
   funcRequestforPermitAlteration() {
     this.app_route = ['./online-services/importexport-approvedappsel'];
@@ -551,7 +647,7 @@ export class SharedImpExpdashboardClass {
     this.scrollToTop();
 
   }
-  
+
   funcApplicationRejection(app_data) {
 
     //this.spinner.show();
@@ -726,59 +822,61 @@ export class SharedImpExpdashboardClass {
 
   }
   funcInitiateLicenseApplication(app_data) {
-/*
-
-    this.modalServ.openDialog(this.viewRef, {
-      title: 'Do you want to Initiate Request for Import License Application?',
-      childComponent: '',
-      settings: {
-        closeButtonClass: 'fa fa-close'
-      },
-      actionButtons: [{
-        text: 'Yes',
-        buttonClass: 'btn btn-danger',
-        onAction: () => new Promise((resolve: any, reject: any) => {
-          this.spinner.show();
-          this.utilityService.getApplicationProcessInformation(app_data.application_code, 'importexportapp/funcInitiateLicenseApplication')
-            .subscribe(
-              data => {
-                this.title = app_data.application_type;
-                if (data.success) {
-                  app_data.application_status_id = 1;
-                  app_data.process_title = this.title;
-                  this.appService.setApplicationDetail(data.app_data);
-                  this.app_route = ['./online-services/importexport-application'];
-                  this.router.navigate(this.app_route);
-                  this.scrollToTop();
-                }
-                else {
-                  this.toastr.error(data.message, 'Alert!');
-
-
-                }
-
-                this.spinner.hide();
-              });
-          resolve();
-        })
-      }, {
-        text: 'no',
-        buttonClass: 'btn btn-default',
-        onAction: () => new Promise((resolve: any) => {
-          resolve();
-        })
-      }
-      ]
-    });
-*/
+    /*
+    
+        this.modalServ.openDialog(this.viewRef, {
+          title: 'Do you want to Initiate Request for Import License Application?',
+          childComponent: '',
+          settings: {
+            closeButtonClass: 'fa fa-close'
+          },
+          actionButtons: [{
+            text: 'Yes',
+            buttonClass: 'btn btn-danger',
+            onAction: () => new Promise((resolve: any, reject: any) => {
+              this.spinner.show();
+              this.utilityService.getApplicationProcessInformation(app_data.application_code, 'importexportapp/funcInitiateLicenseApplication')
+                .subscribe(
+                  data => {
+                    this.title = app_data.application_type;
+                    if (data.success) {
+                      app_data.application_status_id = 1;
+                      app_data.process_title = this.title;
+                      this.appService.setApplicationDetail(data.app_data);
+                      this.app_route = ['./online-services/importexport-application'];
+                      this.router.navigate(this.app_route);
+                      this.scrollToTop();
+                    }
+                    else {
+                      this.toastr.error(data.message, 'Alert!');
+    
+    
+                    }
+    
+                    this.spinner.hide();
+                  });
+              resolve();
+            })
+          }, {
+            text: 'no',
+            buttonClass: 'btn btn-default',
+            onAction: () => new Promise((resolve: any) => {
+              resolve();
+            })
+          }
+          ]
+        });
+    */
 
   }
   onCellPrepared(e) {
     this.utilityService.onCellPrepared(e);
 
   }
-  onInitiatenewImportExpApplications(){
-        this.isPermitInitialisation = true; 
+  // onInitiatenewImportExpApplications(){
+  //       this.isPermitInitialisation = true; 
 
-  }
+  // }
+
+
 }

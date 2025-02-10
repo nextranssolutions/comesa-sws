@@ -162,13 +162,10 @@ export class SharedImpexpApplicationClass {
 
     this.trader_id = user.trader_id;
     this.mistrader_id = user.mistrader_id;
-    this.application_details = this.appService.getApplicationDetail();
-
-    if (!this.application_details) {
-      // this.router.navigate(['./../online-services/importvisa-dashboard']);
-      //return
-    }
-    else {
+    this.application_details = localStorage.getItem('application_details');
+    this.application_details = JSON.parse(this.application_details);
+  
+    if(this.application_details) {
 
       this.regulatory_subfunction_id = this.application_details.regulatory_subfunction_id;
       this.process_title = this.application_details.process_title;
