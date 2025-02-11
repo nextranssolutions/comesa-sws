@@ -8,7 +8,7 @@
 
     <dx-data-grid (onCellPrepared)="onCellPrepared($event)" class="table row-border hover"
       (onExporting)="onExporting($event)" [wordWrapEnabled]="true" [dataSource]="countriesinfoData"
-      [remoteOperations]="true" [showBorders]="true" [allowColumnResizing]="true" [columnHidingEnabled]="false"
+      [remoteOperations]="true" [showBorders]="true" [allowColumnResizing]="true" [columnHidingEnabled]="true"
       keyExpr="id" (onToolbarPreparing)="onAdvanceProductRegistrySearch($event)">
 
       <dxo-export [enabled]="true" [fileName]="'records' | translate" [formats]="['pdf', 'xlsx']"
@@ -33,6 +33,12 @@
         <dxo-lookup [dataSource]="Countries" displayExpr="name" valueExpr="id">
         </dxo-lookup>
       </dxi-column>
+
+  <dxi-column *ngIf="table_name == 'par_districts'" dataField="region_id"
+      caption="{{ 'Regions' | translate }}">
+      <dxo-lookup [dataSource]="regionsData" displayExpr="name" valueExpr="id">
+      </dxo-lookup>
+    </dxi-column>
 
       <dxi-column *ngIf="table_name == 'par_bankbranches'" dataField="bank_id"
         caption="{{ 'bank' | translate }}">

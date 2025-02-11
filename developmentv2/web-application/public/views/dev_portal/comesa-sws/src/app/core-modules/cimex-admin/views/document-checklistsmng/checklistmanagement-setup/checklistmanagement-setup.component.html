@@ -1,29 +1,31 @@
-<<<<<<< HEAD
-<div class="content-wrapper">
+
+
    
-=======
-<div class="breadcrumbs ace-save-state" id="breadcrumbs">
-    <ul class="breadcrumb">
-        <li>
-            <i class="ace-icon fa fa-home home-icon"></i>
-            <a href="#">{{ parameter_name | translate }}</a>
-        </li>
->>>>>>> e6561bde8dea2cb34e781f78e1c8f8e26534f184
+<div class="main-content-inner">
+    <div class="breadcrumbs ace-save-state" id="breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="ace-icon fa fa-home home-icon"></i>
+                <a href="#">Home</a>
+            </li>
+            <li class="active">{{parameter_name | translate}}</li>
+        </ul>
 
-    </ul><!-- /.breadcrumb -->
+    </div>
 
-</div>
-<div class="page-header">
-    <h1>
-        {{ parameter_name | translate }}
-        <small>
-            <i class="ace-icon fa fa-angle-double-right"></i>
-            {{ 'configuration_item' | translate }}
-        </small>
-    </h1>
-</div><!-- /.page-header -->
 
-<div class="container-fluid">
+    <div class="page-content">
+        <div class="page-header">
+            <h1>
+                {{parameter_name | translate}}
+                <small>
+                    <i class="ace-icon fa fa-angle-double-right"></i>
+                    overview &amp; stats
+                </small>
+            </h1>
+        </div>
+
+        <div class="container-fluid">
     <dx-tab-panel id="Navigation Tab" [swipeEnabled]="false" [showNavButtons]="true" [tabsPosition]="tabsPosition"
         [animationEnabled]="true">
         <dxi-item title="{{ 'checklist_types' | translate }}" icon="fa fa-cog">
@@ -39,4 +41,7 @@
         </dxi-item>
 
     </dx-tab-panel>
+    </div>
 </div>
+</div>
+
