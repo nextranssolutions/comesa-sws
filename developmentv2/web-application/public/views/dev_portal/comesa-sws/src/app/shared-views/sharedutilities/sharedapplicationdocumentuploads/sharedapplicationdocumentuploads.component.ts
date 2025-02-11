@@ -397,7 +397,7 @@ export class SharedapplicationdocumentuploadsComponent implements OnChanges {
   onaplicationDocumentUpload() {
     this.spinnerShow('Loading the Application Documents');
     const uploadData = this.prepareSave();
-    this.documentService.uploadApplicationDMSDocument(uploadData, this.application_code, 'onaplicationDocumentUpload')
+   /* this.documentService.uploadApplicationDMSDocument(uploadData, this.application_code, 'onaplicationDocumentUpload')
       //.pipe(first())
       .subscribe(
         response => {
@@ -418,6 +418,7 @@ export class SharedapplicationdocumentuploadsComponent implements OnChanges {
           this.toastr.success('Error occurred', 'Response');
 
         });
+        */
   }
   onUploadApplicationDocument(data) {
 

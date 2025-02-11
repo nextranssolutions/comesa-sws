@@ -233,12 +233,12 @@
         </dxo-lookup>
     </dxi-column>
 
-    <dxi-column *ngIf="table_name == 'par_gmp_product_categories' || table_name == 'par_product_lines'" dataField="migration_code">
+    <dxi-column *ngIf="table_name == 'par_gmp_product_categories' || table_name == 'par_product_lines'" dataField="migration_code" caption="{{ 'migration_code' | translate }}">
         <dxo-lookup [dataSource]="migrationData" displayExpr="name" valueExpr="id">
         </dxo-lookup>
     </dxi-column>
 
-    <dxi-column *ngIf="table_name == 'par_assessment_procedures'" dataField="has_fast_track">
+    <dxi-column *ngIf="table_name == 'par_assessment_procedures'" dataField="has_fast_track" caption="{{'has_fast_track' | translate}}">
         <dxo-lookup [dataSource]="fastTrackData" displayExpr="name" valueExpr="id">
         </dxo-lookup>
     </dxi-column>

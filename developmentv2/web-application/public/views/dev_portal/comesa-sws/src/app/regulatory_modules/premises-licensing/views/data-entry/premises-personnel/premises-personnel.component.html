@@ -1,0 +1,117 @@
+<div class=" wizard-content">
+
+    <dx-data-grid class="table row-border hover" [dataSource]="premPersonnelDetailsData" keyExpr="id" (onToolbarPreparing)="onPremisesPersonnelToolbar($event,'')">
+        
+        <dxo-paging [enabled]="true">
+        </dxo-paging>
+        <dxo-pager [showInfo]="true" infoText="Page #{0}. Total: {1} ({2} items)">
+        </dxo-pager>
+        <dxo-export [enabled]="true" fileName="premPersonnelDetailsData" [allowExportSelectedData]="true"></dxo-export>
+
+        <dxo-selection mode="multiple"></dxo-selection>
+        <dxo-group-panel [visible]="true"></dxo-group-panel>
+        <dxi-column [width]="200" caption="{{'action' | translate}}" name="command-editing" [allowFiltering]="false" [allowSorting]="false" cellTemplate="cellTemplate">
+            <div *dxTemplate="let data of 'cellTemplate'">
+                <dx-button text="{{'edit' | translate}}" (click)="funcEditPersonnelDetails(data)" 
+                    type="danger" icon="edit">
+                    </dx-button> 
+                <dx-button text="{{'delete' | translate}}" (click)="funcDeletePersonnelDetails(data)" 
+                    type="danger" icon="delete">
+                </dx-button> 
+            </div>
+        </dxi-column>
+        <dxi-column dataField="personnel_name" caption="{{'personnel_name' | translate}}"></dxi-column>
+        <dxi-column dataField="email_address" caption="{{'email_address' | translate}}"></dxi-column>
+        <dxi-column dataField="qualification" caption="{{'qualification' | translate}}"></dxi-column>
+        <dxi-column dataField="study_field" caption="{{'study_field' | translate}}"></dxi-column>
+        <dxi-column dataField="registration_no" caption="{{'registration_no' | translate}}"></dxi-column>
+        <dxi-column dataField="professional_board" caption="{{'professional_board' | translate}}"></dxi-column>
+        
+    </dx-data-grid>
+</div>
+
+
+<dx-popup class="popup"  [width]="funcpopWidth(80)" [showTitle]="true" title="{{'premises_personnel' | translate}}" [dragEnabled]="false" [hideOnOutsideClick]="false" [(visible)]="isBusinessPersonnelPopupVisible">
+    <div *dxTemplate="let data of 'content'" class="row">
+        <dx-scroll-view></dx-scroll-view>
+        <div class="col-lg-12 row">
+                    <form role="form" enctype="multipart/form-data" role="form" [formGroup]="premisesPersonnelDetailsfrm" class="col-lg-12 row" (ngSubmit)="onSavePremisesPersonnelDetails()">
+                        <div class="row wizard-contentwin">
+                            <div class="col-lg-4">
+                                <label class="control-label">"{{'name' | translate}}"</label>
+                                <dx-text-box formControlName="personnel_name"  placeholder="{{'personnel_name' | translate}}" [showClearButton]="true">
+                                </dx-text-box>
+                            </div>
+                           
+                            <div class="col-lg-4">
+                                <label class="control-label">"{{'telephone_no' | translate}}"</label>
+                                <dx-text-box formControlName="telephone_no" placeholder="{{'telephone_no' | translate}}" [showClearButton]="true">
+                                </dx-text-box>
+                            </div>
+                            <div class="col-lg-4">
+                                <label class="control-label">"{{'email_address' | translate}}"</label>
+                                <dx-text-box formControlName="email_address"  placeholder="{{'email_address' | translate}}" [showClearButton]="true">
+                                </dx-text-box>
+                            </div>
+
+                            <div class="col-lg-8  input-group ">
+                                <div class="col-lg-8">
+                                    <label for="ti" class="control-label">"{{'personnel_identification_no' | translate}}"</label>
+                                    <dx-text-box formControlName="personnel_identification_no" placeholder="{{'personnel_identification_no' | translate}}"  [showClearButton]="true">
+                                    </dx-text-box>
+                                </div>
+
+                                <div class="col-lg-4">
+                                  <label class="control-label">"{{'personnel_identification_type' | translate}}"</label>
+                                  <dx-select-box  [dataSource]="personnelIdentificationTypeData" valueExpr="id" displayExpr="name" placeholder="{{'select_personnel_identification_type' | translate}}" [searchEnabled]="true" formControlName="identification_type_id">
+                                  </dx-select-box>
+                    
+                              </div>
+                          </div>
+                            <div class="col-lg-4">
+                                <label>"{{'personnel_position' | translate}}"</label>
+                                <dx-select-box [dataSource]="personnelPositionData" valueExpr="id" placeholder="{{'personnel_position' | translate}}" displayExpr="name" [searchEnabled]="true" formControlName="position_id">
+                                </dx-select-box>
+                            </div>
+                            <div class="col-lg-4">
+                                <label>"{{'institution' | translate}}"</label>
+                                <dx-text-box formControlName="institution" placeholder="{{'institution' | translate}}">
+                                </dx-text-box>
+                            </div>
+                            
+                            <div class="col-lg-4">
+                                <label>"{{'qualification' | translate}}"</label>
+                                <dx-select-box [dataSource]="qualificationsData" valueExpr="id" placeholder="{{'qualification' | translate}}" displayExpr="name" [searchEnabled]="true" formControlName="qualification_id">
+                                </dx-select-box>
+                            </div>
+                            <div class="col-lg-4">
+                                <label>"{{'study_field' | translate}}"</label>
+                                <dx-text-box formControlName="study_field" placeholder="{{'study_field' | translate}}">
+                                </dx-text-box>
+                            </div>
+                            <div class="col-lg-4">
+                                <label>"{{'registration_no' | translate}}"</label>
+                                <dx-text-box formControlName="registration_no" placeholder="{{'registration_no' | translate}}">
+                                </dx-text-box>
+                            </div>
+                            <div class="col-lg-4">
+                                <label>"{{'professional_board' | translate}}"</label>
+                                <dx-text-box formControlName="professional_board" placeholder="{{'professional_board' | translate}}">
+                                </dx-text-box>
+                            </div>
+                            <div class="col-lg-12">
+                                <input type="hidden" formControlName="id" />
+                            </div>
+                           
+                        </div>
+                        <div style="border-top: 1px solid #ccc; min-height: 100px !important;">
+                            
+                            <dx-button text="{{'save_personnel_details' | translate}}" [disabled]="!premisesPersonnelDetailsfrm.valid" (onClick)="onSavePremisesPersonnelDetails()" type="success" class="btn" icon="save" [elementAttr]="{ class: 'btn btn-primary; pull-right' }">
+                            </dx-button>
+                        </div>
+                    </form>
+               
+        </div>
+    </div>
+</dx-popup>
+

@@ -231,27 +231,27 @@ export class AppDocumentRequirementsComponent {
   onFuncSaveCountriesData() {
     this.spinnerShow('Loading the Application Documents');
     const uploadData = this.prepareSave();
-    this.dmsService.uploadApplicationDMSDocument(uploadData, 0, 'OnSaveDocumentRequirementsDef')
-      //.pipe(first())
-      .subscribe(
-        response => {
-          this.data_record = response;
-          if (this.data_record.success) {
-            this.fetchConfigurationItemsDetails();
-            this.isnewproduct = false;
-            this.toastr.success(this.response.message, 'Response');
-          }
-          else {
+    // this.dmsService.uploadApplicationDMSDocument(uploadData, 0, 'OnSaveDocumentRequirementsDef')
+    //   //.pipe(first())
+    //   .subscribe(
+    //     response => {
+    //       this.data_record = response;
+    //       if (this.data_record.success) {
+    //         this.fetchConfigurationItemsDetails();
+    //         this.isnewproduct = false;
+    //         this.toastr.success(this.response.message, 'Response');
+    //       }
+    //       else {
 
-            this.toastr.success(this.data_record.message, 'Response');
+    //         this.toastr.success(this.data_record.message, 'Response');
 
-          }
-          this.spinnerHide();
-        },
-        error => {
-          this.toastr.success('Error occurred', 'Response');
+    //       }
+    //       this.spinnerHide();
+    //     },
+    //     error => {
+    //       this.toastr.success('Error occurred', 'Response');
 
-        });
+    //     });
   }
 
   funcpopWidth(percentage_width) {
