@@ -174,7 +174,7 @@ export class SharedconfigurationsComponent {
 
     var data_submit = {
       'table_name': 'par_institutions_types',
-      'is_enabled': 1,
+      'is_enabled': true,
     }
     this.configService.onLoadConfigurationData(data_submit)
       .subscribe(
@@ -215,7 +215,7 @@ export class SharedconfigurationsComponent {
 
     var data_submit = {
       'table_name': 'par_regulatory_functions',
-      'is_enabled': 1,
+      'is_enabled': true,
     }
     this.configService.onLoadConfigurationData(data_submit)
       .subscribe(
@@ -236,7 +236,7 @@ export class SharedconfigurationsComponent {
   fetchInstitutionDepartments() {
     var data_submit = {
       'table_name': 'par_institutions_department',
-      'is_enabled': 1,
+      'is_enabled': true,
     }
     this.configService.onLoadConfigurationData(data_submit)
       .subscribe(
