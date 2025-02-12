@@ -230,7 +230,10 @@ export class AuthenticationService {
     const userOtherNames = localStorage.getItem('other_names');
     return of(userOtherNames || ''); // Return an observable with a default empty string if category name is null
   }
-
+  getUserEmailAddress(): Observable<string> {
+    const userEmail = localStorage.getItem('email_address');
+    return of(userEmail || ''); // Return an observable with a default empty string if category name is null
+  }
 
   handleLoginError(error: any) {
     if (error.status === 401) {

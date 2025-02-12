@@ -32,7 +32,7 @@
         <br/><br/>
         Regards,
         <br/>
-        <strong>CONTINENTAL REGULATORY EXPERTS SOLUTION (E-CRES)</strong>
+        <strong>COMESA IMPORT/EXPORT SYSTEM (cIMEX)</strong>
     </div>
 </body>
 </html>

@@ -25,6 +25,7 @@ export class TopUnisectionComponent {
   userFirstName: string = '';
   userCountryOfOrigin: string = '';
   userOtherNames: string = '';
+  userEmail: string = '';
   isLoggedIn: any;
   loadingVisible: boolean;
   spinnerMessage: string;
@@ -86,6 +87,10 @@ export class TopUnisectionComponent {
 
     this.AuthService.getUserOtherNames().subscribe((userOtherNames: string) => {
       this.userOtherNames = userOtherNames;
+    });
+
+    this.AuthService.getUserEmailAddress().subscribe((userEmail: string) => {
+      this.userEmail = userEmail;
     });
 
     this.onCheckUserPWDRequestDetails();
