@@ -30,8 +30,6 @@ import { AppstageStatusesComponent } from 'src/app/core-modules/cimex-admin/view
 import { AppChecklistDefinationComponent } from 'src/app/core-modules/cimex-admin/views/document-checklistsmng/checklist_management/app-checklist-defination/app-checklist-defination.component';
 import { AppChecklistTypesComponent } from 'src/app/core-modules/cimex-admin/views/document-checklistsmng/checklist_management/app-checklist-types/app-checklist-types.component';
 import { AppPerformancescoringScalesComponent } from 'src/app/core-modules/cimex-admin/views/document-checklistsmng/checklist_management/app-performancescoring-scales/app-performancescoring-scales.component';
-import { AppDocumentRequirementsComponent } from 'src/app/core-modules/cimex-admin/views/document-checklistsmng/document_management/app-document-requirements/app-document-requirements.component';
-import { AppDocumentTypesComponent } from 'src/app/core-modules/cimex-admin/views/document-checklistsmng/document_management/app-document-types/app-document-types.component';
 import { AppSystemlabelsmanagementComponent } from 'src/app/core-modules/cimex-admin/views/language-management/app-systemlabelsmanagement/app-systemlabelsmanagement.component';
 import { AppSystemlanguagesComponent } from 'src/app/core-modules/cimex-admin/views/language-management/app-systemlanguages/app-systemlanguages.component';
 import { AppTranslationmanagementComponent } from 'src/app/core-modules/cimex-admin/views/language-management/app-translationmanagement/app-translationmanagement.component';
@@ -51,8 +49,6 @@ import { AppPublicationTypesComponent } from 'src/app/core-modules/cimex-admin/v
 import { AppSubmissionmethodsComponent } from 'src/app/core-modules/cimex-admin/views/configurations/app-submissionmethods/app-submissionmethods.component';
 import { DisclaimerStatementsComponent } from 'src/app/core-modules/cimex-admin/views/configurations/disclaimer-statements/disclaimer-statements.component';
 import { DisclaimerStatementTypesComponent } from 'src/app/core-modules/cimex-admin/views/configurations/disclaimer-statement-types/disclaimer-statement-types.component';
-
-import { DmsDocrequirementsAppstatusComponent } from 'src/app/core-modules/cimex-admin/views/document-checklistsmng/document_management/dms-docrequirements-appstatus/dms-docrequirements-appstatus.component';
 import { AppApplicationtypesComponent } from 'src/app/core-modules/cimex-admin/views/configurations/app-applicationtypes/app-applicationtypes.component';
 import { AppFirewallipsComponent } from 'src/app/core-modules/cimex-admin/views/configurations/app-firewallips/app-firewallips.component';
 import { EcredResourcedashboardComponent } from 'src/app/core-modules/cimex-admin/views/information-sharing/ecred-resourcedashboard/ecred-resourcedashboard.component';
@@ -71,7 +67,6 @@ import { MultilingualConfigurationsComponent } from 'src/app/core-modules/cimex-
 import { NavigationSetupComponent } from 'src/app/core-modules/cimex-admin/views/workflow-management/navigation/navigation-setup/navigation-setup.component';
 import { WorkflowsSetupComponent } from 'src/app/core-modules/cimex-admin/views/workflow-management/workflows/workflows-setup/workflows-setup.component';
 import { NotificationManagementComponent } from 'src/app/core-modules/cimex-admin/views/document-checklistsmng/notification-mng/notification-management/notification-management.component';
-import { DocumentchecklistSetupComponent } from 'src/app/core-modules/cimex-admin/views/document-checklistsmng/documentchecklist-setup/documentchecklist-setup.component';
 import { InstitutionsInformationComponent } from 'src/app/core-modules/cimex-admin/views/system-administration/institutions-information/institutions-information.component';
 
 import { NotSlidesInformationsComponent } from 'src/app/core-modules/cimex-admin/views/system-administration/not-slides-informations/not-slides-informations.component';
@@ -249,6 +244,21 @@ import { AdvertisementChannelComponent } from './views/configurations/promotiona
 import { PrommaterialBookcataloguesComponent } from './views/configurations/promotional_advertisements_configurations/prommaterial-bookcatalogues/prommaterial-bookcatalogues.component';
 import { PromotionadvertChannelsComponent } from './views/configurations/promotional_advertisements_configurations/promotionadvert-channels/promotionadvert-channels.component';
 import { PromotionmaterialCategoriesComponent } from './views/configurations/promotional_advertisements_configurations/promotionmaterial-categories/promotionmaterial-categories.component';
+import { DmsConfigsetupComponent } from './views/document-checklistsmng/document_management/dms-configsetup/dms-configsetup.component';
+import { DmsSitesRepositoryDefinationComponent } from './views/document-checklistsmng/document_management/dms-sites-repository-defination/dms-sites-repository-defination.component';
+import { DocumentExtensionTypesComponent } from './views/document-checklistsmng/document_management/document-extension-types/document-extension-types.component';
+import { DocumentRequirementDefinationComponent } from './views/document-checklistsmng/document_management/document-requirement-defination/document-requirement-defination.component';
+import { DocumentTypesComponent } from './views/document-checklistsmng/document_management/document-types/document-types.component';
+import { NonstructuredDocDefinationComponent } from './views/document-checklistsmng/document_management/nonstructured-doc-defination/nonstructured-doc-defination.component';
+import { SharedDmsComponent } from './views/document-checklistsmng/document_management/shared-dms/shared-dms.component';
+import { HscodechaptersDefinationComponent } from './views/configurations/hscodes-configurations/hscodechapters-defination/hscodechapters-defination.component';
+import { HscodesSectionsComponent } from './views/configurations/hscodes-configurations/hscodes-sections/hscodes-sections.component';
+import { HscodesconfigSetupComponent } from './views/configurations/hscodes-configurations/hscodesconfig-setup/hscodesconfig-setup.component';
+import { HscodesheadingDefinationsComponent } from './views/configurations/hscodes-configurations/hscodesheading-definations/hscodesheading-definations.component';
+import { HscodesproductsRegistryComponent } from './views/configurations/hscodes-configurations/hscodesproducts-registry/hscodesproducts-registry.component';
+import { HscodessubheadingDefinationComponent } from './views/configurations/hscodes-configurations/hscodessubheading-defination/hscodessubheading-defination.component';
+import { HscodestariffDetailsComponent } from './views/configurations/hscodes-configurations/hscodestariff-details/hscodestariff-details.component';
+import { SharedhscodesConfigurationsComponent } from './views/configurations/hscodes-configurations/sharedhscodes-configurations/sharedhscodes-configurations.component';
 
 //./admin-ecres/app-dashboard
 const routes: Routes = [{
@@ -497,12 +507,6 @@ const routes: Routes = [{
     path: "app-checklistdefination",
     component: AppChecklistDefinationComponent
   }, {
-    path: "app-documentrequirements",
-    component: AppDocumentRequirementsComponent
-  }, {
-    path: "app-documenttypes",
-    component: AppDocumentTypesComponent
-  }, {
     path: "app-translationmanagement",
     component: AppTranslationmanagementComponent
   }, {
@@ -558,14 +562,36 @@ const routes: Routes = [{
   }, {
     path: "disclaimer_statement_types",
     component: DisclaimerStatementTypesComponent
-  }, {
-    path: "disclaimer_statement",
-    component: DisclaimerStatementsComponent
   },
   {
-    path: "dms-docrequirements-appstatus",
-    component: DmsDocrequirementsAppstatusComponent
-  }, {
+    path: "app-shared-dms",
+    component: SharedDmsComponent
+  },
+  {
+    path: "app-nonstructured-doc-defination",
+    component: NonstructuredDocDefinationComponent
+  },
+  {
+    path: "app-document-types",
+    component: DocumentTypesComponent
+  },
+  {
+    path: "app-document-requirement-defination",
+    component: DocumentRequirementDefinationComponent
+  },
+  {
+    path: "app-document-extension-types",
+    component: DocumentExtensionTypesComponent
+  },
+  {
+    path: "app-dms-sites-repository-defination",
+    component: DmsSitesRepositoryDefinationComponent
+  },
+  {
+    path: "app-dms-configsetup",
+    component: DmsConfigsetupComponent
+  },
+  {
     path: 'app-applicationtypes',
     component: AppApplicationtypesComponent
   }, {
@@ -747,7 +773,38 @@ const routes: Routes = [{
     path: 'app-assessment-procedures',
     component: AssessmentProceduresComponent
   },
-
+  {
+    path: 'app-hscodes-sections',
+    component: HscodesSectionsComponent
+  },
+ {
+    path: 'app-hscodesheading-definations',
+    component: HscodesheadingDefinationsComponent
+  }, 
+   {
+    path: 'app-hscodesproducts-registry',
+    component: HscodesproductsRegistryComponent
+  }, 
+   {
+    path: 'app-hscodessubheading-defination',
+    component: HscodessubheadingDefinationComponent
+  },
+  {
+    path: 'app-hscodestariff-details',
+    component: HscodestariffDetailsComponent
+  },
+  {
+    path: 'app-sharedhscodes-configurations',
+    component: SharedhscodesConfigurationsComponent
+  },
+  {
+    path: 'app-hscodechapters-defination',
+    component: HscodechaptersDefinationComponent
+  },
+  {
+    path: 'app-hscodesconfig-setup',
+    component: HscodesconfigSetupComponent
+  },
   {
     path: 'systemmanual-configuration',
     component: SystemmanualConfigurationComponent
@@ -770,10 +827,7 @@ const routes: Routes = [{
     path: 'app-notification-management',
     component: NotificationManagementComponent
   },
-  {
-    path: 'app-documentchecklist-setup',
-    component: DocumentchecklistSetupComponent
-  },
+
   {
     path: ' app-ref-numberformats',
     component: RefNumberformatsComponent,
@@ -1122,7 +1176,7 @@ const routes: Routes = [{
     path: 'app-study-sites',
     component: StudySitesComponent
   },
-  
+
   {
     path: 'app-certificate-condition',
     component: CertificateConditionComponent

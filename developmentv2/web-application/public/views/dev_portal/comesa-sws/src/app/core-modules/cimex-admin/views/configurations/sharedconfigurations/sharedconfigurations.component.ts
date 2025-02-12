@@ -141,6 +141,7 @@ export class SharedconfigurationsComponent {
     this.fetchBankDetails();
     this.fetchCurrencyDetails();
     this.fetchProductTypesDetails();
+    this.scrollToTop();
   }
  
   spinnerShow(spinnerMessage) {
@@ -149,6 +150,12 @@ export class SharedconfigurationsComponent {
   }
   spinnerHide() {
     this.loadingVisible = false;
+  }
+  scrollToTop(): void {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth' // Smooth scrolling for better UX
+    });
   }
 
   fetchConfigurationCountriesDetails() {

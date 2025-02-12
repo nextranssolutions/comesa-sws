@@ -1,0 +1,346 @@
+<dx-button text="{{ 'add_new' | translate }} {{ parameter_name | translate}}" type="default" icon="fa fa-plus"
+  [elementAttr]="{ class: '' }" (onClick)="hasReadpermissions=false;onAddNewConfig()">
+</dx-button>
+
+<dx-data-grid (onCellPrepared)="onCellPrepared($event)" class="col-lg-12 table row-border hover"
+  (onExporting)="onExporting($event)" [wordWrapEnabled]="true" [dataSource]="NewConfigData"
+  [remoteOperations]="true" [showBorders]="true" [allowColumnResizing]="true" [columnHidingEnabled]="true" keyExpr="id"
+  (onToolbarPreparing)="onAdvanceProductRegistrySearch($event)">
+
+  <dxo-export [enabled]="true" [fileName]="'records' | translate" [formats]="['pdf', 'xlsx']"
+    [allowExportSelectedData]="true">
+  </dxo-export>
+  <dxo-search-panel [visible]="true"></dxo-search-panel>
+
+  <dxo-filter-row [visible]="show_advancesearch"></dxo-filter-row>
+  <dxo-paging [enabled]="true">
+    <dxo-pager [showInfo]="true" infoText="Page #{0}. Total: {1} ({2} items)" [showPageSizeSelector]="true"
+      [allowedPageSizes]="[50,100]"></dxo-pager>
+  </dxo-paging>
+
+  <dxi-column [width]="100" caption="{{ 'action' | translate }}" name="command-editing" [allowFiltering]="false"
+    [allowSorting]="false" cellTemplate="cellTemplate">
+    <div *dxTemplate="let data of 'cellTemplate'">
+      <dx-menu (onItemClick)="funcActionColClick($event,data)" [items]="actionsMenuItems"></dx-menu>
+    </div>
+  </dxi-column>
+
+  <dxi-column dataField="name" caption="{{ 'name' | translate }}"></dxi-column>
+  <dxi-column dataField="description" caption="{{ 'description' | translate }}"></dxi-column>
+  
+  <dxi-column *ngIf="table_name == 'dms_sites_repository_defination' || table_name == 'txn_nonstructured_docdefination'" dataField="site_id"
+  caption="{{ 'site_id' | translate }}">
+  <dxo-lookup [dataSource]="siteIdData" displayExpr="name" valueExpr="id">
+  </dxo-lookup>
+  </dxi-column>
+
+  <dxi-column *ngIf="table_name == 'dms_sites_repository_defination'" dataField="node_ref"
+      caption="{{ 'node_ref' | translate }}">
+  </dxi-column>
+
+  <dxi-column *ngIf="table_name == 'dms_sites_repository_defination'" dataField="is_dms_site_root"
+      caption="{{ 'is_dms_site_root' | translate }}">
+  </dxi-column>
+
+  <dxi-column *ngIf="table_name == 'txn_nonstructured_docdefination'" dataField="document_type_id"
+      caption="{{ 'document_type_id' | translate }}">
+      <dxo-lookup [dataSource]="documentTypeIdData" displayExpr="name" valueExpr="id">
+    </dxo-lookup>
+  </dxi-column>
+  
+  <dxi-column *ngIf="table_name == 'txn_nonstructured_docdefination'" dataField="node_name"
+      caption="{{ 'node_name' | translate }}">
+  </dxi-column>
+
+  <dxi-column *ngIf="table_name == 'txn_documentrequirements_defination'" dataField="document_type_id"
+  caption="{{ 'document_type_id' | translate }}">
+    <dxo-lookup [dataSource]="documentTypeIdData" displayExpr="name" valueExpr="id">
+    </dxo-lookup>
+  </dxi-column>
+
+  <dxi-column *ngIf="table_name == 'txn_documentrequirements_defination'" dataField="document_requirement_id"
+  caption="{{ 'document_requirement_id' | translate }}">
+    <dxo-lookup [dataSource]="documentRequirementIdData" displayExpr="name" valueExpr="id">
+    </dxo-lookup>
+  </dxi-column>
+
+  <dxi-column *ngIf="table_name == 'txn_documentrequirements_defination'" dataField="product_type_id"
+  caption="{{ 'product_type_id' | translate }}">
+    <dxo-lookup [dataSource]="productTypeIdData" displayExpr="name" valueExpr="id">
+    </dxo-lookup>
+  </dxi-column>
+
+  <dxi-column *ngIf="table_name == 'txn_documentrequirements_defination'" dataField="regulatory_function_id"
+  caption="{{ 'regulatory_function_id' | translate }}">
+    <dxo-lookup [dataSource]="regulatoryFunctionIdData" displayExpr="name" valueExpr="id">
+    </dxo-lookup>
+  </dxi-column>
+
+  <dxi-column *ngIf="table_name == 'txn_documentrequirements_defination'" dataField="regulatory_subfunction_id"
+  caption="{{ 'regulatory_subfunction_id' | translate }}">
+    <dxo-lookup [dataSource]="regulatorySubFunctionIdData" displayExpr="name" valueExpr="id">
+    </dxo-lookup>
+  </dxi-column>
+
+  <dxi-column *ngIf="table_name == 'txn_documentrequirements_defination'" dataField="prodclass_category_id"
+  caption="{{ 'prodclass_category_id' | translate }}">
+    <dxo-lookup [dataSource]="prodClassIdData" displayExpr="name" valueExpr="id">
+    </dxo-lookup>
+  </dxi-column>
+
+  <dxi-column *ngIf="table_name == 'txn_documentrequirements_defination'" dataField="importexport_permittype_id"
+  caption="{{ 'importexport_permittype_id' | translate }}">
+    <dxo-lookup [dataSource]="importexportIdData" displayExpr="name" valueExpr="id">
+    </dxo-lookup>
+  </dxi-column>
+
+  <dxi-column *ngIf="table_name == 'txn_documentrequirements_defination'" dataField="premise_type_id"
+  caption="{{ 'premise_type_id' | translate }}">
+    <dxo-lookup [dataSource]="premiseTypeData" displayExpr="name" valueExpr="id">
+    </dxo-lookup>
+  </dxi-column>
+
+  <dxi-column *ngIf="table_name == 'txn_documentrequirements_defination'" dataField="pharmaceutical_license_id"
+  caption="{{ 'pharmaceutical_license_id' | translate }}">
+    <dxo-lookup [dataSource]="pharmaceuticalLicenseIdData" displayExpr="name" valueExpr="id">
+    </dxo-lookup>
+  </dxi-column>
+
+  <dxi-column *ngIf="table_name == 'txn_documentrequirements_defination'" dataField="pharmaceuticallicense_type_id"
+  caption="{{ 'pharmaceuticallicense_type_id' | translate }}">
+    <dxo-lookup [dataSource]="pharmaceuticalLicenseTypeIdData" displayExpr="name" valueExpr="id">
+    </dxo-lookup>
+  </dxi-column>
+  
+  <dxi-column *ngIf="table_name == 'txn_documentrequirements_defination'" dataField="gmp_type_id"
+  caption="{{ 'gmp_type_id' | translate }}">
+    <dxo-lookup [dataSource]="gmpTypeIdData" displayExpr="name" valueExpr="id">
+    </dxo-lookup>
+  </dxi-column>
+
+  <dxi-column *ngIf="table_name == 'cfg_document_types'" dataField="name"
+  caption="{{ 'name' | translate }}">
+  </dxi-column>
+
+  <dxi-column *ngIf="table_name == 'cfg_document_types'" dataField="document_no"
+  caption="{{ 'document_no' | translate }}">
+  </dxi-column>
+
+  <dxi-column *ngIf="table_name == 'cfg_document_types'" dataField="sop_id"
+  caption="{{ 'sop_id' | translate }}">
+    <dxo-lookup [dataSource]="sopIdData" displayExpr="name" valueExpr="id">
+    </dxo-lookup>
+  </dxi-column>
+
+  <dxi-column *ngIf="table_name == 'cfg_sop_masterlist'" dataField="sop_no"
+  caption="{{ 'sop_no' | translate }}">
+  </dxi-column>
+
+  <dxi-column *ngIf="table_name == 'cfg_document_extension_types'" dataField="extension"
+  caption="{{ 'extension' | translate }}">
+  </dxi-column>
+
+  <!-- <dxi-column *ngIf="table_name == 'cfg_permit_typecategories'" dataField="code"
+  caption="{{ 'code' | translate }}">
+  </dxi-column> -->
+  <dxi-column dataField="is_enabled" caption="{{ 'is_enabled' | translate }}" [dataType]="'boolean'" [width]="100">
+      <dxo-editing [allowUpdating]="true" [allowDeleting]="true" [allowAdding]="true"></dxo-editing>
+  </dxi-column>
+
+</dx-data-grid>
+
+
+<dx-load-panel #loadPanel shadingColor="rgba(0,0,0,0.4)" [position]="{ of: '#employee' }" [(visible)]="loadingVisible"
+  [showIndicator]="true" [showPane]="true" [shading]="true" [message]="spinnerMessage" [hideOnOutsideClick]="false">
+</dx-load-panel>
+
+<dx-popup class="popup" [width]="funcpopWidth(75)" [height]="440" [showTitle]="true" 
+  title="{{ 'add_new' | translate }} {{parameter_name | translate }}" [dragEnabled]="false" [hideOnOutsideClick]="true"
+  [(visible)]="onAddNewConfiVisible">
+
+  <div *dxTemplate="let data of 'content'">
+    <dx-scroll-view>
+
+      <form role="form" enctype="multipart/form-data" [formGroup]="createNewDataFrm" (ngSubmit)="onFuncSaveNewConfigData()">
+        <div class="col-lg-6">
+          <label>{{ 'name' | translate }}</label>
+          <dx-text-box formControlName="name" [showClearButton]="true"></dx-text-box>
+        </div>
+      
+        <div class="col-lg-6">
+          <label>{{ 'description' | translate }}</label>
+          <dx-text-box formControlName="description" [showClearButton]="true"></dx-text-box>
+        </div>
+
+        <!-- <div *ngIf="table_name == 'dms_sites_repository_defination'" class="col-lg-6">
+            <label>{{ 'Site Id' | translate }}</label>
+            <dx-text-box formControlName="site_id" [showClearButton]="true"></dx-text-box>
+        </div> -->
+        <div *ngIf="table_name == 'dms_sites_repository_defination'" class="col-lg-6">
+            <label>{{ 'site_id' | translate }}</label>
+            <dx-select-box [dataSource]="siteIdData" formControlName="site_id" valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
+          </div>
+        
+        <div *ngIf="table_name == 'dms_sites_repository_defination'" class="col-lg-6">
+            <label>{{ 'Node Ref' | translate }}</label>
+            <dx-text-box formControlName="node" [showClearButton]="true"></dx-text-box>
+        </div>
+
+        <div *ngIf="table_name == 'dms_sites_repository_defination'" class="col-lg-6">
+            <label>{{ 'is_dms_site_root' | translate }}</label>
+            <dx-text-box formControlName="is_dms_site_root" [showClearButton]="true"></dx-text-box>
+        </div>
+
+        
+
+        <div *ngIf="table_name == 'txn_nonstructured_docdefination'" class="col-lg-6">
+            <label>{{ 'document type id' | translate }}</label>
+            <dx-select-box [dataSource]="documentTypeIdData" formControlName="document_type_id" valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
+        </div>
+
+        <div *ngIf="table_name == 'txn_nonstructured_docdefination'" class="col-lg-6">
+            <label>{{ 'node name' | translate }}</label>
+            <dx-text-box formControlName="node_name" [showClearButton]="true"></dx-text-box>
+        </div>
+
+        
+        <div *ngIf="table_name == 'txn_documentrequirements_defination'" class="col-lg-6">
+          <label>{{ 'document type id' | translate }}</label>
+          <dx-select-box [dataSource]="documentTypeIdData" formControlName="document_type_id" valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
+        </div>
+
+        <div *ngIf="table_name == 'txn_documentrequirements_defination'" class="col-lg-6">
+          <label>{{ 'product type id' | translate }}</label>
+          <dx-select-box [dataSource]="productTypeIdData" formControlName="product_type_id" valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
+        </div>
+
+        <div *ngIf="table_name == 'txn_documentrequirements_defination'" class="col-lg-6">
+          <label>{{ 'regulatory function id' | translate }}</label>
+          <dx-select-box [dataSource]="regulatoryFunctionIdData" formControlName="regulatory_function_id" valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
+        </div>
+
+        <div *ngIf="table_name == 'txn_documentrequirements_defination'" class="col-lg-6">
+          <label>{{ 'regulatory subfunction id' | translate }}</label>
+          <dx-select-box [dataSource]="regulatorySubFunctionIdData" formControlName="regulatory_subfunction_id" valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
+        </div>
+
+        <div *ngIf="table_name == 'txn_documentrequirements_defination'" class="col-lg-6">
+          <label>{{ 'prodclass category id' | translate }}</label>
+          <dx-select-box [dataSource]="prodClassIdData" formControlName="prodclass_category_id" valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
+        </div>
+
+        <div *ngIf="table_name == 'cfg_document_types'" class="col-lg-6">
+          <label>{{ 'document_no' | translate }}</label>
+          <dx-text-box formControlName="document_no" [showClearButton]="true"></dx-text-box>
+        </div>
+
+        <div *ngIf="table_name == 'cfg_document_types'" class="col-lg-6">
+          <label>{{ 'sop id' | translate }}</label>
+          <dx-select-box [dataSource]="sopIdData" formControlName="sop_id" valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
+        </div>
+
+        <div *ngIf="table_name == 'cfg_sop_masterlist'" class="col-lg-6">
+          <label>{{ 'sop_no' | translate }}</label>
+          <dx-text-box formControlName="sop_no" [showClearButton]="true"></dx-text-box>
+        </div>
+
+        <div *ngIf="table_name == 'cfg_document_extension_types'" class="col-lg-6">
+          <label>{{ 'extension' | translate }}</label>
+          <dx-text-box formControlName="extension" [showClearButton]="true"></dx-text-box>
+        </div>
+
+        <div class="row">
+          <!-- <div *ngIf="table_name == 'cfg_permit_typecategories'" class="col-lg-6">
+            <label>{{ 'product_type' | translate }}</label>
+            <dx-select-box [dataSource]="statusData" formControlName="product_type_id" valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
+          </div>
+       -->
+          
+          <div class="col-lg-6">
+            <label>{{ "is_enabled" | translate }}</label>
+            <dx-select-box [searchEnabled]="true" formControlName="is_enabled" [dataSource]="regStatusOptions" valueExpr="value" displayExpr="text"></dx-select-box>
+          </div>
+        </div>
+      
+        <div class="row">
+          <div class="col-lg-4 pull-right">
+            <dx-button text="{{ 'save' | translate }} {{ parameter_name | translate }}" type="default" icon="fa fa-save"
+              [elementAttr]="{ id: 'elementId', class: 'pull-right' }" (onClick)="onFuncSaveNewConfigData()">
+            </dx-button>
+          </div>
+        </div>
+      </form>      
+    </dx-scroll-view>
+  </div>
+</dx-popup>
+
+
+<dx-popup [visible]="deletePopupVisible" [width]="funcpopWidth(30)" [height]="funcpopHeight(25)" [showTitle]="true"
+  title="{{ 'delete_confirmation_of'+parameter_name | translate }}" (onHidden)="deletePopupVisible = false">
+
+  <div>
+    <p class="confirmation-text">
+      {{ 'are_you_sure_you_want_to_delete' | translate }}
+      "<strong>{{config_record}}</strong>"?
+    </p>
+    <div class="button-container">
+      <dx-button text="{{ 'yes' | translate }}" type="danger" (onClick)="onDeleteConfigurationsDetails()">
+      </dx-button>
+      <dx-button text="{{ 'no' | translate }}" (onClick)="deletePopupVisible = false">
+      </dx-button>
+    </div>
+  </div>
+
+</dx-popup>
+
+<dx-popup [visible]="enablePopupVisible" [width]="funcpopWidth(30)" [height]="funcpopHeight(25)" [showTitle]="true"
+  title="{{ enabledisable_tracer | translate }}" (onHidden)="enablePopupVisible = false">
+
+  <div>
+    <p class="confirmation-text">
+      {{ enabledisable_tracerdescription | translate }}
+      "<strong>{{config_record}}</strong>"?
+    </p>
+    <div class="button-container">
+      <dx-button text="{{ 'yes' | translate }}" type="danger" (onClick)="iniateEnableDisableRecord()">
+      </dx-button>
+      <dx-button text="{{ 'no' | translate }}" (onClick)="enablePopupVisible = false">
+      </dx-button>
+    </div>
+  </div>
+
+</dx-popup>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

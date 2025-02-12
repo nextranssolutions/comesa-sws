@@ -20,4 +20,3 @@ export class DistrictsComponent {
 
   }
 }
-// par_districts
