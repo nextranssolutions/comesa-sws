@@ -105,8 +105,16 @@
                             <div class="row">
 
                                 <div class="col-lg-6">
-                                    <label>{{'traderaccount_type' | translate}}</label>
+                                    <label>{{'account_type' | translate}}</label>
                                     <dx-select-box [dataSource]="userAccountTypeData"
+                                        formControlName="account_type_id" valueExpr="id" displayExpr="name"
+                                        [readOnly]="is_readonly" [searchEnabled]="true">
+                                    </dx-select-box>
+                                </div>
+
+                                <div class="col-lg-6">
+                                    <label>{{'traderaccount_type' | translate}}</label>
+                                    <dx-select-box [dataSource]="traderAccountTypeData"
                                         formControlName="traderaccount_type_id" valueExpr="id" displayExpr="name"
                                         [readOnly]="is_readonly" [searchEnabled]="true">
                                     </dx-select-box>
