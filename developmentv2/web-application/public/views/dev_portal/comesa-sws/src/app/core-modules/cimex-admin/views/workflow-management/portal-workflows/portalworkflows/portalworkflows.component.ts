@@ -18,7 +18,7 @@ export class PortalworkflowsComponent {
   table_name: string;
   parameter_name: string;
   resetcolumns: string;
-  workflowTransitionVisible:boolean;
+  workflowTransitionVisible: boolean;
   show_advancesearch: boolean;
   workflowItemsFrm: FormGroup
   onAddWorkFlowItemVisible: boolean;
@@ -36,8 +36,8 @@ export class PortalworkflowsComponent {
   enableWorkflowTransitionPopupVisible: boolean;
   enabledisable_workflow_transition: string;
   enabledisable_workflowtansitiondescription: string;
-  
-  
+
+
 
   deletePopupVisible = false;
   workflowDetailsVisible = false;
@@ -104,7 +104,7 @@ export class PortalworkflowsComponent {
   stylingModes: DxTabPanelTypes.TabsStyle[] = ['primary', 'secondary'];
   stylingMode: DxTabPanelTypes.TabsStyle = this.stylingModes[0];
   screenWidth: any;
-  workflowTransitionFrm:FormGroup;
+  workflowTransitionFrm: FormGroup;
 
   actionsMenuItems = [
     {
@@ -130,7 +130,7 @@ export class PortalworkflowsComponent {
         { text: "Enable/Disable", action: 'enable_record', icon: 'fa fa-check' },
       ]
     }
-  ];applicationStatusesData:any;
+  ]; applicationStatusesData: any;
   constructor(
     public utilityService: UtilityService,
     public toastr: ToastrService,
@@ -153,7 +153,7 @@ export class PortalworkflowsComponent {
       nextworkflow_status_id: new FormControl('', Validators.compose([])),
       workflowprocess_id: new FormControl('', Validators.compose([])),
     });
-  
+
     this.workflowItemsFrm = new FormGroup({
       id: new FormControl('', Validators.compose([])),
       name: new FormControl('', Validators.compose([])),
@@ -180,7 +180,7 @@ export class PortalworkflowsComponent {
       // regulated_productstype_id: new FormControl('', Validators.compose([])),
       process_category_id: new FormControl('', Validators.compose([])),
       regulated_productstype_id: new FormControl('', Validators.compose([])),
-      workflow_interface_id : new FormControl('', Validators.compose([])),
+      workflow_interface_id: new FormControl('', Validators.compose([])),
     });
 
     this.workflowStagesFrm = new FormGroup({
@@ -191,12 +191,12 @@ export class PortalworkflowsComponent {
       order_no: new FormControl('', Validators.compose([])),
       workflowprocess_id: new FormControl('', Validators.compose([])),
       stage_status_id: new FormControl('', Validators.compose([])),
-      workflow_interface_id : new FormControl('', Validators.compose([])),
-      application_status_id : new FormControl('', Validators.compose([]))
+      workflow_interface_id: new FormControl('', Validators.compose([])),
+      application_status_id: new FormControl('', Validators.compose([]))
     });
   }
   ngOnInit() {
-   
+
     this.fetchapplicationStatusesData();
 
     this.fetchWorkflowItemsDetails();
@@ -214,7 +214,7 @@ export class PortalworkflowsComponent {
     this.onLoadStageStatusData();
     this.onLoadProcessTypesData();
     this.onLoadProcessCategoryData();
-    
+
 
   }
   @HostListener('window:resize', ['$event'])
@@ -264,8 +264,8 @@ export class PortalworkflowsComponent {
     this.show_advancesearch = e.value;
 
   }
-  
-  fetchapplicationStatusesData(){
+
+  fetchapplicationStatusesData() {
 
     var data_submit = {
       'table_name': 'ptl_application_statuses'
@@ -342,7 +342,7 @@ export class PortalworkflowsComponent {
 
   }
 
- 
+
   onRegulatoryFunctionChange($event) {
     if ($event.selectedItem) {
       let regulatory_function = $event.selectedItem;
@@ -450,7 +450,7 @@ export class PortalworkflowsComponent {
     this.spinnerShow('Loading Workflow Transition Details');
     var data_submit = {
       'table_name': 'ptl_workflowprocesses_transitions',
-      workflowprocess_id:workflowprocess_id
+      workflowprocess_id: workflowprocess_id
     }
     this.workflowService.getPortalWorkflowsConfigs(data_submit)
       .subscribe(
@@ -595,7 +595,7 @@ export class PortalworkflowsComponent {
 
   }
 
-  
+
   onFuncSaveWorlflowStageTransitionData() {
 
 
@@ -624,7 +624,7 @@ export class PortalworkflowsComponent {
           this.response = response;
           //the details 
           if (this.response.success) {
-            this.fetchWorkflowTransitionsDetails(this.workflowprocess_id) 
+            this.fetchWorkflowTransitionsDetails(this.workflowprocess_id)
             this.workflowTransitionVisible = false;
             this.toastr.success(this.response.message, 'Response');
             this.spinnerHide();
@@ -772,7 +772,7 @@ export class PortalworkflowsComponent {
     this.workflowItemsFrm.patchValue(data.data);
     this.config_record = data.data.name;
     this.deletePopupVisible = true;
-    
+
   }
 
   funcDeleteWorkflowStageDetails(data) {
@@ -781,7 +781,6 @@ export class PortalworkflowsComponent {
     this.deleteWorkflowStagePopupVisible = true;
     this.workflowStagesFrm.get('table_name')?.setValue('ptl_workflowprocesses_stages');
     this.workflowStagesFrm.get('workflowprocess_id')?.setValue(this.workflowprocess_id);
-    console.log(data);
   }
   funcWorkflowDetails(data) {
 
@@ -790,7 +789,7 @@ export class PortalworkflowsComponent {
     this.workflowTransitionFrm.patchValue(data.data);
     this.config_record = data.data.name;
     this.deleteWorkflowTransitionsPopupVisible = true;
-    
+
   }
 
 
@@ -803,7 +802,7 @@ export class PortalworkflowsComponent {
       this.funcDeleteTransitionsDetails(data);
     } else if (action_btn.action === 'enable_record') {
       this.funcEnableTransitionsDetails(data);
-    } 
+    }
   }
 
   funcStageActionClick(e, data) {
@@ -812,7 +811,7 @@ export class PortalworkflowsComponent {
       this.funcEditStageDetails(data);
     } else if (action_btn.action === 'delete_record') {
       this.funcDeleteWorkflowStageDetails(data);
-    }else if (action_btn.action === 'enable_record') {
+    } else if (action_btn.action === 'enable_record') {
       this.funcEnableDisableStageRecord(data);
     }
   }
@@ -822,7 +821,7 @@ export class PortalworkflowsComponent {
       this.funcEditWorkflowProcessDetails(data);
     } else if (action_btn.action === 'delete_record') {
       this.funcDeleteDetails(data);
-    }else if (action_btn.action === 'enable_record') {
+    } else if (action_btn.action === 'enable_record') {
       this.funcEnableDisableRecord(data);
     } else if (action_btn.action === 'block_record') {
       this.funcDeleteDetails(data);
@@ -903,7 +902,7 @@ export class PortalworkflowsComponent {
 
     this.enableWorkflowTransitionPopupVisible = true;
   }
-  
+
   iniateEnableDisableWorkflowRecord() {
 
     this.spinnerShow('Saving_details');
@@ -956,7 +955,7 @@ export class PortalworkflowsComponent {
         });
   }
 
-  
+
 
 
   funcEnableDisableRecord(data) {
@@ -978,10 +977,10 @@ export class PortalworkflowsComponent {
     this.enableWorkflowPopupVisible = true;
   }
 
-  
-  
-  
- 
+
+
+
+
 
   onCellPrepared(e) {
     this.utilityService.onCellCountriesPrepared(e);
@@ -1011,11 +1010,11 @@ export class PortalworkflowsComponent {
         });
 
   }
-  
+
   onDeleteItem(itemForm: any, tableName: string, parameterName: string, serviceMethod: Function, fetchItems: Function): void {
     // Show spinner with dynamic parameter name
     this.spinnerShow('Deleting ' + parameterName);
-  
+
     // Perform deletion operation
     serviceMethod(itemForm.value, tableName, parameterName).subscribe(
       response => {
@@ -1038,13 +1037,13 @@ export class PortalworkflowsComponent {
   }
   onDeleteWorkflowStage(): void {
     this.onDeleteItem(
-      this.workflowStagesFrm, 
-      'ptl_workflowprocesses_stages', 
-      'Workflow Stage', 
-      this.workflowService.onDeletePortalWorkflowsDetails, 
+      this.workflowStagesFrm,
+      'ptl_workflowprocesses_stages',
+      'Workflow Stage',
+      this.workflowService.onDeletePortalWorkflowsDetails,
       this.fetchWorkflowStageActionsDetails
     );
-  }  
+  }
   // onDeleteWorkflowStageDetails() {
   //   this.spinnerShow('deleting ' + this.parameter_name);
 
@@ -1063,8 +1062,8 @@ export class PortalworkflowsComponent {
 
   onDeleteWorkflowStageDetails() {
     this.spinnerShow('deleting ' + this.parameter_name);
-    this.workflowStagesFrm.get('table_name')?.setValue('ptl_workflowprocesses_stages');  
-    this.workflowService.onDeletePortalWorkflowsDetails( this.workflowStagesFrm.value,'ptl_workflowprocesses_stages', this.parameter_name)
+    this.workflowStagesFrm.get('table_name')?.setValue('ptl_workflowprocesses_stages');
+    this.workflowService.onDeletePortalWorkflowsDetails(this.workflowStagesFrm.value, 'ptl_workflowprocesses_stages', this.parameter_name)
       .subscribe(
         response => {
 
@@ -1154,15 +1153,15 @@ export class PortalworkflowsComponent {
   onUpdateWorkflowsSubmit() {
 
   }
-  onAddWorkFlowTransition(){
+  onAddWorkFlowTransition() {
     this.workflowTransitionFrm.reset();
     this.workflowTransitionVisible = true;
 
-    
+
     this.workflowTransitionFrm.get('table_name')?.setValue('ptl_workflowprocesses_transitions');
     this.workflowTransitionFrm.get('workflowprocess_id')?.setValue(this.workflowprocess_id);
-   }
-   funcEditWorkflowTransitionDetails(data) {
+  }
+  funcEditWorkflowTransitionDetails(data) {
     this.workflowTransitionFrm.reset();
     this.workflowTransitionVisible = true
     this.workflowTransitionFrm.patchValue(data.data);

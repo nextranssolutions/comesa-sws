@@ -15,8 +15,8 @@ import { UtilityService } from 'src/app/core-services/utilities/utility.service'
   styleUrl: './sharedhscodes-configurations.component.css'
 })
 export class SharedhscodesConfigurationsComponent {
-@Input() table_name: string;
-@Input() parameter_name: string;
+  @Input() table_name: string;
+  @Input() parameter_name: string;
   hasReadpermissions: boolean;
   createNewDataFrm: FormGroup;
   onAddNewConfiVisible: boolean;
@@ -68,22 +68,22 @@ export class SharedhscodesConfigurationsComponent {
   ) {
 
 
-      this.createNewDataFrm = new FormGroup({
-        id: new FormControl('', Validators.compose([])),
-        name: new FormControl('', Validators.compose([Validators.required])),
-        description: new FormControl('', Validators.compose([Validators.required])),
-        is_enabled: new FormControl('', Validators.compose([])),
-        hscode: new FormControl('', Validators.compose([])),
-        chapters_defination_id: new FormControl('', Validators.compose([])),
-        heading_definations_id: new FormControl('', Validators.compose([])),
-        subheading_definations_id: new FormControl('', Validators.compose([])),
-        tariff_code: new FormControl('', Validators.compose([])),
-        country_code: new FormControl('', Validators.compose([])),
-        tariff_rate: new FormControl('', Validators.compose([])),    
-        code: new FormControl('', Validators.compose([])),
-      });
-    
-  
+    this.createNewDataFrm = new FormGroup({
+      id: new FormControl('', Validators.compose([])),
+      name: new FormControl('', Validators.compose([Validators.required])),
+      description: new FormControl('', Validators.compose([Validators.required])),
+      is_enabled: new FormControl('', Validators.compose([])),
+      hscode: new FormControl('', Validators.compose([])),
+      chapters_defination_id: new FormControl('', Validators.compose([])),
+      heading_definations_id: new FormControl('', Validators.compose([])),
+      subheading_definations_id: new FormControl('', Validators.compose([])),
+      tariff_code: new FormControl('', Validators.compose([])),
+      country_code: new FormControl('', Validators.compose([])),
+      tariff_rate: new FormControl('', Validators.compose([])),
+      code: new FormControl('', Validators.compose([])),
+    });
+
+
 
   }
 
@@ -91,18 +91,18 @@ export class SharedhscodesConfigurationsComponent {
     this.fetchNewConfigData();
     this.fetchChapterDefinationData();
     this.fetchNewConfigurations();
-    this. fetchHeadingDefinationData();
+    this.fetchHeadingDefinationData();
     this.fetchSubHeadingDefinationData()
-    }
+  }
 
-    spinnerShow(spinnerMessage) {
-      this.loadingVisible = true;
-      this.spinnerMessage = spinnerMessage;
-    }
-    spinnerHide() {
-      this.loadingVisible = false;
-    }
-  
+  spinnerShow(spinnerMessage) {
+    this.loadingVisible = true;
+    this.spinnerMessage = spinnerMessage;
+  }
+  spinnerHide() {
+    this.loadingVisible = false;
+  }
+
   resetcolumns(resetcolumns: any) {
     throw new Error('Method not implemented.');
   }
@@ -156,7 +156,7 @@ export class SharedhscodesConfigurationsComponent {
           this.response = response;
           //the details 
           if (this.response.success) {
-            this. fetchNewConfigurations();
+            this.fetchNewConfigurations();
             this.onAddNewConfiVisible = false;
             this.toastr.success(this.response.message, 'Response');
 
@@ -171,7 +171,7 @@ export class SharedhscodesConfigurationsComponent {
         });
   }
 
-  
+
   fetchNewConfigData() {
 
     var data_submit = {
@@ -197,7 +197,7 @@ export class SharedhscodesConfigurationsComponent {
     var data_submit = {
       'table_name': 'par_hscodechapters_defination'
     }
-    
+
     this.configService.onLoadConfigurationData(data_submit)
       .subscribe(
         data => {
@@ -205,14 +205,13 @@ export class SharedhscodesConfigurationsComponent {
           if (this.data_record.success) {
             this.chapterDefinationData = this.data_record.data
           }
-          console.log(data);
         },
         error => {
 
         });
   }
 
-  fetchHeadingDefinationData(){
+  fetchHeadingDefinationData() {
 
     var data_submit = {
       'table_name': 'par_hscodesheading_definations'
@@ -230,7 +229,7 @@ export class SharedhscodesConfigurationsComponent {
         });
   }
 
-  fetchSubHeadingDefinationData(){
+  fetchSubHeadingDefinationData() {
 
     var data_submit = {
       'table_name': 'par_hscodessubheading_defination'
@@ -247,7 +246,7 @@ export class SharedhscodesConfigurationsComponent {
 
         });
   }
-  
+
   funcpopWidth(percentage_width) {
     return window.innerWidth * percentage_width / 100;
   }
@@ -324,7 +323,7 @@ export class SharedhscodesConfigurationsComponent {
         });
   }
 
-  
+
   onAdvanceProductRegistrySearch(e) {
     e.toolbarOptions.items.unshift({
       location: 'after',
@@ -372,14 +371,14 @@ export class SharedhscodesConfigurationsComponent {
 
 
 
-    onExporting(e: DxDataGridTypes.ExportingEvent) {
-  
-      if (e.format == 'pdf') {
-        this.reportingAnalytics.onExportingPDF(e)
-      }
-      else {
-        this.reportingAnalytics.onExportingExcelData(e)
-      }
+  onExporting(e: DxDataGridTypes.ExportingEvent) {
+
+    if (e.format == 'pdf') {
+      this.reportingAnalytics.onExportingPDF(e)
     }
+    else {
+      this.reportingAnalytics.onExportingExcelData(e)
+    }
+  }
 }
 

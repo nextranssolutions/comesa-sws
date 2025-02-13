@@ -13,23 +13,23 @@ import { AppSettings } from 'src/app/app-settings';
   providedIn: 'root'
 })
 export class AuthenticationService {
-  isLoggedIn: boolean = false; 
+  isLoggedIn: boolean = false;
   userCountryOfOrigin: string;
   userData: any;
-  config:any;
+  config: any;
   base_url: string;
-  userGroupId:number;
+  userGroupId: number;
   constructor(
     private spinner: SpinnerVisibilityService,
     private router: Router,
     public toastr: ToastrService,
-    private http: HttpClient 
+    private http: HttpClient
   ) {
 
     // this.base_url = AppSettings.base_url;
     this.userData = localStorage.getItem('user');
     this.userData = JSON.parse(this.userData);
-    this.base_url = AppSettings.base_url+ '/api/authentication';
+    this.base_url = AppSettings.base_url + '/api/authentication';
   }
   scrollToTop(): void {
     window.scrollTo({
@@ -69,14 +69,14 @@ export class AuthenticationService {
   //     responseType: 'text'
   //   };
   //   let user = this.getUserDetails();
-    
+
   //   localStorage.removeItem("LoggedInUser");
   //   localStorage.clear(); //usr_loggedin_id
   //   return this.http.post(this.base_url + '/funcUserLogOut', {usr_loggedin_id: user.usr_loggedin_id, email_address: user.email_address, userId:user.userId }, headers)
   //     .pipe(map(data => {
   //       localStorage.removeItem("LoggedInUser");
   //       localStorage.clear();
-        
+
   //       this.router.navigate(["../"]);
   //        this.scrollToTop();
 
@@ -89,11 +89,11 @@ export class AuthenticationService {
     this.spinner.show();
     const headers = new HttpHeaders({ "Accept": "application/json" });
     const user = this.getUserDetails();
-  
-    return this.http.post(this.base_url + '/funcUserLogOut', { 
-      usr_loggedin_id: user.usr_loggedin_id, 
-      email_address: user.email_address, 
-      userId: user.userId 
+
+    return this.http.post(this.base_url + '/funcUserLogOut', {
+      usr_loggedin_id: user.usr_loggedin_id,
+      email_address: user.email_address,
+      userId: user.userId
     }, { headers, responseType: 'text' as 'json' })
       .pipe(
         map(() => {
@@ -108,13 +108,13 @@ export class AuthenticationService {
         tap(() => this.spinner.hide())
       ).subscribe();
   }
-  
+
   clearSession() {
     localStorage.clear();
     this.isLoggedIn = false;
     this.toastr.success('Logged out successfully');
   }
-  
+
   onFuncChangePassword(data) {
 
     const httpHeaders: HttpHeaders = new HttpHeaders({
@@ -136,7 +136,7 @@ export class AuthenticationService {
       "Authorization": "Bearer " + this.getAccessToken(),
     });// Step 2
     const options = { params: { 'recover': '' }, headers: httpHeaders };
-    return this.http.post(this.base_url  + '/onFuncRecoverPasswordRequest', data, options)
+    return this.http.post(this.base_url + '/onFuncRecoverPasswordRequest', data, options)
       .pipe(map(data => {
         return data;
       }));
@@ -152,7 +152,7 @@ export class AuthenticationService {
 
     }
   }
-  login(email_address: string, password: string, otp_value:number) {
+  login(email_address: string, password: string, otp_value: number) {
     // var user_password = this.EncrDecr.set(AppSettings.encryptSecretKey, user_password);
     var headers: Object = {
       headers: new HttpHeaders({
@@ -166,8 +166,8 @@ export class AuthenticationService {
         otp_value: otp_value
       }, headers
     ).pipe(map(user => {
-        return user;
-      }));
+      return user;
+    }));
   }
   storeToken(token: string) {
     localStorage.setItem('token', token);
@@ -278,7 +278,7 @@ export class AuthenticationService {
       // Example: this.currentUser = this.decodeToken(token);
       // ...
     }
-    else{
+    else {
       return this.isLoggedIn = false;
     }
   }
@@ -315,7 +315,7 @@ export class AuthenticationService {
         // For example, log out the user or handle the error as needed
         console.error('Token refresh failed:', error);
         // Perform logout or any other necessary action
-       
+
         return of(error); // Return an observable with the error
       })
     );
@@ -399,7 +399,7 @@ export class AuthenticationService {
   requestToken() {
     // Simulate token request logic
     this.tokenRequestCount++;
-    
+
     // Here you would typically make an HTTP request to your backend
     // to request a verification token.
   }
