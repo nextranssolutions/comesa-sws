@@ -568,10 +568,7 @@ import { SharedhscodesConfigurationsComponent } from './views/configurations/hsc
     GmdnCodesComponent,
     ProductconfigurationsSetupComponent,
     SharedproductConfigurationsComponent,
-  
-
     AppWorkflowactiontypesComponent,
-   
     SystemmanualConfigurationComponent,
     SigninSignupGuidelinesComponent,
     TermsconditionsDetailsComponent,

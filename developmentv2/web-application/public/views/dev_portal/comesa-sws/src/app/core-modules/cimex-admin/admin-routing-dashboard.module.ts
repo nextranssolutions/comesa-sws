@@ -878,7 +878,6 @@ const routes: Routes = [{
     path: 'app-external-dashboard',
     component: ExternalDashboardComponent
   },
-
   {
     path: 'app-app-sections',
     component: AppSectionsComponent
