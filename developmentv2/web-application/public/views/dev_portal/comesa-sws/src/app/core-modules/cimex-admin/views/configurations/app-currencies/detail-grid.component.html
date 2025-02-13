@@ -3,10 +3,10 @@
   [showBorders]="true"
   [columnAutoWidth]="true"
 >
-  <dxi-column dataField="Subject" dataType="string"></dxi-column>
-  <dxi-column dataField="StartDate" dataType="date"></dxi-column>
-  <dxi-column dataField="DueDate" dataType="date"></dxi-column>
-  <dxi-column dataField="Priority" dataType="string"></dxi-column>
+  <dxi-column dataField="Subject" dataType="string" caption="{{ 'subject' | translate }}"></dxi-column>
+  <dxi-column dataField="StartDate" dataType="date" caption="{{ 'startdate' | translate }}"></dxi-column>
+  <dxi-column dataField="DueDate" dataType="date" caption="{{ 'duedate' | translate }}"></dxi-column>
+  <dxi-column dataField="Priority" dataType="string" caption="{{ 'priority' | translate }}"></dxi-column>
   <dxi-column
     caption="Completed"
     dataType="boolean"

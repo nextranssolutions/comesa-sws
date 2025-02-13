@@ -591,4 +591,83 @@ class ConfigurationsController extends Controller
         return response()->json($res);
     } 
 
+
+
+    public function getUniformSectionApplicationProcess(Request $req)
+    {
+        try {
+            $app_data = array();
+            $regulatory_subfunction_id = $req->regulatory_subfunction_id;
+            $regulatory_function_id = $req->regulatory_function_id;
+            $appsubmissions_type_id = $req->appsubmissions_type_id;
+
+            // Qualify ambiguous columns with table aliases
+            $filter = array('t1.regulatory_subfunction_id' => $regulatory_subfunction_id);
+            if (validateIsNumeric($appsubmissions_type_id)) {
+                $filter['t1.appsubmissions_type_id'] = $appsubmissions_type_id;
+            }
+            if (!validateIsNumeric($regulatory_function_id)) {
+                $submodule_data = getTableData('par_regulatory_subfunctions', array('id' => $regulatory_subfunction_id));
+                $regulatory_function_id = $submodule_data->regulatory_function_id;
+            }
+
+            $data = DB::table('wf_workflows as t1')
+                ->join('wf_workflow_stages as t2', 't2.workflow_id', 't1.id')
+                ->join('wf_workflow_interfaces as t3', 't3.id', 't2.interface_id')
+                ->select(
+                    't1.*',
+                    't2.id as workflowprocess_stage_id',
+                    't2.name as workflowprocess_stage',
+                    't3.routerlink as router_link'
+                )
+                ->where($filter)
+                ->where('t2.stage_status_id', 1) // Qualified column
+                ->first();
+            // Process application data
+            if ($data) {
+                $app_data['process_infor'] = $data;
+
+                $form_fields = getApplicationGeneralFormsFields($req);
+                $app_data['application_form'] = $form_fields;
+
+                // Additional data entry forms based on regulatory function
+                switch ($regulatory_function_id) {
+                    case 1: // Product registration
+                        $app_data['product_ingredients'] = getApplicationDataEntryFormsFields($req, 2);
+                        $app_data['product_packaging'] = getApplicationDataEntryFormsFields($req, 7);
+                        $app_data['product_manufacturer_information'] = getApplicationDataEntryFormsFields($req, 8);
+                        $app_data['product_nutrients'] = getApplicationDataEntryFormsFields($req, 1);
+                        $app_data['manufacturer_information'] = getApplicationDataEntryFormsFields($req, 10);
+                        $app_data['gmp_inspection'] = getApplicationDataEntryFormsFields($req, 1);
+                        $app_data['product_general_information'] = getApplicationDataEntryFormsFields($req, 11);
+                        $app_data['product_inspection_status'] = getApplicationDataEntryFormsFields($req, 12);
+                        break;
+                    case 2: // Business operations
+                        $app_data['personnel_information'] = getApplicationDataEntryFormsFields($req, 1);
+                        $app_data['business_operations'] = getApplicationDataEntryFormsFields($req, 2);
+                        $app_data['storelocations'] = getApplicationDataEntryFormsFields($req, 4);
+                        break;
+                    case 3:
+                        // Additional cases can be handled here
+                        break;
+                    case 4:
+                        // Additional cases can be handled here
+                        break;
+                    default:
+                        // Handle other cases
+                        break;
+                }
+                $res = array('success' => true, 'data' => $app_data);
+            } else {
+                $res = array('success' => false, 'message' => 'The specified Module Not Mapped');
+            }
+        } catch (\Exception $exception) {
+            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        } catch (\Throwable $throwable) {
+            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        }
+
+        return response()->json($res);
+    }
+
 }
