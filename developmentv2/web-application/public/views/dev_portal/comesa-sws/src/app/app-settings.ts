@@ -35,7 +35,7 @@ export class AppSettings {
   public static siteKey = "6LdIjbsUAAAAAOhQtlHVuK8kpSdbBXAtX3K5pYQb";
   public static system_title = 'COMESA IMPORT/EXPORT SYSTEM (cIMEX) ';
   public static system_website = '';
-  public static system_version = 'E-CRES 1.0';
+  public static system_version = 'cIMEX 1.0';
   public static session_timeoutcheck = 4800000;
   public static SecureKey = "CqCcUxA0fb9hFCASWtJCjpq4uhUY5mMN9noVgDlQ8Yg="
   public static idleTimeout = 6000;

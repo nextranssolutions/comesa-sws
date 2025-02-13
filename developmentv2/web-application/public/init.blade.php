@@ -5,7 +5,7 @@
 
 <head>
     <meta charset="utf-8">
-    <title>AUDA-NEPAD e-CRES</title>
+    <title>COMESA IMPORT/EXPORT SYSTEM (cIMEX)</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>COMESA IMPORT/EXPORT SYSTEM (cIMEX)</title>
