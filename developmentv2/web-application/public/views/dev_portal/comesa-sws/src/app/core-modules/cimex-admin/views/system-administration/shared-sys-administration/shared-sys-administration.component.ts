@@ -195,7 +195,7 @@ export class SharedSysAdministrationComponent {
           response => {
             this.response = response;
             if (this.response.success) {
-              this.fetchAppNavigationMenus(user_group_id);
+              // this.fetchAppNavigationMenus(user_group_id);
               
               this.toastr.success(this.response.message, 'Response');
               this.spinnerHide();
@@ -553,21 +553,21 @@ export class SharedSysAdministrationComponent {
 
         });
   }
-  fetchAppNavigationMenus(user_group_id) {
-    this.spinnerShow('Loading User Permissions Details');
-    this.admnistrationService.getAppUserGroupNavigationMenus(user_group_id).subscribe(
-      (data) => {
-        this.AppNavigationMenus = data;
-        this.spinnerHide();
+  // fetchAppNavigationMenus(user_group_id) {
+  //   this.spinnerShow('Loading User Permissions Details');
+  //   this.admnistrationService.getAppUserGroupNavigationMenus(user_group_id).subscribe(
+  //     (data) => {
+  //       this.AppNavigationMenus = data;
+  //       this.spinnerHide();
 
-        this.tabPanelPopupVisible = true;
-      },
-      (error) => {
-        console.error('Error fetching Navigation menu:', error);
-        this.spinnerHide();
-      }
-    );
-  }
+  //       this.tabPanelPopupVisible = true;
+  //     },
+  //     (error) => {
+  //       console.error('Error fetching Navigation menu:', error);
+  //       this.spinnerHide();
+  //     }
+  //   );
+  // }
   onUpdateUserPermissionSubmit() {
     // Gather values from the form
     const groupId = this.updateuserPermissionfrm.value.id;
@@ -579,7 +579,7 @@ export class SharedSysAdministrationComponent {
 
   funcEditPermissionDetails(data) {
     this.createNewDataFrm.patchValue(data.data);
-    this.fetchAppNavigationMenus(data.data.id)
+    // this.fetchAppNavigationMenus(data.data.id)
     this.user_group_id = data.data.id;
     this.fetchWorkflowPermissionData(data.data.id)
 
@@ -689,7 +689,7 @@ export class SharedSysAdministrationComponent {
             this.response = response;
             //the details 
             if (this.response.success) {
-              this.fetchAppNavigationMenus(user_group_id);
+              // this.fetchAppNavigationMenus(user_group_id);
 
               this.fetchWorkflowPermissionData(user_group_id)
               this.toastr.success(this.response.message, 'Response');

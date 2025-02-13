@@ -48,6 +48,7 @@ export class SharedNavigationsComponent {
   data_record: any;
   config_record: string;
   Countries: any;
+  AppAccountTypeData: any;
   loadingVisible = false;
   AppSystemInterfaceData: any;
   AppRegulatoryFunctionsData: any;
@@ -101,6 +102,7 @@ export class SharedNavigationsComponent {
         resetcolumns: new FormControl('', Validators.compose([])),
         regulatory_function_id: new FormControl('', Validators.compose([])),
         regulatory_subfunction_id: new FormControl('', Validators.compose([])),
+        account_type_id : new FormControl('', Validators.compose([])),
 
       });
     }
@@ -124,10 +126,11 @@ export class SharedNavigationsComponent {
     this.fetchNavigationItemsDetails();
     this.onLoadnavigationTypesData();
     this.onLoadnavigationLevelsData();
+    
     this.onloadworkflowData();
     if (this.table_name == 'wf_navigation_items') {
       this.fetchAppNavigationMenus();
-      
+      this.onLoadAccountTypeData();
       this.onLoadAppSystemInterfaceData();
       this.onLoadAppRegulatoryFunctionsData();
       this.onLoadAppRegulatorySubFunctionsData();
@@ -193,6 +196,25 @@ export class SharedNavigationsComponent {
         });
 
   }
+  onLoadAccountTypeData() {
+    var data_submit = {
+      'table_name': 'sys_account_types'
+    }
+    this.workflowService.getWorkflowConfigs(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.AppAccountTypeData = this.data_record.data;
+          }
+        },
+        error => {
+
+        });
+
+  }
+
+  
 
   onloadworkflowData() {
     var data_submit = {

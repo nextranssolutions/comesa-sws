@@ -204,7 +204,7 @@ export class WorkflowsComponent {
     public workflowService: WokflowManagementService,
     public reportingAnalytics: ReportsService,
   ) {
-    this.table_name = 'wkf_workflows';
+    this.table_name = 'wf_workflows';
     this.parameter_name = "workflows";
     this.checkScreenSize();
      
@@ -244,7 +244,7 @@ ngOnInit() {
     code: new FormControl('', Validators.compose([])),
     order_no: new FormControl('', Validators.compose([])),
     workflow_id: new FormControl('', Validators.compose([])),
-    stage_status: new FormControl('', Validators.compose([])),
+    stage_status_id: new FormControl('', Validators.compose([])),
     stage_category_id: new FormControl('', Validators.compose([])),
     needs_responsible_user: new FormControl('', Validators.compose([])),
     regulatory_function_id: new FormControl('', Validators.compose([])),
@@ -253,24 +253,7 @@ ngOnInit() {
     interface_id: new FormControl('', Validators.compose([])),
     process_category_id: new FormControl('', Validators.compose([])),
    
-    // is_general: new FormControl('', Validators.compose([])),
-    // is_manager_query: new FormControl('', Validators.compose([])),
-    // is_manager_precheckingquery: new FormControl('', Validators.compose([])),
-    // is_manager_query_response: new FormControl('', Validators.compose([])),
-    // is_screeningquery_response: new FormControl('', Validators.compose([])),
-    // is_portalapp_initialstage: new FormControl('', Validators.compose([])),
-    
-    // is_inspection: new FormControl('', Validators.compose([])),
-    // is_inspassessment_stage: new FormControl('', Validators.compose([])),
-    
-    // is_reinspectionintial: new FormControl('', Validators.compose([])),
-  
-    // appdismissal_allowed: new FormControl('', Validators.compose([])),
 
-    // servicedelivery_timeline: new FormControl('', Validators.compose([])),
-    // is_caparesponseinitial:new FormControl('', Validators.compose([])),
- 
-    // stage_status_id: new FormControl('', Validators.compose([])),
     
   });
  
@@ -320,6 +303,7 @@ ngOnInit() {
     checklist_category_id: new FormControl('', Validators.compose([])),
     is_to_portal: new FormControl('', Validators.compose([])),
     needs_directive: new FormControl('', Validators.compose([])),
+    workflow_id:new FormControl('', Validators.compose([])),
   });
 
   
@@ -382,7 +366,7 @@ onAddWorkFlowTransition(){
  this.workflowTransitionFrm.reset();
  this.workflowTransitionVisible = true;
 
- this.workflowTransitionFrm.get('table_name')?.setValue('wkf_workflow_transitions');
+ this.workflowTransitionFrm.get('table_name')?.setValue('wf_workflow_transitions');
  this.workflowTransitionFrm.get('workflow_id')?.setValue(this.workflow_id);
 }
 
@@ -468,7 +452,7 @@ fetchWorkflowStagesDetails(workflow_id) {
 fetchWorkflowStagesInfo(workflow_id) {
   this.spinnerShow('Loading Workflow Stages Details');
   var data_submit = {
-    'table_name': 'wkf_workflow_stages',
+    'table_name': 'wf_workflow_stages',
     workflow_id: workflow_id
   }
   this.workflowService.getWorkflowConfigs(data_submit)
@@ -486,7 +470,7 @@ fetchWorkflowStagesInfo(workflow_id) {
 fetchWorkflowStageActionsDetails(workflow_id) {
   this.spinnerShow('Loading Workflow Stages Details');
   var data_submit = {
-    'table_name': 'wkf_workflow_actions',
+    'table_name': 'wf_workflow_actions',
     workflow_id: workflow_id
   }
   this.workflowService.getWorkflowConfigs(data_submit)
@@ -502,21 +486,7 @@ fetchWorkflowStageActionsDetails(workflow_id) {
 
 }
 
-// fetchWorkflowStageActionsDetails(workflow_id) {
-//   this.spinnerShow('Loading Workflow Stages Details');
-//   this.workflowService.getAppWorkflowStageActions(workflow_id)
-//   .subscribe(
-//     data => {
-//       ;
-//       this.data_record = data;
-//       if (this.data_record.success) {
-//         this.workflowStageActionsData = this.data_record.data;
-//       }
-//     });
-//     this.spinnerHide();
-  
 
-// }
 
 fetchWorkflowTransitionsDetails(workflow_id) {
   this.spinnerShow('Loading Workflow Stages Details');
@@ -637,7 +607,7 @@ onLoadworkflowStageStatusesData() {
 
 onLoadappWorkflowStatusData() {
   var data_submit = {
-    'table_name': 'wkf_workflow_statuses',
+    'table_name': 'cfg_application_statuses',
     
   }
   this.workflowService.getWorkflowConfigs(data_submit)
@@ -656,7 +626,7 @@ onLoadappWorkflowStatusData() {
 
 onloadworkflowAllStageData() {
   var data_submit = {
-    'table_name': 'wkf_workflow_stages'
+    'table_name': 'wf_workflow_stages'
   }
   this.workflowService.getWorkflowConfigs(data_submit)
     .subscribe(
@@ -729,7 +699,7 @@ onLoadworkflowInterfaceData() {
 
 onLoadStageCategoryData() {
   var data_submit = {
-    'table_name': 'wkf_stage_categories',
+    'table_name': 'wf_stage_categories',
     // process_id: process_id
   }
   this.workflowService.getWorkflowConfigs(data_submit)
@@ -785,7 +755,7 @@ onLoadProcessTypesData() {
 
 onLoadProcessCategoryData() {
   var data_submit = {
-    'table_name': 'wkf_workflow_process_category',
+    'table_name': 'wf_workflow_process_category',
     // process_id: process_id
   }
   this.workflowService.getWorkflowConfigs(data_submit)
@@ -804,7 +774,7 @@ onLoadProcessCategoryData() {
 
 onLoadStageData() {
   var data_submit = {
-    'table_name': 'wkf_workflow_stages',
+    'table_name': 'wf_workflow_stages',
     // process_id: process_id
   }
   this.workflowService.getWorkflowConfigs(data_submit)
@@ -844,61 +814,6 @@ onLoadApplicationStatusData() {
 
 
 
-// onFuncSaveWorlflowData() {
-
-
-//   const formData = new FormData();
-//   const invalid = [];
-//   const controls = this.workflowItemsFrm.controls;
-//   for (const name in controls) {
-//     if (controls[name].invalid) {
-//       this.toastr.error('Fill In All Mandatory fields with (*), missing value on ' + name.replace('_id', ''), 'Alert');
-//       return;
-//     }
-//   }
-//   if (this.workflowItemsFrm.invalid) {
-//     return;
-//   }
-
-
-//   this.workflowItemsFrm.get('resetcolumns')?.setValue(this.resetcolumns);
-//   this.workflowItemsFrm.get('table_name')?.setValue(this.table_name);
-//   this.spinnerShow('Saving ' + this.parameter_name);
-//   this.action_url = 'onsaveWorkflowConfigData';
-
-//   this.spinner.show();
-
-//   this.workflowService.onSaveWorkflowDetailsDetails(this.table_name, this.workflowItemsFrm.value, this.action_url)
-//     .subscribe(
-//       response => {
-//         console.log(response)
-//         this.response = response;
-//         //the details 
-
-//         if (this.response.success) {
-
-//           this.fetchWorkflowItemsDetails();
-//           // this.onAddWorkFlowItemVisible = false;
-//           this.toastr.success(this.response.message, 'Response');
-//           // this.onAddWorkFlowItemVisible = false;
-// // console.log(this.response.record_id)
-//           this.workflow_id = this.response.record_id;
-//           // console.log(this.workflow_id)
-//           // this.workflowItemsFrm.get('id')?.setValue(this.workflow_id);
-         
-//           this.selectedTabIndex = 1;
-//           this.spinnerHide();
-//         } else {
-//           this.toastr.error(this.response.message, 'Alert');
-//           this.spinnerHide();
-//         }
-//         this.spinnerHide();
-//       },
-//       error => {
-//         this.toastr.error('Error Occurred', 'Alert');
-//         this.spinnerHide();
-//       });
-// }
 onFuncSaveWorlflowData() {
 
 
@@ -1060,7 +975,7 @@ onFuncSaveWorkflowStageDetailsData() {
 
   this.spinner.show();
 
-  this.workflowService.onSaveWorkflowDetailsDetails('wkf_workflow_stages', this.workflowStagesFrm.value, this.action_url)
+  this.workflowService.onSaveWorkflowDetailsDetails('wf_workflow_stages', this.workflowStagesFrm.value, this.action_url)
     .subscribe(
       response => {
         this.response = response;
@@ -1105,7 +1020,7 @@ onFuncSaveWorlflowStageActionData() {
 
   this.spinner.show();
 
-  this.workflowService.onSaveWorkflowDetailsDetails('wkf_workflow_actions', this.workflowStageActionsItemsFrm.value, this.action_url)
+  this.workflowService.onSaveWorkflowDetailsDetails('wf_workflow_actions', this.workflowStageActionsItemsFrm.value, this.action_url)
     .subscribe(
       response => {
         this.response = response;
@@ -1266,7 +1181,7 @@ funcEditTransitionDetails(data){
   this.workflowTransitionVisible = true
   this.workflowTransitionFrm.patchValue(data.data);
   
-  this.workflowTransitionFrm.get('table_name')?.setValue('wkf_workflow_transitions');
+  this.workflowTransitionFrm.get('table_name')?.setValue('wf_workflow_transitions');
   this.workflowTransitionFrm.get('workflow_id')?.setValue(this.workflow_id);
   
 }
@@ -1289,7 +1204,7 @@ this.workflowStagesFrm.reset();
 this.workflowStageDetailsVisible = true
 this.workflowStagesFrm.patchValue(data.data);
 
-this.workflowStagesFrm.get('table_name')?.setValue('wkf_workflow_stages');
+this.workflowStagesFrm.get('table_name')?.setValue('wf_workflow_stages');
 this.workflowStagesFrm.get('workflow_id')?.setValue(this.workflow_id);
 
 }
@@ -1310,7 +1225,7 @@ funcEditStageActions(data){
   this.workflowStageActionDetailsVisible = true
   this.workflowStageActionsItemsFrm.patchValue(data.data);
   
-  this.workflowStageActionsItemsFrm.get('table_name')?.setValue('wkf_workflow_stages');
+  this.workflowStageActionsItemsFrm.get('table_name')?.setValue('wf_workflow_actions');
   this.workflowStageActionsItemsFrm.get('workflow_id')?.setValue(this.workflow_id);
 }
 funcDeleteStageActions(data){
@@ -1330,7 +1245,7 @@ onCellPrepared(e) {
 }
 onDeleteWorkflowDetails() {
   this.spinnerShow('deleting ' + this.parameter_name);
-  this.workflowItemsFrm.get('table_name')?.setValue('wkf_workflows');
+  this.workflowItemsFrm.get('table_name')?.setValue('wf_workflows');
   this.workflowService.onDeleteWorkflowsDetails(this.workflowItemsFrm.value, this.table_name, this.parameter_name)
     .subscribe(
       response => {
@@ -1408,7 +1323,7 @@ onDeleteWorkflowTransitionDetails() {
 iniateEnableDisableRecord() {
  
   this.spinnerShow('Saving_details');
-  this.workflowItemsFrm.get('table_name')?.setValue('wkf_workflows');
+  this.workflowItemsFrm.get('table_name')?.setValue('wf_workflows');
   this.workflowService.onEnableWorkflowDetails(this.workflowItemsFrm.value, this.table_name, this.parameter_name)
     .subscribe(
       response => {
