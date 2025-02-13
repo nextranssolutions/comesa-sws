@@ -44,7 +44,7 @@ pipeline {
 
           ###### PRODUCTION OF ANGULAR SIDE ####################
           cd /var/www/comesaimpexpsolution/developmentv2/web-application/public/views/dev_portal/comesa-sws/src/app
-          npm install
+          npm install --legacy-peer-deps
           sed -i \'1s/development/production/\' app-settings.ts
           cd ../../
 
