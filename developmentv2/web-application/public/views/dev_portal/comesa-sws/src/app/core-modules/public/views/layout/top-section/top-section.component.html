@@ -1,10 +1,12 @@
 <div class="container-fluid bg-dark text-light px-0 py-2 topfirst-panel">
   <div class="top-bar d-flex justify-content-between align-items-center py-2 px-3">
     <div>
-      <label class="form-label mb-0 me-2 language-option">{{ 'select_language' | translate }}</label>
+      <label class="form-label mb-0 me-2 language-option">{{
+        "select_language" | translate
+        }}</label>
       <ng-container *ngFor="let language of translate.getLangs()">
-        <span class="language-option cursor-pointer " (click)="switchLang($event, language)"
-          [ngClass]="{'active-language': language === translate.currentLang}">
+        <span class="language-option cursor-pointer" (click)="switchLang($event, language)"
+          [ngClass]="{ 'active-language': language === translate.currentLang }">
           {{ language }} |
         </span>
       </ng-container>
@@ -13,35 +15,33 @@
     <div *ngIf="!authService.isLoggedIn"></div>
 
     <div *ngIf="authService.isLoggedIn" class="">
-      <span class="logged-in-text">{{ 'already_logged_in' | translate }}</span>
-      <span class="username">{{ 'username' | translate }} | {{userFirstName}}</span>
+      <span class="logged-in-text">{{ "already_logged_in" | translate }}</span>
+      <span class="username">{{ "username" | translate }} | {{ userFirstName }}</span>
       <span class="dashboard-link cursor-pointer language-option" (click)="funcRedirectToDashboard()">
-        <i class="fa fa-arrow-right"></i> {{ 'access_dashboard' | translate }}
+        <i class="fa fa-arrow-right"></i> {{ "access_dashboard" | translate }}
       </span>
       ||
       <span class="logout-link cursor-pointer language-option" (click)="funcUserLogOut()">
-        <i class="fa fa-sign-out"></i> {{ 'logout' | translate }}
+        <i class="fa fa-sign-out"></i> {{ "logout" | translate }}
       </span>
     </div>
 
     <div *ngIf="!authService.isLoggedIn" class="">
-
-      <span class="form-label cursor-pointer language-option" (click)="funcRedirectSignUp()">
-        <i class="fa fa-user-circle"></i> {{ 'create_account' | translate }}
+      <span class="form-label cursor-pointer language-option" (click)="openSignupPopup()">
+        <i class="fa fa-user-circle"></i> {{ "create_account" | translate }}
       </span>
+
       ||
-      <span class="form-label cursor-pointer language-option " (click)="funcRedirectSignIn()">
-        <i class="fa fas fa-sign-in-alt"></i> {{ 'sign-in' | translate }}
+      <span class="form-label cursor-pointer language-option" (click)="openSigninPopup()">
+        <i class="fa fas fa-sign-in-alt"></i> {{ "sign-in" | translate }}
       </span>
     </div>
   </div>
-
-
 </div>
 
 <div class="container-fluid topsecond-panel">
-  <div class="row gx-0 d-lg-flex align-items-center ">
-    <div class="col-lg-2  div-marginglogo">
+  <div class="row gx-0 d-lg-flex align-items-center">
+    <div class="col-lg-2 div-marginglogo">
       <div class="logo_container">
         <!-- Add logo here -->
       </div>
@@ -49,9 +49,170 @@
 
     <div class="col-lg-4 align-items-center">
       <span class="col-lg-12 system-title animated slideInDown">
-        {{'system_acronym' | translate}}
+        {{ "system_acronym" | translate }}
       </span>
-      <p class="col-lg-12 clstopsystem_title">({{'system_title' | translate}})</p>
+      <p class="col-lg-12 clstopsystem_title">
+        ({{ "system_title" | translate }})
+      </p>
     </div>
   </div>
 </div>
+
+<dx-popup [(visible)]="isSignupPopupVisible" [showTitle]="true" title="{{ 'create_account' | translate }}" [width]="550"
+  [height]="650" [dragEnabled]="true" [closeOnOutsideClick]="true">
+  <dx-form [formGroup]="signUpFrm" (ngSubmit)="submitSignup()">
+
+
+    <dxi-item dataField="{{ 'account_type' | translate }}" editorType="dxTextBox"
+      [editorOptions]="{ placeholder: '{select_account_type}' }">
+      <dx-select-box [dataSource]="userAccountTypeData" formControlName="account_type_id" valueExpr="id"
+        [searchEnabled]="true" displayExpr="name">
+      </dx-select-box>
+    </dxi-item>
+
+    <dxi-item dataField="{{ 'country' | translate }}" editorType="dxTextBox"
+      [editorOptions]="{ placeholder: '{select_country}' }">
+      <dx-select-box [dataSource]="Countries" formControlName="country_of_origin_id"
+        (onSelectionChanged)="onCountrySelection($event)" [showClearButton]="true" valueExpr="id" [searchEnabled]="true"
+        displayExpr="name">
+      </dx-select-box>
+    </dxi-item>
+    <dxi-item dataField="{{ 'name' | translate }}" editorType="dxTextBox">
+      <dx-text-box formControlName="name" placeholder="" [showClearButton]="true"></dx-text-box>
+    </dxi-item>
+    <dxi-item dataField="{{ 'email_addess' | translate }}" editorType="dxTextBox">
+      <dx-text-box formControlName="email_address" placeholder="" [showClearButton]="true"></dx-text-box>
+    </dxi-item>
+    <dxi-item dataField="phone_number" editorType="dxTextBox">
+      <dx-text-box formControlName="phone_number">
+      </dx-text-box>
+    </dxi-item>
+    <dxi-item dataField="{{ 'send_otp' | translate }}" editorType="dxTextBox">
+      <dx-button text="{{ 'send_otp' | translate }}" type="default" icon="fa fa-key"
+        [elementAttr]="{ id: 'elementId', class: 'col-lg-12' }" (onClick)="onSignUpOtpRequest()">
+      </dx-button>
+    </dxi-item>
+
+    <dxi-item dataField="{{ 'otp' | translate }}" editorType="dxTextBox"
+      [editorOptions]="{ placeholder: 'Enter your email' }">
+      <dx-number-box [step]="0" formControlName="otp_value" placeholder="OTP" [showClearButton]="true">
+        <dx-validator>
+          <dxi-validation-rule type="required" message="OTP is required"></dxi-validation-rule>
+        </dx-validator>
+      </dx-number-box>
+    </dxi-item>
+
+    <dxi-item>
+      <dx-button text="{{'sign_up' | translate}}" type="success" icon="fa fa-arrow-right"
+        [elementAttr]="{ id: 'elementId', class: 'col-lg-12' }" (onClick)="submitSignup()">
+      </dx-button>
+    </dxi-item>
+    <dxi-item>
+
+      <dx-button text="{{ 'already_have_an_account' | translate }}" type="default" icon="fa fa-arrow-right"
+        [elementAttr]="{ id: 'elementId', class: 'col-lg-12' }" (onClick)="openSigninPopup()">
+
+      </dx-button>
+    </dxi-item>
+    <dxi-item>
+      <span class="cursor-pointer mr-3 text-primary"><a href="javascript:void(0)" (click)="funcLostPassord()"
+          class="text-primary"><i class="fa fa-key"></i>
+          {{'lost_password' | translate}} </a></span>
+    </dxi-item>
+  </dx-form>
+</dx-popup>
+
+<dx-popup [(visible)]="isSigninPopupVisible" [showTitle]="true" title="{{ 'sign-in' | translate }}" [width]="550"
+  [height]="600" [dragEnabled]="true" [closeOnOutsideClick]="true">
+
+  <dx-form [formGroup]="signInFrm" (ngSubmit)="onSignIn()">
+
+    <!-- Email Address Field -->
+    <dxi-item dataField="email_address" editorType="dxTextBox">
+      <dx-text-box formControlName="email_address" placeholder="{{ 'enter_email_address' | translate }}"
+        [showClearButton]="true">
+      </dx-text-box>
+    </dxi-item>
+
+    <!-- Password Field with Toggle Button -->
+    <dxi-item dataField="password" editorType="dxSelectBox">
+      <dx-text-box formControlName="password" mode="password" placeholder="{{ 'password' | translate }}"
+        [showClearButton]="true" [inputAttr]="{ 'aria-label': 'Password' }" stylingMode="filled"
+        [(mode)]="passwordMode">
+        <dxi-button name="today" location="after" [options]="passwordButton"></dxi-button>
+      </dx-text-box>
+    </dxi-item>
+
+    <!-- Forgot Password Link -->
+    <dxi-item>
+      <span class="cursor-pointer mr-3 text-primary">
+        <a href="javascript:void(0)" (click)="funcLostPassord()" class="d-flex align-items-center">
+          <i class="fa fa-key mr-1"></i> {{ 'lost_password' | translate }}
+        </a>
+      </span>
+    </dxi-item>
+
+    <!-- Send OTP Button -->
+    <dxi-item dataField="send_otp" editorType="dxButtonBox">
+      <dx-button text="{{'send_otp' | translate}}" type="default" icon="fa fa-key"
+        [elementAttr]="{ id: 'elementId', class: 'col-lg-12' }" (onClick)="onOtpRequest()">
+      </dx-button>
+    </dxi-item>
+
+    <!-- OTP Input -->
+    <dxi-item dataField="otp" editorType="dxNumberBox">
+      <dx-number-box formControlName="otp_value" placeholder="OTP" [showClearButton]="true">
+        <dx-validator>
+          <dxi-validation-rule type="required" message="{{ 'otp_is_required' | translate }}"></dxi-validation-rule>
+        </dx-validator>
+      </dx-number-box>
+    </dxi-item>
+
+    <!-- Sign In Button -->
+    <dxi-item>
+      <dx-button text="{{'sign_in' | translate}}" type="default" icon="fas fa-sign-in-alt"
+        [elementAttr]="{ id: 'elementId', class: 'col-lg-12' }" (onClick)="onSignIn()">
+      </dx-button>
+    </dxi-item>
+
+    <!-- Create Account Link -->
+    <dxi-item>
+      <span class="cursor-pointer mr-3 text-primary">
+        <a href="javascript:void(0)" (click)="openSignupPopup()" class="d-flex">
+          <i class="fas fa-user-plus mr-1"></i> {{ 'create_account' | translate }}
+        </a>
+      </span>
+    </dxi-item>
+
+  </dx-form>
+</dx-popup>
+
+
+<dx-popup [(visible)]="islostpassword" [showTitle]="true" title="{{ 'password_recovery' | translate }}" [width]="550"
+  [height]="350" [dragEnabled]="false" [closeOnOutsideClick]="false">
+  <dx-form [formData]="forgotPasswordFrm" [colCount]="1">
+
+    <dxi-item dataField="email_address" editorType="dxTextBox">
+      <dx-text-box formControlName="email_address" placeholder="{{ 'enter_email_address' | translate }}"
+        [showClearButton]="true">
+      </dx-text-box>
+    </dxi-item>
+
+    <dxi-item>
+      <dx-button text="{{ 'request_password_recovery' | translate }}" type="default" icon="fa fa-key"
+        (onClick)="onFuncRecoverPasswordRequest()">
+      </dx-button>
+    </dxi-item>
+
+    <dxi-item>
+      <dx-button class="form-label cursor-pointer" (click)="openSigninPopup()" type="success">
+        <i class="fa fa-arrow-left"></i> {{ 'back_to_login' | translate }}
+      </dx-button>
+    </dxi-item>
+
+  </dx-form>
+</dx-popup>
+
+<dx-load-panel #loadPanel shadingColor="rgba(0,0,0,0.4)" [position]="{ of: '#employee' }" [(visible)]="loadingVisible"
+  [showIndicator]="true" [showPane]="true" [shading]="true" [message]="spinnerMessage" [hideOnOutsideClick]="false">
+</dx-load-panel>

@@ -280,7 +280,7 @@ class UserManagementController extends Controller
             $res = ['success' => false, 'message' => 'Trader information updated.'];
 
             // Check if record exists in the database
-            $existingRecord = DB::table('txn_trader_account')
+            $existingRecord = DB::table('tra_trader_account')
                 // ->where('email_address', aes_encrypt($email_address))
                 ->where('id', $record_id)
                 ->exists();
@@ -289,7 +289,7 @@ class UserManagementController extends Controller
                 ->exists();
 
             if ($existingRecord) {
-                $table_name = 'txn_trader_account';
+                $table_name = 'tra_trader_account';
 
                 // Prepare user data for update
                 $trader_data = [
@@ -742,7 +742,7 @@ class UserManagementController extends Controller
                     '{email_address}' => $email_address,
                     '{user_password}' => $generatedPassword
                 );
-                $subject = 'Password Reset Instructions - CONTINENTAL REGULATORY EXPERTS SOLUTION (E-CRES)';
+                $subject = 'Password Reset Instructions - COMESA IMPORT/EXPORT SYSTEM (cIMEX)';
                 $template_id = 2;
                 $res = sendMailNotification($req->email_address, $subject, '', '', '', '', '', $template_id, $vars);
 
@@ -1484,10 +1484,10 @@ class UserManagementController extends Controller
                     'externaluser_category_id' => $rec->externaluser_category_id,
                     'email' => $rec->email,
                     'username' => $rec->username,
-                    'phone'=>$rec->phone,
-                    'mobile'=>$rec->mobile,
+                    'phone' => $rec->phone,
+                    'mobile' => $rec->mobile,
                     'last_login_time' => $rec->last_login_time,
-                    'is_active'=>$rec->is_active,
+                    'is_active' => $rec->is_active,
                 );
             }
             $res = array('success' => true, 'data' => $user_data);
@@ -1507,7 +1507,7 @@ class UserManagementController extends Controller
             $user_data = array();
             $requestData = $req->all();
             $table_name = $req->table_name;
-            $table_name = 'txn_trader_account';
+            $table_name = 'tra_trader_account';
             unset($requestData['table_name']);
 
             $sql = DB::table($table_name . ' as t1')
@@ -1709,14 +1709,36 @@ class UserManagementController extends Controller
 
     public function onsaveTraderData(Request $req)
     {
-        // $trader_data = json_decode($req->traderData_sub);
-        DB::beginTransaction();
-
         try {
-            // Generate registration number
-            $trader_no = generateUserRegistrationNo('txn_trader_account');
+            DB::beginTransaction(); // Start transaction
 
-            $data = [
+            $process_id = 1;
+            $appworkflow_status_id = 1;
+            $email_address = $req->email_address;
+            $phone_number = $req->phone_number;
+
+            $trader_no = generateUserRegistrationNo('tra_trader_account');
+
+            $validator = Validator::make($req->all(), [
+                // 'account_type_id' => 'required|integer',
+                // 'country_of_origin_id' => 'required|integer',
+                // 'identification_no' => $trader_no,
+                // 'identification_type_id' => 'required|integer',
+                // 'identification_number' => 'required',
+                // 'first_name' => 'required|string',
+                // 'email_address' => 'required|string|email:rfc,dns,spoof|indisposable',
+                // 'created_by' => 'nullable|max:255',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => $validator->errors()->first(),
+                ], 422);
+            }
+
+            // **Step 1: Create Trader Account**
+            $trader_account_data = [
                 'name' => $req->name,
                 'contact_person' => $req->contact_person,
                 'contact_person_email' => $req->contact_person_email,
@@ -1730,94 +1752,80 @@ class UserManagementController extends Controller
                 'email_address' => $req->email_address,
                 'status_id' => 1,
                 'identification_no' => $trader_no,
+                'created_by' => $req->email_address,
+                'created_on' => now(),
             ];
 
-            // Check if the email already exists
-            $emailExists = DB::table('txn_trader_account')
-                ->where('email_address', $req->email_address)
-                ->exists();
-              
-            if ($emailExists) {
-                // return response()->json(['success' => false, 'message' => 'Email already exists.'], 400);
-                return $this->onUpdateTraderData($req);
-                //  write code here using the refactored function onUpdateTraderData to update the txn_trader_account in the main db and the portal db as well as update the email in usr_users_information in the portal_db
-            } else {
+            $trader_resp = insertRecord('tra_trader_account', $trader_account_data);
 
-                // Insert trader account into the primary database
-                $resp = insertRecord('txn_trader_account', $data, 'Create Trader Account');
-                if (!$resp['success']) {
-                    throw new \Exception('Failed to create trader account in the primary database.');
-                }
-
-                $trader_id = $resp['record_id'];
-
-                // Insert trader account into the 'portal' database
-                $portalResp = insertPortalRecord('txn_trader_account', $data, 'portal');
-                if (!$portalResp['success']) {
-                    throw new \Exception('Failed to create trader account in the portal database.');
-                }
-
-                $generatedPassword = bin2hex(random_bytes(8));
-
-
-                $user_data = [
-                    'trader_id' => $trader_id,
-                    'email_address' => $req->email_address,
-                    'name' => $req->name,
-                    'password' => aes_encrypt($generatedPassword),
-                    'is_verified' => $req->is_verified ?? 0,
-                    'telephone_number' => $req->telephone_no,
-                    'is_initiatepassword_change' => 1,
-                    'country_id' => $req->country_id,
-                    'account_type_id' => $req->account_type_id ?? null,
-                    'is_initiateprofile_update' => 1,
-                    'created_by' => $req->email_address,
-                    'created_on' => now(),
-                ];
-
-                // Insert user account details into the 'portal' database
-                $userResp = insertPortalRecord('usr_users_information', $user_data, 'portal');
-
-                if (!$userResp['success']) {
-                    throw new \Exception('Failed to create user information in the portal database.');
-                }
-
-                // Send email notification
-                $template_id = 1;
-                $subject = 'Trader Account Creation Notification';
-                $vars = [
-                    '{name}' => $req->name,
-                    '{email_address}' => $req->email_address,
-                    '{password}' => $generatedPassword,
-                    '{identification_no}' => $trader_no
-                ];
-
-                $decodedEmail = $req->email_address;
-                // $mailResp = sendMailNotification($req->name, $req->email_address, $subject, '', '', '', '', '', $template_id, $vars);
-
-                $mailResp = sendMailNotification($decodedEmail, $subject, '', '', '', '', '', $template_id, $vars);
-
-                if (!$mailResp['success']) {
-                    DB::rollBack();
-                    return response()->json([
-                        'success' => false,
-                        'message' => 'Account created, but email notification failed. Please contact support.'
-                    ], 500);
-                }
-
-                DB::commit();
-                return response()->json([
-                    'success' => true,
-                    'message' => 'Trader account created successfully. Login credentials have been emailed.'
-                ], 200);
+            if (!$trader_resp['success']) {
+                throw new \Exception('Error creating trader account: ' . $trader_resp['message']);
             }
 
+            $trader_id = $trader_resp['record_id'];
+
+            // **Step 2: Create User Account**
+            $generatedPassword = bin2hex(random_bytes(8));
+            $application_code = generateApplicationCode($process_id, 'usr_users_information');
+
+            $user_data = [
+                'trader_id' => $trader_id,
+                'account_type_id' => $req->account_type_id,
+                // 'user_title_id' => $req->user_title_id,
+                'country_of_origin_id' => $req->country_of_origin_id,
+                'email_address' => aes_encrypt($email_address),
+                'password' => Hash::make($generatedPassword),
+                'surname' => aes_encrypt($req->surname),
+                'first_name' => aes_encrypt($req->first_name),
+                'phone_number' => aes_encrypt($phone_number),
+                'process_id' => $process_id,
+                'appworkflow_status_id' => $appworkflow_status_id,
+                'identification_number' => $req->identification_number,
+                'application_code' => $application_code,
+                'created_by' => $req->email_address,
+                'created_on' => now(),
+            ];
+
+            $user_resp = insertRecord('usr_users_information', $user_data);
+
+            if (!$user_resp['success']) {
+                throw new \Exception('Error creating user account: ' . $user_resp['message']);
+            }
+
+            // **Step 3: Process Submission & Send Email Notification**
+            initiateInitialProcessSubmission('usr_users_information', $application_code, $process_id, $user_resp['record_id']);
+
+            // Send email notification
+            $template_id = 1;
+            $subject = 'Trader Account Creation Notification';
+            $vars = [
+                '{name}' => $req->name,
+                '{email_address}' => $req->email_address,
+                '{password}' => $generatedPassword,
+                '{identification_no}' => $trader_no
+            ];
+
+            $mailResp = sendMailNotification($req->email_address, $subject, '', '', '', '', '', $template_id, $vars);
+            if (!$mailResp['success']) {
+                DB::rollBack();
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Account created, but email notification failed. Please contact support.'
+                ], 500);
+            }
+
+            DB::commit();
+            return response()->json([
+                'success' => true,
+                'message' => 'Trader account created successfully. Login credentials have been emailed.'
+            ], 200);
+
         } catch (\Exception $exception) {
-            DB::rollBack();
-            return response()->json(sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__)), 500);
-        } catch (\Throwable $throwable) {
-            DB::rollBack();
-            return response()->json(sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__)), 500);
+            DB::rollBack(); // Rollback transaction on failure
+            return response()->json([
+                'success' => false,
+                'message' => 'Error: ' . $exception->getMessage(),
+            ], 500);
         }
     }
 
@@ -1842,7 +1850,7 @@ class UserManagementController extends Controller
             }
 
             if (validateIsNumeric($req->id)) {
-                $existingRecord = DB::table('txn_trader_account')->where('id', '=', $req->id)->first();
+                $existingRecord = DB::table('tra_trader_account')->where('id', '=', $req->id)->first();
 
                 $trader_data = [
                     'country_id' => $req->country_id,
@@ -1879,7 +1887,7 @@ class UserManagementController extends Controller
                 DB::beginTransaction();
 
                 $where = ['id' => $existingRecord->id];
-                $table_name = 'txn_trader_account';
+                $table_name = 'tra_trader_account';
 
                 $previous_data = getPreviousRecords($table_name, $where);
                 $previous_data = $previous_data['results'];
@@ -1888,18 +1896,18 @@ class UserManagementController extends Controller
 
                 if ($resp['success']) {
                     // Update in portal
-                    $existingPortalRecord = DB::connection('portal')->table('txn_trader_account')
+                    $existingRecord = DB::table('tra_trader_account')
                         ->where('email_address', '=', $req->email_address)
                         ->first();
-                    if ($existingPortalRecord) {
-                        $resp = updatePortalRecord($table_name, $previous_data, $where, $trader_data, 'portal');
+                    if ($existingRecord) {
+                        $resp = updateRecord($table_name, $previous_data, $where, $trader_data, '');
                     }
 
-                    $existingUserPortalRecord = DB::connection('portal')->table('usr_users_information')
+                    $existingUserRecord = DB::table('usr_users_information')
                         ->where('email_address', '=', $req->email_address)
                         ->first();
-                    if ($existingUserPortalRecord) {
-                        $resp = updatePortalRecord($table_name, $previous_data, $where, $trader_data, 'portal');
+                    if ($existingUserRecord) {
+                        $resp = updateRecord($table_name, $previous_data, $where, $trader_data, '');
 
                         // Send email notification if needed
                         $template_id = 10;

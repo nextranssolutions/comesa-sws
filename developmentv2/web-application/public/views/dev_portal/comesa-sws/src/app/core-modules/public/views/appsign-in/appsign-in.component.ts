@@ -95,21 +95,13 @@ export class AppsignInComponent {
   }
   ngOnInit() {
     this.forgotPasswordFrm = new FormGroup({
-      email_address: new FormControl(
-        '',
-        Validators.compose([Validators.required])
-      ),
+      email_address: new FormControl('', Validators.compose([Validators.required])),
       experts_profile_no: new FormControl('', Validators.compose([])),
     });
 
     this.signInFrm = new FormGroup({
       password: new FormControl('', Validators.compose([Validators.required])),
-      email_address: new FormControl(
-        '',
-        Validators.compose([Validators.required])
-      ),
-      // language: new FormControl('', Validators.compose([])),
-      // sum_input: new FormControl('', Validators.compose([Validators.required])),
+      email_address: new FormControl('', Validators.compose([Validators.required]) ),
       otp_value: new FormControl('', Validators.compose([])),
     });
 
@@ -141,7 +133,7 @@ export class AppsignInComponent {
           this.slides_information = this.data_record.data;
         }
       },
-      (error) => {}
+      (error) => { }
     );
   }
   onAccountTypeSelection($event) {
@@ -229,7 +221,7 @@ export class AppsignInComponent {
         (error) => {
           this.toastr.error(
             'Failed to request OTP: ' +
-              (error.error?.message || 'Unknown error'),
+            (error.error?.message || 'Unknown error'),
             'Error'
           );
           this.spinnerHide();
@@ -258,7 +250,7 @@ export class AppsignInComponent {
       if (controls[name].invalid) {
         this.toastr.error(
           'Fill In All Mandatory fields with (*), missing value on ' +
-            name.replace('_id', ''),
+          name.replace('_id', ''),
           'Alert'
         );
         return;
@@ -381,7 +373,7 @@ export class AppsignInComponent {
       this.onSignIn();
     }
   }
-  handleReset() {}
+  handleReset() { }
   onEmailValueChange($event) {
     this.email_address = $event.value;
   }
@@ -422,7 +414,7 @@ export class AppsignInComponent {
       if (controls[name].invalid) {
         this.toastr.error(
           'Fill In All Mandatory fields with (*), missing value on ' +
-            name.replace('_id', ''),
+          name.replace('_id', ''),
           'Alert'
         );
         return;
@@ -478,7 +470,7 @@ export class AppsignInComponent {
           this.userAccountTypeData = this.data_record.data;
         }
       },
-      (error) => {}
+      (error) => { }
     );
   }
 
