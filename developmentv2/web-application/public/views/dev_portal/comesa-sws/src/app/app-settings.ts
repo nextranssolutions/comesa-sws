@@ -33,7 +33,7 @@ export class AppSettings {
   public static assets_url = assets_url;
   public static mis_url = mis_url;
   public static siteKey = "6LdIjbsUAAAAAOhQtlHVuK8kpSdbBXAtX3K5pYQb";
-  public static system_title = 'CONTINENTAL REGULATORY EXPERTS SOLUTION (E-CRES) ';
+  public static system_title = 'COMESA IMPORT/EXPORT SYSTEM (cIMEX) ';
   public static system_website = '';
   public static system_version = 'E-CRES 1.0';
   public static session_timeoutcheck = 4800000;

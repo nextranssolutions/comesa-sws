@@ -193,7 +193,7 @@
 
 
 <dx-popup class="popup" [width]="funcpopWidth(80)" [height]="550" [showTitle]="true"
-    title="Approved Visa Product Details" [dragEnabled]="false" [closeOnOutsideClick]="false"
+    title="Approved Visa Product Details" [dragEnabled]="false" [hideOnOutsideClick]="false"
     [(visible)]="isApprovedVisaproductsPopupVisible">
     <div *dxTemplate="let data of 'content'">
         <dx-scroll-view>
@@ -241,7 +241,7 @@
 
 
 <dx-popup class="popup" [width]="funcpopWidth(90)" [height]="550" [showTitle]="true" title="Permits Products"
-    [dragEnabled]="false" [closeOnOutsideClick]="false" [(visible)]="isPermitproductsPopupVisible">
+    [dragEnabled]="false" [hideOnOutsideClick]="false" [(visible)]="isPermitproductsPopupVisible">
     <div *dxTemplate="let data of 'content'">
         <dx-scroll-view>
             <div class="row no-padding">
@@ -288,7 +288,7 @@
 </dx-popup>
 
 <dx-popup class="popup" [width]="funcpopWidth(80)" height="funcpopHeight(60)" [showTitle]="true"
-    title="Permit Products Details" [dragEnabled]="false" [closeOnOutsideClick]="false"
+    title="Permit Products Details" [dragEnabled]="false" [hideOnOutsideClick]="false"
     [(visible)]="isPermitproductsAddPopupVisible">
     <div *dxTemplate="let data of 'content'">
 
@@ -507,7 +507,7 @@
 </dx-popup>
 
 <dx-popup class="popup" [width]="funcpopWidth(80)" height="funcpopHeight(60)" [showTitle]="true"
-    title="Permit Products Details" [dragEnabled]="false" [closeOnOutsideClick]="false"
+    title="Permit Products Details" [dragEnabled]="false" [hideOnOutsideClick]="false"
     [(visible)]="isPermitVisaLicProductsAddPopupVisible">
     <div *dxTemplate="let data of 'content'">
 
@@ -681,7 +681,7 @@
 </dx-popup>
 
 <dx-popup class="popup" [width]="funcpopWidth(40)" [height]="400" [showTitle]="true" title="Add Details"
-    [dragEnabled]="false" [closeOnOutsideClick]="false" [(visible)]="addproductCommonNameModal">
+    [dragEnabled]="false" [hideOnOutsideClick]="false" [(visible)]="addproductCommonNameModal">
 
     <div *dxTemplate="let data of 'content'">
         <dx-scroll-view>
@@ -712,7 +712,7 @@
 
 
 <dx-popup class="popup" [width]="funcpopWidth(65)" [height]=620 [showTitle]="true" title="Add Manufacturer"
-    [dragEnabled]="false" [closeOnOutsideClick]="false" [(visible)]="isnewmanufacturerModalShow">
+    [dragEnabled]="false" [hideOnOutsideClick]="false" [(visible)]="isnewmanufacturerModalShow">
 
     <div *dxTemplate="let data of 'content'" class="row">
         <dx-scroll-view>
@@ -777,7 +777,7 @@
 
 
 <dx-popup class="popup" [width]="funcpopWidth(80)" [height]="600" [showTitle]="true" title="Manufacturing Site Details"
-    [dragEnabled]="false" [closeOnOutsideClick]="false" [(visible)]="isManufacturerSitePopupVisible">
+    [dragEnabled]="false" [hideOnOutsideClick]="false" [(visible)]="isManufacturerSitePopupVisible">
     <div *dxTemplate="let data of 'content'">
         <dx-scroll-view>
             <dx-data-grid class="table row-border hover" [allowColumnResizing]="true" [wordWrapEnabled]="true"
@@ -817,7 +817,7 @@
 </dx-popup>
 
 <dx-popup class="popup" [width]="funcpopWidth(80)" [height]="450" [showTitle]="true" title="Document Preview"
-    [dragEnabled]="false" [closeOnOutsideClick]="true" [(visible)]="isDocumentPreviewDownloadwin">
+    [dragEnabled]="false" [hideOnOutsideClick]="true" [(visible)]="isDocumentPreviewDownloadwin">
     <div *dxTemplate="let data of 'content'" class="row">
 
         <dx-scroll-view>
@@ -831,7 +831,7 @@
 
 
 <dx-popup class="popup" [width]="funcpopWidth(90)" [height]="600" [showTitle]="true" title="Uploaded Invoice details "
-    [dragEnabled]="false" [closeOnOutsideClick]="true" [(visible)]="isUploadedInvoiceProductsWin">
+    [dragEnabled]="false" [hideOnOutsideClick]="true" [(visible)]="isUploadedInvoiceProductsWin">
     <div *dxTemplate="let data of 'content'" class="row">
 
         <dx-scroll-view>
@@ -878,14 +878,14 @@
 
 
 <dx-popup class="popup" [width]="funcpopWidth(80)" [height]="700" [showTitle]="true" title="{{printReportTitle}}"
-    [dragEnabled]="false" [closeOnOutsideClick]="true" [(visible)]="isPrintReportVisible">
+    [dragEnabled]="false" [hideOnOutsideClick]="true" [(visible)]="isPrintReportVisible">
     <div *dxTemplate="let data of 'content'">
         <div class="col-lg-12 row" [innerHTML]="printiframeUrl | safe: 'html'"></div>
     </div>
 </dx-popup>
 
 <dx-popup class="popup" [width]="500" [height]="400" [showTitle]="true" title="Upload Option (Invoice Products)"
-    [dragEnabled]="false" [closeOnOutsideClick]="false" [(visible)]="isInvoiceProductsUploadVisable">
+    [dragEnabled]="false" [hideOnOutsideClick]="false" [(visible)]="isInvoiceProductsUploadVisable">
     <div *dxTemplate="let data of 'content'">
         <form role="form" class="row" enctype="multipart/form-data" role="form" [formGroup]="invoiceProductsUploadFrm"
             (ngSubmit)="onunInvoiceProductsUpload()">
@@ -918,7 +918,7 @@
 
 
 <dx-popup class="popup" [width]="500" [height]="400" [showTitle]="true" title="Upload Option (Invoice Products)"
-    [dragEnabled]="false" [closeOnOutsideClick]="false" [(visible)]="isApprovedVisaProductsUploadVisable">
+    [dragEnabled]="false" [hideOnOutsideClick]="false" [(visible)]="isApprovedVisaProductsUploadVisable">
     <div *dxTemplate="let data of 'content'">
         <form role="form" class="row" enctype="multipart/form-data" role="form" [formGroup]="invoiceProductsUploadFrm"
             (ngSubmit)="onApprovedVisaProductsUpload()">

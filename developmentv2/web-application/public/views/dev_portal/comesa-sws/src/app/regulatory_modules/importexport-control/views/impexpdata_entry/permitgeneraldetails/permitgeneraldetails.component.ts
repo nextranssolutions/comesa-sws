@@ -25,13 +25,13 @@ import { PremisesLicensingService } from 'src/app/regulatory_modules/premises-li
 })
 export class PermitgeneraldetailsComponent implements OnInit {
   @Input() applicationGeneraldetailsfrm: FormGroup;
-  configData:any;
+  configData: any;
   regulatedProdTypeData: any;
   regulatedSubfunctionData: any;
   producttypeDefinationData: any;
   data_record: any;
 
-  premises_title:string;
+  premises_title: string;
   applicationTypeData: any;
   applicationCategoryData: any;
   regulatory_subfunction_id: any;
@@ -97,9 +97,9 @@ export class PermitgeneraldetailsComponent implements OnInit {
   mistrader_id: number;
   premise_title: string = 'Premises(Licensed Outlet(s))';
   ammendReadOnly: boolean;
-registration_process_action: string;
-select_registration_section_process: string;
-  constructor(public utilityService: UtilityService, public premappService: PremisesLicensingService, public fb: FormBuilder, public modalServ: NgxSmartModalService, public spinner: SpinnerVisibilityService, public configService: ConfigurationsService, public appService: ImportExportService, public router: Router, public formBuilder: FormBuilder, public config: ConfigurationsService,  public toastr: ToastrService, public authService: AuthenticationService, public httpClient: HttpClient) {
+  registration_process_action: string;
+  select_registration_section_process: string;
+  constructor(public utilityService: UtilityService, public premappService: PremisesLicensingService, public fb: FormBuilder, public modalServ: NgxSmartModalService, public spinner: SpinnerVisibilityService, public configService: ConfigurationsService, public appService: ImportExportService, public router: Router, public formBuilder: FormBuilder, public config: ConfigurationsService, public toastr: ToastrService, public authService: AuthenticationService, public httpClient: HttpClient) {
   }
   ngOnInit() {
 
@@ -125,7 +125,7 @@ select_registration_section_process: string;
 
 
     // this.onLoadCountries();
-     this.onLoadEligibleImportersData;
+    this.onLoadEligibleImportersData;
     // this.onLoadeligibleImportersDocTypes();
     this.onLoadconfirmDataParm();
     this.onLoadRegulatedProdTypeData();
@@ -178,15 +178,15 @@ select_registration_section_process: string;
       regulatory_subfunction_id: this.regulatory_subfunction_id
     };
     this.config.onLoadConfigurationData(data)
-        .subscribe(
-          data => {
-            this.data_record = data;
-            
-            if (this.data_record.success) {
-              this.applicationCategoryData = this.data_record.data;
-              ;
-            }
-          });
+      .subscribe(
+        data => {
+          this.data_record = data;
+
+          if (this.data_record.success) {
+            this.applicationCategoryData = this.data_record.data;
+            ;
+          }
+        });
 
   }
   onLoadpermitProductsCategoryData(permit_category_id) {
@@ -198,15 +198,15 @@ select_registration_section_process: string;
     };
 
     this.config.onLoadConfigurationData(data)
-        .subscribe(
-          data => {
-            this.data_record = data;
-            
-            if (this.data_record.success) {
-              this.permitProductsCategoryData = this.data_record.data;
-              console.log(data.record);
-            }
-          });
+      .subscribe(
+        data => {
+          this.data_record = data;
+
+          if (this.data_record.success) {
+            this.permitProductsCategoryData = this.data_record.data;
+            console.log(data.record);
+          }
+        });
 
   }
   onLoadeligibleImportersDocTypes() {
@@ -216,15 +216,15 @@ select_registration_section_process: string;
     };
 
     this.config.onLoadConfigurationData(data)
-        .subscribe(
-          data => {
-            this.data_record = data;
-            
-            if (this.data_record.success) {
-              this.eligibleImportersDocTypes = this.data_record.data;
-              ;
-            }
-          });
+      .subscribe(
+        data => {
+          this.data_record = data;
+
+          if (this.data_record.success) {
+            this.eligibleImportersDocTypes = this.data_record.data;
+            ;
+          }
+        });
 
   }
 
@@ -249,7 +249,7 @@ select_registration_section_process: string;
 
     }
     else {
-  
+
 
     }
 
@@ -315,15 +315,15 @@ select_registration_section_process: string;
     };
 
     this.config.onLoadConfigurationData(data)
-        .subscribe(
-          data => {
-            this.data_record = data;
-            
-            if (this.data_record.success) {
-              this.confirmDataParam = this.data_record.data;
-              ;
-            }
-          });
+      .subscribe(
+        data => {
+          this.data_record = data;
+
+          if (this.data_record.success) {
+            this.confirmDataParam = this.data_record.data;
+            ;
+          }
+        });
   }
   onLoadproducttypeDefinationData() {
     var data = {
@@ -331,14 +331,14 @@ select_registration_section_process: string;
     };
 
     this.config.onLoadConfigurationData(data)
-        .subscribe(
-          data => {
-            this.data_record = data;
-            
-            if (this.data_record.success) {
-              this.producttypeDefinationData = this.data_record.data;
-            }
-          });
+      .subscribe(
+        data => {
+          this.data_record = data;
+
+          if (this.data_record.success) {
+            this.producttypeDefinationData = this.data_record.data;
+          }
+        });
   }
 
   onLoadRegulatedSubfunctionData() {
@@ -347,56 +347,56 @@ select_registration_section_process: string;
     };
 
     this.config.onLoadConfigurationData(data)
-        .subscribe(
-          data => {
-            console.log(data.record);
-            this.data_record = data;
-            
-            if (this.data_record.success) {
-              this.regulatedSubfunctionData = this.data_record.data;
-              
-            }
-          });
+      .subscribe(
+        data => {
+          console.log(data.record);
+          this.data_record = data;
+
+          if (this.data_record.success) {
+            this.regulatedSubfunctionData = this.data_record.data;
+
+          }
+        });
   }
   onLoadRegulatedProdTypeData() {
     var data = {
       table_name: 'cfg_regulated_productstypes',
-      
-      
+
+
     };
 
     this.config.onLoadConfigurationData(data)
-        .subscribe(
-          data => {
-            console.log(data.record);
-            this.data_record = data;
-            
-            if (this.data_record.success) {
-              this.regulatedProdTypeData = this.data_record.data;
-              
-            }
-          });
+      .subscribe(
+        data => {
+          console.log(data.record);
+          this.data_record = data;
+
+          if (this.data_record.success) {
+            this.regulatedProdTypeData = this.data_record.data;
+
+          }
+        });
   }
-  
+
   onLoadApplicationCategoryData() {
     var data = {
       table_name: 'cfg_importexport_permittypes',
     };
 
     this.config.onLoadConfigurationData(data)
-        .subscribe(
-          data => {
-            this.data_record = data;
-          
-            if (this.data_record.success) {
-              this.applicationCategoryData = this.data_record.data;
-              console.log(this.applicationCategoryData);
-            }
-          },
-          error => {
-            // console.error("HTTP Error:", error); 
+      .subscribe(
+        data => {
+          this.data_record = data;
+
+          if (this.data_record.success) {
+            this.applicationCategoryData = this.data_record.data;
+            console.log(this.applicationCategoryData);
           }
-          );
+        },
+        error => {
+          // console.error("HTTP Error:", error); 
+        }
+      );
   }
   onLoadZoneData() {
     var data = {
@@ -404,17 +404,17 @@ select_registration_section_process: string;
     };
 
     this.config.onLoadConfigurationData(data)
-        .subscribe(
-          data => {
-            this.data_record = data;
-            
-            if (this.data_record.success) {
-              this.zoneData = this.data_record.data;
-              ;
-            }
-          });
+      .subscribe(
+        data => {
+          this.data_record = data;
+
+          if (this.data_record.success) {
+            this.zoneData = this.data_record.data;
+            ;
+          }
+        });
   }
-  
+
   onLoadEligibleImportersData() {
     var data = {
       table_name: 'cfg_eligible_importerscategories',
@@ -422,15 +422,15 @@ select_registration_section_process: string;
     };
 
     this.config.onLoadConfigurationData(data)
-        .subscribe(
-          data => {
-            this.data_record = data;
-            
-            if (this.data_record.success) {
-              this.eligibleImportersData = this.data_record.data;
-              ;
-            }
-          });
+      .subscribe(
+        data => {
+          this.data_record = data;
+
+          if (this.data_record.success) {
+            this.eligibleImportersData = this.data_record.data;
+            ;
+          }
+        });
   }
 
 
@@ -463,7 +463,7 @@ select_registration_section_process: string;
           headers: headers,
           params: { skip: loadOptions.skip, take: loadOptions.take, searchValue: loadOptions.filter, table_name: 'txn_permitsenderreceiver_data' }
         };
-        return me.httpClient.get(AppSettings.base_url + '/'+ 'getSenderreceiversDetails', me.configData)
+        return me.httpClient.get(AppSettings.base_url + '/' + 'getSenderreceiversDetails', me.configData)
           .toPromise()
           .then((data: any) => {
             return {
@@ -662,7 +662,6 @@ select_registration_section_process: string;
       //.pipe(first())
       .subscribe(
         data => {
-          console.log(data);
           this.regions = data;
         },
         error => {

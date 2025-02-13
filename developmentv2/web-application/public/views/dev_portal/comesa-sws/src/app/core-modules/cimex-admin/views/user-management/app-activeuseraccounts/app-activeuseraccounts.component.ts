@@ -7,13 +7,13 @@ import { ShareusermanagementClassComponent } from '../shareusermanagement-class/
   templateUrl: './app-activeuseraccounts.component.html',
   styleUrls: ['./app-activeuseraccounts.component.css']
 })
-export class AppActiveUserAccounts extends ShareusermanagementClassComponent implements OnInit    {
- 
-  ngOnInit() {
-   
+export class AppActiveUserAccounts extends ShareusermanagementClassComponent implements OnInit {
 
+  ngOnInit() {
+
+    this.parameter_name = "all_user_accounts";
     this.fetchUserDetails();
   }
 
-  
+
 }

@@ -810,4 +810,73 @@ class UtilityHelper
 
 
     }
+
+
+    static function getApplicationGeneralFormsFields($req)
+    {
+        $regulatory_subfunction_id = $req->regulatory_subfunction_id;
+        $prodclass_category_id = $req->prodclass_category_id;
+        $regulatory_function_id = $req->regulatory_function_id;
+        $regulated_productstype_id = $req->regulated_productstype_id;
+        $appsubmissions_type_id = $req->appsubmissions_type_id;
+        if (!validateIsNumeric($regulatory_function_id)) {
+            $submodule_data = getTableData('par_regulatory_subfunctions', array('id' => $regulatory_subfunction_id));
+            $regulatory_function_id = $submodule_data->regulatory_function_id;
+        }
+        
+        $data = DB::table('par_applicationforms_fields as t1')
+            ->join('par_formfield_configuration as t2','t1.formfield_configuration_id', '=', 't2.id')
+            ->join('par_applicationforms_configuration as t3', 't1.applicationforms_configuration_id', '=', 't3.id')
+            ->select('t1.*', 't2.name as field_name');
+
+        if (validateIsNumeric($regulatory_subfunction_id)) {
+            $data->where('t3.regulatory_subfunction_id', $regulatory_subfunction_id);
+
+        }
+        if (validateIsNumeric($regulatory_function_id)) {
+            $data->where('t3.regulatory_function_id', $regulatory_function_id);
+
+        }
+        // if (validateIsNumeric($prodclass_category_id)) {
+        //     $data->where('t3.prodclass_category_id', $prodclass_category_id);
+        // }
+        // if (validateIsNumeric($regulated_productstype_id)) {
+        //     $data->where('t3.regulated_productstype_id', $regulated_productstype_id);
+        // }
+        // if (validateIsNumeric($appsubmissions_type_id)) {
+        //     $data->where('t3.regulated_productstype_id', $appsubmissions_type_id);
+        // }
+        $form_defination = $data->get();
+        
+        return $form_defination;
+
+    }
+
+    static function getApplicationDataEntryFormsFields($req, $form_type_id)
+    {
+        $regulatory_subfunction_id = $req->regulatory_subfunction_id;
+        $regulatory_function_id = $req->regulatory_function_id;
+
+        if (!validateIsNumeric($regulatory_function_id)) {
+            $submodule_data = getTableData('par_regulatory_subfunctions', array('id' => $regulatory_subfunction_id));
+            $regulatory_function_id = $submodule_data->regulatory_function_id;
+        }
+
+        $data = DB::table('par_dataentry_formfields as t1')
+            ->join('par_formfield_configuration as t2', 't1.formfield_configuration_id', '=', 't2.id')
+            ->join('par_dataentry_formsetup as t3', 't1.dataentry_formsetup_id', '=', 't3.id')
+            ->select('t1.*', 't2.name as field_name');
+
+
+        if (validateIsNumeric($regulatory_function_id)) {
+            $data->where('t2.regulatory_function_id', $regulatory_function_id);
+
+        }
+        if (validateIsNumeric($form_type_id)) {
+            $data->where('form_type_id', $form_type_id);
+        }
+
+        return $data->get();
+
+    }
 }

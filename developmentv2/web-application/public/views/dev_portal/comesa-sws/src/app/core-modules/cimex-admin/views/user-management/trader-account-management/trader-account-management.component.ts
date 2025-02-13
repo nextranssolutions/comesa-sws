@@ -71,7 +71,7 @@ export class TraderAccountManagementComponent {
   regionData: any;
   traderCategoryData: any;
   countryData: any;
-
+  traderAccountTypeData: any;
   table_name: string;
 
   permitActiveExpertAccountsMenuItems = [
@@ -103,7 +103,7 @@ export class TraderAccountManagementComponent {
     this.table_name = 'txn_trader_account';
 
     this.userAccountFrm = new FormGroup({
-      id: new FormControl( Validators.compose([])),
+      id: new FormControl(Validators.compose([])),
       last_login_time: new FormControl('', Validators.compose([])),
       account_type_id: new FormControl('', Validators.compose([])),
       country_id: new FormControl('', Validators.compose([])),
@@ -116,7 +116,7 @@ export class TraderAccountManagementComponent {
       status_id: new FormControl('', Validators.compose([])),
       fax: new FormControl('', Validators.compose([])),
       // created_on: new FormControl('', Validators.compose([Validators.required])),
-      
+
       postal_address: new FormControl('', Validators.compose([])),
       name: new FormControl('', Validators.compose([])),
       email_address: new FormControl('', Validators.compose([])),
@@ -132,7 +132,7 @@ export class TraderAccountManagementComponent {
       mobile_no: new FormControl('', Validators.compose([])),
       identification_no: new FormControl('', Validators.compose([])),
     });
-    
+
   }
 
   ngOnInit(): void {
@@ -156,6 +156,7 @@ export class TraderAccountManagementComponent {
     this.fetchDistrictData()
     this.fetchRegionData()
     this.fetchTraderCategoryData()
+    this.onLoadTraderAccountTypesData();
   }
   onPopupHidden() {
     this.fetchTraderDetails(0);
@@ -185,40 +186,6 @@ export class TraderAccountManagementComponent {
         });
   }
 
-  // onsaveTraderAccountsDetails() {
-  //   const formData = new FormData();
-  //   const invalid = [];
-  //   const controls = this.userAccountFrm.controls;
-  //   for (const name in controls) {
-  //     if (controls[name].invalid) {
-  //       this.toastr.error('Fill In All Mandatory fields with (*), missing value on ' + name.replace('_id', ''), 'Alert');
-  //       return;
-  //     }
-  //   }
-  //   if (this.userAccountFrm.invalid) {
-  //     return;
-  //   }
-  //   this.spinnerShow('Updating User details');
-
-  //   this.userservice.onsaveUserData(this.table_name, this.userAccountFrm.value, 'onsaveTraderData')
-  //     .subscribe(
-  //       response => {
-  //         this.response = response;
-  //         //the details 
-  //         if (this.response.success) {
-  //           this.toastr.success(this.response.message, 'Response');
-
-  //         } else {
-  //           this.toastr.error(this.response.message, 'Alert');
-  //         }
-  //         this.spinnerHide()
-  //       },
-  //       error => {
-  //         this.toastr.error('Error Occurred', 'Alert');
-  //         this.spinnerHide()
-  //       });
-  // }
-
   onsaveTraderAccountsDetails() {
     const formData = new FormData();
     const invalid = [];
@@ -233,7 +200,7 @@ export class TraderAccountManagementComponent {
       return;
     }
     this.spinner.show();
-    this.userservice.onsaveUserData(this.table_name,this.userAccountFrm.value, 'onsaveTraderData')
+    this.userservice.onsaveUserData(this.table_name, this.userAccountFrm.value, 'onsaveTraderData')
       .subscribe(
         response => {
           this.response = response;
@@ -256,15 +223,33 @@ export class TraderAccountManagementComponent {
 
   onLoadAccountTypesData() {
     var data_submit = {
-      'table_name': 'ptl_account_types'
+      'table_name': 'sys_account_types'
     }
-    this.userservice.onLoadPortalUserData(data_submit)
+    this.userservice.onLoadUserData(data_submit)
       .subscribe(
         data => {
           this.data_record = data;
 
           if (this.data_record.success) {
             this.userAccountTypeData = this.data_record.data;
+          }
+        },
+        error => {
+
+        });
+  }
+
+  onLoadTraderAccountTypesData() {
+    var data_submit = {
+      'table_name': 'par_traderaccount_types'
+    }
+    this.configService.onLoadConfigurationData(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+
+          if (this.data_record.success) {
+            this.traderAccountTypeData = this.data_record.data;
           }
         },
         error => {
@@ -322,7 +307,7 @@ export class TraderAccountManagementComponent {
 
         });
   }
-  
+
   fetchDistrictData() {
     var data_submit = {
       'table_name': 'par_districts'

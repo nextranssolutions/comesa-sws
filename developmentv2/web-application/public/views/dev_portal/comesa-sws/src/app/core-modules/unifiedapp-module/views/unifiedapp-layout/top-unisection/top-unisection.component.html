@@ -189,7 +189,7 @@
             <a  data-toggle="dropdown" class="dropdown-toggle"  data-bs-toggle="dropdown" href="#">
               <i class="fas fa-user"></i>
               <span class="user-info">
-                <small>Welcome,</small>{{ userFirstName }}
+                <small>Welcome,</small>{{ userEmail }}
               </span>
   
               <i class="ace-icon fa fa-caret-down"></i>
@@ -197,8 +197,7 @@
   
             <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
               <li>
-                <a class="dropdown-item" (click)="funcViewUserProfiledetails()">{{'view_profile' | translate}}</a>
-  
+                <a class="btn btn-link" (click)="funcViewUserProfiledetails()"><i class="ace-icon fa fa-user bigger-120 green"></i>{{'my_profile' | translate}}</a>
               </li>
   
               <li class="divider"></li>
@@ -271,3 +270,125 @@
       </dx-scroll-view>
     </div>
   </dx-popup>
+
+  <dx-popup class="popup" [width]="funcpopWidth(80)" [height]="funcpopHeight(80)" [showTitle]="true" [dragEnabled]="false"
+  [hideOnOutsideClick]="false" [(visible)]="is_viewprofilewin" title="{{'my_profile' | translate}}">
+  <div *dxTemplate="let data of 'content'">
+    <dx-scroll-view>
+      <form (ngSubmit)="onsaveActiveUserAccountsDetails()" [formGroup]="userAccountFrm">
+        <div class="profile-card">
+
+          <fieldset class="profile-section">
+            <div class="row">
+              <div class="col-xs-12 col-sm-3 center">
+                <span class="profile-picture">
+                  <img class="editable img-responsive" alt="Alex's Avatar" id="avatar2"
+                    src="assets/images/avatars/userprofileavatar.png" />
+                </span>
+
+                <div class="space space-4"></div>
+
+                <a class="btn btn-sm btn-block btn-success">
+                  <i class="ace-icon fa bigger-120"></i>
+                  <span class="bigger-110">{{userGroupName}}</span>
+                </a>
+
+
+              </div>
+
+              <div class="col-xs-12 col-sm-9">
+                <div class="profile-user-info">
+                  <!-- <div class="profile-info-row">
+                    <div class="profile-info-name"> {{ 'account_type' | translate }} </div>
+
+                    <div class="profile-info-value">
+                      <span><dx-select-box [dataSource]="userAccountTypeData" formControlName="account_type_id"
+                          valueExpr="id" displayExpr="name" [readOnly]="is_readonly" [searchEnabled]="true">
+                        </dx-select-box></span>
+                    </div>
+                  </div> -->
+
+                  <div class="profile-info-row">
+                    <div class="profile-info-name"> <label>{{ 'name' | translate }}</label> </div>
+
+                    <div class="profile-info-value">
+                      <span><dx-text-box formControlName="first_name" [readOnly]="is_readonly" [showClearButton]="true">
+                        </dx-text-box></span>
+                    </div>
+                  </div>
+
+                  <div class="profile-info-row">
+                    <div class="profile-info-name"> <label>{{ 'email_address' | translate }}</label> </div>
+
+                    <div class="profile-info-value">
+                      <span><dx-text-box formControlName="email_address" [readOnly]="is_readonly" [showClearButton]="true">
+                        </dx-text-box></span>
+                    </div>
+                  </div>
+
+                  <div class="profile-info-row">
+                    <div class="profile-info-name"> {{ 'account_type' | translate }} </div>
+
+                    <div class="profile-info-value">
+                      <i class="fa fa-map-marker light-orange bigger-110"></i>
+                      <span> <dx-select-box [dataSource]="userAccountTypeData" formControlName="account_type_id" valueExpr="id"
+                          displayExpr="name" [readOnly]="is_readonly" [showClearButton]="true" [searchEnabled]="true">
+                        </dx-select-box></span>
+                    </div>
+                  </div>
+
+                  <!-- <div class="profile-info-row">
+                    <div class="profile-info-name"> {{ 'directorate' | translate }} </div>
+
+                    <div class="profile-info-value">
+                      <i class="fa fa-map-marker light-orange bigger-110"></i>
+                      <span> <dx-select-box [dataSource]="directorateData" formControlName="directorate_id" valueExpr="id"
+                          displayExpr="name" [readOnly]="is_readonly" [showClearButton]="true" [searchEnabled]="true">
+                        </dx-select-box></span>
+                    </div>
+                  </div> -->
+
+                  <div class="profile-info-row">
+                    <div class="profile-info-name"> <label>{{ 'directorate_units' | translate }}</label> </div>
+
+                    <div class="profile-info-value">
+                      <span><dx-text-box formControlName="directorate_units" [readOnly]="is_readonly" [showClearButton]="true">
+                        </dx-text-box></span>
+                    </div>
+                  </div>
+                  
+
+                  <div class="profile-info-row">
+                    <div class="profile-info-name"> {{'joined' | translate}} </div>
+
+                    <div class="profile-info-value">
+                      <span><dx-date-box formControlName="created_on" valueExpr="id" displayExpr="name"
+                          [readOnly]="is_readonly">
+                        </dx-date-box></span>
+                    </div>
+                  </div>
+
+                  <div class="profile-info-row">
+                    <div class="profile-info-name"> {{'last_online' | translate}} </div>
+
+                    <div class="profile-info-value">
+                      <span><dx-date-box formControlName="last_login_time" valueExpr="id" displayExpr="name"
+                          [readOnly]="is_readonly">
+                        </dx-date-box></span>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="hr hr-8 dotted"></div>
+              </div><!-- /.col -->
+            </div><!-- /.row -->
+
+
+          </fieldset>
+
+        </div>
+      </form>
+    </dx-scroll-view>
+  </div>
+
+</dx-popup>

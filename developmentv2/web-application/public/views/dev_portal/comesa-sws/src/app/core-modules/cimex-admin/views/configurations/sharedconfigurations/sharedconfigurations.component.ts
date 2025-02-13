@@ -24,6 +24,7 @@ export class SharedconfigurationsComponent {
   @Input() resetcolumns: string;
   countriesinfoData: any[] = [];
   institutionData: any[] = [];
+  regionsData: any[] = [];
   institutionTypesData: any[] = [];
   institutionDepartmentData: any[] = [];
   regulatoryFunctionData: any;
@@ -130,6 +131,7 @@ export class SharedconfigurationsComponent {
     this.fetchConfigurationCountriesDetails();
     this.fetchInstitutionTypesDetails();
     this.fetchInstitutionData();
+    this.fetchRegionsData();
     this.onLoadregulatoryFunctionData();
     this.onLoadregulatorySubFunctionData();
     this.fetchDocRequirementsDetails();
@@ -139,6 +141,7 @@ export class SharedconfigurationsComponent {
     this.fetchBankDetails();
     this.fetchCurrencyDetails();
     this.fetchProductTypesDetails();
+    this.scrollToTop();
   }
  
   spinnerShow(spinnerMessage) {
@@ -147,6 +150,12 @@ export class SharedconfigurationsComponent {
   }
   spinnerHide() {
     this.loadingVisible = false;
+  }
+  scrollToTop(): void {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth' // Smooth scrolling for better UX
+    });
   }
 
   fetchConfigurationCountriesDetails() {
@@ -161,7 +170,7 @@ export class SharedconfigurationsComponent {
         data => {
           this.data_record = data;
           if (this.data_record.success) {
-            // this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
+            
             this.Countries = this.data_record.data;
           }
 
@@ -225,6 +234,24 @@ export class SharedconfigurationsComponent {
         },
         error => {
 
+        });
+  }
+
+  fetchRegionsData() {
+
+    var data_submit = {
+      'table_name': 'par_regions',
+    }
+    this.configService.onLoadConfigurationData(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            // this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
+            this.regionsData = this.data_record.data;
+          }
+        },
+        error => {
         });
   }
 
