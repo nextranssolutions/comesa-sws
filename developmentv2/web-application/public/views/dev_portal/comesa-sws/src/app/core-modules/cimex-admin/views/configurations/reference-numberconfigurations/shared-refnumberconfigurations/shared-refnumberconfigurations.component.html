@@ -25,8 +25,8 @@
     </div>
   </dxi-column>
 
-  <dxi-column *ngIf="table_name == 'par_referencenumbers_types' || table_name == 'par_refnumbers_variables' || table_name == 'par_refnumbers_formats'" dataField="name" caption="{{ 'name' | translate }}"></dxi-column>
-  <dxi-column *ngIf="table_name == 'par_referencenumbers_types' || table_name == 'par_refnumbers_variables' || table_name == 'par_refnumbers_formats'" dataField="description" caption="{{ 'description' | translate }}"></dxi-column>
+  <dxi-column  dataField="name" caption="{{ 'name' | translate }}"></dxi-column>
+  <dxi-column  dataField="description" caption="{{ 'description' | translate }}"></dxi-column>
 
   <dxi-column *ngIf="table_name == 'par_refnumbers_formats'" dataField="reference_type_id"
       caption="{{ 'reference_type' | translate }}">
@@ -34,30 +34,30 @@
       </dxo-lookup>
   </dxi-column>
 
-  <dxi-column *ngIf="table_name == 'txn_submodule_referenceformats'" dataField="regulatory_function_id"
+  <dxi-column *ngIf="table_name == 'tra_submodule_referenceformats'" dataField="regulatory_function_id"
   caption="{{ 'regulatory_function' | translate }}">
   <dxo-lookup [dataSource]="regTypeData" displayExpr="name" valueExpr="id">
   </dxo-lookup>
 </dxi-column>
-<dxi-column *ngIf="table_name == 'txn_submodule_referenceformats'" dataField="regulatory_subfunction_id"
+<dxi-column *ngIf="table_name == 'tra_submodule_referenceformats'" dataField="regulatory_subfunction_id"
   caption="{{ 'regulatory_subfunction' | translate }}">
   <dxo-lookup [dataSource]="regSubTypeData" displayExpr="name" valueExpr="id">
   </dxo-lookup>
 </dxi-column>
 
-<dxi-column *ngIf="table_name == 'txn_submodule_referenceformats'" dataField="reference_type_id"
+<dxi-column *ngIf="table_name == 'tra_submodule_referenceformats'" dataField="reference_type_id"
   caption="{{ 'reference_type' | translate }}">
   <dxo-lookup [dataSource]="refTypeData" displayExpr="name" valueExpr="id">
   </dxo-lookup>
 </dxi-column>
 
-<dxi-column *ngIf="table_name == 'txn_submodule_referenceformats'" dataField="reference_format_id"
+<dxi-column *ngIf="table_name == 'tra_submodule_referenceformats'" dataField="reference_format_id"
   caption="{{ 'reference_format' | translate }}">
   <dxo-lookup [dataSource]="refFormatTypeData" displayExpr="name" valueExpr="id">
   </dxo-lookup>
 </dxi-column>
 
-<dxi-column *ngIf="table_name == 'txn_submodule_referenceformats'" dataField="product_type_id"
+<dxi-column *ngIf="table_name == 'tra_submodule_referenceformats'" dataField="product_type_id"
   caption="{{ 'product_type' | translate }}">
   <dxo-lookup [dataSource]="productTypeData" displayExpr="name" valueExpr="id">
   </dxo-lookup>
@@ -88,38 +88,38 @@
     <dx-scroll-view>
 
       <form role="form" enctype="multipart/form-data" [formGroup]="createNewDataFrm" (ngSubmit)="onFuncSaveNewConfigData()">
-        <div *ngIf="table_name == 'par_referencenumbers_types' || table_name == 'par_refnumbers_variables' || table_name == 'par_refnumbers_formats'"class="col-lg-6">
+        <div class="col-lg-6">
           <label>{{ 'name' | translate }}</label>
           <dx-text-box formControlName="name" [showClearButton]="true"></dx-text-box>
         </div>
       
-        <div *ngIf="table_name == 'par_referencenumbers_types' || table_name == 'par_refnumbers_variables' || table_name == 'par_refnumbers_formats'"class="col-lg-6">
+        <div class="col-lg-6">
           <label>{{ 'description' | translate }}</label>
           <dx-text-box formControlName="description" [showClearButton]="true"></dx-text-box>
         </div>
       
         <div class="row">
-          <div *ngIf="table_name == 'par_refnumbers_formats' || table_name == 'txn_submodule_referenceformats'"class="col-lg-6">
+          <div *ngIf="table_name == 'par_refnumbers_formats' || table_name == 'tra_ubmodule_referenceformats'"class="col-lg-6">
             <label>{{ 'reference_type' | translate }}</label>
             <dx-select-box [dataSource]="refTypeData" formControlName="refnumbers_type_id" valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
           </div>
 
-          <div *ngIf="table_name == 'txn_submodule_referenceformats'" class="col-lg-6">
+          <div *ngIf="table_name == 'tra_submodule_referenceformats'" class="col-lg-6">
             <label>{{ 'regulatory_function' | translate }}</label>
             <dx-select-box [dataSource]="regTypeData" formControlName="regulatory_function_id" valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
           </div>
 
-          <div *ngIf="table_name == 'txn_submodule_referenceformats'"class="col-lg-6">
+          <div *ngIf="table_name == 'tra_submodule_referenceformats'"class="col-lg-6">
             <label>{{ 'regulatory_subfunction' | translate }}</label>
             <dx-select-box [dataSource]="regSubTypeData" formControlName="regulatory_subfunction_id" valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
           </div>
           
-          <div *ngIf="table_name == 'txn_submodule_referenceformats'"class="col-lg-6">
+          <div *ngIf="table_name == 'tra_submodule_referenceformats'"class="col-lg-6">
             <label>{{ 'reference_format' | translate }}</label>
             <dx-select-box [dataSource]="refFormatTypeData" formControlName="reference_format_id" valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
           </div>
 
-          <div *ngIf="table_name == 'txn_submodule_referenceformats'"class="col-lg-6">
+          <div *ngIf="table_name == 'tra_submodule_referenceformats'"class="col-lg-6">
             <label>{{ 'product_type' | translate }}</label>
             <dx-select-box [dataSource]="productTypeData" formControlName="product_type_id" valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
           </div>

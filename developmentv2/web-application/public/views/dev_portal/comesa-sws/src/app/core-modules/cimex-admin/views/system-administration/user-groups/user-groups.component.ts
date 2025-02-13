@@ -32,6 +32,7 @@ export class UserGroupsComponent implements OnInit {
     { value: false, text: 'No' },
   ];
   user_group_id:number;
+  account_type_id: number;
   data: any[];
   editRowKey: any;
   editColumnName: any;
@@ -84,7 +85,7 @@ export class UserGroupsComponent implements OnInit {
   tabsPositions: DxTabPanelTypes.Position[] = [
     'left', 'top', 'right', 'bottom',
   ];
-  tabsPosition: DxTabPanelTypes.Position = this.tabsPositions[0];
+  tabsPosition: DxTabPanelTypes.Position = this.tabsPositions[1];
   stylingModes: DxTabPanelTypes.TabsStyle[] = ['primary', 'secondary'];
   stylingMode: DxTabPanelTypes.TabsStyle = this.stylingModes[0];
   screenWidth: any;
@@ -145,6 +146,7 @@ ngOnInit() {
   this.spinnerShow('Loading '+this.parameter_name);
   this.spinnerHide();
   this.checkScreenSize();
+  this.onLoadWorkflowData();
 
   //for the action menu
 
@@ -171,7 +173,7 @@ checkScreenSize(): void {
   if (this.screenWidth < 768) {
     this.tabsPosition = 'top';
   } else {
-    this.tabsPosition = 'left';
+    this.tabsPosition = 'top';
   }
 }
 
@@ -222,7 +224,7 @@ onSavingUserNavigationPermissions(e) {
           this.response = response;
           //the details 
           if (this.response.success) {
-            this.fetchAppNavigationMenus(user_group_id);
+            this.fetchAppNavigationMenus(user_group_id, this.account_type_id);
             this.fetchAppRegulatoryFunction(user_group_id);
             
             this.fetchWorkflowPermissionData(user_group_id) 
@@ -271,7 +273,7 @@ if(this.changes){
         this.response = response;
         //the details 
         if (this.response.success) {
-          this.fetchAppNavigationMenus(user_group_id);
+          this.fetchAppNavigationMenus(user_group_id, this.account_type_id);
           this.fetchAppRegulatoryFunction(user_group_id);
           
           this.fetchWorkflowPermissionData(user_group_id) 
@@ -318,7 +320,7 @@ onSavingUserWorkflowPermissions(e) {
           this.response = response;
           //the details 
           if (this.response.success) {
-            this.fetchAppNavigationMenus(user_group_id);
+            this.fetchAppNavigationMenus(user_group_id, this.account_type_id);
            this.fetchAppRegulatoryFunction(user_group_id);
             this.fetchWorkflowPermissionData(user_group_id); 
             this.toastr.success(this.response.message, 'Response');
@@ -417,6 +419,26 @@ onLoadAllAccountTypeData(){
       });
 
 }
+onLoadWorkflowData(){
+
+  var data_submit = {
+    'table_name': 'wf_workflows'
+  }
+  this.admnistrationService.onLoadSystemAdministrationData(data_submit)
+    .subscribe(
+      data => {
+        this.data_record = data;
+        
+        if (this.data_record.success) {
+          this.workflowData = this.data_record.data;
+        }
+
+      },
+      error => {
+        
+      });
+
+}
 
 spinnerShow(spinnerMessage){
   this.loadingVisible = true;
@@ -477,7 +499,7 @@ onFuncSaveRecordData() {
             this.user_group_id = this.response.record_id;
             
             this.createNewDataFrm.get('id')?.setValue(this.user_group_id);
-            this.fetchAppNavigationMenus(this.user_group_id);
+            this.fetchAppNavigationMenus(this.user_group_id, this.account_type_id);
             this.selectedTabIndex = 1;
             this.toastr.success(this.response.message, 'Response');
             this.spinnerHide();
@@ -511,9 +533,10 @@ onPopupHidden() {
 
 funcEditDetails(data) {
   this.createNewDataFrm.patchValue(data.data);
-
+ 
   this.user_group_id = data.data.id;
-  this.fetchAppNavigationMenus(data.data.id);
+  this.account_type_id = data.data.account_type_id;
+  this.fetchAppNavigationMenus(data.data.id, this.account_type_id);
   this.fetchAppRegulatoryFunction(data.data.id);
   this.fetchWorkflowPermissionData(data.data.id) 
 }
@@ -521,7 +544,7 @@ funcEditPermissionDetails(data) {
   this.createNewDataFrm.patchValue(data.data);
   
   this.user_group_id = data.data.id;
-  this.fetchAppNavigationMenus(data.data.id)
+  this.fetchAppNavigationMenus(data.data.id, this.account_type_id)
   this.fetchWorkflowPermissionData(data.data.id) 
   this.fetchAppRegulatoryFunction(data.data.id)
 }
@@ -532,9 +555,9 @@ onAddNewRecord() {
   this.AppNavigationMenus = []; 
 
 }
-fetchAppNavigationMenus(user_group_id) {
+fetchAppNavigationMenus(user_group_id, account_type_id) {
   this.spinnerShow('Loading User Permissions Details');
-  this.admnistrationService.getAppUserGroupNavigationMenus(user_group_id)
+  this.admnistrationService.getAppUserGroupNavigationMenus(user_group_id, account_type_id)
   .subscribe(
     (data) => {
       
@@ -548,15 +571,6 @@ fetchAppNavigationMenus(user_group_id) {
     }
   );
 
-    // .subscribe(
-    //   data => {
-    //     this.data_record = data;
-    //     if (this.data_record.success) {
-    //       this.AppNavigationMenus = this.data_record.data;
-    //     }
-    //   });
-    //   this.spinnerHide();
-  
 }
 
 fetchAppRegulatoryFunction(user_group_id) {

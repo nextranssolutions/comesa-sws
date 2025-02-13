@@ -309,7 +309,7 @@ export class TopSectionComponent {
       this.userservice
         .onUserAccountRegistration(
           this.signUpFrm.value,
-          'onsaveTraderData'
+          'onUserAccountRegistration'
         )
         .subscribe(
           (data) => {

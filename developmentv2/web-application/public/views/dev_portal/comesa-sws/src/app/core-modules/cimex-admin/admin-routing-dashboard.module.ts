@@ -777,15 +777,15 @@ const routes: Routes = [{
     path: 'app-hscodes-sections',
     component: HscodesSectionsComponent
   },
- {
+  {
     path: 'app-hscodesheading-definations',
     component: HscodesheadingDefinationsComponent
-  }, 
-   {
+  },
+  {
     path: 'app-hscodesproducts-registry',
     component: HscodesproductsRegistryComponent
-  }, 
-   {
+  },
+  {
     path: 'app-hscodessubheading-defination',
     component: HscodessubheadingDefinationComponent
   },
@@ -878,7 +878,6 @@ const routes: Routes = [{
     path: 'app-external-dashboard',
     component: ExternalDashboardComponent
   },
-
   {
     path: 'app-app-sections',
     component: AppSectionsComponent
@@ -1245,7 +1244,8 @@ const routes: Routes = [{
   }, {
     path: 'external-users',
     component: ExternalUsersComponent
-  },
+  }, 
+  
   ]
 }]
 @NgModule({

@@ -397,6 +397,175 @@ class UserManagementController extends Controller
 
         return response()->json($res, 200);
     }
+    public function onUserAccountRegistration(Request $req)
+    {
+        try {
+            DB::beginTransaction(); // Start transaction
+
+            $process_id = 1;
+            $appworkflow_status_id = 1;
+            $email_address = $req->email_address;
+            $phone_number = $req->phone_number;
+            $account_type_id = $req->account_type_id;
+            $otp_value = $req->otp_value;
+
+            $trader_no = generateUserRegistrationNo('tra_trader_account');
+
+            $validator = Validator::make($req->all(), [
+                // 'account_type_id' => 'required|integer',
+                // 'country_of_origin_id' => 'required|integer',
+                // 'identification_no' => $trader_no,
+                // 'identification_type_id' => 'required|integer',
+                // 'identification_number' => 'required',
+                // 'first_name' => 'required|string',
+                // 'email_address' => 'required|string|email:rfc,dns,spoof|indisposable',
+                // 'created_by' => 'nullable|max:255',
+            ]);
+
+            if ($validator->fails()) {
+                return response()->json([
+                    'status' => 'error',
+                    'message' => $validator->errors()->first(),
+                ], 422);
+            }
+            $app_statusrecord = getInitialWorkflowStatusId($process_id);
+            if (!$app_statusrecord) {
+
+                return response()->json([
+                    'success' => false,
+                    'message' => 'The Initial Workflow Status Has not been set, contact the system admin',
+                ], 200);
+            }
+
+            $appworkflow_status_id = $app_statusrecord->appworkflow_status_id;
+
+            //OTP validation
+            if ($otp_value) {
+                $encryptedEmail = aes_encrypt($req->email_address);
+                $otpRecord = DB::table('usr_onetimepwd_tokens')
+                    ->where('email_address', '=', $encryptedEmail)
+                    ->where('otp_value', '=', aes_encrypt($otp_value))
+                    ->where('expiry_time', '>=', now()) // Check if OTP is not expired
+                    ->first();
+                if (!$otpRecord) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Invalid or expired OTP. Please request a new OTP.',
+                    ], 200);
+                }
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'OTP is required.',
+                ], 200);
+            }
+            // **Step 1: Create Trader Account**
+            $trader_account_data = [
+                'name' => $req->name,
+                'contact_person' => $req->contact_person,
+                'contact_person_email' => $req->contact_person_email,
+                'country_id' => $req->country_id,
+                'region_id' => $req->region_id,
+                'district_id' => $req->district_id,
+                'physical_address' => $req->physical_address,
+                'postal_address' => $req->postal_address,
+                'telephone_no' => $req->telephone_no,
+                'mobile_no' => $req->mobile_no,
+                'email_address' => $req->email_address,
+                'status_id' => 1,
+                'identification_no' => $trader_no,
+                'created_by' => $req->email_address,
+                'created_on' => now(),
+            ];
+
+            $trader_resp = insertRecord('tra_trader_account', $trader_account_data);
+
+            if (!$trader_resp['success']) {
+                throw new \Exception('Error creating trader account: ' . $trader_resp['message']);
+            }
+
+            $trader_id = $trader_resp['record_id'];
+
+            // **Step 2: Create User Account**
+            $generatedPassword = bin2hex(random_bytes(8));
+            $application_code = generateApplicationCode($process_id, 'usr_users_information');
+
+            $email_address = aes_encrypt($req->email_address);
+            $record = DB::table('usr_users_information')
+                ->where('email_address', $email_address)
+                // ->where('identification_number', '=', $req->identification_number)
+                ->count();
+
+            if ($record > 0) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'There is an existing user account with the same Email Address, reset password or contact the System administrator.'
+                ], 200);
+            }
+            $user_data = [
+                'trader_id' => $trader_id,
+                'account_type_id' => $req->account_type_id,
+                // 'user_title_id' => $req->user_title_id,
+                'country_of_origin_id' => $req->country_of_origin_id,
+                'email_address' => aes_encrypt($email_address),
+                'password' => Hash::make($generatedPassword),
+                'surname' => aes_encrypt($req->surname),
+                'first_name' => aes_encrypt($req->first_name),
+                'phone_number' => aes_encrypt($phone_number),
+                'process_id' => $process_id,
+                'appworkflow_status_id' => $appworkflow_status_id,
+                'identification_number' => $req->identification_number,
+                'application_code' => $application_code,
+                'created_by' => $req->email_address,
+                'created_on' => now(),
+            ];
+
+            $user_resp = insertRecord('usr_users_information', $user_data);
+
+            if (!$user_resp['success']) {
+                DB::rollBack();
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Error occurred: ' . $user_resp['message'],
+                ], 200);
+            }
+
+            // **Step 3: Process Submission & Send Email Notification**
+            initiateInitialProcessSubmission('usr_users_information', $application_code, $process_id, $user_resp['record_id']);
+
+            // Send email notification
+            $template_id = 1;
+            $subject = 'Trader Account Creation Notification';
+            $vars = [
+                '{name}' => $req->name,
+                '{email_address}' => $req->email_address,
+                '{password}' => $generatedPassword,
+                '{identification_no}' => $trader_no
+            ];
+
+            $mailResp = sendMailNotification($req->email_address, $subject, '', '', '', '', '', $template_id, $vars);
+            if (!$mailResp['success']) {
+                DB::rollBack();
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Account created, but email notification failed. Please contact support.'
+                ], 500);
+            }
+
+            DB::commit();
+            return response()->json([
+                'success' => true,
+                'message' => 'Trader account created successfully. Login credentials have been emailed.'
+            ], 200);
+
+        } catch (\Exception $exception) {
+            DB::rollBack(); // Rollback transaction on failure
+            return response()->json([
+                'success' => false,
+                'message' => 'Error: ' . $exception->getMessage(),
+            ], 500);
+        }
+    }
     // public function onUserAccountRegistration(Request $req)
     // {
     //     DB::beginTransaction();
@@ -437,52 +606,52 @@ class UserManagementController extends Controller
     //             ], 422);
     //         }
 
-    //         $app_statusrecord = getInitialWorkflowStatusId($process_id);
-    //         if (!$app_statusrecord) {
+    // $app_statusrecord = getInitialWorkflowStatusId($process_id);
+    // if (!$app_statusrecord) {
 
-    //             return response()->json([
-    //                 'success' => false,
-    //                 'message' => 'The Initial Workflow Status Has not been set, contact the system admin',
-    //             ], 200);
-    //         }
+    //     return response()->json([
+    //         'success' => false,
+    //         'message' => 'The Initial Workflow Status Has not been set, contact the system admin',
+    //     ], 200);
+    // }
 
-    //         $appworkflow_status_id = $app_statusrecord->appworkflow_status_id;
+    // $appworkflow_status_id = $app_statusrecord->appworkflow_status_id;
 
-    //         //OTP validation
-    //         if ($otp_value) {
-    //             $encryptedEmail = aes_encrypt($req->email_address);
-    //             $otpRecord = DB::table('usr_onetimepwd_tokens')
-    //                 ->where('email_address', '=', $encryptedEmail)
-    //                 ->where('otp_value', '=', aes_encrypt($otp_value))
-    //                 ->where('expiry_time', '>=', now()) // Check if OTP is not expired
-    //                 ->first();
-    //             if (!$otpRecord) {
-    //                 return response()->json([
-    //                     'success' => false,
-    //                     'message' => 'Invalid or expired OTP. Please request a new OTP.',
-    //                 ], 200);
-    //             }
-    //         } else {
-    //             return response()->json([
-    //                 'success' => false,
-    //                 'message' => 'OTP is required.',
-    //             ], 200);
-    //         }
+    // //OTP validation
+    // if ($otp_value) {
+    //     $encryptedEmail = aes_encrypt($req->email_address);
+    //     $otpRecord = DB::table('usr_onetimepwd_tokens')
+    //         ->where('email_address', '=', $encryptedEmail)
+    //         ->where('otp_value', '=', aes_encrypt($otp_value))
+    //         ->where('expiry_time', '>=', now()) // Check if OTP is not expired
+    //         ->first();
+    //     if (!$otpRecord) {
+    //         return response()->json([
+    //             'success' => false,
+    //             'message' => 'Invalid or expired OTP. Please request a new OTP.',
+    //         ], 200);
+    //     }
+    // } else {
+    //     return response()->json([
+    //         'success' => false,
+    //         'message' => 'OTP is required.',
+    //     ], 200);
+    // }
     //         $generatedPassword = bin2hex(random_bytes(8));
 
     //         $email_address = aes_encrypt($req->email_address);
 
-    //         $record = DB::table('usr_users_information')
-    //             ->where('email_address', $email_address)
-    //             ->where('identification_number', '=', $req->identification_number)
-    //             ->count();
+    // $record = DB::table('usr_users_information')
+    //     ->where('email_address', $email_address)
+    //     ->where('identification_number', '=', $req->identification_number)
+    //     ->count();
 
-    //         if ($record > 0) {
-    //             return response()->json([
-    //                 'success' => false,
-    //                 'message' => 'There is an existing user account with the same Email Address, reset password or contact the System administrator.'
-    //             ], 200);
-    //         }
+    // if ($record > 0) {
+    //     return response()->json([
+    //         'success' => false,
+    //         'message' => 'There is an existing user account with the same Email Address, reset password or contact the System administrator.'
+    //     ], 200);
+    // }
 
 
     //         // $telephone_no = $req->phone_number['internationalNumber'];
@@ -1360,7 +1529,7 @@ class UserManagementController extends Controller
             $table_name = $req->table_name;
             $appworkflow_status_id = $req->appworkflow_status_id;
             $phone_number = $req->phone_number;
-            // $user_group_id = $req->user_group_id;
+            $user_group_id = $req->user_group_id;
             $table_name = 'usr_users_information';
             $process_id = 1;
             $sectionSelection = $req->sectionSelection;
@@ -1373,9 +1542,9 @@ class UserManagementController extends Controller
                 $sql->where('appworkflow_status_id', $appworkflow_status_id);
             }
 
-            // if (validateIsNumeric($user_group_id)) {
-            //     $sql->where('user_group_id', $user_group_id);
-            // }
+            if (validateIsNumeric($user_group_id)) {
+                $sql->where('user_group_id', $user_group_id);
+            }
 
             $actionColumnData = returnContextMenuActions($process_id);
             $data = $sql->get();
@@ -1391,7 +1560,7 @@ class UserManagementController extends Controller
                 $user_data[] = array(
                     'id' => $rec->id,
                     'user_title_id' => $rec->user_title_id,
-                    // 'user_group_id' => $rec->user_group_id,
+                    'user_group_id' => $rec->user_group_id,
                     'appworkflow_status' => $rec->appworkflow_status,
                     'identification_type_id' => $rec->identification_type_id,
                     'country_of_origin_id' => $rec->country_of_origin_id,
@@ -1709,36 +1878,14 @@ class UserManagementController extends Controller
 
     public function onsaveTraderData(Request $req)
     {
+        // $trader_data = json_decode($req->traderData_sub);
+        DB::beginTransaction();
+
         try {
-            DB::beginTransaction(); // Start transaction
+            // Generate registration number
+            $trader_no = generateUserRegistrationNo('txn_trader_account');
 
-            $process_id = 1;
-            $appworkflow_status_id = 1;
-            $email_address = $req->email_address;
-            $phone_number = $req->phone_number;
-
-            $trader_no = generateUserRegistrationNo('tra_trader_account');
-
-            $validator = Validator::make($req->all(), [
-                // 'account_type_id' => 'required|integer',
-                // 'country_of_origin_id' => 'required|integer',
-                // 'identification_no' => $trader_no,
-                // 'identification_type_id' => 'required|integer',
-                // 'identification_number' => 'required',
-                // 'first_name' => 'required|string',
-                // 'email_address' => 'required|string|email:rfc,dns,spoof|indisposable',
-                // 'created_by' => 'nullable|max:255',
-            ]);
-
-            if ($validator->fails()) {
-                return response()->json([
-                    'status' => 'error',
-                    'message' => $validator->errors()->first(),
-                ], 422);
-            }
-
-            // **Step 1: Create Trader Account**
-            $trader_account_data = [
+            $data = [
                 'name' => $req->name,
                 'contact_person' => $req->contact_person,
                 'contact_person_email' => $req->contact_person_email,
@@ -1752,80 +1899,88 @@ class UserManagementController extends Controller
                 'email_address' => $req->email_address,
                 'status_id' => 1,
                 'identification_no' => $trader_no,
-                'created_by' => $req->email_address,
-                'created_on' => now(),
             ];
 
-            $trader_resp = insertRecord('tra_trader_account', $trader_account_data);
+            // Check if the email already exists
+            $emailExists = DB::table('txn_trader_account')
+                ->where('email_address', $req->email_address)
+                ->exists();
+              
+            if ($emailExists) {
+                // return response()->json(['success' => false, 'message' => 'Email already exists.'], 400);
+                return $this->onUpdateTraderData($req);
+                //  write code here using the refactored function onUpdateTraderData to update the txn_trader_account in the main db as well as update the email in usr_users_information
+            } else {
 
-            if (!$trader_resp['success']) {
-                throw new \Exception('Error creating trader account: ' . $trader_resp['message']);
-            }
+                // Insert trader account into the primary database
+                $resp = insertRecord('txn_trader_account', $data, 'Create Trader Account');
+                if (!$resp['success']) {
+                    throw new \Exception('Failed to create trader account in the primary database.');
+                }
 
-            $trader_id = $trader_resp['record_id'];
+                $trader_id = $resp['record_id'];
 
-            // **Step 2: Create User Account**
-            $generatedPassword = bin2hex(random_bytes(8));
-            $application_code = generateApplicationCode($process_id, 'usr_users_information');
+                $generatedPassword = bin2hex(random_bytes(8));
 
-            $user_data = [
-                'trader_id' => $trader_id,
-                'account_type_id' => $req->account_type_id,
-                // 'user_title_id' => $req->user_title_id,
-                'country_of_origin_id' => $req->country_of_origin_id,
-                'email_address' => aes_encrypt($email_address),
-                'password' => Hash::make($generatedPassword),
-                'surname' => aes_encrypt($req->surname),
-                'first_name' => aes_encrypt($req->first_name),
-                'phone_number' => aes_encrypt($phone_number),
-                'process_id' => $process_id,
-                'appworkflow_status_id' => $appworkflow_status_id,
-                'identification_number' => $req->identification_number,
-                'application_code' => $application_code,
-                'created_by' => $req->email_address,
-                'created_on' => now(),
-            ];
 
-            $user_resp = insertRecord('usr_users_information', $user_data);
+                $user_data = [
+                    'trader_id' => $trader_id,
+                    'email_address' => $req->email_address,
+                    'name' => $req->name,
+                    'password' => aes_encrypt($generatedPassword),
+                    'is_verified' => $req->is_verified ?? 0,
+                    'telephone_number' => $req->telephone_no,
+                    'is_initiatepassword_change' => 1,
+                    'country_id' => $req->country_id,
+                    'account_type_id' => $req->account_type_id ?? null,
+                    'is_initiateprofile_update' => 1,
+                    'created_by' => $req->email_address,
+                    'created_on' => now(),
+                ];
 
-            if (!$user_resp['success']) {
-                throw new \Exception('Error creating user account: ' . $user_resp['message']);
-            }
+                // Insert user account details into the 'portal' database
+                $userResp = insertRecord('usr_users_information', $user_data, '');
 
-            // **Step 3: Process Submission & Send Email Notification**
-            initiateInitialProcessSubmission('usr_users_information', $application_code, $process_id, $user_resp['record_id']);
+                if (!$userResp['success']) {
+                    throw new \Exception('Failed to create user.');
+                }
 
-            // Send email notification
-            $template_id = 1;
-            $subject = 'Trader Account Creation Notification';
-            $vars = [
-                '{name}' => $req->name,
-                '{email_address}' => $req->email_address,
-                '{password}' => $generatedPassword,
-                '{identification_no}' => $trader_no
-            ];
+                // Send email notification
+                $template_id = 1;
+                $subject = 'Applicant Account Creation Notification';
+                $vars = [
+                    '{name}' => $req->name,
+                    '{email_address}' => $req->email_address,
+                    '{password}' => $generatedPassword,
+                    '{identification_no}' => $trader_no
+                ];
 
-            $mailResp = sendMailNotification($req->email_address, $subject, '', '', '', '', '', $template_id, $vars);
-            if (!$mailResp['success']) {
-                DB::rollBack();
+                $decodedEmail = $req->email_address;
+                // $mailResp = sendMailNotification($req->name, $req->email_address, $subject, '', '', '', '', '', $template_id, $vars);
+
+                $mailResp = sendMailNotification($decodedEmail, $subject, '', '', '', '', '', $template_id, $vars);
+
+                if (!$mailResp['success']) {
+                    DB::rollBack();
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Account created, but email notification failed. Please contact support.'
+                    ], 500);
+                }
+
+                DB::commit();
                 return response()->json([
-                    'success' => false,
-                    'message' => 'Account created, but email notification failed. Please contact support.'
-                ], 500);
+                    'success' => true,
+                    'message' => 'Trader account created successfully. Login credentials have been emailed.'
+                ], 200);
             }
-
-            DB::commit();
-            return response()->json([
-                'success' => true,
-                'message' => 'Trader account created successfully. Login credentials have been emailed.'
-            ], 200);
 
         } catch (\Exception $exception) {
-            DB::rollBack(); // Rollback transaction on failure
-            return response()->json([
-                'success' => false,
-                'message' => 'Error: ' . $exception->getMessage(),
-            ], 500);
+            DB::rollBack();
+            return response()->json(sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__)), 500);
+        } catch (\Throwable $throwable) {
+            DB::rollBack();
+            return response()->json(sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__)), 500);
         }
     }
 
@@ -1895,14 +2050,7 @@ class UserManagementController extends Controller
                 $resp = updateRecord($table_name, $previous_data, $where, $trader_data, '');
 
                 if ($resp['success']) {
-                    // Update in portal
-                    $existingRecord = DB::table('tra_trader_account')
-                        ->where('email_address', '=', $req->email_address)
-                        ->first();
-                    if ($existingRecord) {
-                        $resp = updateRecord($table_name, $previous_data, $where, $trader_data, '');
-                    }
-
+                    
                     $existingUserRecord = DB::table('usr_users_information')
                         ->where('email_address', '=', $req->email_address)
                         ->first();

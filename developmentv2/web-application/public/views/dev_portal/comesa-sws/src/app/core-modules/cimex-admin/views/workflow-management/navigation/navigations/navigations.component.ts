@@ -13,7 +13,7 @@ export class NavigationsComponent {
     // private http: HttpClient,
   ) {
     this.table_name = 'wf_navigation_items';
-    this.parameter_name = "Navigation Items";
+    this.parameter_name = "navigation_items";
   }
   ngOnInit() {
     // other initializations
