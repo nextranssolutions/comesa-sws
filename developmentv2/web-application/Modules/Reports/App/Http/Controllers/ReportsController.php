@@ -91,7 +91,7 @@ class ReportsController extends Controller
                 PDF::SetFont('times', '', 11);
                 PDF::Cell(0, 8, 'Dear ' . $rec->first_name . ' ' . $rec->other_names, 0, 1);
            
-                PDF::MultiCell(0, 7, "Following the successful evaluation of your expression of interest in the assessment of medicinal products under the Continental Regulatory Experts Solution (E-CRES), we are pleased to formally appoint you as an expert for the assessment of medicinal products within the E-CRES framework.", 0, '', '', 1);
+                PDF::MultiCell(0, 7, "Following the successful evaluation of your expression of interest in the assessment of medicinal products under the COMESA IMPORT/EXPORT SYSTEM (cIMEX), we are pleased to formally appoint you as an expert for the assessment of medicinal products within the E-CRES framework.", 0, '', '', 1);
                
                 PDF::SetFont('times', 'B', 11);
               

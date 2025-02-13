@@ -1,6 +1,6 @@
 openapi: 3.0.3
 info:
-  title: 'CONTINENTAL REGULATORY EXPERTS SOLUTION (E-CRES) '
+  title: 'COMESA IMPORT/EXPORT SYSTEM (cIMEX) '
   description: ''
   version: 1.0.0
 servers:

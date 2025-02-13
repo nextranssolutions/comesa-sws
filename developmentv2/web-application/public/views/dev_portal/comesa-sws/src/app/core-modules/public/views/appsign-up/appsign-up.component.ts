@@ -112,6 +112,7 @@ export class AppsignUpComponent {
 
     this.signUpFrm = this.fb.group({
       country_of_origin_id: new FormControl('', Validators.compose([])),
+      user_group_id: new FormControl('', Validators.compose([])),
       email_address: new FormControl(
         '',
         Validators.compose([Validators.required, Validators.email])
@@ -201,10 +202,10 @@ export class AppsignUpComponent {
       (data) => {
         this.data_record = data;
         if (this.data_record.success) {
-          this.decryptedPayload = this.encryptionService.OnDecryptData(
-            this.data_record.data
-          );
-          this.partnerStatesData = this.decryptedPayload;
+          // this.decryptedPayload = this.encryptionService.OnDecryptData(
+          //   this.data_record.data
+          // );
+          this.partnerStatesData = this.data_record.data;
         }
       },
       (error) => {}
@@ -251,15 +252,16 @@ export class AppsignUpComponent {
   onLoaduserGroupData() {
     var data_submit = {
       table_name: 'usr_users_groups',
+      is_enabled: true,
     };
     this.configService.onLoadConfigurationData(data_submit).subscribe(
       (data) => {
         this.data_record = data;
         if (this.data_record.success) {
-          this.decryptedPayload = this.encryptionService.OnDecryptData(
-            this.data_record.data
-          );
-          this.userGroups = this.decryptedPayload;
+          // this.decryptedPayload = this.encryptionService.OnDecryptData(
+          //   this.data_record.data
+          // );
+          this.userGroups = this.data_record.data;
         }
       },
       (error) => {}
@@ -391,10 +393,10 @@ export class AppsignUpComponent {
       (data) => {
         this.data_record = data;
         if (this.data_record.success) {
-          this.decryptedPayload = this.encryptionService.OnDecryptData(
-            this.data_record.data
-          );
-          this.Countries = this.decryptedPayload;
+          // this.decryptedPayload = this.encryptionService.OnDecryptData(
+          //   this.data_record.data
+          // );
+          this.Countries = this.data_record.data;
         }
       },
       (error) => {}

@@ -148,7 +148,9 @@ html, body {
   flex: 1;
   overflow-y: auto;
 }
-.bg-darkbackground{background-color:#44bdf6  !important}
+.bg-darkbackground{
+  background: linear-gradient(90deg, rgb(228, 234, 238) 0%, rgb(152, 195, 223) 75%, rgb(229, 235, 238) 100%) !important;
+}
 
 .border-top{
   border-top:1px solid #ccc !important;
@@ -366,7 +368,7 @@ form .ng-invalid:before {
 
 }
 .ng-invalid:not(form) {
-  border-left: 1px solid #ff0000 !important;
+  /* border-left: 1px solid #ff0000 !important; */
 }
 
 form .ng-valid {
@@ -384,7 +386,7 @@ form .ng-valid {
 }
 
 .ng-invalid:not(form) {
-  border-left: 1px solid #ff0000 !important;
+  /* border-left: 1px solid #ff0000 !important; */
 }
 
 .dx-button-text  {  
@@ -592,7 +594,7 @@ form .ng-valid {
 .dx-overlay-content,
 .dx-popup-normal,
 .dx-resizable {
-  border-radius: 0px !important;
+  border-radius: 5px !important;
 }
 
 /********** Template CSS **********/
