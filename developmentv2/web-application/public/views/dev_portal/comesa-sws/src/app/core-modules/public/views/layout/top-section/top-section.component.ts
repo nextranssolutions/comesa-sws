@@ -50,6 +50,7 @@ export class TopSectionComponent {
   Institutions: any[] = [];
   InstitutionDepartments: any[] = [];
   userAccountTypeData: any;
+  traderAccountTypeData: any;
   userTitles: any[] = [];
   IdentificationType: any[] = [];
   system_title: string = AppSettings.system_title;
@@ -139,7 +140,7 @@ export class TopSectionComponent {
     this.loadTranslations(this.translate.currentLang || 'English');
 
     this.signUpFrm = new FormGroup({
-      account_type_id: new FormControl('', Validators.compose([])),
+      traderaccount_type_id: new FormControl('', Validators.compose([])),
       country_of_origin_id: new FormControl('', Validators.compose([])),
       name: new FormControl('', Validators.compose([])),
       email_address: new FormControl('', Validators.compose([Validators.required, Validators.email])),
@@ -160,7 +161,8 @@ export class TopSectionComponent {
 
     this.onLoaduserGroupData();
     this.fetchUserCountryOfOrigin();
-    this.onLoadAccountTypeData()
+    this.onLoadAccountTypeData();
+    this.onLoadTraderAccountTypeData();
   }
 
   onCountrySelection($event) {
@@ -209,6 +211,25 @@ export class TopSectionComponent {
     );
   }
 
+  onLoadTraderAccountTypeData() {
+    var data_submit = {
+      table_name: 'par_traderaccount_types',
+      is_enabled: true,
+    };
+    this.configService.onLoadConfigurationData(data_submit).subscribe(
+      (data) => {
+        this.data_record = data;
+        if (this.data_record.success) {
+          // this.decryptedPayload = this.encryptionService.OnDecryptData(
+          //   this.data_record.data
+          // );
+          this.traderAccountTypeData = this.data_record.data;
+        }
+      },
+      (error) => { }
+    );
+  }
+  
   fetchUserCountryOfOrigin() {
     var data_submit = {
       table_name: 'par_countries',
