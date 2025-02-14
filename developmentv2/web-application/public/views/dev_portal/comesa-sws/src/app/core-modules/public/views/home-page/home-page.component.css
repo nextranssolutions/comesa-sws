@@ -167,8 +167,8 @@ h5 {
 }
 .form-control-lg,
 .form-select-lg {
-  border-radius: 20px;
-  height: 50px; /* Explicit height for additional customization */
+  border-radius: 0 !important;
+  height: 60px; /* Explicit height for additional customization */
 }
 .btn-rounded {
   border-radius: 50% !important;
@@ -179,3 +179,8 @@ h5 {
   padding: 1.4rem 2rem !important;
 }
 
+
+.input-group {
+  background-color: #f7f8fa; /* Light background for contrast */
+  border-radius: 20px;
+}
