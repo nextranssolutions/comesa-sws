@@ -3,46 +3,19 @@
     <div class="row col-lg-12 row  pull-right">
       <div class="container-fluid p-0">
         <!-- Slider Section -->
-        <div class="slider">
-          <div class="carousel slide" id="slider" data-bs-ride="carousel">
-            <div class="carousel-inner">
-              <div class="carousel-item active slide_image1">
-
-              </div>
-              <div class="carousel-item active slide_image1">
-
-              </div>
-              <div class="carousel-item active slide_image1">
-
-              </div>
-            </div>
-            <button class="carousel-control-prev" type="button" data-bs-target="#slider" data-bs-slide="prev">
-              <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Previous</span>
-            </button>
-            <button class="carousel-control-next" type="button" data-bs-target="#slider" data-bs-slide="next">
-              <span class="carousel-control-next-icon" aria-hidden="true"></span>
-              <span class="visually-hidden">Next</span>
-            </button>
-          </div>
-
+        
           <!-- Overlay Container -->
-          <div class="overlay-container">
-            <h2 class="display-5 mb-4">A Step-by-Step Guide on Foreign Trade Procedures</h2>
+          <!-- <div class="overlay-container"> -->
+            <h2 class="display-5 mb-4">{{'astep-by-step_guide_on_import/export_procedures' | translate}}</h2>
             <!-- Search Box -->
             <div class="search-box">
-              <form>
+              <!-- <form>
                 <div class="input-group">
-                  <!-- Search By Dropdown -->
-                  <!-- <select class="form-select form-select-lg" id="searchBy">
-                    <option selected>HS Code or Product</option>
-                    <option>HS Code</option>
-                    <option>Product</option>
-                  </select> -->
+                  
+              
                   <div class="form-search-by">
-                    <p>{{'search_by' | translate}}</p>
+                    <h6>{{'search_by' | translate}}</h6>
                   </div>
-
 
                   <select class="form-select form-select-lg" id="searchByCriteria"
                     (change)="onSearchCriteriaChange($event)">
@@ -52,7 +25,8 @@
                     </option>
                   </select>
 
-                  <!-- Transaction Type Dropdown -->
+                  
+
                   <select class="form-select form-select-lg" id="transactionType">
                     <option selected disabled>{{ 'select_operation_type' | translate }}</option>
                     <option *ngFor="let transaction of operationTypeData" [value]="transaction.name">
@@ -60,7 +34,6 @@
                     </option>
                   </select>
 
-                  <!-- Dynamic Type Dropdown -->
                   <select class="form-select form-select-lg" id="productType">
                     <option selected disabled>{{ productPlaceholder | translate }}</option>
                     <option *ngFor="let item of dynamicDataSource" [value]="item.name">
@@ -68,39 +41,60 @@
                     </option>
                   </select>
 
-                  <!-- Search Button -->
                   <button type="submit" class="btn btn-primary btn-rounded form-select-lg"
                     (onClick)="onSearchProduct()">
-                    <i class="fa fa-search"></i>
-                  </button>
-                </div>
-              </form>
-              <!-- <form>
-                <div class="input-group">
-                 
-                  <select class="form-select form-select-lg" id="searchBy">
-                    <option selected>HS Code or Product</option>
-                    <option>HS Code</option>
-                    <option>Product</option>
-                  </select>
-                  
-                  <select class="form-select form-select-lg" id="transactionType">
-                    <option selected>Transaction Type</option>
-                    <option>Import</option>
-                    <option>Export</option>
-                    <option>Transit</option>
-                  </select>
-                 
-                  <input type="text" class="form-control form-control-lg" placeholder="Enter your search">
-                 
-                  <button type="submit" class="btn btn-primary btn-rounded">
-                    <i class="bi bi-search"></i>
+                    <i class="fa fa-arrow-right"></i>
                   </button>
                 </div>
               </form> -->
+
+              <form [formGroup]="searchForm" class="search-box">
+                
+                  <div class="dx-fieldset d-flex input-field">
+                    <!-- Search By Dropdown -->
+                    <div class="dx-field">
+                      <label class="form-label w-200">{{ 'search_by' | translate }}</label>
+                    </div>
+                    <div class="dx-field">
+                      
+                      <dx-select-box formControlName="searchByCriteria" [dataSource]="criteriaData" displayExpr="name"
+                        valueExpr="id" placeholder="{{ 'select_search_criteria' | translate }}"
+                        (onValueChanged)="onSearchCriteriaChange($event)" class="form-select-lg w-200">
+                      </dx-select-box>
+                    </div>
+  
+                    <!-- Transaction Type Dropdown -->
+                    <div class="dx-field">
+                      
+                      <dx-select-box formControlName="transactionType" [dataSource]="operationTypeData" displayExpr="name"
+                        valueExpr="name" placeholder="{{ 'select_operation_type' | translate }}"
+                        class="form-select-lg w-200">
+                      </dx-select-box>
+                    </div>
+  
+                    <!-- Dynamic Type Dropdown -->
+                    <div class="dx-field">
+                      
+                      <dx-select-box formControlName="productType" [dataSource]="dynamicDataSource" displayExpr="name"
+                        valueExpr="name" placeholder="{{ productPlaceholder | translate }}" class="form-select-lg w-200">
+                      </dx-select-box>
+                    </div>
+  
+                    <!-- Search Button -->
+                    <div class="dx-field text-center">
+                      <dx-button text="Search" type="default" stylingMode="contained" icon="search"
+                        (onClick)="onSearchProduct()" class="btn-lg btn-primary" class="w-200">
+                      </dx-button>
+                    </div>
+                  </div>
+              
+
+              </form>
+
+
             </div>
-          </div>
-        </div>
+          <!-- </div> -->
+       
       </div>
 
     </div>

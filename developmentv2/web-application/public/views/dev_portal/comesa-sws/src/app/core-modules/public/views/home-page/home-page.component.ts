@@ -1,5 +1,5 @@
 import { Component, ViewContainerRef } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DxButtonTypes } from 'devextreme-angular/ui/button';
 import { DxTextBoxTypes } from 'devextreme-angular/ui/text-box';
@@ -22,7 +22,7 @@ export class HomePageComponent {
   system_title: string = AppSettings.system_title;
 
   iconPosition: any = 'top';
-  signInFrm: FormGroup;
+  searchCriteriaForm: FormGroup;
   submitted = false;
   loading = false;
   message: string;
@@ -68,11 +68,8 @@ export class HomePageComponent {
   regulatoryFunctionData: any;
   private baseUrl;
   dynamicDataSource: any[] = [];
-  var_1: number;
-  var_2: number;
-  sum_var: number;
-  searchExpertsProfileFrm: FormGroup;
   slides_information: any;
+  searchForm: FormGroup;
   constructor(
 
     private router: Router,
@@ -83,41 +80,29 @@ export class HomePageComponent {
     public publicservice: PublicDashboardService,
     private configService: ConfigurationsService,
     public viewRef: ViewContainerRef,
-    public encryptionService: EncryptionService
-
+    public encryptionService: EncryptionService,
+    private fb: FormBuilder
   ) {
     const base_url = AppSettings.base_url;
   }
 
   ngOnInit() {
-    this.authService.getUserGroupName().subscribe((userGroupName: string) => {
-      this.userGroupName = userGroupName;
+    this.searchCriteriaForm = new FormGroup({
+      id: new FormControl('', Validators.compose([])),
+      search_criteria_id: new FormControl('', Validators.compose([])),
+      dynamic_type_id: new FormControl('', Validators.compose([])),
+      operation_type_id: new FormControl('', Validators.compose([]))
     });
 
-    this.authService.getUserFirstName().subscribe((userFirstName: string) => {
-      this.userFirstName = userFirstName;
+    this.searchForm = this.fb.group({
+      searchByCriteria: [null],
+      transactionType: [null],
+      productType: [null]
     });
 
-    this.authService.getCountryOfOrigin().subscribe((userCountryOfOrigin: string) => {
-      this.userCountryOfOrigin = userCountryOfOrigin;
-    });
-
-    // Add this line to check the initial value
-
-    this.forgotPasswordFrm = new FormGroup({
-      email_address: new FormControl('', Validators.compose([Validators.required]))
-    });
-
-    this.signInFrm = new FormGroup({
-      password: new FormControl('', Validators.compose([Validators.required])),
-      email_address: new FormControl('', Validators.compose([Validators.required])),
-      // sum_input: new FormControl('', Validators.compose([Validators.required]))
-
-    });
-
-    this.onLoadcountriesData();
+    // this.onLoadcountriesData();
     this.onLoadregulatoryFunctionData();
-    this.onLoadSlides_information();
+    // this.onLoadSlides_information();
     this.onLoadSearchCriteriaData();
     this.onLoadOperationTypeData();
     this.onLoadProductData();
@@ -130,23 +115,30 @@ export class HomePageComponent {
     });
   }
 
-  onSearchCriteriaChange(event: Event) {
-    const selectedId = (event.target as HTMLSelectElement).value;
-
-    if (selectedId === '1') {
-      // Product Name selected
+  onSearchCriteriaChange(event: any) {
+    const selectedId = event.value; // Use 'value' instead of 'selectedItem.id'
+  
+    if (selectedId === 1) {
       this.dynamicDataSource = this.productData;
       this.productPlaceholder = 'Type of Product';
-    } else if (selectedId === '2') {
-      // HS Code selected
+    } else if (selectedId === 2) {
       this.dynamicDataSource = this.hsCodeData;
       this.productPlaceholder = 'Enter HS Code';
     } else {
-      // Default case
       this.dynamicDataSource = [];
       this.productPlaceholder = 'Select Type';
     }
   }
+  
+
+
+  // onCountrySelection($event) {
+  //   if ($event.selectedItem) {
+  //     let country_data = $event.selectedItem,
+  //     dynamic_type_id = '+' + country_data.phonecode;
+  //     this.searchCriteriaForm.get('dynamic_type_id')?.setValue(name);
+  //   }
+  // }
 
   onSearchProduct() {
 
@@ -255,7 +247,7 @@ export class HomePageComponent {
     this.spinnerShow('');
     var data_submit = {
       'table_name': 'not_slides_informations',
-      'is_enabled': 1
+      'is_enabled': true
     }
     this.configService.onLoadConfigurationData(data_submit)
       .subscribe(
@@ -296,100 +288,11 @@ export class HomePageComponent {
         });
   }
 
-  helloWorld() {
-    alert('Welcome')
-  }
-
   funcpopWidth(percentage_width) {
     return window.innerWidth * percentage_width / 100;
   }
-  funcCreateAccount() {
-    this.router.navigate(['/public/sign-up']);
-    this.scrollToTop();
-  }//
-
-  funcPublicNavigation() {
-
-  }
-  handleReset() {
-
-  } onEmailValueChange($event) {
-    this.email_address = $event.value;
-  }
-  handleExpire() {
-
-  }
-  handleLoad() {
-
-  }
-  onFuncRecoverPasswordRequest() {
-
-    const summation = this.forgotPasswordFrm.get('sum_input')?.value;
-
-    const formData = new FormData();
-    const invalid = [];
-    const controls = this.forgotPasswordFrm.controls;
-    for (const name in controls) {
-      if (controls[name].invalid) {
-        this.toastr.error('Fill In All Mandatory fields with (*), missing value on ' + name.replace('_id', ''), 'Alert');
-        return;
-      }
-    }
-    if (this.forgotPasswordFrm.invalid) {
-      this.toastr.warning('Please fill in all required fields.', 'Warning');
-
-      return;
-    }
-
-    this.loading = true;
-    this.spinnerShow('User Login........');
-
-    this.userservice.onUserAccountRegistration(this.forgotPasswordFrm.value, 'onUserPasswordRequestRecovery').subscribe(
-      (data) => {
-        this.response = data;
-        if (this.response.success) {
-          // Inform the user about association with a sidebar group
-          this.toastr.info(this.response.message, 'Info');
-          this.islostpassword = false;
-        } else {
-          this.toastr.success(this.response.message, 'Success');
-
-        }
-
-        this.spinnerHide()
-      },
-      (error) => {
-        this.toastr.error('Registration failed: ' + error.error.message, 'Error', { timeOut: 10000 });
-        this.spinnerHide()
-      }
-    );
-    //
-  } handleSuccess($event) {
-
-  }
-  funcLostPassord() {
-    this.islostpassword = true;
-  }
-
-  funcRedirectToDashboard() {
-    // Handle other status conditions if needed
-    this.userData = localStorage.getItem('user');
-    let user_data = JSON.parse(this.userData);
-    // 
-    // 
-    // let dashboard_linktest = './partnerstates-ppm';
-    this.router.navigate([user_data.dashboard_link]);
-    this.scrollToTop();
 
 
-    //  this.router.navigate(['./admin-ecres/app-dashboard']);
-    //  this.scrollToTop();
-  }
-
-  funcUserLogOut() {
-    this.spinnerShow('Logging Out');
-    this.authService.funcUserLogOut();
-  }
   spinnerShow(spinnerMessage) {
     this.loadingVisible = true;
     this.spinnerMessage = spinnerMessage;

@@ -19,6 +19,7 @@
   font-style: italic !important;
   font-size: 12px !important;
   font-weight: bold !important;
+  text-align: center;
 }
 .text-primary {
   color: white !important;
