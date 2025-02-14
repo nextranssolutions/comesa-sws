@@ -15,7 +15,7 @@ import { UtilityService } from 'src/app/core-services/utilities/utility.service'
 import { ConfigurationsService } from 'src/app/core-services/configurations/configurations.service';
 import { ImportExportService } from '../../../services/import-export.service';
 import { AuthenticationService } from 'src/app/core-services/authentication/authentication.service';
-import { NgxSmartModalService } from 'ngx-smart-modal';
+ 
 import { PremisesLicensingService } from 'src/app/regulatory_modules/premises-licensing/services/premises-licensing.service';
 
 @Component({
@@ -46,7 +46,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
   consignee_options_check: any;
   zoneData: any;
   regulatory_function_id: any;
-
+  permit_category_id: any;
   application_code: any;
   ispremisesSearchWinVisible: any;
 
@@ -97,9 +97,9 @@ export class PermitgeneraldetailsComponent implements OnInit {
   mistrader_id: number;
   premise_title: string = 'Premises(Licensed Outlet(s))';
   ammendReadOnly: boolean;
-  registration_process_action: string;
-  select_registration_section_process: string;
-  constructor(public utilityService: UtilityService, public premappService: PremisesLicensingService, public fb: FormBuilder, public modalServ: NgxSmartModalService, public spinner: SpinnerVisibilityService, public configService: ConfigurationsService, public appService: ImportExportService, public router: Router, public formBuilder: FormBuilder, public config: ConfigurationsService, public toastr: ToastrService, public authService: AuthenticationService, public httpClient: HttpClient) {
+registration_process_action: string;
+select_registration_section_process: string;
+  constructor(public utilityService: UtilityService, public premappService: PremisesLicensingService, public fb: FormBuilder,   public spinner: SpinnerVisibilityService, public configService: ConfigurationsService, public appService: ImportExportService, public router: Router, public formBuilder: FormBuilder, public config: ConfigurationsService,  public toastr: ToastrService, public authService: AuthenticationService, public httpClient: HttpClient) {
   }
   ngOnInit() {
 
@@ -129,7 +129,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
     // this.onLoadeligibleImportersDocTypes();
     this.onLoadconfirmDataParm();
     this.onLoadRegulatedProdTypeData();
-    this.onLoadpermitProductsCategoryData
+    this.onLoadpermitProductsCategoryData(this.permit_category_id);
     this.onLoadproducttypeDefinationData();
     // this.onsavePermitReceiverSender();
     this.onLoadRegulatedSubfunctionData();
@@ -173,7 +173,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
   }
   onLoadapplicationCategoryData(producttype_defination_id) {
     var data = {
-      table_name: 'cfg_importexport_permittypes',
+      table_name: ' par_importexport_permittypes',
       producttype_defination_id: producttype_defination_id,
       regulatory_subfunction_id: this.regulatory_subfunction_id
     };
@@ -189,30 +189,33 @@ export class PermitgeneraldetailsComponent implements OnInit {
         });
 
   }
-  onLoadpermitProductsCategoryData(permit_category_id) {
 
+
+  onLoadpermitProductsCategoryData(permit_category_id) {
     var data = {
-      table_name: 'cfg_product_categories',
-      // permit_category_id: permit_category_id,
-      // product_type_id: this.product_type_id
+      table_name: 'par_product_categories',
+      permit_category_id: permit_category_id
+      
+      
     };
 
     this.config.onLoadConfigurationData(data)
-      .subscribe(
-        data => {
-          this.data_record = data;
-
-          if (this.data_record.success) {
-            this.permitProductsCategoryData = this.data_record.data;
-            console.log(data.record);
-          }
-        });
-
+        .subscribe(
+          data => {
+         
+            this.data_record = data;
+            
+            if (this.data_record.success) {
+              this.permitProductsCategoryData = this.data_record.data;
+              
+            }
+          });
   }
+
   onLoadeligibleImportersDocTypes() {
 
     var data = {
-      table_name: 'cfg_eligible_importersdoctypes'
+      table_name: ' par_eligible_importersdoctypes'
     };
 
     this.config.onLoadConfigurationData(data)
@@ -311,7 +314,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
   // let non_eligibleimporter = $event.selectedItem.non_eligibleimporter;
   onLoadconfirmDataParm() {
     var data = {
-      table_name: 'cfg_confirmations',
+      table_name: 'par_confirmations',
     };
 
     this.config.onLoadConfigurationData(data)
@@ -327,7 +330,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
   }
   onLoadproducttypeDefinationData() {
     var data = {
-      table_name: 'cfg_producttype_definations',
+      table_name: 'par_producttype_definations',
     };
 
     this.config.onLoadConfigurationData(data)
@@ -343,7 +346,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
 
   onLoadRegulatedSubfunctionData() {
     var data = {
-      table_name: 'cfg_regulatory_subfunctions',
+      table_name: 'par_regulatory_subfunctions',
     };
 
     this.config.onLoadConfigurationData(data)
@@ -360,9 +363,9 @@ export class PermitgeneraldetailsComponent implements OnInit {
   }
   onLoadRegulatedProdTypeData() {
     var data = {
-      table_name: 'cfg_regulated_productstypes',
-
-
+      table_name: 'par_regulated_productstypes',
+      
+      
     };
 
     this.config.onLoadConfigurationData(data)
@@ -380,27 +383,27 @@ export class PermitgeneraldetailsComponent implements OnInit {
 
   onLoadApplicationCategoryData() {
     var data = {
-      table_name: 'cfg_importexport_permittypes',
+      table_name: 'par_importexport_permittypes',
     };
 
     this.config.onLoadConfigurationData(data)
-      .subscribe(
-        data => {
-          this.data_record = data;
-
-          if (this.data_record.success) {
-            this.applicationCategoryData = this.data_record.data;
-            console.log(this.applicationCategoryData);
+        .subscribe(
+          data => {
+            this.data_record = data;
+          
+            if (this.data_record.success) {
+              this.applicationCategoryData = this.data_record.data;
+              
+            }
+          },
+          error => {
+            // console.error("HTTP Error:", error); 
           }
-        },
-        error => {
-          // console.error("HTTP Error:", error); 
-        }
-      );
+          );
   }
   onLoadZoneData() {
     var data = {
-      table_name: 'cfg_zones',
+      table_name: 'par_zones',
     };
 
     this.config.onLoadConfigurationData(data)
@@ -417,7 +420,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
 
   onLoadEligibleImportersData() {
     var data = {
-      table_name: 'cfg_eligible_importerscategories',
+      table_name: ' par_eligible_importerscategories',
       product_type_id: this.product_type_id
     };
 
@@ -461,9 +464,9 @@ export class PermitgeneraldetailsComponent implements OnInit {
 
         me.configData = {
           headers: headers,
-          params: { skip: loadOptions.skip, take: loadOptions.take, searchValue: loadOptions.filter, table_name: 'txn_permitsenderreceiver_data' }
+          params: { skip: loadOptions.skip, take: loadOptions.take, searchValue: loadOptions.filter, table_name: 'tra_permitsenderreceiver_data' }
         };
-        return me.httpClient.get(AppSettings.base_url + '/' + 'getSenderreceiversDetails', me.configData)
+        return me.httpClient.get(AppSettings.base_url + '/'+ 'api/import-export/getSenderreceiversDetails', me.configData)
           .toPromise()
           .then((data: any) => {
             return {
@@ -634,7 +637,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
 
   onLoadDistricts(region_id) {
     var data = {
-      table_name: 'cfg_districts',
+      table_name: ' par_districts',
       region_id: region_id
     };
     this.config.onLoadConfigurationData(data)
@@ -655,7 +658,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
   onLoadRegions(country_id) {
 
     var data = {
-      table_name: 'cfg_regions',
+      table_name: ' par_regions',
       country_id: country_id
     };
     this.config.onLoadConfigurationData(data)
@@ -678,7 +681,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
   onLoadCountries() {
 
     var data = {
-      table_name: 'cfg_countries',
+      table_name: ' par_countries',
       // id: 36
     };
     this.config.onLoadConfigurationData(data)

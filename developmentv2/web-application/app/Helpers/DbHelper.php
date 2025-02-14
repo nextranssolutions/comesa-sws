@@ -570,16 +570,16 @@ class DbHelper
     }
     
     
-   
-    static function getSingleRecord($table, $where,$con)
+
+    static function getSingleRecord($table, $where)
     {
-        $record = DB::connection($con)->table($table)->where($where)->first();
+        $record = DB::table($table)->where($where)->first();
         return $record;
     }
 
-    static function getSingleRecordColValue($table, $where, $col, $con)
+    static function getSingleRecordColValue($table, $where, $col)
     {
-        $val = DB::connection($con)->table($table)->where($where)->value($col);
+        $val = DB::table($table)->where($where)->value($col);
         return $val;
     }
 
@@ -621,10 +621,10 @@ class DbHelper
     }
 
     
-    public static function getParameterItem($table_name, $record_id, $con)
+    public static function getParameterItem($table_name, $record_id)
     {
         $record_name = '';
-        $rec = DB::connection($con)->table($table_name)->where(array('id' => $record_id))->value('name');
+        $rec = DB::table($table_name)->where(array('id' => $record_id))->value('name');
         if ($rec) {
             $record_name = $rec;
         }
@@ -661,11 +661,10 @@ class DbHelper
 
     
 
-    static function getParameterItems($table_name, $filter, $con)
+    static function getParameterItems($table_name, $filter)
     {
         $record_name = '';
-        $rec = DB::connection($con)
-            ->table($table_name);
+        $rec = DB::table($table_name);
 
         if ($filter != '') {
             $rec = $rec->where($filter);

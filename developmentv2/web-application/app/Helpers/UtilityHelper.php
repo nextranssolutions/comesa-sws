@@ -847,6 +847,7 @@ class UtilityHelper
         //     $data->where('t3.regulated_productstype_id', $appsubmissions_type_id);
         // }
         $form_defination = $data->get();
+       
         
         return $form_defination;
 

@@ -205,6 +205,7 @@ export class WorkflowsComponent {
     public reportingAnalytics: ReportsService,
   ) {
     this.table_name = 'wf_workflows';
+    this.table_name = 'wf_workflows';
     this.parameter_name = "workflows";
     this.checkScreenSize();
      
@@ -249,7 +250,7 @@ ngOnInit() {
     needs_responsible_user: new FormControl('', Validators.compose([])),
     regulatory_function_id: new FormControl('', Validators.compose([])),
     is_manager_submission: new FormControl('', Validators.compose([])),
-    process_type_id: new FormControl('', Validators.compose([])),
+    process_id: new FormControl('', Validators.compose([])),
     interface_id: new FormControl('', Validators.compose([])),
     process_category_id: new FormControl('', Validators.compose([])),
    

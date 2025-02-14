@@ -9,6 +9,13 @@ import { KnowledgeCenterComponent } from './views/knowledge-center/knowledge-cen
 import { ReportingAndAnalyticsComponent } from './views/reporting-and-analytics/reporting-and-analytics.component';
 import { EcredSecretariatsigninComponent } from './views/ecred-secretariatsignin/ecred-secretariatsignin.component';
 import { SubscriptionComponent } from './views/subscription/subscription.component';
+import { ImportProceduresComponent } from './views/import-procedures/import-procedures.component';
+import { TransitProceduresComponent } from './views/transit-procedures/transit-procedures.component';
+import { ExportProceduresComponent } from './views/export-procedures/export-procedures.component';
+import { ProducthscodeInformationComponent } from './views/producthscode-information/producthscode-information.component';
+import { ImportexportsCostsComponent } from './views/importexports-costs/importexports-costs.component';
+import { RestrictionsprohibitsComponent } from './views/restrictionsprohibits/restrictionsprohibits.component';
+import { FaqsComponent } from './views/faqs/faqs.component';
 
 const routes: Routes = [{
     path: '',
@@ -43,7 +50,29 @@ const routes: Routes = [{
     }, {
       path: 'user-subscription',
       component: SubscriptionComponent
+    },{
+      path: 'import_procedures',
+      component: ImportProceduresComponent
+    },{
+      path: 'transit_procedures',
+      component: TransitProceduresComponent
+    },{
+      path: 'export_procedures',
+      component: ExportProceduresComponent
+    },{
+      path: 'producthscodes_info',
+      component: ProducthscodeInformationComponent
+    },{
+      path: 'costs_associatedwith_importexport',
+      component: ImportexportsCostsComponent
+    },{
+      path: 'trader_restrictionsprohibits',
+      component: RestrictionsprohibitsComponent
+    },{
+      path: 'faqs',
+      component: FaqsComponent
     }
+    
     ]
   }
 ]
