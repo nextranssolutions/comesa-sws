@@ -406,7 +406,7 @@ class UserManagementController extends Controller
             $appworkflow_status_id = 1;
             $email_address = $req->email_address;
             $phone_number = $req->phone_number;
-            $account_type_id = $req->account_type_id;
+            $traderaccount_type_id = $req->traderaccount_type_id;
             $otp_value = $req->otp_value;
 
             $trader_no = generateUserRegistrationNo('tra_trader_account');
@@ -461,6 +461,7 @@ class UserManagementController extends Controller
             }
             // **Step 1: Create Trader Account**
             $trader_account_data = [
+                'traderaccount_type_id' => $req->traderaccount_type_id,
                 'name' => $req->name,
                 'contact_person' => $req->contact_person,
                 'contact_person_email' => $req->contact_person_email,
@@ -489,7 +490,8 @@ class UserManagementController extends Controller
             // **Step 2: Create User Account**
             $generatedPassword = bin2hex(random_bytes(8));
             $application_code = generateApplicationCode($process_id, 'usr_users_information');
-
+            $account_type_id = 1;
+            $user_group_id = 2;
             $email_address = aes_encrypt($req->email_address);
             $record = DB::table('usr_users_information')
                 ->where('email_address', $email_address)
@@ -504,7 +506,8 @@ class UserManagementController extends Controller
             }
             $user_data = [
                 'trader_id' => $trader_id,
-                'account_type_id' => $req->account_type_id,
+                'account_type_id' => $account_type_id,
+                'user_group_id' => $user_group_id,
                 // 'user_title_id' => $req->user_title_id,
                 'country_of_origin_id' => $req->country_of_origin_id,
                 'email_address' => aes_encrypt($email_address),
