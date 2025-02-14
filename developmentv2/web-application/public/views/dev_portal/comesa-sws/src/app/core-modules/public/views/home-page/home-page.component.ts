@@ -14,7 +14,7 @@ import { UserManagementService } from 'src/app/core-services/user-management/use
 
 @Component({
   selector: 'app-home-page',
- 
+
   templateUrl: './home-page.component.html',
   styleUrl: './home-page.component.css'
 })
@@ -47,12 +47,12 @@ export class HomePageComponent {
   spinnerMessage: string;
   dashboard_link: any;
   dashboard_name: string;
-  selectedSearchCriteria: any;
-  productPlaceholder: string;
   userData: any;
+
   response: any;
   encryptedPayload: any;
   decryptedPayload: any;
+  productPlaceholder: any;
   passwordMode: DxTextBoxTypes.TextBoxType = 'password';
   passwordButton: DxButtonTypes.Properties = {
     icon: 'eyeopen',
@@ -68,6 +68,8 @@ export class HomePageComponent {
     this.slideshowDelay = e.value ? 2000 : 0;
   }
 
+  operationTypeData: any;
+ 
   regulatoryFunctionData: any;
   private baseUrl;
 
@@ -117,44 +119,21 @@ export class HomePageComponent {
       // sum_input: new FormControl('', Validators.compose([Validators.required]))
 
     });
-    this.funcLoginCapture();
-    this.searchExpertsProfileFrm = new FormGroup({
-      experts_keywordsearch: new FormControl('', Validators.compose([])),
-      experts_regulatoryfuncsearch: new FormControl('', Validators.compose([])),
-      experts_regulatoryinstitutiontype: new FormControl('', Validators.compose([])),
-      experts_regulatoryinstitution: new FormControl('', Validators.compose([])),
-      experts_economicblock: new FormControl('', Validators.compose([])),
-      experts_country: new FormControl('', Validators.compose([])),
-      search_category: new FormControl('', Validators.compose([]))
-    });
+
     this.onLoadcountriesData();
     this.onLoadregulatoryFunctionData();
     this.onLoadSlides_information();
     this.onLoadSearchCriteriaData();
-    this.onLoadTransactionTypeData();
+    this.onLoadOperationTypeData();
     this.onLoadProductData();
     this.onLoadHsCodeData();
   }
-
-
-
-  // onSearchCriteriaChange(event: Event) {
-  //   const selectedId = (event.target as HTMLSelectElement).value;
-
-  //   if (selectedId === '1') {
-  //     // Product Name selected
-  //     this.dynamicDataSource = this.productData;
-  //     this.productPlaceholder = 'Type of Product';
-  //   } else if (selectedId === '2') {
-  //     // HS Code selected
-  //     this.dynamicDataSource = this.hsCodeData;
-  //     this.productPlaceholder = 'Enter HS Code';
-  //   } else {
-  //     // Default case
-  //     this.dynamicDataSource = [];
-  //     this.productPlaceholder = 'Select Type';
-  //   }
-  // }
+  scrollToTop(): void {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth' // Smooth scrolling for better UX
+    });
+  }
 
   onSearchCriteriaChange(event: Event) {
     const selectedId = (event.target as HTMLSelectElement).value;
@@ -174,9 +153,69 @@ export class HomePageComponent {
     }
   }
 
+  onSearchProduct() {
 
+  }
 
+  onLoadOperationTypeData() {
+    var data_submit = {
+      'table_name': 'par_operation_type',
+      'is_enabled': true
+    }
+    this.configService.onLoadConfigurationData(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            // this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
+            // this.countriesData = this.decryptedPayload;
+            this.operationTypeData = this.data_record.data;
+          }
+        },
+        error => {
 
+        });
+  }
+
+  onLoadHsCodeData() {
+    var data_submit = {
+      'table_name': 'tra_hscodesproducts_registry',
+      'is_enabled': true
+    }
+    this.configService.onLoadConfigurationData(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            // this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
+            // this.countriesData = this.decryptedPayload;
+            this.hsCodeData = this.data_record.data;
+          }
+        },
+        error => {
+
+        });
+  }
+
+  onLoadProductData() {
+    var data_submit = {
+      'table_name': 'par_products',
+      'is_enabled': true
+    }
+    this.configService.onLoadConfigurationData(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            // this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
+            // this.countriesData = this.decryptedPayload;
+            this.productData = this.data_record.data;
+          }
+        },
+        error => {
+
+        });
+  }
   onLoadregulatoryFunctionData() {
 
     var data_submit = {
@@ -220,8 +259,6 @@ export class HomePageComponent {
         });
 
   }
-
-  par_products
 
   // LOGIN METHOD LOGIC START
   data_record: any;
@@ -287,70 +324,8 @@ export class HomePageComponent {
   }
 
 
-  onLoadHsCodeData() {
-    var data_submit = {
-      'table_name': 'par_hsCode',
-      'is_enabled': 1
-    }
-    this.configService.onLoadConfigurationData(data_submit)
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            // this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
-            // this.countriesData = this.decryptedPayload;
-            this.hsCodeData = this.data_record.data;
-          }
-        },
-        error => {
-
-        });
-  }
 
 
-  onLoadProductData() {
-    var data_submit = {
-      'table_name': 'par_products',
-      'is_enabled': 1
-    }
-    this.configService.onLoadConfigurationData(data_submit)
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            // this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
-            // this.countriesData = this.decryptedPayload;
-            this.productData = this.data_record.data;
-          }
-        },
-        error => {
-
-        });
-  }
-
-
-
-
-  funcLoginCapture() {
-    this.var_1 = Math.floor(Math.random() * 11);
-    this.var_2 = Math.floor(Math.random() * 11);
-
-    this.sum_var = this.var_1 + this.var_2;
-
-  }
-
-  // handleButtonClick(): void {
-  //   if (this.isSignIn) {
-  //     this.onSignIn();
-  //   } else {
-  //     this.onFuncRecoverPasswordRequest();
-  //   }
-  // }
-
-  funcReloadCapture() {
-    this.funcLoginCapture();
-
-  }
 
   helloWorld() {
     alert('Welcome')
@@ -431,13 +406,13 @@ export class HomePageComponent {
     this.userData = localStorage.getItem('user');
     let user_data = JSON.parse(this.userData);
     // 
-    // console.log(user_data.dashboard_link)
+    // 
     // let dashboard_linktest = './partnerstates-ppm';
     this.router.navigate([user_data.dashboard_link]);
 
 
     //  this.router.navigate(['./admin-ecres/app-dashboard']);
-
+    //  this.scrollToTop();
   }
 
   funcUserLogOut() {
@@ -457,11 +432,5 @@ export class HomePageComponent {
 
     this.onLoadcountriesData();
   }
-  onSearchExpertsProfile(selectedTabIndex) {
-    this.searchExpertsProfileFrm.get('selectedTabIndex')?.setValue(selectedTabIndex);
-    this.publicservice.setApplicationDetail(this.searchExpertsProfileFrm.value);
-    //reroute
-    this.router.navigate(['./experts-profiles']);
 
-  }
 }

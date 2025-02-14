@@ -34,6 +34,16 @@
               
               <form>
                 <div class="input-group">
+                  <!-- Search By Dropdown -->
+                  <!-- <select class="form-select form-select-lg" id="searchBy">
+                    <option selected>HS Code or Product</option>
+                    <option>HS Code</option>
+                    <option>Product</option>
+                  </select> -->
+                  <div class="form-search-by">
+                    <p>{{'search_by' | translate}}</p>
+                  </div>
+
 
                   <select class="form-select form-select-lg" id="searchByCriteria"
                     (change)="onSearchCriteriaChange($event)">
@@ -45,8 +55,8 @@
 
                   <!-- Transaction Type Dropdown -->
                   <select class="form-select form-select-lg" id="transactionType">
-                    <option selected disabled>{{ 'operation_type' | translate }}</option>
-                    <option *ngFor="let transaction of transactionTypeData" [value]="transaction.name">
+                    <option selected disabled>{{ 'select_operation_type' | translate }}</option>
+                    <option *ngFor="let transaction of operationTypeData" [value]="transaction.name">
                       {{ transaction.name | translate }}
                     </option>
                   </select>
@@ -59,18 +69,14 @@
                     </option>
                   </select>
 
-
                   <!-- Search Button -->
-                  <!-- <button type="submit" class="btn btn-primary btn-rounded">
-                    <i class="bi bi-search"></i>
-                  </button> -->
-
-                  <button type="submit" class="banner-filters-search-button">
-                    <i class="fas fa-arrow-right">
-                    </i>
+                  <button type="submit" class="btn btn-primary btn-rounded form-select-lg"
+                    (onClick)="onSearchProduct()">
+                    <i class="fa fa-search"></i>
                   </button>
                 </div>
               </form>
+              
             </div>
           </div>
         </div>
