@@ -27,11 +27,11 @@ body, html {
     margin: 20px 0;
   }
   .custom-width {
-    width: 90% !important;
+    width: 80% !important;
 }
   @media (min-width: 992px) { /* Large screens */
     .custom-width {
-        width: 90%  !important;
+        width: 80%  !important;
     }
 }
 @media (max-width: 991px) { /* Medium and smaller screens */
