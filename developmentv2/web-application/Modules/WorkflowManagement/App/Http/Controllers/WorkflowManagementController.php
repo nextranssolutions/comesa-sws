@@ -1126,7 +1126,7 @@ class WorkflowManagementController extends Controller
             // Retrieve the workflow_id from the request
             $workflow_id = $req->workflow_id;
 
-            // Fetch data from the wkf_workflow_stages table where workflow_id matches
+            // Fetch data from the wf_workflow_stages table where workflow_id matches
             $data = DB::table('wf_workflow_stages')
                 ->where('workflow_id', $workflow_id)
                 ->orderBy('order_no')
@@ -1152,7 +1152,7 @@ class WorkflowManagementController extends Controller
             // Retrieve the workflow_id from the request
             $workflow_id = $req->workflow_id;
 
-            // Fetch data from the wkf_workflow_stages table where workflow_id matches
+            // Fetch data from the wf_workflow_stages table where workflow_id matches
             $data = DB::table('wkf_workflow_actions')
                 ->where('workflow_id', $workflow_id)
                 ->orderBy('order_no')
@@ -1208,7 +1208,7 @@ class WorkflowManagementController extends Controller
             // Retrieve the workflow_id from the request
             $workflowprocesses_id = $req->workflowprocesses_id;
 
-            // Fetch data from the wkf_workflow_stages table where workflow_id matches
+            // Fetch data from the wf_workflow_stages table where workflow_id matches
             $data = DB::connection('portal')->table('ptl_workflowprocesses_transitions')
                 ->where('workflowprocesses_id', $workflowprocesses_id)
                 ->orderBy('order_no')

@@ -47,6 +47,8 @@ class ConfigurationsController extends Controller
         return response()->json($res, 200);
     }
 
+
+
     public function onsaveConfigData(Request $req)
     {
         try {
@@ -94,6 +96,7 @@ class ConfigurationsController extends Controller
         }
         return response()->json($res, 200);
     }
+ 
     public function onLoadConfigurationData(Request $req)
     {
         try {
@@ -628,19 +631,16 @@ class ConfigurationsController extends Controller
                 $app_data['process_infor'] = $data;
 
                 $form_fields = getApplicationGeneralFormsFields($req);
+
                 $app_data['application_form'] = $form_fields;
+               
+               
 
                 // Additional data entry forms based on regulatory function
                 switch ($regulatory_function_id) {
                     case 1: // Product registration
-                        $app_data['product_ingredients'] = getApplicationDataEntryFormsFields($req, 2);
-                        $app_data['product_packaging'] = getApplicationDataEntryFormsFields($req, 7);
-                        $app_data['product_manufacturer_information'] = getApplicationDataEntryFormsFields($req, 8);
-                        $app_data['product_nutrients'] = getApplicationDataEntryFormsFields($req, 1);
-                        $app_data['manufacturer_information'] = getApplicationDataEntryFormsFields($req, 10);
-                        $app_data['gmp_inspection'] = getApplicationDataEntryFormsFields($req, 1);
-                        $app_data['product_general_information'] = getApplicationDataEntryFormsFields($req, 11);
-                        $app_data['product_inspection_status'] = getApplicationDataEntryFormsFields($req, 12);
+                        $app_data['application_general_details'] = getApplicationDataEntryFormsFields($req, 19);
+                        
                         break;
                     case 2: // Business operations
                         $app_data['personnel_information'] = getApplicationDataEntryFormsFields($req, 1);

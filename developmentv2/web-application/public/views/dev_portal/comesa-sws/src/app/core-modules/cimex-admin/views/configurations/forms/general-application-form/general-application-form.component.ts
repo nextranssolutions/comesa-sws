@@ -340,7 +340,7 @@ export class GeneralApplicationFormComponent {
 
   onLoadSectionsData() {
     var data_submit = {
-      'table_name': 'par_sections',
+      'table_name': 'par_regulated_productstypes',
       // 'is_enabled': 1,
     }
     this.configService.onLoadConfigurationData(data_submit)

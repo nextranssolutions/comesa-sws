@@ -199,9 +199,9 @@ var uPlot = (function () {
 		return false;
 	}
 
-	function _rangeNum(_min, _max, cfg) {
-		let cmin = cfg.min;
-		let cmax = cfg.max;
+	function _rangeNum(_min, _max,  par) {
+		let cmin =  par.min;
+		let cmax =  par.max;
 
 		let padMin = ifNull(cmin.pad, 0);
 		let padMax = ifNull(cmax.pad, 0);
@@ -1021,8 +1021,8 @@ var uPlot = (function () {
 	});
 	*/
 
-	function timeAxisStamps(stampCfg, fmtDate) {
-		return stampCfg.map(s => s.map((v, i) =>
+	function timeAxisStamps(stamp par, fmtDate) {
+		return stamp par.map(s => s.map((v, i) =>
 			i == 0 || i == 8 || v == null ? v : fmtDate(i == 1 || s[8] == 0 ? v : s[1] + v)
 		));
 	}
@@ -1083,8 +1083,8 @@ var uPlot = (function () {
 		return new Date(y, m, d);
 	}
 
-	function timeSeriesStamp(stampCfg, fmtDate) {
-		return fmtDate(stampCfg);
+	function timeSeriesStamp(stamp par, fmtDate) {
+		return fmtDate(stamp par);
 	}
 	const _timeSeriesStamp = '{YYYY}-{MM}-{DD} {h}:{mm}{aa}';
 
@@ -2588,9 +2588,9 @@ var uPlot = (function () {
 						}
 
 						if (!rangeIsArr && isObj(rn)) {
-							let cfg = rn;
+							let  par = rn;
 							// this is similar to snapNumY
-							rn = (self, dataMin, dataMax) => dataMin == null ? nullNullTuple : rangeNum(dataMin, dataMax, cfg);
+							rn = (self, dataMin, dataMax) => dataMin == null ? nullNullTuple : rangeNum(dataMin, dataMax,  par);
 						}
 					}
 

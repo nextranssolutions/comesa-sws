@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
 import { DxTabPanelTypes } from 'devextreme-angular/ui/tab-panel';
-import { NgxSmartModalService } from 'ngx-smart-modal';
+ 
 import { ToastrService } from 'ngx-toastr';
 import { EncryptionService } from 'src/app/services/encryption/encryption.service';
 import { ExpressionOfInterestManagementService } from 'src/app/services/expresion-of-interest-management/expression-of-interest-management.service';
@@ -92,7 +92,7 @@ export class AppExpressionofinterestreportsComponent {
     public toastr: ToastrService,
     public viewRef: ViewContainerRef,
     public utilityService: UtilityService,
-    public modalService: NgxSmartModalService,
+     
     public eoiService: ExpressionOfInterestManagementService,
     private reportingAnalytics: ReportsService,
     public translate: TranslateService,

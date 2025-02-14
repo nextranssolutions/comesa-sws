@@ -204,7 +204,7 @@ export class WorkflowsComponent {
     public workflowService: WokflowManagementService,
     public reportingAnalytics: ReportsService,
   ) {
-    this.table_name = 'wkf_workflows';
+    this.table_name = 'wf_workflows';
     this.parameter_name = "workflows";
     this.checkScreenSize();
      
@@ -244,12 +244,12 @@ ngOnInit() {
     code: new FormControl('', Validators.compose([])),
     order_no: new FormControl('', Validators.compose([])),
     workflow_id: new FormControl('', Validators.compose([])),
-    stage_status: new FormControl('', Validators.compose([])),
+    stage_status_id: new FormControl('', Validators.compose([])),
     stage_category_id: new FormControl('', Validators.compose([])),
     needs_responsible_user: new FormControl('', Validators.compose([])),
     regulatory_function_id: new FormControl('', Validators.compose([])),
     is_manager_submission: new FormControl('', Validators.compose([])),
-    process_type_id: new FormControl('', Validators.compose([])),
+    process_id: new FormControl('', Validators.compose([])),
     interface_id: new FormControl('', Validators.compose([])),
     process_category_id: new FormControl('', Validators.compose([])),
    
@@ -468,7 +468,7 @@ fetchWorkflowStagesDetails(workflow_id) {
 fetchWorkflowStagesInfo(workflow_id) {
   this.spinnerShow('Loading Workflow Stages Details');
   var data_submit = {
-    'table_name': 'wkf_workflow_stages',
+    'table_name': 'wf_workflow_stages',
     workflow_id: workflow_id
   }
   this.workflowService.getWorkflowConfigs(data_submit)
@@ -656,7 +656,7 @@ onLoadappWorkflowStatusData() {
 
 onloadworkflowAllStageData() {
   var data_submit = {
-    'table_name': 'wkf_workflow_stages'
+    'table_name': 'wf_workflow_stages'
   }
   this.workflowService.getWorkflowConfigs(data_submit)
     .subscribe(
@@ -804,7 +804,7 @@ onLoadProcessCategoryData() {
 
 onLoadStageData() {
   var data_submit = {
-    'table_name': 'wkf_workflow_stages',
+    'table_name': 'wf_workflow_stages',
     // process_id: process_id
   }
   this.workflowService.getWorkflowConfigs(data_submit)
@@ -1060,7 +1060,7 @@ onFuncSaveWorkflowStageDetailsData() {
 
   this.spinner.show();
 
-  this.workflowService.onSaveWorkflowDetailsDetails('wkf_workflow_stages', this.workflowStagesFrm.value, this.action_url)
+  this.workflowService.onSaveWorkflowDetailsDetails('wf_workflow_stages', this.workflowStagesFrm.value, this.action_url)
     .subscribe(
       response => {
         this.response = response;
@@ -1289,7 +1289,7 @@ this.workflowStagesFrm.reset();
 this.workflowStageDetailsVisible = true
 this.workflowStagesFrm.patchValue(data.data);
 
-this.workflowStagesFrm.get('table_name')?.setValue('wkf_workflow_stages');
+this.workflowStagesFrm.get('table_name')?.setValue('wf_workflow_stages');
 this.workflowStagesFrm.get('workflow_id')?.setValue(this.workflow_id);
 
 }
@@ -1310,7 +1310,7 @@ funcEditStageActions(data){
   this.workflowStageActionDetailsVisible = true
   this.workflowStageActionsItemsFrm.patchValue(data.data);
   
-  this.workflowStageActionsItemsFrm.get('table_name')?.setValue('wkf_workflow_stages');
+  this.workflowStageActionsItemsFrm.get('table_name')?.setValue('wf_workflow_stages');
   this.workflowStageActionsItemsFrm.get('workflow_id')?.setValue(this.workflow_id);
 }
 funcDeleteStageActions(data){
@@ -1330,7 +1330,7 @@ onCellPrepared(e) {
 }
 onDeleteWorkflowDetails() {
   this.spinnerShow('deleting ' + this.parameter_name);
-  this.workflowItemsFrm.get('table_name')?.setValue('wkf_workflows');
+  this.workflowItemsFrm.get('table_name')?.setValue('wf_workflows');
   this.workflowService.onDeleteWorkflowsDetails(this.workflowItemsFrm.value, this.table_name, this.parameter_name)
     .subscribe(
       response => {
@@ -1408,7 +1408,7 @@ onDeleteWorkflowTransitionDetails() {
 iniateEnableDisableRecord() {
  
   this.spinnerShow('Saving_details');
-  this.workflowItemsFrm.get('table_name')?.setValue('wkf_workflows');
+  this.workflowItemsFrm.get('table_name')?.setValue('wf_workflows');
   this.workflowService.onEnableWorkflowDetails(this.workflowItemsFrm.value, this.table_name, this.parameter_name)
     .subscribe(
       response => {

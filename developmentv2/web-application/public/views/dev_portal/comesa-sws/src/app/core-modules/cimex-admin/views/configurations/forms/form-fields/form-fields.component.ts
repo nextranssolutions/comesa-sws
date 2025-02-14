@@ -105,7 +105,6 @@ export class FormFieldsComponent {
     this.onLoadModulesData();
     this.onLoadApplicationtablsList();
     this.fetchConfigurationItemsDetails();
-
     this.onLoadformFieldTypeData();
     this.onLoadSubModulesData();
   }
@@ -220,27 +219,24 @@ export class FormFieldsComponent {
   }
 
   onLoadformFieldTypeData() {
-
-    var data_submit = {
-      'table_name': 'par_form_field_types',
-      'is_enabled': 1,
+    var data = {
+      table_name: 'par_form_field_types',
+      is_enabled: 1,
     }
-    this.configService.onLoadConfigurationData(data_submit)
+    this.configService.onLoadConfigurationData(data)
       .subscribe(
         data => {
+          // 
           this.data_record = data;
+         
           if (this.data_record.success) {
             // this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
             this.formFieldTypeData = this.data_record.data;
           }
 
-        },
-        error => {
-
         });
 
   }
-
 
 
   spinnerShow(spinnerMessage) {
@@ -316,6 +312,7 @@ export class FormFieldsComponent {
       .subscribe(
         response => {
           this.response = response;
+          console.log(this.response);
           //the details 
           if (this.response.success) {
             this.fetchConfigurationItemsDetails();
@@ -332,6 +329,9 @@ export class FormFieldsComponent {
           this.spinnerHide();
         });
   }
+
+
+
 
   funcpopWidth(percentage_width) {
     return window.innerWidth * percentage_width / 100;
