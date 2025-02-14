@@ -16,7 +16,7 @@ export class ImportExportService {
   config: any;
   application_details: any;
   baseUrl: any;
-  constructor(private authService: AuthenticationService, private myRoute: Router, private httpClient: HttpClient) {
+  constructor(private authService: AuthenticationService,private http: HttpClient, private myRoute: Router, private httpClient: HttpClient) {
     let user = this.authService.getUserDetails();
 
     this.baseUrl = AppSettings.base_url + '/api/permits';
@@ -25,15 +25,29 @@ export class ImportExportService {
     this.email_address = user.email_address;
 
   }
-  onSavePermitApplication(application_id, permitData, tracking_no, action_url, uploadData = '') {
+  // onSavePermitApplication(application_id, permitData, tracking_no, action_url, uploadData = '') {
 
-    let data_header = {
-      params: { application_id: application_id, tracking_no: tracking_no, 'trader_id': this.trader_id, 'trader_email': this.email_address },
+  //   let data_header = {
+  //     // params: { application_id: application_id, tracking_no: tracking_no, 'trader_id': this.trader_id, 'trader_email': this.email_address },
 
-      headers: { 'Accept': 'application/json', "Authorization": "Bearer " + this.authService.getAccessToken() }
-    };
+  //     headers: { 'Accept': 'application/json', "Authorization": "Bearer " + this.authService.getAccessToken() }
+  //   };
 
-    return this.httpClient.post(this.baseUrl + '/' + action_url, permitData, data_header)
+  //   return this.httpClient.post(this.baseUrl + '/' + action_url, permitData, data_header)
+  //     .pipe(map(data => {
+  //       return data;
+  //     }));
+  // }
+
+  onSavePermitApplication(permitData,registrant_details,action_url) {
+    var headers = new HttpHeaders({
+      "Accept": "application/json",
+      "Authorization": "Bearer " + this.authService.getAccessToken(),
+    });
+    let user = this.authService.getUserDetails();
+    let registrant_data = JSON.stringify(registrant_details);
+    console.log(permitData);
+    return this.http.post(AppSettings.base_url + '/api/import-export/'+action_url, permitData, { headers: headers })
       .pipe(map(data => {
         return data;
       }));

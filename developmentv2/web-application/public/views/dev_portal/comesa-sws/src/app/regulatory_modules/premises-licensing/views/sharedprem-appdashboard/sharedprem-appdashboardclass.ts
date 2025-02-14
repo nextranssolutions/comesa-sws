@@ -248,7 +248,7 @@ export class SharedpremAppdashboardClass {
 
   onLoadSections() {
     var data = {
-      table_name: 'par_sections',
+      table_name: 'par_regulated_productstypes',
     };
 
     this.configService.onLoadConfigurationData(data)
@@ -260,7 +260,7 @@ export class SharedpremAppdashboardClass {
   onLoadPremisesAppType(regulatory_subfunction_id) {
 
     var data = {
-      table_name: 'sub_modules',
+      table_name: 'par_regulatory_subfunctions',
       regulatory_function_id: 2,
       regulatory_subfunction_id: this.regulatory_subfunction_id
     };

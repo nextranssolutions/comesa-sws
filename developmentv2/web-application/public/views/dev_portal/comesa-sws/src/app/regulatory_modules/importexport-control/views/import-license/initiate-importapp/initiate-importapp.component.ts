@@ -8,6 +8,13 @@ import { StepChangedArgs } from 'ng-wizard';
   styleUrl: './initiate-importapp.component.css'
 })
 export class InitiateImportappComponent extends SharedImpexpApplicationClass{
+  ngOnInit() {
+    if (!this.application_details) {
+      this.router.navigate(['./importexport-control/draft-importlicense-dashboard']);
+      this.scrollToTop();
+      return;
+    }
+  }
 config: any;
 stepChanged($event: StepChangedArgs) {
 throw new Error('Method not implemented.');

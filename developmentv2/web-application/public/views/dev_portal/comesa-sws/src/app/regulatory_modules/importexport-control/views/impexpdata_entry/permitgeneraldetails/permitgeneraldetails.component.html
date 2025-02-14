@@ -8,7 +8,7 @@
             </dx-select-box>
           </div>
           <div class="col-lg-4">
-            <label>"{{'product_types_defination' | translate}}"</label>
+            <label>{{'product_types_defination' | translate}}</label>
             <dx-select-box  [dataSource]="producttypeDefinationData" valueExpr="id" displayExpr="name" (onSelectionChanged)="onProductTypesDefinationSelection($event)"
               placeholder="{{'select_product_types_defination' | translate}}"  [searchEnabled]="true" formControlName="producttype_defination_id">
             </dx-select-box>
@@ -127,10 +127,10 @@
           <div class="col-lg-4 input-group">
             <div class="col-lg-8">
               <label>{{'cosignor_details' | translate}}</label>
-              <dx-text-box [readOnly]="true" formControlName="sender_receiver" 
+              <dx-text-box [readOnly]="true" formControlName="consignee_name" 
                 [placeholder]="'consignor_details' | translate" [showClearButton]="true">
               </dx-text-box>
-              <input type="hidden" formControlName="sender_receiver_id" />
+              <input type="hidden" formControlName="consignee_id" />
             </div>
             <div class="col-lg-4">
               <dx-button [elementAttr]="{ class: 'btn btn-primary pull-left' }" [disabled]="ammendReadOnly" 

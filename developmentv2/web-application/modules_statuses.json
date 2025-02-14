@@ -31,5 +31,6 @@
     "ExpressionOfInterestManagement": true,
     "Reports": true,
     "TasksAllocationManagement": true,
-    "OTP": true
+    "OTP": true,
+    "ImportExport": true
 }

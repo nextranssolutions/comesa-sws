@@ -23,6 +23,13 @@ import { TopSectionComponent } from './views/layout/top-section/top-section.comp
 import { ReportingAndAnalyticsComponent } from './views/reporting-and-analytics/reporting-and-analytics.component';
 import { SubscriptionComponent } from './views/subscription/subscription.component';
 import { PublicRoutingModule } from './publicrouting.module';
+import { ImportProceduresComponent } from './views/import-procedures/import-procedures.component';
+import { TransitProceduresComponent } from './views/transit-procedures/transit-procedures.component';
+import { ExportProceduresComponent } from './views/export-procedures/export-procedures.component';
+import { ProducthscodeInformationComponent } from './views/producthscode-information/producthscode-information.component';
+import { ImportexportsCostsComponent } from './views/importexports-costs/importexports-costs.component';
+import { RestrictionsprohibitsComponent } from './views/restrictionsprohibits/restrictionsprohibits.component';
+import { FaqsComponent } from './views/faqs/faqs.component';
 
 @NgModule({
   declarations: [TopSectionComponent,
@@ -36,7 +43,14 @@ import { PublicRoutingModule } from './publicrouting.module';
     ReportingAndAnalyticsComponent, 
     KnowledgeCenterComponent,
     AppsignUpComponent,
-    SubscriptionComponent
+    SubscriptionComponent,
+    ImportProceduresComponent,
+    TransitProceduresComponent,
+    ExportProceduresComponent,
+    ProducthscodeInformationComponent,
+    ImportexportsCostsComponent,
+    RestrictionsprohibitsComponent,
+    FaqsComponent
   ],
   imports: [
     CommonModule, NgHttpLoaderModule, PublicRoutingModule, DxButtonModule, DxProgressBarModule,

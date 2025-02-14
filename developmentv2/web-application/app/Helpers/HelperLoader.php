@@ -8,6 +8,8 @@ use App\Helpers\DMSHelper;
 use App\Helpers\ReportsHelper;
 use App\Helpers\EmailHelper;
 use App\Helpers\EncryptionHelper;
+use App\Helpers\ReferencingHelper;
+
 
 if (!function_exists('aes_encrypt')) {
     function aes_encrypt($value)
@@ -389,6 +391,8 @@ if (!function_exists('converter22')) {
     }
 }
 
+
+
 if (!function_exists('getSingleRecord')) {
     function getSingleRecord($table, $where,$col='pgsql')
     {
@@ -397,9 +401,9 @@ if (!function_exists('getSingleRecord')) {
 }
 
 if (!function_exists('getSingleRecordColValue')) {
-    function getSingleRecordColValue($table, $where, $col, $con = 'pgsql')
+    function getSingleRecordColValue($table, $where, $col)
     {
-        return DbHelper::getSingleRecordColValue($table, $where, $col, $con);
+        return DbHelper::getSingleRecordColValue($table, $where, $col);
     }
 }
 
@@ -593,9 +597,9 @@ if (!function_exists('formatDaterpt')) {
 }
 
 if (!function_exists('getParameterItem')) {
-    function getParameterItem($table_name, $record_id, $con = 'pgsql')
+    function getParameterItem($table_name, $record_id)
     {
-        return DbHelper::getParameterItem($table_name, $record_id, $con);
+        return DbHelper::getParameterItem($table_name, $record_id);
     }
 }
 
@@ -748,6 +752,13 @@ if (!function_exists('getApplicationDataEntryFormsFields')) {
     function getApplicationDataEntryFormsFields($req,$form_type_id)
     {
         return UtilityHelper::getApplicationDataEntryFormsFields($req,$form_type_id);
+    }
+}
+
+if (!function_exists('generateApplicationRefNumber')) {
+    function generateApplicationRefNumber($ref_id, $codes_array, $year, $process_id,$user_id)
+    {
+        return ReferencingHelper::generateApplicationRefNumber($ref_id, $codes_array, $year, $process_id, $user_id);
     }
 }
 
