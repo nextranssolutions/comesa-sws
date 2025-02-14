@@ -20,7 +20,7 @@ import { UserManagementService } from 'src/app/core-services/user-management/use
 })
 export class HomePageComponent {
   system_title: string = AppSettings.system_title;
-  
+
   iconPosition: any = 'top';
   signInFrm: FormGroup;
   submitted = false;
@@ -28,6 +28,11 @@ export class HomePageComponent {
   message: string;
   success: boolean;
   email_address: string;
+  criteriaData: any;
+  hsCodeData: any;
+  productData: any;
+  transactionTypeData: any;
+  dynamicDataSource: any[] = [];
   islostpassword: boolean;
   isSignIn: boolean = true;
   forgotPasswordFrm: FormGroup;
@@ -40,14 +45,16 @@ export class HomePageComponent {
   auth_response: any;
   loadingVisible: boolean;
   spinnerMessage: string;
-  dashboard_link:any;
-   dashboard_name:string;
-   userData: any;
-   response:any;
-   encryptedPayload:any;
-   decryptedPayload:any;
-   passwordMode: DxTextBoxTypes.TextBoxType = 'password';
-   passwordButton: DxButtonTypes.Properties = {
+  dashboard_link: any;
+  dashboard_name: string;
+  selectedSearchCriteria: any;
+  productPlaceholder: string;
+  userData: any;
+  response: any;
+  encryptedPayload: any;
+  decryptedPayload: any;
+  passwordMode: DxTextBoxTypes.TextBoxType = 'password';
+  passwordButton: DxButtonTypes.Properties = {
     icon: 'eyeopen',
     stylingMode: 'text',
     onClick: () => {
@@ -61,19 +68,19 @@ export class HomePageComponent {
     this.slideshowDelay = e.value ? 2000 : 0;
   }
 
-  regulatoryFunctionData:any;
+  regulatoryFunctionData: any;
   private baseUrl;
 
   var_1: number;
   var_2: number;
   sum_var: number;
-  searchExpertsProfileFrm:FormGroup;
-  slides_information:any;
+  searchExpertsProfileFrm: FormGroup;
+  slides_information: any;
   constructor(
-    
+
     private router: Router,
     public authService: AuthenticationService,
-    public userservice:UserManagementService,
+    public userservice: UserManagementService,
     public dashboardService: DashbordManagementService,
     public toastr: ToastrService,
     public publicservice: PublicDashboardService,
@@ -99,7 +106,7 @@ export class HomePageComponent {
     });
 
     // Add this line to check the initial value
-    
+
     this.forgotPasswordFrm = new FormGroup({
       email_address: new FormControl('', Validators.compose([Validators.required]))
     });
@@ -123,14 +130,53 @@ export class HomePageComponent {
     this.onLoadcountriesData();
     this.onLoadregulatoryFunctionData();
     this.onLoadSlides_information();
+    this.onLoadSearchCriteriaData();
+    this.onLoadTransactionTypeData();
+    this.onLoadProductData();
+    this.onLoadHsCodeData();
+  }
 
+
+
+  // onSearchCriteriaChange(event: Event) {
+  //   const selectedId = (event.target as HTMLSelectElement).value;
+
+  //   if (selectedId === '1') {
+  //     // Product Name selected
+  //     this.dynamicDataSource = this.productData;
+  //     this.productPlaceholder = 'Type of Product';
+  //   } else if (selectedId === '2') {
+  //     // HS Code selected
+  //     this.dynamicDataSource = this.hsCodeData;
+  //     this.productPlaceholder = 'Enter HS Code';
+  //   } else {
+  //     // Default case
+  //     this.dynamicDataSource = [];
+  //     this.productPlaceholder = 'Select Type';
+  //   }
+  // }
+
+  onSearchCriteriaChange(event: Event) {
+    const selectedId = (event.target as HTMLSelectElement).value;
+
+    if (selectedId === '1') {
+      // Product Name selected
+      this.dynamicDataSource = this.productData;
+      this.productPlaceholder = 'Type of Product';
+    } else if (selectedId === '2') {
+      // HS Code selected
+      this.dynamicDataSource = this.hsCodeData;
+      this.productPlaceholder = 'Enter HS Code';
+    } else {
+      // Default case
+      this.dynamicDataSource = [];
+      this.productPlaceholder = 'Select Type';
+    }
   }
-  scrollToTop(): void {
-    window.scrollTo({
-      top: 0,
-      behavior: 'smooth' // Smooth scrolling for better UX
-    });
-  }
+
+
+
+
   onLoadregulatoryFunctionData() {
 
     var data_submit = {
@@ -141,9 +187,9 @@ export class HomePageComponent {
         data => {
           this.data_record = data;
           if (this.data_record.success) {
-            // this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
-            // this.regulatoryFunctionData = this.decryptedPayload;
-            this.regulatoryFunctionData = this.data_record.data;
+            this.decryptedPayload = this.encryptionService.OnDecryptData(this.data_record.data);
+            this.regulatoryFunctionData = this.decryptedPayload;
+            // this.regulatoryFunctionData = this.data_record.data;
           }
 
         },
@@ -151,7 +197,7 @@ export class HomePageComponent {
 
         });
 
-  } 
+  }
   onLoadSlides_information() {
     this.spinnerShow('');
     var data_submit = {
@@ -163,9 +209,9 @@ export class HomePageComponent {
         data => {
           this.data_record = data;
           if (this.data_record.success) {
-            // this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
-            // this.slides_information = this.decryptedPayload;
-            this.slides_information = this.data_record.data;
+            this.decryptedPayload = this.encryptionService.OnDecryptData(this.data_record.data);
+            this.slides_information = this.decryptedPayload;
+            // this.slides_information = this.data_record.data;
           }
 
         },
@@ -173,11 +219,13 @@ export class HomePageComponent {
 
         });
 
-  } 
-  
+  }
+
+  par_products
+
   // LOGIN METHOD LOGIC START
-  data_record:any;
-  countriesData:any;
+  data_record: any;
+  countriesData: any;
   onLoadcountriesData() {
     var data_submit = {
       'table_name': 'par_countries'
@@ -187,15 +235,102 @@ export class HomePageComponent {
         data => {
           this.data_record = data;
           if (this.data_record.success) {
-            // this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
-            // this.countriesData = this.decryptedPayload;
-            this.countriesData = this.data_record.data;
+            this.decryptedPayload = this.encryptionService.OnDecryptData(this.data_record.data);
+            this.countriesData = this.decryptedPayload;
+            // this.countriesData = this.data_record.data;
           }
         },
         error => {
 
         });
   }
+
+  onLoadSearchCriteriaData() {
+    var data_submit = {
+      'table_name': 'par_search_criteria',
+      'is_enabled': 1
+    }
+    this.configService.onLoadConfigurationData(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            // this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
+            // this.countriesData = this.decryptedPayload;
+            this.criteriaData = this.data_record.data;
+          }
+        },
+        error => {
+
+        });
+  }
+
+
+  onLoadTransactionTypeData() {
+    var data_submit = {
+      'table_name': 'par_transaction_type',
+      'is_enabled': 1
+    }
+    this.configService.onLoadConfigurationData(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            // this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
+            // this.countriesData = this.decryptedPayload;
+            this.transactionTypeData = this.data_record.data;
+          }
+        },
+        error => {
+
+        });
+  }
+
+
+  onLoadHsCodeData() {
+    var data_submit = {
+      'table_name': 'par_hsCode',
+      'is_enabled': 1
+    }
+    this.configService.onLoadConfigurationData(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            // this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
+            // this.countriesData = this.decryptedPayload;
+            this.hsCodeData = this.data_record.data;
+          }
+        },
+        error => {
+
+        });
+  }
+
+
+  onLoadProductData() {
+    var data_submit = {
+      'table_name': 'par_products',
+      'is_enabled': 1
+    }
+    this.configService.onLoadConfigurationData(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            // this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
+            // this.countriesData = this.decryptedPayload;
+            this.productData = this.data_record.data;
+          }
+        },
+        error => {
+
+        });
+  }
+
+
+
+
   funcLoginCapture() {
     this.var_1 = Math.floor(Math.random() * 11);
     this.var_2 = Math.floor(Math.random() * 11);
@@ -203,7 +338,7 @@ export class HomePageComponent {
     this.sum_var = this.var_1 + this.var_2;
 
   }
-  
+
   // handleButtonClick(): void {
   //   if (this.isSignIn) {
   //     this.onSignIn();
@@ -216,7 +351,7 @@ export class HomePageComponent {
     this.funcLoginCapture();
 
   }
-  
+
   helloWorld() {
     alert('Welcome')
   }
@@ -226,9 +361,8 @@ export class HomePageComponent {
   }
   funcCreateAccount() {
     this.router.navigate(['/public/sign-up']);
-    this.scrollToTop();
   }//
-  
+
   funcPublicNavigation() {
 
   }
@@ -244,7 +378,7 @@ export class HomePageComponent {
 
   }
   onFuncRecoverPasswordRequest() {
-    
+
     const summation = this.forgotPasswordFrm.get('sum_input')?.value;
 
     const formData = new FormData();
@@ -264,28 +398,28 @@ export class HomePageComponent {
 
     this.loading = true;
     this.spinnerShow('User Login........');
-    
-      this.userservice.onUserAccountRegistration(this.forgotPasswordFrm.value, 'onUserPasswordRequestRecovery').subscribe(
-        (data) => {
-          this.response = data;
-          if (this.response.success) {
-            // Inform the user about association with a sidebar group
-            this.toastr.info(this.response.message, 'Info');
-            this.islostpassword = false;
-          } else {
-            this.toastr.success(this.response.message, 'Success');
-            
-          }
-          
-          this.spinnerHide()
-        },
-        (error) => {
-          this.toastr.error('Registration failed: ' + error.error.message, 'Error', { timeOut: 10000 });
-          this.spinnerHide()
+
+    this.userservice.onUserAccountRegistration(this.forgotPasswordFrm.value, 'onUserPasswordRequestRecovery').subscribe(
+      (data) => {
+        this.response = data;
+        if (this.response.success) {
+          // Inform the user about association with a sidebar group
+          this.toastr.info(this.response.message, 'Info');
+          this.islostpassword = false;
+        } else {
+          this.toastr.success(this.response.message, 'Success');
+
         }
-      );
- //
-  }  handleSuccess($event) {
+
+        this.spinnerHide()
+      },
+      (error) => {
+        this.toastr.error('Registration failed: ' + error.error.message, 'Error', { timeOut: 10000 });
+        this.spinnerHide()
+      }
+    );
+    //
+  } handleSuccess($event) {
 
   }
   funcLostPassord() {
@@ -297,14 +431,13 @@ export class HomePageComponent {
     this.userData = localStorage.getItem('user');
     let user_data = JSON.parse(this.userData);
     // 
-  // 
+    // console.log(user_data.dashboard_link)
     // let dashboard_linktest = './partnerstates-ppm';
     this.router.navigate([user_data.dashboard_link]);
-    this.scrollToTop();
 
 
-  //  this.router.navigate(['./admin-ecres/app-dashboard']);
-  //  this.scrollToTop();
+    //  this.router.navigate(['./admin-ecres/app-dashboard']);
+
   }
 
   funcUserLogOut() {
@@ -318,18 +451,17 @@ export class HomePageComponent {
   spinnerHide() {
     this.loadingVisible = false;
   }
-  
-  onAutoLoadConfigurationItems(){
+
+  onAutoLoadConfigurationItems() {
     this.onLoadregulatoryFunctionData();
-    
+
     this.onLoadcountriesData();
-}
-onSearchExpertsProfile(selectedTabIndex){
+  }
+  onSearchExpertsProfile(selectedTabIndex) {
     this.searchExpertsProfileFrm.get('selectedTabIndex')?.setValue(selectedTabIndex);
     this.publicservice.setApplicationDetail(this.searchExpertsProfileFrm.value);
     //reroute
     this.router.navigate(['./experts-profiles']);
-    this.scrollToTop();
-}
 
+  }
 }

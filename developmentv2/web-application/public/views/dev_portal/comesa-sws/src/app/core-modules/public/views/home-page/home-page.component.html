@@ -7,13 +7,13 @@
           <div class="carousel slide" id="slider" data-bs-ride="carousel">
             <div class="carousel-inner">
               <div class="carousel-item active slide_image1">
-                
+
               </div>
               <div class="carousel-item active slide_image1">
-               
+
               </div>
               <div class="carousel-item active slide_image1">
-                
+
               </div>
             </div>
             <button class="carousel-control-prev" type="button" data-bs-target="#slider" data-bs-slide="prev">
@@ -25,32 +25,49 @@
               <span class="visually-hidden">Next</span>
             </button>
           </div>
-      
+
           <!-- Overlay Container -->
           <div class="overlay-container">
-            <h2 class="display-5 mb-4">A Step-by-Step Guide on Foreign Trade Procedures</h2>
+            <h2 class="display-5 mb-4">Step-by-Step Guide on Import Export Procedures</h2>
             <!-- Search Box -->
-            <div class="search-box">
+            <div class="banner-search">
+              
               <form>
                 <div class="input-group">
-                  <!-- Search By Dropdown -->
-                  <select class="form-select form-select-lg" id="searchBy">
-                    <option selected>HS Code or Product</option>
-                    <option>HS Code</option>
-                    <option>Product</option>
+
+                  <select class="form-select form-select-lg" id="searchByCriteria"
+                    (change)="onSearchCriteriaChange($event)">
+                    <option selected disabled>{{ 'select_search_criteria' | translate }}</option>
+                    <option *ngFor="let criterion of criteriaData" [value]="criterion.id">
+                      {{ criterion.name | translate }}
+                    </option>
                   </select>
+
                   <!-- Transaction Type Dropdown -->
                   <select class="form-select form-select-lg" id="transactionType">
-                    <option selected>Transaction Type</option>
-                    <option>Import</option>
-                    <option>Export</option>
-                    <option>Transit</option>
+                    <option selected disabled>{{ 'operation_type' | translate }}</option>
+                    <option *ngFor="let transaction of transactionTypeData" [value]="transaction.name">
+                      {{ transaction.name | translate }}
+                    </option>
                   </select>
-                  <!-- Input Field -->
-                  <input type="text" class="form-control form-control-lg" placeholder="Enter your search">
+
+                  <!-- Dynamic Type Dropdown -->
+                  <select class="form-select form-select-lg" id="productType">
+                    <option selected disabled>{{ productPlaceholder | translate }}</option>
+                    <option *ngFor="let item of dynamicDataSource" [value]="item.name">
+                      {{ item.name | translate }}
+                    </option>
+                  </select>
+
+
                   <!-- Search Button -->
-                  <button type="submit" class="btn btn-primary btn-rounded">
+                  <!-- <button type="submit" class="btn btn-primary btn-rounded">
                     <i class="bi bi-search"></i>
+                  </button> -->
+
+                  <button type="submit" class="banner-filters-search-button">
+                    <i class="fas fa-arrow-right">
+                    </i>
                   </button>
                 </div>
               </form>
