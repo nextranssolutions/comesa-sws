@@ -10,7 +10,7 @@ if (window.location.hostname == 'localhost') {
 }
 if (app_connection == 'development') {
   //nextrans-solutions\comesa-sws\development\web-application
-  base_url = 'http://localhost/nextrans-solutions/comesa-sws/developmentv2/web-application/public/index.php';
+  base_url = 'http://localhost:82/nextrans-solutions/comesa-sws/developmentv2/web-application/public/index.php';
   assets_url = 'http://localhost/nextrans-solutions/comesa-sws/development2/web-application/public/index.php';
   // siteKey = '6LcoH54UAAAAAOqpAGCXC4cmup6N2c5KseVHmv1c';
 }
