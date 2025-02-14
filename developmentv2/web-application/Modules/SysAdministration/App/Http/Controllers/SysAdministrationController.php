@@ -558,12 +558,14 @@ class SysAdministrationController extends Controller
         try {
             $level = 0;
             $user_group_id = $req->user_group_id;
+            $account_type_id = $req->account_type_id;
 
             $navigationItems = DB::table('wf_navigation_items as t1')
                 ->leftJoin('wf_system_interfaces as t3', 't1.system_interface_id', 't3.id')
-                ->leftJoin('sys_usergroup_navpermissions as t4', function ($join) use ($user_group_id) {
+                ->leftJoin('sys_usergroup_navpermissions as t4', function ($join) use ($user_group_id, $account_type_id) {
                     $join->on('t1.id', '=', 't4.navigation_item_id')
-                        ->on('t4.user_group_id', '=', DB::raw($user_group_id));
+                        ->on('t4.user_group_id', '=', DB::raw($user_group_id))
+                        ->on('t1.account_type_id', '=', DB::raw($account_type_id));
                 })
                 ->leftjoin( 'wf_navigation_types as t5', 't1.navigation_type_id', 't5.id')
                 ->select('t1.*', 't3.routerlink', 't1.iconsCls', 't4.user_access_levels_id', 't4.navigation_item_id', 't4.user_group_id')
@@ -580,7 +582,7 @@ class SysAdministrationController extends Controller
 
                 $parent_id = $item->id;
                 $level = 1;
-                $childrens = $this->getNavigationItemsChildrens($parent_id, $level, $user_group_id);
+                $childrens = $this->getNavigationItemsChildrens($parent_id, $level, $user_group_id, $account_type_id);
                 if (!empty($childrens)) {
                     $item->children = $childrens;
                     $rootItems[] = $item;
@@ -598,14 +600,15 @@ class SysAdministrationController extends Controller
         return response()->json($res, 200);
 
     }
-    function getNavigationItemsChildrens($parent_id, $level, $user_group_id)
+    function getNavigationItemsChildrens($parent_id, $level, $user_group_id, $account_type_id)
     {
         $childrens = array();
         $navigationItems = DB::table('wf_navigation_items as t1')
             ->leftJoin('wf_system_interfaces as t3', 't1.system_interface_id', 't3.id')
-            ->leftJoin('sys_usergroup_navpermissions as t4', function ($join) use ($user_group_id) {
+            ->leftJoin('sys_usergroup_navpermissions as t4', function ($join) use ($user_group_id, $account_type_id) {
                 $join->on('t1.id', '=', 't4.navigation_item_id')
-                    ->on('t4.user_group_id', '=', DB::raw($user_group_id));
+                    ->on('t4.user_group_id', '=', DB::raw($user_group_id))
+                    ->on('t1.account_type_id', '=', DB::raw($account_type_id));
             })
             ->select('t1.*', 't3.routerlink', 't1.iconsCls', 't4.user_access_levels_id', 't4.navigation_item_id', 't4.user_group_id')
 
@@ -616,7 +619,7 @@ class SysAdministrationController extends Controller
             $child_id = $item->id;
             $level_child = 2;
             //check for the next level 
-            $grand_children = $this->grandNavigationschildfunction($child_id, $level_child, $user_group_id);
+            $grand_children = $this->grandNavigationschildfunction($child_id, $level_child, $user_group_id, $account_type_id);
             if (!empty($grand_children)) {
 
                 $item->children = $grand_children;
@@ -628,14 +631,15 @@ class SysAdministrationController extends Controller
 
         return $childrens;
     }
-    function grandNavigationschildfunction($parent_id, $level, $user_group_id)
+    function grandNavigationschildfunction($parent_id, $level, $user_group_id, $account_type_id)
     {
         $childrens = array();
         $navigationItems = DB::table('wf_navigation_items as t1')
             ->leftJoin('wf_system_interfaces as t3', 't1.system_interface_id', 't3.id')
-            ->leftJoin('sys_usergroup_navpermissions as t4', function ($join) use ($user_group_id) {
+            ->leftJoin('sys_usergroup_navpermissions as t4', function ($join) use ($user_group_id, $account_type_id) {
                 $join->on('t1.id', '=', 't4.navigation_item_id')
-                    ->on('t4.user_group_id', '=', DB::raw($user_group_id));
+                    ->on('t4.user_group_id', '=', DB::raw($user_group_id))
+                    ->on('t1.account_type_id', '=', DB::raw($account_type_id));
             })
             ->select('t1.*', 't3.routerlink', 't1.iconsCls', 't4.user_access_levels_id', 't4.navigation_item_id', 't4.user_group_id')
             ->where(array('level' => $level, 'parent_id' => $parent_id))->get();

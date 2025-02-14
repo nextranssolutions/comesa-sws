@@ -20,14 +20,14 @@ pipeline {
           sh '''#!/bin/bash
 
           ##### TRANSFER TO THE SERVER ###############
-          sudo rm -rf /var/www/comesaimpexpsolution
-          sudo mkdir /var/www/comesaimpexpsolution
-          sudo cp -R * /var/www/comesaimpexpsolution
-          sudo chown -R jenkins /var/www/comesaimpexpsolution
-          sudo chgrp -R www-data /var/www/comesaimpexpsolution
+          sudo rm -rf /var/www/cimex
+          sudo mkdir /var/www/cimex
+          sudo cp -R * /var/www/cimex
+          sudo chown -R jenkins /var/www/cimex
+          sudo chgrp -R www-data /var/www/cimex
 
           ###### PRODUCTION OF LARAVEL SIDE ####################
-          cd /var/www/comesaimpexpsolution/developmentv2/web-application
+          cd /var/www/cimex/developmentv2/web-application
           composer install --prefer-dist --no-dev -o
 
           # Decrypt the .env file using the encryption key
@@ -43,8 +43,8 @@ pipeline {
           php artisan down
 
           ###### PRODUCTION OF ANGULAR SIDE ####################
-          cd /var/www/comesaimpexpsolution/developmentv2/web-application/public/views/dev_portal/comesa-sws/src/app
-          npm install
+          cd /var/www/cimex/developmentv2/web-application/public/views/dev_portal/comesa-sws/src/app
+          npm install --legacy-peer-deps
           sed -i \'1s/development/production/\' app-settings.ts
           cd ../../
 
@@ -53,7 +53,7 @@ pipeline {
           echo "$build_output"
 
           # Path to the init.blade.php file
-          init_file="/var/www/comesaimpexpsolution/developmentv2/web-application/public/init.blade.php"
+          init_file="/var/www/cimex/developmentv2/web-application/public/init.blade.php"
 
           # Function to update filenames in init.blade.php
           update_filenames() {
@@ -122,24 +122,24 @@ pipeline {
           mv "$temp_file" "$init_file"
           # Adjust permissions
           chmod 755 "$init_file"
-          chmod -R 775 /var/www/comesaimpexpsolution/developmentv2/web-application/storage
-          chmod -R 775 /var/www/comesaimpexpsolution/developmentv2/web-application/bootstrap
+          chmod -R 775 /var/www/cimex/developmentv2/web-application/storage
+          chmod -R 775 /var/www/cimex/developmentv2/web-application/bootstrap
 
           # Copy generated lazy chunk files to the public folder
-          cp /var/www/comesaimpexpsolution/developmentv2/web-application/public/views/front-end/*.js /var/www/comesaimpexpsolution/developmentv2/web-application/public/
+          cp /var/www/cimex/developmentv2/web-application/public/views/front-end/*.js /var/www/cimex/developmentv2/web-application/public/
 
           # Copy asset files
-          cp -R /var/www/comesaimpexpsolution/developmentv2/web-application/public/views/front-end/assets /var/www/comesaimpexpsolution/developmentv2/web-application/public/
+          cp -R /var/www/cimex/developmentv2/web-application/public/views/front-end/assets /var/www/cimex/developmentv2/web-application/public/
 
           ## DELETE EXTRA FILES #####
-          cd /var/www/comesaimpexpsolution/developmentv2/web-application/public/views/
+          cd /var/www/cimex/developmentv2/web-application/public/views/
           rm -rf dev_portal
-          cd /var/www/comesaimpexpsolution
-          find /var/www/comesaimpexpsolution -mindepth 1 -maxdepth 1 ! -name "developmentv2" -exec rm -rf {} +
+          cd /var/www/cimex
+          find /var/www/cimex -mindepth 1 -maxdepth 1 ! -name "developmentv2" -exec rm -rf {} +
 
           ## NOT NEEDED FOR COMESA
           # find /var/www/jenkins_test/ppm_solutions_v2 -mindepth 1 -maxdepth 1 ! -name "development" -exec rm -rf {} +
-          cd /var/www/comesaimpexpsolution/developmentv2/web-application
+          cd /var/www/cimex/developmentv2/web-application
 
           # Disable Maintenance Mode
           php artisan up

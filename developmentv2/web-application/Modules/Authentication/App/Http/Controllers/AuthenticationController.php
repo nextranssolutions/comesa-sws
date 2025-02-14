@@ -25,9 +25,13 @@ class AuthenticationController extends Controller
             $otp_value = $request->otp_value;
             $user_password = base64_decode($request->password);
 
-            if ($email_address != 'admin@gmail.com') {
-                $email_address = aes_encrypt($email_address);
+            // if ($email_address != 'admin@gmail.com' ) {
+            //     $email_address = aes_encrypt($email_address);
+            // }
+            if ($email_address != 'admin@gmail.com' && $email_address != 'applicant@gmail.com' && $email_address != 'oga.admin@gmail.com' && $email_address != 'oga.finace@gmail.com' && $email_address != 'oga.approver@gmail.com' && $email_address != 'oga.reviewer@gmail.com') {
+            $email_address = aes_encrypt($email_address);
             }
+
             $user = ParUsers::where('email_address', $email_address)->first();
          
             if (!$user) {

@@ -57,6 +57,10 @@
         <dxo-lookup [dataSource]="AppRegulatorySubFunctionsData" displayExpr="routerlink" valueExpr="id">
         </dxo-lookup>
     </dxi-column>
+    <dxi-column dataField="account_type_id" caption="account_type">
+        <dxo-lookup [dataSource]="AppAccountTypeData" displayExpr="routerlink" valueExpr="id">
+        </dxo-lookup>
+    </dxi-column>
     <dxo-selection mode="multiple"></dxo-selection>
     <dxo-group-panel [visible]="true"></dxo-group-panel>
     <dxo-paging [pageSize]="500"></dxo-paging>
@@ -200,11 +204,19 @@
                         </dx-select-box>
 
                     </div>
+                    <div class="col-lg-4">
+                        <label for="account_type_id">{{ 'account_type' | translate }}</label>
+
+                        <dx-select-box [dataSource]="AppAccountTypeData" formControlName="account_type_id"
+                            [showClearButton]="true" valueExpr="id" [searchEnabled]="true" displayExpr="name">
+                        </dx-select-box>
+
+                    </div>
                 </div>
 
             </form>
 
-            <form *ngIf="table_name != 'wf_navigation_items'" role="form" enctype="multipart/form-data" role="form"
+            <form *ngIf="table_name != 'wf_navigation_items' && table_name != 'wf_navigation_types'"   role="form" enctype="multipart/form-data" role="form"
                 [formGroup]="navigationItemsFrm" (ngSubmit)="onFuncSaveNavigationData()">
 
                 <div class="row">
@@ -269,6 +281,45 @@
                 </div>
 
             </form>
+
+            <form *ngIf="table_name == 'wf_navigation_types'"   role="form" enctype="multipart/form-data" role="form"
+            [formGroup]="navigationItemsFrm" (ngSubmit)="onFuncSaveNavigationData()">
+
+            <div class="row">
+              
+                <div class="col-lg-6">
+                    <label for="unitName">{{ 'navigation_types' | translate }}</label>
+                    <dx-text-box formControlName="name" [showClearButton]="true">
+
+                    </dx-text-box>
+                </div>
+                
+
+                <div class="col-lg-6">
+
+                    <label>{{ 'code' | translate }}</label>
+                    <dx-text-box formControlName="code" [showClearButton]="true">
+
+                    </dx-text-box>
+                </div>
+                <div class="col-lg-6">
+
+                    <label>{{ 'iso_code' | translate }}</label>
+                    <dx-text-box formControlName="iso_acyronym" [showClearButton]="true">
+
+                    </dx-text-box>
+                </div>
+               
+                <div class="col-lg-12">
+
+                    <label>{{ 'description' | translate }}</label>
+                    <dx-text-area formControlName="description">
+
+                    </dx-text-area>
+                </div>
+            </div>
+
+        </form>
             <div class="col-lg-8 pull-right">
 
             </div><br>
