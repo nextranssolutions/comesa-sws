@@ -7,20 +7,31 @@
     </button>
 
     <div class=" collapse navbar-collapse" id="navbarNavDropdown">
+
     
     <ul class="navbar-nav ms-auto">
       <li class="nav-item">
         <a routerLink="/public/index" class="nav-item nav-link mx-2 active">
           <i class="fa fa-home" ></i>{{ 'home' | translate }}</a>
       </li>
-      <li class="nav-item">
-        <a routerLink="/public/procedures" class="nav-item nav-link">
-          <i class="fa fa-users" ></i>{{ 'procedures' | translate }}</a>
+    
+      <li class="nav-item dropdown">
+        <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
+          data-bs-toggle="dropdown" aria-expanded="false">
+          <i class="fa fa-book" ></i> {{ 'procedures' | translate }}
+        </a>
+        <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
+          <li><a routerLink="/public/import_procedures" class="dropdown-item" href="#">{{ 'import_procedures' | translate }}</a></li>
+          <li><a routerLink="/public/export_procedures" class="dropdown-item" href="#">{{ 'export_procedures' | translate }}</a></li>
+          <li><a routerLink="/public/transit_procedures" class="dropdown-item" href="#">{{ 'transit_procedures' | translate }}</a></li>
+        
+          
+        </ul>
       </li>
      
      <li class="nav-item">
         <a routerLink="/public/producthscodes_info" class="nav-item nav-link">
-          <i class="fa fa-book" ></i>{{ 'products_information' | translate }}</a>
+          <i class="fa fa-book" ></i>{{ 'products_hscode_information' | translate }}</a>
       </li>
       <li class="nav-item dropdown">
         <a class="nav-link mx-2 dropdown-toggle" href="#" id="navbarDropdownMenuLink" role="button"
@@ -28,7 +39,7 @@
           <i class="fa fa-book" ></i> {{ 'trade_facilitation_repository' | translate }}
         </a>
         <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-          <li><a routerLink="/public/general_guidelinesforimport" class="dropdown-item" href="#">{{ 'general_guidelinesforimport' | translate }}</a></li>
+         
           <li><a routerLink="/public/costs_associatedwith_importexport" class="dropdown-item" href="#">{{ 'costs_associatedwith_importexport' | translate }}</a></li>
           <li><a routerLink="/public/trader_restrictionsprohibits" class="dropdown-item" href="#">{{ 'restrictions_prohibitsguidelines' | translate }}</a></li>
         
