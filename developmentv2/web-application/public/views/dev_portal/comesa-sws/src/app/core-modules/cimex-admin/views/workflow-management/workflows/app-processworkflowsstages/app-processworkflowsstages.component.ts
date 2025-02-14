@@ -14,7 +14,7 @@ table_name: string;
   constructor(
     // private http: HttpClient,
   ) {
-    this.table_name = 'wkf_workflow_stages';
+    this.table_name = 'wf_workflow_stages';
     this.parameter_name = "workflow_stages";
     this.resetcolumns = 'table_name,process_id,prevworkflow_stage_id,nextworkflow_stage_id,workflow_status_id';
      

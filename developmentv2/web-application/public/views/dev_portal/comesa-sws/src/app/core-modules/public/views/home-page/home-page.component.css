@@ -167,10 +167,20 @@ h5 {
 }
 .form-control-lg,
 .form-select-lg {
-  border-radius: 20px;
-  height: 50px; /* Explicit height for additional customization */
+  border-radius: 0 !important;
+  height: 60px; /* Explicit height for additional customization */
 }
 .btn-rounded {
-  border-radius: 50%;
-  padding: 0.75rem 1rem; /* Adjust padding for consistent button size */
+  border-radius: 50% !important;
+  padding: 1rem 2rem; /* Adjust padding for consistent button size */
+}
+
+.form-search-by {
+  padding: 1.4rem 2rem !important;
+}
+
+
+.input-group {
+  background-color: #f7f8fa; /* Light background for contrast */
+  border-radius: 20px;
 }
