@@ -449,7 +449,7 @@ class WorkflowManagementController extends Controller
         $navigationItems = DB::table('wf_navigation_items as t1')
             ->leftJoin('wf_system_interfaces as t3', 't1.system_interface_id', 't3.id')
             ->leftJoin('par_regulatory_functions as t4', 't4.id', 't1.regulatory_function_id')
-            ->leftJoin('par_regulatory_subfunctions as t5', 't5.id', 't4.regulatory_function_id')
+            ->leftJoin('par_regulatory_subfunctions as t5', 't5.id', 't5.regulatory_function_id')
             ->select('t1.*', 't3.routerlink', 't1.iconsCls', 't4.name', 't5.name')
             ->orderBy('order_no')
             ->where(array('level' => $level, 'parent_id' => $parent_id))->get();

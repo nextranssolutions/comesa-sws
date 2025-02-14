@@ -141,9 +141,9 @@ export class HomePageComponent {
         data => {
           this.data_record = data;
           if (this.data_record.success) {
-            this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
-            this.regulatoryFunctionData = this.decryptedPayload;
-            // this.regulatoryFunctionData = this.data_record.data;
+            // this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
+            // this.regulatoryFunctionData = this.decryptedPayload;
+            this.regulatoryFunctionData = this.data_record.data;
           }
 
         },
@@ -163,9 +163,9 @@ export class HomePageComponent {
         data => {
           this.data_record = data;
           if (this.data_record.success) {
-            this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
-            this.slides_information = this.decryptedPayload;
-            // this.slides_information = this.data_record.data;
+            // this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
+            // this.slides_information = this.decryptedPayload;
+            this.slides_information = this.data_record.data;
           }
 
         },
@@ -187,9 +187,9 @@ export class HomePageComponent {
         data => {
           this.data_record = data;
           if (this.data_record.success) {
-            this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
-            this.countriesData = this.decryptedPayload;
-            // this.countriesData = this.data_record.data;
+            // this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
+            // this.countriesData = this.decryptedPayload;
+            this.countriesData = this.data_record.data;
           }
         },
         error => {

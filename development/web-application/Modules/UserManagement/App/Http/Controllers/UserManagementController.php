@@ -173,11 +173,6 @@ class UserManagementController extends Controller
 
 
 
-
-
-
-
-
     public function onUpdateUserProfileInformation(Request $req)
     {
         try {
@@ -261,15 +256,15 @@ class UserManagementController extends Controller
                 'user_title_id' => 'required|integer',
                 'account_type_id' => 'required|integer',
                 'country_of_origin_id' => 'required|integer',
-                'member_state_id' => 'nullable|integer',
-                'institution_type_id' => 'nullable|integer',
-                'institution_id' => 'nullable|integer',
+                // 'member_state_id' => 'nullable|integer',
+                // 'institution_type_id' => 'nullable|integer',
+                // 'institution_id' => 'nullable|integer',
                 'organization_name' => 'nullable|string',
-                'institution_department_id' => 'nullable|integer',
-                'registration_number' => 'nullable|max:50',
-                'secretariat_department_id' => 'nullable|integer',
-                'identification_type_id' => 'nullable|integer',
-                'identification_number' => 'nullable',
+                // 'institution_department_id' => 'nullable|integer',
+                // 'registration_number' => 'nullable|max:50',
+                // 'secretariat_department_id' => 'nullable|integer',
+                // 'identification_type_id' => 'nullable|integer',
+                // 'identification_number' => 'nullable',
                 'first_name' => 'required|string',
                 'surname' => 'nullable|string',
                 'other_names' => 'nullable|string',
@@ -347,7 +342,7 @@ class UserManagementController extends Controller
                 'account_type_id' => $req->account_type_id,
                 'user_title_id' => $req->user_title_id,
                 'country_of_origin_id' => $req->country_of_origin_id,
-                'institution_type_id' => $req->institution_type_id,
+                // 'institution_type_id' => $req->institution_type_id,
                 'email_address' => $email_address,
                 'password' => Hash::make($generatedPassword),
                 'surname' => aes_encrypt($req->surname),
@@ -355,12 +350,12 @@ class UserManagementController extends Controller
                 'phone_number' => aes_encrypt($req->phone_number),
                 'process_id' => $process_id,
                 'appworkflow_status_id' => $appworkflow_status_id,
-                'identification_number' => $req->identification_number,
-                'institution_id' => $req->institution_id,
+                // 'identification_number' => $req->identification_number,
+                // 'institution_id' => $req->institution_id,
                 'application_code' => $application_code,
-                'institution_department_id' => $req->institution_department_id,
-                'secretariat_department_id' => $req->secretariat_department_id,
-                'identification_type_id' => $req->identification_type_id,
+                // 'institution_department_id' => $req->institution_department_id,
+                // 'secretariat_department_id' => $req->secretariat_department_id,
+                // 'identification_type_id' => $req->identification_type_id,
                 'created_by' => $req->email_address,
                 'is_initiatepassword_change'=>1,
                 'created_on' => now(),
@@ -381,10 +376,10 @@ class UserManagementController extends Controller
 
             if ($req->account_type_id == 1) {
                 $process_id = 2;
-                $exp_table = 'exp_expertsprofile_information';
-                $experts_profile_no = generateUserRegistrationNo($exp_table);
-                $application_code = generateApplicationCode($process_id, $exp_table);
-                $app_reference_no = generateAppReferenceNo($process_id, $exp_table, $req->email_address);
+                $trader_table = 'tra_trader_account';
+                $experts_profile_no = generateUserRegistrationNo($trader_table);
+                $application_code = generateApplicationCode($process_id, $trader_table);
+                $app_reference_no = generateAppReferenceNo($process_id, $trader_table, $req->email_address);
 
                 $app_statusrecord = getInitialWorkflowStatusId($process_id);
                 if (!$app_statusrecord) {
@@ -418,7 +413,7 @@ class UserManagementController extends Controller
                     'created_on' => now(),
                 ];
 
-                $exp_resp = insertRecord($exp_table, $experts_profile);
+                $exp_resp = insertRecord($trader_table, $experts_profile);
 
                 if (!$exp_resp['success']) {
                     DB::rollBack();
@@ -597,7 +592,7 @@ class UserManagementController extends Controller
                     '{email_address}' => $email_address,
                     '{user_password}' => $generatedPassword
                 );
-                $subject = 'Password Reset Instructions - CONTINENTAL REGULATORY EXPERTS SOLUTION (E-CRES)';
+                $subject = 'Password Reset Instructions - COMESA IMPORT/EXPORT SYSTEM (cIMEX)';
                 $template_id = 2;
                 $res = sendMailNotification($req->email_address, $subject, '', '', '', '', '', $template_id, $vars);
                 
@@ -1037,14 +1032,14 @@ class UserManagementController extends Controller
                 $resp = insertRecord($table_name, $user_data);
 
                 if ($resp['success']) {
-                    $exp_table = 'exp_expertsprofile_information';
+                    $trader_table = 'exp_expertsprofile_information';
                     $user_information_id = $resp['record_id'];
                     if ($account_type_id == 1) {
-                        $experts_profile_no = generateUserRegistrationNo($exp_table);
+                        $experts_profile_no = generateUserRegistrationNo($trader_table);
                         $process_id = 2;
                         $appworkflow_status_id = 1;
-                        $application_code = generateApplicationCode($process_id, $exp_table);
-                        $app_reference_no = generateAppReferenceNo($process_id, $exp_table, $req->email_address);
+                        $application_code = generateApplicationCode($process_id, $trader_table);
+                        $app_reference_no = generateAppReferenceNo($process_id, $trader_table, $req->email_address);
 
                         $experts_profile = [
                             'user_information_id' => $user_information_id,
@@ -1065,7 +1060,7 @@ class UserManagementController extends Controller
                             'created_by' => $req->email_address,
                             'created_on' => now(),
                         ];
-                        $exp_resp = insertRecord($exp_table, $experts_profile);
+                        $exp_resp = insertRecord($trader_table, $experts_profile);
                         if ($exp_resp['success']) {
                             $res = [
                                 'success' => true,
@@ -1254,17 +1249,17 @@ class UserManagementController extends Controller
     //                 $resp = insertRecord($table_name, $user_data);
     
     //                 if ($resp['success']) {
-    //                     $exp_table = 'exp_expertsprofile_information';
+    //                     $trader_table = 'exp_expertsprofile_information';
     //                     $user_information_id = $resp['record_id'];
     //                     if ($account_type_id == 1) {
-    //                         $experts_profile_no = generateUserRegistrationNo($exp_table);
+    //                         $experts_profile_no = generateUserRegistrationNo($trader_table);
     //                         $process_id = 2;
     //                         $appworkflow_status_id = 1;
     //                         $email_address = '';
     //                         $first_name = $req->first_name;
     //                         $other_names = $req->other_names;
-    //                         $application_code = generateApplicationCode($process_id, $exp_table);
-    //                         $app_reference_no = generateAppReferenceNo($process_id, $exp_table, $req->email_address);
+    //                         $application_code = generateApplicationCode($process_id, $trader_table);
+    //                         $app_reference_no = generateAppReferenceNo($process_id, $trader_table, $req->email_address);
     
     //                         $experts_profile = array(
     //                             'user_information_id' => $user_information_id,
@@ -1285,7 +1280,7 @@ class UserManagementController extends Controller
     //                             'created_by' => $req->input('email_address'),
     //                             'created_on' => now(),
     //                         );
-    //                         $exp_resp = insertRecord($exp_table, $experts_profile);
+    //                         $exp_resp = insertRecord($trader_table, $experts_profile);
     //                         if ($exp_resp['success']) {
     //                             $exp_resp = array(
     //                                 'success' => true,

@@ -46,6 +46,7 @@ export class ShareusermanagementClassComponent {
   IdentificationTypeData: any;
   secretariatDepartmentsData: any;
   is_eacsecretariat: boolean;
+  is_super_admin: boolean;
   instituionTypeData: any;
   has_partnerstate_defination: boolean;
   dashboard_type_id: number;
@@ -69,6 +70,7 @@ export class ShareusermanagementClassComponent {
   usrapprovalPopupVisible: boolean;
   decision_description: string;
   appworkflow_status_id: number;
+  user_group_id: number;
   updateUsrPermissNewDataFrm: FormGroup;
   usrrejectionPopupVisible: boolean;
   apiUserAccounts: any;
@@ -122,7 +124,7 @@ export class ShareusermanagementClassComponent {
   ) {
     
     // this.table_name = 'exp_expertsprofile_information';
-    this.parameter_name = "Active User Accounts";
+    // this.parameter_name = "Active User Accounts";
 
 
     
@@ -580,13 +582,13 @@ export class ShareusermanagementClassComponent {
 
   }
   
-  fetchUserDetails(appworkflow_status_id= 0, is_eacsecretariat=true) {
+  fetchUserDetails(appworkflow_status_id= 0, user_group_id=0) {
     this.spinnerShow('Loading Active Users ...........');
 
     var data_submit = {
       'table_name': 'usr_users_information',
       'appworkflow_status_id': appworkflow_status_id,
-      // is_eacsecretariat: is_eacsecretariat
+      'user_group_id': user_group_id,
     }
     this.userManagementService.onGetUserInformation(data_submit, 'onGetUserInformation')
       .subscribe(
@@ -727,7 +729,7 @@ export class ShareusermanagementClassComponent {
     this.appointPopupVisible = true;
   }
   onPopupHidden() {
-    this.fetchUserDetails(0,this.is_eacsecretariat);
+    this.fetchUserDetails(0,this.user_group_id);
   }
 
 
@@ -838,7 +840,7 @@ export class ShareusermanagementClassComponent {
           this.spinner.hide();
           this.response = response;
           if (this.response.success) {
-            this.fetchUserDetails(0,this.is_eacsecretariat);
+            this.fetchUserDetails(0,this.user_group_id);
             this.toastr.success(this.response.message, 'Response');
           }
           else {
@@ -863,7 +865,7 @@ export class ShareusermanagementClassComponent {
           this.spinner.hide();
           this.response = response;
           if (this.response.success) {
-            this.fetchUserDetails(0,this.is_eacsecretariat);
+            this.fetchUserDetails(0,this.user_group_id);
             this.usrapprovalPopupVisible = false;
             this.toastr.success(this.response.message, 'Response');
           }
@@ -889,7 +891,7 @@ export class ShareusermanagementClassComponent {
           
           this.response = response;
           if (this.response.success) {
-            this.fetchUserDetails(0, this.is_eacsecretariat);
+            this.fetchUserDetails(0, this.user_group_id);
             this.usrrejectionPopupVisible = false;
             this.toastr.success(this.response.message, 'Response');
           }
@@ -925,7 +927,7 @@ export class ShareusermanagementClassComponent {
           this.response = response;
           //the details 
           if (this.response.success) {
-            this.fetchUserDetails(0,this.is_eacsecretariat);
+            this.fetchUserDetails(0,this.user_group_id);
             this.addPopupVisible = false;
             this.toastr.success(this.response.message, 'Response');
 
@@ -967,7 +969,7 @@ export class ShareusermanagementClassComponent {
           this.response = response;
           //the details 
           if (this.response.success) {
-            this.fetchUserDetails(0,this.is_eacsecretariat);
+            this.fetchUserDetails(0,this.user_group_id);
             this.addPopupVisible = false;
             this.toastr.success(this.response.message, 'Response');
 
@@ -1059,7 +1061,7 @@ export class ShareusermanagementClassComponent {
 
   }
   onReloadUserCounter() {
-    this.fetchUserDetails(0,this.is_eacsecretariat);
+    this.fetchUserDetails(0,this.user_group_id);
     this.onLoadUserAccountStatusCounters();
   }
 

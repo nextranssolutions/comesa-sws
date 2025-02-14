@@ -12,7 +12,7 @@ export class RefSubmodulesComponent {
      // private http: HttpClient,
    ) 
    {
-     this.table_name = 'txn_submodule_referenceformats';
+     this.table_name = 'tra_submodule_referenceformats';
      this.parameter_name = "submodule_reference";
   }
 }

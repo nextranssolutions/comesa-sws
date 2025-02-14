@@ -3,7 +3,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { NgHttpLoaderModule } from 'ng-http-loader';
 import { DxValidatorModule, DxDropDownButtonModule, DxTreeListModule, DxLoadPanelModule, DxToolbarModule, DxActionSheetModule, DxFileUploaderModule, DxDataGridModule, DxPopupModule, DxButtonModule, DxDateBoxModule, DxTextBoxModule, DxSelectBoxModule, DxTextAreaModule, DxContextMenuModule, DxMenuModule, DxCheckBoxModule, DxNumberBoxModule, DxTagBoxModule, DxTabPanelModule, DxFormModule, DxScrollViewModule, DxHtmlEditorModule, DxDropDownBoxModule, DxRadioGroupModule, DxProgressBarModule, DxChartModule, DxBulletModule, DxDataGridComponent, DxDiagramModule, DxDiagramComponent, DxCalendarModule, DxTabsModule, DxSwitchModule, DxResponsiveBoxModule, DxDrawerModule } from 'devextreme-angular';
-
 import { TranslateLoader, TranslateModule } from '@ngx-translate/core';
 import { TranslateHttpLoader } from '@ngx-translate/http-loader';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
@@ -53,8 +52,6 @@ import { AppstageStatusesComponent } from './views/workflow-management/workflows
 import { AppPerformancescoringScalesComponent } from './views/document-checklistsmng/checklist_management/app-performancescoring-scales/app-performancescoring-scales.component';
 import { AppChecklistTypesComponent } from './views/document-checklistsmng/checklist_management/app-checklist-types/app-checklist-types.component';
 import { AppChecklistDefinationComponent } from './views/document-checklistsmng/checklist_management/app-checklist-defination/app-checklist-defination.component';
-import { AppDocumentRequirementsComponent } from './views/document-checklistsmng/document_management/app-document-requirements/app-document-requirements.component';
-import { AppDocumentTypesComponent } from './views/document-checklistsmng/document_management/app-document-types/app-document-types.component';
 import { SharedDocumentchecklistmngComponent } from './views/document-checklistsmng/shared-documentchecklistmng/shared-documentchecklistmng.component';
 import { AppTranslationmanagementComponent } from './views/language-management/app-translationmanagement/app-translationmanagement.component';
 import { AppSystemlanguagesComponent } from './views/language-management/app-systemlanguages/app-systemlanguages.component';
@@ -80,7 +77,6 @@ import { DisclaimerStatementTypesComponent } from './views/configurations/discla
 import { DisclaimerStatementsComponent } from './views/configurations/disclaimer-statements/disclaimer-statements.component';
 import { TruncateWordsadminPipe } from 'src/app/core-services/TruncateWordsadminPipe';
 import { AppProcesssubmissionComponent } from './views/utilities/app-processsubmission/app-processsubmission.component';
-import { DmsDocrequirementsAppstatusComponent } from './views/document-checklistsmng/document_management/dms-docrequirements-appstatus/dms-docrequirements-appstatus.component';
 import { AppDosageformsComponent } from './views/configurations/app-dosageforms/app-dosageforms.component';
 import { AppApplicationtypesComponent } from './views/configurations/app-applicationtypes/app-applicationtypes.component';
 import { AppFirewallipsComponent } from './views/configurations/app-firewallips/app-firewallips.component';
@@ -110,14 +106,10 @@ import { MultilingualConfigurationsComponent } from './views/multilingual-config
 import { NavigationSetupComponent } from './views/workflow-management/navigation/navigation-setup/navigation-setup.component';
 import { WorkflowsSetupComponent } from './views/workflow-management/workflows/workflows-setup/workflows-setup.component';
 import { NotificationManagementComponent } from './views/document-checklistsmng/notification-mng/notification-management/notification-management.component';
-import { DocumentchecklistSetupComponent } from './views/document-checklistsmng/documentchecklist-setup/documentchecklist-setup.component';
 import { ExpertprofileSetupComponent } from './views/configurations/expertprofile-setup/expertprofile-setup.component';
 import { InstitutionsInformationComponent } from './views/system-administration/institutions-information/institutions-information.component';
 import { NotSlidesInformationsComponent } from './views/system-administration/not-slides-informations/not-slides-informations.component';
 import { ChecklistmanagementSetupComponent } from './views/document-checklistsmng/checklistmanagement-setup/checklistmanagement-setup.component';
-import { DmsDmsdocumentSitesComponent } from './views/document-checklistsmng/document_management/dms-dmsdocument-sites/dms-dmsdocument-sites.component';
-import { DmsProcessesDocdefinationComponent } from './views/document-checklistsmng/document_management/dms-processes-docdefination/dms-processes-docdefination.component';
-import { DmsNonstructuredDocrequirementComponent } from './views/document-checklistsmng/document_management/dms-nonstructured-docrequirement/dms-nonstructured-docrequirement.component';
 import { UserSetupComponent } from './views/system-administration/user-setup/user-setup.component';
 import { AppOrganizationinformationComponent } from './views/system-administration/app-organizationinformation/app-organizationinformation.component';
 import { AppSignatoriesComponent } from './views/system-administration/app-signatories/app-signatories.component';
@@ -251,7 +243,6 @@ import { ProcessdatesSpandefinationComponent } from './views/configurations/time
 import { RegistrationDuetimespanComponent } from './views/configurations/timeframe-configurations/registration-duetimespan/registration-duetimespan.component';
 import { SharedTimeframeconfigurationsComponent } from './views/configurations/timeframe-configurations/shared-timeframeconfigurations/shared-timeframeconfigurations.component';
 import { TimeframeConfigsetupComponent } from './views/configurations/timeframe-configurations/timeframe-configsetup/timeframe-configsetup.component';
-
 import { CountryRegionsComponent } from './views/configurations/location-parameters/country-regions/country-regions.component';
 import { DistrictcouncilDefinationComponent } from './views/configurations/location-parameters/districtcouncil-defination/districtcouncil-defination.component';
 import { DistrictsComponent } from './views/configurations/location-parameters/districts/districts.component';
@@ -292,6 +283,21 @@ import { AdvertisementChannelComponent } from './views/configurations/promotiona
 import { PrommaterialBookcataloguesComponent } from './views/configurations/promotional_advertisements_configurations/prommaterial-bookcatalogues/prommaterial-bookcatalogues.component';
 import { PromotionadvertChannelsComponent } from './views/configurations/promotional_advertisements_configurations/promotionadvert-channels/promotionadvert-channels.component';
 import { PromotionmaterialCategoriesComponent } from './views/configurations/promotional_advertisements_configurations/promotionmaterial-categories/promotionmaterial-categories.component';
+import { DmsConfigsetupComponent } from './views/document-checklistsmng/document_management/dms-configsetup/dms-configsetup.component';
+import { DmsSitesRepositoryDefinationComponent } from './views/document-checklistsmng/document_management/dms-sites-repository-defination/dms-sites-repository-defination.component';
+import { DocumentExtensionTypesComponent } from './views/document-checklistsmng/document_management/document-extension-types/document-extension-types.component';
+import { DocumentRequirementDefinationComponent } from './views/document-checklistsmng/document_management/document-requirement-defination/document-requirement-defination.component';
+import { DocumentTypesComponent } from './views/document-checklistsmng/document_management/document-types/document-types.component';
+import { NonstructuredDocDefinationComponent } from './views/document-checklistsmng/document_management/nonstructured-doc-defination/nonstructured-doc-defination.component';
+import { SharedDmsComponent } from './views/document-checklistsmng/document_management/shared-dms/shared-dms.component';
+import { HscodechaptersDefinationComponent } from './views/configurations/hscodes-configurations/hscodechapters-defination/hscodechapters-defination.component';
+import { HscodesSectionsComponent } from './views/configurations/hscodes-configurations/hscodes-sections/hscodes-sections.component';
+import { HscodesconfigSetupComponent } from './views/configurations/hscodes-configurations/hscodesconfig-setup/hscodesconfig-setup.component';
+import { HscodesheadingDefinationsComponent } from './views/configurations/hscodes-configurations/hscodesheading-definations/hscodesheading-definations.component';
+import { HscodesproductsRegistryComponent } from './views/configurations/hscodes-configurations/hscodesproducts-registry/hscodesproducts-registry.component';
+import { HscodessubheadingDefinationComponent } from './views/configurations/hscodes-configurations/hscodessubheading-defination/hscodessubheading-defination.component';
+import { HscodestariffDetailsComponent } from './views/configurations/hscodes-configurations/hscodestariff-details/hscodestariff-details.component';
+import { SharedhscodesConfigurationsComponent } from './views/configurations/hscodes-configurations/sharedhscodes-configurations/sharedhscodes-configurations.component';
 
 
 @NgModule({
@@ -361,6 +367,17 @@ import { PromotionmaterialCategoriesComponent } from './views/configurations/pro
     PromotionalAdvertconfigsetupComponent,
     SharedPromotionAdvertConfigurationsComponent,
 
+    HscodechaptersDefinationComponent,
+    HscodesSectionsComponent,
+    HscodesheadingDefinationsComponent,
+    HscodesproductsRegistryComponent,
+    HscodessubheadingDefinationComponent,
+    HscodestariffDetailsComponent,
+    HscodesconfigSetupComponent,
+    SharedhscodesConfigurationsComponent,
+
+
+
     RefNumbertypesComponent,
     RefNumbervariablesComponent,
     RefSubmodulesComponent,
@@ -404,6 +421,14 @@ import { PromotionmaterialCategoriesComponent } from './views/configurations/pro
     DistrictsComponent,
     DistrictcouncilDefinationComponent,
     LocationParametersComponent,
+
+    DmsConfigsetupComponent,
+    DmsSitesRepositoryDefinationComponent,
+    DocumentExtensionTypesComponent,
+    DocumentRequirementDefinationComponent,
+    DocumentTypesComponent,
+    NonstructuredDocDefinationComponent,
+    SharedDmsComponent,
 
 
 
@@ -461,7 +486,7 @@ import { PromotionmaterialCategoriesComponent } from './views/configurations/pro
     AppstageStatusesComponent, SharedDocumentchecklistmngComponent,
     SharedSysAdministrationComponent, AppPerformancescoringScalesComponent,
     AppChecklistTypesComponent, AppChecklistDefinationComponent,
-    AppDocumentRequirementsComponent, AppDocumentTypesComponent,
+     
     ShareusermanagementClassComponent,
     UserAccounttypesComponent, SystemDashbordtypesComponent,
     UsermanagementDashboardComponent, ApplicationDocumentuploadsComponent,
@@ -490,7 +515,7 @@ import { PromotionmaterialCategoriesComponent } from './views/configurations/pro
    
    
     InstitutionsTypesComponent, AppNationalitiesComponent, AppGenderComponent, AppPublicationTypesComponent,
-    DmsDocrequirementsAppstatusComponent,
+
     RegistrationConditionComponent,
     AppDosageformsComponent, AppApplicationtypesComponent, AppFirewallipsComponent,
     EcredResourcedashboardComponent,
@@ -543,10 +568,7 @@ import { PromotionmaterialCategoriesComponent } from './views/configurations/pro
     GmdnCodesComponent,
     ProductconfigurationsSetupComponent,
     SharedproductConfigurationsComponent,
-  
-
     AppWorkflowactiontypesComponent,
-   
     SystemmanualConfigurationComponent,
     SigninSignupGuidelinesComponent,
     TermsconditionsDetailsComponent,
@@ -556,16 +578,14 @@ import { PromotionmaterialCategoriesComponent } from './views/configurations/pro
     NavigationSetupComponent,
     WorkflowsSetupComponent,
     NotificationManagementComponent,
-    DocumentchecklistSetupComponent,
+    
     
     ExpertprofileSetupComponent,
     InstitutionsInformationComponent,
     RegistrationRegulationComponent,
     RefnumberConfigsetupComponent,
 
-    ChecklistmanagementSetupComponent,
-    DmsDmsdocumentSitesComponent,
-    DmsProcessesDocdefinationComponent, DmsNonstructuredDocrequirementComponent,
+    ChecklistmanagementSetupComponent, 
     SharedProcessconfigurationComponent,
     UserDashboardComponent,
     FinanceDashboardComponent,
@@ -659,7 +679,6 @@ import { PromotionmaterialCategoriesComponent } from './views/configurations/pro
     SharedSysAdministrationComponent, InstitutionsDepartmentsComponent,
     InstitutionsDetailsComponent, InstitutionsTypesComponent, AppNationalitiesComponent, AppGenderComponent,
     AppPublicationTypesComponent,
-    DmsDocrequirementsAppstatusComponent,
     AppDosageformsComponent,
     AppApplicationtypesComponent,
     AppFirewallipsComponent,
@@ -746,6 +765,15 @@ import { PromotionmaterialCategoriesComponent } from './views/configurations/pro
     RefNumberformatsComponent,
     SharedRefnumberconfigurationsComponent,
 
+    HscodechaptersDefinationComponent,
+    HscodesSectionsComponent,
+    HscodesheadingDefinationsComponent,
+    HscodesproductsRegistryComponent,
+    HscodessubheadingDefinationComponent,
+    HscodestariffDetailsComponent,
+    HscodesconfigSetupComponent,
+    SharedhscodesConfigurationsComponent,
+
     AssessmentProceduresComponent,
     AtccodesDefinationsComponent,
     ClassificationComponent,
@@ -785,6 +813,13 @@ import { PromotionmaterialCategoriesComponent } from './views/configurations/pro
     SharedTimeframeconfigurationsComponent,
     TimeframeConfigsetupComponent,
 
+    DmsConfigsetupComponent,
+    DmsSitesRepositoryDefinationComponent,
+    DocumentExtensionTypesComponent,
+    DocumentRequirementDefinationComponent,
+    DocumentTypesComponent,
+    NonstructuredDocDefinationComponent,
+    SharedDmsComponent,
 
     AdvertisementTypesComponent,
     PromotionMaterialsComponent,

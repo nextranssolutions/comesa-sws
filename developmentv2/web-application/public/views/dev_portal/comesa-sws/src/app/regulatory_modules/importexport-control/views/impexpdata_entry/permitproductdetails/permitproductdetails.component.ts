@@ -26,12 +26,12 @@ import { UtilityService } from 'src/app/core-services/utilities/utility.service'
 export class PermitproductdetailsComponent implements OnInit {
   @Input() productGeneraldetailsfrm: FormGroup;
   requireUnitPackData: boolean = false;
-  isprodnextdisable:boolean;
-  device_type_visible:boolean;
-  status_id:any;
-  response_data:any;
-  configData:any;
-  permitUploadedProductsData:any;
+  isprodnextdisable: boolean;
+  device_type_visible: boolean;
+  status_id: any;
+  response_data: any;
+  configData: any;
+  permitUploadedProductsData: any;
   trader_id: number;
   mistrader_id: number;
   dataGrid: DxDataGridComponent; printiframeUrl: any;
@@ -134,10 +134,10 @@ export class PermitproductdetailsComponent implements OnInit {
   is_rawpackagingproduct_type: boolean;
   productnametitle: string;
   ammendReadOnly: boolean;
-  constructor(private utilityService:UtilityService, private dmsService:DocumentManagementService,  public fb: FormBuilder,  public spinner: SpinnerVisibilityService, public configService: ConfigurationsService, public appService: ImportExportService, public router: Router, public formBuilder: FormBuilder, public config: ConfigurationsService,public toastr: ToastrService, public authService: AuthenticationService, public httpClient: HttpClient) {
-  
-  
-    }
+  constructor(private utilityService: UtilityService, private dmsService: DocumentManagementService, public fb: FormBuilder, public spinner: SpinnerVisibilityService, public configService: ConfigurationsService, public appService: ImportExportService, public router: Router, public formBuilder: FormBuilder, public config: ConfigurationsService, public toastr: ToastrService, public authService: AuthenticationService, public httpClient: HttpClient) {
+
+
+  }
   ngOnInit() {
     this.invoiceProductsUploadFrm = this.formBuilder.group({
       file: null,
@@ -403,13 +403,13 @@ export class PermitproductdetailsComponent implements OnInit {
           if (data.success) {
 
             this.permitProductsData = data.data;
-            if(this.permitProductsData.length > 0){
+            if (this.permitProductsData.length > 0) {
               this.isprodnextdisable = false;
             }
-            else{
+            else {
               this.isprodnextdisable = true;
             }
-            
+
           }
           else {
             this.toastr.success(data.message, 'Alert');
@@ -540,7 +540,7 @@ export class PermitproductdetailsComponent implements OnInit {
   onLoadcommonNameData() {
     var data = {
       table_name: 'cfg_common_names',
-     
+
     };
     this.config.onLoadConfigurationData(data)
       .subscribe(
@@ -872,51 +872,51 @@ export class PermitproductdetailsComponent implements OnInit {
 
       return;
     }
-/*
-    this.modalServ.openDialog(this.viewRef, {
-      title: 'Do you want remove the uploaded Products()',
-      childComponent: '',
-      settings: {
-        closeButtonClass: 'fa fa-close'
-      },
-      actionButtons: [{
-        text: 'Yes',
-        buttonClass: 'btn btn-danger',
-        onAction: () => new Promise((resolve: any, reject: any) => {
-          this.spinner.show();
-          this.appService.onDeletePermitUploadedProductsDetails('wb_uploadpermits_products', this.application_code, 'Permit products Details')
-            .subscribe(
-              response => {
-
-                this.spinner.hide();
-                let response_data = response.json();
-                if (response_data.success) {
-                  this.onLoadpermitUploadedProductsData(this.application_code);
-                  this.toastr.success(response_data.message, 'Response');
-                }
-                else {
-
-                  this.toastr.success(response_data.message, 'Response');
-
-                }
-
-              },
-              error => {
-                this.loading = false;
-              });
-          resolve();
-        })
-      }, {
-        text: 'no',
-        buttonClass: 'btn btn-default',
-        onAction: () => new Promise((resolve: any) => {
-          this.isUploadedInvoiceProductsWin = true;
-          resolve();
-        })
-      }
-      ]
-    });
-*/
+    /*
+        this.modalServ.openDialog(this.viewRef, {
+          title: 'Do you want remove the uploaded Products()',
+          childComponent: '',
+          settings: {
+            closeButtonClass: 'fa fa-close'
+          },
+          actionButtons: [{
+            text: 'Yes',
+            buttonClass: 'btn btn-danger',
+            onAction: () => new Promise((resolve: any, reject: any) => {
+              this.spinner.show();
+              this.appService.onDeletePermitUploadedProductsDetails('wb_uploadpermits_products', this.application_code, 'Permit products Details')
+                .subscribe(
+                  response => {
+    
+                    this.spinner.hide();
+                    let response_data = response.json();
+                    if (response_data.success) {
+                      this.onLoadpermitUploadedProductsData(this.application_code);
+                      this.toastr.success(response_data.message, 'Response');
+                    }
+                    else {
+    
+                      this.toastr.success(response_data.message, 'Response');
+    
+                    }
+    
+                  },
+                  error => {
+                    this.loading = false;
+                  });
+              resolve();
+            })
+          }, {
+            text: 'no',
+            buttonClass: 'btn btn-default',
+            onAction: () => new Promise((resolve: any) => {
+              this.isUploadedInvoiceProductsWin = true;
+              resolve();
+            })
+          }
+          ]
+        });
+    */
 
   }
   funcUploadOptionProductsWin() {
@@ -991,10 +991,10 @@ export class PermitproductdetailsComponent implements OnInit {
         data => {
           if (data.success) {
             this.permitUploadedProductsData = data.data;
-            if(this.permitUploadedProductsData.length > 0){
+            if (this.permitUploadedProductsData.length > 0) {
               this.isprodnextdisable = false;
             }
-            else{
+            else {
               this.isprodnextdisable = true;
             }
 
@@ -1247,7 +1247,7 @@ export class PermitproductdetailsComponent implements OnInit {
       //.pipe(first())
       .subscribe(
         data => {
-          console.log(data);
+
           this.regions = data;
         },
         error => {

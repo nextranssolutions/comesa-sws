@@ -5,10 +5,10 @@
 
 <head>
     <meta charset="utf-8">
-    <title>AUDA-NEPAD e-CRES</title>
+    <title>COMESA IMPORT/EXPORT SYSTEM (cIMEX)</title>
 
     <meta name="viewport" content="width=device-width, initial-scale=1">
-    <title>CONTINENTAL REGULATORY EXPERTS SOLUTION (E-CRES)</title>
+    <title>COMESA IMPORT/EXPORT SYSTEM (cIMEX)</title>
 
     <link rel="icon" href="{{asset('favicon.ico')}}" type="image/x-icon">
     <meta content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no" name="viewport">
@@ -40,7 +40,7 @@
 
             </div>
             <div class="center_title">
-                <h4 style="text-align:center">CONTINENTAL REGULATORY EXPERTS SOLUTION (E-CRES)</h4>
+                <h4 style="text-align:center">COMESA IMPORT/EXPORT SYSTEM (cIMEX)</h4>
             </div>
 
         </div>

@@ -170,11 +170,11 @@ export class ServiceAdmnistrationService {
   }
 
   
-  getAppUserGroupNavigationMenus(user_group_id) {
+  getAppUserGroupNavigationMenus(user_group_id, account_type_id) {
     
     this.system = {
       headers: { 'Accept': 'application/json' },
-      params:{user_group_id:user_group_id}
+      params:{user_group_id:user_group_id, account_type_id:account_type_id}
     };
 
     return this.HttpClient.get(this.baseUrl + '/getAppUserGroupNavigationMenus', this.system)

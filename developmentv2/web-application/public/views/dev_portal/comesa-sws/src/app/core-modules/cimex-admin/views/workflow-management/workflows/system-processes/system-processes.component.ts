@@ -65,7 +65,7 @@ export class SystemProcessesComponent {
       public workflowService: WokflowManagementService,
       public reportingAnalytics: ReportsService,
     ) {
-      this.table_name = 'wkf_processes';
+      this.table_name = 'wf_processes';
       this.parameter_name = "system_processes";
       this.checkScreenSize();
        
@@ -273,7 +273,7 @@ export class SystemProcessesComponent {
   }
   onloadworkflowData() {
     var data_submit = {
-      'table_name': 'wkf_workflows',
+      'table_name': 'wf_workflows',
     }
     this.workflowService.getWorkflowConfigs(data_submit)
       .subscribe(
