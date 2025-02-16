@@ -147,6 +147,103 @@ class PublicInfoManagementController extends Controller
     return response()->json($res, 200);
 }
 
+public function onLoadProcedureDetails(Request $req)
+{
+    try {
+        // $process_id = 2;
+        // Correct variable names
+        $procedure_keywordsearch = $req->procedure_keywordsearch;
+        $procedure_subcategories = $req->procedure_subcategories;
+        $procedure_categories = $req->procedure_categories;
+        $hscodessubheading = $req->hscodessubheading;
+        // Initialize the query builder
+        $procedure_data = array();
+        $table_name = 'tra_importexport_proceduredetails';
+        
+        $sql = DB::table($table_name . ' as t1')
+            // ->leftJoin('usr_users_information as t2', 't1.user_information_id', 't2.id')
+            ->leftJoin('par_procedures_categories as t3', 't1.procedures_category_id', 't3.id')
+            ->leftJoin('par_procedures_subcategories as t4', 't1.procedures_subcategory_id', 't4.id')
+            ->leftJoin('par_hscodechapters_defination as t5', 't1.hscodechapters_defination_id', 't5.id')
+            ->leftJoin('par_hscodesheading_definations as t6', 't1.hscodesheading_defination_id', 't6.id')
+            ->leftJoin('par_hscodessubheading_defination as t7', 't1.hscodessubheading_defination_id', 't7.id')
+            ->leftJoin('par_oga_information as t8', 't1.organisation_id', 't8.id')
+            ->select(
+                't1.*',
+                't6.name as hscodesheading', 
+                't5.name as hscodechapters',  
+                't3.name as procedure_categories', 
+                't3.description as procedure_category_description',
+                't4.name as procedure_subcategories',
+                't4.description as procedure_subcategory_description',
+                't7.name as hscodessubheading',
+                't8.name as organisation'
+            );
+            // ->where('allow_public_visibility', true);
+
+        // Check if any filter is provided and apply necessary conditions
+        if (!empty($hscodessubheading) || !empty($procedure_keywordsearch) || !empty($procedure_subcategories) || !empty($procedure_categories)) {
+            
+            // Keyword search: first name, other names, or surname
+            if (!empty($procedure_keywordsearch)) {
+                $sql->where(function($query) use ($procedure_keywordsearch) {
+                    $query->where('t1.procedures_category_id', 'like', "%$procedure_keywordsearch%")
+                          ->orWhere('t1.procedures_subcategory_id', 'like', "%$procedure_keywordsearch%")
+                          ->orWhere('t1.hscodechapters_defination_id', 'like', "%$procedure_keywordsearch%");
+                });
+            }
+
+            // Institution type filtering (if numeric)
+            if (is_numeric($procedure_categories)) {
+                $sql->where('t1.procedures_category_id', $procedure_categories);
+            }
+
+            // Regulatory function filtering (if numeric)
+            if (is_numeric($procedure_subcategories)) {
+                $sql->where('t3.id', $procedure_subcategories);
+            }
+
+            // Country filtering (if numeric)
+            if (is_numeric($hscodessubheading)) {
+                $sql->where('t1.hscodessubheading_defination_id', $hscodessubheading);
+            }
+        }
+        $data = $sql->get();
+
+        // Loop through each record and build the response array
+        foreach ($data as $rec) {
+            $procedure_data[] = array(
+                'id' => $rec->id,
+                'procedures_category_id' => $rec->procedures_category_id,
+                'procedures_subcategory_id' => $rec->procedures_subcategory_id,
+                'hscodechapters_defination_id' => $rec->hscodechapters_defination_id,
+                'hscodesheading_defination_id' => $rec->hscodesheading_defination_id,
+                'hscodessubheading_defination_id' => $rec->hscodessubheading_defination_id,
+                'organisation_id' => $rec->organisation_id,
+                'procedure_description' => $rec->procedure_description,
+                'procedure_accesslink' => $rec->procedure_accesslink,
+
+                'hscodesheading' => $rec->hscodesheading,
+                'hscodechapters' => $rec->hscodechapters,
+                'procedure_categories' => $rec->procedure_categories,
+                'procedure_subcategories' => $rec->procedure_subcategories,
+                'hscodessubheading' => $rec->hscodessubheading,
+                'organisation' => $rec->organisation,
+                'procedure_category_description' => $rec->procedure_category_description,
+                'procedure_subcategory_description' => $rec->procedure_subcategory_description,
+            );
+        }
+        // $user_data=encrypt_data($procedure_data);
+        $res = array('success' => true, 'data' => $procedure_data);
+
+    } catch (\Exception $exception) {
+        $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+    } catch (\Throwable $throwable) {
+        $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+    }
+    return response()->json($res, 200);
+}
+
   public function onGetExpertsProfileInformation(Request $req)
     {
         try {

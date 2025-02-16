@@ -306,7 +306,7 @@ input[type=email] {
   background-size: contain;
 }
 .div-imagelogo {
-  background: #fff url("../src/assets/dist/img/logo.jpg") no-repeat left top;
+  background: #fff url("../src/assets/dist/img/logo.png") no-repeat left top;
   background-size: contain;
   width: 250px !important;
   height: 60px !important;
@@ -593,11 +593,7 @@ form .ng-valid {
     
   } */
 
-/* .eac-logo{
-    background:url(images/eac-logo.jpg) no-repeat left top;
-    height:auto !important;
-    width: auto !important;
-  } */ 
+
 .dx-overlay-content,
 .dx-popup-normal,
 .dx-resizable {

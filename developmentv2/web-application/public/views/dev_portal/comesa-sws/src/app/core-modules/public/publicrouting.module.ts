@@ -16,6 +16,7 @@ import { ProducthscodeInformationComponent } from './views/producthscode-informa
 import { ImportexportsCostsComponent } from './views/importexports-costs/importexports-costs.component';
 import { RestrictionsprohibitsComponent } from './views/restrictionsprohibits/restrictionsprohibits.component';
 import { FaqsComponent } from './views/faqs/faqs.component';
+import { SearchProceduresComponent } from './views/search-procedures/search-procedures.component';
 
 const routes: Routes = [{
     path: '',
@@ -71,9 +72,12 @@ const routes: Routes = [{
     },{
       path: 'faqs',
       component: FaqsComponent
+    }, {
+      path: 'search-procedures',
+      component: SearchProceduresComponent
     }
     
-    ]
+    ] 
   }
 ]
 

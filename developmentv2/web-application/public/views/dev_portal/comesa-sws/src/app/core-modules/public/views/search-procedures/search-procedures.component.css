@@ -1,0 +1,15 @@
+.container {
+    max-width: 900px;
+  }
+  
+  .accordion-button {
+    background-color: #f7f8fa;
+    color: #6e513f;
+    font-weight: bold;
+  }
+  
+  .accordion-body {
+    background-color: #f7f8fa;
+    padding: 15px;
+  }
+  

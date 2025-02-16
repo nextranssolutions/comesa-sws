@@ -31,4 +31,5 @@ Route::middleware(['XssSanitizer','clear_cache_config','firewall.all'])->prefix(
     Route::get('onLoadPublicInfoConfig', [PublicInfoManagementController::class, 'onLoadPublicInfoConfig']);
     Route::get('onLoadPublicApprovedExpressionofInterests', [PublicInfoManagementController::class, 'onLoadPublicApprovedExpressionofInterests']);
     Route::get('onLoadApprovedEOISummaryData', [PublicInfoManagementController::class, 'onLoadApprovedEOISummaryData']);
+    Route::get('onLoadProcedureDetails', [PublicInfoManagementController::class, 'onLoadProcedureDetails']);
 });
