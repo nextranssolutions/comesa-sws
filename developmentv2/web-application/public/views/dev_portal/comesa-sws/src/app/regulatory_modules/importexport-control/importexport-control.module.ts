@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { SharedModuleModule } from 'src/app/shared-views/shared-module.module';
 import { ImportexportRoutingModule } from './importexport-routing.module';
 import { ImportexportNavigationComponent } from './views/layout/importexport-navigation/importexport-navigation.component';
 import { ImportexportLayoutComponent } from './views/layout/importexport-layout/importexport-layout.component';
@@ -19,7 +18,8 @@ import { InitiateImportappComponent } from './views/import-license/initiate-impo
 import { PermitgeneraldetailsComponent } from './views/impexpdata_entry/permitgeneraldetails/permitgeneraldetails.component';
 // import { SharedImpexpApplicationClass } from './views/shared-impexpapplicationclass/shared-impexpapplicationclass';
 import { NgWizardConfig, NgWizardModule, THEME } from 'ng-wizard'
-import { SafePipeModule } from 'src/app/safe-pipe/safe-pipe.module';
+import { SafePipeModule } from '../../safe-pipe/safe-pipe.module';
+import { SharedModuleModule } from '../../shared-views/shared-module.module';
 
 const ngWizardConfig: NgWizardConfig = {
   theme: THEME.default
@@ -60,7 +60,7 @@ const ngWizardConfig: NgWizardConfig = {
     DxHtmlEditorModule,
     DxDropDownBoxModule, DxTagBoxModule,
     DxRadioGroupModule,
-    SafePipeModule,
+    SafePipeModule
   ]
 })
 export class ImportexportControlModule { }

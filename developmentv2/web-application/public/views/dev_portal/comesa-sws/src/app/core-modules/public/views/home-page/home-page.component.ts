@@ -102,7 +102,7 @@ export class HomePageComponent {
 
     // this.onLoadcountriesData();
     this.onLoadregulatoryFunctionData();
-    // this.onLoadSlides_information();
+    this.onLoadSlides_information();
     this.onLoadSearchCriteriaData();
     this.onLoadOperationTypeData();
     this.onLoadProductData();

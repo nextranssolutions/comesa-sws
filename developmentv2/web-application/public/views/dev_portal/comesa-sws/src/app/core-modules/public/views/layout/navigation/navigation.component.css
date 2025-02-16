@@ -1,4 +1,6 @@
-
+.navbar .navbar-nav > li{
+  border: 0px !important;
+}
 
 .navbar-light {
     background-color: #ffffff !important;
@@ -585,7 +587,7 @@
   }
   
   .navbar-dark .navbar-nav .nav-link.disabled {
-    color: rgba(255, 255, 255, 0.25)
+    color: #fff
   }
   
   .navbar-dark .navbar-nav .show>.nav-link,
@@ -733,3 +735,22 @@
     width: 100%
   }
   
+
+  .navbar .navbar-nav > li > a {
+    padding-top: 15px !important;;
+    padding-bottom: 11px;
+    height: 55px !important;;
+    background-color: transparent;
+    font-size: 18px !important;
+    font-weight: normal !important;
+    color: #FFF;
+    text-shadow: 0 !important;
+  }
+
+  .navbar .navbar-nav > li.open > a, .navbar .navbar-nav > li > a:focus, .navbar .navbar-nav > li > a:hover {
+    background-color: rgba(0, 0, 0, .1) !important;
+    color: #FFF !important;
+    cursor: pointer !important;
+    
+    text-decoration: none  !important;
+  }
