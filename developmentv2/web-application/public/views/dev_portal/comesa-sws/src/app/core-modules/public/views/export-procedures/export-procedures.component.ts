@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
 import { SpinnerVisibilityService } from 'ng-http-loader';
 import { ToastrService } from 'ngx-toastr';
+import { PublicDashboardService } from 'src/app/core-services/public-dashboard/public-dashboard.service';
 import { ReportsService } from 'src/app/core-services/reports/reports.service';
 import { UtilityService } from 'src/app/core-services/utilities/utility.service';
 
@@ -18,7 +19,8 @@ export class ExportProceduresComponent {
   spinnerMessage: string;
   loadingVisible: boolean;
   exportProcedureData: any[] = [];
-
+  data_record: any;
+  operation_type_id: number = 2; // default operation type id for export
 
   constructor(
     private spinner: SpinnerVisibilityService,
@@ -26,7 +28,7 @@ export class ExportProceduresComponent {
     public toastr: ToastrService,
     public viewRef: ViewContainerRef,
     public utilityService: UtilityService,
-
+    public publicservice: PublicDashboardService,
     public reportingAnalytics: ReportsService,
 
   ) {
@@ -34,13 +36,30 @@ export class ExportProceduresComponent {
   }
 
   ngOnInit() {
-    this.onLoadExportProcedureData()
+    this.onLoadExportProcedureData(this.operation_type_id)
   }
 
 
+  onLoadExportProcedureData(operation_type_id) {
+    this.spinnerShow('Loading...........');
 
-  onLoadExportProcedureData(){
-    
+    var data_submit = {
+      table_name: 'tra_importexport_proceduredetails',
+      operation_type_id: operation_type_id
+    }
+    this.publicservice.onLoadInformationSharingDataUrl(data_submit, 'onLoadProcedureDetails')
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.exportProcedureData = this.data_record.data;
+          }
+          this.spinnerHide();
+        },
+        error => {
+
+          this.spinnerHide();
+        });
   }
   onExporting(e: DxDataGridTypes.ExportingEvent) {
 

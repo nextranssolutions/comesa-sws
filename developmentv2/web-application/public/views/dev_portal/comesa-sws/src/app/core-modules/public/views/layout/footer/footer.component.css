@@ -1,11 +1,11 @@
 .facts .container {
-    padding-top: 1rem;
-    padding-bottom: 1rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
 }
 
 .facts .row {
-    margin-top: 0;
-    margin-bottom: 0;
+  margin-top: 0;
+  margin-bottom: 0;
 }
 
 .img-fluid {
@@ -14,5 +14,3 @@
   height: auto;
   /* margin-left: 1%; */
 }
-
-

@@ -40,8 +40,8 @@ import { SearchProceduresComponent } from './views/search-procedures/search-proc
     CenterPageComponent,
 
     SystemmanualPageComponent, EcredSecretariatsigninComponent, EcredSecretariatsigninComponent,
-    
-    ReportingAndAnalyticsComponent, 
+
+    ReportingAndAnalyticsComponent,
     KnowledgeCenterComponent,
     AppsignUpComponent,
     SubscriptionComponent,
@@ -51,7 +51,7 @@ import { SearchProceduresComponent } from './views/search-procedures/search-proc
     ProducthscodeInformationComponent,
     ImportexportsCostsComponent,
     RestrictionsprohibitsComponent,
-    FaqsComponent,SearchProceduresComponent
+    FaqsComponent, SearchProceduresComponent
   ],
   imports: [
     CommonModule, NgHttpLoaderModule, PublicRoutingModule, DxButtonModule, DxProgressBarModule,
@@ -63,7 +63,7 @@ import { SearchProceduresComponent } from './views/search-procedures/search-proc
     DxTextBoxModule,
     DxDateBoxModule, DxDataGridModule,
     HttpClientModule, DxValidatorModule,
-    NgxIntlTelInputModule,DxToolbarModule,
+    NgxIntlTelInputModule, DxToolbarModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

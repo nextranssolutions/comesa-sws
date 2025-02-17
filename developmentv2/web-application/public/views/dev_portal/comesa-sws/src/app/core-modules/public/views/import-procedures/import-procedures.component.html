@@ -24,12 +24,21 @@
 
             <dxi-column dataField="id" caption="{{'id' | translate}}" [visible]="false"></dxi-column>
 
-            <dxi-column dataField="title" caption="{{'title' | translate}}"></dxi-column>
+            <dxi-column dataField="hscodechapters" caption="{{'hscodechapters' | translate}}"></dxi-column>
 
-            <dxi-column dataField="description" caption="{{'description' | translate}}"></dxi-column>
+            <dxi-column dataField="hscodesheading" caption="{{'hscodesheading' | translate}}"></dxi-column>
+
+            <dxi-column dataField="hscodessubheading" caption="{{'hscodessubheading' | translate}}"></dxi-column>
+            <dxi-column dataField="procedure_categories" caption="{{'procedure_categories' | translate}}"></dxi-column>
+
+            <dxi-column dataField="procedure_subcategories"
+                caption="{{'procedure_subcategories' | translate}}"></dxi-column>
 
 
-            <dxi-column dataField="category" caption="{{'category' | translate}}"></dxi-column>
+            <dxi-column dataField="procedure_description"
+                caption="{{'procedure_description' | translate}}"></dxi-column>
+
+            <dxi-column dataField="organisation" caption="{{'organisation' | translate}}"></dxi-column>
 
             <dxo-paging [pageSize]="200"></dxo-paging>
         </dx-data-grid>

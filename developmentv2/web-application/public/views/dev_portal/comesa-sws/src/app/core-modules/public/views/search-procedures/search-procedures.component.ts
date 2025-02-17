@@ -8,7 +8,7 @@ import { PublicDashboardService } from 'src/app/core-services/public-dashboard/p
   templateUrl: './search-procedures.component.html',
   styleUrl: './search-procedures.component.css'
 })
-export class SearchProceduresComponent implements OnInit{
+export class SearchProceduresComponent implements OnInit {
   data_record: any;
   operationTypeId: any;
   procedures: any[] = [];
@@ -24,7 +24,7 @@ export class SearchProceduresComponent implements OnInit{
     private route: ActivatedRoute,
     public configService: ConfigurationsService,
     public publicservice: PublicDashboardService
-  ) {}
+  ) { }
 
   ngOnInit() {
     // Get parameters from the route
@@ -41,13 +41,13 @@ export class SearchProceduresComponent implements OnInit{
   // onLoadProcedureData() {
   //   var data_submit = {
   //     table_name: 'tra_importexport_proceduredetails',
-      
+
   //   };
   //   this.configService.onLoadConfigurationData(data_submit).subscribe(
   //     (data) => {
   //       this.data_record = data;
   //       if (this.data_record.success) {
-       
+
   //         this.procedureData = this.data_record.data;
   //       }
   //     },
@@ -71,14 +71,14 @@ export class SearchProceduresComponent implements OnInit{
   //         this.spinnerHide();
   //       },
   //       error => {
-          
+
   //         this.spinnerHide();
   //       });
   // }
 
   onLoadProcedureData() {
     const data_submit = { table_name: 'tra_importexport_proceduredetails' };
-    
+
     this.publicservice.onLoadInformationSharingDataUrl(data_submit, 'onLoadProcedureDetails')
       .subscribe(
         data => {
@@ -106,12 +106,5 @@ export class SearchProceduresComponent implements OnInit{
   spinnerHide() {
     this.loadingVisible = false;
   }
-  loadProcedures() {
-    // Mock procedure data (replace with API call)
-    this.procedures = [
-      { id: 1, title: 'Procedure 1', description: 'Step-by-step guide for procedure 1.' },
-      { id: 2, title: 'Procedure 2', description: 'Step-by-step guide for procedure 2.' },
-      { id: 3, title: 'Procedure 3', description: 'Step-by-step guide for procedure 3.' }
-    ];
-  }
+
 }

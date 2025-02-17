@@ -19,66 +19,66 @@ import { FaqsComponent } from './views/faqs/faqs.component';
 import { SearchProceduresComponent } from './views/search-procedures/search-procedures.component';
 
 const routes: Routes = [{
+  path: '',
+  component: PublicLayoutComponent,
+  children: [{
     path: '',
-    component: PublicLayoutComponent,
-    children: [{
-      path: '',
-      component: HomePageComponent
-    }, {
-      path: 'index',
-      component: HomePageComponent
-    }, {
-      path: 'system-manual',
-      component: SystemmanualPageComponent
-    },{
-      path: 'knowledge-center',
-      component: KnowledgeCenterComponent
-    }, {
-      path: 'reporting-and-analytics',
-      component: ReportingAndAnalyticsComponent
-    }, {
-      path: 'amrh-secretariate',
-      component: EcredSecretariatsigninComponent
-    },{
-      path: 'sign-up',
-      component: AppsignUpComponent
-    }, {
-      path: 'sign-in',
-      component: AppsignInComponent
-    }, {
-      path: 'sign-up',
-      component: AppsignUpComponent
-    }, {
-      path: 'user-subscription',
-      component: SubscriptionComponent
-    },{
-      path: 'import_procedures',
-      component: ImportProceduresComponent
-    },{
-      path: 'transit_procedures',
-      component: TransitProceduresComponent
-    },{
-      path: 'export_procedures',
-      component: ExportProceduresComponent
-    },{
-      path: 'producthscodes_info',
-      component: ProducthscodeInformationComponent
-    },{
-      path: 'costs_associatedwith_importexport',
-      component: ImportexportsCostsComponent
-    },{
-      path: 'trader_restrictionsprohibits',
-      component: RestrictionsprohibitsComponent
-    },{
-      path: 'faqs',
-      component: FaqsComponent
-    }, {
-      path: 'search-procedures',
-      component: SearchProceduresComponent
-    }
-    
-    ] 
+    component: HomePageComponent
+  }, {
+    path: 'index',
+    component: HomePageComponent
+  }, {
+    path: 'system-manual',
+    component: SystemmanualPageComponent
+  }, {
+    path: 'knowledge-center',
+    component: KnowledgeCenterComponent
+  }, {
+    path: 'reporting-and-analytics',
+    component: ReportingAndAnalyticsComponent
+  }, {
+    path: 'amrh-secretariate',
+    component: EcredSecretariatsigninComponent
+  }, {
+    path: 'sign-up',
+    component: AppsignUpComponent
+  }, {
+    path: 'sign-in',
+    component: AppsignInComponent
+  }, {
+    path: 'sign-up',
+    component: AppsignUpComponent
+  }, {
+    path: 'user-subscription',
+    component: SubscriptionComponent
+  }, {
+    path: 'import_procedures',
+    component: ImportProceduresComponent
+  }, {
+    path: 'transit_procedures',
+    component: TransitProceduresComponent
+  }, {
+    path: 'export_procedures',
+    component: ExportProceduresComponent
+  }, {
+    path: 'producthscodes_info',
+    component: ProducthscodeInformationComponent
+  }, {
+    path: 'costs_associatedwith_importexport',
+    component: ImportexportsCostsComponent
+  }, {
+    path: 'trader_restrictionsprohibits',
+    component: RestrictionsprohibitsComponent
+  }, {
+    path: 'faqs',
+    component: FaqsComponent
+  }, {
+    path: 'search-procedures',
+    component: SearchProceduresComponent
   }
+
+  ]
+}
 ]
 
 @NgModule({

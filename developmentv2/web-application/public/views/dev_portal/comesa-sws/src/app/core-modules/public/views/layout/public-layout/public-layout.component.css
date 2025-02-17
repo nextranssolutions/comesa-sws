@@ -53,12 +53,13 @@ html {
 
 app-footer {
   margin-top: auto;
-  position: relative; /* Keeps footer in normal flow */
+  position: relative;
+  /* Keeps footer in normal flow */
   bottom: 0;
 }
 
 .main-container {
   display: flex;
   flex-direction: column;
-  min-height: 100vh; 
+  min-height: 100vh;
 }
