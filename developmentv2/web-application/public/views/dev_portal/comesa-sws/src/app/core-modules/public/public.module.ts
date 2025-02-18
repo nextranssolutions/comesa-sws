@@ -30,6 +30,7 @@ import { ProducthscodeInformationComponent } from './views/producthscode-informa
 import { ImportexportsCostsComponent } from './views/importexports-costs/importexports-costs.component';
 import { RestrictionsprohibitsComponent } from './views/restrictionsprohibits/restrictionsprohibits.component';
 import { FaqsComponent } from './views/faqs/faqs.component';
+import { SearchProceduresComponent } from './views/search-procedures/search-procedures.component';
 
 @NgModule({
   declarations: [TopSectionComponent,
@@ -39,8 +40,8 @@ import { FaqsComponent } from './views/faqs/faqs.component';
     CenterPageComponent,
 
     SystemmanualPageComponent, EcredSecretariatsigninComponent, EcredSecretariatsigninComponent,
-    
-    ReportingAndAnalyticsComponent, 
+
+    ReportingAndAnalyticsComponent,
     KnowledgeCenterComponent,
     AppsignUpComponent,
     SubscriptionComponent,
@@ -50,7 +51,7 @@ import { FaqsComponent } from './views/faqs/faqs.component';
     ProducthscodeInformationComponent,
     ImportexportsCostsComponent,
     RestrictionsprohibitsComponent,
-    FaqsComponent
+    FaqsComponent, SearchProceduresComponent
   ],
   imports: [
     CommonModule, NgHttpLoaderModule, PublicRoutingModule, DxButtonModule, DxProgressBarModule,
@@ -62,7 +63,7 @@ import { FaqsComponent } from './views/faqs/faqs.component';
     DxTextBoxModule,
     DxDateBoxModule, DxDataGridModule,
     HttpClientModule, DxValidatorModule,
-    NgxIntlTelInputModule,DxToolbarModule,
+    NgxIntlTelInputModule, DxToolbarModule,
     TranslateModule.forRoot({
       loader: {
         provide: TranslateLoader,

@@ -8,23 +8,29 @@ html, body {
   font-family: 'Nunito Sans',sans-serif;
  
 }
-/*
- 
-  margin: 0;
-  font-size: 15px;
-  margin: 0;
-  padding: 0;
-  background-color: #DDD !important;
-  color: #333;
-  line-height: 1.6;
-  /*background: url("../src/assets/dist/img/hero4.jpg") no-repeat left top;*
-  height: 100vh;
-  margin: 0;
-  justify-content: center;
-  align-items: center;
 
-*/
 
+
+
+.infobox-small {
+  width: 33%  !important;
+  height: 80px !important;
+  text-align: left  !important;
+  padding-bottom: 5px  !important;
+  padding-top: 15px  !important;
+}
+.infobox-small > .infobox-data {
+  display: inline-block;
+  text-align: left;
+  vertical-align: middle;
+  max-width: 202px !important;
+  font-size: 15px !important;
+  border-left: 1px solid #fff !important;
+  min-width: 0;
+}
+.navbar .navbar-nav > li > a {
+  text-shadow: 0 1px 0 rgba(0, 0, 0, .0) !important;
+}
 .no-skin .sidebar {
   background-color: #F2F2F2 !important;
   border-style: solid !important;
@@ -47,8 +53,10 @@ html, body {
   color: #2679B5 !important;
 }
 .div-bottompanelguide{
-  border-right: 1px solid #fff;
-
+  border-right: 1px solid #fff !important;
+  font-weight: bold !important;
+  font-size: 18px !important;
+  background-color: #033721 !important;
 }
 .system-title {
   font-size: 28px;
@@ -109,23 +117,20 @@ html, body {
   min-height: 100vh !important;
 }
 .div-home{
-  min-height: 40vh !important;
+  min-height: 20vh !important;
 }
-widget
+
 .carousel-inner {
-  height: 65vh !important;
+  min-height: 40vh !important;
 }
 .carousel-item {
   margin-top:2vh;
-  height: 80vh;
+  min-height: 40vh;
   display: flex;
   align-items: center;
   justify-content: center;
   background-color: #f8f9fa;
   color: #000;
-}
-.carousel-item {
-  height: 50vh;
 }
 
 /* Ensure image covers the card and the carousel item */
@@ -301,7 +306,7 @@ input[type=email] {
   background-size: contain;
 }
 .div-imagelogo {
-  background: #fff url("../src/assets/dist/img/logo.jpg") no-repeat left top;
+  background: #fff url("../src/assets/dist/img/logo.png") no-repeat left top;
   background-size: contain;
   width: 250px !important;
   height: 60px !important;
@@ -588,11 +593,7 @@ form .ng-valid {
     
   } */
 
-/* .eac-logo{
-    background:url(images/eac-logo.jpg) no-repeat left top;
-    height:auto !important;
-    width: auto !important;
-  } */ 
+
 .dx-overlay-content,
 .dx-popup-normal,
 .dx-resizable {
@@ -6478,4 +6479,24 @@ fieldset:disabled .btn {
 .px-0 {
   padding-right: 0 !important;
   padding-left: 0 !important
+}
+
+.dx-texteditor.dx-editor-filled .dx-lookup-field, .dx-texteditor.dx-editor-filled .dx-placeholder::before, .dx-texteditor.dx-editor-filled .dx-texteditor-input, .dx-texteditor.dx-editor-outlined .dx-lookup-field, .dx-texteditor.dx-editor-outlined .dx-placeholder::before, .dx-texteditor.dx-editor-outlined .dx-texteditor-input {
+  padding: 15px 15px !important;
+}
+
+
+.dx-textbox .dx-texteditor-input, 
+.dx-datebox .dx-texteditor-input, 
+.dx-numberbox .dx-texteditor-input {
+  border-radius: 0px !important;
+  margin-top: 5px !important;
+  margin-bottom: 5px !important;
+}
+
+/* Optional: Ensure the entire input container aligns properly */
+.dx-textbox, .dx-datebox, .dx-numberbox {
+  border-radius: 0px !important;
+  margin-top: 5px !important;
+  margin-bottom: 5px !important;
 }

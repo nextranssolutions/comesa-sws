@@ -16,13 +16,13 @@ use Modules\PublicInfoManagement\App\Http\Controllers\PublicInfoManagementContro
 */
 
 Route::middleware(['auth:sanctum'])->prefix('v1')->name('api.')->group(function () {
-    Route::get('publicinfomanagement', fn (Request $request) => $request->user())->name('publicinfomanagement');
+    Route::get('publicinfomanagement', fn(Request $request) => $request->user())->name('publicinfomanagement');
 });
 
 
-Route::middleware(['XssSanitizer','clear_cache_config','firewall.all'])->prefix('publicinfomanagement')->group(function () {
+Route::middleware(['XssSanitizer', 'clear_cache_config', 'firewall.all'])->prefix('publicinfomanagement')->group(function () {
     Route::post('onSearchExpertsProfileInformation', [PublicInfoManagementController::class, 'onSearchExpertsProfileInformation']);
-	Route::get('getSystemNavigationItems', [PublicInfoManagementController::class, 'getSystemNavigationItems']);
+    Route::get('getSystemNavigationItems', [PublicInfoManagementController::class, 'getSystemNavigationItems']);
     Route::get('getOrganisationServices', [PublicInfoManagementController::class, 'getOrganisationServices']);
 
     Route::get('onLoadExpertsPublicationManagement', [PublicInfoManagementController::class, 'onLoadExpertsPublicationManagement']);
@@ -30,5 +30,6 @@ Route::middleware(['XssSanitizer','clear_cache_config','firewall.all'])->prefix(
     Route::get('onLoadKnowledgeCenterManagementData', [PublicInfoManagementController::class, 'onLoadKnowledgeCenterManagementData']);
     Route::get('onLoadPublicInfoConfig', [PublicInfoManagementController::class, 'onLoadPublicInfoConfig']);
     Route::get('onLoadPublicApprovedExpressionofInterests', [PublicInfoManagementController::class, 'onLoadPublicApprovedExpressionofInterests']);
-    Route::get('onLoadApprovedEOISummaryData', [PublicInfoManagementController::class, 'onLoadApprovedEOISummaryData']);
+    Route::get('onLoadHSCodesProductsRegistry', [PublicInfoManagementController::class, 'onLoadHSCodesProductsRegistry']);
+    Route::get('onLoadProcedureDetails', [PublicInfoManagementController::class, 'onLoadProcedureDetails']);
 });
