@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HscodeMappingComponent } from './hscode-mapping.component';
+import { HscodeDashboardComponent } from './hscode-dashboard.component';
 
-describe('HscodeMappingComponent', () => {
-  let component: HscodeMappingComponent;
-  let fixture: ComponentFixture<HscodeMappingComponent>;
+describe('HscodeDashboardComponent', () => {
+  let component: HscodeDashboardComponent;
+  let fixture: ComponentFixture<HscodeDashboardComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HscodeMappingComponent]
+      imports: [HscodeDashboardComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(HscodeMappingComponent);
+    fixture = TestBed.createComponent(HscodeDashboardComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

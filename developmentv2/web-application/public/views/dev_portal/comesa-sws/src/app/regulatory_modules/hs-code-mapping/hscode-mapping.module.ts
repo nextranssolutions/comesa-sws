@@ -16,14 +16,25 @@ import { SharedModuleModule } from 'src/app/shared-views/shared-module.module';
 import { httpTranslateLoader } from '../revenue-management/revenue-management.module';
 import { HscodeRoutingModule } from './hscode-routing.module';
 import { RouterModule } from '@angular/router';
-import { HscodeMappingComponent } from './views/hscode-mapping/hscode-mapping.component';
+import { HscodechaptersDefinationComponent } from './views/hscodes-mapping/hscodechapters-defination/hscodechapters-defination.component';
+import { HscodesSectionsComponent } from './views/hscodes-mapping/hscodes-sections/hscodes-sections.component';
+import { HscodesheadingDefinationsComponent } from './views/hscodes-mapping/hscodesheading-definations/hscodesheading-definations.component';
+import { HscodesmappingConfigsetupComponent } from './views/hscodes-mapping/hscodesmapping-configsetup/hscodesmapping-configsetup.component';
+import { HscodesproductsRegistryComponent } from './views/hscodes-mapping/hscodesproducts-registry/hscodesproducts-registry.component';
+import { HscodessubheadingDefinationComponent } from './views/hscodes-mapping/hscodessubheading-defination/hscodessubheading-defination.component';
+import { HscodestariffDetailsComponent } from './views/hscodes-mapping/hscodestariff-details/hscodestariff-details.component';
+import { SharedhscodesConfigurationsComponent } from './views/hscodes-mapping/sharedhscodes-configurations/sharedhscodes-configurations.component';
+import { HscodeDashboardComponent } from './views/hscode-dashboard/hscode-dashboard.component';
+
 
 const ngWizardConfig: NgWizardConfig = {
   theme: THEME.default
 };
 
 @NgModule({
-  declarations: [HscodemappingHeaderComponent, HscodemappingLayoutComponent, HscodemappingNavigationComponent, HscodeMappingComponent],
+  declarations: [HscodemappingHeaderComponent, HscodemappingLayoutComponent, HscodemappingNavigationComponent,HscodechaptersDefinationComponent,
+    HscodesSectionsComponent,HscodesheadingDefinationsComponent,HscodesmappingConfigsetupComponent,HscodesproductsRegistryComponent,
+    HscodessubheadingDefinationComponent,HscodestariffDetailsComponent,SharedhscodesConfigurationsComponent,HscodeDashboardComponent],
   imports: [
      CommonModule,
         SharedModuleModule,HscodeRoutingModule,RouterModule,  
