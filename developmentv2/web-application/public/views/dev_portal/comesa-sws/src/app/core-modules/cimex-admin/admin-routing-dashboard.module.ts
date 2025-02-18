@@ -27,14 +27,11 @@ import { AppProcessworkflowtransitionsComponent } from 'src/app/core-modules/cim
 import { AppProcessworkflowsstagesComponent } from 'src/app/core-modules/cimex-admin/views/workflow-management/workflows/app-processworkflowsstages/app-processworkflowsstages.component';
 import { AppProcessworkflowsComponent } from 'src/app/core-modules/cimex-admin/views/workflow-management/workflows/app-processworkflows/app-processworkflows.component';
 import { AppstageStatusesComponent } from 'src/app/core-modules/cimex-admin/views/workflow-management/workflows/appstage-statuses/appstage-statuses.component';
-import { AppChecklistDefinationComponent } from 'src/app/core-modules/cimex-admin/views/document-checklistsmng/checklist_management/app-checklist-defination/app-checklist-defination.component';
-import { AppChecklistTypesComponent } from 'src/app/core-modules/cimex-admin/views/document-checklistsmng/checklist_management/app-checklist-types/app-checklist-types.component';
-import { AppPerformancescoringScalesComponent } from 'src/app/core-modules/cimex-admin/views/document-checklistsmng/checklist_management/app-performancescoring-scales/app-performancescoring-scales.component';
+
 import { AppSystemlabelsmanagementComponent } from 'src/app/core-modules/cimex-admin/views/language-management/app-systemlabelsmanagement/app-systemlabelsmanagement.component';
 import { AppSystemlanguagesComponent } from 'src/app/core-modules/cimex-admin/views/language-management/app-systemlanguages/app-systemlanguages.component';
 import { AppTranslationmanagementComponent } from 'src/app/core-modules/cimex-admin/views/language-management/app-translationmanagement/app-translationmanagement.component';
-import { NotificationTypesComponent } from 'src/app/core-modules/cimex-admin/views/document-checklistsmng/notification-mng/notification-types/notification-types.component';
-import { EmailTemplatesComponent } from 'src/app/core-modules/cimex-admin/views/document-checklistsmng/notification-mng/email-templates/email-templates.component';
+
 import { UserAccounttypesComponent } from 'src/app/core-modules/cimex-admin/views/system-administration/user-accounttypes/user-accounttypes.component';
 import { SystemDashbordtypesComponent } from 'src/app/core-modules/cimex-admin/views/system-administration/system-dashbordtypes/system-dashbordtypes.component';
 import { InstitutionsTypesComponent } from 'src/app/core-modules/cimex-admin/views/system-administration/institutions-types/institutions-types.component';
@@ -47,7 +44,6 @@ import { AppNationalitiesComponent } from 'src/app/core-modules/cimex-admin/view
 import { AppGenderComponent } from 'src/app/core-modules/cimex-admin/views/configurations/app-gender/app-gender.component';
 import { AppPublicationTypesComponent } from 'src/app/core-modules/cimex-admin/views/configurations/app-publication-types/app-publication-types.component';
 import { AppSubmissionmethodsComponent } from 'src/app/core-modules/cimex-admin/views/configurations/app-submissionmethods/app-submissionmethods.component';
-import { DisclaimerStatementsComponent } from 'src/app/core-modules/cimex-admin/views/configurations/disclaimer-statements/disclaimer-statements.component';
 import { DisclaimerStatementTypesComponent } from 'src/app/core-modules/cimex-admin/views/configurations/disclaimer-statement-types/disclaimer-statement-types.component';
 import { AppApplicationtypesComponent } from 'src/app/core-modules/cimex-admin/views/configurations/app-applicationtypes/app-applicationtypes.component';
 import { AppFirewallipsComponent } from 'src/app/core-modules/cimex-admin/views/configurations/app-firewallips/app-firewallips.component';
@@ -65,12 +61,8 @@ import { SyslogsComponent } from 'src/app/core-modules/cimex-admin/views/syslogs
 import { SystemmanualConfigurationComponent } from 'src/app/core-modules/cimex-admin/views/system-administration/system-guidelines/systemmanual-configuration/systemmanual-configuration.component';
 import { MultilingualConfigurationsComponent } from 'src/app/core-modules/cimex-admin/views/multilingual-configurations/multilingual-configurations.component';
 import { NavigationSetupComponent } from 'src/app/core-modules/cimex-admin/views/workflow-management/navigation/navigation-setup/navigation-setup.component';
-import { WorkflowsSetupComponent } from 'src/app/core-modules/cimex-admin/views/workflow-management/workflows/workflows-setup/workflows-setup.component';
-import { NotificationManagementComponent } from 'src/app/core-modules/cimex-admin/views/document-checklistsmng/notification-mng/notification-management/notification-management.component';
 import { InstitutionsInformationComponent } from 'src/app/core-modules/cimex-admin/views/system-administration/institutions-information/institutions-information.component';
 
-import { NotSlidesInformationsComponent } from 'src/app/core-modules/cimex-admin/views/system-administration/not-slides-informations/not-slides-informations.component';
-import { ChecklistmanagementSetupComponent } from 'src/app/core-modules/cimex-admin/views/document-checklistsmng/checklistmanagement-setup/checklistmanagement-setup.component';
 import { UserSetupComponent } from 'src/app/core-modules/cimex-admin/views/system-administration/user-setup/user-setup.component';
 
 
@@ -123,8 +115,7 @@ import { CtrlDrugstypeComponent } from './views/configurations/controlled-drugs-
 import { ControlleddrugsConfsetupComponent } from './views/configurations/controlled-drugs-configurations/controlleddrugs-confsetup/controlleddrugs-confsetup.component';
 import { SharedCtrldrugsconfigurationComponent } from './views/configurations/controlled-drugs-configurations/shared-ctrldrugsconfiguration/shared-ctrldrugsconfiguration.component';
 import { TraderAccountManagementComponent } from './views/user-management/trader-account-management/trader-account-management.component';
-import { InterfacesComponent } from './views/workflow-management/workflows/interfaces/interfaces.component';
-import { WorkflowsComponent } from './views/workflow-management/workflows/workflows/workflows.component';
+
 import { ImportExportconfsetupComponent } from './views/configurations/import-exportconfigurations/import-exportconfsetup/import-exportconfsetup.component';
 import { PermitReasonsComponent } from './views/configurations/import-exportconfigurations/permit-reasons/permit-reasons.component';
 import { PermittypeCategoriesComponent } from './views/configurations/import-exportconfigurations/permittype-categories/permittype-categories.component';
@@ -135,7 +126,6 @@ import { GmpConfigsetupComponent } from './views/configurations/gmp-configuratio
 import { GmpProductcategoryComponent } from './views/configurations/gmp-configurations/gmp-productcategory/gmp-productcategory.component';
 import { GmpProductlineComponent } from './views/configurations/gmp-configurations/gmp-productline/gmp-productline.component';
 import { SharedGmpconfigurationsComponent } from './views/configurations/gmp-configurations/shared-gmpconfigurations/shared-gmpconfigurations.component';
-import { SystemProcessesComponent } from './views/workflow-management/workflows/system-processes/system-processes.component';
 import { AdvertisementTypesComponent } from './views/configurations/promotional_advertisements_configurations/advertisement-types/advertisement-types.component';
 import { PromotionMaterialsComponent } from './views/configurations/promotional_advertisements_configurations/promotion-materials/promotion-materials.component';
 import { PromotionalAdvertconfigsetupComponent } from './views/configurations/promotional_advertisements_configurations/promotional-advertconfigsetup/promotional-advertconfigsetup.component';
@@ -176,7 +166,6 @@ import { ClinicalinterventionAssignmentComponent } from './views/configurations/
 import { ClinicalmaskingBindingComponent } from './views/configurations/clinical-trialconfigurations/clinicalmasking-binding/clinicalmasking-binding.component';
 import { ClinicalmaskingUsedComponent } from './views/configurations/clinical-trialconfigurations/clinicalmasking-used/clinicalmasking-used.component';
 import { ClinicalnatureControlsComponent } from './views/configurations/clinical-trialconfigurations/clinicalnature-controls/clinicalnature-controls.component';
-import { ClinicaloutcomesTypesComponent } from './views/configurations/clinical-trialconfigurations/clinicaloutcomes-types/clinicaloutcomes-types.component';
 import { ClinicalrecruitStatusesComponent } from './views/configurations/clinical-trialconfigurations/clinicalrecruit-statuses/clinicalrecruit-statuses.component';
 import { ClinicalreportTypesComponent } from './views/configurations/clinical-trialconfigurations/clinicalreport-types/clinicalreport-types.component';
 import { ClinicalsequenceGenerationComponent } from './views/configurations/clinical-trialconfigurations/clinicalsequence-generation/clinicalsequence-generation.component';
@@ -244,21 +233,6 @@ import { AdvertisementChannelComponent } from './views/configurations/promotiona
 import { PrommaterialBookcataloguesComponent } from './views/configurations/promotional_advertisements_configurations/prommaterial-bookcatalogues/prommaterial-bookcatalogues.component';
 import { PromotionadvertChannelsComponent } from './views/configurations/promotional_advertisements_configurations/promotionadvert-channels/promotionadvert-channels.component';
 import { PromotionmaterialCategoriesComponent } from './views/configurations/promotional_advertisements_configurations/promotionmaterial-categories/promotionmaterial-categories.component';
-import { DmsConfigsetupComponent } from './views/document-checklistsmng/document_management/dms-configsetup/dms-configsetup.component';
-import { DmsSitesRepositoryDefinationComponent } from './views/document-checklistsmng/document_management/dms-sites-repository-defination/dms-sites-repository-defination.component';
-import { DocumentExtensionTypesComponent } from './views/document-checklistsmng/document_management/document-extension-types/document-extension-types.component';
-import { DocumentRequirementDefinationComponent } from './views/document-checklistsmng/document_management/document-requirement-defination/document-requirement-defination.component';
-import { DocumentTypesComponent } from './views/document-checklistsmng/document_management/document-types/document-types.component';
-import { NonstructuredDocDefinationComponent } from './views/document-checklistsmng/document_management/nonstructured-doc-defination/nonstructured-doc-defination.component';
-import { SharedDmsComponent } from './views/document-checklistsmng/document_management/shared-dms/shared-dms.component';
-import { HscodechaptersDefinationComponent } from './views/configurations/hscodes-configurations/hscodechapters-defination/hscodechapters-defination.component';
-import { HscodesSectionsComponent } from './views/configurations/hscodes-configurations/hscodes-sections/hscodes-sections.component';
-import { HscodesconfigSetupComponent } from './views/configurations/hscodes-configurations/hscodesconfig-setup/hscodesconfig-setup.component';
-import { HscodesheadingDefinationsComponent } from './views/configurations/hscodes-configurations/hscodesheading-definations/hscodesheading-definations.component';
-import { HscodesproductsRegistryComponent } from './views/configurations/hscodes-configurations/hscodesproducts-registry/hscodesproducts-registry.component';
-import { HscodessubheadingDefinationComponent } from './views/configurations/hscodes-configurations/hscodessubheading-defination/hscodessubheading-defination.component';
-import { HscodestariffDetailsComponent } from './views/configurations/hscodes-configurations/hscodestariff-details/hscodestariff-details.component';
-import { SharedhscodesConfigurationsComponent } from './views/configurations/hscodes-configurations/sharedhscodes-configurations/sharedhscodes-configurations.component';
 import { PermitTypesComponent } from './views/configurations/permittypes-configuration/permit-types/permit-types.component';
 
 //./admin-ecres/app-dashboard
@@ -322,10 +296,7 @@ const routes: Routes = [{
     component: PortalworkflowsComponent
   },
 
-  {
-    path: "app-system-processes",
-    component: SystemProcessesComponent
-  },
+ 
   {
     path: "app-portal-interfaces",
     component: PortalInterfacesComponent
@@ -338,14 +309,8 @@ const routes: Routes = [{
     path: "app-portal-navigation-levels",
     component: PortalNavigationLevelsComponent
   },
-  {
-    path: "app-interfaces",
-    component: InterfacesComponent
-  },
-  {
-    path: "app-workflows",
-    component: WorkflowsComponent
-  },
+ 
+  
   {
     path: "app-portal-navigation-types",
     component: PortalNavigationTypesComponent
@@ -503,16 +468,7 @@ const routes: Routes = [{
   }, {
     path: "app-processworkflows",
     component: AppProcessworkflowsComponent
-  }, {
-    path: "app-performancescoring",
-    component: AppPerformancescoringScalesComponent
-  }, {
-    path: "app-checklisttypes",
-    component: AppChecklistTypesComponent
-  }, {
-    path: "app-checklistdefination",
-    component: AppChecklistDefinationComponent
-  }, {
+  },  {
     path: "app-translationmanagement",
     component: AppTranslationmanagementComponent
   }, {
@@ -521,13 +477,7 @@ const routes: Routes = [{
   }, {
     path: "app-systemlabels",
     component: AppSystemlabelsmanagementComponent
-  }, {
-    path: "app-email-templates",
-    component: EmailTemplatesComponent
-  }, {
-    path: "app-notification-types",
-    component: NotificationTypesComponent
-  }, {
+  },  {
     path: "app-useraccount-types",
     component: UserAccounttypesComponent
   }, {
@@ -569,34 +519,7 @@ const routes: Routes = [{
     path: "disclaimer_statement_types",
     component: DisclaimerStatementTypesComponent
   },
-  {
-    path: "app-shared-dms",
-    component: SharedDmsComponent
-  },
-  {
-    path: "app-nonstructured-doc-defination",
-    component: NonstructuredDocDefinationComponent
-  },
-  {
-    path: "app-document-types",
-    component: DocumentTypesComponent
-  },
-  {
-    path: "app-document-requirement-defination",
-    component: DocumentRequirementDefinationComponent
-  },
-  {
-    path: "app-document-extension-types",
-    component: DocumentExtensionTypesComponent
-  },
-  {
-    path: "app-dms-sites-repository-defination",
-    component: DmsSitesRepositoryDefinationComponent
-  },
-  {
-    path: "app-dms-configsetup",
-    component: DmsConfigsetupComponent
-  },
+  
   {
     path: 'app-applicationtypes',
     component: AppApplicationtypesComponent
@@ -779,38 +702,7 @@ const routes: Routes = [{
     path: 'app-assessment-procedures',
     component: AssessmentProceduresComponent
   },
-  {
-    path: 'app-hscodes-sections',
-    component: HscodesSectionsComponent
-  },
-  {
-    path: 'app-hscodesheading-definations',
-    component: HscodesheadingDefinationsComponent
-  },
-  {
-    path: 'app-hscodesproducts-registry',
-    component: HscodesproductsRegistryComponent
-  },
-  {
-    path: 'app-hscodessubheading-defination',
-    component: HscodessubheadingDefinationComponent
-  },
-  {
-    path: 'app-hscodestariff-details',
-    component: HscodestariffDetailsComponent
-  },
-  {
-    path: 'app-sharedhscodes-configurations',
-    component: SharedhscodesConfigurationsComponent
-  },
-  {
-    path: 'app-hscodechapters-defination',
-    component: HscodechaptersDefinationComponent
-  },
-  {
-    path: 'app-hscodesconfig-setup',
-    component: HscodesconfigSetupComponent
-  },
+  
   {
     path: 'systemmanual-configuration',
     component: SystemmanualConfigurationComponent
@@ -823,16 +715,10 @@ const routes: Routes = [{
   }, {
     path: 'app-navigation-setup',
     component: NavigationSetupComponent
-  }, {
-    path: 'app-workflows-setup',
-    component: WorkflowsSetupComponent
-  }, {
+  },  {
     path: 'app-workflows-setup',
     component: AppWorkflowactiontypesComponent
-  }, {
-    path: 'app-notification-management',
-    component: NotificationManagementComponent
-  },
+  }, 
 
   {
     path: ' app-ref-numberformats',
@@ -858,17 +744,9 @@ const routes: Routes = [{
   {
     path: 'app-institutions-information',
     component: InstitutionsInformationComponent
-  }, {
-
-    path: 'not-slides-informations',
-    component: NotSlidesInformationsComponent
-
   },
 
-  {
-    path: 'app-checklistmanagement-setup',
-    component: ChecklistmanagementSetupComponent
-  }, {
+   {
     path: 'app-workflowstatusesinterfaces',
     component: AppWorkflowstatusesinterfacesComponent
   }

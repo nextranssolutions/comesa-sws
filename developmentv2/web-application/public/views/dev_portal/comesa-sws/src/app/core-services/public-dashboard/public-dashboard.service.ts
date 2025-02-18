@@ -56,7 +56,7 @@ export class PublicDashboardService {
 
   onLoadInformationSharingDataUrl(data, action_url) {
     data.table_name = btoa(data.table_name);
-    data.table_name=this.encryptionService.OnEncryptData(data.table_name)
+    // data.table_name=this.encryptionService.OnEncryptData(data.table_name)
     this.information = {
       params: data,
       headers: { 'Accept': 'application/json' }

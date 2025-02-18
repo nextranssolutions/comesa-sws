@@ -1,8 +1,10 @@
 import { Component, ViewContainerRef } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
 import { SpinnerVisibilityService } from 'ng-http-loader';
 import { ToastrService } from 'ngx-toastr';
+import { ConfigurationsService } from 'src/app/core-services/configurations/configurations.service';
 import { PublicDashboardService } from 'src/app/core-services/public-dashboard/public-dashboard.service';
 import { ReportsService } from 'src/app/core-services/reports/reports.service';
 import { UtilityService } from 'src/app/core-services/utilities/utility.service';
@@ -18,7 +20,23 @@ export class ProducthscodeInformationComponent {
   spinnerMessage: string;
   loadingVisible: boolean;
   productHscodeData: any[] = [];
+  procedureData: any[] = [];
   data_record: any;
+  selectedProduct: string = '';
+  searchQuery: string = '';
+  searchText: string = ''; // Search text
+  filteredProcedureData: any[] = [];
+  hscodeData: any[] = [];
+  iconPosition: any = "top";
+  selectedSubheadingId: number;
+  subheading_definations_id: number;  selectedTabIndex = 0;
+  productChapterData: any;
+  productCategoryData: any;
+  productSubcategoryData: any;
+
+  searchProcedureFrm: FormGroup;
+
+  table_name: string;
 
   constructor(
     private spinner: SpinnerVisibilityService,
@@ -28,13 +46,33 @@ export class ProducthscodeInformationComponent {
     public utilityService: UtilityService,
     public publicservice: PublicDashboardService,
     public reportingAnalytics: ReportsService,
+    private configService: ConfigurationsService,
+
 
   ) {
-
+    this.table_name = 'tra_hscodesproducts_registry'
+    this.searchProcedureFrm = new FormGroup({
+      hscodechapters: new FormControl('', Validators.compose([])),
+      hscodesheading: new FormControl('', Validators.compose([])),
+      hscodessubheading: new FormControl('', Validators.compose([])),
+    });
   }
 
   ngOnInit() {
-    this.onLoadProductHscodeData()
+    this.onLoadProductHscodeData();
+    this.onLoadproductChapterData();
+    this.onLoadproductCategoryData();
+    this.onLoadproductSubCategoryData();
+
+
+    let searchproceduredetails = this.publicservice.getApplicationDetail();
+    if (searchproceduredetails) {
+      this.searchProcedureFrm.patchValue(searchproceduredetails);
+      this.selectedTabIndex = searchproceduredetails.selectedTabIndex;
+      this.onLoadProductHscodeData();
+    }
+    
+    this.onLoadProcedureData();
   }
 
 
@@ -42,7 +80,7 @@ export class ProducthscodeInformationComponent {
     this.spinnerShow('Loading...........');
 
     var data_submit = {
-      table_name: 'tra_hscodesproducts_registry',
+      table_name: this.table_name,
     }
     this.publicservice.onLoadInformationSharingDataUrl(data_submit, 'onLoadHSCodesProductsRegistry')
       .subscribe(
@@ -50,6 +88,7 @@ export class ProducthscodeInformationComponent {
           this.data_record = data;
           if (this.data_record.success) {
             this.productHscodeData = this.data_record.data;
+            this.onLoadHSCodes(this.subheading_definations_id)
           }
           this.spinnerHide();
         },
@@ -59,6 +98,146 @@ export class ProducthscodeInformationComponent {
         });
   }
 
+  onLoadproductChapterData() {
+
+    var data_submit = {
+      'table_name': 'par_hscodechapters_defination'
+    }
+    this.configService.onLoadConfigurationData(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.productChapterData = this.data_record.data;
+          }
+        },
+        error => {
+
+        });
+
+  }
+
+  onLoadproductSubCategoryData() {
+
+    var data_submit = {
+      'table_name': 'par_hscodessubheading_defination'
+    }
+    this.configService.onLoadConfigurationData(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.productSubcategoryData = this.data_record.data;
+          }
+        },
+        error => {
+
+        });
+
+  }
+
+  onLoadproductCategoryData() {
+
+    var data_submit = {
+      'table_name': 'par_hscodesheading_definations'
+    }
+    this.configService.onLoadConfigurationData(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.productCategoryData = this.data_record.data;
+          }
+        },
+        error => {
+
+        });
+
+  }
+
+  funcProcedureClick(e) {
+    //add logic
+    let tab_index = e.itemIndex;
+
+    if (tab_index == 1 || tab_index == 2) {
+
+    }
+  }
+
+
+  onLoadHSCodes(subheading_definations_id) {
+    this.spinnerShow('Loading...........');
+
+    var data_submit = {
+      table_name: 'tra_hscodesproducts_registry',
+      hscodessubheading_defination_id: subheading_definations_id
+    };
+
+    this.publicservice.onLoadInformationSharingDataUrl(data_submit, 'onLoadHSCodesProductsRegistry')
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.hscodeData = this.data_record.data;
+            this.filterHSCodesBySubheading(subheading_definations_id);
+          }
+          this.spinnerHide();
+        },
+        error => {
+          this.spinnerHide();
+        }
+      );
+}
+
+filterHSCodesBySubheading(subheading_definations_id) {
+  // Filter the HS codes based on the selected subheading
+  this.hscodeData = this.hscodeData.filter(hscode => hscode.subheading_definations_id === subheading_definations_id);
+}
+
+
+  // onLoadProcedureData() {
+  //   const data_submit = { table_name: 'tra_importexport_proceduredetails' };
+
+  //   this.publicservice.onLoadInformationSharingDataUrl(data_submit, 'onLoadProcedureDetails')
+  //     .subscribe(
+  //       data => {
+  //         if (data.success) {
+  //           this.procedureData = data.data;
+  //           this.filteredProcedureData = [...this.procedureData]; // Initialize filtered data
+  //         }
+  //       },
+  //       error => {
+  //         console.error('Error loading procedures:', error);
+  //       }
+  //     );
+  // }
+
+  // onSearch() {
+  //   this.filteredProcedureData = this.procedureData.filter(procedure =>
+  //     procedure.procedure_categories.toLowerCase().includes(this.searchText.toLowerCase()) ||
+  //     procedure.procedure_description.toLowerCase().includes(this.searchText.toLowerCase())
+  //   );
+  // }
+  onLoadProcedureData() {
+    const data_submit = { table_name: 'tra_importexport_proceduredetails' };
+  
+    this.publicservice.onLoadInformationSharingDataUrl(data_submit, 'onLoadProcedureDetails')
+      .subscribe(
+        data => {
+          if (data.success) {
+            this.procedureData = data.data;
+            
+            // Filter procedures based on the selected subheading_definations_id
+            this.filteredProcedureData = this.procedureData.filter(procedure =>
+              procedure.subheading_definations_id === this.selectedSubheadingId
+            );
+          }
+        },
+        error => {
+          console.error('Error loading procedures:', error);
+        }
+      );
+  }
 
   onExporting(e: DxDataGridTypes.ExportingEvent) {
 

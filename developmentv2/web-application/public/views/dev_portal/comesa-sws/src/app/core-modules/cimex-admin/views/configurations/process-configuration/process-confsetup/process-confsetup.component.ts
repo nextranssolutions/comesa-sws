@@ -20,9 +20,7 @@ export class ProcessConfsetupComponent {
   screenWidth: any;
 
   constructor(){
-    this.checkScreenSize();
-
-    
+    this.checkScreenSize(); 
   }
   ngOnInit(){
     

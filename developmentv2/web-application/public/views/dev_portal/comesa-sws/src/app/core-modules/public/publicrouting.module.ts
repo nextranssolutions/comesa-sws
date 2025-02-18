@@ -17,6 +17,7 @@ import { ImportexportsCostsComponent } from './views/importexports-costs/importe
 import { RestrictionsprohibitsComponent } from './views/restrictionsprohibits/restrictionsprohibits.component';
 import { FaqsComponent } from './views/faqs/faqs.component';
 import { SearchProceduresComponent } from './views/search-procedures/search-procedures.component';
+import { AllProceduresComponent } from './views/all-procedures/all-procedures.component';
 
 const routes: Routes = [{
   path: '',
@@ -75,8 +76,11 @@ const routes: Routes = [{
   }, {
     path: 'search-procedures',
     component: SearchProceduresComponent
+  }, {
+    path: 'all-procedures',
+    component: AllProceduresComponent
   }
-
+  // 
   ]
 }
 ]
