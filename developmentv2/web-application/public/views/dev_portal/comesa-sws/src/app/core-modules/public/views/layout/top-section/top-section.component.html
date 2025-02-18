@@ -59,8 +59,8 @@
 </div>
 
 
-<dx-popup [(visible)]="isSignupPopupVisible" [showTitle]="true" title="{{ 'create_account' | translate }}" [width]="550"
-  [height]="650" [dragEnabled]="true" [closeOnOutsideClick]="true">
+<dx-popup [(visible)]="isSignupPopupVisible" [showTitle]="true" title="{{ 'applicant_only_account' | translate }}" [width]="550"
+  [height]="650"  [maxHeight]="650"[dragEnabled]="true" [closeOnOutsideClick]="true">
   <dx-form [formGroup]="signUpFrm" (ngSubmit)="submitSignup()" class="futuristic-form">
 
     <dxi-item dataField="{{ 'trader_account_type' | translate }}" editorType="dxTextBox"
