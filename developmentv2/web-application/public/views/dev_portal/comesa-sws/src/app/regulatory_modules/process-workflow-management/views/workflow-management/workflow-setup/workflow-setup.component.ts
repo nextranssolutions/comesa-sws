@@ -2,15 +2,12 @@ import { Component, HostListener } from '@angular/core';
 import { DxTabPanelTypes } from 'devextreme-angular/ui/tab-panel';
 
 @Component({
-  selector: 'app-process-confsetup',
-
-  templateUrl: './process-confsetup.component.html',
-  styleUrl: './process-confsetup.component.css'
+  selector: 'app-workflow-setup',
+  templateUrl: './workflow-setup.component.html',
+  styleUrl: './workflow-setup.component.css'
 })
-export class ProcessConfsetupComponent {
-
-  table_name: string;
-  parameter_name: string = "process_configurations";
+export class WorkflowSetupComponent {
+ parameter_name: string = "workflow_setup"
   tabsPositions: DxTabPanelTypes.Position[] = [
     'left', 'top', 'right', 'bottom',
   ];
@@ -20,10 +17,7 @@ export class ProcessConfsetupComponent {
   screenWidth: any;
 
   constructor(){
-    this.checkScreenSize(); 
-  }
-  ngOnInit(){
-    
+    this.checkScreenSize();
   }
   @HostListener('window:resize', ['$event'])
   onResize(event: Event): void{
@@ -37,8 +31,5 @@ export class ProcessConfsetupComponent {
     }else{
       this.tabsPosition = 'top';
     }
-  }
-  onFuncSaveNavigationData(){
-
   }
 }
