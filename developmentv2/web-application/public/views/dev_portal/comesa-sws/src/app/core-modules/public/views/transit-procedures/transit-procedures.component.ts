@@ -1,8 +1,10 @@
 import { Component, ViewContainerRef } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
 import { SpinnerVisibilityService } from 'ng-http-loader';
 import { ToastrService } from 'ngx-toastr';
+import { ConfigurationsService } from 'src/app/core-services/configurations/configurations.service';
 import { PublicDashboardService } from 'src/app/core-services/public-dashboard/public-dashboard.service';
 import { ReportsService } from 'src/app/core-services/reports/reports.service';
 import { UtilityService } from 'src/app/core-services/utilities/utility.service';
@@ -19,7 +21,14 @@ export class TransitProceduresComponent {
   loadingVisible: boolean;
   transitProcedureData: any[] = [];
   data_record: any;
-  operation_type_id: number = 3; // default operation type id for transit
+  table_name: string;
+  selectedTabIndex = 0;
+  iconPosition: any = 'top';
+  searchProcedureFrm: FormGroup;
+  productChapterData: any;
+  productSubcategoryData: any;
+  productCategoryData: any;
+  operation_type_id: number; // default operation type id for transit
 
   constructor(
     private spinner: SpinnerVisibilityService,
@@ -29,21 +38,39 @@ export class TransitProceduresComponent {
     public utilityService: UtilityService,
     public publicservice: PublicDashboardService,
     public reportingAnalytics: ReportsService,
+    private configService: ConfigurationsService,
 
   ) {
-
+    this.table_name = 'tra_importexport_proceduredetails'
+    this.searchProcedureFrm = new FormGroup({
+      hscodechapters: new FormControl('', Validators.compose([])),
+      hscodesheading: new FormControl('', Validators.compose([])),
+      hscodessubheading: new FormControl('', Validators.compose([])),
+    });
   }
 
   ngOnInit() {
-    this.onLoadTransitProcedureData(this.operation_type_id)
+    this.onLoadTransitProcedureData();
+    this.onLoadproductChapterData();
+    this.onLoadproductCategoryData();
+    this.onLoadproductSubCategoryData();
+    let searchproceduredetails = this.publicservice.getApplicationDetail();
+    if (searchproceduredetails) {
+      this.searchProcedureFrm.patchValue(searchproceduredetails);
+      this.selectedTabIndex = searchproceduredetails.selectedTabIndex;
+      this.onGetFilteredData();
+    }
+    else {
+      this.onGetFilteredData();
+    }
   }
 
-  onLoadTransitProcedureData(operation_type_id) {
+  onLoadTransitProcedureData() {
     this.spinnerShow('Loading...');
   
     const data_submit = {
-      table_name: 'tra_importexport_proceduredetails',
-      operation_type_id: operation_type_id 
+      table_name: this.table_name,
+      'operation_type_id': 3
     };
   
     this.publicservice.onLoadInformationSharingDataUrl(data_submit, 'onLoadProcedureDetails')
@@ -54,9 +81,103 @@ export class TransitProceduresComponent {
             this.transitProcedureData = this.data_record.data;
           }
           this.spinnerHide();
+        }, error => {
+
+          this.spinnerHide();
+        });
+    
+  }
+
+
+  onGetFilteredData() {
+    this.spinnerShow('Loading...');
+  
+    const data_submit = {
+      table_name: this.table_name,
+      
+    };
+  
+    this.publicservice.onLoadInformationSharingDataUrl(data_submit, 'onLoadProcedureDetails')
+      .subscribe(
+        (data) => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.transitProcedureData = this.data_record.data;
+          }
+          this.spinnerHide();
+        }, error => {
+
+          this.spinnerHide();
+        });
+    
+  }
+
+  onLoadproductSubCategoryData() {
+
+    var data_submit = {
+      'table_name': 'par_hscodessubheading_defination'
+    }
+    this.configService.onLoadConfigurationData(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.productSubcategoryData = this.data_record.data;
+          }
         },
-        () => this.spinnerHide()
-      );
+        error => {
+
+        });
+
+  }
+
+  onLoadproductCategoryData() {
+
+    var data_submit = {
+      'table_name': 'par_hscodesheading_definations'
+    }
+    this.configService.onLoadConfigurationData(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.productCategoryData = this.data_record.data;
+          }
+        },
+        error => {
+
+        });
+
+  }
+
+  onLoadproductChapterData() {
+
+    var data_submit = {
+      'table_name': 'par_hscodechapters_defination'
+    }
+    this.configService.onLoadConfigurationData(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.productChapterData = this.data_record.data;
+          }
+        },
+        error => {
+
+        });
+
+  }
+
+
+
+  funcProcedureClick(e) {
+    //add logic
+    let tab_index = e.itemIndex;
+
+    if (tab_index == 1 || tab_index == 2) {
+
+    }
   }
   
   onExporting(e: DxDataGridTypes.ExportingEvent) {

@@ -1,8 +1,6 @@
 <div class="container-fluid row div-home">
     <div class="col-lg-12 border-linemargin">
-        <h6 class="text-start">{{'export_procedures' | translate}}</h6>
-
-
+        <h6 class="text-start">{{'all_procedures' | translate}}</h6>
 
         <form role="form" enctype="multipart/form-data" role="form" [formGroup]="searchProcedureFrm"
             (ngSubmit)="onGetFilteredData()">
@@ -16,14 +14,16 @@
                     <div class="form-group has-search margin-top">
 
                         <dx-select-box [dataSource]="productChapterData" class="form-control"
-                            placeholder="{{'select_product' | translate}}" formControlName="hscodechapters"
-                            [showClearButton]="true" valueExpr="id" [searchEnabled]="true" displayExpr="name">
+                            placeholder="{{'select_product' | translate}}"
+                            formControlName="hscodechapters" [showClearButton]="true" valueExpr="id"
+                            [searchEnabled]="true" displayExpr="name">
                         </dx-select-box>
-
+                       
                     </div>
                     <div class="col-lg-12 btn-searchdetails">
-                        <dx-button text="{{'search_by_product' | translate}}" type="default" icon="fa fa-search"
-                            [elementAttr]="{  class: 'btn-searchdetails' }" (onClick)="onGetFilteredData()">
+                        <dx-button text="{{'search_by_product' | translate}}" type="default"
+                            icon="fa fa-search" [elementAttr]="{  class: 'btn-searchdetails' }"
+                            (onClick)="onGetFilteredData()">
                         </dx-button>
 
                     </div>
@@ -34,10 +34,11 @@
                     <div class="form-group has-search margin-top">
 
                         <dx-select-box [dataSource]="productCategoryData" class="form-control"
-                            placeholder="{{'search_by_product_category' | translate}}" formControlName="hscodesheading"
-                            [showClearButton]="true" valueExpr="id" [searchEnabled]="true" displayExpr="name">
+                            placeholder="{{'search_by_product_category' | translate}}"
+                            formControlName="hscodesheading" [showClearButton]="true" valueExpr="id"
+                            [searchEnabled]="true" displayExpr="name">
                         </dx-select-box>
-
+                       
                     </div>
                     <div class="col-lg-12 btn-searchdetails">
                         <dx-button text="{{'search_by_product_category' | translate}}" type="default"
@@ -57,7 +58,7 @@
                             formControlName="hscodessubheading" [showClearButton]="true" valueExpr="id"
                             [searchEnabled]="true" displayExpr="name">
                         </dx-select-box>
-
+                       
                     </div>
                     <div class="col-lg-12 btn-searchdetails">
                         <dx-button text="{{'search_by_product_subcategory' | translate}}" type="default"
@@ -72,7 +73,7 @@
         </form>
 
         <dx-data-grid (onExporting)="onExporting($event)" (onCellPrepared)="onCellPrepared($event)"
-            class="table row-border hover" [dataSource]="exportProcedureData" [remoteOperations]='true'
+            class="table row-border hover" [dataSource]="transitProcedureData" [remoteOperations]='true'
             [showBorders]="true" [allowColumnResizing]="true" [columnHidingEnabled]="true" [wordWrapEnabled]="true"
             keyExpr="id" (onToolbarPreparing)="onAdvanceSearch($event)">
 
@@ -94,12 +95,11 @@
             <dxi-column dataField="id" caption="{{'id' | translate}}" [visible]="false"></dxi-column>
             <dxi-column [groupIndex]="0" dataField="operation_type" caption="{{ 'operation_type' | translate }}">
             </dxi-column>
-            <dxi-column [groupIndex]="0" dataField="hscodechapters" caption="{{ 'hscodechapters' | translate }}">
+            <dxi-column [groupIndex]="0" dataField="hscodechapters" caption="{{ 'product' | translate }}">
             </dxi-column>
+            <dxi-column dataField="hscodesheading" caption="{{'product_category' | translate}}"></dxi-column>
 
-            <dxi-column dataField="hscodesheading" caption="{{'hscodesheading' | translate}}"></dxi-column>
-
-            <dxi-column dataField="hscodessubheading" caption="{{'hscodessubheading' | translate}}"></dxi-column>
+            <dxi-column dataField="hscodessubheading" caption="{{'product_subcategory' | translate}}"></dxi-column>
             <dxi-column dataField="procedure_categories" caption="{{'procedure_categories' | translate}}"></dxi-column>
 
             <dxi-column dataField="procedure_subcategories"
@@ -110,6 +110,7 @@
                 caption="{{'procedure_description' | translate}}"></dxi-column>
 
             <dxi-column dataField="organisation" caption="{{'organisation' | translate}}"></dxi-column>
+
             <dxo-paging [pageSize]="200"></dxo-paging>
         </dx-data-grid>
     </div>
