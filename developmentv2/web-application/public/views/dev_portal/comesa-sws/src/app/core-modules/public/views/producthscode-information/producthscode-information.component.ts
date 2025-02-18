@@ -30,7 +30,6 @@ export class ProducthscodeInformationComponent {
   iconPosition: any = "top";
   selectedSubheadingId: number;
   subheading_definations_id: number;  selectedTabIndex = 0;
-  iconPosition: any = 'top';
   productChapterData: any;
   productCategoryData: any;
   productSubcategoryData: any;
