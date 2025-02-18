@@ -5,7 +5,7 @@
 .div-home {
   height: 30vh;
   align-content: center !important;
-  background-color: #E4E6E9;
+  background-color: #fff;
 }
 .error-section {
   background-color: #f7f8fa;
@@ -54,8 +54,8 @@
   width: 34rem;
 }
 .dx-fieldset {
-  /* background-color: #edf2f7; */
-  background-color: #fff;
+  background-color: #edf2f7;
+  /* background-color: #fff; */
   border-radius: 40px;
   align-items: center;
   /* padding-top: 15px; */

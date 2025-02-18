@@ -29,6 +29,9 @@ export class TransitProceduresComponent {
   productSubcategoryData: any;
   productCategoryData: any;
   operation_type_id: number; // default operation type id for transit
+  selectedSubheadingId: number;
+  filteredProcedureData: any[] = [];
+  procedureData: any[] = [];
 
   constructor(
     private spinner: SpinnerVisibilityService,
@@ -54,6 +57,7 @@ export class TransitProceduresComponent {
     this.onLoadproductChapterData();
     this.onLoadproductCategoryData();
     this.onLoadproductSubCategoryData();
+    this.onLoadProcedureData()
     let searchproceduredetails = this.publicservice.getApplicationDetail();
     if (searchproceduredetails) {
       this.searchProcedureFrm.patchValue(searchproceduredetails);
@@ -86,6 +90,31 @@ export class TransitProceduresComponent {
           this.spinnerHide();
         });
     
+  }
+
+  onLoadProcedureData() {
+    const data_submit = { 
+      table_name: 'tra_importexport_proceduredetails',
+      'operation_type_id': 3 
+    };
+    
+  
+    this.publicservice.onLoadInformationSharingDataUrl(data_submit, 'onLoadProcedureDetails')
+      .subscribe(
+        data => {
+          if (data.success) {
+            this.procedureData = data.data;
+            
+            // Filter procedures based on the selected subheading_definations_id
+            this.filteredProcedureData = this.procedureData.filter(procedure =>
+              procedure.subheading_definations_id === this.selectedSubheadingId
+            );
+          }
+        },
+        error => {
+          console.error('Error loading procedures:', error);
+        }
+      );
   }
 
 

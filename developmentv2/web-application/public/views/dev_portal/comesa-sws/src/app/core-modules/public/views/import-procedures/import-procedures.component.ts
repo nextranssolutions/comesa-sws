@@ -23,13 +23,14 @@ export class ImportProceduresComponent {
   productChapterData: any;
   productCategoryData: any;
   productSubcategoryData: any;
-  
+  procedureData: any[] = [];
   loadingVisible: boolean;
   importProcedureData: any[] = [];
+  selectedSubheadingId: number;
   data_record: any;
   transitProcedureData: any;
   searchProcedureFrm: FormGroup;
-
+  filteredProcedureData: any[] = [];
   operation_type_id: number; // default operation type id for import
   table_name : string;
   constructor(
@@ -57,6 +58,7 @@ export class ImportProceduresComponent {
     this.onLoadproductChapterData();
     this.onLoadproductCategoryData();
     this.onLoadproductSubCategoryData();
+    this.onLoadProcedureData()
 
     let searchproceduredetails = this.publicservice.getApplicationDetail();
     if (searchproceduredetails) {
@@ -90,6 +92,31 @@ export class ImportProceduresComponent {
 
           this.spinnerHide();
         });
+  }
+
+  onLoadProcedureData() {
+    const data_submit = { 
+      table_name: 'tra_importexport_proceduredetails',
+      'operation_type_id': 1 
+    };
+    
+  
+    this.publicservice.onLoadInformationSharingDataUrl(data_submit, 'onLoadProcedureDetails')
+      .subscribe(
+        data => {
+          if (data.success) {
+            this.procedureData = data.data;
+            
+            // Filter procedures based on the selected subheading_definations_id
+            this.filteredProcedureData = this.procedureData.filter(procedure =>
+              procedure.subheading_definations_id === this.selectedSubheadingId
+            );
+          }
+        },
+        error => {
+          console.error('Error loading procedures:', error);
+        }
+      );
   }
 
   onLoadproductCategoryData() {
