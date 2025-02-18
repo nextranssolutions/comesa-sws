@@ -174,12 +174,15 @@ class PublicInfoManagementController extends Controller
                 ->select(
                     't1.*',
                     't6.name as hscodesheading',
+                    't6.hscode as headingcode',
                     't5.name as hscodechapters',
+                    't5.hscode as chapterscode',
                     't3.name as procedure_categories',
                     't3.description as procedure_category_description',
                     't4.name as procedure_subcategories',
                     't4.description as procedure_subcategory_description',
                     't7.name as hscodessubheading',
+                    't7.hscode as subheadingcode',
                     't8.name as organisation',
                     't9.name as operation_type'
                 );
@@ -212,12 +215,8 @@ class PublicInfoManagementController extends Controller
                     $sql->where('t1.hscodessubheading_defination_id', $hscodessubheading);
                 }
 
-                if (!empty($operation_type_id)) {
-                    if (is_array($operation_type_id)) {
-                        $sql->whereIn('t1.operation_type_id', $operation_type_id);
-                    } elseif (is_numeric($operation_type_id)) {
-                        $sql->where('t1.operation_type_id', $operation_type_id);
-                    }
+                if (validateIsNumeric($operation_type_id)) {
+                    $sql->where("t1.operation_type_id", $operation_type_id);
                 }
             }
             $data = $sql->get();
@@ -236,11 +235,13 @@ class PublicInfoManagementController extends Controller
                     'procedure_description' => $rec->procedure_description,
                     'procedure_accesslink' => $rec->procedure_accesslink,
 
-                    'hscodesheading' => $rec->hscodesheading,
-                    'hscodechapters' => $rec->hscodechapters,
+                    'hscodesheading' => $rec->headingcode . ' ' . $rec->hscodesheading,
+                    'hscodechapters' => $rec->chapterscode . ' ' . $rec->hscodechapters,
+                    'hscodessubheading' =>  $rec->subheadingcode . ' ' . $rec->hscodessubheading,
+        
                     'procedure_categories' => $rec->procedure_categories,
                     'procedure_subcategories' => $rec->procedure_subcategories,
-                    'hscodessubheading' => $rec->hscodessubheading,
+                    
                     'organisation' => $rec->organisation,
                     'procedure_category_description' => $rec->procedure_category_description,
                     'procedure_subcategory_description' => $rec->procedure_subcategory_description,
@@ -258,52 +259,170 @@ class PublicInfoManagementController extends Controller
         return response()->json($res, 200);
     }
 
-
     public function onLoadHSCodesProductsRegistry(Request $req)
     {
         try {
-            // $process_id = 2;
-
-            // Initialize the query builder
-            $productregistry_data = array();
+            $productregistry_data = [];
+            $subheading_definations_id = $req->subheading_definations_id;
             $table_name = 'tra_hscodesproducts_registry';
-
-            $sql = DB::table($table_name . ' as t1')
-                ->leftJoin('par_hscodechapters_defination as t3', 't1.chapters_defination_id', 't3.id')
-                ->leftJoin('par_hscodesheading_definations as t4', 't1.heading_definations_id', 't4.id')
-                ->leftJoin('par_hscodessubheading_defination as t5', 't1.subheading_definations_id', 't5.id')
+    
+            $sql = DB::table("$table_name as t1")
+                ->leftJoin('par_hscodechapters_defination as t3', 't1.chapters_defination_id', '=', 't3.id')
+                ->leftJoin('par_hscodessections as t2', 't3.hscodesection_id', '=', 't2.id')
+                ->leftJoin('par_hscodesheading_definations as t4', 't1.heading_definations_id', '=', 't4.id')
+                ->leftJoin('par_hscodessubheading_defination as t5', 't1.subheading_definations_id', '=', 't5.id')
                 ->select(
-                    't1.*',
+                    't1.id',
+                    't1.chapters_defination_id',
+                    't1.heading_definations_id',
+                    't1.subheading_definations_id',
                     't5.name as hscodessubheading',
                     't5.hscode as subheadingcode',
                     't3.name as hscodechapters',
                     't3.hscode as chapterscode',
                     't4.name as hscodesheading',
-                    't4.hscode as headingcode',
+                    't4.hscode as headingcode'
+                )
+                ->groupBy(
+                    't1.id', 
+                    't1.chapters_defination_id', 
+                    't1.heading_definations_id', 
+                    't1.subheading_definations_id',
+                    't3.hscodesection_id',
+                    't5.name',
+                    't5.hscode',
+                    't3.name',
+                    't3.hscode',
+                    't4.name',
+                    't4.hscode'
                 );
-            // ->where('allow_public_visibility', true);
-
-
+    
+            if (is_numeric($subheading_definations_id)) {
+                $sql->where('t5.id', $subheading_definations_id);
+            }
+    
             $data = $sql->get();
-
-            // Loop through each record and build the response array
+    
             foreach ($data as $rec) {
-                $productregistry_data[] = array(
+                $productregistry_data[] = [
                     'id' => $rec->id,
-
                     'chapters_defination_id' => $rec->chapters_defination_id,
                     'heading_definations_id' => $rec->heading_definations_id,
                     'subheading_definations_id' => $rec->subheading_definations_id,
-
-
                     'hscodesheading' => $rec->headingcode . ' ' . $rec->hscodesheading,
                     'hscodechapters' => $rec->chapterscode . ' ' . $rec->hscodechapters,
                     'hscodessubheading' => $rec->subheadingcode . ' ' . $rec->hscodessubheading,
+                    'headingcode' => $rec->headingcode,
+                    'chapterscode' => $rec->chapterscode,
+                    'subheadingcode' => $rec->subheadingcode,
+                ];
+            }
+    
+            $res = ['success' => true, 'data' => $productregistry_data];
+    
+        } catch (\Exception $exception) {
+            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        } catch (\Throwable $throwable) {
+            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        }
+        
+        return response()->json($res, 200);
+    }
+    
+    
+    // public function onLoadHSCodesProductsRegistry(Request $req)
+    // {
+    //     try {
+    //         // $process_id = 2;
+
+    //         // Initialize the query builder
+    //         $productregistry_data = array();
+    //         $subheading_definations_id = $req->subheading_definations_id;
+            
+    //         $table_name = 'tra_hscodesproducts_registry';
+
+    //         $sql = DB::table($table_name . ' as t1')
+    //             ->join('par_hscodessections as t2', 't3.hscodessection_id', 't2.id')
+    //             ->leftJoin('par_hscodechapters_defination as t3', 't1.chapters_defination_id', 't3.id')
+    //             ->leftJoin('par_hscodesheading_definations as t4', 't1.heading_definations_id', 't4.id')
+    //             ->leftJoin('par_hscodessubheading_defination as t5', 't1.subheading_definations_id', 't5.id')
+    //             ->select(
+    //                 't1.*',
+    //                 't5.name as hscodessubheading',
+    //                 't5.hscode as subheadingcode',
+    //                 't3.name as hscodechapters',
+    //                 't3.hscode as chapterscode',
+    //                 't4.name as hscodesheading',
+    //                 't4.hscode as headingcode',
+    //             )
+    //             ->groupBy('hscodessection_id');
+    //         // ->where('allow_public_visibility', true);
+    //         if (is_numeric($subheading_definations_id)) {
+    //             $sql->where('t5.id', $subheading_definations_id);
+    //         }
+
+    //         $data = $sql->get();
+
+    //         // Loop through each record and build the response array
+    //         foreach ($data as $rec) {
+    //             $productregistry_data[] = array(
+    //                 'id' => $rec->id,
+
+    //                 'chapters_defination_id' => $rec->chapters_defination_id,
+    //                 'heading_definations_id' => $rec->heading_definations_id,
+    //                 'subheading_definations_id' => $rec->subheading_definations_id,
+    //                 'hscodesheading' => $rec->headingcode . ' ' . $rec->hscodesheading,
+    //                 'hscodechapters' => $rec->chapterscode . ' ' . $rec->hscodechapters,
+    //                 'hscodessubheading' => $rec->subheadingcode . ' ' . $rec->hscodessubheading,
+    //                 'headingcode' => $rec->headingcode,
+    //                 'chapterscode' => $rec->chapterscode,
+    //                 'subheadingcode' => $rec->subheadingcode,
+    //             );
+    //         }
+    //         // $user_data=encrypt_data($procedure_data);
+    //         $res = array('success' => true, 'data' => $productregistry_data);
+
+    //     } catch (\Exception $exception) {
+    //         $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+    //     } catch (\Throwable $throwable) {
+    //         $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+    //     }
+    //     return response()->json($res, 200);
+    // }
+    public function onLoadHSCodes(Request $req)
+    {
+        try {
+            // Initialize the query builder
+            $productregistry_data = array();
+            
+            $table_name = 'tra_hscodesproducts_registry';
+            
+            // Assuming 'subheading_definations_id' comes from the request, validate and filter
+            $subheading_definations_id = $req->input('subheading_definations_id');
+            
+            $sql = DB::table($table_name . ' as t1')
+                ->leftJoin('par_hscodechapters_defination as t3', 't1.chapters_defination_id', 't3.id')
+                ->leftJoin('par_hscodesheading_definations as t4', 't1.heading_definations_id', 't4.id')
+                ->leftJoin('par_hscodessubheading_defination as t5', 't1.subheading_definations_id', 't5.id')
+                ->select(
+                    't5.hscode as subheadingcode',
+                    't4.hscode as headingcode',
+                    't3.hscode as chapterscode'
+                ); // Add the filtering condition
+                
+            $data = $sql->get();
+            
+            // Loop through each record and build the response array
+            foreach ($data as $rec) {
+                $productregistry_data[] = array(
+                    'chapterscode' => $rec->chapterscode,
+                    'headingcode' => $rec->headingcode,
+                    'subheadingcode' => $rec->subheadingcode,
                 );
             }
-            // $user_data=encrypt_data($procedure_data);
+            
             $res = array('success' => true, 'data' => $productregistry_data);
-
+            
         } catch (\Exception $exception) {
             $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
         } catch (\Throwable $throwable) {
@@ -311,6 +430,8 @@ class PublicInfoManagementController extends Controller
         }
         return response()->json($res, 200);
     }
+    
+    
 
     public function onGetExpertsProfileInformation(Request $req)
     {

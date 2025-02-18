@@ -1,320 +1,124 @@
-/* General Styles */
 .bg-white {
   background-color: #fff;
 }
 
-/* General Section Styling */
+.div-home {
+  height: 30vh;
+  align-content: center !important;
+  background-color: #E4E6E9;
+}
 .error-section {
   background-color: #f7f8fa;
-  /* Light background for contrast */
   padding: 20px;
 }
-
-
 .card-text {
   font-size: 16px !important;
   display: flex;
+  height: 30vh;
   align-items: center;
-  /* Vertically centers the text */
   justify-content: center;
-  /* Horizontally centers the text */
   text-align: center;
-  /* Centers the text within its container */
 }
-
 .card-title {
   font-size: 22px !important;
 }
-
 .div-centerpanel {
-  max-width: 100% !important;
   margin: 0 auto !important;
   display: flex;
+  height: 30vh;
   align-items: center !important;
   justify-content: center !important;
   padding-left: 20px;
 }
 
-/* .card-body {
-  padding: 15px;
-} */
-
-/* Typography */
-h5 {
-  font-family: 'Roboto', sans-serif;
-  font-weight: 600;
-}
-
-.text-primary {
-  color: #6e513f !important;
-}
-
 .text-secondary {
   color: #6c757d;
 }
-
-/* Buttons */
 .dx-button {
   border-radius: 6px;
   padding: 10px 20px;
 }
-
-.dx-button .dx-icon {
-  margin-right: 8px;
-}
-
-/* Responsive Spacing */
-.mt-3 {
-  margin-top: 20px !important;
-}
-
-.mt-4 {
-  margin-top: 24px !important;
-}
-
-.ml-2 {
-  margin-left: 8px !important;
-}
-
-/* Map Image */
-.img-fluid {
-  border-radius: 4px;
-}
-
-/* Additional Button Hover Effect */
 .dx-button:hover {
   background-color: #6e513f;
   transition: background-color 0.3s ease;
 }
-
-.py-5 {
-  padding-bottom: 5px !important;
-  padding-top: 5px !important;
-}
-
-.btn-margin-5 {
-  margin: 5px;
-}
-
-/* .card-img-top {
-  object-fit: cover; 
-  height: 100%; 
-} */
-
-.card {
-  height: 100%;
-  display: flex;
-  flex-direction: column;
-  border-radius: 8px;
-}
-
-.card-img-top {
-  height: auto;
-  max-height: 70%;
-  /* Limit the height of the image to 50% of the card */
-  object-fit: contain;
-  /* Resize the image without cropping */
-}
-
-.carousel-inner {
-  border-radius: 0px !important;
-}
-
-.slide {
-  border-radius: 0px !important;
-}
-
-.carousel .carousel-item img {
-  border-radius: 0 !important;
-}
-
-.carousel-inner {
-  border-radius: 0 !important;
-}
-
-.carousel-item {
-  border-radius: 0 !important;
-  min-height: 60vh !important;
-}
-
-.card-body {
-  flex: 1;
-
-  min-height: 58vh !important;
-  overflow: auto;
-  flex: 1 1 auto;
-  padding: 1rem 1rem;
-}
-
-.card-footer {
-  text-align: center;
-  min-height: 12vh !important;
-  font-size: 13px !important;
-  font-weight: bold !important;
-  font-family: 'Nunito Sans', sans-serif !important;
-}
-
-.slider {
-  position: relative;
-  min-height: 50vh !important;
-}
-
-.slider img {
-  object-fit: cover;
-  width: 100%;
-}
-
-/* Center Content */
-.div-centerpanel {
-  max-width: 100%;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 20px;
-}
-
-/* Overlay Styling */
-.overlay-container {
-  /* text-align: center; */
-  /* padding: 20px; */
-  width: 100%;
-  /* max-width: 900px; */
-  margin: 0 auto;
-}
-
-.display-5 .h2 {
-  padding-left: 0 !important;
-  text-align: left !important;
-}
-
-.dx-button.dx-button-default {
-  /* border-radius: 0 20px 20px 0; */
-  height: 4.5rem !important;
-  margin-bottom: 19px !important;
-}
-
-.dx-widget {
-  border-radius: 0 20px 20px 0 !important;
-  /* margin: 0px !important; */
-}
-
-/* Headings */
-/* h2 {
-  font-size: 2rem;
-  font-weight: bold;
-  color: #333;
-} */
-
-/* Search Box */
 .search-box {
-  background: rgba(255, 255, 255, 0.9);
-  /* padding: 15px; */
+  /* background: rgba(255, 255, 255, 0.9); */
   border-radius: 10px;
-  /* box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); */
-  max-width: 900px;
   margin: 0 auto;
 }
-
-/* Form Elements */
 .form-select-lg {
   border-radius: 5px;
   height: 45px;
   font-size: 1rem;
+  width: 34rem;
 }
-
-/* Button Styling */
-/* .btn-lg {
-  font-size: 1.1rem;
-  padding: 10px;
-  border-radius: 5px;
-} */
-
-/* .input-filed {
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
-} */
-.dx-field:last-of-type {
-  margin: none !important;
-}
-
-.dx-field {
-
-  /* align-items: center; */
-  /* padding-left: 20px !important; */
-}
-
-.form-label {
-  padding-right: 15px !important;
-}
-
-.text-center {
-  /* padding-top: 10px !important; */
-  border-radius: 20px;
-}
-
 .dx-fieldset {
   background-color: #edf2f7;
-  border-radius: 20px;
+  border-radius: 40px;
   align-items: center;
   padding-top: 15px;
   padding-left: 20px;
 }
+.subtitle h2 {
+  padding-left: 30px;
+}
+.searchbutton .dx-field:last-of-type {
+  margin: none !important;
+}
 
-/* Responsive Styles */
+.search-button .pb-2 {
+  padding: 2rem !important;
+  margin-bottom: 2rem !important;
+  border-radius: 0 20px 20px 0px !important;
+}
+
+.search-button {
+  padding: 20px;
+}
 @media (max-width: 992px) {
   h2 {
     font-size: 1.8rem;
   }
-
   .search-box {
     max-width: 90%;
   }
-
   .form-select-lg {
     font-size: 1rem;
   }
-
   .btn-lg {
     font-size: 1rem;
   }
 }
-
 @media (max-width: 768px) {
   h2 {
     font-size: 1.6rem;
   }
-
   .search-box {
     padding: 12px;
     max-width: 100%;
   }
-
   .form-select-lg {
     font-size: 0.95rem;
     height: 42px;
   }
-
   .btn-lg {
     font-size: 1rem;
     padding: 10px;
   }
 }
-
 @media (max-width: 576px) {
   h2 {
     font-size: 1.4rem;
   }
-
   .search-box {
     padding: 10px;
     max-width: 100%;
   }
-
   .form-select-lg {
     font-size: 0.9rem;
     height: 40px;
   }
-
   .btn-lg {
     font-size: 0.9rem;
     padding: 8px;

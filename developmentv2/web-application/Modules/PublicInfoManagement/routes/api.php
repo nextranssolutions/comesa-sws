@@ -29,7 +29,7 @@ Route::middleware(['XssSanitizer', 'clear_cache_config', 'firewall.all'])->prefi
     Route::get('onLoadExpertsResourceManagement', [PublicInfoManagementController::class, 'onLoadExpertsResourceManagement']);
     Route::get('onLoadKnowledgeCenterManagementData', [PublicInfoManagementController::class, 'onLoadKnowledgeCenterManagementData']);
     Route::get('onLoadPublicInfoConfig', [PublicInfoManagementController::class, 'onLoadPublicInfoConfig']);
-    Route::get('onLoadPublicApprovedExpressionofInterests', [PublicInfoManagementController::class, 'onLoadPublicApprovedExpressionofInterests']);
+    Route::get('onLoadHSCodes', [PublicInfoManagementController::class, 'onLoadHSCodes']);
     Route::get('onLoadHSCodesProductsRegistry', [PublicInfoManagementController::class, 'onLoadHSCodesProductsRegistry']);
     Route::get('onLoadProcedureDetails', [PublicInfoManagementController::class, 'onLoadProcedureDetails']);
 });

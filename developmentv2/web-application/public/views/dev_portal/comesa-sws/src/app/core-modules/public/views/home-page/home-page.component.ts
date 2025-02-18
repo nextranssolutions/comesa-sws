@@ -137,14 +137,6 @@ export class HomePageComponent {
     }
   }
 
-  // onCountrySelection($event) {
-  //   if ($event.selectedItem) {
-  //     let country_data = $event.selectedItem,
-  //     dynamic_type_id = '+' + country_data.phonecode;
-  //     this.searchCriteriaForm.get('dynamic_type_id')?.setValue(name);
-  //   }
-  // }
-
   onSearchProduct() {
     this.operationTypeId = this.searchForm.value.transactionType; // Get selected operation type ID
     this.selectedProduct = this.searchForm.value.productType; // Get selected product
@@ -201,7 +193,7 @@ export class HomePageComponent {
   onLoadHsCodeData() {
     var data_submit = {
       table_name: 'tra_hscodesproducts_registry',
-      is_enabled: true,
+      // is_enabled: true,
     };
     this.configService.onLoadConfigurationData(data_submit).subscribe(
       (data) => {
@@ -215,6 +207,27 @@ export class HomePageComponent {
       (error) => { }
     );
   }
+
+  // onLoadHsCodeData() {
+  //   this.spinnerShow('Loading...........');
+
+  //   var data_submit = {
+  //     table_name: 'tra_hscodesproducts_registry',
+  //   }
+  //   this.publicservice.onLoadInformationSharingDataUrl(data_submit, 'onLoadHSCodesProductsRegistry')
+  //     .subscribe(
+  //       data => {
+  //         this.data_record = data;
+  //         if (this.data_record.success) {
+  //           this.hsCodeData = this.data_record.data;
+  //         }
+  //         this.spinnerHide();
+  //       },
+  //       error => {
+
+  //         this.spinnerHide();
+  //       });
+  // }
 
   onLoadProductData() {
     var data_submit = {

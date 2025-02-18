@@ -38,12 +38,12 @@ export class TransitProceduresComponent {
     this.onLoadTransitProcedureData(this.operation_type_id)
   }
 
-  onLoadTransitProcedureData(operation_type_id: number = 0) {
+  onLoadTransitProcedureData(operation_type_id) {
     this.spinnerShow('Loading...');
   
     const data_submit = {
       table_name: 'tra_importexport_proceduredetails',
-      operation_type_id: operation_type_id > 0 ? operation_type_id : null, // ✅ Use null for all records
+      operation_type_id: operation_type_id 
     };
   
     this.publicservice.onLoadInformationSharingDataUrl(data_submit, 'onLoadProcedureDetails')
