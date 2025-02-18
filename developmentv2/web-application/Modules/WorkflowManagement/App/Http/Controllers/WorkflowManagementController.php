@@ -154,7 +154,7 @@ class WorkflowManagementController extends Controller
                     ->select('group_id')
                     ->where(array('user_id' => $user_id))
                     ->get();
-
+           
 
                 $usergroups = convertStdClassObjToArray($usergroups);
 
@@ -168,7 +168,7 @@ class WorkflowManagementController extends Controller
                 ->leftJoin('par_regulatoryfunctionaccess_groups as t2', 't1.id', 't2.regulatory_function_id')
                 ->select('t1.*', 't1.iconsCls', 't2.user_access_levels_id', 't1.id as regulatory_function')
                 ->orderBy('t1.order_no');
-
+           
             $regulatory_functions->whereIn('user_group_id', $usergroups);
 
             $res = array(
