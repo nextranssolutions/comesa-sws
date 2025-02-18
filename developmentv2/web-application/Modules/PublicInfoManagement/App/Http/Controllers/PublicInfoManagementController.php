@@ -41,7 +41,6 @@ class PublicInfoManagementController extends Controller
             $data = $sql->get();
 
             $res = array('success' => true, 'data' => $data);
-
         } catch (\Exception $exception) {
             $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
         } catch (\Throwable $throwable) {
@@ -138,7 +137,6 @@ class PublicInfoManagementController extends Controller
             }
             $user_data = encrypt_data($user_data);
             $res = array('success' => true, 'data' => $user_data);
-
         } catch (\Exception $exception) {
             $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
         } catch (\Throwable $throwable) {
@@ -147,19 +145,20 @@ class PublicInfoManagementController extends Controller
         return response()->json($res, 200);
     }
 
+
     public function onLoadProcedureDetails(Request $req)
     {
         try {
-            // $process_id = 2;
-            // Correct variable names
-            $procedure_keywordsearch = $req->procedure_keywordsearch;
-            $procedure_subcategories = $req->procedure_subcategories;
-            $procedure_categories = $req->procedure_categories;
-            $hscodessubheading = $req->hscodessubheading;
-            $operation_type_id = $req->operation_type_id;
-            // Initialize the query builder
-            $procedure_data = array();
+            $requestData = $req->all();
             $table_name = 'tra_importexport_proceduredetails';
+            $procedure_keywordsearch = $req->procedure_keywordsearch;
+            $procedures_subcategory_id = $req->procedures_subcategory_id;
+            $procedures_category_id = $req->procedures_category_id;
+            $hscodessubheading_defination_id = $req->hscodessubheading_defination_id;
+            $operation_type_id = $req->operation_type_id;
+            $organisation_id = $req->organisation_id;
+            $procedure_data = array();
+            unset($requestData['table_name']);
 
             $sql = DB::table($table_name . ' as t1')
                 // ->leftJoin('usr_users_information as t2', 't1.user_information_id', 't2.id')
@@ -170,7 +169,7 @@ class PublicInfoManagementController extends Controller
                 ->leftJoin('par_hscodessubheading_defination as t7', 't1.hscodessubheading_defination_id', 't7.id')
                 ->leftJoin('par_oga_information as t8', 't1.organisation_id', 't8.id')
                 ->leftJoin('par_operation_type as t9', 't1.operation_type_id', 't9.id')
-                
+
                 ->select(
                     't1.*',
                     't6.name as hscodesheading',
@@ -183,46 +182,33 @@ class PublicInfoManagementController extends Controller
                     't8.name as organisation',
                     't9.name as operation_type'
                 );
-            // ->where('allow_public_visibility', true);
-
-            // Check if any filter is provided and apply necessary conditions
-            if (!empty($hscodessubheading) || !empty($procedure_keywordsearch) || !empty($procedure_subcategories) || !empty($procedure_categories)) {
-
-                // Keyword search: first name, other names, or surname
-                if (!empty($procedure_keywordsearch)) {
-                    $sql->where(function ($query) use ($procedure_keywordsearch) {
-                        $query->where('t1.procedures_category_id', 'like', "%$procedure_keywordsearch%")
-                            ->orWhere('t1.procedures_subcategory_id', 'like', "%$procedure_keywordsearch%")
-                            ->orWhere('t1.hscodechapters_defination_id', 'like', "%$procedure_keywordsearch%");
-                    });
-                }
-
-                // Institution type filtering (if numeric)
-                if (is_numeric($procedure_categories)) {
-                    $sql->where('t1.procedures_category_id', $procedure_categories);
-                }
-
-                // Regulatory function filtering (if numeric)
-                if (is_numeric($procedure_subcategories)) {
-                    $sql->where('t3.id', $procedure_subcategories);
-                }
-
-                // Country filtering (if numeric)
-                if (is_numeric($hscodessubheading)) {
-                    $sql->where('t1.hscodessubheading_defination_id', $hscodessubheading);
-                }
-
-                if (!empty($operation_type_id)) {
-                    if (is_array($operation_type_id)) {
-                        $sql->whereIn('t1.operation_type_id', $operation_type_id);
-                    } elseif (is_numeric($operation_type_id)) {
-                        $sql->where('t1.operation_type_id', $operation_type_id);
-                    }
-                }
+            if (!empty($procedure_keywordsearch)) {
+                $sql->where(function ($query) use ($procedure_keywordsearch) {
+                    $query->where('t1.procedures_category_id', 'like', "%$procedure_keywordsearch%")
+                        ->orWhere('t1.procedures_subcategory_id', 'like', "%$procedure_keywordsearch%")
+                        ->orWhere('t1.hscodechapters_defination_id', 'like', "%$procedure_keywordsearch%");
+                });
             }
-            $data = $sql->get();
+            if (validateIsNumeric($procedures_category_id)) {
+                $sql->where('t1.procedures_category_id', $procedures_category_id);
+            }
 
-            // Loop through each record and build the response array
+            if (validateIsNumeric($procedures_subcategory_id)) {
+                $sql->where('t1.procedures_subcategory_id', $procedures_subcategory_id);
+            }
+
+            if (validateIsNumeric($hscodessubheading_defination_id)) {
+                $sql->where('t1.hscodessubheading_defination_id', $hscodessubheading_defination_id);
+            }
+            if (validateIsNumeric($operation_type_id)) {
+                $sql->where('t1.operation_type_id', $operation_type_id);
+            }
+
+            if (validateIsNumeric($organisation_id)) {
+                $sql->where('t1.organisation_id', $organisation_id);
+            }
+
+            $data = $sql->get();
             foreach ($data as $rec) {
                 $procedure_data[] = array(
                     'id' => $rec->id,
@@ -247,9 +233,8 @@ class PublicInfoManagementController extends Controller
                     'operation_type' => $rec->operation_type,
                 );
             }
-            // $user_data=encrypt_data($procedure_data);
-            $res = array('success' => true, 'data' => $procedure_data);
 
+            $res = ['success' => true, 'data' => $procedure_data];
         } catch (\Exception $exception) {
             $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
         } catch (\Throwable $throwable) {
@@ -259,14 +244,19 @@ class PublicInfoManagementController extends Controller
     }
 
 
+
     public function onLoadHSCodesProductsRegistry(Request $req)
     {
         try {
-            // $process_id = 2;
 
-            // Initialize the query builder
             $productregistry_data = array();
             $table_name = 'tra_hscodesproducts_registry';
+            $chapters_keywordsearch = $req->chapters_keywordsearch;
+            $headingdefinations_keywordsearch = $req->headingdefinations_keywordsearch;
+            $subheadingdefinations_keywordsearch = $req->subheadingdefinations_keywordsearch;
+            $chapters_defination_id = $req->chapters_defination_id;
+            $heading_definations_id = $req->heading_definations_id;
+            $subheading_definations_id = $req->subheading_definations_id;
 
             $sql = DB::table($table_name . ' as t1')
                 ->leftJoin('par_hscodechapters_defination as t3', 't1.chapters_defination_id', 't3.id')
@@ -281,8 +271,23 @@ class PublicInfoManagementController extends Controller
                     't4.name as hscodesheading',
                     't4.hscode as headingcode',
                 );
-            // ->where('allow_public_visibility', true);
+            if (!empty($chapters_keywordsearch)) {
+                $sql->where(function ($query) use ($chapters_keywordsearch) {
+                    $query->where('t1.chapters_defination_id', 'like', "%$chapters_keywordsearch%")
+                        ->orWhere('t1.heading_definations_id', 'like', "%$chapters_keywordsearch%")
+                        ->orWhere('t1.subheading_definations_id', 'like', "%$chapters_keywordsearch%");
+                });
+            }
 
+            if (validateIsNumeric($chapters_defination_id)) {
+                $sql->where('t1.chapters_defination_id', $chapters_defination_id);
+            }
+            if (validateIsNumeric($heading_definations_id)) {
+                $sql->where('t1.heading_definations_id', $heading_definations_id);
+            }
+            if (validateIsNumeric($subheading_definations_id)) {
+                $sql->where('t1.subheading_definations_id', $subheading_definations_id);
+            }
 
             $data = $sql->get();
 
@@ -303,7 +308,6 @@ class PublicInfoManagementController extends Controller
             }
             // $user_data=encrypt_data($procedure_data);
             $res = array('success' => true, 'data' => $productregistry_data);
-
         } catch (\Exception $exception) {
             $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
         } catch (\Throwable $throwable) {
@@ -398,7 +402,6 @@ class PublicInfoManagementController extends Controller
                 );
             }
             $res = array('success' => true, 'data' => $user_data);
-
         } catch (\Exception $exception) {
             $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
         } catch (\Throwable $throwable) {
@@ -447,14 +450,12 @@ class PublicInfoManagementController extends Controller
                 'success' => true,
                 'navigation_items' => $rootItems
             );
-
         } catch (\Exception $exception) {
             $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
         } catch (\Throwable $throwable) {
             $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
         }
         return response()->json($res, 200);
-
     }
     function getNavigationChildrens($parent_id, $level, $navigation_type_id)
     {
@@ -471,7 +472,6 @@ class PublicInfoManagementController extends Controller
         foreach ($navigationItems as $item) {
 
             $childrens[] = $item;
-
         }
 
         return $childrens;
@@ -504,7 +504,6 @@ class PublicInfoManagementController extends Controller
             $data = $sql->get();
 
             $res = array('success' => true, 'data' => $data);
-
         } catch (\Exception $exception) {
             $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
         } catch (\Throwable $throwable) {
@@ -830,7 +829,5 @@ class PublicInfoManagementController extends Controller
             $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
         }
         return response()->json($res, 200);
-
     }
-
 }

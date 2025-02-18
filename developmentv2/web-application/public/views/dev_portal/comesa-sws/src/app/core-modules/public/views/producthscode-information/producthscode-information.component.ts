@@ -1,8 +1,10 @@
 import { Component, ViewContainerRef } from '@angular/core';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
 import { SpinnerVisibilityService } from 'ng-http-loader';
 import { ToastrService } from 'ngx-toastr';
+import { ConfigurationsService } from 'src/app/core-services/configurations/configurations.service';
 import { PublicDashboardService } from 'src/app/core-services/public-dashboard/public-dashboard.service';
 import { ReportsService } from 'src/app/core-services/reports/reports.service';
 import { UtilityService } from 'src/app/core-services/utilities/utility.service';
@@ -19,6 +21,15 @@ export class ProducthscodeInformationComponent {
   loadingVisible: boolean;
   productHscodeData: any[] = [];
   data_record: any;
+  selectedTabIndex = 0;
+  iconPosition: any = 'top';
+  productChapterData: any;
+  productCategoryData: any;
+  productSubcategoryData: any;
+
+  searchProcedureFrm: FormGroup;
+
+  table_name: string;
 
   constructor(
     private spinner: SpinnerVisibilityService,
@@ -28,13 +39,34 @@ export class ProducthscodeInformationComponent {
     public utilityService: UtilityService,
     public publicservice: PublicDashboardService,
     public reportingAnalytics: ReportsService,
+    private configService: ConfigurationsService,
+
 
   ) {
-
+    this.table_name = 'tra_hscodesproducts_registry'
+    this.searchProcedureFrm = new FormGroup({
+      hscodechapters: new FormControl('', Validators.compose([])),
+      hscodesheading: new FormControl('', Validators.compose([])),
+      hscodessubheading: new FormControl('', Validators.compose([])),
+    });
   }
 
   ngOnInit() {
-    this.onLoadProductHscodeData()
+    this.onLoadProductHscodeData();
+    this.onLoadproductChapterData();
+    this.onLoadproductCategoryData();
+    this.onLoadproductSubCategoryData();
+
+
+    let searchproceduredetails = this.publicservice.getApplicationDetail();
+    if (searchproceduredetails) {
+      this.searchProcedureFrm.patchValue(searchproceduredetails);
+      this.selectedTabIndex = searchproceduredetails.selectedTabIndex;
+      this.onGetFilteredData();
+    }
+    else {
+      this.onGetFilteredData();
+    }
   }
 
 
@@ -42,7 +74,7 @@ export class ProducthscodeInformationComponent {
     this.spinnerShow('Loading...........');
 
     var data_submit = {
-      table_name: 'tra_hscodesproducts_registry',
+      table_name: this.table_name,
     }
     this.publicservice.onLoadInformationSharingDataUrl(data_submit, 'onLoadHSCodesProductsRegistry')
       .subscribe(
@@ -57,6 +89,95 @@ export class ProducthscodeInformationComponent {
 
           this.spinnerHide();
         });
+  }
+
+  onLoadproductChapterData() {
+
+    var data_submit = {
+      'table_name': 'par_hscodechapters_defination'
+    }
+    this.configService.onLoadConfigurationData(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.productChapterData = this.data_record.data;
+          }
+        },
+        error => {
+
+        });
+
+  }
+
+  onLoadproductSubCategoryData() {
+
+    var data_submit = {
+      'table_name': 'par_hscodessubheading_defination'
+    }
+    this.configService.onLoadConfigurationData(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.productSubcategoryData = this.data_record.data;
+          }
+        },
+        error => {
+
+        });
+
+  }
+
+  onLoadproductCategoryData() {
+
+    var data_submit = {
+      'table_name': 'par_hscodesheading_definations'
+    }
+    this.configService.onLoadConfigurationData(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.productCategoryData = this.data_record.data;
+          }
+        },
+        error => {
+
+        });
+
+  }
+
+  funcProcedureClick(e) {
+    //add logic
+    let tab_index = e.itemIndex;
+
+    if (tab_index == 1 || tab_index == 2) {
+
+    }
+  }
+
+  onGetFilteredData() {
+    this.spinnerShow('Loading...');
+
+    const data_submit = {
+      table_name: this.table_name,
+
+    };
+
+    this.publicservice.onLoadInformationSharingDataUrl(data_submit, 'onLoadProcedureDetails')
+      .subscribe(
+        (data) => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.productHscodeData = this.data_record.data;
+          }
+          this.spinnerHide();
+        }, error => {
+
+          this.spinnerHide();
+        });
+
   }
 
 
