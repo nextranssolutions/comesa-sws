@@ -1,12 +1,8 @@
 import { Component, HostListener, Input, OnInit, ViewContainerRef } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-
-
 import { ToastrService } from 'ngx-toastr';
-
 import { DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
-
 import { DxTabPanelTypes } from 'devextreme-angular/ui/tab-panel';
 import { UtilityService } from 'src/app/core-services/utilities/utility.service';
 import { ServiceAdmnistrationService } from 'src/app/core-services/system-admnistration/system-admnistration.service';
@@ -130,8 +126,9 @@ export class UserGroupsComponent implements OnInit {
       routerLink: new FormControl(this.resetcolumns, Validators.compose([])),
       dashboard_type_id: new FormControl(this.resetcolumns, Validators.compose([])),
       has_partnerstate_defination: new FormControl(this.resetcolumns, Validators.compose([])),
+      is_enabled: new FormControl('', Validators.compose([])),
       // institution_type_id: new FormControl(this.resetcolumns, Validators.compose([])),
-      is_super_admin: new FormControl('', Validators.compose([]))
+      is_super_admin: new FormControl('', Validators.compose([])),
 
     });
    // this.resetcolumns = 'resetcolumns,account_type_id,routerLink,has_partnerstate_defination';

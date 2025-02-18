@@ -298,6 +298,7 @@ import { HscodesproductsRegistryComponent } from './views/configurations/hscodes
 import { HscodessubheadingDefinationComponent } from './views/configurations/hscodes-configurations/hscodessubheading-defination/hscodessubheading-defination.component';
 import { HscodestariffDetailsComponent } from './views/configurations/hscodes-configurations/hscodestariff-details/hscodestariff-details.component';
 import { SharedhscodesConfigurationsComponent } from './views/configurations/hscodes-configurations/sharedhscodes-configurations/sharedhscodes-configurations.component';
+import { PermitTypesComponent } from './views/configurations/permittypes-configuration/permit-types/permit-types.component';
 
 
 @NgModule({
@@ -554,6 +555,7 @@ import { SharedhscodesConfigurationsComponent } from './views/configurations/hsc
     IntendedendUserComponent,
     MasterIngredientsComponent,
     MethodofUseComponent,
+    PermitTypesComponent,
     NutrientsComponent,
     ProdclassificationCategoriesComponent,
     ProdclassificationRulesComponent,
@@ -720,6 +722,7 @@ import { SharedhscodesConfigurationsComponent } from './views/configurations/hsc
     TermsconditionsDetailsComponent,
     GuidelinesoptionsComponent,
     UserSetupComponent,
+    PermitTypesComponent,
     NotSlidesInformationsComponent,
     SharedPortalNavigationsComponent,
     ControlleddrugsConfsetupComponent,

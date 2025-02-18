@@ -13,18 +13,20 @@ import { NgxCaptchaModule } from 'ngx-captcha';
 import { NgxIntlTelInputModule } from 'ngx-intl-tel-input-gg';
 import { SafePipeModule } from 'src/app/safe-pipe/safe-pipe.module';
 import { SharedModuleModule } from 'src/app/shared-views/shared-module.module';
-import { ImportexportRoutingModule } from '../importexport-control/importexport-routing.module';
 import { httpTranslateLoader } from '../revenue-management/revenue-management.module';
+import { HscodeRoutingModule } from './hscode-routing.module';
+import { RouterModule } from '@angular/router';
+import { HscodeMappingComponent } from './views/hscode-mapping/hscode-mapping.component';
 
 const ngWizardConfig: NgWizardConfig = {
   theme: THEME.default
 };
 
 @NgModule({
-  declarations: [HscodemappingHeaderComponent, HscodemappingLayoutComponent, HscodemappingNavigationComponent],
+  declarations: [HscodemappingHeaderComponent, HscodemappingLayoutComponent, HscodemappingNavigationComponent, HscodeMappingComponent],
   imports: [
-     CommonModule, ImportexportRoutingModule,
-        SharedModuleModule,
+     CommonModule,
+        SharedModuleModule,HscodeRoutingModule,RouterModule,  
         NgWizardModule.forRoot(ngWizardConfig),
         NgHttpLoaderModule, DxButtonModule, DxProgressBarModule,
         FormsModule,
@@ -56,5 +58,5 @@ const ngWizardConfig: NgWizardConfig = {
   
 })
 export class HscodeMappingModule {
-  HscodemappingHeaderComponent
+  
  }

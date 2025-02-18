@@ -259,6 +259,7 @@ import { HscodesproductsRegistryComponent } from './views/configurations/hscodes
 import { HscodessubheadingDefinationComponent } from './views/configurations/hscodes-configurations/hscodessubheading-defination/hscodessubheading-defination.component';
 import { HscodestariffDetailsComponent } from './views/configurations/hscodes-configurations/hscodestariff-details/hscodestariff-details.component';
 import { SharedhscodesConfigurationsComponent } from './views/configurations/hscodes-configurations/sharedhscodes-configurations/sharedhscodes-configurations.component';
+import { PermitTypesComponent } from './views/configurations/permittypes-configuration/permit-types/permit-types.component';
 
 //./admin-ecres/app-dashboard
 const routes: Routes = [{
@@ -286,7 +287,12 @@ const routes: Routes = [{
   }, {
     path: 'app-user-groups',
     component: UserGroupsComponent
-  }, {
+  },
+  {
+    path: 'app-permit-types',
+    component: PermitTypesComponent
+  },
+  {
     path: 'app-currencies',
     component: AppCurrenciesComponent
   }, {
