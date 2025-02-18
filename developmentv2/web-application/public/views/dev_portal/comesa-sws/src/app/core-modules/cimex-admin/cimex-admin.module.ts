@@ -49,15 +49,11 @@ import { AppSharedworkflowComponent } from './views/workflow-management/workflow
 import { SharedusermanagementComponent } from './views/user-management/sharedusermanagement/sharedusermanagement.component';
 import { SharedSysAdministrationComponent } from './views/system-administration/shared-sys-administration/shared-sys-administration.component';
 import { AppstageStatusesComponent } from './views/workflow-management/workflows/appstage-statuses/appstage-statuses.component';
-import { AppPerformancescoringScalesComponent } from './views/document-checklistsmng/checklist_management/app-performancescoring-scales/app-performancescoring-scales.component';
-import { AppChecklistTypesComponent } from './views/document-checklistsmng/checklist_management/app-checklist-types/app-checklist-types.component';
-import { AppChecklistDefinationComponent } from './views/document-checklistsmng/checklist_management/app-checklist-defination/app-checklist-defination.component';
-import { SharedDocumentchecklistmngComponent } from './views/document-checklistsmng/shared-documentchecklistmng/shared-documentchecklistmng.component';
+
 import { AppTranslationmanagementComponent } from './views/language-management/app-translationmanagement/app-translationmanagement.component';
 import { AppSystemlanguagesComponent } from './views/language-management/app-systemlanguages/app-systemlanguages.component';
 import { AppSystemlabelsmanagementComponent } from './views/language-management/app-systemlabelsmanagement/app-systemlabelsmanagement.component';
-import { NotificationTypesComponent } from './views/document-checklistsmng/notification-mng/notification-types/notification-types.component';
-import { EmailTemplatesComponent } from './views/document-checklistsmng/notification-mng/email-templates/email-templates.component';
+
 import { UserAccounttypesComponent } from './views/system-administration/user-accounttypes/user-accounttypes.component';
 import { SystemDashbordtypesComponent } from './views/system-administration/system-dashbordtypes/system-dashbordtypes.component';
 import { InstitutionsDepartmentsComponent } from './views/system-administration/institutions-departments/institutions-departments.component';
@@ -104,12 +100,8 @@ import { TermsconditionsDetailsComponent } from './views/system-administration/s
 import { GuidelinesoptionsComponent } from './views/system-administration/system-guidelines/guidelinesoptions/guidelinesoptions.component';
 import { MultilingualConfigurationsComponent } from './views/multilingual-configurations/multilingual-configurations.component';
 import { NavigationSetupComponent } from './views/workflow-management/navigation/navigation-setup/navigation-setup.component';
-import { WorkflowsSetupComponent } from './views/workflow-management/workflows/workflows-setup/workflows-setup.component';
-import { NotificationManagementComponent } from './views/document-checklistsmng/notification-mng/notification-management/notification-management.component';
 import { ExpertprofileSetupComponent } from './views/configurations/expertprofile-setup/expertprofile-setup.component';
 import { InstitutionsInformationComponent } from './views/system-administration/institutions-information/institutions-information.component';
-import { NotSlidesInformationsComponent } from './views/system-administration/not-slides-informations/not-slides-informations.component';
-import { ChecklistmanagementSetupComponent } from './views/document-checklistsmng/checklistmanagement-setup/checklistmanagement-setup.component';
 import { UserSetupComponent } from './views/system-administration/user-setup/user-setup.component';
 import { AppOrganizationinformationComponent } from './views/system-administration/app-organizationinformation/app-organizationinformation.component';
 import { AppSignatoriesComponent } from './views/system-administration/app-signatories/app-signatories.component';
@@ -162,8 +154,7 @@ import { CtrlDrugstypeComponent } from './views/configurations/controlled-drugs-
 import { ControlleddrugsConfsetupComponent } from './views/configurations/controlled-drugs-configurations/controlleddrugs-confsetup/controlleddrugs-confsetup.component';
 import { SharedCtrldrugsconfigurationComponent } from './views/configurations/controlled-drugs-configurations/shared-ctrldrugsconfiguration/shared-ctrldrugsconfiguration.component';
 import { TraderAccountManagementComponent } from './views/user-management/trader-account-management/trader-account-management.component';
-import { InterfacesComponent } from './views/workflow-management/workflows/interfaces/interfaces.component';
-import { WorkflowsComponent } from './views/workflow-management/workflows/workflows/workflows.component';
+
 import { ImportExportconfsetupComponent } from './views/configurations/import-exportconfigurations/import-exportconfsetup/import-exportconfsetup.component';
 import { PermitReasonsComponent } from './views/configurations/import-exportconfigurations/permit-reasons/permit-reasons.component';
 import { PermittypeCategoriesComponent } from './views/configurations/import-exportconfigurations/permittype-categories/permittype-categories.component';
@@ -174,7 +165,6 @@ import { GmpConfigsetupComponent } from './views/configurations/gmp-configuratio
 import { GmpProductcategoryComponent } from './views/configurations/gmp-configurations/gmp-productcategory/gmp-productcategory.component';
 import { GmpProductlineComponent } from './views/configurations/gmp-configurations/gmp-productline/gmp-productline.component';
 import { SharedGmpconfigurationsComponent } from './views/configurations/gmp-configurations/shared-gmpconfigurations/shared-gmpconfigurations.component';
-import { SystemProcessesComponent } from './views/workflow-management/workflows/system-processes/system-processes.component';
 import { AdvertisementTypesComponent } from './views/configurations/promotional_advertisements_configurations/advertisement-types/advertisement-types.component';
 import { PromotionMaterialsComponent } from './views/configurations/promotional_advertisements_configurations/promotion-materials/promotion-materials.component';
 import { PromotionalAdvertconfigsetupComponent } from './views/configurations/promotional_advertisements_configurations/promotional-advertconfigsetup/promotional-advertconfigsetup.component';
@@ -283,22 +273,7 @@ import { AdvertisementChannelComponent } from './views/configurations/promotiona
 import { PrommaterialBookcataloguesComponent } from './views/configurations/promotional_advertisements_configurations/prommaterial-bookcatalogues/prommaterial-bookcatalogues.component';
 import { PromotionadvertChannelsComponent } from './views/configurations/promotional_advertisements_configurations/promotionadvert-channels/promotionadvert-channels.component';
 import { PromotionmaterialCategoriesComponent } from './views/configurations/promotional_advertisements_configurations/promotionmaterial-categories/promotionmaterial-categories.component';
-import { DmsConfigsetupComponent } from './views/document-checklistsmng/document_management/dms-configsetup/dms-configsetup.component';
-import { DmsSitesRepositoryDefinationComponent } from './views/document-checklistsmng/document_management/dms-sites-repository-defination/dms-sites-repository-defination.component';
-import { DocumentExtensionTypesComponent } from './views/document-checklistsmng/document_management/document-extension-types/document-extension-types.component';
-import { DocumentRequirementDefinationComponent } from './views/document-checklistsmng/document_management/document-requirement-defination/document-requirement-defination.component';
-import { DocumentTypesComponent } from './views/document-checklistsmng/document_management/document-types/document-types.component';
-import { NonstructuredDocDefinationComponent } from './views/document-checklistsmng/document_management/nonstructured-doc-defination/nonstructured-doc-defination.component';
-import { SharedDmsComponent } from './views/document-checklistsmng/document_management/shared-dms/shared-dms.component';
-import { HscodechaptersDefinationComponent } from './views/configurations/hscodes-configurations/hscodechapters-defination/hscodechapters-defination.component';
-import { HscodesSectionsComponent } from './views/configurations/hscodes-configurations/hscodes-sections/hscodes-sections.component';
-import { HscodesconfigSetupComponent } from './views/configurations/hscodes-configurations/hscodesconfig-setup/hscodesconfig-setup.component';
-import { HscodesheadingDefinationsComponent } from './views/configurations/hscodes-configurations/hscodesheading-definations/hscodesheading-definations.component';
-import { HscodesproductsRegistryComponent } from './views/configurations/hscodes-configurations/hscodesproducts-registry/hscodesproducts-registry.component';
-import { HscodessubheadingDefinationComponent } from './views/configurations/hscodes-configurations/hscodessubheading-defination/hscodessubheading-defination.component';
-import { HscodestariffDetailsComponent } from './views/configurations/hscodes-configurations/hscodestariff-details/hscodestariff-details.component';
-import { SharedhscodesConfigurationsComponent } from './views/configurations/hscodes-configurations/sharedhscodes-configurations/sharedhscodes-configurations.component';
-
+import { SharedDocumentchecklistmngComponent } from './views/document-checklistsmng/shared-documentchecklistmng/shared-documentchecklistmng.component';
 
 @NgModule({
   declarations: [AppdashboardComponent,
@@ -327,11 +302,11 @@ import { SharedhscodesConfigurationsComponent } from './views/configurations/hsc
     ControlDocumentmanagementComponent,
     AppCurrenciesComponent,
     AppAuditTrail,
-    WorkflowsComponent,
+    
     GeneralApplicationFormComponent,
     SharedPortalNavigationsComponent,
     PortalNavigationComponent,
-    SystemProcessesComponent,
+   
     PortalNavigationTypesComponent,
     PortalNavigationSetupComponent,
     PortalNavigationLevelsComponent,
@@ -351,7 +326,7 @@ import { SharedhscodesConfigurationsComponent } from './views/configurations/hsc
     CtrlDrugssubstancesComponent,
     CtrlDrugstypeComponent,
     SharedCtrldrugsconfigurationComponent,
-    InterfacesComponent,    ImportExportconfsetupComponent,
+     ImportExportconfsetupComponent,
     PermitReasonsComponent,
     PermittypeCategoriesComponent,
     PortentryExitComponent,
@@ -367,14 +342,7 @@ import { SharedhscodesConfigurationsComponent } from './views/configurations/hsc
     PromotionalAdvertconfigsetupComponent,
     SharedPromotionAdvertConfigurationsComponent,
 
-    HscodechaptersDefinationComponent,
-    HscodesSectionsComponent,
-    HscodesheadingDefinationsComponent,
-    HscodesproductsRegistryComponent,
-    HscodessubheadingDefinationComponent,
-    HscodestariffDetailsComponent,
-    HscodesconfigSetupComponent,
-    SharedhscodesConfigurationsComponent,
+
 
 
 
@@ -422,16 +390,7 @@ import { SharedhscodesConfigurationsComponent } from './views/configurations/hsc
     DistrictcouncilDefinationComponent,
     LocationParametersComponent,
 
-    DmsConfigsetupComponent,
-    DmsSitesRepositoryDefinationComponent,
-    DocumentExtensionTypesComponent,
-    DocumentRequirementDefinationComponent,
-    DocumentTypesComponent,
-    NonstructuredDocDefinationComponent,
-    SharedDmsComponent,
-
-
-
+ 
 
     StudySitesComponent,
     SponsorsNatureComponent,
@@ -470,7 +429,7 @@ import { SharedhscodesConfigurationsComponent } from './views/configurations/hsc
     SystemAdministratorsComponent,
     ReportsanalyticsdashboardComponent,
     AppNmrasinfoComponent,
-    NotSlidesInformationsComponent,
+    
     SharedNavigationsComponent,
     NavigationsComponent, AppSharedworkflowComponent,
     NavigationTypesComponent, AppExchangeratesComponent,
@@ -480,12 +439,12 @@ import { SharedhscodesConfigurationsComponent } from './views/configurations/hsc
     AppProcessworkflowtransitionsComponent,
     AppProcessworkflowsstagesComponent,
     AppProcessworkflowsComponent,
-    NotificationTypesComponent, EmailTemplatesComponent,
+    SharedDocumentchecklistmngComponent,
     NavigationLevelsComponent, NavigationInterfacesComponent,
     InstitutionsDepartmentsComponent,
-    AppstageStatusesComponent, SharedDocumentchecklistmngComponent,
-    SharedSysAdministrationComponent, AppPerformancescoringScalesComponent,
-    AppChecklistTypesComponent, AppChecklistDefinationComponent,
+    AppstageStatusesComponent,
+    SharedSysAdministrationComponent, 
+   
      
     ShareusermanagementClassComponent,
     UserAccounttypesComponent, SystemDashbordtypesComponent,
@@ -576,8 +535,8 @@ import { SharedhscodesConfigurationsComponent } from './views/configurations/hsc
     UserSetupComponent,
     MultilingualConfigurationsComponent,
     NavigationSetupComponent,
-    WorkflowsSetupComponent,
-    NotificationManagementComponent,
+   
+    
     
     
     ExpertprofileSetupComponent,
@@ -585,7 +544,7 @@ import { SharedhscodesConfigurationsComponent } from './views/configurations/hsc
     RegistrationRegulationComponent,
     RefnumberConfigsetupComponent,
 
-    ChecklistmanagementSetupComponent, 
+  
     SharedProcessconfigurationComponent,
     UserDashboardComponent,
     FinanceDashboardComponent,
@@ -670,7 +629,7 @@ import { SharedhscodesConfigurationsComponent } from './views/configurations/hsc
     AdminRoutingDashboardModule,
     UserAccounttypesComponent, SystemDashbordtypesComponent,
     AppTranslationmanagementComponent, AppSystemlanguagesComponent, AppSystemlabelsmanagementComponent,
-    NotificationTypesComponent, EmailTemplatesComponent,
+   
     SharedusermanagementComponent,
     EcredResourcedashboardComponent,
     TranslateModule,
@@ -704,7 +663,7 @@ import { SharedhscodesConfigurationsComponent } from './views/configurations/hsc
     PortalProcesstransitionComponent,
     PortalDocdefinationComponent,
     AppFormsComponent,
-    InterfacesComponent,
+   
     SharedconfigurationsComponent,
     UserloginLogsComponent,
     UserpwdresetrequestLogsComponent,
@@ -720,7 +679,7 @@ import { SharedhscodesConfigurationsComponent } from './views/configurations/hsc
     TermsconditionsDetailsComponent,
     GuidelinesoptionsComponent,
     UserSetupComponent,
-    NotSlidesInformationsComponent,
+    
     SharedPortalNavigationsComponent,
     ControlleddrugsConfsetupComponent,
     PortalNavigationComponent,
@@ -747,7 +706,7 @@ import { SharedhscodesConfigurationsComponent } from './views/configurations/hsc
     CtrlDrugssaltsComponent,
     CtrlDrugssubstancesComponent,
     CtrlDrugstypeComponent,
-    WorkflowsComponent,
+ 
     ImportExportconfsetupComponent,
     PermitReasonsComponent,
     PermittypeCategoriesComponent,
@@ -757,7 +716,7 @@ import { SharedhscodesConfigurationsComponent } from './views/configurations/hsc
     GmpConfigsetupComponent,
     GmpProductcategoryComponent,
     GmpProductlineComponent,
-    SystemProcessesComponent,
+  
 
     RefNumbertypesComponent,
     RefNumbervariablesComponent,
@@ -765,14 +724,6 @@ import { SharedhscodesConfigurationsComponent } from './views/configurations/hsc
     RefNumberformatsComponent,
     SharedRefnumberconfigurationsComponent,
 
-    HscodechaptersDefinationComponent,
-    HscodesSectionsComponent,
-    HscodesheadingDefinationsComponent,
-    HscodesproductsRegistryComponent,
-    HscodessubheadingDefinationComponent,
-    HscodestariffDetailsComponent,
-    HscodesconfigSetupComponent,
-    SharedhscodesConfigurationsComponent,
 
     AssessmentProceduresComponent,
     AtccodesDefinationsComponent,
@@ -813,13 +764,7 @@ import { SharedhscodesConfigurationsComponent } from './views/configurations/hsc
     SharedTimeframeconfigurationsComponent,
     TimeframeConfigsetupComponent,
 
-    DmsConfigsetupComponent,
-    DmsSitesRepositoryDefinationComponent,
-    DocumentExtensionTypesComponent,
-    DocumentRequirementDefinationComponent,
-    DocumentTypesComponent,
-    NonstructuredDocDefinationComponent,
-    SharedDmsComponent,
+
 
     AdvertisementTypesComponent,
     PromotionMaterialsComponent,

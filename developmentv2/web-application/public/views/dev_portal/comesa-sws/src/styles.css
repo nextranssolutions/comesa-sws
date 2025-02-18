@@ -117,7 +117,7 @@ html, body {
   min-height: 100vh !important;
 }
 .div-home{
-  min-height: 20vh !important;
+  min-height: 50vh !important;
 }
 
 .carousel-inner {
@@ -132,6 +132,11 @@ html, body {
   background-color: #f8f9fa;
   color: #000;
 }
+
+.dx-toolbar .dx-toolbar-items-container {
+  height: 65px !important;
+}
+
 
 /* Ensure image covers the card and the carousel item */
 .carousel-item img {
@@ -401,7 +406,7 @@ form .ng-valid {
 }  
 
 .dx-datagrid .dx-row > td {
-  padding: 2px 2px !important;
+  /* padding: 2px 2px !important; */
   border-radius: 0.3px;
 }
 
