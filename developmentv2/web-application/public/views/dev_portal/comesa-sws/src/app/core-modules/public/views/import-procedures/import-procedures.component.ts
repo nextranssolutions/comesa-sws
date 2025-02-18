@@ -53,7 +53,7 @@ export class ImportProceduresComponent {
   }
 
   ngOnInit() {
-    this.onLoadImportProcedureData();
+    this.onLoadImportProcedureData(this.operation_type_id);
     this.onLoadproductChapterData();
     this.onLoadproductCategoryData();
     this.onLoadproductSubCategoryData();
@@ -62,15 +62,13 @@ export class ImportProceduresComponent {
     if (searchproceduredetails) {
       this.searchProcedureFrm.patchValue(searchproceduredetails);
       this.selectedTabIndex = searchproceduredetails.selectedTabIndex;
-      this.onGetFilteredData();
+      this.onLoadImportProcedureData(this.operation_type_id);
     }
-    else {
-      this.onGetFilteredData();
-    }
+   
   }
 
 
-  onLoadImportProcedureData() {
+  onLoadImportProcedureData(operation_type_id) {
     this.spinnerShow('Loading...........');
 
     var data_submit = {
@@ -158,28 +156,6 @@ export class ImportProceduresComponent {
 
   }
 
-  onGetFilteredData() {
-    this.spinnerShow('Loading...');
-  
-    const data_submit = {
-      table_name: this.table_name,
-      
-    };
-  
-    this.publicservice.onLoadInformationSharingDataUrl(data_submit, 'onLoadProcedureDetails')
-      .subscribe(
-        (data) => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            this.transitProcedureData = this.data_record.data;
-          }
-          this.spinnerHide();
-        }, error => {
-
-          this.spinnerHide();
-        });
-    
-  }
   onExporting(e: DxDataGridTypes.ExportingEvent) {
 
     if (e.format == 'pdf') {

@@ -60,7 +60,7 @@
 
 
 <dx-popup [(visible)]="isSignupPopupVisible" [showTitle]="true" title="{{ 'applicant_only_account' | translate }}" [width]="550"
-  [height]="650"  [maxHeight]="650"[dragEnabled]="true" [closeOnOutsideClick]="true">
+  [height]="750" [dragEnabled]="true" [closeOnOutsideClick]="true">
   <dx-form [formGroup]="signUpFrm" (ngSubmit)="submitSignup()" class="futuristic-form">
 
     <dxi-item dataField="{{ 'trader_account_type' | translate }}" editorType="dxTextBox"
@@ -103,26 +103,27 @@
         </dx-validator>
       </dx-number-box>
     </dxi-item>
-  
-    <dxi-item>
+ 
+    <dxi-item class="d-flex pl-5">
       <dx-button text="{{'sign_up' | translate}}" type="success" icon="fa fa-arrow-right"
         [elementAttr]="{ class: 'neon-button' }" (onClick)="submitSignup()">
       </dx-button>
-    </dxi-item>
-  
-    <dxi-item>
       <dx-button text="{{ 'already_have_an_account' | translate }}?" type="default" icon="fa fa-user"
-        [elementAttr]="{ class: 'neon-button-outline' }" (onClick)="openSigninPopup()">
-      </dx-button>
+      [elementAttr]="{ class: 'neon-button-outline' }" (onClick)="openSigninPopup()">
+    </dx-button>
     </dxi-item>
   
-    <dxi-item>
+    <!-- <dxi-item>
+    
+    </dxi-item> -->
+  
+    <!-- <dxi-item>
       <span class="cursor-pointer text-primary">
         <a href="javascript:void(0)" (click)="funcLostPassord()" class="text-primary futuristic-link">
           <i class="fa fa-key"></i> {{'lost_password' | translate}}
         </a>
       </span>
-    </dxi-item>
+    </dxi-item> -->
   
   </dx-form>
   

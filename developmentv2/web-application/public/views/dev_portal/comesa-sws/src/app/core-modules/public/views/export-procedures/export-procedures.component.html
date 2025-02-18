@@ -2,74 +2,78 @@
     <div class="col-lg-12 border-linemargin">
         <h6 class="text-start">{{'export_procedures' | translate}}</h6>
 
+        <div class="row">
+            <div class="col-lg-12">
 
+                <form role="form" enctype="multipart/form-data" role="form" [formGroup]="searchProcedureFrm"
+                    (ngSubmit)="onLoadExportProcedureData(operation_type_id)">
+                    <dx-tab-panel id="experts Search" [(selectedIndex)]="selectedTabIndex"
+                        (onTitleClick)="funcProcedureClick($event)" [iconPosition]="iconPosition" [swipeEnabled]="false"
+                        [showNavButtons]="true" [animationEnabled]="true">
 
-        <form role="form" enctype="multipart/form-data" role="form" [formGroup]="searchProcedureFrm"
-            (ngSubmit)="onGetFilteredData()">
-            <dx-tab-panel id="experts Search" [(selectedIndex)]="selectedTabIndex"
-                (onTitleClick)="funcProcedureClick($event)" [iconPosition]="iconPosition" [swipeEnabled]="false"
-                [showNavButtons]="true" [animationEnabled]="true">
+                        <!-- Access Levels Tab -->
 
-                <!-- Access Levels Tab -->
+                        <dxi-item title="{{'search_by_product' | translate}}" icon="map">
+                            <div class="form-group has-search search-margin-top">
 
-                <dxi-item title="{{'search_by_product' | translate}}" icon="map">
-                    <div class="form-group has-search margin-top">
+                                <dx-select-box [dataSource]="productChapterData" class="form-control"
+                                    placeholder="{{'select_product' | translate}}" formControlName="hscodechapters"
+                                    [showClearButton]="true" valueExpr="id" [searchEnabled]="true" displayExpr="name">
+                                </dx-select-box>
 
-                        <dx-select-box [dataSource]="productChapterData" class="form-control"
-                            placeholder="{{'select_product' | translate}}" formControlName="hscodechapters"
-                            [showClearButton]="true" valueExpr="id" [searchEnabled]="true" displayExpr="name">
-                        </dx-select-box>
+                            </div>
+                            <div class="col-lg-12 btn-searchdetails">
+                                <dx-button text="{{'search_by_product' | translate}}" type="default" icon="fa fa-search"
+                                    [elementAttr]="{  class: 'btn-searchdetails' }" (onClick)="onLoadExportProcedureData(operation_type_id)">
+                                </dx-button>
 
-                    </div>
-                    <div class="col-lg-12 btn-searchdetails">
-                        <dx-button text="{{'search_by_product' | translate}}" type="default" icon="fa fa-search"
-                            [elementAttr]="{  class: 'btn-searchdetails' }" (onClick)="onGetFilteredData()">
-                        </dx-button>
+                            </div>
 
-                    </div>
+                        </dxi-item>
 
-                </dxi-item>
+                        <dxi-item title="{{'search_by_product_category' | translate}}" icon="map">
+                            <div class="form-group has-search search-margin-top">
 
-                <dxi-item title="{{'search_by_product_category' | translate}}" icon="map">
-                    <div class="form-group has-search margin-top">
+                                <dx-select-box [dataSource]="productCategoryData" class="form-control"
+                                    placeholder="{{'search_by_product_category' | translate}}"
+                                    formControlName="hscodesheading" [showClearButton]="true" valueExpr="id"
+                                    [searchEnabled]="true" displayExpr="name">
+                                </dx-select-box>
 
-                        <dx-select-box [dataSource]="productCategoryData" class="form-control"
-                            placeholder="{{'search_by_product_category' | translate}}" formControlName="hscodesheading"
-                            [showClearButton]="true" valueExpr="id" [searchEnabled]="true" displayExpr="name">
-                        </dx-select-box>
+                            </div>
+                            <div class="col-lg-12 btn-searchdetails">
+                                <dx-button text="{{'search_by_product_category' | translate}}" type="default"
+                                    icon="fa fa-search" [elementAttr]="{  class: 'btn-searchdetails' }"
+                                    (onClick)="onLoadExportProcedureData(operation_type_id)">
+                                </dx-button>
 
-                    </div>
-                    <div class="col-lg-12 btn-searchdetails">
-                        <dx-button text="{{'search_by_product_category' | translate}}" type="default"
-                            icon="fa fa-search" [elementAttr]="{  class: 'btn-searchdetails' }"
-                            (onClick)="onGetFilteredData()">
-                        </dx-button>
+                            </div>
 
-                    </div>
+                        </dxi-item>
 
-                </dxi-item>
+                        <dxi-item title="{{'search_by_product_subcategory' | translate}}" icon="map">
+                            <div class="form-group has-search search-margin-top">
 
-                <dxi-item title="{{'search_by_product_subcategory' | translate}}" icon="map">
-                    <div class="form-group has-search margin-top">
+                                <dx-select-box [dataSource]="productSubcategoryData" class="form-control"
+                                    placeholder="{{'search_by_product_subcategory' | translate}}"
+                                    formControlName="hscodessubheading" [showClearButton]="true" valueExpr="id"
+                                    [searchEnabled]="true" displayExpr="name">
+                                </dx-select-box>
 
-                        <dx-select-box [dataSource]="productSubcategoryData" class="form-control"
-                            placeholder="{{'search_by_product_subcategory' | translate}}"
-                            formControlName="hscodessubheading" [showClearButton]="true" valueExpr="id"
-                            [searchEnabled]="true" displayExpr="name">
-                        </dx-select-box>
+                            </div>
+                            <div class="col-lg-12 btn-searchdetails">
+                                <dx-button text="{{'search_by_product_subcategory' | translate}}" type="default"
+                                    icon="fa fa-search" [elementAttr]="{  class: 'btn-searchdetails' }"
+                                    (onClick)="onLoadExportProcedureData(operation_type_id)">
+                                </dx-button>
 
-                    </div>
-                    <div class="col-lg-12 btn-searchdetails">
-                        <dx-button text="{{'search_by_product_subcategory' | translate}}" type="default"
-                            icon="fa fa-search" [elementAttr]="{  class: 'btn-searchdetails' }"
-                            (onClick)="onGetFilteredData()">
-                        </dx-button>
+                            </div>
 
-                    </div>
-
-                </dxi-item>
-            </dx-tab-panel>
-        </form>
+                        </dxi-item>
+                    </dx-tab-panel>
+                </form>
+            </div>
+        </div>
 
         <dx-data-grid (onExporting)="onExporting($event)" (onCellPrepared)="onCellPrepared($event)"
             class="table row-border hover" [dataSource]="exportProcedureData" [remoteOperations]='true'

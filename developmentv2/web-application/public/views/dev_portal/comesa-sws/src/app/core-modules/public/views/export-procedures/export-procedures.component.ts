@@ -64,11 +64,9 @@ export class ExportProceduresComponent {
     if (searchproceduredetails) {
       this.searchProcedureFrm.patchValue(searchproceduredetails);
       this.selectedTabIndex = searchproceduredetails.selectedTabIndex;
-      this.onGetFilteredData();
+      this.onLoadExportProcedureData(this.operation_type_id);
     }
-    else {
-      this.onGetFilteredData();
-    }
+    
   }
 
   funcProcedureClick(e) {
@@ -162,29 +160,6 @@ export class ExportProceduresComponent {
   }
 
 
-
-  onGetFilteredData() {
-    this.spinnerShow('Loading...');
-
-    const data_submit = {
-      table_name: this.table_name,
-
-    };
-
-    this.publicservice.onLoadInformationSharingDataUrl(data_submit, 'onLoadProcedureDetails')
-      .subscribe(
-        (data) => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            this.transitProcedureData = this.data_record.data;
-          }
-          this.spinnerHide();
-        }, error => {
-
-          this.spinnerHide();
-        });
-
-  }
   onExporting(e: DxDataGridTypes.ExportingEvent) {
 
     if (e.format == 'pdf') {
