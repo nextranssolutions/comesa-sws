@@ -274,6 +274,7 @@ import { PrommaterialBookcataloguesComponent } from './views/configurations/prom
 import { PromotionadvertChannelsComponent } from './views/configurations/promotional_advertisements_configurations/promotionadvert-channels/promotionadvert-channels.component';
 import { PromotionmaterialCategoriesComponent } from './views/configurations/promotional_advertisements_configurations/promotionmaterial-categories/promotionmaterial-categories.component';
 import { SharedDocumentchecklistmngComponent } from './views/document-checklistsmng/shared-documentchecklistmng/shared-documentchecklistmng.component';
+import { PermitTypesComponent } from './views/configurations/permittypes-configuration/permit-types/permit-types.component';
 
 @NgModule({
   declarations: [AppdashboardComponent,
@@ -513,6 +514,7 @@ import { SharedDocumentchecklistmngComponent } from './views/document-checklists
     IntendedendUserComponent,
     MasterIngredientsComponent,
     MethodofUseComponent,
+    PermitTypesComponent,
     NutrientsComponent,
     ProdclassificationCategoriesComponent,
     ProdclassificationRulesComponent,
@@ -663,6 +665,8 @@ import { SharedDocumentchecklistmngComponent } from './views/document-checklists
     PortalProcesstransitionComponent,
     PortalDocdefinationComponent,
     AppFormsComponent,
+    PermitTypesComponent,
+   
    
     SharedconfigurationsComponent,
     UserloginLogsComponent,

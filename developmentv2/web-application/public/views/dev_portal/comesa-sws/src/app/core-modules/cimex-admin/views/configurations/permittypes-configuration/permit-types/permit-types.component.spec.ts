@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { HscodeMappingComponent } from './hscode-mapping.component';
+import { PermitTypesComponent } from './permit-types.component';
 
-describe('HscodeMappingComponent', () => {
-  let component: HscodeMappingComponent;
-  let fixture: ComponentFixture<HscodeMappingComponent>;
+describe('PermitTypesComponent', () => {
+  let component: PermitTypesComponent;
+  let fixture: ComponentFixture<PermitTypesComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [HscodeMappingComponent]
+      imports: [PermitTypesComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(HscodeMappingComponent);
+    fixture = TestBed.createComponent(PermitTypesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

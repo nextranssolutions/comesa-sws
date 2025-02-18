@@ -14,6 +14,7 @@ Route::middleware(['XssSanitizer','clear_cache_config','firewall.all'])->prefix(
     Route::post('onSaveNotSlidesInformation', [SysAdministrationController::class, 'onSaveNotSlidesInformation']);
     
     Route::get('getAppUserGroupNavigationMenus', [SysAdministrationController::class, 'getAppUserGroupNavigationMenus']);
+    Route::get('getAppHsCodes', [SysAdministrationController::class, 'getAppHsCodes']);
     //Route::post('onSaveGroupNavPermissions',[SysAdministrationController::class,'onSaveGroupNavPermissions']);
     Route::post('onSavingUserNavigationPermissions', [SysAdministrationController::class, 'onSavingUserNavigationPermissions']);
     Route::post('onSaveSystemGuideline',[SysAdministrationController::class,'onSaveSystemGuideline']);

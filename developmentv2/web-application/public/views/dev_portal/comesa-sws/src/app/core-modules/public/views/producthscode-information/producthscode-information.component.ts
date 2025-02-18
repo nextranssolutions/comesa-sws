@@ -69,11 +69,9 @@ export class ProducthscodeInformationComponent {
     if (searchproceduredetails) {
       this.searchProcedureFrm.patchValue(searchproceduredetails);
       this.selectedTabIndex = searchproceduredetails.selectedTabIndex;
-      this.onGetFilteredData();
+      this.onLoadProductHscodeData();
     }
-    else {
-      this.onGetFilteredData();
-    }
+    
     this.onLoadProcedureData();
   }
 
@@ -166,28 +164,6 @@ export class ProducthscodeInformationComponent {
     }
   }
 
-  onGetFilteredData() {
-    this.spinnerShow('Loading...');
-
-    const data_submit = {
-      table_name: this.table_name,
-
-    };
-
-    this.publicservice.onLoadInformationSharingDataUrl(data_submit, 'onLoadProcedureDetails')
-      .subscribe(
-        (data) => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            this.productHscodeData = this.data_record.data;
-          }
-          this.spinnerHide();
-        }, error => {
-
-          this.spinnerHide();
-        });
-
-  }
 
   onLoadHSCodes(subheading_definations_id) {
     this.spinnerShow('Loading...........');

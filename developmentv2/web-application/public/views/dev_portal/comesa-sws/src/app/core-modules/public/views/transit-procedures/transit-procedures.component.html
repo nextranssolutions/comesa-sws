@@ -4,7 +4,7 @@
         <div class="row">
             <div class="col-lg-12">
                 <form role="form" enctype="multipart/form-data" role="form" [formGroup]="searchProcedureFrm"
-                    (ngSubmit)="onGetFilteredData()">
+                    (ngSubmit)="onLoadTransitProcedureData(operation_type_id)">
                     <dx-tab-panel id="experts Search" [(selectedIndex)]="selectedTabIndex"
                         (onTitleClick)="funcProcedureClick($event)" [iconPosition]="iconPosition" [swipeEnabled]="false"
                         [showNavButtons]="true" [animationEnabled]="true">
@@ -22,7 +22,7 @@
                             </div>
                             <div class="col-lg-12 btn-searchdetails">
                                 <dx-button text="{{'search_by_product' | translate}}" type="default" icon="fa fa-search"
-                                    [elementAttr]="{  class: 'btn-searchdetails' }" (onClick)="onGetFilteredData()">
+                                    [elementAttr]="{  class: 'btn-searchdetails' }" (onClick)="onLoadTransitProcedureData(operation_type_id)">
                                 </dx-button>
 
                             </div>
@@ -42,7 +42,7 @@
                             <div class="col-lg-12 btn-searchdetails">
                                 <dx-button text="{{'search_by_product_category' | translate}}" type="default"
                                     icon="fa fa-search" [elementAttr]="{  class: 'btn-searchdetails' }"
-                                    (onClick)="onGetFilteredData()">
+                                    (onClick)="onLoadTransitProcedureData(operation_type_id)">
                                 </dx-button>
 
                             </div>
@@ -62,7 +62,7 @@
                             <div class="col-lg-12 btn-searchdetails">
                                 <dx-button text="{{'search_by_product_subcategory' | translate}}" type="default"
                                     icon="fa fa-search" [elementAttr]="{  class: 'btn-searchdetails' }"
-                                    (onClick)="onGetFilteredData()">
+                                    (onClick)="onLoadTransitProcedureData(operation_type_id)">
                                 </dx-button>
 
                             </div>

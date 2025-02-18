@@ -53,7 +53,7 @@ export class TransitProceduresComponent {
   }
 
   ngOnInit() {
-    this.onLoadTransitProcedureData();
+    this.onLoadTransitProcedureData(this.operation_type_id);
     this.onLoadproductChapterData();
     this.onLoadproductCategoryData();
     this.onLoadproductSubCategoryData();
@@ -62,14 +62,12 @@ export class TransitProceduresComponent {
     if (searchproceduredetails) {
       this.searchProcedureFrm.patchValue(searchproceduredetails);
       this.selectedTabIndex = searchproceduredetails.selectedTabIndex;
-      this.onGetFilteredData();
+      this.onLoadTransitProcedureData(this.operation_type_id);
     }
-    else {
-      this.onGetFilteredData();
-    }
+    
   }
 
-  onLoadTransitProcedureData() {
+  onLoadTransitProcedureData(operation_type_id) {
     this.spinnerShow('Loading...');
   
     const data_submit = {
@@ -117,29 +115,6 @@ export class TransitProceduresComponent {
       );
   }
 
-
-  onGetFilteredData() {
-    this.spinnerShow('Loading...');
-  
-    const data_submit = {
-      table_name: this.table_name,
-      
-    };
-  
-    this.publicservice.onLoadInformationSharingDataUrl(data_submit, 'onLoadProcedureDetails')
-      .subscribe(
-        (data) => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            this.transitProcedureData = this.data_record.data;
-          }
-          this.spinnerHide();
-        }, error => {
-
-          this.spinnerHide();
-        });
-    
-  }
 
   onLoadproductSubCategoryData() {
 

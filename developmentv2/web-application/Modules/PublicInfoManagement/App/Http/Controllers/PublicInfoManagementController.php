@@ -278,6 +278,19 @@ class PublicInfoManagementController extends Controller
                     't3.hscode as chapterscode',
                     't4.name as hscodesheading',
                     't4.hscode as headingcode',
+                )
+                ->groupBy(
+                    't1.id', 
+                    't1.chapters_defination_id', 
+                    't1.heading_definations_id', 
+                    't1.subheading_definations_id',
+                    't3.hscodesection_id',
+                    't5.name',
+                    't5.hscode',
+                    't3.name',
+                    't3.hscode',
+                    't4.name',
+                    't4.hscode'
                 );
             if (!empty($chapters_keywordsearch)) {
                 $sql->where(function ($query) use ($chapters_keywordsearch) {

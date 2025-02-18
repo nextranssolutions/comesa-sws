@@ -13,18 +13,31 @@ import { NgxCaptchaModule } from 'ngx-captcha';
 import { NgxIntlTelInputModule } from 'ngx-intl-tel-input-gg';
 import { SafePipeModule } from 'src/app/safe-pipe/safe-pipe.module';
 import { SharedModuleModule } from 'src/app/shared-views/shared-module.module';
-import { ImportexportRoutingModule } from '../importexport-control/importexport-routing.module';
 import { httpTranslateLoader } from '../revenue-management/revenue-management.module';
+import { HscodeRoutingModule } from './hscode-routing.module';
+import { RouterModule } from '@angular/router';
+import { HscodechaptersDefinationComponent } from './views/hscodes-mapping/hscodechapters-defination/hscodechapters-defination.component';
+import { HscodesSectionsComponent } from './views/hscodes-mapping/hscodes-sections/hscodes-sections.component';
+import { HscodesheadingDefinationsComponent } from './views/hscodes-mapping/hscodesheading-definations/hscodesheading-definations.component';
+import { HscodesmappingConfigsetupComponent } from './views/hscodes-mapping/hscodesmapping-configsetup/hscodesmapping-configsetup.component';
+import { HscodesproductsRegistryComponent } from './views/hscodes-mapping/hscodesproducts-registry/hscodesproducts-registry.component';
+import { HscodessubheadingDefinationComponent } from './views/hscodes-mapping/hscodessubheading-defination/hscodessubheading-defination.component';
+import { HscodestariffDetailsComponent } from './views/hscodes-mapping/hscodestariff-details/hscodestariff-details.component';
+import { SharedhscodesConfigurationsComponent } from './views/hscodes-mapping/sharedhscodes-configurations/sharedhscodes-configurations.component';
+import { HscodeDashboardComponent } from './views/hscode-dashboard/hscode-dashboard.component';
+
 
 const ngWizardConfig: NgWizardConfig = {
   theme: THEME.default
 };
 
 @NgModule({
-  declarations: [HscodemappingHeaderComponent, HscodemappingLayoutComponent, HscodemappingNavigationComponent],
+  declarations: [HscodemappingHeaderComponent, HscodemappingLayoutComponent, HscodemappingNavigationComponent,HscodechaptersDefinationComponent,
+    HscodesSectionsComponent,HscodesheadingDefinationsComponent,HscodesmappingConfigsetupComponent,HscodesproductsRegistryComponent,
+    HscodessubheadingDefinationComponent,HscodestariffDetailsComponent,SharedhscodesConfigurationsComponent,HscodeDashboardComponent],
   imports: [
-     CommonModule, ImportexportRoutingModule,
-        SharedModuleModule,
+     CommonModule,
+        SharedModuleModule,HscodeRoutingModule,RouterModule,  
         NgWizardModule.forRoot(ngWizardConfig),
         NgHttpLoaderModule, DxButtonModule, DxProgressBarModule,
         FormsModule,
@@ -56,5 +69,5 @@ const ngWizardConfig: NgWizardConfig = {
   
 })
 export class HscodeMappingModule {
-  HscodemappingHeaderComponent
+  
  }

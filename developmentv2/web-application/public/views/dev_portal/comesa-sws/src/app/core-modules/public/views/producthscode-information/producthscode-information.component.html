@@ -3,8 +3,7 @@
         <h4 class="text-start pt-2">{{'products_hscode_information' | translate}}</h4>
         <div class="row">
             <div class="col-lg-12">
-                <form role="form" enctype="multipart/form-data" [formGroup]="searchProcedureFrm"
-                    (ngSubmit)="onGetFilteredData()">
+                <form role="form" enctype="multipart/form-data" [formGroup]="searchProcedureFrm" (ngSubmit)="onLoadProductHscodeData()">
                     <dx-tab-panel id="productSearch" [(selectedIndex)]="selectedTabIndex"
                         (onTitleClick)="funcProcedureClick($event)" [iconPosition]="iconPosition" [swipeEnabled]="false"
                         [showNavButtons]="true" [animationEnabled]="true">
@@ -19,7 +18,7 @@
                             </div>
                             <div class="text-center mt-3">
                                 <dx-button text="{{'search_by_product' | translate}}" type="default" icon="fa fa-search"
-                                    [elementAttr]="{ class: 'btn-searchdetails' }" (onClick)="onGetFilteredData()">
+                                    [elementAttr]="{ class: 'btn-searchdetails' }" (onClick)="onLoadProductHscodeData()">
                                 </dx-button>
                             </div>
                         </dxi-item>
@@ -36,7 +35,7 @@
                             <div class="text-center mt-3">
                                 <dx-button text="{{'search_by_product_category' | translate}}" type="default"
                                     icon="fa fa-search" [elementAttr]="{ class: 'btn-searchdetails' }"
-                                    (onClick)="onGetFilteredData()">
+                                    (onClick)="onLoadProductHscodeData()">
                                 </dx-button>
                             </div>
                         </dxi-item>
@@ -53,7 +52,7 @@
                             <div class="text-center mt-3">
                                 <dx-button text="{{'search_by_product_subcategory' | translate}}" type="default"
                                     icon="fa fa-search" [elementAttr]="{ class: 'btn-searchdetails' }"
-                                    (onClick)="onGetFilteredData()">
+                                    (onClick)="onLoadProductHscodeData()">
                                 </dx-button>
                             </div>
                         </dxi-item>
