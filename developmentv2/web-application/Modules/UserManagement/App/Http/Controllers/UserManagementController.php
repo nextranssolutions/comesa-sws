@@ -531,7 +531,24 @@ class UserManagementController extends Controller
                     'success' => false,
                     'message' => 'Error occurred: ' . $user_resp['message'],
                 ], 200);
+            } else {
+                $appuser_id = $user_resp['record_id'];
+                $group_id = 2;
+                $usergroup_data = [
+                    'group_id' => $group_id,
+                    'user_id' => $appuser_id,
+                ];
+    
+                $usergroup_resp = insertRecord('tra_user_group', $usergroup_data);
+                if (!$usergroup_resp['success']) {
+                    DB::rollBack();
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Error occurred: ' . $usergroup_resp['message'],
+                    ], 200);
+                }
             }
+           
 
             // **Step 3: Process Submission & Send Email Notification**
             initiateInitialProcessSubmission('usr_users_information', $application_code, $process_id, $user_resp['record_id']);
