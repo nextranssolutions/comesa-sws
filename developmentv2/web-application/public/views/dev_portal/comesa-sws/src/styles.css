@@ -6487,7 +6487,7 @@ fieldset:disabled .btn {
 }
 
 .dx-texteditor.dx-editor-filled .dx-lookup-field, .dx-texteditor.dx-editor-filled .dx-placeholder::before, .dx-texteditor.dx-editor-filled .dx-texteditor-input, .dx-texteditor.dx-editor-outlined .dx-lookup-field, .dx-texteditor.dx-editor-outlined .dx-placeholder::before, .dx-texteditor.dx-editor-outlined .dx-texteditor-input {
-  /* padding: 10px !important; */
+  padding: 15px 15px !important;
 }
 
 
@@ -6496,7 +6496,7 @@ fieldset:disabled .btn {
 .dx-numberbox .dx-texteditor-input {
   border-radius: 0px !important;
   margin-top: 5px !important;
-  /* margin-bottom: 5px !important; */
+  margin-bottom: 5px !important;
 }
 
 /* Optional: Ensure the entire input container aligns properly */

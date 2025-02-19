@@ -32,4 +32,5 @@ Route::middleware(['XssSanitizer', 'clear_cache_config', 'firewall.all'])->prefi
     Route::get('onLoadHSCodes', [PublicInfoManagementController::class, 'onLoadHSCodes']);
     Route::get('onLoadHSCodesProductsRegistry', [PublicInfoManagementController::class, 'onLoadHSCodesProductsRegistry']);
     Route::get('onLoadProcedureDetails', [PublicInfoManagementController::class, 'onLoadProcedureDetails']);
+    Route::get('onLoadRestrictionsProhibitions', [PublicInfoManagementController::class, 'onLoadRestrictionsProhibitions']);
 });

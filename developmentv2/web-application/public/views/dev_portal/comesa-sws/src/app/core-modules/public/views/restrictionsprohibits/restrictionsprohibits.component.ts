@@ -3,6 +3,7 @@ import { Router } from '@angular/router';
 import { DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
 import { SpinnerVisibilityService } from 'ng-http-loader';
 import { ToastrService } from 'ngx-toastr';
+import { PublicDashboardService } from 'src/app/core-services/public-dashboard/public-dashboard.service';
 import { ReportsService } from 'src/app/core-services/reports/reports.service';
 import { UtilityService } from 'src/app/core-services/utilities/utility.service';
 
@@ -17,28 +18,45 @@ export class RestrictionsprohibitsComponent {
           spinnerMessage: string;
           loadingVisible: boolean;
           restrictionsData: any[] = [];
-        
-        
+          table_name: string;
+          data_record: any;
           constructor(
             private spinner: SpinnerVisibilityService,
             private router: Router,
             public toastr: ToastrService,
             public viewRef: ViewContainerRef,
             public utilityService: UtilityService,
-        
+            public publicservice: PublicDashboardService,
             public reportingAnalytics: ReportsService,
         
           ) {
-        
+            this.table_name = 'tra_restrictions_prohibitions';
           }
         
           ngOnInit() {
             this.onLoadRestrictionsData()
           }
         
+          onLoadRestrictionsData() {
+            this.spinnerShow('Loading...');
+          
+            const data_submit = {
+              table_name: this.table_name,
+              // 'operation_type_id': 3
+            };
+          
+            this.publicservice.onLoadInformationSharingDataUrl(data_submit, 'onLoadRestrictionsProhibitions')
+              .subscribe(
+                (data) => {
+                  this.data_record = data;
+                  if (this.data_record.success) {
+                    this.restrictionsData = this.data_record.data;
+                  }
+                  this.spinnerHide();
+                }, error => {
         
-        
-          onLoadRestrictionsData(){
+                  this.spinnerHide();
+                });
             
           }
           onExporting(e: DxDataGridTypes.ExportingEvent) {
@@ -107,3 +125,5 @@ export class RestrictionsprohibitsComponent {
             this.loadingVisible = false;
           }
 }
+
+

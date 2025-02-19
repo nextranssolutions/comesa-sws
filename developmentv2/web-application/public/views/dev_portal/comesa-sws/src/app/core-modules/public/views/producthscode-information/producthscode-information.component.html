@@ -1,13 +1,13 @@
 <div class="container-fluid row div-home">
     <div class="col-lg-12 border-linemargin">
-        <h6 class="text-start">{{'product_hscodes' | translate}}</h6>
+        <h4 class="text-start pt-2">{{'products_hscode_information' | translate}}</h4>
         <div class="row">
             <div class="col-lg-12">
                 <form role="form" enctype="multipart/form-data" [formGroup]="searchProcedureFrm" (ngSubmit)="onLoadProductHscodeData()">
                     <dx-tab-panel id="productSearch" [(selectedIndex)]="selectedTabIndex"
                         (onTitleClick)="funcProcedureClick($event)" [iconPosition]="iconPosition" [swipeEnabled]="false"
                         [showNavButtons]="true" [animationEnabled]="true">
-        
+
                         <!-- Search by Product -->
                         <dxi-item title="{{'search_by_product' | translate}}" icon="map">
                             <div class="form-group has-search search-margin-top">
@@ -22,13 +22,14 @@
                                 </dx-button>
                             </div>
                         </dxi-item>
-        
+
                         <!-- Search by Product Category -->
                         <dxi-item title="{{'search_by_product_category' | translate}}" icon="map">
                             <div class="form-group has-search search-margin-top">
                                 <dx-select-box [dataSource]="productCategoryData" class="form-control"
-                                    placeholder="{{'search_by_product_category' | translate}}" formControlName="hscodesheading"
-                                    [showClearButton]="true" valueExpr="id" [searchEnabled]="true" displayExpr="name">
+                                    placeholder="{{'search_by_product_category' | translate}}"
+                                    formControlName="hscodesheading" [showClearButton]="true" valueExpr="id"
+                                    [searchEnabled]="true" displayExpr="name">
                                 </dx-select-box>
                             </div>
                             <div class="text-center mt-3">
@@ -38,7 +39,7 @@
                                 </dx-button>
                             </div>
                         </dxi-item>
-        
+
                         <!-- Search by Product Subcategory -->
                         <dxi-item title="{{'search_by_product_subcategory' | translate}}" icon="map">
                             <div class="form-group has-search search-margin-top">
@@ -55,13 +56,13 @@
                                 </dx-button>
                             </div>
                         </dxi-item>
-        
+
                     </dx-tab-panel>
                 </form>
             </div>
         </div>
-        
-        
+
+
 
 
         <dx-data-grid (onExporting)="onExporting($event)" (onCellPrepared)="onCellPrepared($event)"

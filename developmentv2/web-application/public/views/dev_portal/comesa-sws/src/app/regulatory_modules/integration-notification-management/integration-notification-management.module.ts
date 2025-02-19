@@ -12,11 +12,11 @@ import { NgxCaptchaModule } from 'ngx-captcha';
 import { NgxIntlTelInputModule } from 'ngx-intl-tel-input-gg';
 import { SafePipeModule } from 'src/app/safe-pipe/safe-pipe.module';
 import { SharedModuleModule } from 'src/app/shared-views/shared-module.module';
-import { ImportexportRoutingModule } from '../importexport-control/importexport-routing.module';
 import { httpTranslateLoader } from '../revenue-management/revenue-management.module';
 import { IntegrationNtfMgtHeaderComponent } from './views/layout/integration-ntf-mgt-header/integration-ntf-mgt-header.component';
 import { IntegrationNtfMgtLayoutComponent } from './views/layout/integration-ntf-mgt-layout/integration-ntf-mgt-layout.component';
 import { IntegrationNtfMgtNavigationComponent } from './views/layout/integration-ntf-mgt-navigation/integration-ntf-mgt-navigation.component';
+import { IntegrationNtfManagementDashboardComponent } from './views/integration-ntf-management-dashboard/integration-ntf-management-dashboard.component';
 
 
 
@@ -26,9 +26,9 @@ const ngWizardConfig: NgWizardConfig = {
 
 
 @NgModule({
-  declarations: [IntegrationNtfMgtHeaderComponent, IntegrationNtfMgtLayoutComponent, IntegrationNtfMgtNavigationComponent],
+  declarations: [IntegrationNtfMgtHeaderComponent, IntegrationNtfMgtLayoutComponent, IntegrationNtfMgtNavigationComponent,IntegrationNtfManagementDashboardComponent],
   imports: [
-    CommonModule, ImportexportRoutingModule,
+    CommonModule, IntegrationNotificationManagementRoutingModule,
     SharedModuleModule,
     NgWizardModule.forRoot(ngWizardConfig),
     NgHttpLoaderModule, DxButtonModule, DxProgressBarModule,

@@ -211,6 +211,7 @@ export class TopSectionComponent {
     );
   }
 
+
   onLoadTraderAccountTypeData() {
     var data_submit = {
       table_name: 'par_traderaccount_types',

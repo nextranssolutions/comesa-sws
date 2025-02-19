@@ -339,65 +339,68 @@ class PublicInfoManagementController extends Controller
     }
     
     
-    // public function onLoadHSCodesProductsRegistry(Request $req)
-    // {
-    //     try {
-    //         // $process_id = 2;
+    public function onLoadRestrictionsProhibitions(Request $req)
+    {
+        try {
+            // $process_id = 2;
 
-    //         // Initialize the query builder
-    //         $productregistry_data = array();
-    //         $subheading_definations_id = $req->subheading_definations_id;
+            // Initialize the query builder
+            $productregistry_data = array();
+            $hscodessubheading_defination_id = $req->hscodessubheading_defination_id;
             
-    //         $table_name = 'tra_hscodesproducts_registry';
+            $table_name = 'tra_restrictions_prohibitions';
 
-    //         $sql = DB::table($table_name . ' as t1')
-    //             ->join('par_hscodessections as t2', 't3.hscodessection_id', 't2.id')
-    //             ->leftJoin('par_hscodechapters_defination as t3', 't1.chapters_defination_id', 't3.id')
-    //             ->leftJoin('par_hscodesheading_definations as t4', 't1.heading_definations_id', 't4.id')
-    //             ->leftJoin('par_hscodessubheading_defination as t5', 't1.subheading_definations_id', 't5.id')
-    //             ->select(
-    //                 't1.*',
-    //                 't5.name as hscodessubheading',
-    //                 't5.hscode as subheadingcode',
-    //                 't3.name as hscodechapters',
-    //                 't3.hscode as chapterscode',
-    //                 't4.name as hscodesheading',
-    //                 't4.hscode as headingcode',
-    //             )
-    //             ->groupBy('hscodessection_id');
-    //         // ->where('allow_public_visibility', true);
-    //         if (is_numeric($subheading_definations_id)) {
-    //             $sql->where('t5.id', $subheading_definations_id);
-    //         }
+            $sql = DB::table($table_name . ' as t1')
+                // ->join('par_hscodessections as t2', 't3.hscodessection_id', 't2.id')
+                ->leftJoin('par_hscodechapters_defination as t3', 't1.hscodechapters_defination_id', 't3.id')
+                ->leftJoin('par_hscodesheading_definations as t4', 't1.hscodesheading_defination_id', 't4.id')
+                ->leftJoin('par_hscodessubheading_defination as t5', 't1.hscodessubheading_defination_id', 't5.id') 
+                ->leftJoin('par_operation_type as t6', 't1.permit_operations_id', 't6.id') 
+                ->select(
+                    't1.*',
+                    't5.name as hscodessubheading',
+                    't5.hscode as subheadingcode',
+                    't3.name as hscodechapters',
+                    't3.hscode as chapterscode',
+                    't4.name as hscodesheading',
+                    't4.hscode as headingcode',
+                    't6.name as permit_operation',
+                );
+            // ->where('allow_public_visibility', true);
+            if (is_numeric($hscodessubheading_defination_id)) {
+                $sql->where('t5.id', $hscodessubheading_defination_id);
+            }
 
-    //         $data = $sql->get();
+            $data = $sql->get();
 
-    //         // Loop through each record and build the response array
-    //         foreach ($data as $rec) {
-    //             $productregistry_data[] = array(
-    //                 'id' => $rec->id,
+            // Loop through each record and build the response array
+            foreach ($data as $rec) {
+                $productregistry_data[] = array(
+                    'id' => $rec->id,
 
-    //                 'chapters_defination_id' => $rec->chapters_defination_id,
-    //                 'heading_definations_id' => $rec->heading_definations_id,
-    //                 'subheading_definations_id' => $rec->subheading_definations_id,
-    //                 'hscodesheading' => $rec->headingcode . ' ' . $rec->hscodesheading,
-    //                 'hscodechapters' => $rec->chapterscode . ' ' . $rec->hscodechapters,
-    //                 'hscodessubheading' => $rec->subheadingcode . ' ' . $rec->hscodessubheading,
-    //                 'headingcode' => $rec->headingcode,
-    //                 'chapterscode' => $rec->chapterscode,
-    //                 'subheadingcode' => $rec->subheadingcode,
-    //             );
-    //         }
-    //         // $user_data=encrypt_data($procedure_data);
-    //         $res = array('success' => true, 'data' => $productregistry_data);
+                    'hscodechapters_defination_id' => $rec->hscodechapters_defination_id,
+                    'hscodesheading_defination_id' => $rec->hscodesheading_defination_id,
+                    'hscodessubheading_defination_id' => $rec->hscodessubheading_defination_id,
+                    'permit_operations_id' => $rec->permit_operations_id,
+                    'hscodesheading' => $rec->headingcode . ' ' . $rec->hscodesheading,
+                    'hscodechapters' => $rec->chapterscode . ' ' . $rec->hscodechapters,
+                    'hscodessubheading' => $rec->subheadingcode . ' ' . $rec->hscodessubheading,
+                    'headingcode' => $rec->headingcode,
+                    'chapterscode' => $rec->chapterscode,
+                    'subheadingcode' => $rec->subheadingcode,
+                    'permit_operation' => $rec->permit_operation,
+                );
+            }
+            // $user_data=encrypt_data($procedure_data);
+            $res = array('success' => true, 'data' => $productregistry_data);
 
-    //     } catch (\Exception $exception) {
-    //         $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
-    //     } catch (\Throwable $throwable) {
-    //         $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
-    //     }
-    //     return response()->json($res, 200);
-    // }
+        } catch (\Exception $exception) {
+            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        } catch (\Throwable $throwable) {
+            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        }
+        return response()->json($res, 200);
+    }
     public function onLoadHSCodes(Request $req)
     {
         try {
