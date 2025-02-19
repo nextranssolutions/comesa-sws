@@ -406,7 +406,7 @@ form .ng-valid {
 }  
 
 .dx-datagrid .dx-row > td {
-  /* padding: 2px 2px !important; */
+  padding: 2px 2px !important;
   border-radius: 0.3px;
 }
 
@@ -6487,16 +6487,21 @@ fieldset:disabled .btn {
 }
 
 .dx-texteditor.dx-editor-filled .dx-lookup-field, .dx-texteditor.dx-editor-filled .dx-placeholder::before, .dx-texteditor.dx-editor-filled .dx-texteditor-input, .dx-texteditor.dx-editor-outlined .dx-lookup-field, .dx-texteditor.dx-editor-outlined .dx-placeholder::before, .dx-texteditor.dx-editor-outlined .dx-texteditor-input {
-  padding: 15px 15px !important;
+  padding: 5px 15px !important;
 }
 
 
 .dx-textbox .dx-texteditor-input, 
 .dx-datebox .dx-texteditor-input, 
 .dx-numberbox .dx-texteditor-input {
-  border-radius: 0px !important;
-  margin-top: 5px !important;
-  margin-bottom: 5px !important;
+  /* border-radius: 0px !important; */
+  margin-left: 5px !important;
+  /* margin-bottom: 5px !important; */
+}
+
+.dx-dropdowneditor-input-wrapper {
+  
+  margin-left: 12px !important;
 }
 
 /* Optional: Ensure the entire input container aligns properly */
@@ -6504,4 +6509,17 @@ fieldset:disabled .btn {
   border-radius: 0px !important;
   margin-top: 5px !important;
   margin-bottom: 5px !important;
+}
+
+
+.dx-scrollable-content label {
+  margin-left: 12px;
+}
+
+.dx-textbox .dx-texteditor-input, .dx-datebox .dx-texteditor-input, .dx-numberbox .dx-texteditor-input {
+    border: 1px solid #D5D5D5 !important;
+}
+
+.dx-dropdowneditor-input-wrapper .dx-selectbox-container {
+  margin-left: 12px;
 }
