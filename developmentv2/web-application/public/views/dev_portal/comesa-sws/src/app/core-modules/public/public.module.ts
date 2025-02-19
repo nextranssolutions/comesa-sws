@@ -31,6 +31,7 @@ import { ImportexportsCostsComponent } from './views/importexports-costs/importe
 import { RestrictionsprohibitsComponent } from './views/restrictionsprohibits/restrictionsprohibits.component';
 import { FaqsComponent } from './views/faqs/faqs.component';
 import { SearchProceduresComponent } from './views/search-procedures/search-procedures.component';
+import { AllProceduresComponent } from './views/all-procedures/all-procedures.component';
 
 @NgModule({
   declarations: [TopSectionComponent,
@@ -51,7 +52,8 @@ import { SearchProceduresComponent } from './views/search-procedures/search-proc
     ProducthscodeInformationComponent,
     ImportexportsCostsComponent,
     RestrictionsprohibitsComponent,
-    FaqsComponent, SearchProceduresComponent
+    FaqsComponent, SearchProceduresComponent,
+    AllProceduresComponent
   ],
   imports: [
     CommonModule, NgHttpLoaderModule, PublicRoutingModule, DxButtonModule, DxProgressBarModule,

@@ -275,6 +275,7 @@ import { RegulatedProductsTypesComponent } from './views/configurations/process-
 import { RegFunctionsComponent } from './views/configurations/process-configurations/reg-functions/reg-functions.component';
 import { AppealsTypesComponent } from './views/configurations/process-configurations/appeals-types/appeals-types.component';
 import { ProcessConfigsetupComponent } from './views/configurations/process-configurations/process-configsetup/process-configsetup.component';
+import { PermitTypesComponent } from './views/configurations/permittypes-configuration/permit-types/permit-types.component';
 
 @NgModule({
   declarations: [AppdashboardComponent,
@@ -517,6 +518,7 @@ import { ProcessConfigsetupComponent } from './views/configurations/process-conf
     IntendedendUserComponent,
     MasterIngredientsComponent,
     MethodofUseComponent,
+    PermitTypesComponent,
     NutrientsComponent,
     ProdclassificationCategoriesComponent,
     ProdclassificationRulesComponent,
@@ -667,6 +669,8 @@ import { ProcessConfigsetupComponent } from './views/configurations/process-conf
     PortalProcesstransitionComponent,
     PortalDocdefinationComponent,
     AppFormsComponent,
+    PermitTypesComponent,
+   
    
     SharedconfigurationsComponent,
     UserloginLogsComponent,

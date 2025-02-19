@@ -428,17 +428,16 @@ class UserManagementController extends Controller
                     'message' => $validator->errors()->first(),
                 ], 422);
             }
-            $app_statusrecord = getInitialWorkflowStatusId($process_id);
-            
-            if (!$app_statusrecord) {
+            // $app_statusrecord = getInitialWorkflowStatusId($process_id);
+            // if (!$app_statusrecord) {
 
-                return response()->json([
-                    'success' => false,
-                    'message' => 'The Initial Workflow Status Has not been set, contact the system admin',
-                ], 200);
-            }
+            //     return response()->json([
+            //         'success' => false,
+            //         'message' => 'The Initial Workflow Status Has not been set, contact the system admin',
+            //     ], 200);
+            // }
 
-            $appworkflow_status_id = $app_statusrecord->appworkflow_status_id;
+            // $appworkflow_status_id = $app_statusrecord->appworkflow_status_id;
 
             //OTP validation
             if ($otp_value) {

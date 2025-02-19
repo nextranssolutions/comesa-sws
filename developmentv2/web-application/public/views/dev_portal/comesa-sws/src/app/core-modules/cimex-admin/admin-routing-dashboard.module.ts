@@ -229,6 +229,7 @@ import { PrommaterialBookcataloguesComponent } from './views/configurations/prom
 import { PromotionadvertChannelsComponent } from './views/configurations/promotional_advertisements_configurations/promotionadvert-channels/promotionadvert-channels.component';
 import { PromotionmaterialCategoriesComponent } from './views/configurations/promotional_advertisements_configurations/promotionmaterial-categories/promotionmaterial-categories.component';
 import { ProcessConfigsetupComponent } from './views/configurations/process-configurations/process-configsetup/process-configsetup.component';
+import { PermitTypesComponent } from './views/configurations/permittypes-configuration/permit-types/permit-types.component';
 
 //./admin-ecres/app-dashboard
 const routes: Routes = [{
@@ -256,7 +257,12 @@ const routes: Routes = [{
   }, {
     path: 'app-user-groups',
     component: UserGroupsComponent
-  }, {
+  },
+  {
+    path: 'app-permit-types',
+    component: PermitTypesComponent
+  },
+  {
     path: 'app-currencies',
     component: AppCurrenciesComponent
   }, {

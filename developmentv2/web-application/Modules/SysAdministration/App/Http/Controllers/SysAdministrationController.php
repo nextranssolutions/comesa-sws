@@ -749,6 +749,7 @@ class SysAdministrationController extends Controller
     }
 
 
+    
     public function getAppUserGroupRegulatoryFunctions(Request $req)
     {
         try {
@@ -773,7 +774,33 @@ class SysAdministrationController extends Controller
         return response()->json($res, 200);
     }
 
+    public function getAppHscodes(Request $req)
+{
+    try {
+        
+        $permit_type_id = $req->permit_type_id;
+        $sql = DB::table('par_hsCode as t1')
+            ->leftJoin('tra_transactionpermit_types as t2', function ($join) use ($permit_type_id) {
+                $join->on('t1.id', '=', 't2.hscode_id')
+                     ->where('t2.transaction_permit_id', '=', $permit_type_id);
+            })
+            ->select('t1.*')
+            ->orderBy('t1.order_no');
+            if (validateIsNumeric($permit_type_id)) {
+                $sql->where('t1.permit_type_id', $permit_type_id);
+            };
+            $data = $sql->get(); 
+            print_r($data);
+            $res = ['success' => true, 'data' => $data];
+
+    }catch (\Exception $exception) {
+        $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+    } catch (\Throwable $throwable) {
+        $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+    }
     
+    return response()->json($res, 200);
+}
 
     public function onSaveSystemGuideline(Request $req)
     {

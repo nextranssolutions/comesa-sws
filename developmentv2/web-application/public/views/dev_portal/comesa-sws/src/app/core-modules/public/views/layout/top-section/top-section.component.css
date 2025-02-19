@@ -182,7 +182,7 @@
 
 .futuristic-form .dx-textbox,
 .futuristic-form .dx-selectbox {
-  background: rgba(0, 0, 0, 0.4);
+  /* background: rgba(0, 0, 0, 0.4); */
   border: 1px solid #00c6ff;
   border-radius: 8px;
   color: #fff;
@@ -210,4 +210,15 @@
     width: 100%;
     padding: 15px;
   }
+}
+.custom-buttons {
+  justify-content: space-between;
+}
+
+.dx-field-item:not(.dx-field-item-has-group):not(.dx-field-item-has-tabs):not(.dx-first-row):not(.dx-label-v-align) {
+  padding-top: 10px !important;
+}
+
+.dx-field-item:not(.dx-field-item-has-group):not(.dx-field-item-has-tabs):not(.dx-first-row):not(.dx-label-v-align) {
+  padding-top: 10px !important;
 }

@@ -1,4 +1,4 @@
-import { HttpClient, HttpHeaders} from '@angular/common/http';
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AppSettings } from 'src/app/app-settings';
 import { map } from 'rxjs/operators';
@@ -13,11 +13,11 @@ export class ServiceAdmnistrationService {
 
   private baseUrl;
   system: any;
-  data:any;
-  key:string= 'kPJks1MrdXE03n8H';
+  data: any;
+  key: string = 'kPJks1MrdXE03n8H';
 
   application_details: any;
-  constructor(private HttpClient: HttpClient, private http: HttpClient,private sanitizer:DomSanitizer,private authService: AuthenticationService,private encryptionService: EncryptionService) { 
+  constructor(private HttpClient: HttpClient, private http: HttpClient, private sanitizer: DomSanitizer, private authService: AuthenticationService, private encryptionService: EncryptionService) {
     this.baseUrl = AppSettings.base_url + '/api/sysadministration';
   }
   getApplicationDetail() {
@@ -27,9 +27,9 @@ export class ServiceAdmnistrationService {
     this.application_details = data;
   }
   onLoadServicesDataset(module_id) {
-    
+
     this.system = {
-      params:  {module_id:module_id},
+      params: { module_id: module_id },
       headers: { 'Accept': 'application/json' }
     };
     return this.HttpClient.get(this.baseUrl + '/getOrganisationServices', this.system)
@@ -38,17 +38,17 @@ export class ServiceAdmnistrationService {
         return navigations;
       }));
   }
-  
+
   getSafeUrl(url) {
-      return this.sanitizer.bypassSecurityTrustResourceUrl(url)
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url)
   }
-  onLoadAppSubmissionGuidelines(sub_module_id,section_id){
+  onLoadAppSubmissionGuidelines(sub_module_id, section_id) {
     var headers = new HttpHeaders({
       "Accept": "application/json",
       "Authorization": "Bearer " + this.authService.getAccessToken(),
     });
     this.system = {
-      params: { sub_module_id: sub_module_id, section_id:section_id},
+      params: { sub_module_id: sub_module_id, section_id: section_id },
       headers: headers
     };
     return this.HttpClient.get(this.baseUrl + '/getAppSubmissionGuidelines', this.system)
@@ -56,12 +56,12 @@ export class ServiceAdmnistrationService {
         return <any>data;
       }));
   }
-  
+
   onLoadDataUrl(data, action_url) {
     data.table_name = btoa(data.table_name);
-    data.table_name=this.encryptionService.OnEncryptData(data.table_name)
+    data.table_name = this.encryptionService.OnEncryptData(data.table_name)
     const loggedInUserId = localStorage.getItem('id');
-    data.user_id =loggedInUserId;
+    data.user_id = loggedInUserId;
     this.system = {
       params: data,
       headers: { 'Accept': 'application/json' }
@@ -71,7 +71,7 @@ export class ServiceAdmnistrationService {
         return <any>data;
       }));
   }
-  
+
   onLoadSystemAdministrationData(data) {
     data.table_name = btoa(data.table_name);
     this.system = {
@@ -81,7 +81,7 @@ export class ServiceAdmnistrationService {
 
     return this.HttpClient.get(this.baseUrl + '/onLoadSystemAdministrationData', this.system)
       .pipe(map(data => {
-            return <any>data;
+        return <any>data;
       }));
   }
 
@@ -94,11 +94,11 @@ export class ServiceAdmnistrationService {
 
     return this.HttpClient.get(this.baseUrl + '/onLoadSystemGuideline', this.system)
       .pipe(map(data => {
-            return <any>data;
+        return <any>data;
       }));
   }
-  onSaveSystemAdministrationDetails(table_name,data,action_url){
-    if(data.guidelines){
+  onSaveSystemAdministrationDetails(table_name, data, action_url) {
+    if (data.guidelines) {
       let guidelines_data = data.guidelines;
 
       data.guidelines = btoa(guidelines_data)
@@ -106,34 +106,34 @@ export class ServiceAdmnistrationService {
     const loggedInUserId = localStorage.getItem('id');
     const loggedInUserName = localStorage.getItem('first_name');
     this.system = {
-      params: { 'user_id': loggedInUserId, 'user_name': loggedInUserName,table_name:table_name },
+      params: { 'user_id': loggedInUserId, 'user_name': loggedInUserName, table_name: table_name },
 
       headers: { 'Accept': 'application/json' }
     };
 
-    return this.http.post(this.baseUrl + '/'+action_url, data,this.system)
+    return this.http.post(this.baseUrl + '/' + action_url, data, this.system)
       .pipe(map(data => {
         return data;
       }));
   }
-  onSavingUserNavigationPermissions(table_name,data,post_data,action_url){
+  onSavingUserNavigationPermissions(table_name, data, post_data, action_url) {
     const loggedInUserId = localStorage.getItem('id');
     const loggedInUserName = localStorage.getItem('first_name');
     this.system = {
-      params: { 'user_id': loggedInUserId, 'user_name': loggedInUserName,table_name:table_name, 'permission_data': post_data},
+      params: { 'user_id': loggedInUserId, 'user_name': loggedInUserName, table_name: table_name, 'permission_data': post_data },
 
       headers: { 'Accept': 'application/json' }
     };
 
-    return this.http.post(this.baseUrl + '/'+action_url, data,this.system)
+    return this.http.post(this.baseUrl + '/' + action_url, data, this.system)
       .pipe(map(data => {
         return data;
       }));
   }
 
-  
 
-  onDeleteSystemAdministrationDetails(dataForm,table_name,title){
+
+  onDeleteSystemAdministrationDetails(dataForm, table_name, title) {
     var headers = new Headers({
       "Accept": "application/json",
       "Authorization": "Bearer " + this.authService.getAccessToken(),
@@ -141,9 +141,9 @@ export class ServiceAdmnistrationService {
     const loggedInUserId = localStorage.getItem('id');
     const loggedInUserName = localStorage.getItem('first_name');
     this.system = {
-      params: { 'user_id': loggedInUserId, 'user_name': loggedInUserName,table_name:table_name },
+      params: { 'user_id': loggedInUserId, 'user_name': loggedInUserName, table_name: table_name },
 
-      headers: { 'Accept': 'application/json',"Authorization": "Bearer " + this.authService.getAccessToken(), }
+      headers: { 'Accept': 'application/json', "Authorization": "Bearer " + this.authService.getAccessToken(), }
     };
     return this.http.post(this.baseUrl + '/onDeleteConfigData', dataForm, this.system)
       .pipe(map(data => {
@@ -151,7 +151,7 @@ export class ServiceAdmnistrationService {
       }));
   }
 
-  onDeleteConfigData(dataForm,table_name,title){
+  onDeleteConfigData(dataForm, table_name, title) {
     var headers = new Headers({
       "Accept": "application/json",
       "Authorization": "Bearer " + this.authService.getAccessToken(),
@@ -159,9 +159,9 @@ export class ServiceAdmnistrationService {
     const loggedInUserId = localStorage.getItem('id');
     const loggedInUserName = localStorage.getItem('first_name');
     this.system = {
-      params: { 'user_id': loggedInUserId, 'user_name': loggedInUserName,table_name:table_name },
+      params: { 'user_id': loggedInUserId, 'user_name': loggedInUserName, table_name: table_name },
 
-      headers: { 'Accept': 'application/json',"Authorization": "Bearer " + this.authService.getAccessToken(), }
+      headers: { 'Accept': 'application/json', "Authorization": "Bearer " + this.authService.getAccessToken(), }
     };
     return this.http.post(this.baseUrl + '/onDeleteConfigData', dataForm, this.system)
       .pipe(map(data => {
@@ -169,12 +169,12 @@ export class ServiceAdmnistrationService {
       }));
   }
 
-  
+
   getAppUserGroupNavigationMenus(user_group_id, account_type_id) {
-    
+
     this.system = {
       headers: { 'Accept': 'application/json' },
-      params:{user_group_id:user_group_id, account_type_id:account_type_id}
+      params: { user_group_id: user_group_id, account_type_id: account_type_id }
     };
 
     return this.HttpClient.get(this.baseUrl + '/getAppUserGroupNavigationMenus', this.system)
@@ -183,10 +183,10 @@ export class ServiceAdmnistrationService {
       }));
   }
   getAppUserGroupWorkflowPermission(user_group_id) {
-    
+
     this.system = {
       headers: { 'Accept': 'application/json' },
-      params:{user_group_id:user_group_id}
+      params: { user_group_id: user_group_id }
     };
 
     return this.HttpClient.get(this.baseUrl + '/getAppUserGroupWorkflowPermission', this.system)
@@ -196,10 +196,10 @@ export class ServiceAdmnistrationService {
   }
 
   getAppUserGroupRegulatoryFunctions(user_group_id) {
-    
+
     this.system = {
       headers: { 'Accept': 'application/json' },
-      params:{user_group_id:user_group_id}
+      params: { user_group_id: user_group_id }
     };
 
     return this.HttpClient.get(this.baseUrl + '/getAppUserGroupRegulatoryFunctions', this.system)
@@ -208,6 +208,16 @@ export class ServiceAdmnistrationService {
       }));
   }
 
+  getAppHsCodes(permit_type_id) {
 
-  
+    this.system = {
+      headers: { 'Accept': 'application/json' },
+      params: { permit_type_id: permit_type_id }
+    };
+
+    return this.HttpClient.get(this.baseUrl + '/getAppHsCodes', this.system)
+      .pipe(map(data => {
+        return <any>data;
+      }));
+  }
 }

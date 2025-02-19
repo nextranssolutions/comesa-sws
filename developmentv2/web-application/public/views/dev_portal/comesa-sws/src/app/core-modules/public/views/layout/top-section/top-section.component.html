@@ -59,8 +59,8 @@
 </div>
 
 
-<dx-popup [(visible)]="isSignupPopupVisible" [showTitle]="true" title="{{ 'create_account' | translate }}" [width]="550"
-  [height]="650" [dragEnabled]="true" [closeOnOutsideClick]="true">
+<dx-popup [(visible)]="isSignupPopupVisible" [showTitle]="true" title="{{ 'create_account(applicants_only)' | translate }}" [width]="550"
+  [height]="750" [dragEnabled]="true" [closeOnOutsideClick]="true">
   <dx-form [formGroup]="signUpFrm" (ngSubmit)="submitSignup()" class="futuristic-form">
 
     <dxi-item dataField="{{ 'trader_account_type' | translate }}" editorType="dxTextBox"
@@ -103,26 +103,27 @@
         </dx-validator>
       </dx-number-box>
     </dxi-item>
-  
-    <dxi-item>
+ 
+    <dxi-item class="d-flex custom-buttons">
       <dx-button text="{{'sign_up' | translate}}" type="success" icon="fa fa-arrow-right"
         [elementAttr]="{ class: 'neon-button' }" (onClick)="submitSignup()">
       </dx-button>
-    </dxi-item>
-  
-    <dxi-item>
       <dx-button text="{{ 'already_have_an_account' | translate }}?" type="default" icon="fa fa-user"
-        [elementAttr]="{ class: 'neon-button-outline' }" (onClick)="openSigninPopup()">
-      </dx-button>
+      [elementAttr]="{ class: 'neon-button-outline' }" (onClick)="openSigninPopup()">
+    </dx-button>
     </dxi-item>
   
-    <dxi-item>
+    <!-- <dxi-item>
+    
+    </dxi-item> -->
+  
+    <!-- <dxi-item>
       <span class="cursor-pointer text-primary">
         <a href="javascript:void(0)" (click)="funcLostPassord()" class="text-primary futuristic-link">
           <i class="fa fa-key"></i> {{'lost_password' | translate}}
         </a>
       </span>
-    </dxi-item>
+    </dxi-item> -->
   
   </dx-form>
   
@@ -209,13 +210,9 @@
     </dxi-item>
   
     <!-- Forgot Password Link -->
-    <dxi-item>
-      <span class="cursor-pointer text-primary">
-        <a href="javascript:void(0)" (click)="funcLostPassord()">
-          <i class="fa fa-key"></i> {{ 'lost_password' | translate }}
-        </a>
-      </span>
-    </dxi-item>
+    <!-- <dxi-item>
+    
+    </dxi-item> -->
   
     <!-- Send OTP Button -->
     <dxi-item>
@@ -238,13 +235,19 @@
       <dx-button class="dx-button" text="{{'sign_in' | translate}}" icon="fas fa-sign-in-alt"
         (onClick)="onSignIn()">
       </dx-button>
+    
     </dxi-item>
   
     <!-- Create Account Link -->
-    <dxi-item>
+    <dxi-item class="d-flex custom-buttons"> 
       <span class="cursor-pointer text-primary">
         <a href="javascript:void(0)" (click)="openSignupPopup()">
           <i class="fas fa-user-plus"></i> {{ 'create_account' | translate }}
+        </a>
+      </span>
+      <span class="cursor-pointer text-primary">
+        <a href="javascript:void(0)" (click)="funcLostPassord()">
+          <i class="fa fa-key"></i> {{ 'lost_password' | translate }}
         </a>
       </span>
     </dxi-item>
