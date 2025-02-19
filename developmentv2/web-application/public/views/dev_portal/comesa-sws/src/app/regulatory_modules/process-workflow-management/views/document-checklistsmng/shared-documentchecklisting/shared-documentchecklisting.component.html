@@ -9,7 +9,7 @@
   
   
   <dx-button text="{{ 'add' | translate  }} {{ parameter_name | translate }}" type="default" icon="fa fa-save"
-    [elementAttr]="{ id: 'elementId', class: 'pull-right' }" (onClick)="hasReadpermissions=false; onAddNewProduct()">
+    [elementAttr]="{ id: 'elementId', class: '' }" (onClick)="hasReadpermissions=false; onAddNewProduct()">
   </dx-button>
   
   <dx-data-grid (onCellPrepared)="onCellPrepared($event)" (onExporting)="onExporting($event)"

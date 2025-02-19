@@ -1,24 +1,22 @@
-import { Component, HostListener, Input, OnInit, ViewContainerRef } from '@angular/core';
+import { Component, HostListener, OnInit, ViewContainerRef } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { ToastrService } from 'ngx-toastr';
 import { DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
 import { DxTabPanelTypes } from 'devextreme-angular/ui/tab-panel';
-import { UtilityService } from 'src/app/core-services/utilities/utility.service';
-import { ServiceAdmnistrationService } from 'src/app/core-services/system-admnistration/system-admnistration.service';
+import { ToastrService } from 'ngx-toastr';
 import { AppmenuService, Change } from 'src/app/core-services/appmenu.service';
-import { WokflowManagementService } from 'src/app/core-services/workflow-management/wokflow-management.service';
 import { ReportsService } from 'src/app/core-services/reports/reports.service';
+import { ServiceAdmnistrationService } from 'src/app/core-services/system-admnistration/system-admnistration.service';
+import { UtilityService } from 'src/app/core-services/utilities/utility.service';
+import { WokflowManagementService } from 'src/app/core-services/workflow-management/wokflow-management.service';
 
 @Component({
-  selector: 'app-user-groups',
-  templateUrl: './user-groups.component.html',
-  styleUrls: ['./user-groups.component.css']
+  selector: 'app-user-groups-permissions',
+  templateUrl: './user-groups-permissions.component.html',
+  styleUrl: './user-groups-permissions.component.css'
 })
-
-
-export class UserGroupsComponent implements OnInit {
-  resetcolumns = 'dashboard_type_id,resetcolumns,routerLink,has_partnerstate_defination';
+export class UserGroupsPermissionsComponent implements OnInit{
+resetcolumns = 'dashboard_type_id,resetcolumns,routerLink,has_partnerstate_defination';
   workflowPermissionData:any;
   table_name:string = 'usr_users_groups';
   parameter_name:string = "User Group & Permissions Management";
@@ -56,13 +54,13 @@ export class UserGroupsComponent implements OnInit {
   hideAnimation: any;
   showAnimation: any;
   record_id:number;
-
   addPopupVisible = false;
   deletePopupVisible = false;
   data_record: any;
   config_record:string;
   isLoading:boolean;
   sysadmin: any;
+  organisationData:any;
   AppNavigationMenus:any;
   updateUsrPermissNewDataFrm:FormGroup;
   AppRegulatoryFunction: any;
@@ -127,9 +125,8 @@ export class UserGroupsComponent implements OnInit {
       routerLink: new FormControl(this.resetcolumns, Validators.compose([])),
       dashboard_type_id: new FormControl(this.resetcolumns, Validators.compose([])),
       has_partnerstate_defination: new FormControl(this.resetcolumns, Validators.compose([])),
-      is_enabled: new FormControl('', Validators.compose([])),
       // institution_type_id: new FormControl(this.resetcolumns, Validators.compose([])),
-      is_super_admin: new FormControl('', Validators.compose([])),
+      is_super_admin: new FormControl('', Validators.compose([]))
 
     });
    // this.resetcolumns = 'resetcolumns,account_type_id,routerLink,has_partnerstate_defination';
@@ -145,7 +142,7 @@ ngOnInit() {
   this.spinnerHide();
   this.checkScreenSize();
   this.onLoadWorkflowData();
-
+  this.onloadOrganisationData();
 
   //for the action menu
 
@@ -363,7 +360,25 @@ onloaddashboardTypeData() {
       });
 
 }
+onloadOrganisationData() {
 
+  var data_submit = {
+    'table_name': 'tra_organisation_information'
+  }
+  this.admnistrationService.onLoadSystemAdministrationData(data_submit)
+    .subscribe(
+      data => {
+        this.data_record = data;
+        
+        if (this.data_record.success) {
+          this.organisationData = this.data_record.data;
+        }
+      },
+      error => {
+        
+      });
+
+}
 onLoadAllAccountTypeData(){
 
   var data_submit = {
@@ -768,5 +783,4 @@ onExporting(e: DxDataGridTypes.ExportingEvent) {
       this.reportingAnalytics.onExportingExcelData(e)
     }
 }
-
 }

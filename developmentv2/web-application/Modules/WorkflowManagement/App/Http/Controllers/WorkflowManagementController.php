@@ -473,7 +473,7 @@ class WorkflowManagementController extends Controller
     function grandNavigationschildfunction($parent_id, $level)
     {
         $childrens = array();
-        $navigationItems = DB::connection('portal')->table(', ,m,ck_navigation_items as t1')
+        $navigationItems = DB::table('wf_navigation_items as t1')
             ->leftJoin('wf_system_interfaces as t3', 't1.system_interface_id', 't3.id')
             ->select('t1.*', 't3.routerlink', 't1.iconsCls')
             ->where(array('level' => $level, 'parent_id' => $parent_id))->get();
@@ -485,6 +485,21 @@ class WorkflowManagementController extends Controller
 
         return $childrens;
     }
+    // function grandNavigationschildfunction($parent_id, $level)
+    // {
+    //     $childrens = array();
+    //     $navigationItems = DB::connection('portal')->table(', ,m,ck_navigation_items as t1')
+    //         ->leftJoin('wf_system_interfaces as t3', 't1.system_interface_id', 't3.id')
+    //         ->select('t1.*', 't3.routerlink', 't1.iconsCls')
+    //         ->where(array('level' => $level, 'parent_id' => $parent_id))->get();
+
+    //     foreach ($navigationItems as $child) {
+
+    //         $childrens[] = $child;
+    //     }
+
+    //     return $childrens;
+    // }
 
     public function onsaveWorkflowConfigData(Request $req)
     {
