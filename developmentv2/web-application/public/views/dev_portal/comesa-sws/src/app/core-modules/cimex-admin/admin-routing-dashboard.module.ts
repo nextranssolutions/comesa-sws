@@ -98,11 +98,6 @@ import { AppFormsComponent } from './views/configurations/forms/app-forms-setup/
 import { FormTypesComponent } from './views/configurations/forms/form-types/form-types.component';
 import { FormFieldsComponent } from './views/configurations/forms/form-fields/form-fields.component';
 import { IntegrationManagementComponent } from './views/integration-management/integration-management.component';
-import { ProcessConfsetupComponent } from './views/configurations/process-configuration/process-confsetup/process-confsetup.component';
-import { AppSectionsComponent } from './views/configurations/process-configuration/application-section/app-sections.component';
-import { AppealTypesComponent } from './views/configurations/process-configuration/appeal-types/appeal-types.component';
-import { ModulesComponent } from './views/configurations/process-configuration/modules/modules.component';
-import { SectionsComponent } from './views/configurations/process-configuration/sections/sections.component';
 
 import { GeneralApplicationFormComponent } from './views/configurations/forms/general-application-form/general-application-form.component';
 import { DataEntryFormSetupComponent } from './views/configurations/forms/data-entry-form-setup/data-entry-form-setup.component';
@@ -233,6 +228,7 @@ import { AdvertisementChannelComponent } from './views/configurations/promotiona
 import { PrommaterialBookcataloguesComponent } from './views/configurations/promotional_advertisements_configurations/prommaterial-bookcatalogues/prommaterial-bookcatalogues.component';
 import { PromotionadvertChannelsComponent } from './views/configurations/promotional_advertisements_configurations/promotionadvert-channels/promotionadvert-channels.component';
 import { PromotionmaterialCategoriesComponent } from './views/configurations/promotional_advertisements_configurations/promotionmaterial-categories/promotionmaterial-categories.component';
+import { ProcessConfigsetupComponent } from './views/configurations/process-configurations/process-configsetup/process-configsetup.component';
 
 //./admin-ecres/app-dashboard
 const routes: Routes = [{
@@ -303,7 +299,11 @@ const routes: Routes = [{
     path: "app-portal-navigation-levels",
     component: PortalNavigationLevelsComponent
   },
- 
+  {
+    path: "app-process-configsetup",
+    component: ProcessConfigsetupComponent
+  },
+
   
   {
     path: "app-portal-navigation-types",
@@ -386,10 +386,7 @@ const routes: Routes = [{
     path: 'app-promotionmaterial-categories',
     component: PromotionmaterialCategoriesComponent
   },
-  {
-    path: 'app-process-confsetup',
-    component: ProcessConfsetupComponent
-  },
+ 
 
   {
     path: 'app-institutions-types',
@@ -756,22 +753,7 @@ const routes: Routes = [{
     path: 'app-external-dashboard',
     component: ExternalDashboardComponent
   },
-  {
-    path: 'app-app-sections',
-    component: AppSectionsComponent
-  },
-  {
-    path: 'app-appeal-types',
-    component: AppealTypesComponent
-  },
-  {
-    path: 'app-modules',
-    component: ModulesComponent
-  },
-  {
-    path: 'app-sections',
-    component: SectionsComponent
-  },
+  
 
   {
     path: 'app-annual-ceilconf',

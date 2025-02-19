@@ -5,7 +5,7 @@ import { ProcessWorkflowManagementRoutingModule } from './process-workflow-manag
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
-import { DxButtonModule, DxProgressBarModule, DxLoadPanelModule, DxPopupModule, DxDataGridModule, DxActionSheetModule, DxFileUploaderModule, DxNumberBoxModule, DxCheckBoxModule, DxSelectBoxModule, DxTextAreaModule, DxContextMenuModule, DxMenuModule, DxTagBoxModule, DxDateBoxModule, DxTabPanelModule, DxFormModule, DxScrollViewModule, DxTextBoxModule, DxValidatorModule, DxToolbarModule, DxGalleryModule, DxHtmlEditorModule, DxDropDownBoxModule, DxRadioGroupModule } from 'devextreme-angular';
+import { DxButtonModule, DxProgressBarModule, DxLoadPanelModule, DxPopupModule, DxDataGridModule, DxActionSheetModule, DxFileUploaderModule, DxNumberBoxModule, DxCheckBoxModule, DxSelectBoxModule, DxTextAreaModule, DxContextMenuModule, DxMenuModule, DxTagBoxModule, DxDateBoxModule, DxTabPanelModule, DxFormModule, DxScrollViewModule, DxTextBoxModule, DxValidatorModule, DxToolbarModule, DxGalleryModule, DxHtmlEditorModule, DxDropDownBoxModule, DxRadioGroupModule, DxTreeListModule } from 'devextreme-angular';
 import { NgHttpLoaderModule } from 'ng-http-loader';
 import { NgWizardConfig, THEME, NgWizardModule } from 'ng-wizard';
 import { NgxCaptchaModule } from 'ngx-captcha';
@@ -50,6 +50,13 @@ import { InstitutionInformationComponent } from './views/institution-information
 import { SharedDocumentchecklistingComponent } from './views/document-checklistsmng/shared-documentchecklisting/shared-documentchecklisting.component';
 import { AppInstitutionsComponent } from './views/app-institutions/app-institutions.component';
 import { InstitutionDepartmentsComponent } from './views/institution-departments/institution-departments.component';
+import { SharedProcessconfigurationComponent } from './views/process-configuration/shared-processconfiguration/shared-processconfiguration.component';
+import { AppealTypesComponent } from './views/process-configuration/appeal-types/appeal-types.component';
+import { ProcessConfsetupComponent } from './views/process-configuration/process-confsetup/process-confsetup.component';
+import { RegulatedProductTypesComponent } from './views/process-configuration/regulated-product-types/regulated-product-types.component';
+import { RegulatoryFunctionsComponent } from './views/process-configuration/regulatory-functions/regulatory-functions.component';
+import { InterfacesComponent } from './views/workflow-management/interfaces/interfaces.component';
+import { UserGroupsPermissionsComponent } from './views/user-groups-permissions/user-groups-permissions.component';
 
 
 
@@ -67,7 +74,8 @@ const ngWizardConfig: NgWizardConfig = {
      AppOrganizationinformationComponent, SharedhscodesConfigurationsComponent, HscodechaptersDefinationComponent, HscodesSectionsComponent,
     HscodesconfigSetupComponent, HscodesheadingDefinationsComponent, HscodesproductsRegistryComponent, HscodessubheadingDefinationComponent, HscodestariffDetailsComponent,
     TraderAccountManagementComponent, AppSignatoriesComponent, SharedprocessConfigurationsComponent,InstitutionInformationComponent,SharedDocumentchecklistingComponent,
-    InstitutionDepartmentsComponent
+    InstitutionDepartmentsComponent, SharedProcessconfigurationComponent,AppealTypesComponent,ProcessConfsetupComponent,RegulatedProductTypesComponent,RegulatoryFunctionsComponent,
+    InterfacesComponent,UserGroupsPermissionsComponent
 
   ],
   imports: [
@@ -75,7 +83,7 @@ const ngWizardConfig: NgWizardConfig = {
     SharedModuleModule,
     NgWizardModule.forRoot(ngWizardConfig),
     NgHttpLoaderModule, DxButtonModule, DxProgressBarModule,
-    FormsModule,
+    FormsModule,DxTreeListModule,
     ReactiveFormsModule,
     NgxCaptchaModule, DxLoadPanelModule,
     DxPopupModule, DxDataGridModule, DxActionSheetModule, DxFileUploaderModule, DxNumberBoxModule, DxCheckBoxModule, DxSelectBoxModule, DxTextAreaModule, DxContextMenuModule, DxMenuModule, DxTagBoxModule,

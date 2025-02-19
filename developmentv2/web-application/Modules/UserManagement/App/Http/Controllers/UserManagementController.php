@@ -429,6 +429,7 @@ class UserManagementController extends Controller
                 ], 422);
             }
             $app_statusrecord = getInitialWorkflowStatusId($process_id);
+            
             if (!$app_statusrecord) {
 
                 return response()->json([
