@@ -1,17 +1,19 @@
-/* General Styling */
-.dx-toolbar .dx-toolbar-items-container {
-    margin-bottom: 20px !important;
+.search-margin-top {
+    margin-top: 15px;
+    width: 100rem;
 }
 
-.accordion-button {
-    font-size: 1.5rem;
+[_nghost-ng-c3021171271] {
+    display: flex;
 }
 
 .precedure-category {
     font-size: 1.4rem !important;
-    padding-left: 20px;
+    padding-left: 5rem;
 }
-
+.accordion-button {
+    font-size: 1.5rem;
+}
 .accordion-button2 {
     position: relative;
     display: flex;
@@ -19,97 +21,10 @@
     width: 100%;
     padding: 1rem 5rem;
     font-size: 1.4rem;
-    color: #525368;
+    /* color: #525368; */
     text-align: left;
     background-color: #fff;
     border: 0;
     border-radius: 0;
     transition: all 0.15s ease-in-out;
-}
-
-.text-center {
-    text-align: center;
-}
-
-.search-margin-top {
-    margin-top: 15px;
-    width: 100rem;
-}
-
-.btn-searchdetails {
-    width: auto;
-    font-size: 1.2rem;
-    font-weight: bold;
-}
-
-/* Adjustments for Angular elements */
-[_nghost-ng-c3021171271] {
-    display: flex;
-}
-
-.dx-textbox, .dx-datebox, .dx-numberbox {
-    width: 100%; /* Ensuring responsiveness */
-    /* max-width: 900px; */
-    margin-top: 0px !important;
-    margin-bottom: 0px !important;
-}
-.dx-texteditor.dx-editor-filled .dx-lookup-field, .dx-texteditor.dx-editor-filled .dx-placeholder::before, .dx-texteditor.dx-editor-filled .dx-texteditor-input, .dx-texteditor.dx-editor-outlined .dx-lookup-field, .dx-texteditor.dx-editor-outlined .dx-placeholder::before, .dx-texteditor.dx-editor-outlined .dx-texteditor-input {
-    width: 100rem !important;
-}
-/* Responsive Styling */
-@media (max-width: 1200px) {
-    .accordion-button2 {
-        font-size: 1.3rem;
-        padding: 1rem 3rem;
-    }
-    
-    .precedure-category {
-        font-size: 1.3rem;
-        padding-left: 15px;
-    }
-}
-
-@media (max-width: 992px) {
-    .accordion-button2 {
-        font-size: 1.2rem;
-        padding: 1rem 2rem;
-    }
-    
-    .precedure-category {
-        font-size: 1.2rem;
-    }
-}
-
-@media (max-width: 768px) {
-    .accordion-button2 {
-        font-size: 1.1rem;
-        padding: 1rem 1rem;
-    }
-    
-    .precedure-category {
-        font-size: 1.1rem;
-        padding-left: 10px;
-    }
-
-    .btn-searchdetails {
-        font-size: 1rem;
-        width: 100%; /* Full width buttons on mobile */
-    }
-}
-
-@media (max-width: 576px) {
-    .accordion-button2 {
-        font-size: 1rem;
-        padding: 0.8rem;
-    }
-    
-    .precedure-category {
-        font-size: 1rem;
-        padding-left: 5px;
-    }
-
-    .btn-searchdetails {
-        font-size: 0.9rem;
-        padding: 0.6rem;
-    }
 }

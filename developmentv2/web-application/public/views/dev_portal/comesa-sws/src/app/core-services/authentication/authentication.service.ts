@@ -86,7 +86,7 @@ export class AuthenticationService {
   // }
 
   funcUserLogOut() {
-    this.spinner.show();
+    // this.spinner.show();
     const headers = new HttpHeaders({ "Accept": "application/json" });
     const user = this.getUserDetails();
 
@@ -152,7 +152,7 @@ export class AuthenticationService {
 
     }
   }
-  login(email_address: string, password: string, otp_value: number) {
+  login(email_address: string, password: string, otp_value:number) {
     // var user_password = this.EncrDecr.set(AppSettings.encryptSecretKey, user_password);
     var headers: Object = {
       headers: new HttpHeaders({
@@ -166,8 +166,8 @@ export class AuthenticationService {
         otp_value: otp_value
       }, headers
     ).pipe(map(user => {
-      return user;
-    }));
+        return user;
+      }));
   }
   storeToken(token: string) {
     localStorage.setItem('token', token);

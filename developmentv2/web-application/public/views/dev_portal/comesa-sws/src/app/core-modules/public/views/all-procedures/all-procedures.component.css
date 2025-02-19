@@ -9,7 +9,7 @@
 
 .precedure-category {
     font-size: 1.4rem !important;
-    padding-left: 20px;
+    padding-left: 5rem;
 }
 .accordion-button {
     font-size: 1.5rem;
@@ -21,7 +21,7 @@
     width: 100%;
     padding: 1rem 5rem;
     font-size: 1.4rem;
-    color: #525368;
+    /* color: #525368; */
     text-align: left;
     background-color: #fff;
     border: 0;

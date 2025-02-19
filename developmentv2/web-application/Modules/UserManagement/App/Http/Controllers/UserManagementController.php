@@ -492,7 +492,7 @@ class UserManagementController extends Controller
             $application_code = generateApplicationCode($process_id, 'usr_users_information');
             $account_type_id = 1;
             $user_group_id = 2;
-            $email_address = aes_encrypt($req->email_address);
+            // $email_address = aes_encrypt($req->email_address);
             $record = DB::table('usr_users_information')
                 ->where('email_address', $email_address)
                 // ->where('identification_number', '=', $req->identification_number)
@@ -1908,7 +1908,7 @@ class UserManagementController extends Controller
             $emailExists = DB::table('txn_trader_account')
                 ->where('email_address', $req->email_address)
                 ->exists();
-              
+
             if ($emailExists) {
                 // return response()->json(['success' => false, 'message' => 'Email already exists.'], 400);
                 return $this->onUpdateTraderData($req);
@@ -2053,7 +2053,7 @@ class UserManagementController extends Controller
                 $resp = updateRecord($table_name, $previous_data, $where, $trader_data, '');
 
                 if ($resp['success']) {
-                    
+
                     $existingUserRecord = DB::table('usr_users_information')
                         ->where('email_address', '=', $req->email_address)
                         ->first();
