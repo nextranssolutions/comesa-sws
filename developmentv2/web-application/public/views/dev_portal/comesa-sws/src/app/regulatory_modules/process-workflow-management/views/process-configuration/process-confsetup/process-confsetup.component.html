@@ -17,7 +17,7 @@
                 {{parameter_name | translate}}
                 <small>
                     <i class="ace-icon fa fa-angle-double-right"></i>
-
+                    overview &amp; stats
                 </small>
             </h1>
         </div>
@@ -27,21 +27,18 @@
             <dx-tab-panel class="fullpage-tab" id="Navigation Tab" [stylingMode]="stylingMode"
                 [tabsPosition]="tabsPosition" [swipeEnabled]="false" [showNavButtons]="true" [animationEnabled]="true">
 
-                <dxi-item title="{{ 'form_types' | translate }}" icon="fa fa-clone">
-                    <app-form-types></app-form-types>
+                <dxi-item title="{{ 'regulated_product_types' | translate }}" icon="fa fa-th-list">
+
+                    <app-regulated-product-types></app-regulated-product-types>
                 </dxi-item>
 
-                <dxi-item title="{{ 'form_fields' | translate }}" icon="fa fa-th-list">
-                    <app-form-fields></app-form-fields>
-                </dxi-item>
-                <dxi-item title="{{ 'general_application_forms' | translate }}" icon="fa fa-file-image-o">
-                    <app-general-application-form></app-general-application-form>
-                </dxi-item>
-                <dxi-item title="{{ 'data_entry_forms' | translate }}" icon="fa fa-folder">
-                    <app-data-entry-form-setup></app-data-entry-form-setup>
-                </dxi-item>
-                <dxi-item title="{{ 'application_sections' | translate }}" icon="fa fa-folder">
-                    <app-sections> </app-sections>
+                <dxi-item title="{{ 'regulatory_functions' | translate }}" icon="fa fa-th-list">
+                    <app-regulatory-functions></app-regulatory-functions>
+
+                </dxi-item>           
+
+                <dxi-item title="{{ 'appeal_types' | translate }}" icon="fa fa-th-list">
+                    <app-appeal-types></app-appeal-types>
                 </dxi-item>
 
             </dx-tab-panel>

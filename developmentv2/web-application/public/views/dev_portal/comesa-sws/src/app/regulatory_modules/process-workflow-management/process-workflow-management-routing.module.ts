@@ -24,6 +24,8 @@ import { TraderAccountManagementComponent } from './views/trader-account-managem
 import { AppSignatoriesComponent } from './views/app-signatories/app-signatories.component';
 import { InstitutionInformationComponent } from './views/institution-information/institution-information.component';
 import { HscodesconfigSetupComponent } from './views/hscodes-configurations/hscodesconfig-setup/hscodesconfig-setup.component';
+import { ProcessConfsetupComponent } from './views/process-configuration/process-confsetup/process-confsetup.component';
+import { UserGroupsPermissionsComponent } from './views/user-groups-permissions/user-groups-permissions.component';
 
 const routes: Routes = [{
   path: '',
@@ -53,6 +55,16 @@ const routes: Routes = [{
       path: 'app-app-performancescoring-scales',
       component: AppPerformancescoringScalesComponent
     },
+    {
+      path: 'app-process-confsetup',
+      component: ProcessConfsetupComponent
+    },
+    {
+      path: 'app-user-groups-permissions',
+      component: UserGroupsPermissionsComponent
+    },
+
+    
     {
       path: 'app-checklistmanagement-setup',
       component: ChecklistmanagementSetupComponent
