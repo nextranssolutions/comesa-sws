@@ -96,6 +96,9 @@
             <dxo-master-detail [enabled]="true" template="detail">
             </dxo-master-detail>
             <div *dxTemplate="let data of 'detail'">
+                <div class="m-card-ful h-50" *ngFor="let procedure of filteredProcedureData; let i = index">
+                    <p>{{procedure.procedure_description}}</p>
+                </div>
                 <dx-tab-panel id="hscodeTab" [iconPosition]="iconPosition" [swipeEnabled]="false"
                     [showNavButtons]="true" [animationEnabled]="true">
 
@@ -127,33 +130,31 @@
                                     <div class="accordion-body">
                                         <p class="precedure-category">{{ procedure.procedure_category_description }}</p>
 
-                                        <div class="accordion" [id]="'subAccordion' + i">
-                                            <div class="accordion-item"
-                                                *ngFor="let procedure of filteredProcedureData; let j = index">
-                                                <h3 class="accordion-header pl-5" id="subHeading{{ i }}-{{ j }}">
-                                                    <button class="accordion-button2 collapsed" type="button"
-                                                        data-bs-toggle="collapse"
-                                                        [attr.data-bs-target]="'#subCollapse' + i + '-' + j"
-                                                        aria-expanded="false"
-                                                        [attr.aria-controls]="'subCollapse' + i + '-' + j">
-                                                        {{ procedure.procedure_subcategories }}
-                                                    </button>
-                                                </h3>
-                                                <div [id]="'subCollapse' + i + '-' + j"
-                                                    class="accordion-collapse collapse"
-                                                    [attr.aria-labelledby]="'subHeading' + i + '-' + j"
-                                                    [attr.data-bs-parent]="'#subAccordion' + i">
-                                                    <div class="accordion-body">
-                                                        <p class="precedure-category">{{
-                                                            procedure.procedure_subcategory_description }}</p>
-                                                        <a *ngIf="procedure.procedure_link"
-                                                            [href]="procedure.subcategory_link" target="_blank">
-                                                            More Details
-                                                        </a>
-                                                    </div>
+                                        
+                                        <div class="accordion-item" *ngFor="let subProcedure of filteredProcedureData; let j = index">
+                                            <h3 class="accordion-header pl-5" id="subHeading{{ i }}-{{ j }}">
+                                                <button class="accordion-button2 collapsed" type="button"
+                                                    data-bs-toggle="collapse"
+                                                    [attr.data-bs-target]="'#subCollapse' + i + '-' + j"
+                                                    aria-expanded="false"
+                                                    [attr.aria-controls]="'subCollapse' + i + '-' + j">
+                                                    {{ subProcedure.procedure_subcategories }}
+                                                </button>
+                                            </h3>
+                                            <div [id]="'subCollapse' + i + '-' + j"
+                                                class="accordion-collapse collapse"
+                                                [attr.aria-labelledby]="'subHeading' + i + '-' + j"
+                                                [attr.data-bs-parent]="'#subAccordion' + i">
+                                                <div class="accordion-body">
+                                                    <p class="precedure-category">{{ subProcedure.procedure_subcategory_description }}</p>
+                                                    <a *ngIf="subProcedure.procedure_link"
+                                                        [href]="subProcedure.subcategory_link" target="_blank">
+                                                        More Details
+                                                    </a>
                                                 </div>
                                             </div>
                                         </div>
+                                        
                                     </div>
                                 </div>
                             </div>
