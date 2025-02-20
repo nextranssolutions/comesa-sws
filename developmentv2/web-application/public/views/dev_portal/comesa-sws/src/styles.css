@@ -11,7 +11,9 @@ html, body {
 
 
 
-
+.dx-texteditor-input-container {
+  color: #08090a !important;
+}
 .infobox-small {
   width: 33%  !important;
   height: 80px !important;
@@ -187,7 +189,8 @@ html, body {
 .dx-widget {
   border-radius: 0px !important;
   margin: 0px !important;
-}dx-widget
+}
+dx-widget
 .dx-button {
   border-radius: 2px !important;
   /* margin: 1px !important; */
