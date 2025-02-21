@@ -31,18 +31,18 @@
 
                     </dxi-item>
 
-                    <dxi-item title="{{'search_by_product_category' | translate}}" icon="map">
+                    <dxi-item title="{{'search_by_hscode' | translate}}" icon="map">
                         <div class="form-group has-search search-margin-top">
 
                             <dx-select-box [dataSource]="productCategoryData" class="form-control"
-                                placeholder="{{'search_by_product_category' | translate}}"
+                                placeholder="{{'search_by_hscode' | translate}}"
                                 formControlName="hscodesheading" [showClearButton]="true" valueExpr="id"
-                                [searchEnabled]="true" displayExpr="name">
+                                [searchEnabled]="true" displayExpr="hscode">
                             </dx-select-box>
 
                         </div>
                         <div class="col-lg-12 btn-searchdetails">
-                            <dx-button text="{{'search_by_product_category' | translate}}" type="default"
+                            <dx-button text="{{'search_by_hscode' | translate}}" type="default"
                                 icon="fa fa-search" [elementAttr]="{  class: 'btn-searchdetails' }"
                                 (onClick)="onLoadImportProcedureData(operation_type_id)">
                             </dx-button>
