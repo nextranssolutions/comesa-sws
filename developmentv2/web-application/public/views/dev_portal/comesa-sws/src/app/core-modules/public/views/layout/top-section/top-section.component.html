@@ -60,7 +60,7 @@
 
 
 <dx-popup [(visible)]="isSignupPopupVisible" [showTitle]="true" title="{{ 'create_account(applicants_only)' | translate }}" [width]="550"
-  [height]="750" [dragEnabled]="true" [closeOnOutsideClick]="true">
+  [height]="750" [dragEnabled]="true" [hideOnOutsideClick]="true">
   <dx-form [formGroup]="signUpFrm" (ngSubmit)="submitSignup()" class="futuristic-form">
 
     <dxi-item dataField="{{ 'trader_account_type' | translate }}" editorType="dxTextBox"
@@ -121,7 +121,7 @@
 </dx-popup>
 
 <dx-popup [(visible)]="isSigninPopupVisible" [showTitle]="true" title="{{ 'sign-in' | translate }}" [width]="550"
-  [height]="650" [dragEnabled]="true" [closeOnOutsideClick]="true">
+  [height]="650" [dragEnabled]="true" [hideOnOutsideClick]="true">
   <dx-form class="futuristic-form" [formGroup]="signInFrm" (ngSubmit)="onSignIn()">
 
     <!-- Email Address Field -->
@@ -190,7 +190,7 @@
 
 
 <dx-popup [(visible)]="islostpassword" [showTitle]="true" title="{{ 'password_recovery' | translate }}" [width]="550"
-  [height]="350" [dragEnabled]="false" [closeOnOutsideClick]="false">
+  [height]="350" [dragEnabled]="false" [hideOnOutsideClick]="false">
   <dx-form [formData]="forgotPasswordFrm" [colCount]="1">
 
     <dxi-item dataField="email_address" editorType="dxTextBox">

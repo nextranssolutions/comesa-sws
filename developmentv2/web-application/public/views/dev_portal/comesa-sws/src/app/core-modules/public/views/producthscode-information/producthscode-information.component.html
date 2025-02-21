@@ -3,7 +3,7 @@
         <h4 class="text-start pt-2">{{'products_hscode_information' | translate}}</h4>
         <div class="row">
             <div class="col-lg-12">
-                <form role="form" enctype="multipart/form-data" [formGroup]="searchProcedureFrm" (ngSubmit)="onLoadProductHscodeData()">
+                <form role="form" enctype="multipart/form-data" role="form" [formGroup]="searchProcedureFrm" (ngSubmit)="onLoadProductHscodeData()">
                     <dx-tab-panel id="productSearch" [(selectedIndex)]="selectedTabIndex"
                         (onTitleClick)="funcProcedureClick($event)" [iconPosition]="iconPosition" [swipeEnabled]="false"
                         [showNavButtons]="true" [animationEnabled]="true">
@@ -16,7 +16,7 @@
                                     [showClearButton]="true" valueExpr="id" [searchEnabled]="true" displayExpr="name">
                                 </dx-select-box>
                             </div>
-                            <div class="text-center mt-3">
+                            <div class="col-lg-12 btn-searchdetails">
                                 <dx-button text="{{'search_by_product' | translate}}" type="default" icon="fa fa-search"
                                     [elementAttr]="{ class: 'btn-searchdetails' }" (onClick)="onLoadProductHscodeData()">
                                 </dx-button>
@@ -32,7 +32,7 @@
                                     [searchEnabled]="true" displayExpr="name">
                                 </dx-select-box>
                             </div>
-                            <div class="text-center mt-3">
+                            <div class="col-lg-12 btn-searchdetails">
                                 <dx-button text="{{'search_by_product_category' | translate}}" type="default"
                                     icon="fa fa-search" [elementAttr]="{ class: 'btn-searchdetails' }"
                                     (onClick)="onLoadProductHscodeData()">
@@ -49,7 +49,7 @@
                                     [searchEnabled]="true" displayExpr="name">
                                 </dx-select-box>
                             </div>
-                            <div class="text-center mt-3">
+                            <div class="col-lg-12 btn-searchdetails">
                                 <dx-button text="{{'search_by_product_subcategory' | translate}}" type="default"
                                     icon="fa fa-search" [elementAttr]="{ class: 'btn-searchdetails' }"
                                     (onClick)="onLoadProductHscodeData()">
@@ -115,7 +115,7 @@
                     </dxi-item>
 
 
-                    <dxi-item title="{{'procedures' | translate }}" icon="fa fa-file">
+                    <dxi-item class="accordion" title="{{'procedures' | translate }}" icon="fa fa-file">
                         <div class="accordion" id="proceduresAccordion">
                             <div class="accordion-item" *ngFor="let procedure of filteredProcedureData; let i = index">
                                 <h2 class="accordion-header" id="heading{{ i }}">

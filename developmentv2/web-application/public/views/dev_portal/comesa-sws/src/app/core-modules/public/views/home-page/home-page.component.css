@@ -1,11 +1,16 @@
 .bg-white {
-  background-color: #fff;
+  background-color: #e4e6e9;
 }
 
 .div-home {
   height: 30vh;
   align-content: center !important;
-  background-color: #e4e6e9;
+  background-color: #fff;
+}
+
+.div-home input[readonly] {
+  color: #242223;
+  background: #fff !important;
 }
 .error-section {
   background-color: #f7f8fa;
@@ -34,17 +39,17 @@
 .text-secondary {
   color: #6c757d;
 }
-.dx-button {
+/* .dx-button {
   border-radius: 6px;
   padding: 10px 20px;
-}
+} */
 .dx-button:hover {
   background-color: #6e513f;
   transition: background-color 0.3s ease;
 }
 .search-box {
   /* background: rgba(255, 255, 255, 0.9); */
-  border-radius: 10px;
+  /* border-radius: 10px; */
   margin: 0 auto;
 }
 .form-select-lg {
@@ -58,8 +63,27 @@
   /* background-color: #fff; */
   border-radius: 40px;
   align-items: center;
+  display: flex !important;
+  width: 100%;
+
   /* padding-top: 15px; */
-  padding-left: 20px;
+  /* padding-left: 20px; */
+  /* padding: 10px 0 10px 0; */
+}
+
+.search-box  .dx-fieldset {
+  margin: 0 !important;
+  padding-right: 10px !important;
+}
+
+/* .search-button .dx-button.dx-button-default {
+  padding: 10px;
+  border-radius: 0 50px 50px 0 !important;
+} */
+
+.search-button[_ngcontent-ng-c4078178751]   .dx-button.dx-button-default[_ngcontent-ng-c4078178751] {
+  padding: 1.6em 2.0em 2em 2.2em;
+  border-radius: 0 50px 50px 0 !important;
 }
 .dx-field {
   margin: 0 !important;
@@ -72,13 +96,19 @@
 }
 
 .search-button .pb-2 {
-  padding: 2rem !important;
+  /* padding: 2rem !important; */
   /* margin-bottom: 2rem !important; */
+  /* border-radius: 0 20px 20px 0px !important; */
+}
+
+.search-button dx-button{
+  padding: 20px;
   border-radius: 0 20px 20px 0px !important;
 }
 
-.search-button {
-  /* padding: 20px; */
+.search-button dx-button-content{
+  padding: 15px 1px 30px 20px;
+  border-radius: 0 20px 20px 0px !important;
 }
 
 .carousel-inner{
@@ -119,6 +149,7 @@
   .search-box {
     padding: 12px;
     max-width: 100%;
+    
   }
   .form-select-lg {
     font-size: 0.95rem;
@@ -136,6 +167,10 @@
   .search-box {
     padding: 10px;
     max-width: 100%;
+    
+  }
+  .dx-fieldset {
+    display: block !important;
   }
   .form-select-lg {
     font-size: 0.9rem;
