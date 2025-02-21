@@ -54,12 +54,6 @@ html, body {
   font-weight: lighter !important;
   color: #2679B5 !important;
 }
-.div-bottompanelguide{
-  border-right: 1px solid #fff !important;
-  font-weight: bold !important;
-  font-size: 18px !important;
-  background-color: #033721 !important;
-}
 .system-title {
   font-size: 28px;
   font-weight: 230 !important;
@@ -214,7 +208,7 @@ input[type=email] {
     border-radius: 0px !important;
 }
 .accordion-body {
-  padding: 0 !important;
+  padding: 0;
 }
 .truncate-text {
   white-space: nowrap;
@@ -2561,8 +2555,8 @@ fieldset:disabled .btn {
 }
 
 .accordion-button:not(.collapsed) {
-  color: #2f8032;
-  background-color: #ebf4eb;
+  color: #48A6DB;
+  background-color: #f4f9fc;
   box-shadow: inset 0 -1px 0 rgba(0, 0, 0, 0.125)
 }
 

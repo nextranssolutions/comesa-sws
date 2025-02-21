@@ -1,5 +1,5 @@
-<div class="container mt-4">
-  <div class="search-box p-3 div-home">
+<div class="container">
+  <div class="search-box div-home">
     <div class="row">
       <div class="subtitle col-12 col-md-9">
         <dx-gallery [dataSource]="slides_information" [showIndicator]="false" [showNavButtons]="false" [loop]="true"
@@ -19,7 +19,7 @@
         <div class="dx-fieldset flex-wrap gap-3 justify-content-center">
           <!-- Search By Dropdown -->
           <div class="dx-field w-md-auto">
-            <label class="form-label">{{ 'search_by' | translate }}</label>
+            <h4 class="form-label">{{ 'search_by' | translate }}</h4>
           </div>
           <div class="dx-field w-md-auto">
             <dx-select-box formControlName="searchByCriteria" [dataSource]="criteriaData" displayExpr="name"

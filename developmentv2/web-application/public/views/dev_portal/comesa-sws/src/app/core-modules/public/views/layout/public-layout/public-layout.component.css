@@ -52,7 +52,7 @@ html {
 }
 
 app-footer {
-  margin-top: auto;
+  /* margin-top: auto; */
   position: relative;
   /* Keeps footer in normal flow */
   bottom: 0;
