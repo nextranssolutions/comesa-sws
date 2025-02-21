@@ -36,15 +36,14 @@
                             <div class="form-group has-search search-margin-top">
 
                                 <dx-select-box [dataSource]="productCategoryData" class="form-control"
-                                    placeholder="{{'search_by_hscode' | translate}}"
-                                    formControlName="hscodesheading" [showClearButton]="true" valueExpr="id"
-                                    [searchEnabled]="true" displayExpr="hscode">
+                                    placeholder="{{'search_by_hscode' | translate}}" formControlName="hscodesheading"
+                                    [showClearButton]="true" valueExpr="id" [searchEnabled]="true" displayExpr="hscode">
                                 </dx-select-box>
 
                             </div>
                             <div class="col-lg-12 btn-searchdetails">
-                                <dx-button text="{{'search_by_hscode' | translate}}" type="default"
-                                    icon="fa fa-search" [elementAttr]="{  class: 'btn-searchdetails' }"
+                                <dx-button text="{{'search_by_hscode' | translate}}" type="default" icon="fa fa-search"
+                                    [elementAttr]="{  class: 'btn-searchdetails' }"
                                     (onClick)="onLoadExportProcedureData(operation_type_id)">
                                 </dx-button>
 

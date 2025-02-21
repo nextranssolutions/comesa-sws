@@ -1,7 +1,7 @@
 <div class="container">
   <div class="search-box div-home">
     <div class="row">
-      <div class="subtitle col-12 col-md-9">
+      <div class="subtitle col-12 col-md-8">
         <dx-gallery [dataSource]="slides_information" [showIndicator]="false" [showNavButtons]="false" [loop]="true"
           [height]="'auto'" [width]="'100%'" [slideshowDelay]="5000" [animationDuration]="1">
           <div *dxTemplate="let slide of 'item'">
@@ -12,7 +12,7 @@
         </dx-gallery>
       </div>
     </div>
-    
+
 
     <div class="col-lg-12">
       <form [formGroup]="searchForm" class="search-box">
@@ -44,8 +44,8 @@
 
           <!-- Search Button -->
           <div class="search-button">
-            <dx-button text="{{'search' | translate}}" type="default" stylingMode="contained" icon="search" (onClick)="onSearchProduct()"
-              class="btn-primary">
+            <dx-button text="{{'search' | translate}}" type="default" stylingMode="contained" icon="search"
+              (onClick)="onSearchProduct()" class="btn-primary">
             </dx-button>
           </div>
         </div>

@@ -329,7 +329,7 @@ import { AppSectionsComponent } from './views/configurations/forms/application-s
     CtrlDrugssubstancesComponent,
     CtrlDrugstypeComponent,
     SharedCtrldrugsconfigurationComponent,
-     ImportExportconfsetupComponent,
+    ImportExportconfsetupComponent,
     PermitReasonsComponent,
     PermittypeCategoriesComponent,
     PortentryExitComponent,
@@ -393,7 +393,7 @@ import { AppSectionsComponent } from './views/configurations/forms/application-s
     DistrictcouncilDefinationComponent,
     LocationParametersComponent,
 
- 
+
 
     StudySitesComponent,
     SponsorsNatureComponent,
@@ -420,19 +420,19 @@ import { AppSectionsComponent } from './views/configurations/forms/application-s
     ClinicaltrialConfigsetupComponent,
     SharedclinicalTrialconfigurationsComponent,
     CertificateConditionComponent,
-    
+
     AppPartnerStates,
     ControlDocmasterlistComponent,
     AppNotificationsComponent,
     AppDashboardsectionsComponent,
-  
+
     DocumentControlsetupComponent,
     ControlleddrugsConfsetupComponent,
-   
+
     SystemAdministratorsComponent,
     ReportsanalyticsdashboardComponent,
     AppNmrasinfoComponent,
-    
+
     SharedNavigationsComponent,
     NavigationsComponent, AppSharedworkflowComponent,
     NavigationTypesComponent, AppExchangeratesComponent,
@@ -446,9 +446,9 @@ import { AppSectionsComponent } from './views/configurations/forms/application-s
     NavigationLevelsComponent, NavigationInterfacesComponent,
     InstitutionsDepartmentsComponent,
     AppstageStatusesComponent,
-    SharedSysAdministrationComponent, 
-   
-     
+    SharedSysAdministrationComponent,
+
+
     ShareusermanagementClassComponent,
     UserAccounttypesComponent, SystemDashbordtypesComponent,
     UsermanagementDashboardComponent, ApplicationDocumentuploadsComponent,
@@ -459,7 +459,7 @@ import { AppSectionsComponent } from './views/configurations/forms/application-s
     PrommaterialBookcataloguesComponent,
     PromotionadvertChannelsComponent,
     PromotionmaterialCategoriesComponent,
-   
+
     AppProcesssubmissionComponent,
     AppSubmissionmethodsComponent,
     AppFormsComponent,
@@ -467,15 +467,15 @@ import { AppSectionsComponent } from './views/configurations/forms/application-s
     DynamicFormComponent,
     FormFieldsComponent,
     FormTypesComponent,
-    
+
     AppTranslationmanagementComponent, AppSystemlanguagesComponent,
     AppSystemlabelsmanagementComponent, InstitutionsDetailsComponent,
     AppSystemlabelsmanagementComponent,
 
     InstitutionsDetailsComponent,
     SystemsFunctionalitiesComponent,
-   
-   
+
+
     InstitutionsTypesComponent, AppNationalitiesComponent, AppGenderComponent, AppPublicationTypesComponent,
 
     RegistrationConditionComponent,
@@ -539,17 +539,17 @@ import { AppSectionsComponent } from './views/configurations/forms/application-s
     UserSetupComponent,
     MultilingualConfigurationsComponent,
     NavigationSetupComponent,
-   
-    
-    
-    
+
+
+
+
     ExpertprofileSetupComponent,
     InstitutionsInformationComponent,
     RegistrationRegulationComponent,
     RefnumberConfigsetupComponent,
 
-  
-    
+
+
     UserDashboardComponent,
     FinanceDashboardComponent,
     ExternalDashboardComponent,
@@ -566,7 +566,7 @@ import { AppSectionsComponent } from './views/configurations/forms/application-s
     PortalProcesstransitionComponent,
     PortalDocdefinationComponent,
     IntegrationManagementComponent,
-    
+
 
   ],
   imports: [
@@ -576,7 +576,7 @@ import { AppSectionsComponent } from './views/configurations/forms/application-s
     NgHttpLoaderModule, DxTreeListModule, AdminRoutingDashboardModule,
     DxDataGridModule, DxActionSheetModule, DxFileUploaderModule, DxNumberBoxModule, DxCheckBoxModule, DxSelectBoxModule, DxContextMenuModule, DxMenuModule, DxTagBoxModule,
     DxTabPanelModule, DxFormModule, DxScrollViewModule, DxChartModule,
-    DxSelectBoxModule, DxoExportModule, 
+    DxSelectBoxModule, DxoExportModule,
     DxValidatorModule, DxDrawerModule,
     DxCalendarModule, DxPopupModule, DxFileUploaderModule, DxNumberBoxModule, DxMenuModule, DxTagBoxModule,
     DxTabPanelModule, DxFileUploaderModule, DxNumberBoxModule,
@@ -633,7 +633,7 @@ import { AppSectionsComponent } from './views/configurations/forms/application-s
     AdminRoutingDashboardModule,
     UserAccounttypesComponent, SystemDashbordtypesComponent,
     AppTranslationmanagementComponent, AppSystemlanguagesComponent, AppSystemlabelsmanagementComponent,
-   
+
     SharedusermanagementComponent,
     EcredResourcedashboardComponent,
     TranslateModule,
@@ -668,8 +668,8 @@ import { AppSectionsComponent } from './views/configurations/forms/application-s
     PortalDocdefinationComponent,
     AppFormsComponent,
     PermitTypesComponent,
-   
-   
+
+
     SharedconfigurationsComponent,
     UserloginLogsComponent,
     UserpwdresetrequestLogsComponent,
@@ -685,12 +685,12 @@ import { AppSectionsComponent } from './views/configurations/forms/application-s
     TermsconditionsDetailsComponent,
     GuidelinesoptionsComponent,
     UserSetupComponent,
-    
+
     SharedPortalNavigationsComponent,
     ControlleddrugsConfsetupComponent,
     PortalNavigationComponent,
     PortalNavigationTypesComponent,
-    
+
     PortalNavigationSetupComponent,
     PortalNavigationLevelsComponent,
     PortalNavigationInterfacesComponent,
@@ -702,14 +702,14 @@ import { AppSectionsComponent } from './views/configurations/forms/application-s
     RegistrationConditionComponent,
     RegistrationRegulationComponent,
     IntegrationManagementComponent,
-   
+
     AnnualCeilconfComponent,
     CtrlDrugsbasesaltsComponent,
     CtrlDrugsconvfactComponent,
     CtrlDrugssaltsComponent,
     CtrlDrugssubstancesComponent,
     CtrlDrugstypeComponent,
- 
+
     ImportExportconfsetupComponent,
     PermitReasonsComponent,
     PermittypeCategoriesComponent,
@@ -719,7 +719,7 @@ import { AppSectionsComponent } from './views/configurations/forms/application-s
     GmpConfigsetupComponent,
     GmpProductcategoryComponent,
     GmpProductlineComponent,
-  
+
 
     RefNumbertypesComponent,
     RefNumbervariablesComponent,
@@ -799,11 +799,11 @@ import { AppSectionsComponent } from './views/configurations/forms/application-s
     SamplingReasonComponent,
     SharedPmsconfigurationsComponent,
 
-    
-    
-    
+
+
+
     SharedCtrldrugsconfigurationComponent,
-   
+
 
     StudySitesComponent,
     SponsorsNatureComponent,
@@ -830,7 +830,7 @@ import { AppSectionsComponent } from './views/configurations/forms/application-s
     ClinicaltrialConfigsetupComponent,
     SharedclinicalTrialconfigurationsComponent,
     RefnumberConfigsetupComponent,
-    
+
     LocationCountriesComponent,
     CountryRegionsComponent,
     ProvincesComponent,

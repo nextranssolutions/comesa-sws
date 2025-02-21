@@ -493,7 +493,7 @@ export class TopSectionComponent {
         this.success = this.auth_response.success;
 
         if (this.success) {
-          
+
           let access_token = this.auth_response.access_token;
           let isLoggedIn = this.auth_response.isLoggedIn;
           if (access_token != '' && isLoggedIn) {
@@ -512,14 +512,14 @@ export class TopSectionComponent {
             localStorage.setItem('id', this.auth_response.id);
             localStorage.setItem('user_group_name', this.auth_response.user_group_name);
             localStorage.setItem('first_name', this.auth_response.first_name);
-            localStorage.setItem('country_of_origin_id',this.auth_response.country_of_origin );
+            localStorage.setItem('country_of_origin_id', this.auth_response.country_of_origin);
             localStorage.setItem('other_names', this.auth_response.other_names);
-            localStorage.setItem( 'email_address', this.auth_response.email_address);
+            localStorage.setItem('email_address', this.auth_response.email_address);
             localStorage.setItem('userGroupId', this.auth_response.userGroupId);
-            localStorage.setItem('account_type_name', this.auth_response.account_type_name );
+            localStorage.setItem('account_type_name', this.auth_response.account_type_name);
             localStorage.setItem('account_type_id', this.auth_response.account_type_id);
             localStorage.setItem('user_group_id', this.auth_response.user_group_id);
-            localStorage.setItem( 'userCountryOfOrigin', this.auth_response.countryName);
+            localStorage.setItem('userCountryOfOrigin', this.auth_response.countryName);
             localStorage.setItem('usr_loggedin_id', this.auth_response.usr_loggedin_id);
             localStorage.setItem('dashboard_link', this.auth_response.dashboard_link
             );

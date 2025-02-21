@@ -4,9 +4,10 @@
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
 
-html, body {
-  font-family: 'Nunito Sans',sans-serif;
- 
+html,
+body {
+  font-family: 'Nunito Sans', sans-serif;
+
 }
 
 
@@ -14,14 +15,16 @@ html, body {
 .dx-texteditor-input-container {
   color: #08090a !important;
 }
+
 .infobox-small {
-  width: 33%  !important;
+  width: 33% !important;
   height: 80px !important;
-  text-align: left  !important;
-  padding-bottom: 5px  !important;
-  padding-top: 15px  !important;
+  text-align: left !important;
+  padding-bottom: 5px !important;
+  padding-top: 15px !important;
 }
-.infobox-small > .infobox-data {
+
+.infobox-small>.infobox-data {
   display: inline-block;
   text-align: left;
   vertical-align: middle;
@@ -30,23 +33,32 @@ html, body {
   border-left: 1px solid #fff !important;
   min-width: 0;
 }
-.navbar .navbar-nav > li > a {
+
+.navbar .navbar-nav>li>a {
   text-shadow: 0 1px 0 rgba(0, 0, 0, .0) !important;
 }
+
 .no-skin .sidebar {
   background-color: #F2F2F2 !important;
   border-style: solid !important;
   border-color: #CCC !important;
   border-width: 0 1px 0 0 !important;
 }
-.container, .container-fluid, .container-lg, .container-md, .container-sm, .container-xl {
+
+.container,
+.container-fluid,
+.container-lg,
+.container-md,
+.container-sm,
+.container-xl {
   width: 100%;
-  
+
   padding-right: 3px !important;
-  padding-left: 3px  !important;
+  padding-left: 3px !important;
   margin-right: auto;
   margin-left: auto;
 }
+
 .page-header h1 {
   padding: 0 !important;
   margin: 0 8px !important;
@@ -54,10 +66,11 @@ html, body {
   font-weight: lighter !important;
   color: #2679B5 !important;
 }
+
 .system-title {
   font-size: 28px;
   font-weight: 230 !important;
-  font-family: 'Nunito Sans',sans-serif !important;
+  font-family: 'Nunito Sans', sans-serif !important;
   /* color: #f8f9fa;  */
   color: #333;
   text-align: center;
@@ -70,6 +83,7 @@ html, body {
   -ms-flex-wrap: wrap;
   flex-wrap: wrap;
 }
+
 /* .navbar-light .navbar-nav .nav-link{
   color: #363737 !important;
   background: url("../src/assets/dist/img/nav.jpg") no-repeat left top;
@@ -81,6 +95,7 @@ html, body {
   font-size: 18px !important;
   font-weight: bold !important;
 }
+
 /* .dx- {
   -webkit-text-size-adjust: none;
   print-color-adjust: exact;
@@ -92,35 +107,40 @@ html, body {
 } */
 
 
-.topfirst-panel{
+.topfirst-panel {
   min-height: 5vh !important;
 }
-.topsecond-panel{
+
+.topsecond-panel {
   min-height: 1vh !important;
 }
 
-.footersecond-panel{
+.footersecond-panel {
   min-height: 15vh !important;
 }
-.footerfirst-panel{
+
+.footerfirst-panel {
   min-height: 10vh !important;
 }
 
-.page-content{
-   min-height: 90vh !important;
+.page-content {
+  min-height: 90vh !important;
 }
-.main-container{
+
+.main-container {
   min-height: 100vh !important;
 }
-.div-home{
+
+.div-home {
   min-height: 50vh !important;
 }
 
 .carousel-inner {
   min-height: 40vh !important;
 }
+
 .carousel-item {
-  margin-top:2vh;
+  margin-top: 2vh;
   min-height: 40vh;
   display: flex;
   align-items: center;
@@ -139,9 +159,11 @@ html, body {
   height: 100%;
   object-fit: cover;
 }
-.content-wrapper > .content {
+
+.content-wrapper>.content {
   padding: 0 !important;
 }
+
 /* Style the card to fill the carousel item */
 .carousel-item .card {
   height: 100%;
@@ -154,27 +176,30 @@ html, body {
   flex: 1;
   overflow-y: auto;
 }
-.bg-darkbackground{
+
+.bg-darkbackground {
   background: linear-gradient(90deg, rgb(228, 234, 238) 0%, rgb(152, 195, 223) 75%, rgb(229, 235, 238) 100%) !important;
 }
 
-.border-top{
-  border-top:1px solid #ccc !important;
+.border-top {
+  border-top: 1px solid #ccc !important;
   margin-top: 5px !important;
 }
 
-.float-right{
+.float-right {
   text-align: right !important;
-  float:right !important;
-}
-.dx-popup-content{
-  padding: 5px !important;
-}
-.card-header{
-  padding:2px !important;
+  float: right !important;
 }
 
-.margin-top5{
+.dx-popup-content {
+  padding: 5px !important;
+}
+
+.card-header {
+  padding: 2px !important;
+}
+
+.margin-top5 {
   margin-top: 10px !important;
   line-height: 5.4px !important;
 
@@ -184,32 +209,35 @@ html, body {
   border-radius: 0px !important;
   margin: 0px !important;
 }
-dx-widget
-.dx-button {
+
+dx-widget .dx-button {
   border-radius: 2px !important;
   /* margin: 1px !important; */
   border-style: none !important;
 }
 
-.brand-link{
-  padding:0 !important;
+.brand-link {
+  padding: 0 !important;
 }
-.dx-selectbox .dx-texteditor-input:read-only{
+
+.dx-selectbox .dx-texteditor-input:read-only {
   border: 0px !important;
 }
 
 
 input[type=text],
 input[type=email] {
-    width: calc(100% - 10px);
-    padding: 2px  !important; 
-    margin-bottom: 5px;
-    border: 1px #ccc;
-    border-radius: 0px !important;
+  width: calc(100% - 10px);
+  padding: 2px !important;
+  margin-bottom: 5px;
+  border: 1px #ccc;
+  border-radius: 0px !important;
 }
+
 .accordion-body {
   padding: 0;
 }
+
 .truncate-text {
   white-space: nowrap;
   overflow: hidden;
@@ -220,6 +248,7 @@ input[type=email] {
   */
   display: inline-block;
 }
+
 .div_maincontent {
   height: 68vh;
   /* Adjust this value based on your needs */
@@ -241,7 +270,7 @@ input[type=email] {
   display: flex;
   flex-direction: column;
 }
- 
+
 .div_dashmaincontent {
   height: 65vh;
   /* Adjust this value based on your needs */
@@ -302,11 +331,14 @@ input[type=email] {
   flex: 0 0 20% !important;
   max-width: 20% !important;
 }
-.slide_image1{
+
+.slide_image1 {
   background: #fff url("../src/assets/dist/img/ship2.jpg") no-repeat left top;
-  opacity: 0.3; /* Apply transparency */
+  opacity: 0.3;
+  /* Apply transparency */
   background-size: contain;
 }
+
 .div-imagelogo {
   background: #fff url("../src/assets/dist/img/logo.png") no-repeat left top;
   background-size: contain;
@@ -319,7 +351,7 @@ input[type=email] {
 
 .homepage-panel {
 
-  
+
   background: linear-gradient(90deg, rgb(47, 89, 119) 0%, rgba(155, 196, 217, 1) 75%, rgb(77, 151, 182) 100%) !important;
   height: 100vh;
   background-size: cover;
@@ -364,16 +396,19 @@ input[type=email] {
   border-radius: 5px;
 
 }
+
 form .ng-invalid:before {
   display: flex;
   align-items: left;
   justify-content: left;
-  content: "*";right: 1px; 
+  content: "*";
+  right: 1px;
   color: #e32;
   font-size: 12px;
   color: #e32 !important;
 
 }
+
 .ng-invalid:not(form) {
   /* border-left: 1px solid #ff0000 !important; */
 }
@@ -387,6 +422,7 @@ form .ng-valid {
 .dx-tab .dx-tab-text {
   text-transform: capitalize !important;
 }
+
 /* .dx-button-text {
   line-height: 2 !important;
 } */
@@ -398,11 +434,11 @@ form .ng-valid {
   /* border-left: 1px solid #ff0000 !important; */
 }
 
-.dx-button-text  {  
-  text-transform: none !important;  
-}  
+.dx-button-text {
+  text-transform: none !important;
+}
 
-.dx-datagrid .dx-row > td {
+.dx-datagrid .dx-row>td {
   padding: 2px 2px !important;
   border-radius: 0.3px;
 }
@@ -1114,7 +1150,7 @@ h6,
 
 .copyright {
   color: var(--light);
-  
+
   background: linear-gradient(90deg, rgb(47, 89, 119) 0%, rgba(155, 196, 217, 1) 75%, rgb(77, 151, 182) 100%) !important;
 }
 
@@ -1162,7 +1198,7 @@ h6,
 .h6 {
   margin-top: 0;
   margin-bottom: .5rem;
-  font-family: 'Nunito Sans',sans-serif  !important;
+  font-family: 'Nunito Sans', sans-serif !important;
   font-weight: 700;
   line-height: 1.2;
   color: #48A6DB
@@ -2552,6 +2588,12 @@ fieldset:disabled .btn {
   .accordion-button {
     transition: none
   }
+}
+
+.div-home {
+  height: 30vh;
+  align-content: center !important;
+  background-color: #fff;
 }
 
 .accordion-button:not(.collapsed) {
@@ -5178,7 +5220,7 @@ fieldset:disabled .btn {
   display: flex;
   justify-content: flex-end;
   padding: 3px;
-  
+
 }
 
 .popup-footer .btn {
@@ -5311,6 +5353,7 @@ fieldset:disabled .btn {
   border-top-left-radius: 0;
   border-top-right-radius: 0
 }
+
 .btn .badge {
   position: relative;
   top: -1px
@@ -6483,23 +6526,79 @@ fieldset:disabled .btn {
   padding-left: 0 !important
 }
 
-.dx-texteditor.dx-editor-filled .dx-lookup-field, .dx-texteditor.dx-editor-filled .dx-placeholder::before, .dx-texteditor.dx-editor-filled .dx-texteditor-input, .dx-texteditor.dx-editor-outlined .dx-lookup-field, .dx-texteditor.dx-editor-outlined .dx-placeholder::before, .dx-texteditor.dx-editor-outlined .dx-texteditor-input {
+.dx-texteditor.dx-editor-filled .dx-lookup-field,
+.dx-texteditor.dx-editor-filled .dx-placeholder::before,
+.dx-texteditor.dx-editor-filled .dx-texteditor-input,
+.dx-texteditor.dx-editor-outlined .dx-lookup-field,
+.dx-texteditor.dx-editor-outlined .dx-placeholder::before,
+.dx-texteditor.dx-editor-outlined .dx-texteditor-input {
   padding: 5px 5px !important;
 }
 
-dx-selectbox .col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-xs-1, .col-xs-10, .col-xs-11, .col-xs-12, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9 {
-  
+dx-selectbox .col-lg-1,
+.col-lg-10,
+.col-lg-11,
+.col-lg-12,
+.col-lg-2,
+.col-lg-3,
+.col-lg-4,
+.col-lg-5,
+.col-lg-6,
+.col-lg-7,
+.col-lg-8,
+.col-lg-9,
+.col-md-1,
+.col-md-10,
+.col-md-11,
+.col-md-12,
+.col-md-2,
+.col-md-3,
+.col-md-4,
+.col-md-5,
+.col-md-6,
+.col-md-7,
+.col-md-8,
+.col-md-9,
+.col-sm-1,
+.col-sm-10,
+.col-sm-11,
+.col-sm-12,
+.col-sm-2,
+.col-sm-3,
+.col-sm-4,
+.col-sm-5,
+.col-sm-6,
+.col-sm-7,
+.col-sm-8,
+.col-sm-9,
+.col-xs-1,
+.col-xs-10,
+.col-xs-11,
+.col-xs-12,
+.col-xs-2,
+.col-xs-3,
+.col-xs-4,
+.col-xs-5,
+.col-xs-6,
+.col-xs-7,
+.col-xs-8,
+.col-xs-9 {
+
   padding-left: 13px;
-  
+
 }
 
 /* Optional: Ensure the entire input container aligns properly */
-.dx-textbox, .dx-datebox, .dx-numberbox {
+.dx-textbox,
+.dx-datebox,
+.dx-numberbox {
   border-radius: 0px !important;
   margin-top: 5px !important;
   margin-bottom: 5px !important;
 }
 
-.dx-textbox .dx-texteditor-input, .dx-datebox .dx-texteditor-input, .dx-numberbox .dx-texteditor-input {
-    border: 1px solid #D5D5D5 !important;
+.dx-textbox .dx-texteditor-input,
+.dx-datebox .dx-texteditor-input,
+.dx-numberbox .dx-texteditor-input {
+  border: 1px solid #D5D5D5 !important;
 }

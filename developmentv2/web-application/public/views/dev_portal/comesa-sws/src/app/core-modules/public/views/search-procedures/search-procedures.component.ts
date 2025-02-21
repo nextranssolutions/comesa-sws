@@ -41,7 +41,7 @@ export class SearchProceduresComponent implements OnInit {
       transactionType: [null],
       productType: [null],
     });
-   }
+  }
 
   ngOnInit() {
     // Get parameters from the route
@@ -158,11 +158,11 @@ export class SearchProceduresComponent implements OnInit {
     }
 
     // Navigate to the procedures page with query parameters
-    this.router.navigate(['/public/search-procedures'], { 
-      queryParams: { 
-        operationTypeId: this.operationTypeId, 
-        product: this.selectedProduct 
-      } 
+    this.router.navigate(['/public/search-procedures'], {
+      queryParams: {
+        operationTypeId: this.operationTypeId,
+        product: this.selectedProduct
+      }
     });
   }
 

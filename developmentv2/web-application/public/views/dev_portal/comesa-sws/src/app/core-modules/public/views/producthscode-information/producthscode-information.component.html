@@ -3,7 +3,8 @@
         <h4 class="text-start pt-2">{{'products_hscode_information' | translate}}</h4>
         <div class="row">
             <div class="col-lg-12">
-                <form role="form" enctype="multipart/form-data" role="form" [formGroup]="searchProcedureFrm" (ngSubmit)="onLoadProductHscodeData()">
+                <form role="form" enctype="multipart/form-data" role="form" [formGroup]="searchProcedureFrm"
+                    (ngSubmit)="onLoadProductHscodeData()">
                     <dx-tab-panel id="productSearch" [(selectedIndex)]="selectedTabIndex"
                         (onTitleClick)="funcProcedureClick($event)" [iconPosition]="iconPosition" [swipeEnabled]="false"
                         [showNavButtons]="true" [animationEnabled]="true">
@@ -18,7 +19,8 @@
                             </div>
                             <div class="col-lg-12 btn-searchdetails">
                                 <dx-button text="{{'search_by_product' | translate}}" type="default" icon="fa fa-search"
-                                    [elementAttr]="{ class: 'btn-searchdetails' }" (onClick)="onLoadProductHscodeData()">
+                                    [elementAttr]="{ class: 'btn-searchdetails' }"
+                                    (onClick)="onLoadProductHscodeData()">
                                 </dx-button>
                             </div>
                         </dxi-item>
@@ -130,8 +132,9 @@
                                     <div class="accordion-body">
                                         <p class="precedure-category">{{ procedure.procedure_category_description }}</p>
 
-                                        
-                                        <div class="accordion-item" *ngFor="let subProcedure of filteredProcedureData; let j = index">
+
+                                        <div class="accordion-item"
+                                            *ngFor="let subProcedure of filteredProcedureData; let j = index">
                                             <h3 class="accordion-header pl-5" id="subHeading{{ i }}-{{ j }}">
                                                 <button class="accordion-button2 collapsed" type="button"
                                                     data-bs-toggle="collapse"
@@ -141,12 +144,12 @@
                                                     {{ subProcedure.procedure_subcategories }}
                                                 </button>
                                             </h3>
-                                            <div [id]="'subCollapse' + i + '-' + j"
-                                                class="accordion-collapse collapse"
+                                            <div [id]="'subCollapse' + i + '-' + j" class="accordion-collapse collapse"
                                                 [attr.aria-labelledby]="'subHeading' + i + '-' + j"
                                                 [attr.data-bs-parent]="'#subAccordion' + i">
                                                 <div class="accordion-body">
-                                                    <p class="precedure-category">{{ subProcedure.procedure_subcategory_description }}</p>
+                                                    <p class="precedure-category">{{
+                                                        subProcedure.procedure_subcategory_description }}</p>
                                                     <a *ngIf="subProcedure.procedure_link"
                                                         [href]="subProcedure.subcategory_link" target="_blank">
                                                         More Details
@@ -154,7 +157,7 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        
+
                                     </div>
                                 </div>
                             </div>
