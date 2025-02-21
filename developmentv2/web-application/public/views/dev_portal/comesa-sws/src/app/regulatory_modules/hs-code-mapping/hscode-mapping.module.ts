@@ -25,6 +25,15 @@ import { HscodessubheadingDefinationComponent } from './views/hscodes-mapping/hs
 import { HscodestariffDetailsComponent } from './views/hscodes-mapping/hscodestariff-details/hscodestariff-details.component';
 import { SharedhscodesConfigurationsComponent } from './views/hscodes-mapping/sharedhscodes-configurations/sharedhscodes-configurations.component';
 import { HscodeDashboardComponent } from './views/hscode-dashboard/hscode-dashboard.component';
+import { HscodeInstitutionDepartmentsComponent } from './views/hscode-institutional-information/hscode-institution-departments/hscode-institution-departments.component';
+import { HscodeInstitutionsComponent } from './views/hscode-institutional-information/hscode-institutions/hscode-institutions.component';
+import { HscodeinstitutionsConfigsetupComponent } from './views/hscode-institutional-information/hscodeinstitutions-configsetup/hscodeinstitutions-configsetup.component';
+import { SharedHscodeInstitutionsComponent } from './views/hscode-institutional-information/shared-hscode-institutions/shared-hscode-institutions.component';
+
+
+
+
+
 
 
 const ngWizardConfig: NgWizardConfig = {
@@ -34,7 +43,8 @@ const ngWizardConfig: NgWizardConfig = {
 @NgModule({
   declarations: [HscodemappingHeaderComponent, HscodemappingLayoutComponent, HscodemappingNavigationComponent,HscodechaptersDefinationComponent,
     HscodesSectionsComponent,HscodesheadingDefinationsComponent,HscodesmappingConfigsetupComponent,HscodesproductsRegistryComponent,
-    HscodessubheadingDefinationComponent,HscodestariffDetailsComponent,SharedhscodesConfigurationsComponent,HscodeDashboardComponent],
+    HscodessubheadingDefinationComponent,HscodestariffDetailsComponent,SharedhscodesConfigurationsComponent,HscodeDashboardComponent,
+    HscodeInstitutionDepartmentsComponent,HscodeInstitutionsComponent,HscodeinstitutionsConfigsetupComponent,SharedHscodeInstitutionsComponent,],
   imports: [
      CommonModule,
         SharedModuleModule,HscodeRoutingModule,RouterModule,  

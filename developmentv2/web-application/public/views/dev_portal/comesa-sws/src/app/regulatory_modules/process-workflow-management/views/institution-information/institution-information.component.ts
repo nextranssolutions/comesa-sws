@@ -3,7 +3,6 @@ import { DxTabPanelTypes } from 'devextreme-angular/ui/tab-panel';
 
 @Component({
   selector: 'app-institution-information',
-
   templateUrl: './institution-information.component.html',
   styleUrl: './institution-information.component.css'
 })

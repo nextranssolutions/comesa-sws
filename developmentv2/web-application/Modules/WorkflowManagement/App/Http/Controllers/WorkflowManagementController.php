@@ -316,6 +316,7 @@ class WorkflowManagementController extends Controller
         return $childrens;
     }
 
+
     public function getWorkflowConfigs(Request $req)
     {
         try {
@@ -353,6 +354,7 @@ class WorkflowManagementController extends Controller
             //  $data = $sql->paginate($perPage, ['*'], 'page', $page);
 
             $res = array('success' => true, 'data' => $data);
+            
         } catch (\Exception $exception) {
             $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
         } catch (\Throwable $throwable) {

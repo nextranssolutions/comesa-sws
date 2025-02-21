@@ -537,12 +537,13 @@ import { PermitTypesComponent } from './views/configurations/permittypes-configu
     UserSetupComponent,
     MultilingualConfigurationsComponent,
     NavigationSetupComponent,
+    InstitutionsInformationComponent,
    
     
     
     
     ExpertprofileSetupComponent,
-    InstitutionsInformationComponent,
+    
     RegistrationRegulationComponent,
     RefnumberConfigsetupComponent,
 
@@ -631,7 +632,7 @@ import { PermitTypesComponent } from './views/configurations/permittypes-configu
     AdminRoutingDashboardModule,
     UserAccounttypesComponent, SystemDashbordtypesComponent,
     AppTranslationmanagementComponent, AppSystemlanguagesComponent, AppSystemlabelsmanagementComponent,
-   
+    InstitutionsInformationComponent,
     SharedusermanagementComponent,
     EcredResourcedashboardComponent,
     TranslateModule,

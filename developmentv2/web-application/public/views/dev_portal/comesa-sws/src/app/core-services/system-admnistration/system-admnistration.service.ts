@@ -59,9 +59,9 @@ export class ServiceAdmnistrationService {
 
   onLoadDataUrl(data, action_url) {
     data.table_name = btoa(data.table_name);
-    data.table_name = this.encryptionService.OnEncryptData(data.table_name)
-    const loggedInUserId = localStorage.getItem('id');
-    data.user_id = loggedInUserId;
+    // data.table_name = this.encryptionService.OnEncryptData(data.table_name)
+    // const loggedInUserId = localStorage.getItem('id');
+    // data.user_id = loggedInUserId;
     this.system = {
       params: data,
       headers: { 'Accept': 'application/json' }
@@ -80,6 +80,19 @@ export class ServiceAdmnistrationService {
     };
 
     return this.HttpClient.get(this.baseUrl + '/onLoadSystemAdministrationData', this.system)
+      .pipe(map(data => {
+        return <any>data;
+      }));
+  }
+
+  onLoadTransactionPermitTypeData(data) {
+    data.table_name = btoa(data.table_name);
+    this.system = {
+      params: data,
+      headers: { 'Accept': 'application/json' }
+    };
+
+    return this.HttpClient.get(this.baseUrl + '/onLoadTransactionPermitTypeData', this.system)
       .pipe(map(data => {
         return <any>data;
       }));
@@ -216,6 +229,19 @@ export class ServiceAdmnistrationService {
     };
 
     return this.HttpClient.get(this.baseUrl + '/getAppHsCodes', this.system)
+      .pipe(map(data => {
+        return <any>data;
+      }));
+  }
+
+  getAppPermitCertificateTemplate(permit_type_id) {
+
+    this.system = {
+      headers: { 'Accept': 'application/json' },
+      params: { permit_type_id: permit_type_id }
+    };
+
+    return this.HttpClient.get(this.baseUrl + '/getAppPermitCertificateTemplate', this.system)
       .pipe(map(data => {
         return <any>data;
       }));

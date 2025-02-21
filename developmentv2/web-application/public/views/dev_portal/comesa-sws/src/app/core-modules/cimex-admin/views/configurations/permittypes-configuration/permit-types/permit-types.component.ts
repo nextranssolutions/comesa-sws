@@ -1,13 +1,10 @@
 import { Component, HostListener, Input, OnInit, ViewContainerRef} from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
-import { TranslateService } from '@ngx-translate/core';
 import { DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
 import { DxTabPanelTypes } from 'devextreme-angular/ui/tab-panel';
-import { SpinnerVisibilityService } from 'ng-http-loader';
 import { ToastrService } from 'ngx-toastr';
 import { AppmenuService, Change } from 'src/app/core-services/appmenu.service';
-import { ConfigurationsService } from 'src/app/core-services/configurations/configurations.service';
 import { ReportsService } from 'src/app/core-services/reports/reports.service';
 import { ServiceAdmnistrationService } from 'src/app/core-services/system-admnistration/system-admnistration.service';
 import { UtilityService } from 'src/app/core-services/utilities/utility.service';
@@ -31,6 +28,8 @@ export class PermitTypesComponent implements OnInit {
    ];
    permit_type_id:number;
    account_type_id: number;
+   organization_id: number;
+   workflow_id: number;
    data: any[];
    editRowKey: any;
    editColumnName: any;
@@ -39,12 +38,23 @@ export class PermitTypesComponent implements OnInit {
    workflowStageData:any;
    operationTypeData: any;
    productTypeData: any;
+   hsCodeData: any;
+   permitTemplateTypeData: any;
+   documentTypeData: any;
+   checklistTypeData: any;
+   checklistDefData: any;
+   documentRequirementTypeData: any;
    permitTypeData: any;
    organizationData: any;
    processData: any;
    navigationTypesData:any;
    regulatoryFunctionData: any;
    createNewDataFrm: FormGroup;
+   hsCodeDataFrm: FormGroup;
+   PermitCertificateTemplateFrm: FormGroup;
+   PermitChecklistFrm: FormGroup;
+   PermitRpttGenFrm: FormGroup;
+   PermitRqdDocFrm: FormGroup; 
    isnewrecord: boolean;
    submitted = false;
    loading = false;
@@ -54,6 +64,11 @@ export class PermitTypesComponent implements OnInit {
    response: any;
    showTabPanel: boolean = false;
    tabPanelPopupVisible: boolean = false;
+   hscodePopupVisible: boolean =false;
+   PermitCertTempPopupVisible: boolean =false;
+   PermitRpttGenPopupVisible: boolean =false;
+   PermitRqdDocPopupVisible: boolean =false;
+   PermitChecklistPopupVisible: boolean =false;
    showWizard = false; 
    createdResponsePopupVisible = false;
    editedResponsePopupVisible = false;
@@ -66,10 +81,14 @@ export class PermitTypesComponent implements OnInit {
    data_record: any;
    config_record:string;
    isLoading:boolean;
-   sysadmin: any;
+   permitTypes: any;
    AppNavigationMenus:any;
    updateUsrPermissNewDataFrm:FormGroup;
    AppHsCodes: any;
+   AppPermitCertificateTemplate: any;
+   AppPermitReportGeneration: any;
+   AppPermitRequiredDocuments: any;
+   AppPermitChecklist: any;
    actionsMenuItems = [
      {
        text: "Action",
@@ -86,7 +105,7 @@ export class PermitTypesComponent implements OnInit {
    tabsPositions: DxTabPanelTypes.Position[] = [
      'left', 'top', 'right', 'bottom',
    ];
-   tabsPosition: DxTabPanelTypes.Position = this.tabsPositions[1];
+   tabsPosition: DxTabPanelTypes.Position = this.tabsPositions[0];
    stylingModes: DxTabPanelTypes.TabsStyle[] = ['primary', 'secondary'];
    stylingMode: DxTabPanelTypes.TabsStyle = this.stylingModes[0];
    screenWidth: any;
@@ -107,7 +126,7 @@ export class PermitTypesComponent implements OnInit {
    selectedTabIndex = 0;
    selectTextOnEditStart:boolean;
    startEditAction:boolean;
-   tabNames = ["PermitTypes","OrganizationInformation","HsCodes"]
+   tabNames = ["PermitTypes","HsCodes","PermitCertificateTemplates","PermitReportGeneration","PermitRequiredDocuments","PermitChecklists"]
    constructor(
      
      private router: Router,
@@ -133,25 +152,81 @@ export class PermitTypesComponent implements OnInit {
        process_id: new FormControl(this.resetcolumns, Validators.compose([])),
        physical_address: new FormControl(this.resetcolumns, Validators.compose([])),
        workflow_id: new FormControl('', Validators.compose([])),
-       permit_type_id:  new FormControl('', Validators.compose([]))
- 
+       permit_type_id:  new FormControl('', Validators.compose([])),
+       is_enabled: new FormControl('', Validators.compose([]))
      });
 
+     this.hsCodeDataFrm = new FormGroup({
+      id: new FormControl('', Validators.compose([])),
+      name: new FormControl('', Validators.compose([])),
+      description: new FormControl('', Validators.compose([])),
+      code: new FormControl('', Validators.compose([])),
+      permit_type_id: new FormControl('', Validators.compose([])),
+      is_enabled: new FormControl('', Validators.compose([]))
+    });
+     
+    this.PermitCertificateTemplateFrm = new FormGroup({
+      id: new FormControl('', Validators.compose([])),
+      hs_code_start_int: new FormControl('', Validators.compose([])),
+      hs_code_end_int: new FormControl('', Validators.compose([])),
+      hs_code_specific_int: new FormControl('', Validators.compose([])),
+      permit_type_id: new FormControl('', Validators.compose([])),
+      hscode_seloption_id: new FormControl('', Validators.compose([])),
+      hs_code: new FormControl('', Validators.compose([])),
+      is_enabled: new FormControl('', Validators.compose([]))
+    });
+
+    this.PermitRpttGenFrm = new FormGroup({
+      id: new FormControl('', Validators.compose([])),
+      permit_type_id: new FormControl('', Validators.compose([])),
+      permittemplate_type_id: new FormControl('', Validators.compose([])),
+      permit_template_type: new FormControl('', Validators.compose([])),
+      is_enabled: new FormControl('', Validators.compose([]))
+
+    });
+
+    this.PermitRqdDocFrm = new FormGroup({
+      id: new FormControl('', Validators.compose([])),
+      permit_type_id: new FormControl('', Validators.compose([])),
+      document_type_id: new FormControl('', Validators.compose([])),
+      document_requirement_id: new FormControl('', Validators.compose([])),
+      document_type: new FormControl('', Validators.compose([])),
+      document_requirement: new FormControl('', Validators.compose([])),
+      is_enabled: new FormControl('', Validators.compose([]))
+
+    });
+  
+    this.PermitChecklistFrm = new FormGroup({
+      id: new FormControl('', Validators.compose([])),
+      permit_type_id: new FormControl('', Validators.compose([])),
+      checklist_type_id: new FormControl('', Validators.compose([])),
+      checklist_defination_id: new FormControl('', Validators.compose([])),
+      checklist_type: new FormControl('', Validators.compose([])),
+      checklist_defination: new FormControl('', Validators.compose([])),
+      is_enabled: new FormControl('', Validators.compose([]))
+
+    });
   
     // this.resetcolumns = 'resetcolumns,account_type_id,routerLink,has_partnerstate_defination';
      
    }
  ngOnInit() {
-   this.fetchSysAdminDetails();
+   this.fetchPermitTypeDetails();
    this.onLoadOperationTypeData();
    this.onLoadPermitTypeData();
    this.onLoadproductTypeData();
+   this.onLoadHsCodeData();
    this.onLoadOrganizationData();
-   this.onLoadProcessData();
+   this.onLoadPermitTemplateTypeData();
+   this.onLoadDocumentTypeData();
+   this.onLoadDocumentRequirementTypeData();
+   this.onLoadChecklistTypeData();
+   this.onLoadChecklistDefData();
+  //  this.onLoadProcessData(this.organization_id);
    this.spinnerShow('Loading '+this.parameter_name);
    this.spinnerHide();
    this.checkScreenSize();
-   this.onLoadWorkflowData();
+  //  this.onLoadWorkflowData();
    this.fetchAppHsCodes(this.permit_type_id);
 
  
@@ -164,11 +239,17 @@ export class PermitTypesComponent implements OnInit {
  
  checkScreenSize(): void {
    if (this.screenWidth < 768) {
-     this.tabsPosition = 'top';
+     this.tabsPosition = 'left';
    } else {
-     this.tabsPosition = 'top';
+     this.tabsPosition = 'left';
    }
  }
+
+ onOrganisationDefinationSelection($event) {
+  let organization_id = $event.selectedItem.id;
+  this.onLoadProcessData(organization_id);
+  this.onLoadWorkflowData(organization_id)
+}
  
  onAccountTypeSelection($event){
    if ($event.selectedItem) {
@@ -191,106 +272,16 @@ export class PermitTypesComponent implements OnInit {
    }
  }
  
- onSavingRegulatoryFunctionPermissions(e){
- let permit_type_id = this.createNewDataFrm.get('id')?.value;
- 
- this.changes = [];
- let access_changes = e.changes;
- for (let rec of access_changes) {
-     let data_changeobj = {
-           regulatory_function_id: rec.key,
-   
-     };
- 
-     this.changes.push(data_changeobj);
- }
-  
- if(this.changes){
-   let post_data = JSON.stringify(this.changes);
-   this.spinnerShow('Saving '+this.parameter_name);
-   
-   this.admnistrationService.onSavingUserNavigationPermissions('par_regulatoryfunctionaccess_groups', this.createNewDataFrm.value, post_data,'onSavingRegulatoryFunctionPermissions')
-     .subscribe(
-       response => {
-         this.response = response;
-         //the details 
-         if (this.response.success) {
-           this.fetchAppNavigationMenus(permit_type_id, this.account_type_id);
-           this.fetchAppHsCodes(permit_type_id);
-           
-          //  this.fetchWorkflowPermissionData(permit_type_id) 
-           this.toastr.success(this.response.message, 'Response');
-           this.spinnerHide();
- 
-         } else {
-           this.toastr.error(this.response.message, 'Alert');
-         }
-         // 
-         this.spinnerHide();
-       },
-       error => {
-         this.toastr.error('Error Occurred', 'Alert');
-         // 
-         this.spinnerHide();
-       });
- }
- }
- 
- 
- onSavingUserWorkflowPermissions(e) {
-   // apply changes to local data
-   let user_group_id = this.createNewDataFrm.get('id')?.value;
-   this.changes = [];
-   let access_changes = e.changes;
-   for (let rec of access_changes) {
- 
-       let data_changeobj = {
-             workflow_stage_id: rec.key,
-             user_group_id:user_group_id,
-             user_access_levels_id : rec.data.user_access_levels_id
-       };
-       this.changes.push(data_changeobj);
-   }
-   //call to the back end 
-   if(this.changes){
-     let post_data = JSON.stringify(this.changes);
-     this.spinnerShow('Saving '+this.parameter_name);
-     
-     this.admnistrationService.onSavingUserNavigationPermissions('sys_user_workflowstagepermissions', this.createNewDataFrm.value, post_data,'onSavingUserWorkflowPermissions')
-       .subscribe(
-         response => {
-           this.response = response;
-           //the details 
-           if (this.response.success) {
-             this.fetchAppNavigationMenus(user_group_id, this.account_type_id);
-            this.fetchAppHsCodes(user_group_id);
-            //  this.fetchWorkflowPermissionData(user_group_id); 
-             this.toastr.success(this.response.message, 'Response');
-             this.spinnerHide();
-   
-           } else {
-             this.toastr.error(this.response.message, 'Alert');
-           }
-           // 
-           this.spinnerHide();
-         },
-         error => {
-           this.toastr.error('Error Occurred', 'Alert');
-           // 
-           this.spinnerHide();
-         });
-   }
- 
- }
- 
+
  onNextNavigationItems(nextStep){
    this.selectedTabIndex = this.tabNames.indexOf(nextStep);
  }
  
- onLoadWorkflowData(){
+ onLoadWorkflowData(organization_id){
  
    var data_submit = {
-     'table_name': 'wf_workflows'
+     'table_name': 'wf_workflows',  
+      organization_id: organization_id
    }
    this.admnistrationService.onLoadSystemAdministrationData(data_submit)
      .subscribe(
@@ -315,17 +306,17 @@ export class PermitTypesComponent implements OnInit {
  spinnerHide(){
    this.loadingVisible = false;
  }
- fetchSysAdminDetails() {
+ fetchPermitTypeDetails() {
  
    var data_submit = {
      'table_name': this.table_name
    }
-   this.admnistrationService.onLoadSystemAdministrationData(data_submit)
+   this.admnistrationService.onLoadTransactionPermitTypeData(data_submit)
      .subscribe(
        data => {
          this.data_record = data;
          if (this.data_record.success) {
-           this.sysadmin = this.data_record.data;
+           this.permitTypes = this.data_record.data;
          }
  
        },
@@ -334,8 +325,6 @@ export class PermitTypesComponent implements OnInit {
        });
  
  }
- 
- 
  
  onFuncSaveRecordData() {
  
@@ -362,11 +351,12 @@ export class PermitTypesComponent implements OnInit {
         
          if (this.response.success) {
  
-             this.fetchSysAdminDetails();
+             this.fetchPermitTypeDetails();
              this.isnewrecord = false;
              this.permit_type_id = this.response.record_id;
              
              this.createNewDataFrm.get('id')?.setValue(this.permit_type_id);
+             this.fetchAppHsCodes(this.permit_type_id);
            
              this.selectedTabIndex = 1;
              this.toastr.success(this.response.message, 'Response');
@@ -384,6 +374,281 @@ export class PermitTypesComponent implements OnInit {
          this.spinnerHide();
        });
  }
+
+//  onFuncSaveHsCodeData() {
+ 
+//   const formData = new FormData();
+//   const invalid = [];
+//   const controls = this.hsCodeDataFrm.controls;
+//   for (const name in controls) {
+//     if (controls[name].invalid) {
+//       this.toastr.error('Fill In All Mandatory fields with (*), missing value on ' + name.replace('_id', ''), 'Alert');
+//       return;
+//     }
+//   }
+//   if (this.hsCodeDataFrm.invalid) {
+//     return;
+//   }
+//   this.hsCodeDataFrm.get('resetcolumns')?.setValue(this.resetcolumns);
+
+//   this.spinnerShow('Saving '+this.parameter_name);
+
+//   this.hsCodeDataFrm.get('pemit_type_id')?.setValue(this.permit_type_id);
+
+//   this.admnistrationService.onSaveSystemAdministrationDetails('par_hscode_seloptions ', this.hsCodeDataFrm.value, 'onsaveSysAdminData')
+//     .subscribe(
+//       response => {
+//         this.response = response;
+//         console.log(this.response);
+       
+//         if (this.response.success) {
+
+            
+//             this.isnewrecord = false;
+//             this.permit_type_id = this.response.record_id;
+//             this.fetchAppHsCodes(this.permit_type_id);
+//             this.hsCodeDataFrm.get('id')?.setValue(this.permit_type_id);
+
+          
+//             this.selectedTabIndex = 1;
+//             this.toastr.success(this.response.message, 'Response');
+//             this.spinnerHide();
+
+//         } else {
+//           this.toastr.error(this.response.message, 'Alert');
+//         }
+        
+//         this.spinnerHide();
+//       },
+//       error => {
+//         this.toastr.error('Error Occurred', 'Alert');
+//         // 
+//         this.spinnerHide();
+//       });
+// }
+
+onFuncSaveHsCodeData() {
+
+
+  const formData = new FormData();
+  const invalid = [];
+  const controls = this.hsCodeDataFrm.controls;
+  for (const name in controls) {
+    if (controls[name].invalid) {
+      this.toastr.error('Fill In All Mandatory fields with (*), missing value on ' + name.replace('_id', ''), 'Alert');
+      return;
+    }
+  }
+  if (this.hsCodeDataFrm.invalid) {
+    return;
+  }
+
+  this.hsCodeDataFrm.get('resetcolumns')?.setValue(this.resetcolumns);
+  this.spinnerShow('Saving ' + this.parameter_name);
+  
+
+  // this.spinner.show();
+  this.hsCodeDataFrm.get('permit_type_id')?.setValue(this.permit_type_id);
+  this.admnistrationService.onSaveSystemAdministrationDetails('par_hscode_seloptions', this.hsCodeDataFrm.value, 'onsaveSysAdminData')
+    .subscribe(
+      response => {
+        this.response = response;
+        //the details 
+        if (this.response.success) {
+
+          this.fetchAppHsCodes(this.permit_type_id);
+          this.hscodePopupVisible = false;
+          this.toastr.success(this.response.message, 'Response');
+          this.spinnerHide();
+        } else {
+          this.toastr.error(this.response.message, 'Alert');
+          this.spinnerHide();
+        }
+        this.spinnerHide();
+      },
+      error => {
+        this.toastr.error('Error Occurred', 'Alert');
+        this.spinnerHide();
+      });
+}
+
+
+onFuncSavePermitCertificateTemplatesData() {
+
+
+  const formData = new FormData();
+  const invalid = [];
+  const controls = this.PermitCertificateTemplateFrm.controls;
+  for (const name in controls) {
+    if (controls[name].invalid) {
+      this.toastr.error('Fill In All Mandatory fields with (*), missing value on ' + name.replace('_id', ''), 'Alert');
+      return;
+    }
+  }
+  if (this.PermitCertificateTemplateFrm.invalid) {
+    return;
+  }
+
+  this.PermitCertificateTemplateFrm.get('resetcolumns')?.setValue(this.resetcolumns);
+  this.spinnerShow('Saving ' + this.parameter_name);
+  
+
+  // this.spinner.show();
+  this.PermitCertificateTemplateFrm.get('permit_type_id')?.setValue(this.permit_type_id);
+  this.admnistrationService.onSaveSystemAdministrationDetails('tra_transactionpermit_codes', this.PermitCertificateTemplateFrm.value, 'onsaveSysAdminData')
+    .subscribe(
+      response => {
+        this.response = response;
+        //the details 
+        if (this.response.success) {
+          
+          this.fetchAppPermitCertificateTemplate(this.permit_type_id);
+          this.PermitCertTempPopupVisible = false;
+          this.toastr.success(this.response.message, 'Response');
+          this.spinnerHide();
+        } else {
+          this.toastr.error(this.response.message, 'Alert');
+          this.spinnerHide();
+        }
+        this.spinnerHide();
+      },
+      error => {
+        this.toastr.error('Error Occurred', 'Alert');
+        this.spinnerHide();
+      });
+}
+
+onFuncSavePermitReportGeneration() {
+
+
+  const formData = new FormData();
+  const invalid = [];
+  const controls = this.PermitRpttGenFrm.controls;
+  for (const name in controls) {
+    if (controls[name].invalid) {
+      this.toastr.error('Fill In All Mandatory fields with (*), missing value on ' + name.replace('_id', ''), 'Alert');
+      return;
+    }
+  }
+  if (this.PermitRpttGenFrm.invalid) {
+    return;
+  }
+
+  this.PermitRpttGenFrm.get('resetcolumns')?.setValue(this.resetcolumns);
+  this.spinnerShow('Saving ' + this.parameter_name);
+  
+
+  // this.spinner.show();
+  this.PermitRpttGenFrm.get('permit_type_id')?.setValue(this.permit_type_id);
+  this.admnistrationService.onSaveSystemAdministrationDetails('tra_transactionpermit_rptgeneration', this.PermitRpttGenFrm.value, 'onsaveSysAdminData')
+    .subscribe(
+      response => {
+        this.response = response;
+        //the details 
+        if (this.response.success) {
+          
+          this.fetchAppPermitReportGeneration(this.permit_type_id);
+          this.PermitRpttGenPopupVisible = false;
+          this.toastr.success(this.response.message, 'Response');
+          this.spinnerHide();
+        } else {
+          this.toastr.error(this.response.message, 'Alert');
+          this.spinnerHide();
+        }
+        this.spinnerHide();
+      },
+      error => {
+        this.toastr.error('Error Occurred', 'Alert');
+        this.spinnerHide();
+      });
+}
+
+onFuncSavePermitRequiredDocuments() {
+  const formData = new FormData();
+  const invalid = [];
+  const controls = this.PermitRqdDocFrm.controls;
+  for (const name in controls) {
+    if (controls[name].invalid) {
+      this.toastr.error('Fill In All Mandatory fields with (*), missing value on ' + name.replace('_id', ''), 'Alert');
+      return;
+    }
+  }
+  if (this.PermitRqdDocFrm.invalid) {
+    return;
+  }
+
+  this.PermitRqdDocFrm.get('resetcolumns')?.setValue(this.resetcolumns);
+  this.spinnerShow('Saving ' + this.parameter_name);
+  
+
+  // this.spinner.show();
+  this.PermitRqdDocFrm.get('permit_type_id')?.setValue(this.permit_type_id);
+  this.admnistrationService.onSaveSystemAdministrationDetails('tra_transactionpermit_requireddocuments', this.PermitRqdDocFrm.value, 'onsaveSysAdminData')
+    .subscribe(
+      response => {
+        this.response = response;
+        //the details 
+        if (this.response.success) {
+          
+          this.fetchAppPermitRequiredDocuments(this.permit_type_id);
+          this.PermitRqdDocPopupVisible = false;
+          this.toastr.success(this.response.message, 'Response');
+          this.spinnerHide();
+        } else {
+          this.toastr.error(this.response.message, 'Alert');
+          this.spinnerHide();
+        }
+        this.spinnerHide();
+      },
+      error => {
+        this.toastr.error('Error Occurred', 'Alert');
+        this.spinnerHide();
+      });
+}
+
+onFuncSavePermitChecklist() {
+  const formData = new FormData();
+  const invalid = [];
+  const controls = this.PermitChecklistFrm.controls;
+  for (const name in controls) {
+    if (controls[name].invalid) {
+      this.toastr.error('Fill In All Mandatory fields with (*), missing value on ' + name.replace('_id', ''), 'Alert');
+      return;
+    }
+  }
+  if (this.PermitChecklistFrm.invalid) {
+    return;
+  }
+
+  this.PermitChecklistFrm.get('resetcolumns')?.setValue(this.resetcolumns);
+  this.spinnerShow('Saving ' + this.parameter_name);
+  
+
+  // this.spinner.show();
+  this.PermitChecklistFrm.get('permit_type_id')?.setValue(this.permit_type_id);
+  this.admnistrationService.onSaveSystemAdministrationDetails('tra_transactionpermit_checklists', this.PermitChecklistFrm.value, 'onsaveSysAdminData')
+    .subscribe(
+      response => {
+        this.response = response;
+        //the details 
+        if (this.response.success) {
+          
+          this.fetchAppPermitChecklist(this.permit_type_id);
+          this.PermitChecklistPopupVisible = false;
+          this.toastr.success(this.response.message, 'Response');
+          this.spinnerHide();
+        } else {
+          this.toastr.error(this.response.message, 'Alert');
+          this.spinnerHide();
+        }
+        this.spinnerHide();
+      },
+      error => {
+        this.toastr.error('Error Occurred', 'Alert');
+        this.spinnerHide();
+      });
+}
+ 
  
  funcpopWidth(percentage_width) {
    return window.innerWidth * percentage_width / 100;
@@ -396,14 +661,14 @@ export class PermitTypesComponent implements OnInit {
  }
  
  onPopupHidden() {
-   this.fetchSysAdminDetails();
+   this.fetchPermitTypeDetails();
  }
  
  funcEditDetails(data) {
    this.createNewDataFrm.patchValue(data.data);
   
    this.permit_type_id = data.data.id;
-   this.account_type_id = data.data.account_type_id;
+  //  this.account_type_id = data.data.account_type_id
    this.fetchAppNavigationMenus(data.data.id, this.account_type_id);
    this.fetchAppHsCodes(data.data.id);
   //  this.fetchWorkflowPermissionData(data.data.id) 
@@ -423,6 +688,34 @@ export class PermitTypesComponent implements OnInit {
    this.AppNavigationMenus = []; 
  
  }
+ onAddNewHscode() {
+  this.hsCodeDataFrm.reset();
+  this.hscodePopupVisible = true;
+  this.AppNavigationMenus = []; 
+
+}
+
+onAddNewPermitCertificateTemplate() {
+  this.PermitCertificateTemplateFrm.reset();
+  this.PermitCertTempPopupVisible = true;
+  this.AppNavigationMenus = []; 
+}
+onAddNewPermitReportGeneration() {
+  this.PermitRpttGenFrm.reset();
+  this.PermitRpttGenPopupVisible = true;
+  this.AppNavigationMenus = []; 
+}
+onAddNewAppPermitRequiredDocuments() {
+  this.PermitCertificateTemplateFrm.reset();
+  this.PermitRqdDocPopupVisible = true;
+  this.AppNavigationMenus = []; 
+}
+
+onAddNewAppPermitChecklists() {
+  this.PermitChecklistFrm.reset();
+  this.PermitChecklistPopupVisible = true;
+  this.AppNavigationMenus = []; 
+}
  fetchAppNavigationMenus(user_group_id, account_type_id) {
    this.spinnerShow('Loading User Permissions Details');
    this.admnistrationService.getAppUserGroupNavigationMenus(user_group_id, account_type_id)
@@ -443,32 +736,94 @@ export class PermitTypesComponent implements OnInit {
  
  fetchAppHsCodes(permit_type_id) {
    this.spinnerShow('Loading User Permissions Details');
-   this.admnistrationService.getAppHsCodes(this.permit_type_id)
+
+   var data_submit = {
+    table_name: 'par_hscode_seloptions',
+    permit_type_id: permit_type_id
+   }
+   this.admnistrationService.onLoadDataUrl(data_submit, 'getAppHscodes')
    .subscribe(
      data => {
        this.data_record = data;
-       console.log(this.data_record)
        if (this.data_record.success) {
          this.AppHsCodes = this.data_record.data;
        }
      });
      this.spinnerHide();
+ }
+
+ fetchAppPermitCertificateTemplate(permit_type_id) {
+  this.spinnerShow('Loading User Permissions Details');
+
+  var data_submit = {
+   table_name: 'tra_transactionpermits_codes',
+   permit_type_id: permit_type_id
+  }
+  this.admnistrationService.onLoadDataUrl(data_submit, 'getAppPermitCertificateTemplate')
+  .subscribe(
+    data => {
+      this.data_record = data;
+      if (this.data_record.success) {
+        this.AppPermitCertificateTemplate = this.data_record.data;
+      }
+    });
+    this.spinnerHide();
+}
  
- }
- fetchWorkflowPermissionData(user_group_id) {
-   this.spinnerShow('Loading User Workflow Details');
-   this.admnistrationService.getAppUserGroupWorkflowPermission(user_group_id).subscribe(
-     (data) => {
-       this.workflowPermissionData = data.data; 
-       this.spinnerHide();
-      // this.tabPanelPopupVisible = true;
-     },
-     (error) => {
-       console.error('Error fetching Navigation menu:', error);
-       this.spinnerHide();
-     }
-   );
- }
+fetchAppPermitReportGeneration(permit_type_id) {
+  this.spinnerShow('Loading User Permissions Details');
+
+  var data_submit = {
+   table_name: 'tra_transactionpermit_rptgeneration',
+   permit_type_id: permit_type_id
+  }
+  this.admnistrationService.onLoadDataUrl(data_submit, 'getAppPermitReportGeneration')
+  .subscribe(
+    data => {
+      this.data_record = data;
+      if (this.data_record.success) {
+        this.AppPermitReportGeneration = this.data_record.data;
+      }
+    });
+    this.spinnerHide();
+}
+
+fetchAppPermitRequiredDocuments(permit_type_id) {
+  this.spinnerShow('Loading User Permissions Details');
+
+  var data_submit = {
+   table_name: 'tra_transactionpermit_requireddocuments',
+   permit_type_id: permit_type_id
+  }
+  this.admnistrationService.onLoadDataUrl(data_submit, 'getAppPermitRequiredDocuments')
+  .subscribe(
+    data => {
+      this.data_record = data;
+      if (this.data_record.success) {
+        this.AppPermitRequiredDocuments = this.data_record.data;
+      }
+    });
+    this.spinnerHide();
+}
+
+
+fetchAppPermitChecklist(permit_type_id) {
+  this.spinnerShow('Loading User Permissions Details');
+
+  var data_submit = {
+   table_name: 'tra_transactionpermit_checklists',
+   permit_type_id: permit_type_id
+  }
+  this.admnistrationService.onLoadDataUrl(data_submit, 'getAppPermitChecklist')
+  .subscribe(
+    data => {
+      this.data_record = data;
+      if (this.data_record.success) {
+        this.AppPermitChecklist = this.data_record.data;
+      }
+    });
+    this.spinnerHide();
+}
  
  funcDeleteDetails(data) {
    this.createNewDataFrm.patchValue(data.data);
@@ -527,6 +882,113 @@ export class PermitTypesComponent implements OnInit {
          
        });
  }
+ onLoadHsCodeData(){
+  var data_submit = {
+    'table_name': 'par_hscode_seloptions'
+  }
+  this.workflowService.getWorkflowConfigs(data_submit)
+    .subscribe(
+      data => {
+        this.data_record = data;
+        if (this.data_record.success) {
+          this.hsCodeData = this.data_record.data;
+          
+        }
+      },
+      error => {
+        
+      });
+}
+
+onLoadPermitTemplateTypeData(){
+  var data_submit = {
+    'table_name': 'par_permittemplate_types'
+  }
+  this.workflowService.getWorkflowConfigs(data_submit)
+    .subscribe(
+      data => {
+        this.data_record = data;
+        if (this.data_record.success) {
+          this.permitTemplateTypeData = this.data_record.data;
+          
+        }
+      },
+      error => {
+        
+      });
+}
+
+onLoadDocumentRequirementTypeData(){
+  var data_submit = {
+    'table_name': 'dms_document_requirements'
+  }
+  this.workflowService.getWorkflowConfigs(data_submit)
+    .subscribe(
+      data => {
+        this.data_record = data;
+        if (this.data_record.success) {
+          this.documentRequirementTypeData = this.data_record.data;
+          
+        }
+      },
+      error => {
+        
+      });
+}
+
+onLoadChecklistTypeData(){
+  var data_submit = {
+    'table_name': 'chk_checklist_types'
+  }
+  this.workflowService.getWorkflowConfigs(data_submit)
+    .subscribe(
+      data => {
+        this.data_record = data;
+        if (this.data_record.success) {
+          this.checklistTypeData = this.data_record.data;
+          
+        }
+      },
+      error => {
+        
+      });
+}
+
+onLoadChecklistDefData(){
+  var data_submit = {
+    'table_name': 'chk_checklist_definations'
+  }
+  this.workflowService.getWorkflowConfigs(data_submit)
+    .subscribe(
+      data => {
+        this.data_record = data;
+        if (this.data_record.success) {
+          this.checklistDefData = this.data_record.data;
+          
+        }
+      },
+      error => {
+        
+      });
+}
+onLoadDocumentTypeData(){
+  var data_submit = {
+    'table_name': 'par_document_types'
+  }
+  this.workflowService.getWorkflowConfigs(data_submit)
+    .subscribe(
+      data => {
+        this.data_record = data;
+        if (this.data_record.success) {
+          this.documentTypeData = this.data_record.data;
+          
+        }
+      },
+      error => {
+        
+      });
+}
+
 
  onLoadPermitTypeData(){
   var data_submit = {
@@ -545,6 +1007,8 @@ export class PermitTypesComponent implements OnInit {
         
       });
 }
+
+// 
 onLoadOrganizationData(){
   var data_submit = {
     'table_name': 'tra_organisation_information'
@@ -563,9 +1027,11 @@ onLoadOrganizationData(){
       });
 }
 
-onLoadProcessData(){
+onLoadProcessData(organization_id){
   var data_submit = {
-    'table_name': 'wf_processes'
+    'table_name': 'wf_processes',
+    organization_id: organization_id,
+ 
   }
   this.workflowService.getWorkflowConfigs(data_submit)
     .subscribe(
@@ -580,10 +1046,15 @@ onLoadProcessData(){
         
       });
 }
- onUpdateUserPermissionSubmit() {
+onUpdatePermitType() {
 
    this.showWizard = true;
  }
+
+ onUpdateHsCode() {
+
+  this.showWizard = true;
+}
  
  onAdvanceProductRegistrySearch(e){
    e.toolbarOptions.items.unshift({
@@ -647,7 +1118,7 @@ editorPreparing(e) {
          
          this.response  = response;
          if (this.response.success) {
-           this.fetchSysAdminDetails();
+           this.fetchPermitTypeDetails();
            this.deletePopupVisible = false;
            this.toastr.success(this.response.message, 'Response');
          }
@@ -663,6 +1134,8 @@ editorPreparing(e) {
        });
  
  }
+
+ 
  
  onExporting(e: DxDataGridTypes.ExportingEvent) {
      if (e.format == 'pdf') {
