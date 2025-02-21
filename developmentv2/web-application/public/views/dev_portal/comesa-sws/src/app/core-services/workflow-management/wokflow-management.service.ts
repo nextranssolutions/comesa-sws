@@ -22,6 +22,7 @@ export class WokflowManagementService {
   data: any;
   key: string = 'kPJks1MrdXE03n8H';
   userGroupId: number;
+  account_type_id: number;
   application_details: any;
   config: any;
   constructor(private HttpClient: HttpClient, private http: HttpClient, private sanitizer: DomSanitizer, private authService: AuthenticationService) {
@@ -289,15 +290,17 @@ export class WokflowManagementService {
         return data;
       }));
   }
+
   getUserNavigationItems(navigation_type_id,regulatory_function_id=0) {
 
     this.userGroupId = this.userData.user_group_id;
+    this.account_type_id = this.userData.account_type_id;
     const loggedInUserId = localStorage.getItem('id');
     const loggedInUserName = localStorage.getItem('first_name');
     
     this.config = {
       headers: { 'Accept': 'application/json' },
-      params: {'user_id': loggedInUserId, 'user_name': loggedInUserName,regulatory_function_id:regulatory_function_id, userGroupId: this.userGroupId, navigation_type_id:navigation_type_id },
+      params: {'user_id': loggedInUserId, 'user_name': loggedInUserName,regulatory_function_id:regulatory_function_id, userGroupId: this.userGroupId, navigation_type_id:navigation_type_id, account_type_id:this.account_type_id },
     };
 
     return this.http.get(this.baseUrl + '/getUserNavigationItems', this.config)

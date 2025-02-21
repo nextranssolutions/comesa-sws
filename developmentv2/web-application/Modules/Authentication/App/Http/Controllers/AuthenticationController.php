@@ -28,7 +28,7 @@ class AuthenticationController extends Controller
             // if ($email_address != 'admin@gmail.com' ) {
             //     $email_address = aes_encrypt($email_address);
             // }
-            if ($email_address != 'admin@gmail.com' && $email_address != 'applicant@gmail.com' && $email_address != 'oga.admin@gmail.com' && $email_address != 'oga.finace@gmail.com' && $email_address != 'oga.approver@gmail.com' && $email_address != 'oga.reviewer@gmail.com') {
+            if ($email_address != 'admin@gmail.com'  && $email_address != 'oga.admin@gmail.com' && $email_address != 'oga.finace@gmail.com' && $email_address != 'oga.approver@gmail.com' && $email_address != 'oga.reviewer@gmail.com') {
             $email_address = aes_encrypt($email_address);
             }
 

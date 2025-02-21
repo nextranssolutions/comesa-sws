@@ -1,15 +1,16 @@
 import { Component, HostListener } from '@angular/core';
 import { DxTabPanelTypes } from 'devextreme-angular/ui/tab-panel';
 
-
 @Component({
-  selector: 'app-dms-configsetup',
-  templateUrl: './dms-configsetup.component.html',
-  styleUrl: './dms-configsetup.component.css'
+  selector: 'app-dms-configurationsetup',
+
+  templateUrl: './dms-configurationsetup.component.html',
+  styleUrl: './dms-configurationsetup.component.css'
 })
-export class DmsConfigsetupComponent {
-  table_name: string;
-    parameter_name: string = "dms_configurations";
+export class DmsConfigurationsetupComponent {
+
+    table_name: string;
+    parameter_name:string ="dms_configurations";
     tabsPositions: DxTabPanelTypes.Position[] = [
       'left', 'top', 'right', 'bottom',
     ];
@@ -20,11 +21,6 @@ export class DmsConfigsetupComponent {
   
     constructor(){
       this.checkScreenSize();
-  
-      
-    }
-    ngOnInit(){
-      
     }
     @HostListener('window:resize', ['$event'])
     onResize(event: Event): void{
@@ -34,12 +30,9 @@ export class DmsConfigsetupComponent {
   
     checkScreenSize(): void{
       if(this.screenWidth < 768){
-        this.tabsPosition = 'left';
+        this.tabsPosition = 'top';
       }else{
         this.tabsPosition = 'left';
       }
-    }
-    onFuncSaveNavigationData(){
-  
     }
 }

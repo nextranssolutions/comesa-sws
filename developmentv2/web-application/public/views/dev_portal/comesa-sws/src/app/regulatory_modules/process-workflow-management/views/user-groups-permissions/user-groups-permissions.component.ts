@@ -26,13 +26,14 @@ resetcolumns = 'dashboard_type_id,resetcolumns,routerLink,has_partnerstate_defin
     { value: false, text: 'No' },
   ];
   user_group_id:number;
-  account_type_id: number;
+  account_type_id: number = 4;
   data: any[];
   editRowKey: any;
   editColumnName: any;
   changes: Array<any>;
   workflowData:any;
   workflowStageData:any;
+
   navigationTypesData:any;
   regulatoryFunctionData: any;
   createNewDataFrm: FormGroup;
@@ -134,7 +135,7 @@ resetcolumns = 'dashboard_type_id,resetcolumns,routerLink,has_partnerstate_defin
   }
 ngOnInit() {
   // other initializations
-  this.fetchSysAdminDetails();
+  this.fetchSysAdminDetails(this.account_type_id);
   this.fetchPermissionsDetails();
   this.onLoadnavigationTypesData();
   this.onLoadregulatoryFunctionData();
@@ -427,10 +428,11 @@ spinnerShow(spinnerMessage){
 spinnerHide(){
   this.loadingVisible = false;
 }
-fetchSysAdminDetails() {
+fetchSysAdminDetails(account_type_id) {
 
   var data_submit = {
-    'table_name': this.table_name
+    'table_name': this.table_name,
+    account_type_id:account_type_id
   }
   this.admnistrationService.onLoadSystemAdministrationData(data_submit)
     .subscribe(
@@ -474,7 +476,7 @@ onFuncSaveRecordData() {
         //the details 
         if (this.response.success) {
 
-            this.fetchSysAdminDetails();
+            this.fetchSysAdminDetails(this.account_type_id);
             this.isnewrecord = false;
             this.user_group_id = this.response.record_id;
             
@@ -508,7 +510,7 @@ finishFunction() {
 }
 
 onPopupHidden() {
-  this.fetchSysAdminDetails();
+  this.fetchSysAdminDetails(this.account_type_id);
 }
 
 funcEditDetails(data) {
@@ -758,7 +760,7 @@ onDeleteSystemAdministrationDetails() {
         
         this.response  = response;
         if (this.response.success) {
-          this.fetchSysAdminDetails();
+          this.fetchSysAdminDetails(this.account_type_id);
           this.deletePopupVisible = false;
           this.toastr.success(this.response.message, 'Response');
         }
