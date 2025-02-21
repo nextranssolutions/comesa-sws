@@ -13,6 +13,7 @@ export const routes: Routes = [
   { path: 'integration-notification-management', loadChildren: () => import('./regulatory_modules/integration-notification-management/integration-notification-management.module').then(m => m.IntegrationNotificationManagementModule) },
   { path: 'online-services', loadChildren: () => import('./regulatory_modules/online-services/online-services.module').then(m => m.OnlineServicesModule) },
   { path: 'process-workflow-management', loadChildren: () => import('./regulatory_modules/process-workflow-management/process-workflow-management.module').then(m => m.ProcessWorkflowManagementModule) },
+  { path: 'importexport-permit-application', loadChildren: () => import('./regulatory_modules/importexport-permit-application/importexport-application.module').then(m => m.ImportexportControlModule) },
 ];
 
 @NgModule({
