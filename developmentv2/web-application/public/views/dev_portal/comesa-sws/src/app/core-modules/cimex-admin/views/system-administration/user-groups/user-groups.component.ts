@@ -56,6 +56,7 @@ export class UserGroupsComponent implements OnInit {
   hideAnimation: any;
   showAnimation: any;
   record_id:number;
+
   addPopupVisible = false;
   deletePopupVisible = false;
   data_record: any;
@@ -144,6 +145,7 @@ ngOnInit() {
   this.spinnerHide();
   this.checkScreenSize();
   this.onLoadWorkflowData();
+
 
   //for the action menu
 
@@ -341,42 +343,7 @@ onSavingUserWorkflowPermissions(e) {
 onNextNavigationItems(nextStep){
   this.selectedTabIndex = this.tabNames.indexOf(nextStep);
 }
-// onloadinstutitionTypesData(account_type_id) {
-//   var data_submit = {
-//     'table_name': 'par_institutions_types',
-//     account_type_id:account_type_id
-//   }
-//   this.admnistrationService.onLoadSystemAdministrationData(data_submit)
-//     .subscribe(
-//       data => {
-//         this.data_record = data;
-//         if (this.data_record.success) {
-//           this.instutitionTypesData = this.data_record.data;
-//         }
-//       },
-//       error => {
-        
-//       });
 
-// }
-// onloadallinstutitionTypesData() {
-//   var data_submit = {
-//     'table_name': 'par_institutions_types'
-//   }
-//   this.admnistrationService.onLoadSystemAdministrationData(data_submit)
-//     .subscribe(
-//       data => {
-//         this.data_record = data;
-        
-//         if (this.data_record.success) {
-//           this.allinstutitionTypesData = this.data_record.data;
-//         }
-//       },
-//       error => {
-        
-//       });
-
-// }
 onloaddashboardTypeData() {
 
   var data_submit = {
@@ -396,6 +363,7 @@ onloaddashboardTypeData() {
       });
 
 }
+
 onLoadAllAccountTypeData(){
 
   var data_submit = {

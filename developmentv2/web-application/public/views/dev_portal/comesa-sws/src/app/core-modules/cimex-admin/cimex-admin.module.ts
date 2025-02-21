@@ -137,12 +137,7 @@ import { FormFieldsComponent } from './views/configurations/forms/form-fields/fo
 import { FormTypesComponent } from './views/configurations/forms/form-types/form-types.component';
 import { AdminRoutingDashboardModule } from './admin-routing-dashboard.module';
 import { IntegrationManagementComponent } from './views/integration-management/integration-management.component';
-import { ProcessConfsetupComponent } from './views/configurations/process-configuration/process-confsetup/process-confsetup.component';
-import { AppSectionsComponent } from './views/configurations/process-configuration/application-section/app-sections.component';
-import { AppealTypesComponent } from './views/configurations/process-configuration/appeal-types/appeal-types.component';
-import { ModulesComponent } from './views/configurations/process-configuration/modules/modules.component';
-import { SectionsComponent } from './views/configurations/process-configuration/sections/sections.component';
-import { SharedProcessconfigurationComponent } from './views/configurations/process-configuration/shared-processconfiguration/shared-processconfiguration.component';
+
 import { GeneralApplicationFormComponent } from './views/configurations/forms/general-application-form/general-application-form.component';
 import { DataEntryFormSetupComponent } from './views/configurations/forms/data-entry-form-setup/data-entry-form-setup.component';
 import { AnnualCeilconfComponent } from './views/configurations/controlled-drugs-configurations/annual-ceilingconfiguration/annual-ceilconf.component';
@@ -274,7 +269,14 @@ import { PrommaterialBookcataloguesComponent } from './views/configurations/prom
 import { PromotionadvertChannelsComponent } from './views/configurations/promotional_advertisements_configurations/promotionadvert-channels/promotionadvert-channels.component';
 import { PromotionmaterialCategoriesComponent } from './views/configurations/promotional_advertisements_configurations/promotionmaterial-categories/promotionmaterial-categories.component';
 import { SharedDocumentchecklistmngComponent } from './views/document-checklistsmng/shared-documentchecklistmng/shared-documentchecklistmng.component';
+import { SectionsComponent } from './views/configurations/forms/sections/sections.component';
+import { SharedProcessconfigsComponent } from './views/configurations/process-configurations/shared-processconfigs/shared-processconfigs.component';
+import { RegulatedProductsTypesComponent } from './views/configurations/process-configurations/regulated-products-types/regulated-products-types.component';
+import { RegFunctionsComponent } from './views/configurations/process-configurations/reg-functions/reg-functions.component';
+import { AppealsTypesComponent } from './views/configurations/process-configurations/appeals-types/appeals-types.component';
+import { ProcessConfigsetupComponent } from './views/configurations/process-configurations/process-configsetup/process-configsetup.component';
 import { PermitTypesComponent } from './views/configurations/permittypes-configuration/permit-types/permit-types.component';
+import { AppSectionsComponent } from './views/configurations/forms/application-section/app-sections.component';
 
 @NgModule({
   declarations: [AppdashboardComponent,
@@ -288,38 +290,38 @@ import { PermitTypesComponent } from './views/configurations/permittypes-configu
     SharedusermanagementComponent,
     AppCitiesComponent,
     AppCountriesComponent,
+    RegFunctionsComponent,
+    AppealsTypesComponent,
+    ProcessConfigsetupComponent,
     AppUserTitle, DisclaimerStatementTypesComponent, DisclaimerStatementsComponent,
     AppUserIdentificationType,
     AppInstitution,
     PortalworkflowsComponent,
     ApiUsersComponent,
+    RegulatedProductsTypesComponent,
     AppInstitutionDepartments,
     SharedconfigurationsComponent,
     DataEntryFormSetupComponent,
     AppActiveUserAccounts,
     RecursiveMenuDirective,
-    ProcessConfsetupComponent,
+    AppSectionsComponent,
     AppGenericnamesComponent,
     ControlDocumentmanagementComponent,
     AppCurrenciesComponent,
     AppAuditTrail,
-    
+    SharedProcessconfigsComponent,
     GeneralApplicationFormComponent,
     SharedPortalNavigationsComponent,
     PortalNavigationComponent,
-   
     PortalNavigationTypesComponent,
     PortalNavigationSetupComponent,
     PortalNavigationLevelsComponent,
     PortalNavigationInterfacesComponent,
     PortalTermsComponent,
     TraderAccountManagementComponent,
-    AppSectionsComponent,
-    AppealTypesComponent,
     PortalWorkflowsetupComponent,
-    ModulesComponent,
-    PortalInterfacesComponent,
     SectionsComponent,
+    PortalInterfacesComponent,
     AnnualCeilconfComponent,
     CtrlDrugsbasesaltsComponent,
     CtrlDrugsconvfactComponent,
@@ -327,7 +329,7 @@ import { PermitTypesComponent } from './views/configurations/permittypes-configu
     CtrlDrugssubstancesComponent,
     CtrlDrugstypeComponent,
     SharedCtrldrugsconfigurationComponent,
-     ImportExportconfsetupComponent,
+    ImportExportconfsetupComponent,
     PermitReasonsComponent,
     PermittypeCategoriesComponent,
     PortentryExitComponent,
@@ -391,7 +393,7 @@ import { PermitTypesComponent } from './views/configurations/permittypes-configu
     DistrictcouncilDefinationComponent,
     LocationParametersComponent,
 
- 
+
 
     StudySitesComponent,
     SponsorsNatureComponent,
@@ -418,19 +420,19 @@ import { PermitTypesComponent } from './views/configurations/permittypes-configu
     ClinicaltrialConfigsetupComponent,
     SharedclinicalTrialconfigurationsComponent,
     CertificateConditionComponent,
-    
+
     AppPartnerStates,
     ControlDocmasterlistComponent,
     AppNotificationsComponent,
     AppDashboardsectionsComponent,
-  
+
     DocumentControlsetupComponent,
     ControlleddrugsConfsetupComponent,
-   
+
     SystemAdministratorsComponent,
     ReportsanalyticsdashboardComponent,
     AppNmrasinfoComponent,
-    
+
     SharedNavigationsComponent,
     NavigationsComponent, AppSharedworkflowComponent,
     NavigationTypesComponent, AppExchangeratesComponent,
@@ -444,9 +446,9 @@ import { PermitTypesComponent } from './views/configurations/permittypes-configu
     NavigationLevelsComponent, NavigationInterfacesComponent,
     InstitutionsDepartmentsComponent,
     AppstageStatusesComponent,
-    SharedSysAdministrationComponent, 
-   
-     
+    SharedSysAdministrationComponent,
+
+
     ShareusermanagementClassComponent,
     UserAccounttypesComponent, SystemDashbordtypesComponent,
     UsermanagementDashboardComponent, ApplicationDocumentuploadsComponent,
@@ -457,7 +459,7 @@ import { PermitTypesComponent } from './views/configurations/permittypes-configu
     PrommaterialBookcataloguesComponent,
     PromotionadvertChannelsComponent,
     PromotionmaterialCategoriesComponent,
-   
+
     AppProcesssubmissionComponent,
     AppSubmissionmethodsComponent,
     AppFormsComponent,
@@ -465,15 +467,15 @@ import { PermitTypesComponent } from './views/configurations/permittypes-configu
     DynamicFormComponent,
     FormFieldsComponent,
     FormTypesComponent,
-    
+
     AppTranslationmanagementComponent, AppSystemlanguagesComponent,
     AppSystemlabelsmanagementComponent, InstitutionsDetailsComponent,
     AppSystemlabelsmanagementComponent,
 
     InstitutionsDetailsComponent,
     SystemsFunctionalitiesComponent,
-   
-   
+
+
     InstitutionsTypesComponent, AppNationalitiesComponent, AppGenderComponent, AppPublicationTypesComponent,
 
     RegistrationConditionComponent,
@@ -547,8 +549,8 @@ import { PermitTypesComponent } from './views/configurations/permittypes-configu
     RegistrationRegulationComponent,
     RefnumberConfigsetupComponent,
 
-  
-    SharedProcessconfigurationComponent,
+
+
     UserDashboardComponent,
     FinanceDashboardComponent,
     ExternalDashboardComponent,
@@ -565,7 +567,7 @@ import { PermitTypesComponent } from './views/configurations/permittypes-configu
     PortalProcesstransitionComponent,
     PortalDocdefinationComponent,
     IntegrationManagementComponent,
-    
+
 
   ],
   imports: [
@@ -575,7 +577,7 @@ import { PermitTypesComponent } from './views/configurations/permittypes-configu
     NgHttpLoaderModule, DxTreeListModule, AdminRoutingDashboardModule,
     DxDataGridModule, DxActionSheetModule, DxFileUploaderModule, DxNumberBoxModule, DxCheckBoxModule, DxSelectBoxModule, DxContextMenuModule, DxMenuModule, DxTagBoxModule,
     DxTabPanelModule, DxFormModule, DxScrollViewModule, DxChartModule,
-    DxSelectBoxModule, DxoExportModule, 
+    DxSelectBoxModule, DxoExportModule,
     DxValidatorModule, DxDrawerModule,
     DxCalendarModule, DxPopupModule, DxFileUploaderModule, DxNumberBoxModule, DxMenuModule, DxTagBoxModule,
     DxTabPanelModule, DxFileUploaderModule, DxNumberBoxModule,
@@ -667,8 +669,8 @@ import { PermitTypesComponent } from './views/configurations/permittypes-configu
     PortalDocdefinationComponent,
     AppFormsComponent,
     PermitTypesComponent,
-   
-   
+
+
     SharedconfigurationsComponent,
     UserloginLogsComponent,
     UserpwdresetrequestLogsComponent,
@@ -684,12 +686,12 @@ import { PermitTypesComponent } from './views/configurations/permittypes-configu
     TermsconditionsDetailsComponent,
     GuidelinesoptionsComponent,
     UserSetupComponent,
-    
+
     SharedPortalNavigationsComponent,
     ControlleddrugsConfsetupComponent,
     PortalNavigationComponent,
     PortalNavigationTypesComponent,
-    ProcessConfsetupComponent,
+
     PortalNavigationSetupComponent,
     PortalNavigationLevelsComponent,
     PortalNavigationInterfacesComponent,
@@ -701,17 +703,14 @@ import { PermitTypesComponent } from './views/configurations/permittypes-configu
     RegistrationConditionComponent,
     RegistrationRegulationComponent,
     IntegrationManagementComponent,
-    AppSectionsComponent,
-    AppealTypesComponent,
-    ModulesComponent,
-    SectionsComponent,
+
     AnnualCeilconfComponent,
     CtrlDrugsbasesaltsComponent,
     CtrlDrugsconvfactComponent,
     CtrlDrugssaltsComponent,
     CtrlDrugssubstancesComponent,
     CtrlDrugstypeComponent,
- 
+
     ImportExportconfsetupComponent,
     PermitReasonsComponent,
     PermittypeCategoriesComponent,
@@ -721,7 +720,7 @@ import { PermitTypesComponent } from './views/configurations/permittypes-configu
     GmpConfigsetupComponent,
     GmpProductcategoryComponent,
     GmpProductlineComponent,
-  
+
 
     RefNumbertypesComponent,
     RefNumbervariablesComponent,
@@ -801,11 +800,11 @@ import { PermitTypesComponent } from './views/configurations/permittypes-configu
     SamplingReasonComponent,
     SharedPmsconfigurationsComponent,
 
-    
-    
-    SharedProcessconfigurationComponent,
+
+
+
     SharedCtrldrugsconfigurationComponent,
-   
+
 
     StudySitesComponent,
     SponsorsNatureComponent,
@@ -832,7 +831,7 @@ import { PermitTypesComponent } from './views/configurations/permittypes-configu
     ClinicaltrialConfigsetupComponent,
     SharedclinicalTrialconfigurationsComponent,
     RefnumberConfigsetupComponent,
-    
+
     LocationCountriesComponent,
     CountryRegionsComponent,
     ProvincesComponent,

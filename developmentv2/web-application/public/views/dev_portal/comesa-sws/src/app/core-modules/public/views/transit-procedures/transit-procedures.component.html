@@ -1,6 +1,6 @@
 <div class="container-fluid row div-home">
     <div class="col-lg-12 border-linemargin">
-        <h6 class="text-start">{{'transit_procedures' | translate}}</h6>
+        <h4 class="text-start">{{'transit_procedures' | translate}}</h4>
         <div class="row">
             <div class="col-lg-12">
                 <form role="form" enctype="multipart/form-data" role="form" [formGroup]="searchProcedureFrm"
@@ -22,26 +22,26 @@
                             </div>
                             <div class="col-lg-12 btn-searchdetails">
                                 <dx-button text="{{'search_by_product' | translate}}" type="default" icon="fa fa-search"
-                                    [elementAttr]="{  class: 'btn-searchdetails' }" (onClick)="onLoadTransitProcedureData(operation_type_id)">
+                                    [elementAttr]="{  class: 'btn-searchdetails' }"
+                                    (onClick)="onLoadTransitProcedureData(operation_type_id)">
                                 </dx-button>
 
                             </div>
 
                         </dxi-item>
 
-                        <dxi-item title="{{'search_by_product_category' | translate}}" icon="map">
+                        <dxi-item title="{{'search_by_hscode' | translate}}" icon="map">
                             <div class="form-group has-search search-margin-top">
 
                                 <dx-select-box [dataSource]="productCategoryData" class="form-control"
-                                    placeholder="{{'search_by_product_category' | translate}}"
-                                    formControlName="hscodesheading" [showClearButton]="true" valueExpr="id"
-                                    [searchEnabled]="true" displayExpr="name">
+                                    placeholder="{{'search_by_hscode' | translate}}" formControlName="hscodesheading"
+                                    [showClearButton]="true" valueExpr="id" [searchEnabled]="true" displayExpr="hscode">
                                 </dx-select-box>
 
                             </div>
                             <div class="col-lg-12 btn-searchdetails">
-                                <dx-button text="{{'search_by_product_category' | translate}}" type="default"
-                                    icon="fa fa-search" [elementAttr]="{  class: 'btn-searchdetails' }"
+                                <dx-button text="{{'search_by_hscode' | translate}}" type="default" icon="fa fa-search"
+                                    [elementAttr]="{  class: 'btn-searchdetails' }"
                                     (onClick)="onLoadTransitProcedureData(operation_type_id)">
                                 </dx-button>
 
@@ -74,7 +74,7 @@
         </div>
 
         <dx-data-grid (onExporting)="onExporting($event)" (onCellPrepared)="onCellPrepared($event)"
-            class="table row-border hover" [dataSource]="transitProcedureData" [remoteOperations]='true'
+            class="table row-border hover" [dataSource]="filteredProcedureData" [remoteOperations]='true'
             [showBorders]="true" [allowColumnResizing]="true" [columnHidingEnabled]="true" [wordWrapEnabled]="true"
             keyExpr="id" (onToolbarPreparing)="onAdvanceSearch($event)">
 
@@ -94,24 +94,93 @@
             <dxo-group-panel [visible]="true"></dxo-group-panel>
 
             <dxi-column dataField="id" caption="{{'id' | translate}}" [visible]="false"></dxi-column>
-            <dxi-column [groupIndex]="0" dataField="operation_type" caption="{{ 'operation_type' | translate }}">
+            <dxi-column dataField="operation_type" caption="{{ 'operation_type' | translate }}">
             </dxi-column>
             <dxi-column [groupIndex]="0" dataField="hscodechapters" caption="{{ 'product' | translate }}">
             </dxi-column>
             <dxi-column dataField="hscodesheading" caption="{{'product_category' | translate}}"></dxi-column>
 
             <dxi-column dataField="hscodessubheading" caption="{{'product_subcategory' | translate}}"></dxi-column>
-            <dxi-column dataField="procedure_categories" caption="{{'procedure_categories' | translate}}"></dxi-column>
+            <!-- <dxi-column dataField="procedure_categories" caption="{{'procedure_categories' | translate}}"></dxi-column>
 
             <dxi-column dataField="procedure_subcategories"
                 caption="{{'procedure_subcategories' | translate}}"></dxi-column>
 
 
             <dxi-column dataField="procedure_description"
-                caption="{{'procedure_description' | translate}}"></dxi-column>
+                caption="{{'procedure_description' | translate}}"></dxi-column> -->
 
             <dxi-column dataField="organisation" caption="{{'organisation' | translate}}"></dxi-column>
 
+            <dxo-master-detail [enabled]="true" template="detail">
+            </dxo-master-detail>
+            <div *dxTemplate="let data of 'detail'">
+                <!-- <dx-tab-panel id="hscodeTab" [iconPosition]="iconPosition" [swipeEnabled]="false"
+                    [showNavButtons]="true" [animationEnabled]="true"> -->
+
+                <!-- <dxi-item title="{{'associated_hscodes' | translate }}" icon="fa fa-file">
+                        <dx-data-grid class="table row-border hover" [dataSource]="filteredProcedureData"
+                            [remoteOperations]="true" [showBorders]="true" [allowColumnResizing]="true" keyExpr="id">
+                            <dxi-column [width]="200" dataField="chapterscode"
+                                caption="{{'chapterscode' | translate}}"></dxi-column>
+                            <dxi-column [width]="200" dataField="headingcode"
+                                caption="{{'headingcode' | translate}}"></dxi-column>
+                            <dxi-column [width]="200" dataField="subheadingcode"
+                                caption="{{'subheadingcode' | translate}}"></dxi-column>
+                        </dx-data-grid>
+                    </dxi-item> -->
+
+
+                <!-- <dxi-item title="{{'procedures' | translate }}" icon="fa fa-file"> -->
+                <div class="accordion" id="proceduresAccordion" title="procedures">
+                    <div class="accordion-item" *ngFor="let procedure of filteredProcedureData; let i = index">
+                        <h2 class="accordion-header procedure_category" id="heading{{ i }}">
+                            <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
+                                [attr.data-bs-target]="'#collapse' + i" aria-expanded="false"
+                                [attr.aria-controls]="'collapse' + i">
+                                {{'procedure_category' | translate}}: {{ procedure.procedure_categories }}
+                            </button>
+                        </h2>
+                        <div [id]="'collapse' + i" class="accordion-collapse collapse pl-10"
+                            [attr.aria-labelledby]="'heading' + i" data-bs-parent="#proceduresAccordion">
+                            <div class="accordion-body">
+                                <p class="precedure-category">{{'description' | translate}}: {{
+                                    procedure.procedure_category_description }}</p>
+
+                                <div class="accordion" [id]="'subAccordion' + i">
+                                    <div class="accordion-item"
+                                        *ngFor="let procedure of filteredProcedureData; let j = index">
+                                        <h3 class="accordion-header pl-5" id="subHeading{{ i }}-{{ j }}">
+                                            <button class="accordion-button2 collapsed" type="button"
+                                                data-bs-toggle="collapse"
+                                                [attr.data-bs-target]="'#subCollapse' + i + '-' + j"
+                                                aria-expanded="false"
+                                                [attr.aria-controls]="'subCollapse' + i + '-' + j">
+                                                {{'procedure_subcategory' | translate}}: {{
+                                                procedure.procedure_subcategories }}
+                                            </button>
+                                        </h3>
+                                        <div [id]="'subCollapse' + i + '-' + j" class="accordion-collapse collapse"
+                                            [attr.aria-labelledby]="'subHeading' + i + '-' + j"
+                                            [attr.data-bs-parent]="'#subAccordion' + i">
+                                            <div class="accordion-body">
+                                                <p class="precedure-category"> {{'description' | translate}}: {{
+                                                    procedure.procedure_subcategory_description }}</p>
+                                                <a *ngIf="procedure.procedure_link" [href]="procedure.subcategory_link"
+                                                    target="_blank">
+                                                    More Details
+                                                </a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- </dxi-item> -->
+                <!-- </dx-tab-panel> -->
+            </div>
             <dxo-paging [pageSize]="200"></dxo-paging>
         </dx-data-grid>
     </div>

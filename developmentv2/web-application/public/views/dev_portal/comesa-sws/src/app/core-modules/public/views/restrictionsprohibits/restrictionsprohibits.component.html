@@ -1,6 +1,6 @@
 <div class="container-fluid row div-home">
     <div class="col-lg-12 border-linemargin">
-        <h6 class="text-start">{{'trade_restrictions' | translate}}</h6>
+        <h4 class="text-start">{{'trade_restrictions' | translate}}</h4>
 
         <dx-data-grid (onExporting)="onExporting($event)" (onCellPrepared)="onCellPrepared($event)"
             class="table row-border hover" [dataSource]="restrictionsData" [remoteOperations]='true'
@@ -24,12 +24,16 @@
 
             <dxi-column dataField="id" caption="{{'id' | translate}}" [visible]="false"></dxi-column>
 
-            <dxi-column dataField="title" caption="{{'title' | translate}}"></dxi-column>
-
-            <dxi-column dataField="description" caption="{{'description' | translate}}"></dxi-column>
-
-
-            <dxi-column dataField="category" caption="{{'category' | translate}}"></dxi-column>
+            <dxi-column dataField="hscodechapters" caption="{{'product' | translate}}"></dxi-column>
+            <dxi-column dataField="hscodesheading" caption="{{'product_category' | translate}}"></dxi-column>
+            <dxi-column dataField="hscodessubheading" caption="{{'product_subcategory' | translate}}"></dxi-column>
+            <dxi-column dataField="permit_operation" caption="{{'permit_operation' | translate}}"></dxi-column>
+            <dxi-column dataField="restrictions_description"
+                caption="{{'restrictions_description' | translate}}"></dxi-column>
+            <dxi-column dataField="restricted_product_description"
+                caption="{{'restricted_product_description' | translate}}"></dxi-column>
+            <dxi-column dataField="restrictions_accesslinks"
+                caption="{{'restrictions_accesslinks' | translate}}"></dxi-column>
 
             <dxo-paging [pageSize]="200"></dxo-paging>
         </dx-data-grid>

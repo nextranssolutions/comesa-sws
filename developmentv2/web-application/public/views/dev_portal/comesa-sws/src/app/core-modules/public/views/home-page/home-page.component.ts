@@ -193,7 +193,7 @@ export class HomePageComponent {
   onLoadHsCodeData() {
     var data_submit = {
       table_name: 'tra_hscodesproducts_registry',
-      // is_enabled: true,
+      is_enabled: true,
     };
     this.configService.onLoadConfigurationData(data_submit).subscribe(
       (data) => {

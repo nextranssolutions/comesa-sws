@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
 import { Router } from '@angular/router';
 import { SpinnerVisibilityService } from 'ng-http-loader';
@@ -122,6 +122,7 @@ export class TopSectionComponent {
     public toastr: ToastrService,
     private otpservice: OtpService,
     private configService: ConfigurationsService,
+    private cdr: ChangeDetectorRef
   ) {
     this.spinner.hide();
     translate.addLangs([
@@ -131,8 +132,6 @@ export class TopSectionComponent {
       'Arabic',
       'Portuguese',
     ]);
-
-
   }
 
   ngOnInit() {
@@ -143,18 +142,27 @@ export class TopSectionComponent {
       traderaccount_type_id: new FormControl('', Validators.compose([])),
       country_of_origin_id: new FormControl('', Validators.compose([])),
       name: new FormControl('', Validators.compose([])),
-      email_address: new FormControl('', Validators.compose([Validators.required, Validators.email])),
+      email_address: new FormControl(
+        '',
+        Validators.compose([Validators.required, Validators.email])
+      ),
       phone_number: new FormControl('', Validators.compose([])),
       otp_value: new FormControl('', Validators.compose([Validators.required])),
     });
 
     this.forgotPasswordFrm = new FormGroup({
-      email_address: new FormControl('', Validators.compose([Validators.required])),
+      email_address: new FormControl(
+        '',
+        Validators.compose([Validators.required])
+      ),
       experts_profile_no: new FormControl('', Validators.compose([])),
     });
 
     this.signInFrm = new FormGroup({
-      email_address: new FormControl('', Validators.compose([Validators.required])),
+      email_address: new FormControl(
+        '',
+        Validators.compose([Validators.required])
+      ),
       password: new FormControl('', Validators.compose([Validators.required])),
       otp_value: new FormControl('', Validators.compose([])),
     });
@@ -229,7 +237,7 @@ export class TopSectionComponent {
       (error) => { }
     );
   }
-  
+
   fetchUserCountryOfOrigin() {
     var data_submit = {
       table_name: 'par_countries',
@@ -485,6 +493,7 @@ export class TopSectionComponent {
         this.success = this.auth_response.success;
 
         if (this.success) {
+
           let access_token = this.auth_response.access_token;
           let isLoggedIn = this.auth_response.isLoggedIn;
           if (access_token != '' && isLoggedIn) {
@@ -498,54 +507,21 @@ export class TopSectionComponent {
             this.authService.storeToken(token);
             localStorage.setItem('isLoggedIn', this.auth_response.isLoggedIn);
             localStorage.setItem('user', JSON.stringify(this.auth_response));
-            localStorage.setItem(
-              'token',
-              this.auth_response.authorisation.token
-            );
-
-            localStorage.setItem(
-              'id',
-              this.auth_response.expertsprofile_information_id
-            );
+            localStorage.setItem('token', this.auth_response.authorisation.token);
+            localStorage.setItem('id', this.auth_response.expertsprofile_information_id);
             localStorage.setItem('id', this.auth_response.id);
-            localStorage.setItem(
-              'user_group_name',
-              this.auth_response.user_group_name
-            );
+            localStorage.setItem('user_group_name', this.auth_response.user_group_name);
             localStorage.setItem('first_name', this.auth_response.first_name);
-            localStorage.setItem(
-              'country_of_origin_id',
-              this.auth_response.country_of_origin
-            );
+            localStorage.setItem('country_of_origin_id', this.auth_response.country_of_origin);
             localStorage.setItem('other_names', this.auth_response.other_names);
-            localStorage.setItem(
-              'email_address',
-              this.auth_response.email_address
-            );
+            localStorage.setItem('email_address', this.auth_response.email_address);
             localStorage.setItem('userGroupId', this.auth_response.userGroupId);
-            localStorage.setItem(
-              'account_type_name',
-              this.auth_response.account_type_name
-            );
-            localStorage.setItem(
-              'account_type_id',
-              this.auth_response.account_type_id
-            );
-            localStorage.setItem(
-              'user_group_id',
-              this.auth_response.user_group_id
-            );
-            localStorage.setItem(
-              'userCountryOfOrigin',
-              this.auth_response.countryName
-            );
-            localStorage.setItem(
-              'usr_loggedin_id',
-              this.auth_response.usr_loggedin_id
-            );
-            localStorage.setItem(
-              'dashboard_link',
-              this.auth_response.dashboard_link
+            localStorage.setItem('account_type_name', this.auth_response.account_type_name);
+            localStorage.setItem('account_type_id', this.auth_response.account_type_id);
+            localStorage.setItem('user_group_id', this.auth_response.user_group_id);
+            localStorage.setItem('userCountryOfOrigin', this.auth_response.countryName);
+            localStorage.setItem('usr_loggedin_id', this.auth_response.usr_loggedin_id);
+            localStorage.setItem('dashboard_link', this.auth_response.dashboard_link
             );
             localStorage.setItem(
               'dashboard_name',
@@ -554,7 +530,7 @@ export class TopSectionComponent {
 
             this.authService.isLoggedIn = true;
             this.isLoggedIn = true;
-
+            this.cdr.detectChanges();
             this.router.navigate([this.dashboard_link]);
             this.scrollToTop();
           } else {
@@ -625,7 +601,7 @@ export class TopSectionComponent {
   }
 
   funcUserLogOut() {
-    this.spinnerShow('Logging Out');
+    // this.spinnerShow('Logging Out');
     this.authService.funcUserLogOut();
   }
 

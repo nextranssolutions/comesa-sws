@@ -124,7 +124,7 @@
 </dx-load-panel>
 
 <dx-popup class="popup" [width]="funcpopWidth(75)" [height]="440" [showTitle]="true" [@flyInOut]
-  title="{{ 'add_new' | translate }} {{parameter_name | translate }}" [dragEnabled]="false" [closeOnOutsideClick]="true"
+  title="{{ 'add_new' | translate }} {{parameter_name | translate }}" [dragEnabled]="false" [hideOnOutsideClick]="true"
   [(visible)]="isnewproduct">
 
   <div *dxTemplate="let data of 'content'">

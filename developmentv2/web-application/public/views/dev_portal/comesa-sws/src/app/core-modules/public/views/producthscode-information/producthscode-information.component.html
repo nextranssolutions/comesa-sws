@@ -1,13 +1,14 @@
 <div class="container-fluid row div-home">
     <div class="col-lg-12 border-linemargin">
-        <h6 class="text-start">{{'product_hscodes' | translate}}</h6>
+        <h4 class="text-start pt-2">{{'products_hscode_information' | translate}}</h4>
         <div class="row">
             <div class="col-lg-12">
-                <form role="form" enctype="multipart/form-data" [formGroup]="searchProcedureFrm" (ngSubmit)="onLoadProductHscodeData()">
+                <form role="form" enctype="multipart/form-data" role="form" [formGroup]="searchProcedureFrm"
+                    (ngSubmit)="onLoadProductHscodeData()">
                     <dx-tab-panel id="productSearch" [(selectedIndex)]="selectedTabIndex"
                         (onTitleClick)="funcProcedureClick($event)" [iconPosition]="iconPosition" [swipeEnabled]="false"
                         [showNavButtons]="true" [animationEnabled]="true">
-        
+
                         <!-- Search by Product -->
                         <dxi-item title="{{'search_by_product' | translate}}" icon="map">
                             <div class="form-group has-search search-margin-top">
@@ -16,29 +17,31 @@
                                     [showClearButton]="true" valueExpr="id" [searchEnabled]="true" displayExpr="name">
                                 </dx-select-box>
                             </div>
-                            <div class="text-center mt-3">
+                            <div class="col-lg-12 btn-searchdetails">
                                 <dx-button text="{{'search_by_product' | translate}}" type="default" icon="fa fa-search"
-                                    [elementAttr]="{ class: 'btn-searchdetails' }" (onClick)="onLoadProductHscodeData()">
+                                    [elementAttr]="{ class: 'btn-searchdetails' }"
+                                    (onClick)="onLoadProductHscodeData()">
                                 </dx-button>
                             </div>
                         </dxi-item>
-        
+
                         <!-- Search by Product Category -->
                         <dxi-item title="{{'search_by_product_category' | translate}}" icon="map">
                             <div class="form-group has-search search-margin-top">
                                 <dx-select-box [dataSource]="productCategoryData" class="form-control"
-                                    placeholder="{{'search_by_product_category' | translate}}" formControlName="hscodesheading"
-                                    [showClearButton]="true" valueExpr="id" [searchEnabled]="true" displayExpr="name">
+                                    placeholder="{{'search_by_product_category' | translate}}"
+                                    formControlName="hscodesheading" [showClearButton]="true" valueExpr="id"
+                                    [searchEnabled]="true" displayExpr="name">
                                 </dx-select-box>
                             </div>
-                            <div class="text-center mt-3">
+                            <div class="col-lg-12 btn-searchdetails">
                                 <dx-button text="{{'search_by_product_category' | translate}}" type="default"
                                     icon="fa fa-search" [elementAttr]="{ class: 'btn-searchdetails' }"
                                     (onClick)="onLoadProductHscodeData()">
                                 </dx-button>
                             </div>
                         </dxi-item>
-        
+
                         <!-- Search by Product Subcategory -->
                         <dxi-item title="{{'search_by_product_subcategory' | translate}}" icon="map">
                             <div class="form-group has-search search-margin-top">
@@ -48,20 +51,20 @@
                                     [searchEnabled]="true" displayExpr="name">
                                 </dx-select-box>
                             </div>
-                            <div class="text-center mt-3">
+                            <div class="col-lg-12 btn-searchdetails">
                                 <dx-button text="{{'search_by_product_subcategory' | translate}}" type="default"
                                     icon="fa fa-search" [elementAttr]="{ class: 'btn-searchdetails' }"
                                     (onClick)="onLoadProductHscodeData()">
                                 </dx-button>
                             </div>
                         </dxi-item>
-        
+
                     </dx-tab-panel>
                 </form>
             </div>
         </div>
-        
-        
+
+
 
 
         <dx-data-grid (onExporting)="onExporting($event)" (onCellPrepared)="onCellPrepared($event)"
@@ -95,6 +98,9 @@
             <dxo-master-detail [enabled]="true" template="detail">
             </dxo-master-detail>
             <div *dxTemplate="let data of 'detail'">
+                <div class="m-card-ful h-50" *ngFor="let procedure of filteredProcedureData; let i = index">
+                    <p>{{procedure.procedure_description}}</p>
+                </div>
                 <dx-tab-panel id="hscodeTab" [iconPosition]="iconPosition" [swipeEnabled]="false"
                     [showNavButtons]="true" [animationEnabled]="true">
 
@@ -111,7 +117,7 @@
                     </dxi-item>
 
 
-                    <dxi-item title="{{'procedures' | translate }}" icon="fa fa-file">
+                    <dxi-item class="accordion" title="{{'procedures' | translate }}" icon="fa fa-file">
                         <div class="accordion" id="proceduresAccordion">
                             <div class="accordion-item" *ngFor="let procedure of filteredProcedureData; let i = index">
                                 <h2 class="accordion-header" id="heading{{ i }}">
@@ -126,38 +132,38 @@
                                     <div class="accordion-body">
                                         <p class="precedure-category">{{ procedure.procedure_category_description }}</p>
 
-                                        <div class="accordion" [id]="'subAccordion' + i">
-                                            <div class="accordion-item"
-                                                *ngFor="let procedure of filteredProcedureData; let j = index">
-                                                <h3 class="accordion-header pl-5" id="subHeading{{ i }}-{{ j }}">
-                                                    <button class="accordion-button2 collapsed" type="button"
-                                                        data-bs-toggle="collapse"
-                                                        [attr.data-bs-target]="'#subCollapse' + i + '-' + j"
-                                                        aria-expanded="false"
-                                                        [attr.aria-controls]="'subCollapse' + i + '-' + j">
-                                                        {{ procedure.procedure_subcategories }}
-                                                    </button>
-                                                </h3>
-                                                <div [id]="'subCollapse' + i + '-' + j"
-                                                    class="accordion-collapse collapse"
-                                                    [attr.aria-labelledby]="'subHeading' + i + '-' + j"
-                                                    [attr.data-bs-parent]="'#subAccordion' + i">
-                                                    <div class="accordion-body">
-                                                        <p class="precedure-category">{{
-                                                            procedure.procedure_subcategory_description }}</p>
-                                                        <a *ngIf="procedure.procedure_link"
-                                                            [href]="procedure.subcategory_link" target="_blank">
-                                                            More Details
-                                                        </a>
-                                                    </div>
+
+                                        <div class="accordion-item"
+                                            *ngFor="let subProcedure of filteredProcedureData; let j = index">
+                                            <h3 class="accordion-header pl-5" id="subHeading{{ i }}-{{ j }}">
+                                                <button class="accordion-button2 collapsed" type="button"
+                                                    data-bs-toggle="collapse"
+                                                    [attr.data-bs-target]="'#subCollapse' + i + '-' + j"
+                                                    aria-expanded="false"
+                                                    [attr.aria-controls]="'subCollapse' + i + '-' + j">
+                                                    {{ subProcedure.procedure_subcategories }}
+                                                </button>
+                                            </h3>
+                                            <div [id]="'subCollapse' + i + '-' + j" class="accordion-collapse collapse"
+                                                [attr.aria-labelledby]="'subHeading' + i + '-' + j"
+                                                [attr.data-bs-parent]="'#subAccordion' + i">
+                                                <div class="accordion-body">
+                                                    <p class="precedure-category">{{
+                                                        subProcedure.procedure_subcategory_description }}</p>
+                                                    <a *ngIf="subProcedure.procedure_link"
+                                                        [href]="subProcedure.subcategory_link" target="_blank">
+                                                        More Details
+                                                    </a>
                                                 </div>
                                             </div>
                                         </div>
+
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </dxi-item>
+
                 </dx-tab-panel>
 
 

@@ -673,20 +673,22 @@ class SysAdministrationController extends Controller
             $level = 0;
             $user_group_id = $req->user_group_id;
             $account_type_id = $req->account_type_id;
+           
 
             $navigationItems = DB::table('wf_navigation_items as t1')
                 ->leftJoin('wf_system_interfaces as t3', 't1.system_interface_id', 't3.id')
-                ->leftJoin('sys_usergroup_navpermissions as t4', function ($join) use ($user_group_id, $account_type_id) {
+                ->leftJoin('sys_usergroup_navpermissions as t4', function ($join) use ($user_group_id) {
                     $join->on('t1.id', '=', 't4.navigation_item_id')
-                        ->on('t4.user_group_id', '=', DB::raw($user_group_id))
-                        ->on('t1.account_type_id', '=', DB::raw($account_type_id));
+                        ->on('t4.user_group_id', '=', DB::raw($user_group_id));
                 })
                 ->leftjoin('wf_navigation_types as t5', 't1.navigation_type_id', 't5.id')
                 ->select('t1.*', 't3.routerlink', 't1.iconsCls', 't4.user_access_levels_id', 't4.navigation_item_id', 't4.user_group_id')
                 ->orderBy('t1.order_no')
-                ->where(array('level' => $level))
+                ->where(array('level' => $level, 'account_type_id'=>$account_type_id))
+
 
                 ->get();
+               
             $rootItems = array();
             // This will store items in a hierarchical structure
             $hierarchicalItems = [];

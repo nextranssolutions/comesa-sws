@@ -492,7 +492,7 @@ class UserManagementController extends Controller
             $application_code = generateApplicationCode($process_id, 'usr_users_information');
             $account_type_id = 1;
             $user_group_id = 2;
-            $email_address = aes_encrypt($req->email_address);
+            // $email_address = aes_encrypt($req->email_address);
             $record = DB::table('usr_users_information')
                 ->where('email_address', $email_address)
                 // ->where('identification_number', '=', $req->identification_number)
@@ -531,7 +531,24 @@ class UserManagementController extends Controller
                     'success' => false,
                     'message' => 'Error occurred: ' . $user_resp['message'],
                 ], 200);
+            } else {
+                $appuser_id = $user_resp['record_id'];
+                $group_id = 2;
+                $usergroup_data = [
+                    'group_id' => $group_id,
+                    'user_id' => $appuser_id,
+                ];
+    
+                $usergroup_resp = insertRecord('tra_user_group', $usergroup_data);
+                if (!$usergroup_resp['success']) {
+                    DB::rollBack();
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Error occurred: ' . $usergroup_resp['message'],
+                    ], 200);
+                }
             }
+           
 
             // **Step 3: Process Submission & Send Email Notification**
             initiateInitialProcessSubmission('usr_users_information', $application_code, $process_id, $user_resp['record_id']);
@@ -1908,7 +1925,7 @@ class UserManagementController extends Controller
             $emailExists = DB::table('txn_trader_account')
                 ->where('email_address', $req->email_address)
                 ->exists();
-              
+
             if ($emailExists) {
                 // return response()->json(['success' => false, 'message' => 'Email already exists.'], 400);
                 return $this->onUpdateTraderData($req);
@@ -2053,7 +2070,7 @@ class UserManagementController extends Controller
                 $resp = updateRecord($table_name, $previous_data, $where, $trader_data, '');
 
                 if ($resp['success']) {
-                    
+
                     $existingUserRecord = DB::table('usr_users_information')
                         ->where('email_address', '=', $req->email_address)
                         ->first();

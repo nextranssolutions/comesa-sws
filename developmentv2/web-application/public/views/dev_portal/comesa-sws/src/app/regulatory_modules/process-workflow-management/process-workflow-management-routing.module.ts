@@ -9,7 +9,6 @@ import { AppChecklistDefinationComponent } from './views/document-checklistsmng/
 import { AppChecklistTypesComponent } from './views/document-checklistsmng/checklist_management/app-checklist-types/app-checklist-types.component';
 import { AppPerformancescoringScalesComponent } from './views/document-checklistsmng/checklist_management/app-performancescoring-scales/app-performancescoring-scales.component';
 import { ChecklistmanagementSetupComponent } from './views/document-checklistsmng/checklistmanagement-setup/checklistmanagement-setup.component';
-import { DmsConfigsetupComponent } from './views/document-checklistsmng/document_management/dms-configsetup/dms-configsetup.component';
 import { DmsSitesRepositoryDefinationComponent } from './views/document-checklistsmng/document_management/dms-sites-repository-defination/dms-sites-repository-defination.component';
 import { DocumentExtensionTypesComponent } from './views/document-checklistsmng/document_management/document-extension-types/document-extension-types.component';
 import { DocumentRequirementDefinationComponent } from './views/document-checklistsmng/document_management/document-requirement-defination/document-requirement-defination.component';
@@ -24,6 +23,9 @@ import { TraderAccountManagementComponent } from './views/trader-account-managem
 import { AppSignatoriesComponent } from './views/app-signatories/app-signatories.component';
 import { InstitutionInformationComponent } from './views/institution-information/institution-information.component';
 import { HscodesconfigSetupComponent } from './views/hscodes-configurations/hscodesconfig-setup/hscodesconfig-setup.component';
+import { ProcessConfsetupComponent } from './views/process-configuration/process-confsetup/process-confsetup.component';
+import { UserGroupsPermissionsComponent } from './views/user-groups-permissions/user-groups-permissions.component';
+import { DmsConfigurationsetupComponent } from './views/document-checklistsmng/dms-configurationsetup/dms-configurationsetup.component';
 
 const routes: Routes = [{
   path: '',
@@ -54,13 +56,26 @@ const routes: Routes = [{
       component: AppPerformancescoringScalesComponent
     },
     {
+      path: 'app-process-confsetup',
+      component: ProcessConfsetupComponent
+    },
+    {
+      path: 'app-user-groups-permissions',
+      component: UserGroupsPermissionsComponent
+    },
+
+    
+    {
+      path: 'app-dms-configurationsetup',
+      component: DmsConfigurationsetupComponent
+    },
+   
+    
+    {
       path: 'app-checklistmanagement-setup',
       component: ChecklistmanagementSetupComponent
     },
-    {
-      path: 'dms-configsetup',
-      component: DmsConfigsetupComponent
-    },
+   
     {
       path: 'app-dms-sites-repository-defination',
       component: DmsSitesRepositoryDefinationComponent
