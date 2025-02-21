@@ -3,17 +3,27 @@
     width: 100rem;
 }
 
-[_nghost-ng-c3021171271] {
+#productSearch [_nghost-ng-c3021171271] {
     display: flex;
+}
+
+#productSearch .dx-textbox,
+.dx-datebox,
+.dx-numberbox {
+    border-radius: 5px !important;
+    margin-top: 5px !important;
+    margin-bottom: 0px !important;
 }
 
 .precedure-category {
     font-size: 1.4rem !important;
     padding-left: 5rem;
 }
+
 .accordion-button {
     font-size: 1.5rem;
 }
+
 .accordion-button2 {
     position: relative;
     display: flex;

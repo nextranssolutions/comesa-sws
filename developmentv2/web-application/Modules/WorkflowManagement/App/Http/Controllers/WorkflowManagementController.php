@@ -154,7 +154,7 @@ class WorkflowManagementController extends Controller
                     ->select('group_id')
                     ->where(array('user_id' => $user_id))
                     ->get();
-           
+
 
                 $usergroups = convertStdClassObjToArray($usergroups);
 
@@ -168,7 +168,7 @@ class WorkflowManagementController extends Controller
                 ->leftJoin('par_regulatoryfunctionaccess_groups as t2', 't1.id', 't2.regulatory_function_id')
                 ->select('t1.*', 't1.iconsCls', 't2.user_access_levels_id', 't1.id as regulatory_function')
                 ->orderBy('t1.order_no');
-           
+
             $regulatory_functions->whereIn('user_group_id', $usergroups);
 
             $res = array(
@@ -192,7 +192,7 @@ class WorkflowManagementController extends Controller
             $rootItems = [];
 
             $navigation_type_id = $req->navigation_type_id;
-            $userGroupId = $req->userGroupId;
+            // $userGroupId = $req->userGroupId;
             $user_id = $req->user_id;
             $regulatory_function_id = $req->regulatory_function_id;
             $account_type_id = $req->account_type_id;
@@ -221,9 +221,11 @@ class WorkflowManagementController extends Controller
                     ->leftJoin('wf_system_interfaces as t3', 't1.system_interface_id', 't3.id')
                     ->select('t1.*', 't3.routerlink', 't1.iconsCls', 't2.user_access_levels_id','t1.account_type_id')
                     ->orderBy('t1.order_no')->where(array('level' => $level, 't1.navigation_type_id' => $navigation_type_id));
+
                 if (!$is_super_admin && $navigation_type_id == 2) {
                     $navigationItems->whereIn('user_group_id', $usergroups);
                 }
+
                 if (validateIsNumeric($regulatory_function_id)) {
                     $navigationItems->where('t1.regulatory_function_id', $regulatory_function_id);
                 }

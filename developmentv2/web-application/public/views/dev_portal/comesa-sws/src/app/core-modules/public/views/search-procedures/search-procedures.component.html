@@ -1,9 +1,45 @@
 <div class="container mt-4">
-    <h4>{{ 'Procedures for ' + selectedProduct | translate }}</h4>
+    <h4>{{ 'procedures_for' + selectedProduct | translate }}</h4>
 
     <!-- Search Box -->
-    <dx-text-box [(value)]="searchText" (valueChange)="onSearch()" placeholder="Search procedures..." class="mb-3">
-    </dx-text-box>
+    <!-- <dx-text-box [(value)]="searchText" (valueChange)="onSearch()" placeholder="Search procedures..." class="mb-3">
+    </dx-text-box> -->
+
+    <div class="col-lg-12">
+        <form [formGroup]="searchForm" class="search-box">
+            <div class="dx-fieldset flex-wrap gap-3 justify-content-center">
+
+                <div class="dx-field w-md-auto">
+                    <label class="form-label">{{ 'search_by' | translate }}</label>
+                </div>
+                <div class="dx-field w-md-auto">
+                    <dx-select-box formControlName="searchByCriteria" [dataSource]="criteriaData" displayExpr="name"
+                        valueExpr="id" placeholder="{{ 'select_search_criteria' | translate }}"
+                        (onValueChanged)="onSearchCriteriaChange($event)" class="form-select-lg">
+                    </dx-select-box>
+                </div>
+
+                <div class="dx-field w-md-auto">
+                    <dx-select-box formControlName="transactionType" [dataSource]="operationTypeData" displayExpr="name"
+                        valueExpr="name" placeholder="{{ 'select_operation_type' | translate }}" class="form-select-lg">
+                    </dx-select-box>
+                </div>
+
+                <div class="dx-field w-md-auto">
+                    <dx-select-box formControlName="productType" [dataSource]="dynamicDataSource" displayExpr="name"
+                        valueExpr="name" placeholder="{{ productPlaceholder | translate }}" class="form-select-lg">
+                    </dx-select-box>
+                </div>
+
+
+                <div class="search-button">
+                    <dx-button text="{{'search' | translate}}" type="default" stylingMode="contained" icon="search"
+                        (onClick)="onSearchProduct()" class="btn-primary">
+                    </dx-button>
+                </div>
+            </div>
+        </form>
+    </div>
 
     <!-- Main Accordion (Procedure Categories) -->
     <div class="accordion" id="proceduresAccordion">
@@ -17,7 +53,7 @@
             <div [id]="'collapse' + i" class="accordion-collapse collapse pl-10" [attr.aria-labelledby]="'heading' + i"
                 data-bs-parent="#proceduresAccordion">
                 <div class="accordion-body">
-                    <p>{{ procedure.procedure_category_description }}</p>
+                    <p class="precedure-category">{{ procedure.procedure_category_description }}</p>
 
                     <!-- Nested Accordion (Procedure Subcategories) -->
                     <div class="accordion" [id]="'subAccordion' + i">
@@ -33,7 +69,7 @@
                                 [attr.aria-labelledby]="'subHeading' + i + '-' + j"
                                 [attr.data-bs-parent]="'#subAccordion' + i">
                                 <div class="accordion-body">
-                                    <p>{{ procedure.procedure_subcategory_description }}</p>
+                                    <p class="precedure-category">{{ procedure.procedure_subcategory_description }}</p>
                                     <a *ngIf="procedure.procedure_link" [href]="procedure.subcategory_link"
                                         target="_blank">
                                         More Details

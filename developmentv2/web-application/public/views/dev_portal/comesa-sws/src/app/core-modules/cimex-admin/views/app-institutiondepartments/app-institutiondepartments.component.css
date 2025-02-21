@@ -22,10 +22,10 @@ justify-content: left; /* Align items horizontally to the center */
 }
 
 /* You can also adjust individual button styles if needed */
-.dx-button {
+/* .dx-button {
 margin-top: 10px; 
-margin-right: 10px; /* Adds some spacing between buttons */
-}
+margin-right: 10px; 
+} */
 
 .confirmation-text {
 font-size: 18px; /* Adjust the font size as needed */

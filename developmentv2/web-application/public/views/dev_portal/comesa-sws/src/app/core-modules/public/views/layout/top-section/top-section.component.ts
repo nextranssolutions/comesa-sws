@@ -1,6 +1,6 @@
 import { ChangeDetectorRef, Component, ViewChild } from '@angular/core';
 import { TranslateService } from '@ngx-translate/core';
-import { NavigationEnd, Router } from '@angular/router';
+import { Router } from '@angular/router';
 import { SpinnerVisibilityService } from 'ng-http-loader';
 import { AuthenticationService } from 'src/app/core-services/authentication/authentication.service';
 import { LanguagesService } from 'src/app/core-services/languages/languages.service';
@@ -218,7 +218,6 @@ export class TopSectionComponent {
       (error) => { }
     );
   }
-
 
   onLoadTraderAccountTypeData() {
     var data_submit = {
@@ -459,158 +458,94 @@ export class TopSectionComponent {
     }
   }
   onSignIn() {
+    // Clear localStorage before logging in
+    localStorage.clear();
+
     this.email = this.signInFrm.get('email_address')?.value;
     this.password = this.signInFrm.get('password')?.value;
     const otp_value = this.signInFrm.get('otp_value')?.value;
-  
-    // Validate form inputs
+
+    // const formData = new FormData();
+    // const invalid = [];
+    const controls = this.signInFrm.controls;
+    for (const name in controls) {
+      if (controls[name].invalid) {
+        this.toastr.error(
+          'Fill In All Mandatory fields with (*), missing value on ' +
+          name.replace('_id', ''),
+          'Alert'
+        );
+        return;
+      }
+    }
     if (this.signInFrm.invalid) {
-      this.toastr.error('Fill in all mandatory fields (*) before proceeding.', 'Alert');
       return;
     }
-  
+
     this.loading = true;
-    this.spinnerShow('User Login...');
-  
-    this.authService.login(btoa(this.email), btoa(this.password), otp_value).subscribe(
-      (response: any) => { // Ensure 'response' is properly typed
-        if (!response.success) {
-          this.toastr.error(response.message, 'Alert!');
+    this.spinnerShow('User Login........');
+    this.authService
+      .login(btoa(this.email), btoa(this.password), otp_value)
+
+      .subscribe((response) => {
+        this.auth_response = response;
+        this.message = this.auth_response.message;
+        this.success = this.auth_response.success;
+
+        if (this.success) {
+
+          let access_token = this.auth_response.access_token;
+          let isLoggedIn = this.auth_response.isLoggedIn;
+          if (access_token != '' && isLoggedIn) {
+            this.toastr.success(this.message, 'Success!');
+            // this.isLoggedIn = this.auth_response.isLoggedIn;
+            this.isSigninPopupVisible = false;
+            this.dashboard_name = this.auth_response.dashboard_name;
+            this.dashboard_link = this.auth_response.dashboard_link;
+
+            const token = this.auth_response.authorisation.token;
+            this.authService.storeToken(token);
+            localStorage.setItem('isLoggedIn', this.auth_response.isLoggedIn);
+            localStorage.setItem('user', JSON.stringify(this.auth_response));
+            localStorage.setItem('token', this.auth_response.authorisation.token);
+            localStorage.setItem('id', this.auth_response.expertsprofile_information_id);
+            localStorage.setItem('id', this.auth_response.id);
+            localStorage.setItem('user_group_name', this.auth_response.user_group_name);
+            localStorage.setItem('first_name', this.auth_response.first_name);
+            localStorage.setItem('country_of_origin_id', this.auth_response.country_of_origin);
+            localStorage.setItem('other_names', this.auth_response.other_names);
+            localStorage.setItem('email_address', this.auth_response.email_address);
+            localStorage.setItem('userGroupId', this.auth_response.userGroupId);
+            localStorage.setItem('account_type_name', this.auth_response.account_type_name);
+            localStorage.setItem('account_type_id', this.auth_response.account_type_id);
+            localStorage.setItem('user_group_id', this.auth_response.user_group_id);
+            localStorage.setItem('userCountryOfOrigin', this.auth_response.countryName);
+            localStorage.setItem('usr_loggedin_id', this.auth_response.usr_loggedin_id);
+            localStorage.setItem('dashboard_link', this.auth_response.dashboard_link
+            );
+            localStorage.setItem(
+              'dashboard_name',
+              this.auth_response.dashboard_name
+            );
+
+            this.authService.isLoggedIn = true;
+            this.isLoggedIn = true;
+            this.cdr.detectChanges();
+            this.router.navigate([this.dashboard_link]);
+            this.scrollToTop();
+          } else {
+            this.toastr.error(this.message, 'Alert!');
+          }
           this.spinnerHide();
-          return;
+        } else {
+          this.spinnerHide();
+          this.toastr.error(this.message, 'Alert!');
         }
-  
-        // Successful login
-        localStorage.clear();
-        localStorage.setItem('isLoggedIn', JSON.stringify(response.isLoggedIn));
-        localStorage.setItem('user', JSON.stringify(response));
-  
-        if (response.authorisation && response.authorisation.token) {
-          const token = response.authorisation.token;
-          this.authService.storeToken(token);
-          localStorage.setItem('token', token);
-        }
-  
-        // Store required user details
-        const userDetails = [
-          'id', 'user_group_name', 'first_name', 'country_of_origin_id',
-          'other_names', 'email_address', 'userGroupId', 'account_type_name',
-          'account_type_id', 'user_group_id', 'userCountryOfOrigin',
-          'usr_loggedin_id', 'dashboard_link', 'dashboard_name'
-        ];
-        
-        userDetails.forEach(key => {
-          if (response[key] !== undefined) {
-            localStorage.setItem(key, response[key]);
-          }
-        });
-  
-        this.toastr.success(response.message, 'Success!');
-        this.isLoggedIn = true;
-        this.authService.isLoggedIn = true;
-  
-        this.router.navigate([response.dashboard_link]);
-        this.router.events.subscribe(event => {
-          if (event instanceof NavigationEnd) {
-            console.log('Navigation successful:', event.url);
-          }
-        });
-        console.log('Dashboard Link:', this.auth_response.dashboard_link);
-
         this.spinnerHide();
-      },
-      error => {
-        this.toastr.error('Login failed. Please try again.', 'Error!');
-        this.spinnerHide();
-      }
-    );
+      });
+    //this.router.navigate(['/online-services']);
+    //this.scrollToTop();
   }
-  
-  
-  // onSignIn() {
-  //   // Clear localStorage before logging in
-  //   localStorage.clear();
-
-  //   this.email = this.signInFrm.get('email_address')?.value;
-  //   this.password = this.signInFrm.get('password')?.value;
-  //   const otp_value = this.signInFrm.get('otp_value')?.value;
-
-  //   // const formData = new FormData();
-  //   // const invalid = [];
-  //   const controls = this.signInFrm.controls;
-  //   for (const name in controls) {
-  //     if (controls[name].invalid) {
-  //       this.toastr.error(
-  //         'Fill In All Mandatory fields with (*), missing value on ' +
-  //         name.replace('_id', ''),
-  //         'Alert'
-  //       );
-  //       return;
-  //     }
-  //   }
-  //   if (this.signInFrm.invalid) {
-  //     return;
-  //   }
-
-  //   this.loading = true;
-  //   this.spinnerShow('User Login........');
-  //   this.authService
-  //     .login(btoa(this.email), btoa(this.password), otp_value)
-
-  //     .subscribe((response) => {
-  //       this.auth_response = response;
-  //       this.message = this.auth_response.message;
-  //       this.success = this.auth_response.success;
-
-  //       if (this.success) {
-  //         let access_token = this.auth_response.access_token;
-  //         let isLoggedIn = this.auth_response.isLoggedIn;
-  //         if (access_token != '' && isLoggedIn) {
-  //           this.toastr.success(this.message, 'Success!');
-  //           // this.isLoggedIn = this.auth_response.isLoggedIn;
-  //           this.isSigninPopupVisible = false;
-  //           this.dashboard_name = this.auth_response.dashboard_name;
-  //           this.dashboard_link = this.auth_response.dashboard_link;
-
-  //           const token = this.auth_response.authorisation.token;
-  //           this.authService.storeToken(token);
-  //           localStorage.setItem('isLoggedIn', this.auth_response.isLoggedIn);
-  //           localStorage.setItem('user', JSON.stringify(this.auth_response));
-  //           localStorage.setItem('token', this.auth_response.authorisation.token);
-  //           localStorage.setItem('id', this.auth_response.expertsprofile_information_id);
-  //           localStorage.setItem('id', this.auth_response.id);
-  //           localStorage.setItem('user_group_name', this.auth_response.user_group_name);
-  //           localStorage.setItem('first_name', this.auth_response.first_name);
-  //           localStorage.setItem('country_of_origin_id',this.auth_response.country_of_origin );
-  //           localStorage.setItem('other_names', this.auth_response.other_names);
-  //           localStorage.setItem( 'email_address', this.auth_response.email_address);
-  //           localStorage.setItem('userGroupId', this.auth_response.userGroupId);
-  //           localStorage.setItem('account_type_name', this.auth_response.account_type_name );
-  //           localStorage.setItem('account_type_id', this.auth_response.account_type_id);
-  //           localStorage.setItem('user_group_id', this.auth_response.user_group_id);
-  //           localStorage.setItem( 'userCountryOfOrigin', this.auth_response.countryName);
-  //           localStorage.setItem('usr_loggedin_id', this.auth_response.usr_loggedin_id);
-  //           localStorage.setItem('dashboard_link', this.auth_response.dashboard_link);
-  //           localStorage.setItem('dashboard_name', this.auth_response.dashboard_name);
-
-  //           this.authService.isLoggedIn = true;
-  //           this.isLoggedIn = true;
-            
-  //           this.router.navigate([this.dashboard_link]);
-  //           this.scrollToTop();
-  //         } else {
-  //           this.toastr.error(this.message, 'Alert!');
-  //         }
-  //         this.spinnerHide();
-  //       } else {
-  //         this.spinnerHide();
-  //         this.toastr.error(this.message, 'Alert!');
-  //       }
-  //       this.spinnerHide();
-  //     });
-  //   //this.router.navigate(['/online-services']);
-  //   //this.scrollToTop();
-  // }
 
   openSignupPopup() {
     this.isSigninPopupVisible = false;
