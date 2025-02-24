@@ -16,7 +16,7 @@ export class AppSystemlanguagesComponent  {
     // private http: HttpClient,
   ) {
     this.table_name = 'par_system_languages';
-    this.parameter_name = "System Languages";
+    this.parameter_name = "system_languages";
     this.resetcolumns = 'email_template,notification_type_id,system_label_id,system_language_id,translation,performancescoring_scale_id,checklist_type_id,document_type_id';
   }
   ngOnInit() {

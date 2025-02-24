@@ -28,7 +28,7 @@
   <dxi-column dataField="name" caption="{{ 'name' | translate }}"></dxi-column>
   <dxi-column dataField="description" caption="{{ 'description' | translate }}"></dxi-column>
   
-  <dxi-column *ngIf="table_name == 'dms_sites_repository_defination' || table_name == 'txn_nonstructured_docdefination'" dataField="site_id"
+  <dxi-column *ngIf="table_name == 'dms_sites_repository_defination' || table_name == 'tra_nonstructured_docdefination'" dataField="site_id"
   caption="{{ 'site_id' | translate }}">
   <dxo-lookup [dataSource]="siteIdData" displayExpr="name" valueExpr="id">
   </dxo-lookup>
@@ -42,105 +42,105 @@
       caption="{{ 'is_dms_site_root' | translate }}">
   </dxi-column>
 
-  <dxi-column *ngIf="table_name == 'txn_nonstructured_docdefination'" dataField="document_type_id"
+  <dxi-column *ngIf="table_name == 'tra_nonstructured_docdefination'" dataField="document_type_id"
       caption="{{ 'document_type_id' | translate }}">
       <dxo-lookup [dataSource]="documentTypeIdData" displayExpr="name" valueExpr="id">
     </dxo-lookup>
   </dxi-column>
   
-  <dxi-column *ngIf="table_name == 'txn_nonstructured_docdefination'" dataField="node_name"
+  <dxi-column *ngIf="table_name == 'tra_nonstructured_docdefination'" dataField="node_name"
       caption="{{ 'node_name' | translate }}">
   </dxi-column>
 
-  <dxi-column *ngIf="table_name == 'txn_documentrequirements_defination'" dataField="document_type_id"
+  <dxi-column *ngIf="table_name == 'tra_documentrequirements_defination'" dataField="document_type_id"
   caption="{{ 'document_type_id' | translate }}">
     <dxo-lookup [dataSource]="documentTypeIdData" displayExpr="name" valueExpr="id">
     </dxo-lookup>
   </dxi-column>
 
-  <dxi-column *ngIf="table_name == 'txn_documentrequirements_defination'" dataField="document_requirement_id"
+  <dxi-column *ngIf="table_name == 'tra_documentrequirements_defination'" dataField="document_requirement_id"
   caption="{{ 'document_requirement_id' | translate }}">
     <dxo-lookup [dataSource]="documentRequirementIdData" displayExpr="name" valueExpr="id">
     </dxo-lookup>
   </dxi-column>
 
-  <dxi-column *ngIf="table_name == 'txn_documentrequirements_defination'" dataField="product_type_id"
+  <dxi-column *ngIf="table_name == 'tra_documentrequirements_defination'" dataField="product_type_id"
   caption="{{ 'product_type_id' | translate }}">
     <dxo-lookup [dataSource]="productTypeIdData" displayExpr="name" valueExpr="id">
     </dxo-lookup>
   </dxi-column>
 
-  <dxi-column *ngIf="table_name == 'txn_documentrequirements_defination'" dataField="regulatory_function_id"
+  <dxi-column *ngIf="table_name == 'tra_documentrequirements_defination'" dataField="regulatory_function_id"
   caption="{{ 'regulatory_function_id' | translate }}">
     <dxo-lookup [dataSource]="regulatoryFunctionIdData" displayExpr="name" valueExpr="id">
     </dxo-lookup>
   </dxi-column>
 
-  <dxi-column *ngIf="table_name == 'txn_documentrequirements_defination'" dataField="regulatory_subfunction_id"
+  <dxi-column *ngIf="table_name == 'tra_documentrequirements_defination'" dataField="regulatory_subfunction_id"
   caption="{{ 'regulatory_subfunction_id' | translate }}">
     <dxo-lookup [dataSource]="regulatorySubFunctionIdData" displayExpr="name" valueExpr="id">
     </dxo-lookup>
   </dxi-column>
 
-  <dxi-column *ngIf="table_name == 'txn_documentrequirements_defination'" dataField="prodclass_category_id"
+  <dxi-column *ngIf="table_name == 'tra_documentrequirements_defination'" dataField="prodclass_category_id"
   caption="{{ 'prodclass_category_id' | translate }}">
     <dxo-lookup [dataSource]="prodClassIdData" displayExpr="name" valueExpr="id">
     </dxo-lookup>
   </dxi-column>
 
-  <dxi-column *ngIf="table_name == 'txn_documentrequirements_defination'" dataField="importexport_permittype_id"
+  <dxi-column *ngIf="table_name == 'tra_documentrequirements_defination'" dataField="importexport_permittype_id"
   caption="{{ 'importexport_permittype_id' | translate }}">
     <dxo-lookup [dataSource]="importexportIdData" displayExpr="name" valueExpr="id">
     </dxo-lookup>
   </dxi-column>
 
-  <dxi-column *ngIf="table_name == 'txn_documentrequirements_defination'" dataField="premise_type_id"
+  <dxi-column *ngIf="table_name == 'tra_documentrequirements_defination'" dataField="premise_type_id"
   caption="{{ 'premise_type_id' | translate }}">
     <dxo-lookup [dataSource]="premiseTypeData" displayExpr="name" valueExpr="id">
     </dxo-lookup>
   </dxi-column>
 
-  <dxi-column *ngIf="table_name == 'txn_documentrequirements_defination'" dataField="pharmaceutical_license_id"
+  <dxi-column *ngIf="table_name == 'tra_documentrequirements_defination'" dataField="pharmaceutical_license_id"
   caption="{{ 'pharmaceutical_license_id' | translate }}">
     <dxo-lookup [dataSource]="pharmaceuticalLicenseIdData" displayExpr="name" valueExpr="id">
     </dxo-lookup>
   </dxi-column>
 
-  <dxi-column *ngIf="table_name == 'txn_documentrequirements_defination'" dataField="pharmaceuticallicense_type_id"
+  <dxi-column *ngIf="table_name == 'tra_documentrequirements_defination'" dataField="pharmaceuticallicense_type_id"
   caption="{{ 'pharmaceuticallicense_type_id' | translate }}">
     <dxo-lookup [dataSource]="pharmaceuticalLicenseTypeIdData" displayExpr="name" valueExpr="id">
     </dxo-lookup>
   </dxi-column>
   
-  <dxi-column *ngIf="table_name == 'txn_documentrequirements_defination'" dataField="gmp_type_id"
+  <dxi-column *ngIf="table_name == 'tra_documentrequirements_defination'" dataField="gmp_type_id"
   caption="{{ 'gmp_type_id' | translate }}">
     <dxo-lookup [dataSource]="gmpTypeIdData" displayExpr="name" valueExpr="id">
     </dxo-lookup>
   </dxi-column>
 
-  <dxi-column *ngIf="table_name == 'cfg_document_types'" dataField="name"
+  <dxi-column *ngIf="table_name == 'par_document_types'" dataField="name"
   caption="{{ 'name' | translate }}">
   </dxi-column>
 
-  <dxi-column *ngIf="table_name == 'cfg_document_types'" dataField="document_no"
+  <dxi-column *ngIf="table_name == 'par_document_types'" dataField="document_no"
   caption="{{ 'document_no' | translate }}">
   </dxi-column>
 
-  <dxi-column *ngIf="table_name == 'cfg_document_types'" dataField="sop_id"
+  <dxi-column *ngIf="table_name == 'par_document_types'" dataField="sop_id"
   caption="{{ 'sop_id' | translate }}">
     <dxo-lookup [dataSource]="sopIdData" displayExpr="name" valueExpr="id">
     </dxo-lookup>
   </dxi-column>
 
-  <dxi-column *ngIf="table_name == 'cfg_sop_masterlist'" dataField="sop_no"
+  <dxi-column *ngIf="table_name == 'par_sop_masterlist'" dataField="sop_no"
   caption="{{ 'sop_no' | translate }}">
   </dxi-column>
 
-  <dxi-column *ngIf="table_name == 'cfg_document_extension_types'" dataField="extension"
+  <dxi-column *ngIf="table_name == 'par_document_extension_types'" dataField="extension"
   caption="{{ 'extension' | translate }}">
   </dxi-column>
 
-  <!-- <dxi-column *ngIf="table_name == 'cfg_permit_typecategories'" dataField="code"
+  <!-- <dxi-column *ngIf="table_name == 'par_permit_typecategories'" dataField="code"
   caption="{{ 'code' | translate }}">
   </dxi-column> -->
   <dxi-column dataField="is_enabled" caption="{{ 'is_enabled' | translate }}" [dataType]="'boolean'" [width]="100">
@@ -193,64 +193,64 @@
 
         
 
-        <div *ngIf="table_name == 'txn_nonstructured_docdefination'" class="col-lg-6">
+        <div *ngIf="table_name == 'tra_nonstructured_docdefination'" class="col-lg-6">
             <label>{{ 'document type id' | translate }}</label>
             <dx-select-box [dataSource]="documentTypeIdData" formControlName="document_type_id" valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
         </div>
 
-        <div *ngIf="table_name == 'txn_nonstructured_docdefination'" class="col-lg-6">
+        <div *ngIf="table_name == 'tra_nonstructured_docdefination'" class="col-lg-6">
             <label>{{ 'node name' | translate }}</label>
             <dx-text-box formControlName="node_name" [showClearButton]="true"></dx-text-box>
         </div>
 
         
-        <div *ngIf="table_name == 'txn_documentrequirements_defination'" class="col-lg-6">
+        <div *ngIf="table_name == 'tra_documentrequirements_defination'" class="col-lg-6">
           <label>{{ 'document type id' | translate }}</label>
           <dx-select-box [dataSource]="documentTypeIdData" formControlName="document_type_id" valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
         </div>
 
-        <div *ngIf="table_name == 'txn_documentrequirements_defination'" class="col-lg-6">
+        <div *ngIf="table_name == 'tra_documentrequirements_defination'" class="col-lg-6">
           <label>{{ 'product type id' | translate }}</label>
           <dx-select-box [dataSource]="productTypeIdData" formControlName="product_type_id" valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
         </div>
 
-        <div *ngIf="table_name == 'txn_documentrequirements_defination'" class="col-lg-6">
+        <div *ngIf="table_name == 'tra_documentrequirements_defination'" class="col-lg-6">
           <label>{{ 'regulatory function id' | translate }}</label>
           <dx-select-box [dataSource]="regulatoryFunctionIdData" formControlName="regulatory_function_id" valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
         </div>
 
-        <div *ngIf="table_name == 'txn_documentrequirements_defination'" class="col-lg-6">
+        <div *ngIf="table_name == 'tra_documentrequirements_defination'" class="col-lg-6">
           <label>{{ 'regulatory subfunction id' | translate }}</label>
           <dx-select-box [dataSource]="regulatorySubFunctionIdData" formControlName="regulatory_subfunction_id" valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
         </div>
 
-        <div *ngIf="table_name == 'txn_documentrequirements_defination'" class="col-lg-6">
+        <div *ngIf="table_name == 'tra_documentrequirements_defination'" class="col-lg-6">
           <label>{{ 'prodclass category id' | translate }}</label>
           <dx-select-box [dataSource]="prodClassIdData" formControlName="prodclass_category_id" valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
         </div>
 
-        <div *ngIf="table_name == 'cfg_document_types'" class="col-lg-6">
+        <div *ngIf="table_name == 'par_document_types'" class="col-lg-6">
           <label>{{ 'document_no' | translate }}</label>
           <dx-text-box formControlName="document_no" [showClearButton]="true"></dx-text-box>
         </div>
 
-        <div *ngIf="table_name == 'cfg_document_types'" class="col-lg-6">
+        <div *ngIf="table_name == 'par_document_types'" class="col-lg-6">
           <label>{{ 'sop id' | translate }}</label>
           <dx-select-box [dataSource]="sopIdData" formControlName="sop_id" valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
         </div>
 
-        <div *ngIf="table_name == 'cfg_sop_masterlist'" class="col-lg-6">
+        <div *ngIf="table_name == 'par_sop_masterlist'" class="col-lg-6">
           <label>{{ 'sop_no' | translate }}</label>
           <dx-text-box formControlName="sop_no" [showClearButton]="true"></dx-text-box>
         </div>
 
-        <div *ngIf="table_name == 'cfg_document_extension_types'" class="col-lg-6">
+        <div *ngIf="table_name == 'par_document_extension_types'" class="col-lg-6">
           <label>{{ 'extension' | translate }}</label>
           <dx-text-box formControlName="extension" [showClearButton]="true"></dx-text-box>
         </div>
 
         <div class="row">
-          <!-- <div *ngIf="table_name == 'cfg_permit_typecategories'" class="col-lg-6">
+          <!-- <div *ngIf="table_name == 'par_permit_typecategories'" class="col-lg-6">
             <label>{{ 'product_type' | translate }}</label>
             <dx-select-box [dataSource]="statusData" formControlName="product_type_id" valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
           </div>
@@ -310,37 +310,3 @@
   </div>
 
 </dx-popup>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
