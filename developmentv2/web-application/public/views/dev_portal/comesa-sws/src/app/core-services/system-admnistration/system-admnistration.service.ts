@@ -57,11 +57,29 @@ export class ServiceAdmnistrationService {
       }));
   }
 
+  onEnablePermitTypeDetails(dataForm, table_name, title) {
+    var headers = new Headers({
+      "Accept": "application/json",
+      "Authorization": "Bearer " + this.authService.getAccessToken(),
+    });
+    const loggedInUserId = localStorage.getItem('id');
+    const loggedInUserName = localStorage.getItem('first_name');
+    this.system= {
+      params: { 'user_id': loggedInUserId, 'user_name': loggedInUserName, table_name: table_name },
+
+      headers: { 'Accept': 'application/json', "Authorization": "Bearer " + this.authService.getAccessToken(), }
+    };
+    return this.http.post(this.baseUrl + '/onEnablePermitTypeDetails', dataForm, this.system)
+      .pipe(map(data => {
+        return data;
+      }));
+  }
+
   onLoadDataUrl(data, action_url) {
     data.table_name = btoa(data.table_name);
-    data.table_name = this.encryptionService.OnEncryptData(data.table_name)
-    const loggedInUserId = localStorage.getItem('id');
-    data.user_id = loggedInUserId;
+    // data.table_name = this.encryptionService.OnEncryptData(data.table_name)
+    // const loggedInUserId = localStorage.getItem('id');
+    // data.user_id = loggedInUserId;
     this.system = {
       params: data,
       headers: { 'Accept': 'application/json' }
@@ -80,6 +98,19 @@ export class ServiceAdmnistrationService {
     };
 
     return this.HttpClient.get(this.baseUrl + '/onLoadSystemAdministrationData', this.system)
+      .pipe(map(data => {
+        return <any>data;
+      }));
+  }
+
+  onLoadTransactionPermitTypeData(data) {
+    data.table_name = btoa(data.table_name);
+    this.system = {
+      params: data,
+      headers: { 'Accept': 'application/json' }
+    };
+
+    return this.HttpClient.get(this.baseUrl + '/onLoadTransactionPermitTypeData', this.system)
       .pipe(map(data => {
         return <any>data;
       }));
@@ -216,6 +247,19 @@ export class ServiceAdmnistrationService {
     };
 
     return this.HttpClient.get(this.baseUrl + '/getAppHsCodes', this.system)
+      .pipe(map(data => {
+        return <any>data;
+      }));
+  }
+
+  getAppPermitCertificateTemplate(permit_type_id) {
+
+    this.system = {
+      headers: { 'Accept': 'application/json' },
+      params: { permit_type_id: permit_type_id }
+    };
+
+    return this.HttpClient.get(this.baseUrl + '/getAppPermitCertificateTemplate', this.system)
       .pipe(map(data => {
         return <any>data;
       }));

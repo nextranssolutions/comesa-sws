@@ -61,11 +61,7 @@ import { SyslogsComponent } from 'src/app/core-modules/cimex-admin/views/syslogs
 import { SystemmanualConfigurationComponent } from 'src/app/core-modules/cimex-admin/views/system-administration/system-guidelines/systemmanual-configuration/systemmanual-configuration.component';
 import { MultilingualConfigurationsComponent } from 'src/app/core-modules/cimex-admin/views/multilingual-configurations/multilingual-configurations.component';
 import { NavigationSetupComponent } from 'src/app/core-modules/cimex-admin/views/workflow-management/navigation/navigation-setup/navigation-setup.component';
-import { InstitutionsInformationComponent } from 'src/app/core-modules/cimex-admin/views/system-administration/institutions-information/institutions-information.component';
-
 import { UserSetupComponent } from 'src/app/core-modules/cimex-admin/views/system-administration/user-setup/user-setup.component';
-
-
 import { AppSignatoriesComponent } from 'src/app/core-modules/cimex-admin/views/system-administration/app-signatories/app-signatories.component';
 import { AppOrganizationinformationComponent } from 'src/app/core-modules/cimex-admin/views/system-administration/app-organizationinformation/app-organizationinformation.component';
 import { AppWorkflowactiontypesComponent } from 'src/app/core-modules/cimex-admin/views/workflow-management/workflows/app-workflowactiontypes/app-workflowactiontypes.component';
@@ -229,7 +225,7 @@ import { PrommaterialBookcataloguesComponent } from './views/configurations/prom
 import { PromotionadvertChannelsComponent } from './views/configurations/promotional_advertisements_configurations/promotionadvert-channels/promotionadvert-channels.component';
 import { PromotionmaterialCategoriesComponent } from './views/configurations/promotional_advertisements_configurations/promotionmaterial-categories/promotionmaterial-categories.component';
 import { ProcessConfigsetupComponent } from './views/configurations/process-configurations/process-configsetup/process-configsetup.component';
-import { PermitTypesComponent } from './views/configurations/permittypes-configuration/permit-types/permit-types.component';
+import { InstitutionsInformationComponent } from './views/system-administration/institutions-information/institutions-information.component';
 
 //./admin-ecres/app-dashboard
 const routes: Routes = [{
@@ -259,10 +255,6 @@ const routes: Routes = [{
     component: UserGroupsComponent
   },
   {
-    path: 'app-permit-types',
-    component: PermitTypesComponent
-  },
-  {
     path: 'app-currencies',
     component: AppCurrenciesComponent
   }, {
@@ -280,9 +272,11 @@ const routes: Routes = [{
   }, {
     path: "app-systeminterfaces",
     component: NavigationInterfacesComponent
-
   },
-
+  {
+    path: "app-institutions-information",
+    component: InstitutionsInformationComponent
+  },
   {
     path: "app-portal-navigation-interfaces",
     component: PortalNavigationInterfacesComponent
@@ -738,11 +732,6 @@ const routes: Routes = [{
     path: 'app-shared-refnumberconfigurations',
     component: SharedRefnumberconfigurationsComponent,
   },
-  {
-    path: 'app-institutions-information',
-    component: InstitutionsInformationComponent
-  },
-
    {
     path: 'app-workflowstatusesinterfaces',
     component: AppWorkflowstatusesinterfacesComponent

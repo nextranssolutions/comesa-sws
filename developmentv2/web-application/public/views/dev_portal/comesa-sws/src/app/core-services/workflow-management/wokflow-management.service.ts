@@ -126,6 +126,8 @@ export class WokflowManagementService {
         return <any>data;
       }));
   } 
+
+ 
   getPortalWorkflowsConfigs(data) {
     data.table_name = btoa(data.table_name);
     this.workflow = {

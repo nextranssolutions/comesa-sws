@@ -2,12 +2,12 @@ import { Component, HostListener } from '@angular/core';
 import { DxTabPanelTypes } from 'devextreme-angular/ui/tab-panel';
 
 @Component({
-  selector: 'app-institutions-information',
-  templateUrl: './institutions-information.component.html',
-  styleUrl: './institutions-information.component.css'
+  selector: 'app-hscodeinstitutions-configsetup',
+  templateUrl: './hscodeinstitutions-configsetup.component.html',
+  styleUrl: './hscodeinstitutions-configsetup.component.css'
 })
-export class InstitutionsInformationComponent {
-  parameter_name: string = "institution_information";
+export class HscodeinstitutionsConfigsetupComponent {
+parameter_name: string = "institution_information";
   tabsPositions: DxTabPanelTypes.Position[] = [
     'left', 'top', 'right', 'bottom',
   ];

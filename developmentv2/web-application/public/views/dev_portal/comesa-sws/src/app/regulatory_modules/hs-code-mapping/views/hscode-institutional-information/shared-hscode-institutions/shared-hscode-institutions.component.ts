@@ -1,28 +1,29 @@
 import { Component, Input, ViewContainerRef } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
 import { SpinnerVisibilityService } from 'ng-http-loader';
-
 import { ToastrService } from 'ngx-toastr';
 import { ConfigurationsService } from 'src/app/core-services/configurations/configurations.service';
 import { ReportsService } from 'src/app/core-services/reports/reports.service';
 import { UtilityService } from 'src/app/core-services/utilities/utility.service';
 
 @Component({
-  selector: 'app-shared-importexportconfig',
-  templateUrl: './shared-importexportconfig.component.html',
-  styleUrl: './shared-importexportconfig.component.css'
+  selector: 'app-shared-hscode-institutions',
+  templateUrl: './shared-hscode-institutions.component.html',
+  styleUrl: './shared-hscode-institutions.component.css'
 })
-export class SharedImportexportconfigComponent {
-  @Input() table_name: string;
+export class SharedHscodeInstitutionsComponent {
+ @Input() table_name: string;
   @Input() parameter_name: string;
   hasReadpermissions: boolean;
   createNewDataFrm: FormGroup;
   onAddNewConfiVisible: boolean;
   NewConfigData: any[] = [];
-  permitTypeData: any[] = [];
+  countryData: any[] = [];
+  institutionData: any[] = [];
+  institutionDeptData: any[] = [];
   show_advancesearch: boolean;
   isnewprocess: boolean;
   config_record: string;
@@ -73,7 +74,9 @@ export class SharedImportexportconfigComponent {
         name: new FormControl('', Validators.compose([Validators.required])),
         description: new FormControl('', Validators.compose([Validators.required])),
         is_enabled: new FormControl('', Validators.compose([])),
-        product_type_id: new FormControl('', Validators.compose([])),
+        country_id: new FormControl('', Validators.compose([])),
+        institution_type_id: new FormControl('', Validators.compose([])),
+        institution_id: new FormControl('', Validators.compose([])),
         code: new FormControl('', Validators.compose([])),
         
       });
@@ -84,8 +87,11 @@ export class SharedImportexportconfigComponent {
 
   ngOnInit() {
     this.fetchNewConfigData();
-    this. fetchpermitTypeData();
+    this. fetchCountryData();
     this.fetchNewConfigurations();
+    this.fetchInstitutionData();
+    this.fetchInstitutionDeptData();
+
    
   
     }
@@ -188,17 +194,17 @@ export class SharedImportexportconfigComponent {
 
   }
 
-  fetchpermitTypeData() {
+  fetchCountryData() {
 
     var data_submit = {
-      'table_name': 'par_regulated_productstypes'
+      'table_name': 'par_countries'
     }
     this.configService.onLoadConfigurationData(data_submit)
       .subscribe(
         data => {
           this.data_record = data;
           if (this.data_record.success) {
-            this.permitTypeData = this.data_record.data
+            this.countryData = this.data_record.data
           }
         },
         error => {
@@ -207,6 +213,43 @@ export class SharedImportexportconfigComponent {
 
   }
 
+  fetchInstitutionData() {
+
+    var data_submit = {
+      'table_name': 'par_institutions_types'
+    }
+    this.configService.onLoadConfigurationData(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.institutionData = this.data_record.data
+          }
+        },
+        error => {
+
+        });
+
+  }
+
+  fetchInstitutionDeptData() {
+
+    var data_submit = {
+      'table_name': 'par_institutions'
+    }
+    this.configService.onLoadConfigurationData(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.institutionDeptData = this.data_record.data
+          }
+        },
+        error => {
+
+        });
+
+  }
   
   funcpopWidth(percentage_width) {
     return window.innerWidth * percentage_width / 100;

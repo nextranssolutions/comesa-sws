@@ -135,18 +135,6 @@ export class ConfigurationsService {
       }));
   }
 
-  // getAppRegulatoryFunctionFeeConfig(regulatory_function_id) {
-    
-  //   this.config = {
-  //     headers: { 'Accept': 'application/json' },
-  //     params:{user_group_id:regulatory_function_id}
-  //   };
-
-  //   return this.HttpClient.get(this.baseUrl + '/getAppRegulatoryFunctionFeeConfig', this.config)
-  //     .pipe(map(data => {
-  //       return <any>data;
-  //     }));
-  // }
 
   onLoadApplicationtablsList(data, action_url = 'onLoadApplicationtablsList') {
     data.table_name = btoa(data.table_name);
