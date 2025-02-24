@@ -6,7 +6,7 @@ import { HscodemappingNavigationComponent } from './views/layout/hscodemapping-n
 import { HttpClientModule, HttpClient } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
-import { DxButtonModule, DxProgressBarModule, DxLoadPanelModule, DxPopupModule, DxDataGridModule, DxActionSheetModule, DxFileUploaderModule, DxNumberBoxModule, DxCheckBoxModule, DxSelectBoxModule, DxTextAreaModule, DxContextMenuModule, DxMenuModule, DxTagBoxModule, DxDateBoxModule, DxTabPanelModule, DxFormModule, DxScrollViewModule, DxTextBoxModule, DxValidatorModule, DxToolbarModule, DxGalleryModule, DxHtmlEditorModule, DxDropDownBoxModule, DxRadioGroupModule } from 'devextreme-angular';
+import { DxButtonModule, DxProgressBarModule, DxLoadPanelModule, DxPopupModule, DxDataGridModule, DxActionSheetModule, DxFileUploaderModule, DxNumberBoxModule, DxCheckBoxModule, DxSelectBoxModule, DxTextAreaModule, DxContextMenuModule, DxMenuModule, DxTagBoxModule, DxDateBoxModule, DxTabPanelModule, DxFormModule, DxScrollViewModule, DxTextBoxModule, DxValidatorModule, DxToolbarModule, DxGalleryModule, DxHtmlEditorModule, DxDropDownBoxModule, DxRadioGroupModule, DxTreeListModule } from 'devextreme-angular';
 import { NgHttpLoaderModule } from 'ng-http-loader';
 import { NgWizardConfig, THEME, NgWizardModule } from 'ng-wizard';
 import { NgxCaptchaModule } from 'ngx-captcha';
@@ -29,6 +29,7 @@ import { HscodeInstitutionDepartmentsComponent } from './views/hscode-institutio
 import { HscodeInstitutionsComponent } from './views/hscode-institutional-information/hscode-institutions/hscode-institutions.component';
 import { HscodeinstitutionsConfigsetupComponent } from './views/hscode-institutional-information/hscodeinstitutions-configsetup/hscodeinstitutions-configsetup.component';
 import { SharedHscodeInstitutionsComponent } from './views/hscode-institutional-information/shared-hscode-institutions/shared-hscode-institutions.component';
+import { PermittypeConfigurationsComponent } from './views/permittype-configurations/permittype-configurations.component';
 
 
 
@@ -44,7 +45,7 @@ const ngWizardConfig: NgWizardConfig = {
   declarations: [HscodemappingHeaderComponent, HscodemappingLayoutComponent, HscodemappingNavigationComponent,HscodechaptersDefinationComponent,
     HscodesSectionsComponent,HscodesheadingDefinationsComponent,HscodesmappingConfigsetupComponent,HscodesproductsRegistryComponent,
     HscodessubheadingDefinationComponent,HscodestariffDetailsComponent,SharedhscodesConfigurationsComponent,HscodeDashboardComponent,
-    HscodeInstitutionDepartmentsComponent,HscodeInstitutionsComponent,HscodeinstitutionsConfigsetupComponent,SharedHscodeInstitutionsComponent,],
+    HscodeInstitutionDepartmentsComponent,HscodeInstitutionsComponent,HscodeinstitutionsConfigsetupComponent,SharedHscodeInstitutionsComponent,PermittypeConfigurationsComponent],
   imports: [
      CommonModule,
         SharedModuleModule,HscodeRoutingModule,RouterModule,  
@@ -54,7 +55,7 @@ const ngWizardConfig: NgWizardConfig = {
         ReactiveFormsModule,
         NgxCaptchaModule, DxLoadPanelModule,
         DxPopupModule, DxDataGridModule, DxActionSheetModule, DxFileUploaderModule, DxNumberBoxModule, DxCheckBoxModule, DxSelectBoxModule, DxTextAreaModule, DxContextMenuModule, DxMenuModule, DxTagBoxModule,
-        DxDateBoxModule, DxTabPanelModule, DxFormModule, DxScrollViewModule,
+        DxDateBoxModule, DxTabPanelModule, DxFormModule, DxScrollViewModule,DxTreeListModule,
         DxTextBoxModule,
         DxDateBoxModule, DxDataGridModule,
         HttpClientModule, DxValidatorModule,

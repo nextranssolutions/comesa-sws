@@ -275,7 +275,6 @@ import { RegulatedProductsTypesComponent } from './views/configurations/process-
 import { RegFunctionsComponent } from './views/configurations/process-configurations/reg-functions/reg-functions.component';
 import { AppealsTypesComponent } from './views/configurations/process-configurations/appeals-types/appeals-types.component';
 import { ProcessConfigsetupComponent } from './views/configurations/process-configurations/process-configsetup/process-configsetup.component';
-import { PermitTypesComponent } from './views/configurations/permittypes-configuration/permit-types/permit-types.component';
 import { AppSectionsComponent } from './views/configurations/forms/application-section/app-sections.component';
 
 @NgModule({
@@ -516,7 +515,7 @@ import { AppSectionsComponent } from './views/configurations/forms/application-s
     IntendedendUserComponent,
     MasterIngredientsComponent,
     MethodofUseComponent,
-    PermitTypesComponent,
+    
     NutrientsComponent,
     ProdclassificationCategoriesComponent,
     ProdclassificationRulesComponent,
@@ -668,7 +667,7 @@ import { AppSectionsComponent } from './views/configurations/forms/application-s
     PortalProcesstransitionComponent,
     PortalDocdefinationComponent,
     AppFormsComponent,
-    PermitTypesComponent,
+   
 
 
     SharedconfigurationsComponent,

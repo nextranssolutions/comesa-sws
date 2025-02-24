@@ -55,7 +55,7 @@ class SysAdministrationController extends Controller
         return response()->json($res, 200);
     }
 
-     public function onSaveSystemAdministrationDetails(Request $req)
+    public function onSaveSystemAdministrationDetails(Request $req)
     {
         try {
             $resp = "";
@@ -114,145 +114,60 @@ class SysAdministrationController extends Controller
         return response()->json($res, 200);
     }
 
-    // public function onSavePermitTypeDetails(Request $req)
-    // {
-    //     try {
-    //         $resp = "";
-    //         $permit_type_id = $req->permit_type_id;
-    //         // $user_name = $req->user_name;
+    public function onEnablePermitTypeDetails(Request $req)
+    {
+        try {
+            $record_id = $req->record_id;
+            $table_name = $req->table_name;
+            $title = $req->title;
+            $user_id = $req->user_id;
+            $data = array();
 
-    //         $data = $req->all();
+            $user_name = $req->user_name;
+            //get the records 
+            $resp = false;
+            if (validateIsNumeric($req->id)) {
+                $record_id = $req->id;
+            }
 
-    //         $table_name = $req->table_name;
-    //         $resetcolumns = $req->resetcolumns;
-    //         $record_id = $req->id;
-    //         // unset($data['user_id']);
-    //         // unset($data['user_name']);
-    //         // unset($data['table_name']);
-    //         // unset($data['resetcolumns']);
-    //         if ($resetcolumns != '') {
-    //             $restcolumn_array = explode(',', $resetcolumns);
-    //             $data = unsetArrayData($data, $restcolumn_array);
-    //         }
-    //         if (validateIsNumeric($record_id)) {
-    //             $where = array('id' => $record_id);
-    //             if (recordExists($table_name, $where)) {
+            $where_state = array('id' => $record_id);
 
-    //                 $data['dola'] = Carbon::now();
-    //                 $data['altered_by'] = $permit_type_id;
+            $record = DB::table($table_name)
+                ->where($where_state)
+                ->first();
+            if ($record) {
+                $is_enabled = $record->is_enabled;
+                if ($is_enabled) {
+                    $is_enabled = false;
+                    $enabling_string = "Disabled Successfully";
+                } else {
+                    $is_enabled = true;
+                    $enabling_string = "Enabled Successfully";
+                }
+                $data = array('is_enabled' => $is_enabled);
 
-    //                 $previous_data = getPreviousRecords($table_name, $where);
+                $previous_data = getPreviousRecords($table_name, $where_state);
 
-    //                 $resp = updateRecord($table_name, $previous_data['results'], $where, $data);
-    //             }
-    //         } else {
-    //             unset($data['id']);
-    //             $data['created_by'] = $permit_type_id;
-    //             $data['created_on'] = Carbon::now();
-    //             $resp = insertRecord($table_name, $data);
-    //         }
+                $data['dola'] = Carbon::now();
+                $data['altered_by'] = $user_id;
 
-    //         if ($resp['success']) {
+                $previous_data = getPreviousRecords($table_name, $where_state);
+                $resp = updateRecord($table_name, $previous_data['results'], $where_state, $data, $user_name);
+            }
 
-    //             $res = array(
-    //                 'success' => true,
-    //                 'record_id' => $resp['record_id'],
-    //                 'message' => 'Saved Successfully'
-    //             );
-    //         } else {
-    //             $res = array(
-    //                 'success' => false,
-    //                 'message' => $resp['message']
-    //             );
-    //         }
-    //     } catch (\Exception $exception) {
-    //         $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
-    //     } catch (\Throwable $throwable) {
-    //         $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
-    //     }
-    //     return response()->json($res, 200);
-    // }
-    
-    // public function onSaveSystemAdminWithImage(Request $req)
-    // {
-    //     try {
-    //         // Gather inputs
-    //         $data = $req->all();
-    //         $record_id = $req->id; // Capture record ID
-    //         $user_id = $req->user_id;
-    //         $user_name = $req->user_name;
-    //         $table_name = $req->table_name; 
-    //         $resetcolumns = $req->resetcolumns;
+            if ($resp) {
+                $res = array('success' => true, 'message' => $title . $enabling_string);
+            } else {
+                $res = array('success' => false, 'message' => $title . ' ' . $enabling_string . ' , contact the system admin if this persists');
+            }
+        } catch (\Exception $exception) {
+            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        } catch (\Throwable $throwable) {
+            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        }
 
-    //         // Remove unnecessary fields
-    //         unset($data['user_id'], $data['user_name'], $data['table_name'], $data['resetcolumns']);
-
-    //         if ($resetcolumns != '') {
-    //             $restcolumn_array = explode(',', $resetcolumns);
-    //             $data = unsetArrayData($data, $restcolumn_array);
-    //         }
-
-    //         // Handle file upload if present
-    //         if ($req->hasFile('image_path')) {
-    //             $file = $req->file('image_path');
-    //             $extension = $file->getClientOriginalExtension();
-    //             $upload_directory = config('images.upload_directory');
-    //             $savedName = 'assets/dist/img/image-' . rand(0, 10000) . '.' . $extension;
-
-    //             if ($file->move($upload_directory, $savedName)) {
-    //                 $data['image_path'] = $savedName;
-    //             } else {
-    //                 return response()->json([
-    //                     'success' => false,
-    //                     'message' => 'File upload failed'
-    //                 ], 500);
-    //             }
-    //         }
-
-    //         // Remove the `id` key if it is null or empty
-    //         if (empty($record_id)) {
-    //             unset($data['id']); // Ensure `id` is not passed in the insert
-    //         }
-
-    //         // Update if record ID is provided
-    //         if (validateIsNumeric($record_id)) {
-    //             $where = ['id' => $record_id];
-
-    //             if (recordExists($table_name, $where)) {
-    //                 $data['dola'] = Carbon::now();
-    //                 $data['altered_by'] = $user_id;
-    //                 $previous_data = getPreviousRecords($table_name, $where);
-
-    //                 $resp = updateRecord($table_name, $previous_data['results'], $where, $data, $user_name);
-    //             }
-    //         } else {
-    //             // Insert a new record if no ID is provided
-    //             $data['created_by'] = $user_id;
-    //             $data['created_on'] = Carbon::now();
-    //             $resp = insertRecord($table_name, $data, $user_name);
-    //         }
-
-    //         // Handle response
-    //         if ($resp['success']) {
-    //             $res = [
-    //                 'success' => true,
-    //                 'record_id' => $resp['record_id'],
-    //                 'message' => 'Saved Successfully'
-    //             ];
-    //         } else {
-    //             $res = [
-    //                 'success' => false,
-    //                 'message' => $resp['message']
-    //             ];
-    //         }
-    //     } catch (\Exception $exception) {
-    //         $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
-    //     } catch (\Throwable $throwable) {
-    //         $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
-    //     }
-
-    //     return response()->json($res, 200);
-    // }    
+        return response()->json($res);
+    }
 
 
     public function onSaveNotSlidesInformation(Request $req)
@@ -510,43 +425,43 @@ class SysAdministrationController extends Controller
 
             $sql = DB::table($table_name . ' as t1')
 
-            ->leftJoin('par_operation_type as t2', 't1.operation_type_id', 't2.id')
-            ->leftJoin('par_regulated_productstypes as t3', 't1.regulated_producttype_id', 't3.id')
-            ->leftJoin('tra_organisation_information as t4', 't1.organization_id', 't4.id')
-            ->leftJoin('wf_processes as t5', 't1.process_id', 't5.id')
-            ->leftJoin('wf_workflows as t6', 't1.workflow_id', 't6.id')
+                ->leftJoin('par_operation_type as t2', 't1.operation_type_id', 't2.id')
+                ->leftJoin('par_regulated_productstypes as t3', 't1.regulated_producttype_id', 't3.id')
+                ->leftJoin('tra_organisation_information as t4', 't1.organization_id', 't4.id')
+                ->leftJoin('wf_processes as t5', 't1.process_id', 't5.id')
+                ->leftJoin('wf_workflows as t6', 't1.workflow_id', 't6.id')
 
-            ->select(
-                't1.*',
-                't2.name as operation_type',
-                't3.name as regulated_producttype',
-                't4.name as organization',
-                't5.name as process',
-                't6.name as workflow',
+                ->select(
+                    't1.*',
+                    't2.name as operation_type',
+                    't3.name as regulated_producttype',
+                    't4.name as organization',
+                    't5.name as process',
+                    't6.name as workflow',
 
-            );
+                );
 
             $data = $sql->get();
             foreach ($data as $rec) {
-            $permit_type_data[] = array(
-            'id' => $rec->id,
-            'name' => $rec->name,
-            'description' => $rec->description,
-            'operation_type_id' => $rec->operation_type_id,
-            'regulated_producttype_id' => $rec->regulated_producttype_id,
-            'organization_id' => $rec->organization_id,
-            'process_id' => $rec->process_id,
-            'workflow_id' => $rec->workflow_id,
-            'operation_type' => $rec->operation_type,
-            'regulated_producttype' => $rec->regulated_producttype,
-            'organization' => $rec->organization,
-            'process' => $rec->process,
-            'workflow' => $rec->workflow
+                $permit_type_data[] = array(
+                    'id' => $rec->id,
+                    'name' => $rec->name,
+                    'description' => $rec->description,
+                    'is_enabled' => $rec->is_enabled,
+                    'operation_type_id' => $rec->operation_type_id,
+                    'regulated_producttype_id' => $rec->regulated_producttype_id,
+                    'organization_id' => $rec->organization_id,
+                    'process_id' => $rec->process_id,
+                    'workflow_id' => $rec->workflow_id,
+                    'operation_type' => $rec->operation_type,
+                    'regulated_producttype' => $rec->regulated_producttype,
+                    'organization' => $rec->organization,
+                    'process' => $rec->process,
+                    'workflow' => $rec->workflow
 
-              );
+                );
             }
             $res = ['success' => true, 'data' => $permit_type_data];
-            
         } catch (\Exception $exception) {
             $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
         } catch (\Throwable $throwable) {
@@ -673,7 +588,7 @@ class SysAdministrationController extends Controller
             $level = 0;
             $user_group_id = $req->user_group_id;
             $account_type_id = $req->account_type_id;
-           
+
 
             $navigationItems = DB::table('wf_navigation_items as t1')
                 ->leftJoin('wf_system_interfaces as t3', 't1.system_interface_id', 't3.id')
@@ -684,11 +599,11 @@ class SysAdministrationController extends Controller
                 ->leftjoin('wf_navigation_types as t5', 't1.navigation_type_id', 't5.id')
                 ->select('t1.*', 't3.routerlink', 't1.iconsCls', 't4.user_access_levels_id', 't4.navigation_item_id', 't4.user_group_id')
                 ->orderBy('t1.order_no')
-                ->where(array('level' => $level, 'account_type_id'=>$account_type_id))
+                ->where(array('level' => $level, 'account_type_id' => $account_type_id))
 
 
                 ->get();
-               
+
             $rootItems = array();
             // This will store items in a hierarchical structure
             $hierarchicalItems = [];
@@ -894,11 +809,11 @@ class SysAdministrationController extends Controller
                 ->select('t1.*')
                 // ->where('t2.id', '=', $permit_type_id)
                 ->orderBy('t1.order_no');
-                // ->groupBy('t2.id');
-                if (validateIsNumeric($permit_type_id)) {
-                    $records->where('t1.permit_type_id', $permit_type_id);
-                };
-                
+            // ->groupBy('t2.id');
+            if (validateIsNumeric($permit_type_id)) {
+                $records->where('t1.permit_type_id', $permit_type_id);
+            };
+
             $records = $records->get();
 
             $res = ['success' => true, 'data' => $records];
@@ -909,177 +824,177 @@ class SysAdministrationController extends Controller
         }
         return response()->json($res, 200);
     }
-    public function getAppPermitCertificateTemplate(Request $req){
+    public function getAppPermitCertificateTemplate(Request $req)
+    {
         try {
-                   $requestData = $req->all();
-                   $table_name = 'tra_transactionpermit_codes';
-                   $permit_certificate_templates_data = array();
-                   unset($requestData['table_name']);
-       
-                   $sql = DB::table($table_name . ' as t1')
-       
-                   ->leftJoin('tra_transactionpermit_types as t2', 't1.permit_type_id', 't2.id')
-                   ->leftJoin('par_hscode_seloptions as t3', 't1.hscode_seloption_id', 't3.id')
-       
-                   ->select(
-                       't1.*',
-                       't2.name as hs_code',
-       
-                   );
-       
-                   $data = $sql->get();
-                   foreach ($data as $rec) {
-                   $permit_certificate_templates_data[] = array(
-                   'id' => $rec->id,
-                   'hs_code_start_int' => $rec->hs_code_start_int,
-                   'hs_code_end_int' => $rec->hs_code_end_int,
-                   'hs_code_specific_int' => $rec->hs_code_specific_int,
-                   'permit_type_id' => $rec->permit_type_id,
-                   'hscode_seloption_id' => $rec->hscode_seloption_id,
-                   'hs_code' => $rec->hs_code,
-                   
-       
-                     );
-                   }
-                   $res = ['success' => true, 'data' => $permit_certificate_templates_data];
-                   
-               } catch (\Exception $exception) {
-                   $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
-               } catch (\Throwable $throwable) {
-                   $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
-               }
-       
-               return response()->json($res, 200);
-           }
+            $requestData = $req->all();
+            $table_name = 'tra_transactionpermit_codes';
+            $permit_certificate_templates_data = array();
+            unset($requestData['table_name']);
 
-           public function getAppPermitReportGeneration(Request $req){
-            try {
-                       $requestData = $req->all();
-                       $table_name = 'tra_transactionpermit_rptgeneration';
-                       $permit_report_generation_data = array();
-                       unset($requestData['table_name']);
-           
-                       $sql = DB::table($table_name . ' as t1')
-           
-                       ->leftJoin('tra_transactionpermit_types as t2', 't1.permit_type_id', 't2.id')
-                       ->leftJoin('par_permittemplate_types as t3', 't1.permittemplate_type_id', 't3.id')
-           
-                       ->select(
-                           't1.*',
-                           't3.name as permit_template_type',
-           
-                       );
-           
-                       $data = $sql->get();
-                       foreach ($data as $rec) {
-                       $permit_report_generation_data[] = array(
-                       'id' => $rec->id,
-                       'permit_type_id' => $rec->permit_type_id,
-                       'permittemplate_type_id' => $rec->permittemplate_type_id,
-                       'permit_template_type' => $rec->permit_template_type,
-                       
-           
-                         );
-                       }
-                       $res = ['success' => true, 'data' => $permit_report_generation_data];
-                       
-                   } catch (\Exception $exception) {
-                       $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
-                   } catch (\Throwable $throwable) {
-                       $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
-                   }
-           
-                   return response()->json($res, 200);
-               }
-        
-               public function getAppPermitRequiredDocuments(Request $req){
-                try {
-                           $requestData = $req->all();
-                           $table_name = 'tra_transactionpermit_requireddocuments';
-                           $permit_report_generation_data = array();
-                           unset($requestData['table_name']);
-               
-                           $sql = DB::table($table_name . ' as t1')
-               
-                           ->leftJoin('tra_transactionpermit_types as t2', 't1.permit_type_id', 't2.id')
-                           ->leftJoin('par_document_types as t3', 't1.document_type_id', 't3.id')
-                           ->leftJoin('dms_document_requirements as t4', 't1.document_requirement_id', 't4.id')
-               
-                           ->select(
-                               't1.*',
-                               't3.name as document_type',
-                               't4.name as document_requirement'
-               
-                           );
-               
-                           $data = $sql->get();
-                           foreach ($data as $rec) {
-                           $permit_report_generation_data[] = array(
-                           'id' => $rec->id,
-                           'permit_type_id' => $rec->permit_type_id,
-                           'document_type_id' => $rec->document_type_id,
-                           'document_requirement_id' => $rec->document_requirement_id,
-                           'document_type' => $rec->document_type,
-                           'document_requirement' => $rec->document_requirement,
-                           
-               
-                             );
-                           }
-                           $res = ['success' => true, 'data' => $permit_report_generation_data];
-                           
-                       } catch (\Exception $exception) {
-                           $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
-                       } catch (\Throwable $throwable) {
-                           $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
-                       }
-               
-                       return response()->json($res, 200);
-                   }
+            $sql = DB::table($table_name . ' as t1')
 
-                   public function getAppPermitChecklist(Request $req){
-                    try {
-                               $requestData = $req->all();
-                               $table_name = 'tra_transactionpermit_checklists';
-                               $permit_checklists_data = array();
-                               unset($requestData['table_name']);
-                   
-                               $sql = DB::table($table_name . ' as t1')
-                   
-                               ->leftJoin('tra_transactionpermit_types as t2', 't1.permit_type_id', 't2.id')
-                               ->leftJoin('chk_checklist_types as t3', 't1.checklist_type_id', 't3.id')
-                               ->leftJoin('chk_checklist_definations as t4', 't1.checklist_defination_id', 't4.id')
-                   
-                               ->select(
-                                   't1.*',
-                                   't3.name as checklist_type',
-                                   't4.name as checklist_defination'
-                   
-                               );
-                   
-                               $data = $sql->get();
-                               foreach ($data as $rec) {
-                               $permit_checklists_data[] = array(
-                               'id' => $rec->id,
-                               'permit_type_id' => $rec->permit_type_id,
-                               'checklist_type_id' => $rec->checklist_type_id,
-                               'checklist_defination_id' => $rec->checklist_defination_id,
-                               'checklist_type' => $rec->checklist_type,
-                               'checklist_defination' => $rec->checklist_defination,
-                               
-                   
-                                 );
-                               }
-                               $res = ['success' => true, 'data' => $permit_checklists_data];
-                               
-                           } catch (\Exception $exception) {
-                               $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
-                           } catch (\Throwable $throwable) {
-                               $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
-                           }
-                   
-                           return response()->json($res, 200);
-                       }
-    
+                ->leftJoin('tra_transactionpermit_types as t2', 't1.permit_type_id', 't2.id')
+                ->leftJoin('par_hscode_seloptions as t3', 't1.hscode_seloption_id', 't3.id')
+
+                ->select(
+                    't1.*',
+                    't2.name as hs_code',
+
+                );
+
+            $data = $sql->get();
+            foreach ($data as $rec) {
+                $permit_certificate_templates_data[] = array(
+                    'id' => $rec->id,
+                    'hs_code_start_int' => $rec->hs_code_start_int,
+                    'hs_code_end_int' => $rec->hs_code_end_int,
+                    'hs_code_specific_int' => $rec->hs_code_specific_int,
+                    'permit_type_id' => $rec->permit_type_id,
+                    'hscode_seloption_id' => $rec->hscode_seloption_id,
+                    'hs_code' => $rec->hs_code,
+
+
+                );
+            }
+            $res = ['success' => true, 'data' => $permit_certificate_templates_data];
+        } catch (\Exception $exception) {
+            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        } catch (\Throwable $throwable) {
+            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        }
+
+        return response()->json($res, 200);
+    }
+
+    public function getAppPermitReportGeneration(Request $req)
+    {
+        try {
+            $requestData = $req->all();
+            $table_name = 'tra_transactionpermit_rptgeneration';
+            $permit_report_generation_data = array();
+            unset($requestData['table_name']);
+
+            $sql = DB::table($table_name . ' as t1')
+
+                ->leftJoin('tra_transactionpermit_types as t2', 't1.permit_type_id', 't2.id')
+                ->leftJoin('par_permittemplate_types as t3', 't1.permittemplate_type_id', 't3.id')
+
+                ->select(
+                    't1.*',
+                    't3.name as permit_template_type',
+
+                );
+
+            $data = $sql->get();
+            foreach ($data as $rec) {
+                $permit_report_generation_data[] = array(
+                    'id' => $rec->id,
+                    'permit_type_id' => $rec->permit_type_id,
+                    'permittemplate_type_id' => $rec->permittemplate_type_id,
+                    'permit_template_type' => $rec->permit_template_type,
+
+
+                );
+            }
+            $res = ['success' => true, 'data' => $permit_report_generation_data];
+        } catch (\Exception $exception) {
+            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        } catch (\Throwable $throwable) {
+            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        }
+
+        return response()->json($res, 200);
+    }
+
+    public function getAppPermitRequiredDocuments(Request $req)
+    {
+        try {
+            $requestData = $req->all();
+            $table_name = 'tra_transactionpermit_requireddocuments';
+            $permit_report_generation_data = array();
+            unset($requestData['table_name']);
+
+            $sql = DB::table($table_name . ' as t1')
+
+                ->leftJoin('tra_transactionpermit_types as t2', 't1.permit_type_id', 't2.id')
+                ->leftJoin('par_document_types as t3', 't1.document_type_id', 't3.id')
+                ->leftJoin('dms_document_requirements as t4', 't1.document_requirement_id', 't4.id')
+
+                ->select(
+                    't1.*',
+                    't3.name as document_type',
+                    't4.name as document_requirement'
+
+                );
+
+            $data = $sql->get();
+            foreach ($data as $rec) {
+                $permit_report_generation_data[] = array(
+                    'id' => $rec->id,
+                    'permit_type_id' => $rec->permit_type_id,
+                    'document_type_id' => $rec->document_type_id,
+                    'document_requirement_id' => $rec->document_requirement_id,
+                    'document_type' => $rec->document_type,
+                    'document_requirement' => $rec->document_requirement,
+
+
+                );
+            }
+            $res = ['success' => true, 'data' => $permit_report_generation_data];
+        } catch (\Exception $exception) {
+            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        } catch (\Throwable $throwable) {
+            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        }
+
+        return response()->json($res, 200);
+    }
+
+    public function getAppPermitChecklist(Request $req)
+    {
+        try {
+            $requestData = $req->all();
+            $table_name = 'tra_transactionpermit_checklists';
+            $permit_checklists_data = array();
+            unset($requestData['table_name']);
+
+            $sql = DB::table($table_name . ' as t1')
+
+                ->leftJoin('tra_transactionpermit_types as t2', 't1.permit_type_id', 't2.id')
+                ->leftJoin('chk_checklist_types as t3', 't1.checklist_type_id', 't3.id')
+                ->leftJoin('chk_checklist_definations as t4', 't1.checklist_defination_id', 't4.id')
+
+                ->select(
+                    't1.*',
+                    't3.name as checklist_type',
+                    't4.name as checklist_defination'
+
+                );
+
+            $data = $sql->get();
+            foreach ($data as $rec) {
+                $permit_checklists_data[] = array(
+                    'id' => $rec->id,
+                    'permit_type_id' => $rec->permit_type_id,
+                    'checklist_type_id' => $rec->checklist_type_id,
+                    'checklist_defination_id' => $rec->checklist_defination_id,
+                    'checklist_type' => $rec->checklist_type,
+                    'checklist_defination' => $rec->checklist_defination,
+
+
+                );
+            }
+            $res = ['success' => true, 'data' => $permit_checklists_data];
+        } catch (\Exception $exception) {
+            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        } catch (\Throwable $throwable) {
+            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        }
+
+        return response()->json($res, 200);
+    }
+
     public function onSaveSystemGuideline(Request $req)
     {
         try {

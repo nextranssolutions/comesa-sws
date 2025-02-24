@@ -50,7 +50,8 @@ export class SharedHscodeInstitutionsComponent {
       items: [
         //  { text: "View", action: 'view_record', icon: 'fa fa-eye' },
         { text: "Edit", action: 'edit_record', icon: 'fa fa-edit' },
-        { text: "Delete", action: 'delete_record', icon: 'fa fa-trash' }
+        { text: "Delete", action: 'delete_record', icon: 'fa fa-trash' },
+        { text: "Enable/Disable", action: 'enable_record', icon: 'fa fa-check' },
       ]
     }
   ];

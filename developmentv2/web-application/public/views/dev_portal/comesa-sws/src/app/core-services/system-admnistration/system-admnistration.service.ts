@@ -57,6 +57,24 @@ export class ServiceAdmnistrationService {
       }));
   }
 
+  onEnablePermitTypeDetails(dataForm, table_name, title) {
+    var headers = new Headers({
+      "Accept": "application/json",
+      "Authorization": "Bearer " + this.authService.getAccessToken(),
+    });
+    const loggedInUserId = localStorage.getItem('id');
+    const loggedInUserName = localStorage.getItem('first_name');
+    this.system= {
+      params: { 'user_id': loggedInUserId, 'user_name': loggedInUserName, table_name: table_name },
+
+      headers: { 'Accept': 'application/json', "Authorization": "Bearer " + this.authService.getAccessToken(), }
+    };
+    return this.http.post(this.baseUrl + '/onEnablePermitTypeDetails', dataForm, this.system)
+      .pipe(map(data => {
+        return data;
+      }));
+  }
+
   onLoadDataUrl(data, action_url) {
     data.table_name = btoa(data.table_name);
     // data.table_name = this.encryptionService.OnEncryptData(data.table_name)

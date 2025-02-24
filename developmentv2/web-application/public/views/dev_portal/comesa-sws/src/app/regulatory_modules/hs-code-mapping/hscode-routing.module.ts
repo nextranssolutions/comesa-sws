@@ -3,7 +3,6 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { HscodemappingLayoutComponent } from './views/layout/hscodemapping-layout/hscodemapping-layout.component';
 import { AuthGuard } from 'src/app/guards/auth.guard';
-import { PermitTypesComponent } from 'src/app/core-modules/cimex-admin/views/configurations/permittypes-configuration/permit-types/permit-types.component';
 import { HscodesmappingConfigsetupComponent } from './views/hscodes-mapping/hscodesmapping-configsetup/hscodesmapping-configsetup.component';
 import { HscodechaptersDefinationComponent } from './views/hscodes-mapping/hscodechapters-defination/hscodechapters-defination.component';
 import { HscodesSectionsComponent } from './views/hscodes-mapping/hscodes-sections/hscodes-sections.component';
@@ -21,7 +20,7 @@ import { PermittypeConfigurationsComponent } from './views/permittype-configurat
 
 
 const routes: Routes = [{
-  path: '',
+  path: 'app-hscodemapping-layout',
   component: HscodemappingLayoutComponent,
   canActivate: [AuthGuard],
   children: [{
@@ -77,10 +76,9 @@ const routes: Routes = [{
     component: SharedHscodeInstitutionsComponent
   },
   {
-    path: 'app-permit-types',
-    component: PermitTypesComponent
+    path: 'app-permittype-configurations',
+    component: PermittypeConfigurationsComponent
   },
-  
 ]
 }]
 
