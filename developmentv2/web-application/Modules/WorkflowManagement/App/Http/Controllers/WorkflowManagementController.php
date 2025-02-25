@@ -185,6 +185,39 @@ class WorkflowManagementController extends Controller
         return response()->json($res, 200);
     }
 
+    public function getRegulatoryFunctionGuidelines(Request $req)
+{
+    try {
+        $regulatory_function_id = $req->regulatory_function_id;
+
+        // Ensure that the ID is provided and valid
+        if (empty($regulatory_function_id)) {
+            return response()->json([
+                'success' => false,
+             
+            ], 400);
+        }
+
+        // Fetch the regulatory function guidelines from the database
+        $regulatory_functions_guidelines = DB::table('sys_regulatoryfunction_guidelines as t1')
+            ->select('t1.regulatory_function_id', 't1.guideline_text') // Add more fields if needed
+            ->where('t1.regulatory_function_id', $regulatory_function_id) // Use `where()` instead of `whereIn()`
+            ->orderBy('t1.order_no')
+            ->get(); // Execute the query
+
+        return response()->json([
+            'success' => true,
+            'data' => $regulatory_functions_guidelines
+        ], 200);
+
+    } catch (\Exception $exception) {
+        $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+    } catch (\Throwable $throwable) {
+        $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+    }
+}
+
+
 
     public function getUserNavigationItems(Request $req)
     {
