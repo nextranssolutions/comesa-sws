@@ -177,7 +177,7 @@
   background: rgba(255, 255, 255, 0.05);
   backdrop-filter: blur(10px);
   box-shadow: 0 0 15px rgba(0, 255, 255, 0.2);
-  color: #fff;
+  color: #fff !important;
 }
 
 .futuristic-form .dx-textbox,
@@ -189,14 +189,19 @@
 }
 
 .futuristic-form .dx-button {
-  background: linear-gradient(135deg, #00c6ff, #0072ff);
-  border-radius: 10px;
+  background: linear-gradient(135deg, #00c6ff, #8bc8ec);
+  border-radius: 5px !important;
   transition: all 0.3s ease-in-out;
+  color: #fff;
+}
+
+.dx-button .dx-icon {
+  color: #fff;
 }
 
 .futuristic-form .dx-button:hover {
-  background: linear-gradient(135deg, #0072ff, #00c6ff);
-  box-shadow: 0 0 10px #00c6ff;
+  background: linear-gradient(135deg, #8bc8ec, #00c6ff);
+  box-shadow: 0 0 10px #00c6ff !important;
 }
 
 .futuristic-form a {
