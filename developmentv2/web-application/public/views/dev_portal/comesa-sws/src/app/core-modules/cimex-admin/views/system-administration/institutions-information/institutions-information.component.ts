@@ -7,6 +7,7 @@ import { DxTabPanelTypes } from 'devextreme-angular/ui/tab-panel';
   styleUrl: './institutions-information.component.css'
 })
 export class InstitutionsInformationComponent {
+  parameter_name: string = "institution_information";
   tabsPositions: DxTabPanelTypes.Position[] = [
     'left', 'top', 'right', 'bottom',
   ];

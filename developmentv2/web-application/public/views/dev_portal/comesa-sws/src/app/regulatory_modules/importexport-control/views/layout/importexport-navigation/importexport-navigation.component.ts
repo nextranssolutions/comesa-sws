@@ -16,6 +16,7 @@ export class ImportexportNavigationComponent {
 nav_data: any;
   dashboard_title: string = "Admin Dashboard";
   navigation_type_id: number = 2;
+ 
   isLoggedIn: any;
   isDropdownOpen: boolean = false;
   userGroupName: string = '';
@@ -120,6 +121,7 @@ nav_data: any;
       .subscribe(
         data => {
           this.response = data;
+          console.log(this.response);
           if (this.response.success) {
             //   this.decryptedPayload=this.encryptionService.OnDecryptData(this.response.navigation_items);
             this.loggedInUserNavigationItems = this.response.navigation_items;
@@ -127,6 +129,7 @@ nav_data: any;
         }
       );
   }
+
 
   spinnerShow(spinnerMessage) {
     this.loadingVisible = true;

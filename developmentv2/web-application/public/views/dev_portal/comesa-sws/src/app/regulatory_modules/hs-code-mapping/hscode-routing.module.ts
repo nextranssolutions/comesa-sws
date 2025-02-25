@@ -3,10 +3,6 @@ import { CommonModule } from '@angular/common';
 import { RouterModule, Routes } from '@angular/router';
 import { HscodemappingLayoutComponent } from './views/layout/hscodemapping-layout/hscodemapping-layout.component';
 import { AuthGuard } from 'src/app/guards/auth.guard';
-import { DraftImportlicensedashComponent } from '../importexport-control/views/import-license/draft-importlicensedash/draft-importlicensedash.component';
-
-import { PermitTypesComponent } from 'src/app/core-modules/cimex-admin/views/configurations/permittypes-configuration/permit-types/permit-types.component';
-import { InstitutionsInformationComponent } from 'src/app/core-modules/cimex-admin/views/system-administration/institutions-information/institutions-information.component';
 import { HscodesmappingConfigsetupComponent } from './views/hscodes-mapping/hscodesmapping-configsetup/hscodesmapping-configsetup.component';
 import { HscodechaptersDefinationComponent } from './views/hscodes-mapping/hscodechapters-defination/hscodechapters-defination.component';
 import { HscodesSectionsComponent } from './views/hscodes-mapping/hscodes-sections/hscodes-sections.component';
@@ -16,9 +12,15 @@ import { HscodessubheadingDefinationComponent } from './views/hscodes-mapping/hs
 import { HscodestariffDetailsComponent } from './views/hscodes-mapping/hscodestariff-details/hscodestariff-details.component';
 import { SharedhscodesConfigurationsComponent } from './views/hscodes-mapping/sharedhscodes-configurations/sharedhscodes-configurations.component';
 import { HscodeDashboardComponent } from './views/hscode-dashboard/hscode-dashboard.component';
+import { HscodeInstitutionDepartmentsComponent } from './views/hscode-institutional-information/hscode-institution-departments/hscode-institution-departments.component';
+import { HscodeInstitutionsComponent } from './views/hscode-institutional-information/hscode-institutions/hscode-institutions.component';
+import { HscodeinstitutionsConfigsetupComponent } from './views/hscode-institutional-information/hscodeinstitutions-configsetup/hscodeinstitutions-configsetup.component';
+import { SharedHscodeInstitutionsComponent } from './views/hscode-institutional-information/shared-hscode-institutions/shared-hscode-institutions.component';
+import { PermittypeConfigurationsComponent } from './views/permittype-configurations/permittype-configurations.component';
+
 
 const routes: Routes = [{
-  path: '',
+  path: 'app-hscodemapping-layout',
   component: HscodemappingLayoutComponent,
   canActivate: [AuthGuard],
   children: [{
@@ -58,14 +60,26 @@ const routes: Routes = [{
   },
 
   {
-    path: 'app-permit-types',
-    component: PermitTypesComponent
+    path: 'app-hscode-institution-departments',
+    component: HscodeInstitutionDepartmentsComponent
   },
   {
-    path: 'app-institutions-information',
-    component: InstitutionsInformationComponent
-  }
-  ]
+    path: 'app-hscode-institutions',
+    component: HscodeInstitutionsComponent
+  },
+  {
+    path: 'app-hscodeinstitutions-configsetup',
+    component: HscodeinstitutionsConfigsetupComponent
+  },
+  {
+    path: 'app-shared-hscode-institutions',
+    component: SharedHscodeInstitutionsComponent
+  },
+  {
+    path: 'app-permittype-configurations',
+    component: PermittypeConfigurationsComponent
+  },
+]
 }]
 
 @NgModule({

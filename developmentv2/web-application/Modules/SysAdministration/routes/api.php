@@ -7,14 +7,20 @@ use Modules\SysAdministration\App\Http\Controllers\SysAdministrationController;
 
 Route::middleware(['XssSanitizer','clear_cache_config','firewall.all'])->prefix('sysadministration')->group(function () {
     Route::get('onLoadSystemAdministrationData', [SysAdministrationController::class, 'onLoadSystemAdministrationData']);
+    Route::get('onLoadTransactionPermitTypeData', [SysAdministrationController::class, 'onLoadTransactionPermitTypeData']);
+    Route::get('getAppPermitCertificateTemplate', [SysAdministrationController::class, 'getAppPermitCertificateTemplate']);
+    Route::get('getAppPermitReportGeneration', [SysAdministrationController::class, 'getAppPermitReportGeneration']);
+    Route::get('getAppPermitChecklist', [SysAdministrationController::class, 'getAppPermitChecklist']);
+    Route::get('getAppPermitRequiredDocuments', [SysAdministrationController::class, 'getAppPermitRequiredDocuments']);
     Route::post('onsaveSysAdminData', [SysAdministrationController::class, 'onSaveSystemAdministrationDetails']);
 	Route::post('onDeleteSystemAdministrationDetails', [SysAdministrationController::class, 'onDeleteSystemAdministrationDetails']);
     Route::post('onDeleteConfigData', [SysAdministrationController::class, 'onDeleteConfigData']);
     
     Route::post('onSaveNotSlidesInformation', [SysAdministrationController::class, 'onSaveNotSlidesInformation']);
-    
+    Route::post('onEnablePermitTypeDetails', [SysAdministrationController::class, 'onEnablePermitTypeDetails']);
+  
     Route::get('getAppUserGroupNavigationMenus', [SysAdministrationController::class, 'getAppUserGroupNavigationMenus']);
-    Route::get('getAppHsCodes', [SysAdministrationController::class, 'getAppHsCodes']);
+    Route::get('getAppHscodes', [SysAdministrationController::class, 'getAppHscodes']);
     //Route::post('onSaveGroupNavPermissions',[SysAdministrationController::class,'onSaveGroupNavPermissions']);
     Route::post('onSavingUserNavigationPermissions', [SysAdministrationController::class, 'onSavingUserNavigationPermissions']);
     Route::post('onSaveSystemGuideline',[SysAdministrationController::class,'onSaveSystemGuideline']);

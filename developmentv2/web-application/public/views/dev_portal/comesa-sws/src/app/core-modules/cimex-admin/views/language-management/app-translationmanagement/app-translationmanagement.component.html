@@ -1,7 +1,7 @@
 <!-- <div class="content-wrapper"> -->
     <!-- <div class="content-header">
         <div class="container-fluid"> -->
-            <div class="row mb-2">
+            <!-- <div class="row mb-2">
                 <div class="col-sm-6">
                     <h5 class="m-0">{{ parameter_name | translate }}</h5>
                 </div>
@@ -12,15 +12,25 @@
                         <li class="breadcrumb-item active">{{ parameter_name | translate }}</li>
                     </ol>
                 </div>
-            </div>
+            </div> -->
         <!-- </div>
     </div> -->
-    <section class="content">
+    <!-- <section class="content"> -->
         <!-- <div class="container-fluid"> -->
+
+            <div class="page-header">
+                <h3>
+                  {{ parameter_name | translate }}
+                  <small>
+                    <i class="ace-icon fa fa-angle-double-right"></i>
+                  </small>
+                </h3>
+              </div><!-- /.page-header -->
             <dx-button text="{{ 'add' | translate }} {{ 'system_labels' | translate }}" type="default" icon="fa fa-save"
                 [elementAttr]="{ }"
                 (onClick)="hasReadpermissions=false;onAddNewSystemLabel()">
             </dx-button>
+            <!-- <div>
             <form role="form" enctype="multipart/form-data" role="form" [formGroup]="filterLanguageFrm">
 
                 <div class="col-lg-6">
@@ -30,7 +40,7 @@
                     </dx-select-box>
                 </div>
             </form>
-
+         </div> -->
             <dx-data-grid (onCellPrepared)="onCellPrepared($event)" class="table row-border hover"
                 (onExporting)="onExporting($event)" [wordWrapEnabled]="true"
                 (onSaving)="onSavingLanguageTranslationManagement($event)" [dataSource]="translationMnaagementData"
@@ -72,7 +82,7 @@
 
         <!-- </div> -->
 
-    </section>
+    <!-- </section> -->
 
 <!-- </div> -->
 

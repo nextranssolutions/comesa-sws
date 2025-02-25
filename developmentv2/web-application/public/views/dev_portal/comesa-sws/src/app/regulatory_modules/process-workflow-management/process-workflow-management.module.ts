@@ -24,13 +24,6 @@ import { AppChecklistDefinationComponent } from './views/document-checklistsmng/
 import { AppChecklistTypesComponent } from './views/document-checklistsmng/checklist_management/app-checklist-types/app-checklist-types.component';
 import { AppPerformancescoringScalesComponent } from './views/document-checklistsmng/checklist_management/app-performancescoring-scales/app-performancescoring-scales.component';
 import { ChecklistmanagementSetupComponent } from './views/document-checklistsmng/checklistmanagement-setup/checklistmanagement-setup.component';
-import { DmsConfigsetupComponent } from './views/document-checklistsmng/document_management/dms-configsetup/dms-configsetup.component';
-import { SharedDmsComponent } from './views/document-checklistsmng/document_management/shared-dms/shared-dms.component';
-import { DmsSitesRepositoryDefinationComponent } from './views/document-checklistsmng/document_management/dms-sites-repository-defination/dms-sites-repository-defination.component';
-import { DocumentExtensionTypesComponent } from './views/document-checklistsmng/document_management/document-extension-types/document-extension-types.component';
-import { DocumentRequirementDefinationComponent } from './views/document-checklistsmng/document_management/document-requirement-defination/document-requirement-defination.component';
-import { DocumentTypesComponent } from './views/document-checklistsmng/document_management/document-types/document-types.component';
-import { NonstructuredDocDefinationComponent } from './views/document-checklistsmng/document_management/nonstructured-doc-defination/nonstructured-doc-defination.component';
 import { EmailTemplatesComponent } from './views/document-checklistsmng/notification-mng/email-templates/email-templates.component';
 import { NotificationManagementComponent } from './views/document-checklistsmng/notification-mng/notification-management/notification-management.component';
 import { NotificationTypesComponent } from './views/document-checklistsmng/notification-mng/notification-types/notification-types.component';
@@ -57,6 +50,14 @@ import { RegulatedProductTypesComponent } from './views/process-configuration/re
 import { RegulatoryFunctionsComponent } from './views/process-configuration/regulatory-functions/regulatory-functions.component';
 import { InterfacesComponent } from './views/workflow-management/interfaces/interfaces.component';
 import { UserGroupsPermissionsComponent } from './views/user-groups-permissions/user-groups-permissions.component';
+import { DmsConfigsetupComponent } from './views/dms/dms-configsetup/dms-configsetup.component';
+import { DmsSitesRepositoryDefinationComponent } from './views/dms/dms-sites-repository-defination/dms-sites-repository-defination.component';
+import { DocumentExtensionTypesComponent } from './views/dms/document-extension-types/document-extension-types.component';
+import { DocumentRequirementDefinationComponent } from './views/dms/document-requirement-defination/document-requirement-defination.component';
+import { DocumentTypesComponent } from './views/dms/document-types/document-types.component';
+import { NonstructuredDocDefinationComponent } from './views/dms/nonstructured-doc-defination/nonstructured-doc-defination.component';
+import { SharedDmsComponent } from './views/dms/shared-dms/shared-dms.component';
+import { SopMasterlistComponent } from './views/dms/sop-masterlist/sop-masterlist.component';
 
 
 
@@ -68,14 +69,14 @@ const ngWizardConfig: NgWizardConfig = {
 @NgModule({
   declarations: [ProcessWorkflowMgtHeaderComponent, ProcessWorkflowMgtLayoutComponent, ProcessWorkflowMgtNavigationComponent,
     ProcessWorkflowsComponent, SystemProcessesComponent, WorkflowSetupComponent, AppChecklistDefinationComponent, 
-    AppChecklistTypesComponent, AppPerformancescoringScalesComponent, ChecklistmanagementSetupComponent, DmsConfigsetupComponent, SharedDmsComponent,
-    DmsSitesRepositoryDefinationComponent, DocumentExtensionTypesComponent, DocumentRequirementDefinationComponent, DocumentTypesComponent, NonstructuredDocDefinationComponent,
+    AppChecklistTypesComponent, AppPerformancescoringScalesComponent, ChecklistmanagementSetupComponent,
     EmailTemplatesComponent, NotificationManagementComponent, NotificationTypesComponent, AppInstitutionsComponent,
      AppOrganizationinformationComponent, SharedhscodesConfigurationsComponent, HscodechaptersDefinationComponent, HscodesSectionsComponent,
     HscodesconfigSetupComponent, HscodesheadingDefinationsComponent, HscodesproductsRegistryComponent, HscodessubheadingDefinationComponent, HscodestariffDetailsComponent,
     TraderAccountManagementComponent, AppSignatoriesComponent, SharedprocessConfigurationsComponent,InstitutionInformationComponent,SharedDocumentchecklistingComponent,
     InstitutionDepartmentsComponent, SharedProcessconfigurationComponent,AppealTypesComponent,ProcessConfsetupComponent,RegulatedProductTypesComponent,RegulatoryFunctionsComponent,
-    InterfacesComponent,UserGroupsPermissionsComponent
+    InterfacesComponent,UserGroupsPermissionsComponent,DmsConfigsetupComponent,DmsSitesRepositoryDefinationComponent,DocumentExtensionTypesComponent,DocumentRequirementDefinationComponent,
+    DocumentTypesComponent,NonstructuredDocDefinationComponent,SharedDmsComponent,SopMasterlistComponent
 
   ],
   imports: [

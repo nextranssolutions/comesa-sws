@@ -195,6 +195,7 @@ class WorkflowManagementController extends Controller
             // $userGroupId = $req->userGroupId;
             $user_id = $req->user_id;
             $regulatory_function_id = $req->regulatory_function_id;
+            $account_type_id = $req->account_type_id;
             // $regulatory_function_id =1;
             if (validateIsNumeric($user_id) || $navigation_type_id != 2) {
                 //get the table data ,'user_group_id' => $userGroupId
@@ -202,7 +203,8 @@ class WorkflowManagementController extends Controller
                 if (validateIsNumeric($user_id)) {
                     $users_groups = getSingleRecord('usr_users_information', array('id' => $user_id));
                     $is_super_admin = $users_groups->is_super_admin;
-                    $usergroups = DB::table('tra_user_group as t1')
+                    // $user_account_type = $users_groups->account_type_id;
+                    $usergroups = DB::table(table: 'tra_user_group as t1')
                         ->select('group_id')
                         ->where(array('user_id' => $user_id))
                         ->get();
@@ -217,7 +219,7 @@ class WorkflowManagementController extends Controller
                 $navigationItems = DB::table('wf_navigation_items as t1')
                     ->leftJoin('sys_usergroup_navpermissions as t2', 't1.id', 't2.navigation_item_id')
                     ->leftJoin('wf_system_interfaces as t3', 't1.system_interface_id', 't3.id')
-                    ->select('t1.*', 't3.routerlink', 't1.iconsCls', 't2.user_access_levels_id')
+                    ->select('t1.*', 't3.routerlink', 't1.iconsCls', 't2.user_access_levels_id','t1.account_type_id')
                     ->orderBy('t1.order_no')->where(array('level' => $level, 't1.navigation_type_id' => $navigation_type_id));
 
                 if (!$is_super_admin && $navigation_type_id == 2) {
@@ -227,6 +229,9 @@ class WorkflowManagementController extends Controller
                 if (validateIsNumeric($regulatory_function_id)) {
                     $navigationItems->where('t1.regulatory_function_id', $regulatory_function_id);
                 }
+                // if(validateIsNumeric($regulatory_function_id == 1)){
+                //     $navigationItems->where('account_type_id', $account_type_id);
+                //   }
                 $navigationItems = $navigationItems->get();
 
                 $rootItems = array();
@@ -318,6 +323,7 @@ class WorkflowManagementController extends Controller
         return $childrens;
     }
 
+
     public function getWorkflowConfigs(Request $req)
     {
         try {
@@ -355,6 +361,7 @@ class WorkflowManagementController extends Controller
             //  $data = $sql->paginate($perPage, ['*'], 'page', $page);
 
             $res = array('success' => true, 'data' => $data);
+            
         } catch (\Exception $exception) {
             $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
         } catch (\Throwable $throwable) {
