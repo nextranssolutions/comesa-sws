@@ -28,7 +28,7 @@
           </div>
         </div>
         <div class="widget-toolbar card-footer">
-          <a href="#" class="btn btn-primary">
+          <a href="javascript:void(0)" (click)="regulatoryFunctionGuidelines(rec)" class="btn btn-primary">
             <i class="ace-icon fa fa-file"></i> {{ "guidelines" }}
           </a>
           <a
@@ -37,7 +37,7 @@
             class="btn btn-success proceed-link"
           >
             <i class="ace-icon fa fa-external-link"></i>
-            {{ "proceed_to_application" | translate}}
+            {{ "proceed" | translate}}
           </a>
         </div>
       </div>
@@ -120,6 +120,42 @@
   </div>
 </div>
 <!-- /.main-content -->
+
+
+<dx-popup class="popup" [(visible)]="refFunctionGuidelines" [width]="funcpopWidth(75)" [height]="funcpopHeight(55)" [showTitle]="true" [@flyInOut]
+title="{{ 'regulatory_function_guidelines' | translate }}" [dragEnabled]="false" [hideOnOutsideClick]="true"(onHidden)="refFunctionGuidelines = false">
+   <div class="row col-lg-12">
+   <dx-data-grid (onCellPrepared)="onCellPrepared($event)" class="table row-border hover"
+   (onExporting)="onExporting($event)" [wordWrapEnabled]="true" [dataSource]="guidelineDetails"
+   [remoteOperations]="true" [showBorders]="true" [allowColumnResizing]="true" [columnHidingEnabled]="true"
+   keyExpr="id" (onToolbarPreparing)="onAdvanceProductRegistrySearch($event)">
+
+   <dxo-export [enabled]="true" [fileName]="'records' | translate" [formats]="['pdf', 'xlsx']"
+     [allowExportSelectedData]="true">
+   </dxo-export>
+   <dxo-search-panel [visible]="true"></dxo-search-panel>
+
+   <dxo-filter-row [visible]="show_advancesearch"></dxo-filter-row>
+   <dxo-paging [enabled]="true">
+     <dxo-pager [showInfo]="true" infoText="Page #{0}. Total: {1} ({2} items)" [showPageSizeSelector]="true"
+       [allowedPageSizes]="[20,50,100]"></dxo-pager>
+   </dxo-paging>
+
+   <!-- <dxi-column [width]="100" caption="{{ 'action' | translate }}" name="command-editing" [allowFiltering]="false"
+     [allowSorting]="false" cellTemplate="cellTemplate">
+     <div *dxTemplate="let data of 'cellTemplate'">
+       <dx-menu (onItemClick)="funcActionColClick($event,data)" [items]="actionsMenuItems"></dx-menu>
+     </div>
+   </dxi-column> -->
+   <dxi-column  dataField="name" caption="{{ 'name' | translate }}"></dxi-column>
+   <dxi-column  dataField="guideline_descriptions" caption="{{ 'guideline_descriptions' | translate }}"></dxi-column>
+   <dxi-column  dataField="links" caption="{{ 'links' | translate }}"></dxi-column>
+   <dxi-column  dataField="documents_upload" caption="{{ 'documents_upload' | translate }}"></dxi-column>
+
+   </dx-data-grid>
+   </div>
+
+  </dx-popup>
 
 <dx-load-panel #loadPanel shadingColor="rgba(0,0,0,0.4)" [position]="{ of: '#employee' }" [(visible)]="loadingVisible"
   [showIndicator]="true" [showPane]="true" [shading]="true" [message]="spinnerMessage" [hideOnOutsideClick]="false">

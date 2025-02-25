@@ -327,6 +327,19 @@ export class WokflowManagementService {
       }));
   }
 
+  getRegulatoryFunctionGuidelines(regulatoryFunctionId) {
+    const config = {
+      headers: { 'Accept': 'application/json' },
+      params: { regulatory_function_id: regulatoryFunctionId },
+    };
+
+    return this.http.get(this.baseUrl + '/getRegulatoryFunctionGuidelines', config)
+      .pipe(map(response => {
+        return response;
+      }));
+}
+
+
 
   getAppWorkflowStages(workflow_id) {
     
