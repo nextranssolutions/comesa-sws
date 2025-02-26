@@ -206,7 +206,6 @@ export class ProcessWorkflowsComponent {
     public reportingAnalytics: ReportsService,
   ) {
     this.table_name = 'wf_workflows';
-    this.table_name = 'wf_workflows';
     this.parameter_name = "workflows";
     this.checkScreenSize();
      

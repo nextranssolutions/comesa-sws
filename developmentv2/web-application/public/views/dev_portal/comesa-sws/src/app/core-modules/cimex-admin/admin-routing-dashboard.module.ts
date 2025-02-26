@@ -226,6 +226,7 @@ import { PromotionadvertChannelsComponent } from './views/configurations/promoti
 import { PromotionmaterialCategoriesComponent } from './views/configurations/promotional_advertisements_configurations/promotionmaterial-categories/promotionmaterial-categories.component';
 import { ProcessConfigsetupComponent } from './views/configurations/process-configurations/process-configsetup/process-configsetup.component';
 import { InstitutionsInformationComponent } from './views/system-administration/institutions-information/institutions-information.component';
+import { RegulatoryFunctionGuidelinesComponent } from './views/system-administration/system-guidelines/regulatory-function-guidelines/regulatory-function-guidelines.component';
 
 //./admin-ecres/app-dashboard
 const routes: Routes = [{
@@ -712,8 +713,12 @@ const routes: Routes = [{
   }, 
 
   {
-    path: ' app-ref-numberformats',
+    path: 'app-ref-numberformats',
     component: RefNumberformatsComponent,
+  },
+  {
+    path: 'app-regulatory-function-guidelines',
+    component: RegulatoryFunctionGuidelinesComponent
   },
   {
     path: 'app-ref-numbertypes',

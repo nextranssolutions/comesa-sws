@@ -1,24 +1,6 @@
-<!-- <div class="content-wrapper"> -->
-<div class="content-header">
-    <div class="container-fluid">
-        <div class="row mb-2">
-            <div class="col-sm-6">
-                <h5 class="m-0">{{ parameter_name | translate }}</h5>
-            </div>
-            <div class="col-sm-6">
-                <ol class="breadcrumb float-sm-right">
-                    <li class="breadcrumb-item"><a routerLink="/">{{ 'Home' | translate }}</a></li>
-                    <li class="breadcrumb-item active">{{ parameter_name | translate }}</li>
-                </ol>
-            </div>
-        </div>
-    </div>
-</div>
 
-<section class="content">
-    <div class="container-fluid">
         <dx-button text="{{ 'add' | translate }} {{ parameter_name | translate }}" type="default" icon="fa fa-plus"
-            [elementAttr]="{ id: 'elementId', class: 'pull-right' }"
+            [elementAttr]="{ id: 'elementId', class: '' }"
             (onClick)="hasReadpermissions=false; funcRedirectToPosting()">
         </dx-button>
 
@@ -39,7 +21,7 @@
             <dxo-group-panel [visible]="true"></dxo-group-panel>
 
 
-            <dxi-column caption="Other Actions" [width]="100" name="command-editing" [allowFiltering]="false"
+            <dxi-column caption="{{'other_actions' | translate }}" [width]="100" name="command-editing" [allowFiltering]="false"
                 [allowSorting]="false" cellTemplate="cellTemplate">
                 <div *dxTemplate="let d of 'cellTemplate'">
                     <dx-menu [items]="d.data.contextMenu" displayExpr="text"
@@ -77,9 +59,6 @@
             <dxo-paging [pageSize]="200"></dxo-paging>
         </dx-data-grid>
 
-    </div>
-</section>
-<!-- </div> -->
 
 <dx-popup [visible]="approvalPopupVisible" [width]="funcpopWidth(85)" [height]="funcpopHeight(85)" [showTitle]="true"
     [title]="previewtitle" (onHidden)="approvalPopupVisible = false">

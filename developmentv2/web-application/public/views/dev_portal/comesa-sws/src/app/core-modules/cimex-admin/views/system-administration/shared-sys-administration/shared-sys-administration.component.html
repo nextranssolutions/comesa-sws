@@ -1,16 +1,4 @@
-<!-- <div class="content-header">
-    <div class="row mb-2">
-      <div class="col-sm-6">
-        <h5 class="m-0">{{ parameter_name | translate }}</h5>
-      </div>
-      <div class="col-sm-6">
-        <ol class="breadcrumb float-sm-right">
-          <li class="breadcrumb-item"><a routerLink="/admin-ecres/app-dashboard">{{ 'home' | translate }}</a></li>
-          <li class="breadcrumb-item active">{{ parameter_name | translate }}</li>
-        </ol>
-      </div>
-    </div>
-</div> -->
+
 
 <div class="main-content-inner">
   <div class="breadcrumbs ace-save-state" id="breadcrumbs">
@@ -41,7 +29,7 @@
 
 
       <dx-button text="{{ 'add_new' | translate }} {{ parameter_name | translate}}" type="default" icon="fa fa-save"
-        [elementAttr]="{ id: 'elementId', class: 'pull-right' }" (onClick)="hasReadpermissions=false;onAddNewRecord()">
+        [elementAttr]="{ id: 'elementId', class: '' }" (onClick)="hasReadpermissions=false;onAddNewRecord()">
       </dx-button>
 
       <dx-data-grid (onCellPrepared)="onCellPrepared($event)" class="table row-border hover"
@@ -87,7 +75,7 @@
 
     </section>
 
-    <!-- </div> -->
+
 
     <dx-popup class="popup" [width]="funcpopWidth(65)" [height]="funcpopHeight(65)" [showTitle]="true"
       title="{{ parameter_name | translate }}" [dragEnabled]="false" [hideOnOutsideClick]="false"

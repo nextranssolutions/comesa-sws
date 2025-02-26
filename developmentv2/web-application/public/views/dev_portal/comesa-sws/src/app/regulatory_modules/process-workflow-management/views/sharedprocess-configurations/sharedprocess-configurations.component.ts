@@ -72,6 +72,7 @@ export class SharedprocessConfigurationsComponent {
     feeTypesData: any;
     loadingVisible: boolean;
     is_enabled: boolean;
+    organisationData: any;
     enabledisable_tracer: string;
     enabledisable_tracerdescription: string;
     enablePopupVisible: boolean
@@ -102,10 +103,10 @@ export class SharedprocessConfigurationsComponent {
         is_member_state: new FormControl('', Validators.compose([])),
         iso_acyronym: new FormControl('', Validators.compose([])),
         is_tracer_item: new FormControl(false, Validators.compose([])),
-        country_id: new FormControl(false, Validators.compose([])),
+        country_id: new FormControl('', Validators.compose([])),
         routerLink: new FormControl(false, Validators.compose([])),
-        institution_id: new FormControl(false, Validators.compose([])),
-        regulatory_function_id: new FormControl(false, Validators.compose([])),
+        institution_id: new FormControl('', Validators.compose([])),
+        regulatory_function_id: new FormControl('', Validators.compose([])),
         institution_type_id: new FormControl(false, Validators.compose([])),
         resetcolumns: new FormControl('', Validators.compose([])),
         fee_type_id: new FormControl('', Validators.compose([])),
@@ -121,6 +122,12 @@ export class SharedprocessConfigurationsComponent {
         ip: new FormControl('', Validators.compose([])),
         blocked: new FormControl('', Validators.compose([])),
         is_enabled: new FormControl('', Validators.compose([])),
+        region_id: new FormControl('', Validators.compose([])),
+        // organisation_id: new FormControl('', Validators.compose([Validators.required])),
+        email_address: new FormControl('', Validators.compose([])),
+        ministry_name: new FormControl('', Validators.compose([])),
+        telephone_number: new FormControl('', Validators.compose([])),
+        physical_address: new FormControl('', Validators.compose([])),
       });
   
   
@@ -143,6 +150,7 @@ export class SharedprocessConfigurationsComponent {
       this.fetchCurrencyDetails();
       this.fetchProductTypesDetails();
       this.scrollToTop();
+      this.onLoadOrganisationData();
     }
    
     spinnerShow(spinnerMessage) {
@@ -163,8 +171,8 @@ export class SharedprocessConfigurationsComponent {
   
       var data_submit = {
         'table_name': 'par_countries',
-        'is_member_state': 1,
-        'is_enabled': 1,
+        // 'is_member_state': 1,
+        // 'is_enabled': 1,
       }
       this.configService.onLoadConfigurationData(data_submit)
         .subscribe(
@@ -196,6 +204,27 @@ export class SharedprocessConfigurationsComponent {
             }
           }
         )
+    }
+    onLoadOrganisationData() {
+  
+      var data_submit = {
+        'table_name': 'tra_organisation_information',
+        // 'is_enabled': 1,
+      }
+      this.configService.onLoadConfigurationData(data_submit)
+        .subscribe(
+          data => {
+            this.data_record = data;
+            if (this.data_record.success) {
+              // this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
+              this.organisationData = this.data_record.data;
+            }
+  
+          },
+          error => {
+  
+          });
+  
     }
   
     fetchInstitutionTypesDetails() {
@@ -491,7 +520,7 @@ export class SharedprocessConfigurationsComponent {
       this.createNewDataFrm.reset();
       this.addPopupVisible = true;
     }
-    onFuncSaveCountriesData() {
+    onFuncSaveOrganisationData() {
   
       const formData = new FormData();
       const invalid = [];

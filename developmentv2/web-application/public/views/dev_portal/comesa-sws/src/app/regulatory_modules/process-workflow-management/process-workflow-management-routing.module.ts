@@ -21,6 +21,7 @@ import { HscodesconfigSetupComponent } from './views/hscodes-configurations/hsco
 import { ProcessConfsetupComponent } from './views/process-configuration/process-confsetup/process-confsetup.component';
 import { UserGroupsPermissionsComponent } from './views/user-groups-permissions/user-groups-permissions.component';
 import { DmsConfigsetupComponent } from './views/dms/dms-configsetup/dms-configsetup.component';
+import { DocumentTypesComponent } from './views/dms/document-types/document-types.component';
 
 const routes: Routes = [{
   path: '',
@@ -58,8 +59,10 @@ const routes: Routes = [{
       path: 'app-user-groups-permissions',
       component: UserGroupsPermissionsComponent
     },
-
-    
+    {
+      path: 'app-document-types',
+      component: DocumentTypesComponent
+    },
     
     {
       path: 'app-checklistmanagement-setup',
