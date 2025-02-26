@@ -38,7 +38,7 @@ export class TraderAccountManagementComponent {
   userFirstName: string = '';
   userOtherNames: string = '';
   userGroupName: string = '';
-
+  iconPosition: any = "top";
   passwordMode: DxTextBoxTypes.TextBoxType = 'password';
   passwordButton: DxButtonTypes.Properties = {
     icon: 'eyeopen',
@@ -65,7 +65,7 @@ export class TraderAccountManagementComponent {
   addPopupVisible: boolean;
   config_record: any;
   deletePopupVisible: boolean;
-  seeprofile: boolean;
+  viewprofile: boolean;
   accountStatusData: any;
   districtData: any;
   regionData: any;
@@ -73,6 +73,7 @@ export class TraderAccountManagementComponent {
   countryData: any;
   traderAccountTypeData: any;
   table_name: string;
+  traderApplicationData: any;
 
   permitActiveExpertAccountsMenuItems = [
     {
@@ -157,9 +158,14 @@ export class TraderAccountManagementComponent {
     this.fetchRegionData()
     this.fetchTraderCategoryData()
     this.onLoadTraderAccountTypesData();
+    this.onLoadTraderApplicationsData();
   }
   onPopupHidden() {
     this.fetchTraderDetails(0);
+  }
+
+  onActionEditDetails() {
+    this.is_readonly = false;
   }
 
   onGetSingleUserProfileDetails() {
@@ -255,6 +261,29 @@ export class TraderAccountManagementComponent {
         error => {
 
         });
+  }
+
+  onLoadTraderApplicationsData(appworkflow_status_id = 0,) {
+    this.spinnerShow('Loading...........');
+
+    var data_submit = {
+      'table_name': 'tra_importexport_applications',
+      // user_id: localStorage.getItem('user_id'),
+      // 'appworkflow_status_id': appworkflow_status_id,
+    }
+    this.userservice.onGetUserInformation(data_submit, 'onGetTraderApplicationDetails')
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.traderApplicationData = this.data_record.data;
+          }
+          this.spinnerHide();
+        },
+        error => {
+
+        });
+
   }
 
   fetchCountryData() {
@@ -395,7 +424,7 @@ export class TraderAccountManagementComponent {
 
   funcprofileDetails(data) {
     this.userAccountFrm.patchValue(data.data);
-    this.seeprofile = true;
+    this.viewprofile = true;
   }
 
   spinnerShow(spinnerMessage) {

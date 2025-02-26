@@ -172,12 +172,6 @@ class UserManagementController extends Controller
     }
 
 
-
-
-
-
-
-
     public function onUpdateUserProfileInformation(Request $req)
     {
         try {
@@ -397,6 +391,8 @@ class UserManagementController extends Controller
 
         return response()->json($res, 200);
     }
+
+
     public function onUserAccountRegistration(Request $req)
     {
         try {
@@ -519,6 +515,8 @@ class UserManagementController extends Controller
                 'appworkflow_status_id' => $appworkflow_status_id,
                 'identification_number' => $req->identification_number,
                 'application_code' => $application_code,
+                'is_initiatepassword_change' => 1,
+                'is_initiateprofile_update' => 1,
                 'created_by' => $req->email_address,
                 'created_on' => now(),
             ];
@@ -538,7 +536,7 @@ class UserManagementController extends Controller
                     'group_id' => $group_id,
                     'user_id' => $appuser_id,
                 ];
-    
+
                 $usergroup_resp = insertRecord('tra_user_group', $usergroup_data);
                 if (!$usergroup_resp['success']) {
                     DB::rollBack();
@@ -548,7 +546,7 @@ class UserManagementController extends Controller
                     ], 200);
                 }
             }
-           
+
 
             // **Step 3: Process Submission & Send Email Notification**
             initiateInitialProcessSubmission('usr_users_information', $application_code, $process_id, $user_resp['record_id']);
@@ -586,221 +584,6 @@ class UserManagementController extends Controller
             ], 500);
         }
     }
-    // public function onUserAccountRegistration(Request $req)
-    // {
-    //     DB::beginTransaction();
-    //     $process_id = 1;
-    //     $account_type_id = $req->account_type_id;
-    //     $otp_value = $req->otp_value;
-    //     try {
-    //         $validator = Validator::make($req->all(), [
-    //             'user_title_id' => 'required|integer',
-    //             'account_type_id' => 'required|integer',
-    //             'country_of_origin_id' => 'required|integer',
-    //             'member_state_id' => 'nullable|integer',
-    //             'institution_type_id' => 'nullable|integer',
-    //             'institution_id' => 'nullable|integer',
-    //             'organization_name' => 'nullable|string',
-    //             'institution_department_id' => 'nullable|integer',
-    //             'registration_number' => 'nullable|max:50',
-    //             'secretariat_department_id' => 'nullable|integer',
-    //             'identification_type_id' => 'nullable|integer',
-    //             'identification_number' => 'nullable',
-    //             'first_name' => 'required|string',
-    //             'surname' => 'nullable|string',
-    //             'other_names' => 'nullable|string',
-    //             'email_address' => 'required|string|email:rfc,dns,spoof|indisposable',
-    //             'phone_number' => 'nullable|string',
-
-    //             'otp_value' => 'nullable|string',
-    //             'created_by' => 'nullable|max:255',
-    //             'created_on' => now()
-    //         ]);
-
-    //         // $appworkflow_status_id = 1;
-
-    //         if ($validator->fails()) {
-    //             return response()->json([
-    //                 'status' => 'error',
-    //                 'message' => $validator->errors()->first(),
-    //             ], 422);
-    //         }
-
-    // $app_statusrecord = getInitialWorkflowStatusId($process_id);
-    // if (!$app_statusrecord) {
-
-    //     return response()->json([
-    //         'success' => false,
-    //         'message' => 'The Initial Workflow Status Has not been set, contact the system admin',
-    //     ], 200);
-    // }
-
-    // $appworkflow_status_id = $app_statusrecord->appworkflow_status_id;
-
-    // //OTP validation
-    // if ($otp_value) {
-    //     $encryptedEmail = aes_encrypt($req->email_address);
-    //     $otpRecord = DB::table('usr_onetimepwd_tokens')
-    //         ->where('email_address', '=', $encryptedEmail)
-    //         ->where('otp_value', '=', aes_encrypt($otp_value))
-    //         ->where('expiry_time', '>=', now()) // Check if OTP is not expired
-    //         ->first();
-    //     if (!$otpRecord) {
-    //         return response()->json([
-    //             'success' => false,
-    //             'message' => 'Invalid or expired OTP. Please request a new OTP.',
-    //         ], 200);
-    //     }
-    // } else {
-    //     return response()->json([
-    //         'success' => false,
-    //         'message' => 'OTP is required.',
-    //     ], 200);
-    // }
-    //         $generatedPassword = bin2hex(random_bytes(8));
-
-    //         $email_address = aes_encrypt($req->email_address);
-
-    // $record = DB::table('usr_users_information')
-    //     ->where('email_address', $email_address)
-    //     ->where('identification_number', '=', $req->identification_number)
-    //     ->count();
-
-    // if ($record > 0) {
-    //     return response()->json([
-    //         'success' => false,
-    //         'message' => 'There is an existing user account with the same Email Address, reset password or contact the System administrator.'
-    //     ], 200);
-    // }
-
-
-    //         // $telephone_no = $req->phone_number['internationalNumber'];
-    //         $table_name = 'usr_users_information';
-    //         $application_code = generateApplicationCode($process_id, $table_name);
-    //         $full_names = trim($req->first_name . ' ' . $req->surname);
-
-    //         $user_data = [
-    //             'account_type_id' => $req->account_type_id,
-    //             'user_title_id' => $req->user_title_id,
-    //             'country_of_origin_id' => $req->country_of_origin_id,
-    //             'institution_type_id' => $req->institution_type_id,
-    //             'email_address' => $email_address,
-    //             'password' => Hash::make($generatedPassword),
-    //             'surname' => aes_encrypt($req->surname),
-    //             'first_name' => aes_encrypt($req->first_name),
-    //             'phone_number' => aes_encrypt($req->phone_number),
-    //             'process_id' => $process_id,
-    //             'appworkflow_status_id' => $appworkflow_status_id,
-    //             'identification_number' => $req->identification_number,
-    //             'institution_id' => $req->institution_id,
-    //             'application_code' => $application_code,
-    //             'institution_department_id' => $req->institution_department_id,
-    //             'secretariat_department_id' => $req->secretariat_department_id,
-    //             'identification_type_id' => $req->identification_type_id,
-    //             'created_by' => $req->email_address,
-    //             'is_initiatepassword_change' => 1,
-    //             'created_on' => now(),
-    //         ];
-
-    //         $resp = insertRecord('usr_users_information', $user_data);
-
-    //         if (!$resp['success']) {
-    //             DB::rollBack();
-    //             return response()->json([
-    //                 'success' => false,
-    //                 'message' => 'Error occurred: ' . $resp['message'],
-    //             ], 200);
-    //         }
-
-    //         $user_information_id = $resp['record_id'];
-    //         $experts_profile_no = '';
-    // if ($req->account_type_id == 1) {
-    //     $process_id = 2;
-    //     $exp_table = 'exp_expertsprofile_information';
-    //     $experts_profile_no = generateUserRegistrationNo($exp_table);
-    //     $application_code = generateApplicationCode($process_id, $exp_table);
-    //     $app_reference_no = generateAppReferenceNo($process_id, $exp_table, $req->email_address);
-
-    //     $app_statusrecord = getInitialWorkflowStatusId($process_id);
-    //     if (!$app_statusrecord) {
-
-    //         return response()->json([
-    //             "process_id" => $process_id,
-    //             'success' => false,
-    //             'message' => 'The Initial Workflow Status Has not been set, contact the system admin',
-    //         ], 200);
-    //     }
-
-    //     $appworkflow_status_id = $app_statusrecord->appworkflow_status_id;
-
-    //     $experts_profile = [
-    //         'user_information_id' => $user_information_id,
-    //         'app_reference_no' => $app_reference_no,
-    //         'experts_profile_no' => $experts_profile_no,
-    //         'process_id' => $process_id,
-    //         'appworkflow_status_id' => $appworkflow_status_id,
-    //         'email_address' => $req->email_address,
-    //         'first_name' => $req->first_name,
-    //         'other_names' => $req->other_names,
-    //         'user_title_id' => $req->user_title_id,
-    //         'identification_type_id' => $req->identification_type_id,
-    //         'identification_number' => $req->identification_number,
-    //         'country_of_origin_id' => $req->country_of_origin_id,
-    //         'physical_address' => $req->physical_address,
-    //         // 'present_telephone_no' => $telephone_no,
-    //         'application_code' => $application_code,
-    //         'created_by' => $req->input('email_address'),
-    //         'created_on' => now(),
-    //     ];
-
-    //     $exp_resp = insertRecord($exp_table, $experts_profile);
-
-    //     if (!$exp_resp['success']) {
-    //         DB::rollBack();
-    //         return response()->json([
-    //             'success' => false,
-    //             'message' => 'Error occurred: ' . $exp_resp['message'],
-    //         ], 200);
-    //     }
-    // }
-    //         initiateInitialProcessSubmission('usr_users_information', $application_code, $process_id, $user_information_id);
-
-    //         $template_id = 1;
-    //         $subject = 'Account Creation Notification';
-    //         $vars = [
-    //             '{user_name}' => $full_names,
-    //             '{email_address}' => $req->email_address,
-    //             '{user_password}' => $generatedPassword,
-    //             '{experts_profile_no}' => $experts_profile_no
-    //         ];
-
-    //         $res = sendMailNotification($req->email_address, $subject, '', '', '', '', '', $template_id, $vars);
-
-    //         if (!$res['success']) {
-    //             DB::rollBack();
-    //             return response()->json([
-    //                 'success' => true,
-    //                 'appworkflow_status_id' => $appworkflow_status_id,
-    //                 'process_id' => $process_id,
-    //                 'message' => 'Your account has been created successfully, unfortunately the email notification failed, try recreating the account or contact the system administrator.',
-    //             ], 200);
-    //         }
-
-    //         DB::commit();
-    //         return response()->json([
-    //             'success' => true,
-    //             'message' => 'Your account has been created successfully, and the account credentials have been emailed to you.',
-    //         ], 200);
-
-    //     } catch (\Exception $exception) {
-    //         DB::rollBack();
-    //         $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
-    //     } catch (\Throwable $throwable) {
-    //         DB::rollBack();
-    //         $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
-    //     }
-    //     return response()->json($res, 200);
-    // }
 
     public function onCheckUserPWDRequestDetails(Request $req)
     {
@@ -905,6 +688,36 @@ class UserManagementController extends Controller
                     'message' => 'No user account associated with this email address exists. Please verify your email address or contact the system administrator for assistance.'
                 ], 404);
             }
+        } catch (\Exception $exception) {
+            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        } catch (\Throwable $throwable) {
+            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        }
+        return response()->json($res, 200);
+    }
+
+    public function onCheckUserProfileUpdateDetails(Request $req)
+    {
+        try {
+            $user_id = $req->user_id;
+            $email_address = $req->email_address;
+            //, 'email_address'=>aes_encrypt($req->email_address)
+            $record = Db::table('usr_users_information')
+                ->where(array('id' => $user_id))
+                ->first();
+
+            if ($record) {
+                $is_initiateprofile_update = ($record->is_initiateprofile_update);
+                $res = array(
+                    'success' => true,
+                    'message' => 'Kindly update your profile to proceed',
+                    'is_initiateprofile_update' => $is_initiateprofile_update
+                );
+            } else {
+                $res = array('success' => false, 'message' => 'User Account Not found');
+
+            }
+
         } catch (\Exception $exception) {
             $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
         } catch (\Throwable $throwable) {
@@ -1786,6 +1599,56 @@ class UserManagementController extends Controller
 
         return response()->json($res, 200);
     }
+
+    public function onGetTraderApplicationDetails(Request $req)
+    {
+        try {
+            $user_data = null;
+            $user_id = $req->user_id;
+    
+            // Validate user_id (ensure it's numeric)
+            if (!$user_id || !filter_var($user_id, FILTER_VALIDATE_INT)) {
+                return response()->json(['success' => false, 'message' => 'Invalid or missing user ID'], 400);
+            }
+    
+            $record = DB::table('tra_importexport_applications as t1')
+                ->leftJoin('tra_consignee_data as t2', 't2.id', '=', 't1.consignee_id')
+                ->leftJoin('wf_workflow_stages as t3', 't3.id', '=', 't1.workflow_stage_id')
+                ->leftJoin('usr_users_information as t4', 't4.id', '=', 't1.applicant_id')
+                ->select([
+                    't1.id',
+                    't1.app_tracking_code',
+                    't1.consignee_id',
+                    't1.workflow_stage_id',
+                    't1.application_code',
+                    't1.applicant_id',
+                    't1.process_id',
+                    't1.created_on'
+                ])
+                ->where('t1.applicant_id', $user_id) // Ensure you filter by user
+                ->first(); // Get only one record instead of a collection
+    
+            if ($record) {
+                $user_data = [
+                    'id' => $record->id,
+                    'app_tracking_code' => $record->app_tracking_code,
+                    'consignee_id' => $record->consignee_id,
+                    'workflow_stage_id' => $record->workflow_stage_id,
+                    'application_code' => $record->application_code,
+                    'process_id' => $record->process_id,
+                    'created_on' => $record->created_on,
+                ];
+            }
+    
+            return response()->json(['success' => true, 'data' => $user_data], 200);
+    
+        } catch (\Exception $exception) {
+            return response()->json(sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__)), 500);
+        } catch (\Throwable $throwable) {
+            return response()->json(sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__)), 500);
+        }
+    }
+    
 
     public function onLoadUserData(Request $req)
     {

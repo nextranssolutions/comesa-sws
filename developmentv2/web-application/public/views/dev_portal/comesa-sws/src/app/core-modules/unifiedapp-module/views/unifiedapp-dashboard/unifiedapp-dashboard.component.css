@@ -1,11 +1,11 @@
-.widget-box.card {
+/* .widget-box.card {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1)!important;
     border-radius: 10px!important;
     margin: 5px!important;
-}
+} */
 
 .widget-box.card:hover {
-    transform: translateY(-5px)!important;
+    /* transform: translateY(-5px)!important; */
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2)!important;
 }
 
@@ -39,7 +39,7 @@
 }
 
 .widget-title {
-    color: #48a6db !important;
+    /* color: rgba(0, 0, 0, .87) !important; */
     font-size: 17px !important;
 }
 
