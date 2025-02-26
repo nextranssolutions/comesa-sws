@@ -43,6 +43,7 @@ Route::middleware(['XssSanitizer','clear_cache_config','firewall.all'])->prefix(
     Route::get('getPortalWorkflowConfigs', [WorkflowManagementController::class, 'getPortalWorkflowConfigs']);
     Route::get('getAppPortalWorkflowStages', [WorkflowManagementController::class, 'getAppPortalWorkflowStages']);
     Route::get('getAppProtalWorkflowTransitions', [WorkflowManagementController::class, 'getAppProtalWorkflowTransitions']);
+    Route::get('getRegulatoryFunctionGuidelines', [WorkflowManagementController::class, 'getRegulatoryFunctionGuidelines']);
     Route::post('onsavePortalWorkflowConfigData', [WorkflowManagementController::class, 'onsavePortalWorkflowConfigData']);
     Route::post('onDeletePortalWorkflowsDetails', [WorkflowManagementController::class, 'onDeletePortalWorkflowsDetails']);
     Route::post('onEnablePortalWorkflowDetails', [WorkflowManagementController::class, 'onEnablePortalWorkflowDetails']);

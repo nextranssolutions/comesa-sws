@@ -23,7 +23,7 @@
           </div>
           <div class="dx-field w-md-auto">
             <dx-select-box formControlName="searchByCriteria" [dataSource]="criteriaData" displayExpr="name"
-              valueExpr="id" placeholder="{{ 'select_search_criteria' | translate }}"
+            [searchEnabled]="true"valueExpr="id" placeholder="{{ 'select_search_criteria' | translate }}"
               (onValueChanged)="onSearchCriteriaChange($event)" class="form-select-lg">
             </dx-select-box>
           </div>
@@ -31,14 +31,14 @@
           <!-- Transaction Type Dropdown -->
           <div class="dx-field w-md-auto">
             <dx-select-box formControlName="transactionType" [dataSource]="operationTypeData" displayExpr="name"
-              valueExpr="name" placeholder="{{ 'select_operation_type' | translate }}" class="form-select-lg">
+            [searchEnabled]="true"valueExpr="name" placeholder="{{ 'select_operation_type' | translate }}" class="form-select-lg">
             </dx-select-box>
           </div>
 
           <!-- Dynamic Type Dropdown -->
           <div class="dx-field w-md-auto">
             <dx-select-box formControlName="productType" [dataSource]="dynamicDataSource" displayExpr="name"
-              valueExpr="name" placeholder="{{ productPlaceholder | translate }}" class="form-select-lg">
+            [searchEnabled]="true"valueExpr="name" placeholder="{{ productPlaceholder | translate }}" class="form-select-lg">
             </dx-select-box>
           </div>
 
