@@ -1,49 +1,164 @@
 <form role="form" enctype="multipart/form-data" role="form" [formGroup]="applicationGeneraldetailsfrm" >
     <div class="row  wizard-content">
      
-          <div class="col-lg-4">
-            <label>{{'registration_process_action' | translate}}</label>
-            <dx-select-box  [dataSource]="regulatedProdTypeData" valueExpr="id" displayExpr="name"
-              placeholder= "{{'select_registration_section_process' | translate}}" [searchEnabled]="true" formControlName="regulatory_subfunction_id">
+          <div class="col-lg-6">
+            <label>{{'application_type' | translate}}</label>
+            <dx-select-box  [dataSource]="applicationTypeData" valueExpr="id" displayExpr="name"
+              placeholder= "{{'application_type' | translate}}" [searchEnabled]="true" formControlName="application_type_id">
             </dx-select-box>
           </div>
-          <div class="col-lg-4">
-            <label>{{'product_types_defination' | translate}}</label>
-            <dx-select-box  [dataSource]="producttypeDefinationData" valueExpr="id" displayExpr="name" (onSelectionChanged)="onProductTypesDefinationSelection($event)"
-              placeholder="{{'select_product_types_defination' | translate}}"  [searchEnabled]="true" formControlName="producttype_defination_id">
+          
+          
+          <div class="col-lg-6">
+            <label>{{'permit_type' | translate}}</label>
+            <dx-select-box  [dataSource]="permitTypeData" valueExpr="id" displayExpr="name"
+              placeholder= "{{'permit_type' | translate}}" [searchEnabled]="true" formControlName="permit_type_id">
             </dx-select-box>
           </div>
+
+          <div class="col-lg-6">
+            <label>{{ 'date_of_application' | translate }}</label>
+            <dx-date-box dateSerializationFormat="yyyy-MM-dd" [max]="maxDate" formControlName="date_of_application" 
+              [placeholder]="'date_of_application' | translate" [showClearButton]="true">
+            </dx-date-box>
+          </div>
+
+          <div class="col-lg-6">
+            <label>{{ 'expected_date_of_shipment' | translate }}</label>
+            <dx-date-box dateSerializationFormat="yyyy-MM-dd" [max]="maxDate" formControlName="expected_date_of_shipment" 
+              [placeholder]="'expected_date_of_shipment' | translate" [showClearButton]="true">
+            </dx-date-box>
+          </div>
+
+          <div class="input-group">
+            <div class="col-lg-10">
+              <label>{{'importer_exporter_details' | translate}}</label>
+              <dx-text-box [readOnly]="true" formControlName="importer_exporter_name" 
+                [placeholder]="'importer_exporter_details' | translate" [showClearButton]="true">
+              </dx-text-box>
+              <input type="hidden" formControlName="importer_exporter_id" />
+            </div>
+            <div class="col-lg-2 pt-5">
+              <dx-button [elementAttr]="{ class: 'btn btn-primary pull-left' }" [disabled]="ammendReadOnly" 
+                style="margin-top:25px !important;" text="{{ 'search_details' | translate }}" type="default" 
+                (onClick)="onsearchSenderreceiver()">
+                <i class="fa fa-search"></i> {{ 'search' | translate }} {{ importerexporter_title }}
+              </dx-button>
+            </div>
+          </div>
+
           <div class="col-lg-4">
-            <label>{{ 'application_type' | translate}} </label>
-            <dx-select-box  [dataSource]="regulatedSubfunctionData" valueExpr="id" displayExpr="name" placeholder="{{'select_application_type' | translate}}" [searchEnabled]="true"
-              formControlName="regulatory_subfunction_id">
+            <label>{{ 'port_type' | translate}}</label>
+            <dx-select-box [dataSource]="portTypeData" valueExpr="id" displayExpr="name"
+              placeholder="{{'port_type' | translate}}"   [searchEnabled]="true" formControlName="port_type">
             </dx-select-box>
           </div>
+
           <div class="col-lg-4">
-            <label>{{ 'permit_use' | translate}}</label>
-            <dx-select-box [dataSource]="applicationCategoryData" valueExpr="id" displayExpr="name"
-              placeholder="{{'select_application_category' | translate}}"  (onSelectionChanged)="onApplicationCategorySelection($event)" [searchEnabled]="true" formControlName="permit_category_id">
+            <label>{{ 'port_of_entryexit' | translate}}</label>
+            <dx-select-box [dataSource]="portOfEntryExitData" valueExpr="id" displayExpr="name"
+              placeholder="{{'port_of_entryexit' | translate}}"  (onSelectionChanged)="onApplicationCategorySelection($event)" [searchEnabled]="true" formControlName="port_of_entryexit_id">
             </dx-select-box>
           </div>
+
           <div class="col-lg-4">
-            <label>{{ 'product_categories' | translate}}</label>
+            <label>{{'customs_office'| translate}}</label>
+            <dx-text-box formControlName="customs_office" placeholder="{{'customs_office' | translate}}"
+              [showClearButton]="true">
+            </dx-text-box>
+           
+          </div>
+
+          <div class="col-lg-4" *ngIf="is_licensepermit">
+            <label>{{'mode_of_transport' | translate}}</label>
+            <dx-select-box [dataSource]="modeOfTransportData" valueExpr="id" displayExpr="name"
+              [placeholder]="'select_mode_of_transport' | translate" [searchEnabled]="true" formControlName="mode_oftransport_id">
+            </dx-select-box>
+          </div>
+
+          <div class="col-lg-4">
+            <label>{{'transpoter_name'| translate}}</label>
+            <dx-text-box formControlName="transpoter_name" placeholder="{{'transpoter_name' | translate}}"
+              [showClearButton]="true">
+            </dx-text-box>
+           
+          </div>
+
+          <div class="col-lg-4">
+            <label>{{'transporter_contact'| translate}}</label>
+            <dx-text-box formControlName="transporter_contact" placeholder="{{'transporter_contact' | translate}}"
+              [showClearButton]="true">
+            </dx-text-box>
+           
+          </div>
+
+
+          <div class="col-lg-4">
+            <label>{{ 'transporter_country' | translate}}</label>
             <dx-select-box [dataSource]="permitProductsCategoryData" valueExpr="id" displayExpr="name"
-              placeholder="{{ 'select_product_category' | translate}}"  [readOnly]="ammendReadOnly" [searchEnabled]="true" formControlName="permit_productscategory_id">
+              placeholder="{{ 'transporter_country' | translate}}"  [readOnly]="ammendReadOnly" [searchEnabled]="true" formControlName="country_id">
             </dx-select-box>
           </div>
-          <div class="col-lg-4" >
-            <label for="ti" class="control-label">{{'permit_processing_branch' | translate}}</label>
-        
-            <dx-select-box [dataSource]="zoneData" valueExpr="id" placeholder="{{'permit_process_branch' | translate}}"
-              displayExpr="name"  [readOnly]="ammendReadOnly" [searchEnabled]="true" formControlName="zone_id">
+
+          <div class="col-lg-4">
+            <label>{{ 'final_destination_country' | translate}}</label>
+            <dx-select-box [dataSource]="countryData" valueExpr="id" displayExpr="name"
+              placeholder="{{ 'final_destination_country' | translate}}"  [readOnly]="ammendReadOnly" [searchEnabled]="true" formControlName="country_id">
             </dx-select-box>
           </div>
-     
-        <div class="col-lg-4"  *ngIf="!hide_visalicensedetails">
-          <label>{{'do_you_have_a_operational_premises_licenses' | translate}}</label>
+
+          <div class="col-lg-4">
+            <label>{{ 'invoice_type' | translate}}</label>
+            <dx-select-box [dataSource]="invoiceTypeData" valueExpr="id" displayExpr="name"
+              placeholder="{{ 'invoice_type' | translate}}"  [readOnly]="ammendReadOnly" [searchEnabled]="true" formControlName="invoice_type_id">
+            </dx-select-box>
+          </div>
+
+          <div class="col-lg-4">
+            <label>{{'invoice_number'| translate}}</label>
+            <dx-text-box formControlName="invoice_number" placeholder="{{'invoice_number' | translate}}"
+              [showClearButton]="true">
+            </dx-text-box>
+           
+          </div>
+
+          <div class="col-lg-4">
+            <label>{{ 'invoice_date' | translate }}</label>
+            <dx-date-box dateSerializationFormat="yyyy-MM-dd" [max]="maxDate" formControlName="invoice_date" 
+              [placeholder]="'invoice_date' | translate" [showClearButton]="true">
+            </dx-date-box>
+          </div>
+
+          <div class="col-lg-4">
+            <label>{{'total_invoice_value'| translate}}</label>
+            <dx-text-box formControlName="total_invoice_value" placeholder="{{'total_invoice_value' | translate}}"
+              [showClearButton]="true">
+            </dx-text-box>
+           
+          </div>
+          
+          <div class="col-lg-4">
+            <label>{{ 'currency_of_transaction' | translate}}</label>
+            <dx-select-box [dataSource]="currencyData" valueExpr="id" displayExpr="name"
+              placeholder="{{ 'currency_of_transaction' | translate}}"  [readOnly]="ammendReadOnly" [searchEnabled]="true" formControlName="currency_id">
+            </dx-select-box>
+          </div>
+
+          
+          <div class="col-lg-4" *ngIf="is_licensepermit">
+            <label>{{'invoice_paying_currency' | translate}}</label>
+            <dx-select-box [dataSource]="currencyData" [readOnly]="ammendReadOnly" valueExpr="id" displayExpr="name"
+              [placeholder]="'select_paying_currency' | translate" [searchEnabled]="true" formControlName="paying_currency_id">
+            </dx-select-box>
+          </div>
+          
+          
+
+        <div class="col-lg-12"  *ngIf="!hide_visalicensedetails">
+          <label>{{'declaration_statuses' | translate}}</label>
           <dx-select-box [dataSource]="confirmDataParam" valueExpr="id" displayExpr="name"
             (onSelectionChanged)="onhaveRegOutletsChange($event)" placeholder="{{'select' | translate}}"
-            [searchEnabled]="true"  [readOnly]="ammendReadOnly" formControlName="has_registered_outlets">
+            [searchEnabled]="true"  [readOnly]="ammendReadOnly" formControlName="declaration_statuses">
           </dx-select-box>
         </div>
         
@@ -89,72 +204,10 @@
             </div>
           </div>
     
-          
-          <div class="col-lg-4" *ngIf="is_licensepermit">
-            <label>{{'port_of_entry_exit' | translate}}</label>
-            <dx-select-box [dataSource]="portOfEntryExitData" valueExpr="id" displayExpr="name"
-              [placeholder]="'select_port' | translate" [searchEnabled]="true" formControlName="port_id">
-            </dx-select-box>
-          </div>
-          
-          <div class="col-lg-4" *ngIf="is_licensepermit">
-            <label>{{'mode_of_transport' | translate}}</label>
-            <dx-select-box [dataSource]="modeOfTransportData" valueExpr="id" displayExpr="name"
-              [placeholder]="'select_mode_of_transport' | translate" [searchEnabled]="true" formControlName="mode_oftransport_id">
-            </dx-select-box>
-          </div>
-          
-          <div class="col-lg-4">
-            <label>{{ 'invoice_no' | translate }}</label>
-            <dx-text-box formControlName="proforma_invoice_no" [placeholder]="'invoice_no' | translate" [showClearButton]="true">
-            </dx-text-box>
-          </div>
-          
-          <div class="col-lg-4">
-            <label>{{ 'invoice_date' | translate }}</label>
-            <dx-date-box dateSerializationFormat="yyyy-MM-dd" [max]="maxDate" formControlName="proforma_invoice_date" 
-              [placeholder]="'invoice_date' | translate" [showClearButton]="true">
-            </dx-date-box>
-          </div>
-          
-          <div class="col-lg-4" *ngIf="is_licensepermit">
-            <label>{{'invoice_paying_currency' | translate}}</label>
-            <dx-select-box [dataSource]="payingCurrencyData" [readOnly]="ammendReadOnly" valueExpr="id" displayExpr="name"
-              [placeholder]="'select_paying_currency' | translate" [searchEnabled]="true" formControlName="paying_currency_id">
-            </dx-select-box>
-          </div>
-          
-          <div class="col-lg-4 input-group">
-            <div class="col-lg-8">
-              <label>{{'cosignor_details' | translate}}</label>
-              <dx-text-box [readOnly]="true" formControlName="consignee_name" 
-                [placeholder]="'consignor_details' | translate" [showClearButton]="true">
-              </dx-text-box>
-              <input type="hidden" formControlName="consignee_id" />
-            </div>
-            <div class="col-lg-4">
-              <dx-button [elementAttr]="{ class: 'btn btn-primary pull-left' }" [disabled]="ammendReadOnly" 
-                style="margin-top:25px !important;" text="{{ 'search_details' | translate }}" type="default" 
-                (onClick)="onsearchSenderreceiver()">
-                <i class="fa fa-search"></i> {{ 'search' | translate }} {{ consignor_title }}
-              </dx-button>
-            </div>
-          </div>
+        
           
     
-        <!-- *ngIf="!hide_visalicensedetails"
-        <div class="col-lg-4 "  *ngIf="showreason_fornonregister_outlet">
-          <label>Supporting Documents Type</label>
-          <dx-select-box [dataSource]="eligibleImportersDocTypes" valueExpr="id" displayExpr="name"
-             placeholder="Select"
-            [searchEnabled]="true" formControlName="eligible_importersdoctype_id">
-          </dx-select-box>
-        </div>
-        <div class="col-lg-4  input-group "  *ngIf="showreason_fornonregister_outlet">
-          <label>Upload Documents</label>
-          <input type="file" class="form-control col-lg-12" (change)="fileChangeEvent($event)" multiple placeholder="Upload Supporting Document"/>
-        </div>
-    -->
+        
       
       <div class="col-lg-4 form-group" style="margin:1px;">
     
@@ -208,7 +261,7 @@
     </dx-popup>
     
     
-    <dx-popup class="popup"  [width]="funcpopWidth(80)" [height]="550" [showTitle]="true" title="{{consignor_title}} Details"
+    <dx-popup class="popup"  [width]="funcpopWidth(80)" [height]="550" [showTitle]="true" title="{{importerexporter_title}} Details"
       [dragEnabled]="false" [hideOnOutsideClick]="false" [(visible)]="issenderreceiverSearchWinVisible">
       <div *dxTemplate="let data of 'content'">
         <dx-scroll-view>
@@ -287,7 +340,7 @@
       </div>
     </dx-popup>
     
-    <dx-popup class="popup"  [width]="funcpopWidth(80)" [height]="450" [showTitle]="true" title="{{consignee_sendertitle}}"
+    <dx-popup class="popup"  [width]="funcpopWidth(80)" [height]="450" [showTitle]="true" title="{{importerexporter_title}}"
       [dragEnabled]="false" [hideOnOutsideClick]="false" [(visible)]="issenderreceiverAddWinVisible">
       <div *dxTemplate="let data of 'content'">
           <dx-scroll-view>
@@ -300,19 +353,19 @@
     
               <div class="col-xs-12 col-md-3 col-lg-3 col-xl-3 ">
     
-                <label class="control-label">Name</label>
+                <label class="control-label">{{'name'| translate}}</label>
                 <dx-text-box formControlName="name">
                 </dx-text-box>
     
               </div>
               <div class="col-xs-12 col-md-3 col-lg-3 col-xl-3 ">
-                <label class="control-label">Country</label>
-                <dx-select-box [dataSource]="countries" valueExpr="id" displayExpr="name" placeholder="Select Country"
+                <label class="control-label">{{'country'| translate}}</label>
+                <dx-select-box [dataSource]="countries" valueExpr="id" displayExpr="name" placeholder="{{'select_country' | translate}}"
                   (onSelectionChanged)="onCoutryCboSelect($event)" [searchEnabled]="true" formControlName="country_id">
                 </dx-select-box>
               </div>
               <div class="col-xs-12 col-md-3 col-lg-3 col-xl-3 ">
-                <label for="ti" class="control-label">Province/Region/City</label>
+                <label for="ti" class="control-label">{{'province_region_city'| translate}}</label>
     
                 <dx-select-box [dataSource]="regions" valueExpr="id" displayExpr="name"
                   (onSelectionChanged)="onRegionsCboSelect($event)" [searchEnabled]="true" formControlName="region_id">
@@ -320,36 +373,36 @@
     
               </div>
               <div class="col-xs-12 col-md-3 col-lg-3 col-xl-3 ">
-                <label for="ti" class="control-label">District(Optional)</label>
+                <label for="ti" class="control-label">{{'district(optional)'| translate}}</label>
     
-                <dx-select-box [dataSource]="districts" valueExpr="id" placeholder="Select District" displayExpr="name"
+                <dx-select-box [dataSource]="districts" valueExpr="id" placeholder="{{'select_district' | translate}}" displayExpr="name"
                   [searchEnabled]="true" formControlName="district_id">
                 </dx-select-box>
               </div>
               <div class="col-xs-12 col-md-3 col-lg-3 col-xl-3 ">
-                <label for="ti" class="control-label">Email Address</label>
-                <dx-text-box formControlName="email_address" placeholder="Email Address">
+                <label for="ti" class="control-label">{{'email_address'| translate}}</label>
+                <dx-text-box formControlName="email_address" placeholder="{{'email_address' | translate}}">
                 </dx-text-box>
               </div>
             
               <div class="col-xs-12 col-md-3 col-lg-3 col-xl-3 ">
-                <label for="ti" class="control-label">Telephone No</label>
+                <label for="ti" class="control-label">{{'telephone_no'| translate}}</label>
     
-                <dx-text-box formControlName="telephone_no" placeholder="Telephone No">
+                <dx-text-box formControlName="telephone_no" placeholder="{{'telephone_no' | translate}}">
                 </dx-text-box>
               </div>
               
               <div class="col-lg-12">
-                <label class="control-label">Physical Address</label>
+                <label class="control-label">{{'physical_address'| translate}}</label>
     
-                <dx-text-area [height]="60" formControlName="physical_address" placeholder="Physical Address">
+                <dx-text-area [height]="60" formControlName="physical_address" placeholder="{{'physical_address' | translate}}" >
                 </dx-text-area>
               </div>
            
               <div class="col-lg-12 btn-margin-5">
                 <br />
                 <button type="submit" (submit)="onsavePermitReceiverSender()" [disabled]="!permitReceiverSenderFrm.valid"
-                  class="btn btn-primary"><i class="fa fa-user"></i> Save {{consignee_sendertitle}} Details</button>
+                  class="btn btn-primary"><i class="fa fa-user"></i> {{ 'save' | translate }} {{ importerexporter_title }}</button>
               </div>
             </div>
           </form>

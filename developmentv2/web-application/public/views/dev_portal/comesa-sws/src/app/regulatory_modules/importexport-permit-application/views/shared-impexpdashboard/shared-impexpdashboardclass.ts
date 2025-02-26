@@ -217,7 +217,7 @@ export class SharedImpExpdashboardClass {
             this.appService.setApplicationDetail(data.data);
             localStorage.setItem('application_details', JSON.stringify(data.data));
             // this.appService.setProductApplicationDetail(data.data);
-            this.app_route = ['./importexport-control/' + this.router_link];
+            this.app_route = ['./importexport-permit-application/' + this.router_link];
 
             this.router.navigate(this.app_route);
             this.scrollToTop();
