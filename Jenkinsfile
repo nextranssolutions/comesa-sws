@@ -18,7 +18,7 @@ pipeline {
       steps {
 
           sh '''#!/bin/bash
-
+######################### NOTE: UNCHECK LIGHTWEIGHT CHECKOUT OPTION FOR FIRST TIME BUILDING THEN CHECK AFTER FIRST COMPLETE BUILD #####################
           ##### TRANSFER TO THE SERVER ###############
           sudo rm -rf /var/www/cimex
           sudo mkdir /var/www/cimex
