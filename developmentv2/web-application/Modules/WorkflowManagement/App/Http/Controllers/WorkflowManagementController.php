@@ -229,9 +229,7 @@ class WorkflowManagementController extends Controller
                 if (validateIsNumeric($regulatory_function_id)) {
                     $navigationItems->where('t1.regulatory_function_id', $regulatory_function_id);
                 }
-                // if(validateIsNumeric($regulatory_function_id == 1)){
-                //     $navigationItems->where('account_type_id', $account_type_id);
-                //   }
+             
                 $navigationItems = $navigationItems->get();
 
                 $rootItems = array();

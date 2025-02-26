@@ -15,6 +15,7 @@ export const routes: Routes = [
   { path: 'process-workflow-management', loadChildren: () => import('./regulatory_modules/process-workflow-management/process-workflow-management.module').then(m => m.ProcessWorkflowManagementModule) },
   { path: 'revenue-management', loadChildren: () => import('./regulatory_modules/revenue-management/revenue-management.module').then(m => m.RevenueManagementModule) },
   { path: 'importexport-permit-application', loadChildren: () => import('./regulatory_modules/importexport-permit-application/importexport-application.module').then(m => m.ImportexportControlModule) },
+
 ];
 
 @NgModule({
