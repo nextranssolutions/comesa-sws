@@ -1,17 +1,30 @@
-<div class="content-wrapper">
-    <div class="content-header">
-        <!-- Title and Breadcrumb -->
-        <div class="container-fluid">
-            <div class="row mb-2">
-                <div class="col-sm-6">
-                    <h4 class="m-0">{{'system_manual_configurations' | translate}}</h4>
-                </div>
-                
-            </div>
-        </div>
+<div class="main-content-inner">
+    <div class="breadcrumbs ace-save-state" id="breadcrumbs">
+      <ul class="breadcrumb">
+        <li>
+          <i class="ace-icon fa fa-home home-icon"></i>
+          <a href="#"><a routerLink="/admin-cimex/app-dashboard">{{ 'home' | translate }}</a></a>
+        </li>
+        <!-- <li class="active">{{ parameter_name | translate }}</li> -->
+      </ul>
+  
     </div>
-
-    <section class="content">
+  
+  
+    <div class="page-content">
+  
+      <div class="page-header">
+        <h1>
+          <!-- {{ parameter_name | translate }} -->
+          <small>
+            <i class="ace-icon fa fa-angle-double-right"></i>
+            overview &amp; stats
+          </small>
+        </h1>
+      </div>
+  
+      <section class="content">
+  
         <div class="container-fluid">
             <dx-tab-panel id="supplierPanel" [swipeEnabled]="false" [showNavButtons]="true" [animationEnabled]="true" [tabsPosition]="tabsPosition">
 
@@ -39,8 +52,7 @@
 
             
         </div>
-    </section>
-
-
-
+        </section>
+    </div>
 </div>
+        

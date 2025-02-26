@@ -28,12 +28,11 @@
 
     <div *ngIf="!authService.isLoggedIn" class="">
       <span class="form-label cursor-pointer language-option" (click)="openSignupPopup()">
-        <i class="fa fa-user-circle"></i> {{ "create_account" | translate }}
+        <i class="fa fa-user"></i> {{ "create_account" | translate }}
       </span>
-
       ||
       <span class="form-label cursor-pointer language-option" (click)="openSigninPopup()">
-        <i class="fa fas fa-sign-in-alt"></i> {{ "sign-in" | translate }}
+        <i class="fa fa-sign-in"></i> {{ "sign-in" | translate }}
       </span>
     </div>
   </div>
@@ -149,7 +148,7 @@
 
     <!-- Send OTP Button -->
     <dxi-item>
-      <dx-button class="dx-button" text="{{'send_otp' | translate}}" icon="fa fa-key" (onClick)="onOtpRequest()">
+      <dx-button class="dx-button" text="{{'request_otp' | translate}}" icon="fa fa-key" (onClick)="onOtpRequest()">
       </dx-button>
     </dxi-item>
 

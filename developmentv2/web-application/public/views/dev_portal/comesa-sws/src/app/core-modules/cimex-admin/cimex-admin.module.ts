@@ -276,6 +276,7 @@ import { RegFunctionsComponent } from './views/configurations/process-configurat
 import { AppealsTypesComponent } from './views/configurations/process-configurations/appeals-types/appeals-types.component';
 import { ProcessConfigsetupComponent } from './views/configurations/process-configurations/process-configsetup/process-configsetup.component';
 import { AppSectionsComponent } from './views/configurations/forms/application-section/app-sections.component';
+import { RegulatoryFunctionGuidelinesComponent } from './views/system-administration/system-guidelines/regulatory-function-guidelines/regulatory-function-guidelines.component';
 
 @NgModule({
   declarations: [AppdashboardComponent,
@@ -308,6 +309,7 @@ import { AppSectionsComponent } from './views/configurations/forms/application-s
     ControlDocumentmanagementComponent,
     AppCurrenciesComponent,
     AppAuditTrail,
+    RegulatoryFunctionGuidelinesComponent,
     SharedProcessconfigsComponent,
     GeneralApplicationFormComponent,
     SharedPortalNavigationsComponent,

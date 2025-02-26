@@ -103,6 +103,7 @@ export class SharedDocumentchecklistingComponent {
         email_template: new FormControl('', Validators.compose([])),
         marks_allocated: new FormControl('', Validators.compose([])),
         is_enabled: new FormControl('', Validators.compose([])),
+        organisation_id: new FormControl('', Validators.compose([Validators.required])),
   
       });
   
