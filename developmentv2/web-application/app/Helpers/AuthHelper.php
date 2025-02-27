@@ -79,6 +79,11 @@ class AuthHelper {
         }
         return $helpdesk_url;
     }
+    static function getHelpDeskAccessUrl() {
+        
+        $helpdesk_url = env( 'helpdesk_url' );
+        return $helpdesk_url;
+    }
 
     static function updateFaveoPassword( $helpdesk_user_id, $newPassword ) {
         $client = new Client();

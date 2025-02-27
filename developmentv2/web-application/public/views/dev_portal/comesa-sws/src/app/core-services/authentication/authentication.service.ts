@@ -58,32 +58,6 @@ export class AuthenticationService {
     return this.getAccessToken() !== null;
   }
 
-  // funcUserLogOut() {
-  //   this.spinner.show();
-
-  //   var headers: Object = {
-  //     headers: new HttpHeaders({
-  //       "Accept": "application/json",
-  //       //"Authorization": "Bearer " + this.getAccessToken(),
-  //     }),
-  //     responseType: 'text'
-  //   };
-  //   let user = this.getUserDetails();
-
-  //   localStorage.removeItem("LoggedInUser");
-  //   localStorage.clear(); //usr_loggedin_id
-  //   return this.http.post(this.base_url + '/funcUserLogOut', {usr_loggedin_id: user.usr_loggedin_id, email_address: user.email_address, userId:user.userId }, headers)
-  //     .pipe(map(data => {
-  //       localStorage.removeItem("LoggedInUser");
-  //       localStorage.clear();
-
-  //       this.router.navigate(["../"]);
-  //        this.scrollToTop();
-
-  //       location.reload();
-  //       this.spinner.hide();
-  //     })).subscribe();
-  // }
 
   funcUserLogOut() {
     // this.spinner.show();

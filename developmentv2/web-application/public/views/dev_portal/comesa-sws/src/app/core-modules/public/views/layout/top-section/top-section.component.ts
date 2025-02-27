@@ -20,6 +20,8 @@ import { ToastrService } from 'ngx-toastr';
 import { OtpService } from 'src/app/core-services/otp/otp.service';
 import { DxButtonTypes } from 'devextreme-angular/ui/button';
 import { ConfigurationsService } from 'src/app/core-services/configurations/configurations.service';
+import { PublicDashboardService } from 'src/app/core-services/public-dashboard/public-dashboard.service';
+import { DomSanitizer,SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-top-section',
@@ -29,11 +31,14 @@ import { ConfigurationsService } from 'src/app/core-services/configurations/conf
 export class TopSectionComponent {
   @ViewChild('targetValidator', { static: false })
   validator: DxValidatorComponent;
-
+  printiframeUrl:any;
   phonePattern = /^[+]?(\d[\d\-()\s]{7,}\d)$/;
   phoneRules: DxTextBoxTypes.Properties['maskRules'] = {
     X: /[\d]/,
   };
+  printReportTitle: string;
+  isPrintReportVisible: boolean = false;
+  helpdeskUrl: any;
   loading = false;
   auth_response: any;
   isLoggedIn: boolean;
@@ -44,44 +49,23 @@ export class TopSectionComponent {
   message: string;
   guideline_option_id: number = 1;
   success: boolean;
-  allCountries: any[] = [];
   Countries: any;
-  userGroups: any[] = [];
-  Institutions: any[] = [];
-  InstitutionDepartments: any[] = [];
-  userAccountTypeData: any;
   traderAccountTypeData: any;
-  userTitles: any[] = [];
-  IdentificationType: any[] = [];
   system_title: string = AppSettings.system_title;
   signUpFrm: FormGroup;
-  currentStep: number = 1;
-  systemGuidelines: any;
   termscheckbox: boolean;
   base_url: string = AppSettings.base_url;
-  filesToUpload: Array<File> = [];
   data_record: any;
   loadingVisible: boolean;
   spinnerMessage: string;
   response: any;
-  var_1: number;
-  var_2: number;
-  sum_var: number;
-  secretariatDepartmentsData: any;
-  is_eacsecretariat: boolean;
-  instituionTypeData: any;
-  has_partnerstate_defination: boolean;
   dashboard_type_id: number;
-  partnerStatesData: any;
   phoneForm: FormGroup;
   selectedCountry: string = '';
   signInFrm: FormGroup;
   forgotPasswordFrm: FormGroup;
   phoneMaskInvalidMessage: string = '';
-  phoneValidationMessage: string = '';
-  on_showsigninguidelines: boolean;
-  on_showsignupterms: boolean;
-  termsConditionsData: any;
+  
   is_otpdisabled: boolean = true;
   preferredCountries: CountryISO[] = [
     CountryISO.Kenya,
@@ -94,14 +78,12 @@ export class TopSectionComponent {
   userFirstName: string = '';
   process_id: number;
   systems_functionality_id: number;
-  is_expertsprofile: boolean;
   // Popup visibility
   isSignupPopupVisible = false;
   isSigninPopupVisible = false;
   islostpassword: boolean;
   tokenRequestCount: number = 0;
   // Form data
-
   passwordMode: DxTextBoxTypes.TextBoxType = 'password';
   passwordButton: DxButtonTypes.Properties = {
     icon: 'eyeopen',
@@ -117,11 +99,11 @@ export class TopSectionComponent {
     private translationService: LanguagesService,
     private router: Router,
     private spinner: SpinnerVisibilityService,
-    private fb: FormBuilder,
     private userservice: UserManagementService,
     public toastr: ToastrService,
     private otpservice: OtpService,
     private configService: ConfigurationsService,
+    public publicService:PublicDashboardService,
     private cdr: ChangeDetectorRef
   ) {
     this.spinner.hide();
@@ -154,8 +136,7 @@ export class TopSectionComponent {
       email_address: new FormControl(
         '',
         Validators.compose([Validators.required])
-      ),
-      experts_profile_no: new FormControl('', Validators.compose([])),
+      )
     });
 
     this.signInFrm = new FormGroup({
@@ -167,9 +148,7 @@ export class TopSectionComponent {
       otp_value: new FormControl('', Validators.compose([])),
     });
 
-    this.onLoaduserGroupData();
     this.fetchUserCountryOfOrigin();
-    this.onLoadAccountTypeData();
     this.onLoadTraderAccountTypeData();
   }
 
@@ -179,44 +158,6 @@ export class TopSectionComponent {
         country_code = '+' + country_data.phonecode;
       this.signUpFrm.get('phone_number')?.setValue(country_code);
     }
-  }
-
-  onLoaduserGroupData() {
-    var data_submit = {
-      table_name: 'usr_users_groups',
-      is_enabled: true,
-    };
-    this.configService.onLoadConfigurationData(data_submit).subscribe(
-      (data) => {
-        this.data_record = data;
-        if (this.data_record.success) {
-          // this.decryptedPayload = this.encryptionService.OnDecryptData(
-          //   this.data_record.data
-          // );
-          this.userGroups = this.data_record.data;
-        }
-      },
-      (error) => { }
-    );
-  }
-
-  onLoadAccountTypeData() {
-    var data_submit = {
-      table_name: 'sys_account_types',
-      is_enabled: true,
-    };
-    this.configService.onLoadConfigurationData(data_submit).subscribe(
-      (data) => {
-        this.data_record = data;
-        if (this.data_record.success) {
-          // this.decryptedPayload = this.encryptionService.OnDecryptData(
-          //   this.data_record.data
-          // );
-          this.userAccountTypeData = this.data_record.data;
-        }
-      },
-      (error) => { }
-    );
   }
 
   onLoadTraderAccountTypeData() {
@@ -234,7 +175,7 @@ export class TopSectionComponent {
           this.traderAccountTypeData = this.data_record.data;
         }
       },
-      (error) => { }
+      (error) => {}
     );
   }
 
@@ -252,7 +193,7 @@ export class TopSectionComponent {
           this.Countries = this.data_record.data;
         }
       },
-      (error) => { }
+      (error) => {}
     );
   }
 
@@ -270,7 +211,7 @@ export class TopSectionComponent {
       if (controls[name].invalid) {
         this.toastr.error(
           'Fill In All Mandatory fields with (*), missing value on ' +
-          name.replace('_id', ''),
+            name.replace('_id', ''),
           'Alert'
         );
         return;
@@ -317,7 +258,9 @@ export class TopSectionComponent {
   funcpopWidth(percentage_width) {
     return (window.innerWidth * percentage_width) / 100;
   }
-
+  funcpopHeight(percentage_width) {
+    return (window.innerHeight * percentage_width) / 100;
+  }
   submitSignup() {
     const isOptionalFields = true;
     const controls = this.signUpFrm.controls;
@@ -325,7 +268,7 @@ export class TopSectionComponent {
       if (controls[name].invalid) {
         this.toastr.error(
           'Fill In All Mandatory fields with (*), missing value on ' +
-          name.replace('_id', ''),
+            name.replace('_id', ''),
           'Alert'
         );
         return;
@@ -399,7 +342,7 @@ export class TopSectionComponent {
         (error) => {
           this.toastr.error(
             'Failed to request OTP: ' +
-            (error.error?.message || 'Unknown error'),
+              (error.error?.message || 'Unknown error'),
             'Error'
           );
           this.spinnerHide();
@@ -432,31 +375,14 @@ export class TopSectionComponent {
         (error) => {
           this.toastr.error(
             'Failed to request OTP: ' +
-            (error.error?.message || 'Unknown error'),
+              (error.error?.message || 'Unknown error'),
             'Error'
           );
           this.spinnerHide();
         }
       );
   }
-  onAccountTypeSelection($event) {
-    if ($event.selectedItem) {
-      let account_type = $event.selectedItem;
-      this.dashboard_type_id = account_type.dashboard_type_id;
-      this.is_expertsprofile = account_type.is_expertsprofile;
-    } else {
-      this.dashboard_type_id = 0;
-      this.is_expertsprofile = false;
-    }
-
-    if (!this.is_expertsprofile) {
-      this.signInFrm.get('experts_profile_no')?.clearValidators();
-    } else {
-      this.signInFrm
-        .get('experts_profile_no')
-        ?.setValidators([Validators.required]); // Add any other validators you need
-    }
-  }
+ 
   onSignIn() {
     // Clear localStorage before logging in
     localStorage.clear();
@@ -464,15 +390,12 @@ export class TopSectionComponent {
     this.email = this.signInFrm.get('email_address')?.value;
     this.password = this.signInFrm.get('password')?.value;
     const otp_value = this.signInFrm.get('otp_value')?.value;
-
-    // const formData = new FormData();
-    // const invalid = [];
     const controls = this.signInFrm.controls;
     for (const name in controls) {
       if (controls[name].invalid) {
         this.toastr.error(
           'Fill In All Mandatory fields with (*), missing value on ' +
-          name.replace('_id', ''),
+            name.replace('_id', ''),
           'Alert'
         );
         return;
@@ -493,7 +416,6 @@ export class TopSectionComponent {
         this.success = this.auth_response.success;
 
         if (this.success) {
-
           let access_token = this.auth_response.access_token;
           let isLoggedIn = this.auth_response.isLoggedIn;
           if (access_token != '' && isLoggedIn) {
@@ -505,30 +427,21 @@ export class TopSectionComponent {
 
             const token = this.auth_response.authorisation.token;
             this.authService.storeToken(token);
+            this.authService.isLoggedIn = isLoggedIn;
             localStorage.setItem('isLoggedIn', this.auth_response.isLoggedIn);
             localStorage.setItem('user', JSON.stringify(this.auth_response));
+            localStorage.setItem('trader_data', JSON.stringify(this.auth_response.trader_data));
             localStorage.setItem('token', this.auth_response.authorisation.token);
-            localStorage.setItem('id', this.auth_response.expertsprofile_information_id);
             localStorage.setItem('id', this.auth_response.id);
-            localStorage.setItem('user_group_name', this.auth_response.user_group_name);
             localStorage.setItem('first_name', this.auth_response.first_name);
-            localStorage.setItem('country_of_origin_id', this.auth_response.country_of_origin);
-            localStorage.setItem('other_names', this.auth_response.other_names);
-            localStorage.setItem('email_address', this.auth_response.email_address);
-            localStorage.setItem('userGroupId', this.auth_response.userGroupId);
-            localStorage.setItem('account_type_name', this.auth_response.account_type_name);
             localStorage.setItem('account_type_id', this.auth_response.account_type_id);
-            localStorage.setItem('user_group_id', this.auth_response.user_group_id);
-            localStorage.setItem('userCountryOfOrigin', this.auth_response.countryName);
             localStorage.setItem('usr_loggedin_id', this.auth_response.usr_loggedin_id);
-            localStorage.setItem('dashboard_link', this.auth_response.dashboard_link
-            );
+
+            localStorage.setItem('dashboard_link', this.auth_response.dashboard_link);
             localStorage.setItem(
               'dashboard_name',
               this.auth_response.dashboard_name
             );
-
-            this.authService.isLoggedIn = true;
             this.isLoggedIn = true;
             this.cdr.detectChanges();
             this.router.navigate([this.dashboard_link]);
@@ -572,7 +485,7 @@ export class TopSectionComponent {
         this.translate.setTranslation(locale, translations, true);
         this.translate.use(locale);
       },
-      (error) => { }
+      (error) => {}
     );
   }
 
@@ -588,7 +501,7 @@ export class TopSectionComponent {
         this.translate.setTranslation(locale, translations, true);
         this.translate.use(locale);
       },
-      (error) => { }
+      (error) => {}
     );
   }
 
@@ -612,5 +525,10 @@ export class TopSectionComponent {
 
   spinnerHide() {
     this.loadingVisible = false;
+  }
+  funcRedirectToHelpDesk(){
+    this.helpdeskUrl  = AppSettings.help_deskurl
+    this.printReportTitle = 'Help Desk';
+    this.isPrintReportVisible = true;
   }
 }

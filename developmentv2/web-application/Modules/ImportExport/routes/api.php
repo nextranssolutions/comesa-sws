@@ -20,6 +20,7 @@ use Modules\ImportExport\App\Http\Controllers\ImportExportController;
 Route::middleware(['XssSanitizer','clear_cache_config','firewall.all'])->prefix('import-export')->group(function () {
    
     Route::get('getSenderreceiversDetails', [ImportExportController::class, 'getSenderreceiversDetails']);
+    Route::get('getTraderInformationDetails', [ImportExportController::class, 'getTraderInformationDetails']);
     Route::post('saveImportExportApplication', [ImportExportController::class,'saveImportExportApplication']);
     Route::post('onSaveUniformApplicantDataset', [ImportExportController::class,'onSaveUniformApplicantDataset']);
     

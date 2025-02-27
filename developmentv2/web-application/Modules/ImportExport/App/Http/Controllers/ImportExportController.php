@@ -383,4 +383,58 @@ class ImportExportController extends Controller
 
         return response()->json($res);
     }
+
+    public function getTraderInformationDetails(Request $req)
+    {
+        try {
+            $search_value = '';
+            $take = 50; // Default take
+            $skip = 0; // Default skip
+            $searchValue = $req->searchValue ?? '';
+    
+            if (!empty($searchValue) && $searchValue !== 'undefined') {
+                $searchValue = explode(',', $searchValue);
+                $search_value = $searchValue[2] ?? '';
+            }
+    
+            $is_local_agent = $req->is_local_agent;
+            $data = collect();
+            $totalCount = 0;
+    
+            
+                $data = DB::table('tra_trader_account as t1')
+                    ->leftJoin('par_countries as t2', 't1.country_id', '=', 't2.id')
+                    ->leftJoin('par_regions as t3', 't1.region_id', '=', 't3.id')
+                    ->leftJoin('par_districts as t4', 't1.district_id', '=', 't4.id')
+                    ->select(
+                        't1.id', 't1.name as applicant_name', 't1.contact_person', 
+                        't1.tin_no', 't1.country_id as country_id', 't1.region_id as region_id',
+                        't1.district_id as district_id', 't4.name as district_name', 't3.name as region_name', 
+                        't1.physical_address', 't1.postal_address', 't1.telephone_no as telephone_no', 
+                        't1.fax as fax', 't1.email_address', 't1.website as website'
+                    )
+                    ->when($search_value, fn($query) => 
+                        $query->where('t1.name', 'LIKE', "%{$search_value}%")
+                    )
+                    ->orderByDesc('t1.id')
+                    ->get();
+    
+                $totalCount = $data->count();
+            
+    
+            return response()->json([
+                'success' => true,
+                'data' => $data,
+                'totalCount' => $totalCount
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+    
+    
+    
 }

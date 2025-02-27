@@ -60,7 +60,7 @@
             </dxi-column>
             <dxi-column  dataField="guideline_descriptions" caption="{{ 'guideline_descriptions' | translate }}"></dxi-column>
             <dxi-column  dataField="links" caption="{{ 'links' | translate }}"></dxi-column>
-            <dxi-column  dataField="documents_upload" caption="{{ 'documents_upload' | translate }}"></dxi-column>
+            <dxi-column  dataField="document_path" caption="{{ 'documents_upload' | translate }}"></dxi-column>
             <dxi-column [width]="50" dataField="is_enabled" caption="{{ 'enabled_disabledoption' | translate }}">
             </dxi-column>
             
@@ -70,7 +70,8 @@
         </div>
         </section>
 
-
+      </div>
+    </div>
 
 
 
@@ -110,6 +111,13 @@
                           valueExpr="value" displayExpr="text">
                         </dx-select-box>
                       </div>
+                      <!-- <div class="col-lg-3">
+                        <label>{{ 'upload_document' | translate }}</label>
+                        <input type="file" (change)="onFileSelected($event)"  formControlName="documents_upload" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"/>
+                    </div> -->
+                    <dx-file-uploader [selectButtonText]="'select_document'" formControlName="document_path" [labelText]="'document_path'" accept=".pdf,.doc,.docx,.png,.jpg,.jpeg"
+                            [uploadMode]="'useButtons'" (onUploaded)="onFileSelected($event)">
+                        </dx-file-uploader>
                     <div class="col-lg-12">
                         <label>{{ 'guideline_descriptions' | translate }}</label>
                         <dx-text-area formControlName="guideline_descriptions">
@@ -167,5 +175,9 @@
   </div>
 
 </dx-popup>
-</div>
-</div>
+
+
+
+<dx-load-panel #loadPanel shadingColor="rgba(0,0,0,0.4)" [position]="{ of: '#employee' }" [(visible)]="loadingVisible"
+[showIndicator]="true" [showPane]="true" [shading]="true" [message]="spinnerMessage" [hideOnOutsideClick]="false">
+</dx-load-panel>

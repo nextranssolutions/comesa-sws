@@ -33,13 +33,15 @@ import { FaqsComponent } from './views/faqs/faqs.component';
 import { SearchProceduresComponent } from './views/search-procedures/search-procedures.component';
 import { AllProceduresComponent } from './views/all-procedures/all-procedures.component';
 
+import { SharedModuleModule } from 'src/app/shared-views/shared-module.module';
+import { IframeHelperComponent } from './views/iframe-helper/iframe-helper.component';
+
 @NgModule({
   declarations: [TopSectionComponent,
     PublicLayoutComponent, AppsignInComponent,
     FooterComponent, SystemguudelinesDetailsComponent,
     NavigationComponent, HomePageComponent,
-    CenterPageComponent,
-
+    CenterPageComponent,IframeHelperComponent,
     SystemmanualPageComponent, EcredSecretariatsigninComponent, EcredSecretariatsigninComponent,
 
     ReportingAndAnalyticsComponent,
@@ -57,7 +59,7 @@ import { AllProceduresComponent } from './views/all-procedures/all-procedures.co
   ],
   imports: [
     CommonModule, NgHttpLoaderModule, PublicRoutingModule, DxButtonModule, DxProgressBarModule,
-    FormsModule,
+    FormsModule,SharedModuleModule,
     ReactiveFormsModule,
     NgxCaptchaModule, DxLoadPanelModule,
     DxPopupModule, DxDataGridModule, DxActionSheetModule, DxFileUploaderModule, DxNumberBoxModule, DxCheckBoxModule, DxSelectBoxModule, DxTextAreaModule, DxContextMenuModule, DxMenuModule, DxTagBoxModule,

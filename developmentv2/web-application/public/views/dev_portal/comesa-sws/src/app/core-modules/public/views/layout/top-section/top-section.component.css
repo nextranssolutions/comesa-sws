@@ -79,6 +79,9 @@
 .cursor-pointer {
   cursor: pointer;
 }
+.margin-top{
+  margin-top: 10px !important;
+}
 /* Custom styles for the dropdown */
 .dropdown-menu {
   margin-left:-50px !important;

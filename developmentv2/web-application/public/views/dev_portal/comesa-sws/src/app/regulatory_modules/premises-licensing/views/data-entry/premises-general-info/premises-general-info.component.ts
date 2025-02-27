@@ -496,7 +496,7 @@ data_record: any;
 
   onLoadContactPerson() {
     var data = {
-      table_name: 'txn_trader_account'
+      table_name: 'tra_trader_account'
     };
     this.configService.onLoadConfigurationData(data)
       .subscribe(
