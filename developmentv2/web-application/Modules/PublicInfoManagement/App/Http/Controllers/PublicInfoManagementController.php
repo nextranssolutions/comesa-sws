@@ -277,7 +277,7 @@ class PublicInfoManagementController extends Controller
                     't3.name as hscodechapters',
                     't3.hscode as chapterscode',
                     't4.name as hscodesheading',
-                    't4.hscode as headingcode',
+                    't4.hscode as headingcode'
                 )
                 ->groupBy(
                     't1.id', 
@@ -364,7 +364,7 @@ class PublicInfoManagementController extends Controller
                     't3.hscode as chapterscode',
                     't4.name as hscodesheading',
                     't4.hscode as headingcode',
-                    't6.name as permit_operation',
+                    't6.name as permit_operation'
                 );
             // ->where('allow_public_visibility', true);
             if (is_numeric($hscodessubheading_defination_id)) {
@@ -963,7 +963,7 @@ class PublicInfoManagementController extends Controller
         try{
               $helpdesk_url = getHelpDeskAccessUrl();
             $res = array('success'=>true, 'helpdesk_url'=>$helpdesk_url);
-            
+
 
         } catch (\Exception $exception) {
             $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
