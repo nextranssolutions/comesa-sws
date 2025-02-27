@@ -15,9 +15,6 @@ use Modules\PublicInfoManagement\App\Http\Controllers\PublicInfoManagementContro
     |
 */
 
-Route::middleware(['auth:sanctum'])->prefix('v1')->name('api.')->group(function () {
-    Route::get('publicinfomanagement', fn(Request $request) => $request->user())->name('publicinfomanagement');
-});
 
 
 Route::middleware(['XssSanitizer', 'clear_cache_config', 'firewall.all'])->prefix('publicinfomanagement')->group(function () {
@@ -33,4 +30,9 @@ Route::middleware(['XssSanitizer', 'clear_cache_config', 'firewall.all'])->prefi
     Route::get('onLoadHSCodesProductsRegistry', [PublicInfoManagementController::class, 'onLoadHSCodesProductsRegistry']);
     Route::get('onLoadProcedureDetails', [PublicInfoManagementController::class, 'onLoadProcedureDetails']);
     Route::get('onLoadRestrictionsProhibitions', [PublicInfoManagementController::class, 'onLoadRestrictionsProhibitions']);
+
+    Route::get('onGetHelpDeskAccessDetails', [PublicInfoManagementController::class, 'onGetHelpDeskAccessDetails']);
+
+    
+
 });

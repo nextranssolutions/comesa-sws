@@ -38,11 +38,11 @@ nav_data: any;
     private workflow: WokflowManagementService,
     public encryptionService: EncryptionService
   ) { 
-   this.regulatory_data = localStorage.getItem('regulatory_function');
-    this.regulatory_data = JSON.parse(this.regulatory_data);
-   // console.log(this.regulatory_data);
+    // this.regulatory_data = localStorage.getItem('regulatory_function');
+    // this.regulatory_data = JSON.parse(this.regulatory_data);
+    // console.log(this.regulatory_data);
     this.regulatory_function_id = 1;
-    this.getUserNavigationItems(this.regulatory_function_id);
+    this.getApplicantNavigationItems(this.regulatory_function_id);
 
   }
 
@@ -115,8 +115,8 @@ nav_data: any;
   }
 
 
-  getUserNavigationItems(regulatory_function_id) {
-    this.workflow.getUserNavigationItems(this.navigation_type_id,regulatory_function_id)
+  getApplicantNavigationItems(regulatory_function_id) {
+    this.workflow.getApplicantNavigationItems(this.navigation_type_id,regulatory_function_id)
       .subscribe(
         data => {
           this.response = data;

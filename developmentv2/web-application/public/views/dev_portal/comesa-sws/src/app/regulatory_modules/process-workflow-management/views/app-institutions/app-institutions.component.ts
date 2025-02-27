@@ -12,8 +12,8 @@ export class AppInstitutionsComponent {
   constructor(
     // private http: HttpClient,
   ) {
-    this.table_name = 'par_institutions';
-    this.parameter_name = "Institutions Details";
+    this.table_name = 'tra_organisation_information';
+    this.parameter_name = "organisation_details";
   }
 
   ngOnInit() {

@@ -2,7 +2,8 @@ let app_connection = 'development',
   base_url = '',
   assets_url = '',
   mis_url = '',
-  siteKey = ''
+  siteKey = '',
+  help_deskurl ='';
   ;  // dev 
 // var app_connection = 'production'; // production 
 if (window.location.hostname == 'localhost') {
@@ -13,6 +14,7 @@ if (app_connection == 'development') {
   base_url = 'http://localhost/nextrans-solutions/comesa/comesa-sws/developmentv2/web-application/public/index.php';
   assets_url = 'http://localhost/nextrans-solutions/comesa/comesa-sws/developmentv2/web-application/public/index.php';
   // siteKey = '6LcoH54UAAAAAOqpAGCXC4cmup6N2c5KseVHmv1c';
+  help_deskurl= 'http://localhost/nextrans-solutions/comesa/comesa-sws/developmentv2/help-desk/';
 }
 else if (app_connection == 'fixed_acess') {
   base_url = ''
@@ -32,6 +34,8 @@ export class AppSettings {
   public static base_url = base_url;
   public static assets_url = assets_url;
   public static mis_url = mis_url;
+  public static help_deskurl = help_deskurl;
+
   public static siteKey = "6LdIjbsUAAAAAOhQtlHVuK8kpSdbBXAtX3K5pYQb";
   public static system_title = 'COMESA IMPORT/EXPORT SYSTEM (cIMEX) ';
   public static system_website = '';

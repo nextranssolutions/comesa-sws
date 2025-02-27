@@ -1,3 +1,12 @@
+<div class="page-header">
+  <h3>
+    {{ parameter_name | translate }}
+    <small>
+      <i class="ace-icon fa fa-angle-double-right"></i>
+    </small>
+  </h3>
+</div><!-- /.page-header -->
+
 <dx-button text="{{ 'add_new' | translate }} {{ parameter_name | translate}}" type="default" icon="fa fa-plus"
   [elementAttr]="{ class: '' }" (onClick)="hasReadpermissions=false;onAddNewConfig()">
 </dx-button>
@@ -148,6 +157,7 @@
   </dxi-column>
 
 </dx-data-grid>
+
 
 
 <dx-load-panel #loadPanel shadingColor="rgba(0,0,0,0.4)" [position]="{ of: '#employee' }" [(visible)]="loadingVisible"
@@ -310,3 +320,5 @@
   </div>
 
 </dx-popup>
+
+

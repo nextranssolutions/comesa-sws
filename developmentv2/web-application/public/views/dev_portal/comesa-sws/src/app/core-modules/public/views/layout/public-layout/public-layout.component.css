@@ -32,14 +32,14 @@ html {
 }
 
 .custom-width {
-  width: 80% !important;
+  width: 85% !important;
 }
 
 @media (min-width: 992px) {
 
   /* Large screens */
   .custom-width {
-    width: 80% !important;
+    width: 85% !important;
   }
 }
 

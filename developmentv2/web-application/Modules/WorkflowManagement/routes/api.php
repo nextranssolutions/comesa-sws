@@ -25,7 +25,8 @@ Route::middleware(['auth:sanctum'])->prefix('v1')->name('api.')->group(function 
 Route::middleware(['XssSanitizer','clear_cache_config','firewall.all'])->prefix('workflow')->group(function () {
     Route::get('getUserNavigationItems', [WorkflowManagementController::class, 'getUserNavigationItems']);
     Route::get('getAllNavigationItems', [WorkflowManagementController::class, 'getAllNavigationItems']);
-   
+    Route::get('getApplicantNavigationItems', [WorkflowManagementController::class, 'getApplicantNavigationItems']);
+    
     Route::get('getWorkflowConfigs', [WorkflowManagementController::class, 'getWorkflowConfigs']);
     Route::get('getAppNavigationMenus', [WorkflowManagementController::class, 'getAppNavigationMenus']);
     Route::post('onsaveWorkflowConfigData', [WorkflowManagementController::class, 'onsaveWorkflowConfigData']);

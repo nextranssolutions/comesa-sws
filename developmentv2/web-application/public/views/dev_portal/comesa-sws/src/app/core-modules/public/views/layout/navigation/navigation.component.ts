@@ -45,19 +45,7 @@ export class NavigationComponent {
     this.getUserNavigationItems();
   }
 
-  // onLogout() {
-  //   this.authService.logout()
-  //     .then(() => {
-  //       setTimeout(() => {
-  //         this.authService.handleLogoutSuccess();
-  //         this.authService.logout();
-  //         this.isLoggedIn = this.authService.isLoggedIn; 
-  //       }, 500); 
-  //     })
-  //     .catch(() => {
-  //       this.authService.handleLogoutError();
-  //     });
-  // }
+
   scrollToTop(): void {
     window.scrollTo({
       top: 0,

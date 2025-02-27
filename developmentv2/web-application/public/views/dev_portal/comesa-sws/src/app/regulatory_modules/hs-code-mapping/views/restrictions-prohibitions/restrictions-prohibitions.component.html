@@ -1,1 +1,51 @@
-<p>restrictions-prohibitions works!</p>
+<div class="main-content-inner">
+    <div class="breadcrumbs ace-save-state" id="breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="ace-icon fa fa-home home-icon"></i>
+                <a href="#"><a routerLink="/admin-cimex/app-dashboard">{{ 'home' | translate }}</a></a>
+            </li>
+            <li class="active">{{ parameter_name | translate }}</li>
+        </ul>
+
+    </div>
+
+
+    <div class="page-content">
+
+        <div class="page-header">
+            <h1>
+                {{ parameter_name | translate }}
+                <small>
+                    <i class="ace-icon fa fa-angle-double-right"></i>
+                    overview &amp; stats
+                </small>
+            </h1>
+        </div>
+
+        <dx-button text="{{ 'add' | translate }} {{ parameter_name | translate}}" type="default" icon="fa fa-plus"
+        [elementAttr]="{ class: '' }" (onClick)="onAddNewRestrictionPohibition()">
+        </dx-button>
+
+        <dx-data-grid [allowColumnReordering]="true" (onCellPrepared)="onCellPrepared($event)"
+        class="table row-border hover" [wordWrapEnabled]="true" [dataSource]="restrictionProhibitionDetails" [remoteOperations]="true"
+        [showBorders]="true" [allowColumnResizing]="true" [columnHidingEnabled]="false" keyExpr="id"
+        (onToolbarPreparing)="onAdvanceProductRegistrySearch($event)">
+
+        <dxo-export [enabled]="true" fileName="Data" [allowExportSelectedData]="true"></dxo-export>
+        <dxo-search-panel [visible]="true"></dxo-search-panel>
+        <!-- <dxo-header-filter [visible]="true"></dxo-header-filter> -->
+        <dxo-filter-row [visible]="show_advancesearch"></dxo-filter-row>
+        <dxo-paging [enabled]="true">
+            <dxo-pager [showInfo]="true" infoText="Page #{0}. Total: {1} ({2} items)" [showPageSizeSelector]="true"
+                [allowedPageSizes]="[50,100]"></dxo-pager>
+        </dxo-paging>
+
+        <dxi-column [width]="100" caption="{{ 'action' | translate }}" name="command-editing"
+            [allowFiltering]="false" [allowSorting]="false" cellTemplate="cellTemplate">
+            <div *dxTemplate="let data of 'cellTemplate'">
+                <dx-menu (onItemClick)="funcActionColClick($event,data)" [items]="actionsMenuItems"></dx-menu>
+            </div>
+        </dxi-column>
+        <dxi-column dataField="name" caption="{{ 'name' | translate }}"></dxi-column>
+        <dxi-column dataField="description" caption="{{ 'description' | translate }}"></dxi-column>

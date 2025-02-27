@@ -126,6 +126,19 @@ if (!function_exists('generateUniqID')) {
         return AuthHelper::generateUniqID();
     }
 }
+if (!function_exists('loginFaveoUser')) {
+    function loginFaveoUser($email, $password)
+    {
+        return AuthHelper::loginFaveoUser($email, $password);
+    }
+}
+if (!function_exists('getHelpDeskAccessUrl')) {
+    function getHelpDeskAccessUrl()
+    {
+        return AuthHelper::getHelpDeskAccessUrl();
+    }
+}
+
 
 if (!function_exists('generatePwdSaltOnRegister')) {
     function generatePwdSaltOnRegister($username)
