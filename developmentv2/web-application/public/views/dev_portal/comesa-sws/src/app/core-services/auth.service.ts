@@ -10,7 +10,6 @@ export class AuthService {
   isLoggedIn: boolean = false; 
   userCountryOfOrigin: string;
 
-
   base_url: string;
   constructor(
     public toastr: ToastrService,
