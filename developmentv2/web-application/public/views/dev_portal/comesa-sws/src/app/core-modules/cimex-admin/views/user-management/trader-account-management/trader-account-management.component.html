@@ -92,8 +92,6 @@
         </div>
     </div>
 
-
-
     <dx-popup [(visible)]="addPopupVisible" [width]="funcpopWidth(85)" [height]="funcpopHeight(65)" [showTitle]="true"
         title="{{'trader_account' | translate}}">
         <div *dxTemplate="let data of 'content'">
@@ -257,10 +255,10 @@
                         <!-- <dx-button text="Enable Edit" type="default" icon="fa fa-edit" [elementAttr]="{ class: 'pull-left' }"
                         (onClick)="onActionEditDetails()">
                     </dx-button> -->
-                        <dx-button text="Save Trader Account Details" type="default" icon="fa fa-plus"
+                        <dx-button text="{{'save_trader_account_details' | translate}}" type="default" icon="fa fa-plus"
                             [elementAttr]="{ class: 'pull-left' }" (onClick)="onsaveTraderAccountsDetails()">
                         </dx-button>
-                        <dx-button text="Cancel" type="danger" icon="fa fa-times" [elementAttr]="{ class: 'pull-left' }"
+                        <dx-button text="{{'cancel' | translate}}" type="danger" icon="fa fa-times" [elementAttr]="{ class: 'pull-left' }"
                             (onClick)="addPopupVisible = false">
                         </dx-button>
                     </div>

@@ -94,7 +94,6 @@ export class TopSectionComponent {
   userFirstName: string = '';
   process_id: number;
   systems_functionality_id: number;
-  is_expertsprofile: boolean;
   // Popup visibility
   isSignupPopupVisible = false;
   isSigninPopupVisible = false;
@@ -196,7 +195,7 @@ export class TopSectionComponent {
           this.userGroups = this.data_record.data;
         }
       },
-      (error) => { }
+      (error) => {}
     );
   }
 
@@ -215,7 +214,7 @@ export class TopSectionComponent {
           this.userAccountTypeData = this.data_record.data;
         }
       },
-      (error) => { }
+      (error) => {}
     );
   }
 
@@ -234,7 +233,7 @@ export class TopSectionComponent {
           this.traderAccountTypeData = this.data_record.data;
         }
       },
-      (error) => { }
+      (error) => {}
     );
   }
 
@@ -252,7 +251,7 @@ export class TopSectionComponent {
           this.Countries = this.data_record.data;
         }
       },
-      (error) => { }
+      (error) => {}
     );
   }
 
@@ -270,7 +269,7 @@ export class TopSectionComponent {
       if (controls[name].invalid) {
         this.toastr.error(
           'Fill In All Mandatory fields with (*), missing value on ' +
-          name.replace('_id', ''),
+            name.replace('_id', ''),
           'Alert'
         );
         return;
@@ -325,7 +324,7 @@ export class TopSectionComponent {
       if (controls[name].invalid) {
         this.toastr.error(
           'Fill In All Mandatory fields with (*), missing value on ' +
-          name.replace('_id', ''),
+            name.replace('_id', ''),
           'Alert'
         );
         return;
@@ -399,7 +398,7 @@ export class TopSectionComponent {
         (error) => {
           this.toastr.error(
             'Failed to request OTP: ' +
-            (error.error?.message || 'Unknown error'),
+              (error.error?.message || 'Unknown error'),
             'Error'
           );
           this.spinnerHide();
@@ -432,31 +431,14 @@ export class TopSectionComponent {
         (error) => {
           this.toastr.error(
             'Failed to request OTP: ' +
-            (error.error?.message || 'Unknown error'),
+              (error.error?.message || 'Unknown error'),
             'Error'
           );
           this.spinnerHide();
         }
       );
   }
-  onAccountTypeSelection($event) {
-    if ($event.selectedItem) {
-      let account_type = $event.selectedItem;
-      this.dashboard_type_id = account_type.dashboard_type_id;
-      this.is_expertsprofile = account_type.is_expertsprofile;
-    } else {
-      this.dashboard_type_id = 0;
-      this.is_expertsprofile = false;
-    }
 
-    if (!this.is_expertsprofile) {
-      this.signInFrm.get('experts_profile_no')?.clearValidators();
-    } else {
-      this.signInFrm
-        .get('experts_profile_no')
-        ?.setValidators([Validators.required]); // Add any other validators you need
-    }
-  }
   onSignIn() {
     // Clear localStorage before logging in
     localStorage.clear();
@@ -472,7 +454,7 @@ export class TopSectionComponent {
       if (controls[name].invalid) {
         this.toastr.error(
           'Fill In All Mandatory fields with (*), missing value on ' +
-          name.replace('_id', ''),
+            name.replace('_id', ''),
           'Alert'
         );
         return;
@@ -493,7 +475,6 @@ export class TopSectionComponent {
         this.success = this.auth_response.success;
 
         if (this.success) {
-
           let access_token = this.auth_response.access_token;
           let isLoggedIn = this.auth_response.isLoggedIn;
           if (access_token != '' && isLoggedIn) {
@@ -507,21 +488,53 @@ export class TopSectionComponent {
             this.authService.storeToken(token);
             localStorage.setItem('isLoggedIn', this.auth_response.isLoggedIn);
             localStorage.setItem('user', JSON.stringify(this.auth_response));
-            localStorage.setItem('token', this.auth_response.authorisation.token);
-            localStorage.setItem('id', this.auth_response.expertsprofile_information_id);
+            localStorage.setItem(
+              'token',
+              this.auth_response.authorisation.token
+            );
+            localStorage.setItem(
+              'id',
+              this.auth_response.expertsprofile_information_id
+            );
             localStorage.setItem('id', this.auth_response.id);
-            localStorage.setItem('user_group_name', this.auth_response.user_group_name);
+            localStorage.setItem(
+              'user_group_name',
+              this.auth_response.user_group_name
+            );
             localStorage.setItem('first_name', this.auth_response.first_name);
-            localStorage.setItem('country_of_origin_id', this.auth_response.country_of_origin);
+            localStorage.setItem(
+              'country_of_origin_id',
+              this.auth_response.country_of_origin
+            );
             localStorage.setItem('other_names', this.auth_response.other_names);
-            localStorage.setItem('email_address', this.auth_response.email_address);
+            localStorage.setItem(
+              'email_address',
+              this.auth_response.email_address
+            );
             localStorage.setItem('userGroupId', this.auth_response.userGroupId);
-            localStorage.setItem('account_type_name', this.auth_response.account_type_name);
-            localStorage.setItem('account_type_id', this.auth_response.account_type_id);
-            localStorage.setItem('user_group_id', this.auth_response.user_group_id);
-            localStorage.setItem('userCountryOfOrigin', this.auth_response.countryName);
-            localStorage.setItem('usr_loggedin_id', this.auth_response.usr_loggedin_id);
-            localStorage.setItem('dashboard_link', this.auth_response.dashboard_link
+            localStorage.setItem(
+              'account_type_name',
+              this.auth_response.account_type_name
+            );
+            localStorage.setItem(
+              'account_type_id',
+              this.auth_response.account_type_id
+            );
+            localStorage.setItem(
+              'user_group_id',
+              this.auth_response.user_group_id
+            );
+            localStorage.setItem(
+              'userCountryOfOrigin',
+              this.auth_response.countryName
+            );
+            localStorage.setItem(
+              'usr_loggedin_id',
+              this.auth_response.usr_loggedin_id
+            );
+            localStorage.setItem(
+              'dashboard_link',
+              this.auth_response.dashboard_link
             );
             localStorage.setItem(
               'dashboard_name',
@@ -572,7 +585,7 @@ export class TopSectionComponent {
         this.translate.setTranslation(locale, translations, true);
         this.translate.use(locale);
       },
-      (error) => { }
+      (error) => {}
     );
   }
 
@@ -588,7 +601,7 @@ export class TopSectionComponent {
         this.translate.setTranslation(locale, translations, true);
         this.translate.use(locale);
       },
-      (error) => { }
+      (error) => {}
     );
   }
 

@@ -1,6 +1,5 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
-import { ImportexportRoutingModule } from './importexport-routing.module';
 import { ImportexportNavigationComponent } from './views/layout/importexport-navigation/importexport-navigation.component';
 import { ImportexportLayoutComponent } from './views/layout/importexport-layout/importexport-layout.component';
 import { ImportexportHeaderComponent } from './views/layout/importexport-header/importexport-header.component';
@@ -21,6 +20,7 @@ import { NgWizardConfig, NgWizardModule, THEME } from 'ng-wizard'
 import { SafePipeModule } from '../../safe-pipe/safe-pipe.module';
 import { SharedModuleModule } from '../../shared-views/shared-module.module';
 import { DashboardComponent } from './views/dashboard/dashboard.component';
+import { ImportexportApplicationRoutingModule } from './importexport-applicationrouting.module';
 
 
 const ngWizardConfig: NgWizardConfig = {
@@ -34,7 +34,7 @@ const ngWizardConfig: NgWizardConfig = {
     PermitproductdetailsComponent, PermitgeneraldetailsComponent,
     ImportexportHeaderComponent,InitiateImportappComponent, DashboardComponent],
   imports: [
-    CommonModule, ImportexportRoutingModule,
+    CommonModule, ImportexportApplicationRoutingModule,
     SharedModuleModule,
     NgWizardModule.forRoot(ngWizardConfig),
     NgHttpLoaderModule, DxButtonModule, DxProgressBarModule,
