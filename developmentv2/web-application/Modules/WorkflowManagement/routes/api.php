@@ -25,7 +25,8 @@ Route::middleware(['auth:sanctum'])->prefix('v1')->name('api.')->group(function 
 Route::middleware(['XssSanitizer','clear_cache_config','firewall.all'])->prefix('workflow')->group(function () {
     Route::get('getUserNavigationItems', [WorkflowManagementController::class, 'getUserNavigationItems']);
     Route::get('getAllNavigationItems', [WorkflowManagementController::class, 'getAllNavigationItems']);
-   
+    Route::get('getApplicantNavigationItems', [WorkflowManagementController::class, 'getApplicantNavigationItems']);
+    
     Route::get('getWorkflowConfigs', [WorkflowManagementController::class, 'getWorkflowConfigs']);
     Route::get('getAppNavigationMenus', [WorkflowManagementController::class, 'getAppNavigationMenus']);
     Route::post('onsaveWorkflowConfigData', [WorkflowManagementController::class, 'onsaveWorkflowConfigData']);
@@ -43,6 +44,7 @@ Route::middleware(['XssSanitizer','clear_cache_config','firewall.all'])->prefix(
     Route::get('getPortalWorkflowConfigs', [WorkflowManagementController::class, 'getPortalWorkflowConfigs']);
     Route::get('getAppPortalWorkflowStages', [WorkflowManagementController::class, 'getAppPortalWorkflowStages']);
     Route::get('getAppProtalWorkflowTransitions', [WorkflowManagementController::class, 'getAppProtalWorkflowTransitions']);
+    Route::get('getRegulatoryFunctionGuidelines', [WorkflowManagementController::class, 'getRegulatoryFunctionGuidelines']);
     Route::post('onsavePortalWorkflowConfigData', [WorkflowManagementController::class, 'onsavePortalWorkflowConfigData']);
     Route::post('onDeletePortalWorkflowsDetails', [WorkflowManagementController::class, 'onDeletePortalWorkflowsDetails']);
     Route::post('onEnablePortalWorkflowDetails', [WorkflowManagementController::class, 'onEnablePortalWorkflowDetails']);

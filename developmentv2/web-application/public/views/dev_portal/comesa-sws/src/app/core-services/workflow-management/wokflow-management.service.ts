@@ -313,6 +313,28 @@ export class WokflowManagementService {
 
 
   }
+
+
+  getApplicantNavigationItems(navigation_type_id,regulatory_function_id=0) {
+
+    this.userGroupId = this.userData.user_group_id;
+    this.account_type_id = this.userData.account_type_id;
+    const loggedInUserId = localStorage.getItem('id');
+    const loggedInUserName = localStorage.getItem('first_name');
+    
+    this.config = {
+      headers: { 'Accept': 'application/json' },
+      params: {'user_id': loggedInUserId, 'user_name': loggedInUserName,regulatory_function_id:regulatory_function_id, userGroupId: this.userGroupId, navigation_type_id:navigation_type_id, account_type_id:this.account_type_id },
+    };
+
+    return this.http.get(this.baseUrl + '/getApplicantNavigationItems', this.config)
+      .pipe(map(navigations => {
+
+        return navigations;
+      }));
+
+
+  }
   getRegultoryFunctionUserAccess() {
     const loggedInUserId = localStorage.getItem('id');
     
@@ -326,6 +348,19 @@ export class WokflowManagementService {
         return regulatory_function;
       }));
   }
+
+  getRegulatoryFunctionGuidelines(regulatoryFunctionId) {
+    const config = {
+      headers: { 'Accept': 'application/json' },
+      params: { regulatory_function_id: regulatoryFunctionId },
+    };
+
+    return this.http.get(this.baseUrl + '/getRegulatoryFunctionGuidelines', config)
+      .pipe(map(response => {
+        return response;
+      }));
+}
+
 
 
   getAppWorkflowStages(workflow_id) {

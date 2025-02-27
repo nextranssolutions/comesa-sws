@@ -185,6 +185,39 @@ class WorkflowManagementController extends Controller
         return response()->json($res, 200);
     }
 
+    public function getRegulatoryFunctionGuidelines(Request $req)
+{
+    try {
+        $regulatory_function_id = $req->regulatory_function_id;
+
+        // Ensure that the ID is provided and valid
+        if (empty($regulatory_function_id)) {
+            return response()->json([
+                'success' => false,
+             
+            ], 400);
+        }
+
+        // Fetch the regulatory function guidelines from the database
+        $regulatory_functions_guidelines = DB::table('sys_regulatoryfunction_guidelines as t1')
+            ->select('t1.regulatory_function_id', 't1.guideline_text') // Add more fields if needed
+            ->where('t1.regulatory_function_id', $regulatory_function_id) // Use `where()` instead of `whereIn()`
+            ->orderBy('t1.order_no')
+            ->get(); // Execute the query
+
+        return response()->json([
+            'success' => true,
+            'data' => $regulatory_functions_guidelines
+        ], 200);
+
+    } catch (\Exception $exception) {
+        $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+    } catch (\Throwable $throwable) {
+        $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+    }
+}
+
+
 
     public function getUserNavigationItems(Request $req)
     {
@@ -229,9 +262,7 @@ class WorkflowManagementController extends Controller
                 if (validateIsNumeric($regulatory_function_id)) {
                     $navigationItems->where('t1.regulatory_function_id', $regulatory_function_id);
                 }
-                // if(validateIsNumeric($regulatory_function_id == 1)){
-                //     $navigationItems->where('account_type_id', $account_type_id);
-                //   }
+             
                 $navigationItems = $navigationItems->get();
 
                 $rootItems = array();
@@ -252,6 +283,71 @@ class WorkflowManagementController extends Controller
                     }
                 }
             }
+            // $rootItems=encrypt_data($rootItems);
+
+            $res = array(
+                'success' => true,
+                'navigation_items' => $rootItems
+            );
+            // print_r($res);
+        } catch (\Exception $exception) {
+            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        } catch (\Throwable $throwable) {
+            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        }
+        return response()->json($res, 200);
+    }
+
+
+
+    public function getApplicantNavigationItems(Request $req)
+    {
+        try {
+            $rootItems = [];
+
+            $navigation_type_id = $req->navigation_type_id;
+            // $userGroupId = $req->userGroupId;
+            $user_id = $req->user_id;
+            $regulatory_function_id = $req->regulatory_function_id;
+            $account_type_id = $req->account_type_id;
+            // $regulatory_function_id =1;
+           
+
+                $level = 0;
+                $navigationItems = DB::table('wf_navigation_items as t1')
+                    ->leftJoin('sys_usergroup_navpermissions as t2', 't1.id', 't2.navigation_item_id')
+                    ->leftJoin('wf_system_interfaces as t3', 't1.system_interface_id', 't3.id')
+                    ->select('t1.*', 't3.routerlink', 't1.iconsCls', 't2.user_access_levels_id','t1.account_type_id')
+                    ->orderBy('t1.order_no')->where(array('level' => $level, 't1.navigation_type_id' => $navigation_type_id));
+
+
+                if (validateIsNumeric($regulatory_function_id)) {
+                    $navigationItems->where('t1.regulatory_function_id', $regulatory_function_id);
+                }
+
+                if (validateIsNumeric($account_type_id)) {
+                    $navigationItems->where('t1.account_type_id', $account_type_id);
+                }
+             
+                $navigationItems = $navigationItems->get();
+
+                $rootItems = array();
+                // This will store items in a hierarchical structure
+                $hierarchicalItems = [];
+
+                // Group items by their parent_id to create a hierarchical structure
+                foreach ($navigationItems as $item) {
+
+                    $parent_id = $item->id;
+                    $level = 1;
+                    $childrens = $this->getApplicantNavigationChildrens($parent_id, $level, $navigation_type_id);
+                    if (!empty($childrens)) {
+                        $item->children = $childrens;
+                        $rootItems[] = $item;
+                    } else {
+                        $rootItems[] = $item;
+                    }
+                }
             // $rootItems=encrypt_data($rootItems);
 
             $res = array(
@@ -299,6 +395,39 @@ class WorkflowManagementController extends Controller
 
         return $childrens;
     }
+
+    function getApplicantNavigationChildrens($parent_id, $level, $navigation_type_id)
+    {
+        $childrens = array();
+        $navigationItems = DB::table('wf_navigation_items as t1')
+            ->leftJoin('sys_usergroup_navpermissions as t2', 't1.id', 't2.navigation_item_id')
+            ->leftJoin('wf_system_interfaces as t3', 't1.system_interface_id', 't3.id')
+
+            ->select('t1.*', 't3.routerlink', 't1.iconsCls', 't2.user_access_levels_id')
+            ->orderBy('order_no', 'asc')
+            ->where(array('level' => $level, 'parent_id' => $parent_id, 't1.navigation_type_id' => $navigation_type_id));
+
+       
+        $navigationItems = $navigationItems->get();
+        foreach ($navigationItems as $item) {
+
+            $child_id = $item->id;
+            $level_child = 2;
+            //check for the next level 
+            $grand_children = $this->grandchildApplicantfunction($child_id, $level_child,  $navigation_type_id);
+            if (!empty($grand_children)) {
+
+                $item->children = $grand_children;
+                $childrens[] = $item;
+            } else {
+                $childrens[] = $item;
+            }
+        }
+
+        return $childrens;
+    }
+
+
     function grandchildfunction($parent_id, $level, $usergroups, $is_super_admin, $navigation_type_id)
     {
 
@@ -312,6 +441,29 @@ class WorkflowManagementController extends Controller
         if (!$is_super_admin && $navigation_type_id == 2) {
             $navigationItems->whereIn('user_group_id', $usergroups);
         }
+
+        // $navigationItems = $navigationItems->get();
+        $navigationItems = $navigationItems->distinct()->groupBy('t1.id', 't3.routerlink', 't2.user_access_levels_id')->get();
+        foreach ($navigationItems as $child) {
+
+            $childrens[] = $child;
+        }
+
+        return $childrens;
+    }
+
+
+    function grandchildApplicantfunction($parent_id, $level,$navigation_type_id)
+    {
+
+        $childrens = array();
+        $navigationItems = DB::table('wf_navigation_items as t1')
+            ->leftJoin('sys_usergroup_navpermissions as t2', 't1.id', 't2.navigation_item_id')
+            ->leftJoin('wf_system_interfaces as t3', 't1.system_interface_id', 't3.id')
+            ->select('t1.*', 't3.routerlink', 't1.iconsCls', 't2.user_access_levels_id')
+            ->orderBy('order_no')
+            ->where(array('level' => $level, 'parent_id' => $parent_id, 't1.navigation_type_id' => $navigation_type_id));
+        
 
         // $navigationItems = $navigationItems->get();
         $navigationItems = $navigationItems->distinct()->groupBy('t1.id', 't3.routerlink', 't2.user_access_levels_id')->get();

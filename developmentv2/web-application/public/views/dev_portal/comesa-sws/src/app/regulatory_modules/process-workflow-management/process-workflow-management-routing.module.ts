@@ -9,12 +9,7 @@ import { AppChecklistDefinationComponent } from './views/document-checklistsmng/
 import { AppChecklistTypesComponent } from './views/document-checklistsmng/checklist_management/app-checklist-types/app-checklist-types.component';
 import { AppPerformancescoringScalesComponent } from './views/document-checklistsmng/checklist_management/app-performancescoring-scales/app-performancescoring-scales.component';
 import { ChecklistmanagementSetupComponent } from './views/document-checklistsmng/checklistmanagement-setup/checklistmanagement-setup.component';
-import { DmsSitesRepositoryDefinationComponent } from './views/document-checklistsmng/document_management/dms-sites-repository-defination/dms-sites-repository-defination.component';
-import { DocumentExtensionTypesComponent } from './views/document-checklistsmng/document_management/document-extension-types/document-extension-types.component';
-import { DocumentRequirementDefinationComponent } from './views/document-checklistsmng/document_management/document-requirement-defination/document-requirement-defination.component';
-import { DocumentTypesComponent } from './views/document-checklistsmng/document_management/document-types/document-types.component';
-import { NonstructuredDocDefinationComponent } from './views/document-checklistsmng/document_management/nonstructured-doc-defination/nonstructured-doc-defination.component';
-import { SharedDmsComponent } from './views/document-checklistsmng/document_management/shared-dms/shared-dms.component';
+
 import { EmailTemplatesComponent } from './views/document-checklistsmng/notification-mng/email-templates/email-templates.component';
 import { NotificationManagementComponent } from './views/document-checklistsmng/notification-mng/notification-management/notification-management.component';
 import { NotificationTypesComponent } from './views/document-checklistsmng/notification-mng/notification-types/notification-types.component';
@@ -25,7 +20,8 @@ import { InstitutionInformationComponent } from './views/institution-information
 import { HscodesconfigSetupComponent } from './views/hscodes-configurations/hscodesconfig-setup/hscodesconfig-setup.component';
 import { ProcessConfsetupComponent } from './views/process-configuration/process-confsetup/process-confsetup.component';
 import { UserGroupsPermissionsComponent } from './views/user-groups-permissions/user-groups-permissions.component';
-import { DmsConfigurationsetupComponent } from './views/document-checklistsmng/dms-configurationsetup/dms-configurationsetup.component';
+import { DmsConfigsetupComponent } from './views/dms/dms-configsetup/dms-configsetup.component';
+import { DocumentTypesComponent } from './views/dms/document-types/document-types.component';
 
 const routes: Routes = [{
   path: '',
@@ -63,43 +59,22 @@ const routes: Routes = [{
       path: 'app-user-groups-permissions',
       component: UserGroupsPermissionsComponent
     },
-
-    
     {
-      path: 'app-dms-configurationsetup',
-      component: DmsConfigurationsetupComponent
+      path: 'app-document-types',
+      component: DocumentTypesComponent
     },
-   
     
     {
       path: 'app-checklistmanagement-setup',
       component: ChecklistmanagementSetupComponent
     },
+     
+    {
+      path: 'app-dms-configsetup',
+      component: DmsConfigsetupComponent
+    },
    
-    {
-      path: 'app-dms-sites-repository-defination',
-      component: DmsSitesRepositoryDefinationComponent
-    },
-    {
-      path: 'app-document-extension-types',
-      component: DocumentExtensionTypesComponent
-    },
-    {
-      path: 'app-document-requirement-defination',
-      component: DocumentRequirementDefinationComponent
-    },
-    {
-      path: 'app-document-types',
-      component: DocumentTypesComponent
-    },
-    {
-      path: 'app-nonstructured-doc-defination',
-      component: NonstructuredDocDefinationComponent
-    },
-    {
-      path: 'app-shared-dms',
-      component: SharedDmsComponent
-    },
+    
     {
       path: 'app-email-templates',
       component: EmailTemplatesComponent

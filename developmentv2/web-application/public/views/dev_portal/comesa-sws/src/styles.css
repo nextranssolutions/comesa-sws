@@ -52,7 +52,7 @@ body {
 .container-sm,
 .container-xl {
   width: 100%;
-
+  
   padding-right: 3px !important;
   padding-left: 3px !important;
   margin-right: auto;
@@ -132,9 +132,14 @@ body {
 }
 
 .div-home {
-  min-height: 50vh !important;
+  min-height: 53vh !important;
+  background-color: #fff !important;
+  opacity:inherit;
+  /* align-content: center; */
 }
-
+.div-home .div-hero {
+  align-content:flex-start !important;
+}
 .carousel-inner {
   min-height: 40vh !important;
 }
@@ -1201,7 +1206,7 @@ h6,
   font-family: 'Nunito Sans', sans-serif !important;
   font-weight: 700;
   line-height: 1.2;
-  color: #48A6DB
+  /* color: #48A6DB */
 }
 
 h1,
@@ -2588,12 +2593,6 @@ fieldset:disabled .btn {
   .accordion-button {
     transition: none
   }
-}
-
-.div-home {
-  height: 30vh;
-  align-content: center !important;
-  background-color: #fff;
 }
 
 .accordion-button:not(.collapsed) {

@@ -55,7 +55,7 @@
       <dxo-lookup [dataSource]="notificationTypeData" displayExpr="name" valueExpr="id">
       </dxo-lookup>
     </dxi-column>
-    <dxi-column  *ngIf="table_name == 'chk_checklist_types' || table_name == 'chk_checklist_definations' || table_name == 'tra_organisation_information' " dataField="organisation_id"
+    <dxi-column  *ngIf="table_name == 'chk_checklist_types' || table_name == 'chk_checklist_definations' || table_name == 'tra_organisation_information' || table_name=='ntf_email_templates'" dataField="organisation_id"
     caption="{{ 'organisation' | translate }}">
     <dxo-lookup [dataSource]="organisationData" displayExpr="name" valueExpr="id">
     </dxo-lookup>
@@ -69,7 +69,7 @@
   
     <dxi-column dataField="name" caption="{{ 'name' | translate }}"></dxi-column>
     <dxi-column dataField="description" caption="{{ 'description' | translate }}"></dxi-column>
-    <dxi-column dataField="code" caption="{{ 'code' | translate }}"></dxi-column>
+    
     <dxi-column *ngIf="table_name == 'tra_translation_management'" dataField="system_label_id"
       caption="{{ 'default_system_label' | translate }}">
       <dxo-lookup [dataSource]="systemLabelsData" displayExpr="translation" valueExpr="id">
@@ -90,6 +90,7 @@
       caption="{{ 'marks_allocated' | translate }}">
   
     </dxi-column>
+    <dxi-column dataField="code" caption="{{ 'code' | translate }}"></dxi-column>
   
     <dxi-column [width]="100" dataField="is_enabled" caption="{{ 'enabled_disabledoption' | translate }}"></dxi-column>
   
@@ -182,10 +183,10 @@
   
               </dx-number-box>
             </div>
-            <div *ngIf="table_name == 'chk_checklist_types' || table_name == 'chk_checklist_definations' || table_name == 'tra_organisation_information' " class="col-lg-6">
+            <div *ngIf="table_name == 'chk_checklist_types' || table_name == 'chk_checklist_definations' || table_name == 'tra_organisation_information'|| table_name=='ntf_email_templates' " class="col-lg-6">
               <label>{{ 'organisation' | translate }}</label>
-              <dx-select-box [dataSource]="organisationData" formControlName="system_label_id" valueExpr="id"
-                [searchEnabled]="true" displayExpr="translation">
+              <dx-select-box [dataSource]="organisationData" formControlName="organisation_id" valueExpr="id"
+                [searchEnabled]="true" displayExpr="name">
               </dx-select-box>
             </div>
   

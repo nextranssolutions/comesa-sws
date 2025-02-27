@@ -1,1 +1,20 @@
-<p>faqs works!</p>
+<div class="container-fluid row div-home">
+    <div class="col-lg-12 border-linemargin">
+    <h4>{{'frequently_asked_questions(FAQs)' | translate}}</h4>
+  
+    <dx-data-grid 
+      [dataSource]="faqData"
+      [showBorders]="true"
+      [columnAutoWidth]="true"
+      [rowAlternationEnabled]="true"
+      [filterRow]="{ visible: true }"
+      [paging]="{ pageSize: 10 }"
+      [pager]="{ showPageSizeSelector: true, allowedPageSizes: [5, 10, 20], showInfo: true }"
+    >
+      <dxi-column dataField="id" caption="ID" [width]="70"></dxi-column>
+      <dxi-column dataField="name" caption="Question"></dxi-column>
+      <dxi-column dataField="description" caption="Answer"></dxi-column>
+      <dxi-column dataField="created_on" caption="Created On" dataType="date" format="shortDate"></dxi-column>
+    </dx-data-grid>
+  </div>
+  </div>

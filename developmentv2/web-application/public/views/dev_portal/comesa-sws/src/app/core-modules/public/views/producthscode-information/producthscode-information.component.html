@@ -1,5 +1,5 @@
 <div class="container-fluid row div-home">
-    <div class="col-lg-12 border-linemargin">
+    <div class="col-lg-12 border-linemargin div-hero">
         <h4 class="text-start pt-2">{{'products_hscode_information' | translate}}</h4>
         <div class="row">
             <div class="col-lg-12">
@@ -14,15 +14,10 @@
                             <div class="form-group has-search search-margin-top">
                                 <dx-select-box [dataSource]="productChapterData" class="form-control"
                                     placeholder="{{'select_product' | translate}}" formControlName="hscodechapters"
-                                    [showClearButton]="true" valueExpr="id" [searchEnabled]="true" displayExpr="name">
+                                    (onSelectionChanged)="onLoadProductHscodeData()"[showClearButton]="true" valueExpr="id" [searchEnabled]="true" displayExpr="name">
                                 </dx-select-box>
                             </div>
-                            <div class="col-lg-12 btn-searchdetails">
-                                <dx-button text="{{'search_by_product' | translate}}" type="default" icon="fa fa-search"
-                                    [elementAttr]="{ class: 'btn-searchdetails' }"
-                                    (onClick)="onLoadProductHscodeData()">
-                                </dx-button>
-                            </div>
+                            
                         </dxi-item>
 
                         <!-- Search by Product Category -->
@@ -31,15 +26,10 @@
                                 <dx-select-box [dataSource]="productCategoryData" class="form-control"
                                     placeholder="{{'search_by_product_category' | translate}}"
                                     formControlName="hscodesheading" [showClearButton]="true" valueExpr="id"
-                                    [searchEnabled]="true" displayExpr="name">
+                                    (onSelectionChanged)="onLoadProductHscodeData()"[searchEnabled]="true" displayExpr="name">
                                 </dx-select-box>
                             </div>
-                            <div class="col-lg-12 btn-searchdetails">
-                                <dx-button text="{{'search_by_product_category' | translate}}" type="default"
-                                    icon="fa fa-search" [elementAttr]="{ class: 'btn-searchdetails' }"
-                                    (onClick)="onLoadProductHscodeData()">
-                                </dx-button>
-                            </div>
+                            
                         </dxi-item>
 
                         <!-- Search by Product Subcategory -->
@@ -48,23 +38,16 @@
                                 <dx-select-box [dataSource]="productSubcategoryData" class="form-control"
                                     placeholder="{{'search_by_product_subcategory' | translate}}"
                                     formControlName="hscodessubheading" [showClearButton]="true" valueExpr="id"
-                                    [searchEnabled]="true" displayExpr="name">
+                                    (onSelectionChanged)="onLoadProductHscodeData()"[searchEnabled]="true" displayExpr="name">
                                 </dx-select-box>
                             </div>
-                            <div class="col-lg-12 btn-searchdetails">
-                                <dx-button text="{{'search_by_product_subcategory' | translate}}" type="default"
-                                    icon="fa fa-search" [elementAttr]="{ class: 'btn-searchdetails' }"
-                                    (onClick)="onLoadProductHscodeData()">
-                                </dx-button>
-                            </div>
+                            
                         </dxi-item>
 
                     </dx-tab-panel>
                 </form>
             </div>
         </div>
-
-
 
 
         <dx-data-grid (onExporting)="onExporting($event)" (onCellPrepared)="onCellPrepared($event)"
@@ -113,6 +96,17 @@
                                 caption="{{'headingcode' | translate}}"></dxi-column>
                             <dxi-column [width]="200" dataField="subheadingcode"
                                 caption="{{'subheadingcode' | translate}}"></dxi-column>
+                        </dx-data-grid>
+                    </dxi-item>
+
+                    <dxi-item title="{{'hscodes_registry' | translate }}" icon="fa fa-file">
+                        <dx-data-grid class="table row-border hover" [dataSource]="productHscodeData"
+                            [remoteOperations]="true" [showBorders]="true" [allowColumnResizing]="true" keyExpr="id">
+                            <dxi-column dataField="subheadingcode" caption="{{'hscode' | translate}}"></dxi-column>
+                            <dxi-column dataField="hscodessubheading"
+                                caption="{{'product' | translate}}"></dxi-column>
+                            <dxi-column dataField="description"
+                                caption="{{'description' | translate}}"></dxi-column>
                         </dx-data-grid>
                     </dxi-item>
 

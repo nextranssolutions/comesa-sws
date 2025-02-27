@@ -30,9 +30,10 @@ export class PermitgeneraldetailsComponent implements OnInit {
   regulatedSubfunctionData: any;
   producttypeDefinationData: any;
   data_record: any;
-
+  has_declaration_statuses: boolean;
   premises_title: string;
   applicationTypeData: any;
+  portTypeData: any;
   applicationCategoryData: any;
   regulatory_subfunction_id: any;
   applicationTypeCategoryData: any;
@@ -40,7 +41,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
   portOfEntryExitData: any;
   payingCurrencyData: any;
   modeOfTransportData: any;
-
+  permitTypeData: any;
   currencyData: any;
   consigneeOptionsData: any;
   consignee_options_check: any;
@@ -49,12 +50,13 @@ export class PermitgeneraldetailsComponent implements OnInit {
   permit_category_id: any;
   application_code: any;
   ispremisesSearchWinVisible: any;
-
+  countryData: any;
+  invoiceTypeData: any;
   registered_premisesData: any = {};
   issenderreceiverSearchWinVisible: any;
   consignee_sendertitle: any;
   issenderreceiverAddWinVisible: any;
-  permitReceiverSenderFrm: FormGroup;
+  @Input() permitReceiverSenderFrm: FormGroup;
   countries: any;
   regions: any;
   districts: any;
@@ -82,6 +84,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
   confirmDataParam: any;
   is_licensepermit: boolean = false;
   consignor_title: string = 'Consignor(Supplier/Receiver)';
+  importerexporter_title: string = 'Import/Exporter'
   eligibleImportersData: any;
   eligibleImportersDocTypes: any;
   filesToUpload: Array<File> = [];
@@ -128,7 +131,14 @@ select_registration_section_process: string;
     this.onLoadEligibleImportersData;
     // this.onLoadeligibleImportersDocTypes();
     this.onLoadconfirmDataParm();
-    this.onLoadRegulatedProdTypeData();
+    this.onLoadapplicationTypeData();
+    this.onLoadportTypeData();
+    this.onLoadpermitTypeData();
+    this.onLoadportOfEntryExitData();
+    this.onLoadmodeOfTransportData();
+    this.onLoadcountryData();
+    this.onLoadinvoiceTypeData();
+    this.onLoadcurrencyData();
     this.onLoadpermitProductsCategoryData(this.permit_category_id);
     this.onLoadproducttypeDefinationData();
     // this.onsavePermitReceiverSender();
@@ -361,10 +371,10 @@ select_registration_section_process: string;
           }
         });
   }
-  onLoadRegulatedProdTypeData() {
+  onLoadapplicationTypeData() {
     var data = {
-      table_name: 'par_regulated_productstypes',
-      
+      table_name: 'par_application_types',
+      is_enabled: true,
       
     };
 
@@ -375,7 +385,156 @@ select_registration_section_process: string;
           this.data_record = data;
 
           if (this.data_record.success) {
-            this.regulatedProdTypeData = this.data_record.data;
+            this.applicationTypeData = this.data_record.data;
+
+          }
+        });
+  }
+
+
+  onLoadportOfEntryExitData() {
+    var data = {
+      table_name: 'par_entryexit_port',
+      is_enabled: true,
+      
+    };
+
+    this.config.onLoadConfigurationData(data)
+      .subscribe(
+        data => {
+          console.log(data.record);
+          this.data_record = data;
+
+          if (this.data_record.success) {
+            this.portOfEntryExitData = this.data_record.data;
+
+          }
+        });
+  }
+  // 
+
+  onLoadmodeOfTransportData() {
+    var data = {
+      table_name: 'par_transport_mode',
+      is_enabled: true,
+      
+    };
+
+    this.config.onLoadConfigurationData(data)
+      .subscribe(
+        data => {
+          console.log(data.record);
+          this.data_record = data;
+
+          if (this.data_record.success) {
+            this.modeOfTransportData = this.data_record.data;
+
+          }
+        });
+  }
+
+
+  onLoadportTypeData() {
+    var data = {
+      table_name: 'par_port_type',
+      is_enabled: true,
+      
+    };
+
+    this.config.onLoadConfigurationData(data)
+      .subscribe(
+        data => {
+          console.log(data.record);
+          this.data_record = data;
+
+          if (this.data_record.success) {
+            this.portTypeData = this.data_record.data;
+
+          }
+        });
+  }
+
+  // currencyData
+
+  onLoadcurrencyData() {
+    var data = {
+      table_name: 'par_currencies',
+      is_enabled: true,
+      
+    };
+
+    this.config.onLoadConfigurationData(data)
+      .subscribe(
+        data => {
+          console.log(data.record);
+          this.data_record = data;
+
+          if (this.data_record.success) {
+            this.currencyData = this.data_record.data;
+
+          }
+        });
+  }
+
+  onLoadcountryData() {
+    var data = {
+      table_name: 'par_countries',
+      is_enabled: true,
+      
+    };
+
+    this.config.onLoadConfigurationData(data)
+      .subscribe(
+        data => {
+          console.log(data.record);
+          this.data_record = data;
+
+          if (this.data_record.success) {
+            this.countryData = this.data_record.data;
+
+          }
+        });
+  }
+
+  onLoadinvoiceTypeData() {
+    var data = {
+      table_name: 'par_invoice_types',
+      is_enabled: true,
+      
+    };
+
+    this.config.onLoadConfigurationData(data)
+      .subscribe(
+        data => {
+          console.log(data.record);
+          this.data_record = data;
+
+          if (this.data_record.success) {
+            this.invoiceTypeData = this.data_record.data;
+
+          }
+        });
+  }
+
+
+
+
+
+  onLoadpermitTypeData() {
+    var data = {
+      table_name: 'par_permit_typecategories',
+      is_enabled: 1,
+      
+    };
+
+    this.config.onLoadConfigurationData(data)
+      .subscribe(
+        data => {
+          console.log(data.record);
+          this.data_record = data;
+
+          if (this.data_record.success) {
+            this.permitTypeData = this.data_record.data;
 
           }
         });
@@ -479,6 +638,8 @@ select_registration_section_process: string;
     });
 
   }
+
+  
   onsearchConsignee() {
 
     this.consignee_sendertitle = 'Consignee Details';

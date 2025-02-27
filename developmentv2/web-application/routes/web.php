@@ -14,3 +14,6 @@
 Route::get('/', function () {
     return view('init');
 });
+Route::get('/help-desk', function () {
+    return view('helpdesk');
+});
