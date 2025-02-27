@@ -122,7 +122,7 @@
 <!-- /.main-content -->
 
 
-<dx-popup class="popup" [(visible)]="refFunctionGuidelines" [width]="funcpopWidth(75)" [height]="funcpopHeight(55)" [showTitle]="true" [@flyInOut]
+<dx-popup class="popup" [(visible)]="refFunctionGuidelines" [width]="funcpopWidth(75)" [height]="funcpopHeight(55)" [showTitle]="true" 
 title="{{ 'regulatory_function_guidelines' | translate }}" [dragEnabled]="false" [hideOnOutsideClick]="true"(onHidden)="refFunctionGuidelines = false">
    <div class="row col-lg-12">
    <dx-data-grid (onCellPrepared)="onCellPrepared($event)" class="table row-border hover"

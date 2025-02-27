@@ -78,7 +78,6 @@ export class TopSectionComponent {
   userFirstName: string = '';
   process_id: number;
   systems_functionality_id: number;
-  is_expertsprofile: boolean;
   // Popup visibility
   isSignupPopupVisible = false;
   isSigninPopupVisible = false;
@@ -176,7 +175,7 @@ export class TopSectionComponent {
           this.traderAccountTypeData = this.data_record.data;
         }
       },
-      (error) => { }
+      (error) => {}
     );
   }
 
@@ -194,7 +193,7 @@ export class TopSectionComponent {
           this.Countries = this.data_record.data;
         }
       },
-      (error) => { }
+      (error) => {}
     );
   }
 
@@ -212,7 +211,7 @@ export class TopSectionComponent {
       if (controls[name].invalid) {
         this.toastr.error(
           'Fill In All Mandatory fields with (*), missing value on ' +
-          name.replace('_id', ''),
+            name.replace('_id', ''),
           'Alert'
         );
         return;
@@ -269,7 +268,7 @@ export class TopSectionComponent {
       if (controls[name].invalid) {
         this.toastr.error(
           'Fill In All Mandatory fields with (*), missing value on ' +
-          name.replace('_id', ''),
+            name.replace('_id', ''),
           'Alert'
         );
         return;
@@ -343,7 +342,7 @@ export class TopSectionComponent {
         (error) => {
           this.toastr.error(
             'Failed to request OTP: ' +
-            (error.error?.message || 'Unknown error'),
+              (error.error?.message || 'Unknown error'),
             'Error'
           );
           this.spinnerHide();
@@ -376,7 +375,7 @@ export class TopSectionComponent {
         (error) => {
           this.toastr.error(
             'Failed to request OTP: ' +
-            (error.error?.message || 'Unknown error'),
+              (error.error?.message || 'Unknown error'),
             'Error'
           );
           this.spinnerHide();
@@ -396,7 +395,7 @@ export class TopSectionComponent {
       if (controls[name].invalid) {
         this.toastr.error(
           'Fill In All Mandatory fields with (*), missing value on ' +
-          name.replace('_id', ''),
+            name.replace('_id', ''),
           'Alert'
         );
         return;
@@ -417,7 +416,6 @@ export class TopSectionComponent {
         this.success = this.auth_response.success;
 
         if (this.success) {
-
           let access_token = this.auth_response.access_token;
           let isLoggedIn = this.auth_response.isLoggedIn;
           if (access_token != '' && isLoggedIn) {
@@ -487,7 +485,7 @@ export class TopSectionComponent {
         this.translate.setTranslation(locale, translations, true);
         this.translate.use(locale);
       },
-      (error) => { }
+      (error) => {}
     );
   }
 
@@ -503,7 +501,7 @@ export class TopSectionComponent {
         this.translate.setTranslation(locale, translations, true);
         this.translate.use(locale);
       },
-      (error) => { }
+      (error) => {}
     );
   }
 
