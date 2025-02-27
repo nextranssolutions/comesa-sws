@@ -420,9 +420,9 @@ class UserManagementController extends Controller
 
             if ($validator->fails()) {
                 return response()->json([
-                    'status' => 'error',
+                    'success' =>false,
                     'message' => $validator->errors()->first(),
-                ], 422);
+                ], 200);
             }
             // $app_statusrecord = getInitialWorkflowStatusId($process_id);
             // if (!$app_statusrecord) {
@@ -1098,9 +1098,9 @@ class UserManagementController extends Controller
 
             if ($validator->fails()) {
                 return response()->json([
-                    'status' => 'error',
+                    'success' =>false,
                     'message' => $validator->errors()->first(),
-                ], 422);
+                ], 200);
             }
 
             // Check if a user with the given identification number already exists
@@ -1882,9 +1882,9 @@ class UserManagementController extends Controller
 
             if ($validator->fails()) {
                 return response()->json([
-                    'status' => 'error',
+                    'success' =>false,
                     'message' => $validator->errors()->first(),
-                ], 422);
+                ], 200);
             }
 
             if (validateIsNumeric($req->id)) {
@@ -2028,9 +2028,9 @@ class UserManagementController extends Controller
 
             if ($validator->fails()) {
                 return response()->json([
-                    'status' => 'error',
+                    'success' =>false,
                     'message' => $validator->errors()->first(),
-                ], 422);
+                ], 200);
             }
             $table_name = 'tra_subscription_registration';
             $where = array('email_address' => $email_address);
