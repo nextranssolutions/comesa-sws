@@ -7,7 +7,7 @@ import { DxTabPanelTypes } from 'devextreme-angular/ui/tab-panel';
   styleUrl: './import-exportconfsetup.component.css'
 })
 export class ImportExportconfsetupComponent {
-table_name: string;
+  table_name: string;
   parameter_name: string = "import_export_configurations";
   tabsPositions: DxTabPanelTypes.Position[] = [
     'left', 'top', 'right', 'bottom',

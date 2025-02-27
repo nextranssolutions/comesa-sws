@@ -7,7 +7,6 @@ import { HscodesmappingConfigsetupComponent } from './views/hscodes-mapping/hsco
 import { HscodechaptersDefinationComponent } from './views/hscodes-mapping/hscodechapters-defination/hscodechapters-defination.component';
 import { HscodesSectionsComponent } from './views/hscodes-mapping/hscodes-sections/hscodes-sections.component';
 import { HscodesheadingDefinationsComponent } from './views/hscodes-mapping/hscodesheading-definations/hscodesheading-definations.component';
-import { HscodesproductsRegistryComponent } from './views/hscodes-mapping/hscodesproducts-registry/hscodesproducts-registry.component';
 import { HscodessubheadingDefinationComponent } from './views/hscodes-mapping/hscodessubheading-defination/hscodessubheading-defination.component';
 import { HscodestariffDetailsComponent } from './views/hscodes-mapping/hscodestariff-details/hscodestariff-details.component';
 import { SharedhscodesConfigurationsComponent } from './views/hscodes-mapping/sharedhscodes-configurations/sharedhscodes-configurations.component';
@@ -17,10 +16,17 @@ import { HscodeInstitutionsComponent } from './views/hscode-institutional-inform
 import { HscodeinstitutionsConfigsetupComponent } from './views/hscode-institutional-information/hscodeinstitutions-configsetup/hscodeinstitutions-configsetup.component';
 import { SharedHscodeInstitutionsComponent } from './views/hscode-institutional-information/shared-hscode-institutions/shared-hscode-institutions.component';
 import { PermittypeConfigurationsComponent } from './views/permittype-configurations/permittype-configurations.component';
+import { HscodeRegistryproductsComponent } from './views/hscode-registryproducts/hscode-registryproducts.component';
+import { HscodesproductsRegistryComponent } from './views/hscodes-mapping/hscodesproducts-registry/hscodesproducts-registry.component';
+import { RestrictionsProhibitionsComponent } from './views/restrictions-prohibitions/restrictions-prohibitions.component';
+import { ServiceDeliveryTimelineComponent } from './views/service_delivery_timeline/service-delivery-timeline/service-delivery-timeline.component';
+import { ServiceTypesComponent } from './views/service_delivery_timeline/service-types/service-types.component';
+import { ServicedeliveryConfigsetupComponent } from './views/service_delivery_timeline/servicedelivery-configsetup/servicedelivery-configsetup.component';
+import { SharedServiceDeliveryComponent } from './views/service_delivery_timeline/shared-service-delivery/shared-service-delivery.component';
 
 
 const routes: Routes = [{
-  path: 'app-hscodemapping-layout',
+  path: '',
   component: HscodemappingLayoutComponent,
   canActivate: [AuthGuard],
   children: [{
@@ -45,6 +51,10 @@ const routes: Routes = [{
   {
     path: 'app-hscodesproducts-registry',
     component: HscodesproductsRegistryComponent
+  },
+  {
+    path: 'app-hscode-registryproducts',
+    component: HscodeRegistryproductsComponent
   },
   {
     path: 'app-hscodessubheading-defination',
@@ -79,7 +89,28 @@ const routes: Routes = [{
     path: 'app-permittype-configurations',
     component: PermittypeConfigurationsComponent
   },
-]
+  {
+    path: 'app-restrictions-prohibitions',
+    component: RestrictionsProhibitionsComponent
+  },
+  {
+    path: 'app-shared-service-delivery',
+    component: SharedServiceDeliveryComponent
+  },
+  {
+    path: 'app-servicedelivery-configsetup',
+    component: ServicedeliveryConfigsetupComponent
+
+  },
+  {
+    path: 'app-service-types',
+    component: ServiceTypesComponent
+  },
+  {
+    path: 'app-service-delivery-timeline',
+    component: ServiceDeliveryTimelineComponent
+  },
+  ]
 }]
 
 @NgModule({

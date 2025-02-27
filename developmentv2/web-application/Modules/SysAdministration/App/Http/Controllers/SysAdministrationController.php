@@ -504,18 +504,26 @@ class SysAdministrationController extends Controller
             $sql = DB::table($table_name . ' as t1')
 
                 ->leftJoin('par_operation_type as t2', 't1.operation_type_id', 't2.id')
-                ->leftJoin('par_regulated_productstypes as t3', 't1.regulated_producttype_id', 't3.id')
-                ->leftJoin('tra_organisation_information as t4', 't1.organization_id', 't4.id')
+                ->leftJoin('par_product_categories as t3', 't1.product_category_id', 't3.id')
+                ->leftJoin('tra_organisation_information as t4', 't1.organisation_id', 't4.id')
                 ->leftJoin('wf_processes as t5', 't1.process_id', 't5.id')
                 ->leftJoin('wf_workflows as t6', 't1.workflow_id', 't6.id')
-
+                ->leftJoin('par_service_deliverytimelines as t7', 't1.service_deliverytimeline_id', 't7.id')
+                ->leftJoin('par_refnumbers_formats as t8', 't1.reference_noformat_id', 't8.id')
+                ->leftJoin('par_permit_statuses as t9', 't1.permit_status_id', 't9.id')
+                ->leftJoin('par_renewable_statuses as t10', 't1.renewable_status_id', 't10.id')
+                
                 ->select(
                     't1.*',
                     't2.name as operation_type',
-                    't3.name as regulated_producttype',
-                    't4.name as organization',
+                    't3.name as product_category',
+                    't4.name as organisation',
                     't5.name as process',
                     't6.name as workflow',
+                    't7.name as service_deliverytimeline',
+                    't8.name as ref_number_format',
+                    't9.name as permit_status',
+                    't10.name as renewable_status'
 
                 );
 
@@ -527,16 +535,24 @@ class SysAdministrationController extends Controller
                     'description' => $rec->description,
                     'is_enabled' => $rec->is_enabled,
                     'operation_type_id' => $rec->operation_type_id,
-                    'regulated_producttype_id' => $rec->regulated_producttype_id,
-                    'organization_id' => $rec->organization_id,
+                    'product_category_id' => $rec->product_category_id,
+                    'organisation_id' => $rec->organisation_id,
                     'process_id' => $rec->process_id,
                     'workflow_id' => $rec->workflow_id,
+                    'service_deliverytimeline_id' => $rec->service_deliverytimeline_id,
+                    'reference_noformat_id' => $rec->reference_noformat_id,
+                    'permit_status_id' => $rec->permit_status_id,
+                    'renewable_status_id' => $rec->renewable_status_id,
                     'operation_type' => $rec->operation_type,
-                    'regulated_producttype' => $rec->regulated_producttype,
-                    'organization' => $rec->organization,
+                    'product_category' => $rec->product_category,
+                    'organisation' => $rec->organisation,
                     'process' => $rec->process,
-                    'workflow' => $rec->workflow
-
+                    'workflow' => $rec->workflow,
+                    'service_deliverytimeline' => $rec->service_deliverytimeline,
+                    'ref_number_format' => $rec->ref_number_format,
+                    'permit_status' => $rec->permit_status,
+                    'renewable_status' => $rec->renewable_status,
+                    
                 );
             }
             $res = ['success' => true, 'data' => $permit_type_data];
@@ -549,6 +565,56 @@ class SysAdministrationController extends Controller
         return response()->json($res, 200);
     }
 
+    
+    public function onLoadTransactionProductRegistryDetails(Request $req)
+    {
+        try {
+            $requestData = $req->all();
+            $table_name = 'tra_hscodesproducts_registry';
+            $permit_type_data = array();
+            unset($requestData['table_name']);
+
+            $sql = DB::table($table_name . ' as t1')
+
+                ->leftJoin('par_hscodechapters_defination as t2', 't1.chapters_defination_id', 't2.id')
+                ->leftJoin('par_hscodesheading_definations as t3', 't1.heading_definations_id', 't3.id')
+                ->leftJoin('par_hscodessubheading_defination as t4', 't1.subheading_definations_id', 't4.id')
+                
+
+                ->select(
+                    't1.*',
+                    't2.name as chapters_defination',
+                    't3.name as heading_definations',
+                    't4.name as subheading_definations',
+                    
+
+                );
+
+            $data = $sql->get();
+            foreach ($data as $rec) {
+                $permit_type_data[] = array(
+                    'id' => $rec->id,
+                    'name' => $rec->name,
+                    'description' => $rec->description,
+                    'is_enabled' => $rec->is_enabled,
+                    'chapters_defination_id' => $rec->chapters_defination_id,
+                    'heading_definations_id' => $rec->heading_definations_id,
+                    'subheading_definations_id' => $rec->subheading_definations_id,
+                    'chapters_defination' => $rec->chapters_defination,
+                    'heading_definations' => $rec->heading_definations,
+                    'subheading_definations' => $rec->subheading_definations,
+
+                );
+            }
+            $res = ['success' => true, 'data' => $permit_type_data];
+        } catch (\Exception $exception) {
+            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        } catch (\Throwable $throwable) {
+            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        }
+
+        return response()->json($res, 200);
+    }
     public function onLoadSystemAdministrationData(Request $req)
     {
         try {
@@ -880,44 +946,25 @@ class SysAdministrationController extends Controller
     public function getAppHscodes(Request $req)
     {
         try {
-            $permit_type_id = $req->permit_type_id;
-            // $process_id = $req->process_id;
-            $records = DB::table('par_hscode_seloptions  as t1')
-                ->join('tra_transactionpermit_types as t2', 't1.permit_type_id', 't2.id')
-                ->select('t1.*')
-                // ->where('t2.id', '=', $permit_type_id)
-                ->orderBy('t1.order_no');
-            // ->groupBy('t2.id');
-            if (validateIsNumeric($permit_type_id)) {
-                $records->where('t1.permit_type_id', $permit_type_id);
-            };
-
-            $records = $records->get();
-
-            $res = ['success' => true, 'data' => $records];
-        } catch (\Exception $exception) {
-            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
-        } catch (\Throwable $throwable) {
-            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
-        }
-        return response()->json($res, 200);
-    }
-    public function getAppPermitCertificateTemplate(Request $req)
-    {
-        try {
             $requestData = $req->all();
-            $table_name = 'tra_transactionpermit_codes';
+            $table_name = 'tra_transactionpermit_hs_codes';
             $permit_certificate_templates_data = array();
             unset($requestData['table_name']);
 
             $sql = DB::table($table_name . ' as t1')
 
-                ->leftJoin('tra_transactionpermit_types as t2', 't1.permit_type_id', 't2.id')
-                ->leftJoin('par_hscode_seloptions as t3', 't1.hscode_seloption_id', 't3.id')
-
+                ->leftJoin('tra_transactionpermit_types as t2', 't1.transactionpermit_type_id', 't2.id')
+                ->leftJoin('par_hscode_seloption as t3', 't1.hscode_seloption_id', 't3.id')
+                ->leftJoin('par_quota_limitationstype as t4', 't1.quota_limitationstype_id', 't4.id')
+                ->leftJoin('par_mapping_status as t5', 't1.mapping_status_id', 't5.id')
+                ->leftJoin('par_hscodemapping_option as t6', 't1.hscodemapping_option_id', 't6.id')
+                   
                 ->select(
                     't1.*',
-                    't2.name as hs_code',
+                    't3.name as hs_code_selection_option',
+                    't4.name as quota_limitationstype',
+                    't5.name as mapping_status',
+                    't6.name as hscodemapping_option'
 
                 );
 
@@ -925,13 +972,24 @@ class SysAdministrationController extends Controller
             foreach ($data as $rec) {
                 $permit_certificate_templates_data[] = array(
                     'id' => $rec->id,
+                    'name' => $rec->name,
+                    'description' => $rec->description,
+                    'special_conditions' => $rec->special_conditions,
+                    'limitation_description' => $rec->limitation_description,
+                    'code' => $rec->code,
+                    'is_enabled' => $rec->is_enabled,
                     'hs_code_start_int' => $rec->hs_code_start_int,
                     'hs_code_end_int' => $rec->hs_code_end_int,
                     'hs_code_specific_int' => $rec->hs_code_specific_int,
-                    'permit_type_id' => $rec->permit_type_id,
+                    'transactionpermit_type_id' => $rec->transactionpermit_type_id,
                     'hscode_seloption_id' => $rec->hscode_seloption_id,
-                    'hs_code' => $rec->hs_code,
-
+                    'quota_limitationstype_id' => $rec->quota_limitationstype_id,
+                    'mapping_status_id'  => $rec->mapping_status_id,
+                    'hscodemapping_option_id' => $rec->hscodemapping_option_id,
+                    'hs_code_selection_option' => $rec->hs_code_selection_option,
+                    'quota_limitationstype' => $rec->quota_limitationstype,
+                    'mapping_status' => $rec->mapping_status,
+                    'hscodemapping_option' => $rec->hscodemapping_option,
 
                 );
             }
@@ -944,35 +1002,86 @@ class SysAdministrationController extends Controller
 
         return response()->json($res, 200);
     }
-
-    public function getAppPermitReportGeneration(Request $req)
+    public function getAppPermitSignatoriesData(Request $req)
     {
         try {
             $requestData = $req->all();
-            $table_name = 'tra_transactionpermit_rptgeneration';
+            $table_name = 'tra_transactionpermit_signatories';
+            $permit_signatories_data = array();
+            unset($requestData['table_name']);
+
+            $sql = DB::table($table_name . ' as t1')
+
+                ->leftJoin('tra_transactionpermit_types as t2', 't1.transactionpermit_type_id', 't2.id')
+                ->leftJoin('par_permittemplate_types as t3', 't1.permit_template_type_id', 't3.id')
+                ->leftJoin('par_permit_templates as t4', 't1.permit_template_id', 't4.id')
+                ->leftJoin('wf_workflow_stages as t5', 't1.workflow_stage_id', 't5.id')
+
+                ->select(
+                    't1.*',
+                    't3.name as permit_template_type',
+                    't4.name as permit_template',
+                    't5.name as workflow_stage'
+                   
+                );
+
+            $data = $sql->get();
+            foreach ($data as $rec) {
+                $permit_signatories_data[] = array(
+                    'id' => $rec->id,
+                    'name' => $rec->name,
+                    'description' => $rec->description,
+                    'permit_signatory' => $rec->permit_signatory,
+                    'is_approval_document' => $rec->name,
+                    'code' => $rec->code,
+                    'is_enabled' => $rec->is_enabled,
+                    'transactionpermit_type_id' => $rec->transactionpermit_type_id,
+                    'permit_template_type_id' => $rec->permit_template_type_id,
+                    'permit_template_id' => $rec->permit_template_id,
+                    'workflow_stage_id' => $rec->workflow_stage_id,
+                    'permit_template_type' => $rec->permit_template_type,
+                    'permit_template' => $rec->permit_template,
+                    'workflow_stage' => $rec->workflow_stage
+
+                    
+                );
+            }
+            $res = ['success' => true, 'data' => $permit_signatories_data];
+        } catch (\Exception $exception) {
+            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        } catch (\Throwable $throwable) {
+            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        }
+
+        return response()->json($res, 200);
+    }
+
+    public function getAppPermitSpecialConditions(Request $req)
+    {
+        try {
+            $requestData = $req->all();
+            $table_name = 'tra_permit_special_conditions';
             $permit_report_generation_data = array();
             unset($requestData['table_name']);
 
             $sql = DB::table($table_name . ' as t1')
 
-                ->leftJoin('tra_transactionpermit_types as t2', 't1.permit_type_id', 't2.id')
-                ->leftJoin('par_permittemplate_types as t3', 't1.permittemplate_type_id', 't3.id')
+                ->leftJoin('tra_transactionpermit_types as t2', 't1.transactionpermit_type_id', 't2.id')
+                ->leftJoin('par_quota_limitationstype as t3', 't1.quota_limitationstype_id', 't3.id')
 
                 ->select(
                     't1.*',
-                    't3.name as permit_template_type',
-
+                    't3.name as quota_limitationstype',
                 );
-
             $data = $sql->get();
             foreach ($data as $rec) {
                 $permit_report_generation_data[] = array(
                     'id' => $rec->id,
-                    'permit_type_id' => $rec->permit_type_id,
-                    'permittemplate_type_id' => $rec->permittemplate_type_id,
-                    'permit_template_type' => $rec->permit_template_type,
-
-
+                    'transactionpermit_type_id' => $rec->transactionpermit_type_id,
+                    'quota_limitationstype_id' => $rec->quota_limitationstype_id,
+                    'limitation_description' => $rec->limitation_description,
+                    'special_conditions' => $rec->special_conditions,
+                    'quota_limitationstype' => $rec->quota_limitationstype,
                 );
             }
             $res = ['success' => true, 'data' => $permit_report_generation_data];
@@ -995,7 +1104,7 @@ class SysAdministrationController extends Controller
 
             $sql = DB::table($table_name . ' as t1')
 
-                ->leftJoin('tra_transactionpermit_types as t2', 't1.permit_type_id', 't2.id')
+                ->leftJoin('tra_transactionpermit_types as t2', 't1.transactionpermit_type_id', 't2.id')
                 ->leftJoin('par_document_types as t3', 't1.document_type_id', 't3.id')
                 ->leftJoin('dms_document_requirements as t4', 't1.document_requirement_id', 't4.id')
 
@@ -1010,7 +1119,11 @@ class SysAdministrationController extends Controller
             foreach ($data as $rec) {
                 $permit_report_generation_data[] = array(
                     'id' => $rec->id,
-                    'permit_type_id' => $rec->permit_type_id,
+                    'is_mandatory' => $rec->is_mandatory,
+                    'allow_multiple' => $rec->allow_multiple,
+                    'has_validity_period' => $rec->has_validity_period,
+                    'status' => $rec->status,
+                    'transactionpermit_type_id' => $rec->transactionpermit_type_id,
                     'document_type_id' => $rec->document_type_id,
                     'document_requirement_id' => $rec->document_requirement_id,
                     'document_type' => $rec->document_type,
@@ -1039,14 +1152,17 @@ class SysAdministrationController extends Controller
 
             $sql = DB::table($table_name . ' as t1')
 
-                ->leftJoin('tra_transactionpermit_types as t2', 't1.permit_type_id', 't2.id')
+                ->leftJoin('tra_transactionpermit_types as t2', 't1.transactionpermit_type_id', 't2.id')
                 ->leftJoin('chk_checklist_types as t3', 't1.checklist_type_id', 't3.id')
                 ->leftJoin('chk_checklist_definations as t4', 't1.checklist_defination_id', 't4.id')
+                ->leftJoin('wf_workflow_stages as t5', 't1.workflow_stage_id', 't5.id')
 
                 ->select(
                     't1.*',
                     't3.name as checklist_type',
-                    't4.name as checklist_defination'
+                    't4.name as checklist_defination',
+                    't5.name as workflow_stage',
+
 
                 );
 
@@ -1054,7 +1170,10 @@ class SysAdministrationController extends Controller
             foreach ($data as $rec) {
                 $permit_checklists_data[] = array(
                     'id' => $rec->id,
-                    'permit_type_id' => $rec->permit_type_id,
+                    'is_mandatory' => $rec->is_mandatory,
+                    'has_query_check' => $rec->has_query_check,
+                    'workflow_stage_id' => $rec->workflow_stage_id,
+                    'transactionpermit_type_id' => $rec->transactionpermit_type_id,
                     'checklist_type_id' => $rec->checklist_type_id,
                     'checklist_defination_id' => $rec->checklist_defination_id,
                     'checklist_type' => $rec->checklist_type,

@@ -7,9 +7,10 @@ use Modules\SysAdministration\App\Http\Controllers\SysAdministrationController;
 
 Route::middleware(['XssSanitizer','clear_cache_config','firewall.all'])->prefix('sysadministration')->group(function () {
     Route::get('onLoadSystemAdministrationData', [SysAdministrationController::class, 'onLoadSystemAdministrationData']);
+    Route::get('onLoadTransactionProductRegistryDetails', [SysAdministrationController::class, 'onLoadTransactionProductRegistryDetails']);
     Route::get('onLoadTransactionPermitTypeData', [SysAdministrationController::class, 'onLoadTransactionPermitTypeData']);
-    Route::get('getAppPermitCertificateTemplate', [SysAdministrationController::class, 'getAppPermitCertificateTemplate']);
-    Route::get('getAppPermitReportGeneration', [SysAdministrationController::class, 'getAppPermitReportGeneration']);
+    Route::get('getAppPermitSignatoriesData', [SysAdministrationController::class, 'getAppPermitSignatoriesData']);
+    Route::get('getAppPermitSpecialConditions', [SysAdministrationController::class, 'getAppPermitSpecialConditions']);
     Route::get('getAppPermitChecklist', [SysAdministrationController::class, 'getAppPermitChecklist']);
     Route::get('getAppPermitRequiredDocuments', [SysAdministrationController::class, 'getAppPermitRequiredDocuments']);
     Route::post('onsaveSysAdminData', [SysAdministrationController::class, 'onSaveSystemAdministrationDetails']);

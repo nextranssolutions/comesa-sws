@@ -117,6 +117,19 @@ export class ServiceAdmnistrationService {
       }));
   }
 
+  onLoadTransactionProductRegistryDetails(data) {
+    data.table_name = btoa(data.table_name);
+    this.system = {
+      params: data,
+      headers: { 'Accept': 'application/json' }
+    };
+
+    return this.HttpClient.get(this.baseUrl + '/onLoadTransactionProductRegistryDetails', this.system)
+      .pipe(map(data => {
+        return <any>data;
+      }));
+  }
+ 
   onLoadSystemGuideline(data) {
     data.table_name = btoa(data.table_name);
     this.system = {

@@ -277,7 +277,7 @@ class PublicInfoManagementController extends Controller
                     't3.name as hscodechapters',
                     't3.hscode as chapterscode',
                     't4.name as hscodesheading',
-                    't4.hscode as headingcode',
+                    't4.hscode as headingcode'
                 )
                 ->groupBy(
                     't1.id', 
@@ -364,7 +364,7 @@ class PublicInfoManagementController extends Controller
                     't3.hscode as chapterscode',
                     't4.name as hscodesheading',
                     't4.hscode as headingcode',
-                    't6.name as permit_operation',
+                    't6.name as permit_operation'
                 );
             // ->where('allow_public_visibility', true);
             if (is_numeric($hscodessubheading_defination_id)) {
@@ -827,9 +827,9 @@ class PublicInfoManagementController extends Controller
 
             if ($validator->fails()) {
                 return response()->json([
-                    'status' => 'error',
+                    'success' =>false,
                     'message' => $validator->errors()->first(),
-                ], 422);
+                ], 200);
             }
 
             $table_name = 'tra_subscription_registration';
@@ -957,5 +957,20 @@ class PublicInfoManagementController extends Controller
             $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
         }
         return response()->json($res, 200);
+    }
+
+    public function onGetHelpDeskAccessDetails(Request $req){
+        try{
+              $helpdesk_url = getHelpDeskAccessUrl();
+            $res = array('success'=>true, 'helpdesk_url'=>$helpdesk_url);
+
+
+        } catch (\Exception $exception) {
+            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        } catch (\Throwable $throwable) {
+            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        }
+        return response()->json($res, 200);
+
     }
 }
