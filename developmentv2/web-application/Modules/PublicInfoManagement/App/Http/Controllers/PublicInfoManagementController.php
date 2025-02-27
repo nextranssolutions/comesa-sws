@@ -827,9 +827,9 @@ class PublicInfoManagementController extends Controller
 
             if ($validator->fails()) {
                 return response()->json([
-                    'status' => 'error',
+                    'success' =>false,
                     'message' => $validator->errors()->first(),
-                ], 422);
+                ], 200);
             }
 
             $table_name = 'tra_subscription_registration';
