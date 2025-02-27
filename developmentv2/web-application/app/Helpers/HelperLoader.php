@@ -401,7 +401,7 @@ if (!function_exists('getSingleRecord')) {
 }
 
 if (!function_exists('getSingleRecordColValue')) {
-    function getSingleRecordColValue($table, $where, $col)
+    function getSingleRecordColValue($table, $where, $col='pqsql')
     {
         return DbHelper::getSingleRecordColValue($table, $where, $col);
     }

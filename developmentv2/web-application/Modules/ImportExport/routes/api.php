@@ -16,13 +16,12 @@ use Modules\ImportExport\App\Http\Controllers\ImportExportController;
     |
 */
 
-Route::middleware(['auth:sanctum'])->prefix('v1')->name('api.')->group(function () {
-    Route::get('importexport', fn (Request $request) => $request->user())->name('importexport');
-});
 
 Route::middleware(['XssSanitizer','clear_cache_config','firewall.all'])->prefix('import-export')->group(function () {
    
     Route::get('getSenderreceiversDetails', [ImportExportController::class, 'getSenderreceiversDetails']);
     Route::post('saveImportExportApplication', [ImportExportController::class,'saveImportExportApplication']);
+    Route::post('onSaveUniformApplicantDataset', [ImportExportController::class,'onSaveUniformApplicantDataset']);
+    
     
 });

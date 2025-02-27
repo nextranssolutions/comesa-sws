@@ -249,8 +249,7 @@ class ReferencingHelper
         $serial_variables = $serial_format = DB::table('par_refnumbers_variables')
             ->select('identifier')
             ->get();
-        // print_r($serial_variables);
-        // exit();
+        
         $serial_variables = convertStdClassObjToArray($serial_variables);
         $serial_variables = convertAssArrayToSimpleArray($serial_variables, 'identifier');
         // print_r($serial_variables);
