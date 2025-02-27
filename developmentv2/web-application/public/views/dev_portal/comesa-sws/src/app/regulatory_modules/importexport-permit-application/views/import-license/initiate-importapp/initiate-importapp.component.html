@@ -50,7 +50,7 @@
                     <!-- Your content goes here -->
 
                     <div>
-                        <app-permitgeneraldetails [applicationGeneraldetailsfrm]="applicationGeneraldetailsfrm"></app-permitgeneraldetails>
+                        <app-permitgeneraldetails [applicationGeneraldetailsfrm]="applicationGeneraldetailsfrm" [permitReceiverSenderFrm]="permitReceiverSenderFrm"></app-permitgeneraldetails>
                     </div>
 
                     <!-- Add more content to see the scroll effect -->
@@ -58,10 +58,10 @@
             </div>
             <div class="div_footer button-container">
 
-                <dx-button text="{{'dashboard' | translate}}" type="success" icon="fa fa-eraser"
+                <!-- <dx-button text="{{'dashboard' | translate}}" type="success" icon="fa fa-eraser"
                     [elementAttr]="{  class: 'pull-left' }" (onClick)="onApplicationDashboard()">
-                </dx-button>
-                <dx-button text="{{'save_permit_application &&_next_step' | translate}}" type="default"
+                </dx-button> -->
+                <dx-button text="{{'save_permit_application' | translate}}" type="default"
                     icon="fa fa-save" [elementAttr]="{ id: 'elementId', class: 'pull-right' }"
                     (onClick)="onSaveImportExportApplication()">
                 </dx-button>
