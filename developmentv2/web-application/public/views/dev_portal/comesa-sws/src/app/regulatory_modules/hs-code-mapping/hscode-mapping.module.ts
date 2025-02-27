@@ -32,6 +32,10 @@ import { PermittypeConfigurationsComponent } from './views/permittype-configurat
 import { HscodeRegistryproductsComponent } from './views/hscode-registryproducts/hscode-registryproducts.component';
 import { HscodesproductsRegistryComponent } from './views/hscodes-mapping/hscodesproducts-registry/hscodesproducts-registry.component';
 import { RestrictionsProhibitionsComponent } from './views/restrictions-prohibitions/restrictions-prohibitions.component';
+import { ServiceDeliveryTimelineComponent } from './views/service_delivery_timeline/service-delivery-timeline/service-delivery-timeline.component';
+import { ServiceTypesComponent } from './views/service_delivery_timeline/service-types/service-types.component';
+import { ServicedeliveryConfigsetupComponent } from './views/service_delivery_timeline/servicedelivery-configsetup/servicedelivery-configsetup.component';
+import { SharedServiceDeliveryComponent } from './views/service_delivery_timeline/shared-service-delivery/shared-service-delivery.component';
 
 const ngWizardConfig: NgWizardConfig = {
   theme: THEME.default
@@ -41,7 +45,8 @@ const ngWizardConfig: NgWizardConfig = {
   declarations: [HscodemappingHeaderComponent, HscodemappingLayoutComponent, HscodemappingNavigationComponent, HscodechaptersDefinationComponent,
     HscodesSectionsComponent, HscodesheadingDefinationsComponent, HscodesmappingConfigsetupComponent, HscodeRegistryproductsComponent, HscodesproductsRegistryComponent,
     HscodessubheadingDefinationComponent, HscodestariffDetailsComponent, SharedhscodesConfigurationsComponent, HscodeDashboardComponent,RestrictionsProhibitionsComponent,
-    HscodeInstitutionDepartmentsComponent, HscodeInstitutionsComponent, HscodeinstitutionsConfigsetupComponent, SharedHscodeInstitutionsComponent, PermittypeConfigurationsComponent
+    HscodeInstitutionDepartmentsComponent, HscodeInstitutionsComponent, HscodeinstitutionsConfigsetupComponent, SharedHscodeInstitutionsComponent, PermittypeConfigurationsComponent,ServiceDeliveryTimelineComponent,
+    ServiceTypesComponent,ServicedeliveryConfigsetupComponent,SharedServiceDeliveryComponent
   ],
   imports: [
     CommonModule,
