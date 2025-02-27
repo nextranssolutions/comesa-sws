@@ -20,7 +20,6 @@ import { HscodechaptersDefinationComponent } from './views/hscodes-mapping/hscod
 import { HscodesSectionsComponent } from './views/hscodes-mapping/hscodes-sections/hscodes-sections.component';
 import { HscodesheadingDefinationsComponent } from './views/hscodes-mapping/hscodesheading-definations/hscodesheading-definations.component';
 import { HscodesmappingConfigsetupComponent } from './views/hscodes-mapping/hscodesmapping-configsetup/hscodesmapping-configsetup.component';
-import { HscodesproductsRegistryComponent } from './views/hscodes-mapping/hscodesproducts-registry/hscodesproducts-registry.component';
 import { HscodessubheadingDefinationComponent } from './views/hscodes-mapping/hscodessubheading-defination/hscodessubheading-defination.component';
 import { HscodestariffDetailsComponent } from './views/hscodes-mapping/hscodestariff-details/hscodestariff-details.component';
 import { SharedhscodesConfigurationsComponent } from './views/hscodes-mapping/sharedhscodes-configurations/sharedhscodes-configurations.component';
@@ -30,55 +29,53 @@ import { HscodeInstitutionsComponent } from './views/hscode-institutional-inform
 import { HscodeinstitutionsConfigsetupComponent } from './views/hscode-institutional-information/hscodeinstitutions-configsetup/hscodeinstitutions-configsetup.component';
 import { SharedHscodeInstitutionsComponent } from './views/hscode-institutional-information/shared-hscode-institutions/shared-hscode-institutions.component';
 import { PermittypeConfigurationsComponent } from './views/permittype-configurations/permittype-configurations.component';
-
-
-
-
-
-
+import { HscodeRegistryproductsComponent } from './views/hscode-registryproducts/hscode-registryproducts.component';
+import { HscodesproductsRegistryComponent } from './views/hscodes-mapping/hscodesproducts-registry/hscodesproducts-registry.component';
+import { RestrictionsProhibitionsComponent } from './views/restrictions-prohibitions/restrictions-prohibitions.component';
 
 const ngWizardConfig: NgWizardConfig = {
   theme: THEME.default
 };
 
 @NgModule({
-  declarations: [HscodemappingHeaderComponent, HscodemappingLayoutComponent, HscodemappingNavigationComponent,HscodechaptersDefinationComponent,
-    HscodesSectionsComponent,HscodesheadingDefinationsComponent,HscodesmappingConfigsetupComponent,HscodesproductsRegistryComponent,
-    HscodessubheadingDefinationComponent,HscodestariffDetailsComponent,SharedhscodesConfigurationsComponent,HscodeDashboardComponent,
-    HscodeInstitutionDepartmentsComponent,HscodeInstitutionsComponent,HscodeinstitutionsConfigsetupComponent,SharedHscodeInstitutionsComponent,PermittypeConfigurationsComponent],
+  declarations: [HscodemappingHeaderComponent, HscodemappingLayoutComponent, HscodemappingNavigationComponent, HscodechaptersDefinationComponent,
+    HscodesSectionsComponent, HscodesheadingDefinationsComponent, HscodesmappingConfigsetupComponent, HscodeRegistryproductsComponent, HscodesproductsRegistryComponent,
+    HscodessubheadingDefinationComponent, HscodestariffDetailsComponent, SharedhscodesConfigurationsComponent, HscodeDashboardComponent,RestrictionsProhibitionsComponent,
+    HscodeInstitutionDepartmentsComponent, HscodeInstitutionsComponent, HscodeinstitutionsConfigsetupComponent, SharedHscodeInstitutionsComponent, PermittypeConfigurationsComponent
+  ],
   imports: [
-     CommonModule,
-        SharedModuleModule,HscodeRoutingModule,RouterModule,  
-        NgWizardModule.forRoot(ngWizardConfig),
-        NgHttpLoaderModule, DxButtonModule, DxProgressBarModule,
-        FormsModule,
-        ReactiveFormsModule,
-        NgxCaptchaModule, DxLoadPanelModule,
-        DxPopupModule, DxDataGridModule, DxActionSheetModule, DxFileUploaderModule, DxNumberBoxModule, DxCheckBoxModule, DxSelectBoxModule, DxTextAreaModule, DxContextMenuModule, DxMenuModule, DxTagBoxModule,
-        DxDateBoxModule, DxTabPanelModule, DxFormModule, DxScrollViewModule,DxTreeListModule,
-        DxTextBoxModule,
-        DxDateBoxModule, DxDataGridModule,
-        HttpClientModule, DxValidatorModule,
-        NgxIntlTelInputModule, DxToolbarModule,
-        TranslateModule.forRoot({
-          loader: {
-            provide: TranslateLoader,
-            useFactory: httpTranslateLoader,
-            deps: [HttpClient]
-          }
-        }),
-        DxDataGridModule,
-        DxPopupModule, DxGalleryModule,
-        DxFileUploaderModule,
-        DxActionSheetModule,
-        DxFileUploaderModule, DxNumberBoxModule, DxCheckBoxModule, DxSelectBoxModule, DxTextAreaModule, DxContextMenuModule, DxMenuModule, DxScrollViewModule, DxTabPanelModule,
-        DxHtmlEditorModule,
-        DxDropDownBoxModule, DxTagBoxModule,
-        DxRadioGroupModule,
-        SafePipeModule,
-      ]
-  
+    CommonModule,
+    SharedModuleModule, HscodeRoutingModule, RouterModule,
+    NgWizardModule.forRoot(ngWizardConfig),
+    NgHttpLoaderModule, DxButtonModule, DxProgressBarModule,
+    FormsModule,
+    ReactiveFormsModule,
+    NgxCaptchaModule, DxLoadPanelModule,
+    DxPopupModule, DxDataGridModule, DxActionSheetModule, DxFileUploaderModule, DxNumberBoxModule, DxCheckBoxModule, DxSelectBoxModule, DxTextAreaModule, DxContextMenuModule, DxMenuModule, DxTagBoxModule,
+    DxDateBoxModule, DxTabPanelModule, DxFormModule, DxScrollViewModule, DxTreeListModule,
+    DxTextBoxModule,
+    DxDateBoxModule, DxDataGridModule,
+    HttpClientModule, DxValidatorModule,
+    NgxIntlTelInputModule, DxToolbarModule,
+    TranslateModule.forRoot({
+      loader: {
+        provide: TranslateLoader,
+        useFactory: httpTranslateLoader,
+        deps: [HttpClient]
+      }
+    }),
+    DxDataGridModule,
+    DxPopupModule, DxGalleryModule,
+    DxFileUploaderModule,
+    DxActionSheetModule,
+    DxFileUploaderModule, DxNumberBoxModule, DxCheckBoxModule, DxSelectBoxModule, DxTextAreaModule, DxContextMenuModule, DxMenuModule, DxScrollViewModule, DxTabPanelModule,
+    DxHtmlEditorModule,
+    DxDropDownBoxModule, DxTagBoxModule,
+    DxRadioGroupModule,
+    SafePipeModule,
+  ]
+
 })
 export class HscodeMappingModule {
-  
- }
+
+}
