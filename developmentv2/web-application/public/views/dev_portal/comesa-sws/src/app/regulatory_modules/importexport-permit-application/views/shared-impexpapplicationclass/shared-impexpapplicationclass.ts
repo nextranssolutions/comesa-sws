@@ -165,7 +165,6 @@ export class SharedImpexpApplicationClass {
     this.trader_id = user.trader_id;
     this.mistrader_id = user.mistrader_id;
     this.application_details = localStorage.getItem('application_details');
-   console.log("ApplicationDetails:",this.application_details)
     this.application_details = JSON.parse(this.application_details);
     this.form_fielddata = this.application_details.application_form;
     this.applicationGeneraldetailsfrm = this.formBuilder.group({});
