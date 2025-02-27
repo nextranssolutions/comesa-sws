@@ -185,7 +185,7 @@ class WorkflowManagementController extends Controller
         return response()->json($res, 200);
     }
 
-    public function getRegulatoryFunctionGuidelines(Request $req)
+public function getRegulatoryFunctionGuidelines(Request $req)
 {
     try {
         $regulatory_function_id = $req->regulatory_function_id;
