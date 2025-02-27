@@ -20,6 +20,9 @@ import { ToastrService } from 'ngx-toastr';
 import { OtpService } from 'src/app/core-services/otp/otp.service';
 import { DxButtonTypes } from 'devextreme-angular/ui/button';
 import { ConfigurationsService } from 'src/app/core-services/configurations/configurations.service';
+import { PublicDashboardService } from 'src/app/core-services/public-dashboard/public-dashboard.service';
+import { UtilityService } from 'src/app/core-services/utilities/utility.service';
+import { DomSanitizer,SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-top-section',
@@ -29,11 +32,14 @@ import { ConfigurationsService } from 'src/app/core-services/configurations/conf
 export class TopSectionComponent {
   @ViewChild('targetValidator', { static: false })
   validator: DxValidatorComponent;
-
+  printiframeUrl:any;
   phonePattern = /^[+]?(\d[\d\-()\s]{7,}\d)$/;
   phoneRules: DxTextBoxTypes.Properties['maskRules'] = {
     X: /[\d]/,
   };
+  printReportTitle: string;
+  isPrintReportVisible: boolean = false;
+  helpdeskUrl: SafeResourceUrl;
   loading = false;
   auth_response: any;
   isLoggedIn: boolean;
@@ -116,12 +122,14 @@ export class TopSectionComponent {
     public authService: AuthenticationService,
     private translationService: LanguagesService,
     private router: Router,
+    private sanitizer: DomSanitizer,
     private spinner: SpinnerVisibilityService,
     private fb: FormBuilder,
     private userservice: UserManagementService,
     public toastr: ToastrService,
     private otpservice: OtpService,
     private configService: ConfigurationsService,
+    public publicService:PublicDashboardService,
     private cdr: ChangeDetectorRef
   ) {
     this.spinner.hide();
@@ -317,7 +325,9 @@ export class TopSectionComponent {
   funcpopWidth(percentage_width) {
     return (window.innerWidth * percentage_width) / 100;
   }
-
+  funcpopHeight(percentage_width) {
+    return (window.innerHeight * percentage_width) / 100;
+  }
   submitSignup() {
     const isOptionalFields = true;
     const controls = this.signUpFrm.controls;
@@ -439,24 +449,7 @@ export class TopSectionComponent {
         }
       );
   }
-  onAccountTypeSelection($event) {
-    if ($event.selectedItem) {
-      let account_type = $event.selectedItem;
-      this.dashboard_type_id = account_type.dashboard_type_id;
-      this.is_expertsprofile = account_type.is_expertsprofile;
-    } else {
-      this.dashboard_type_id = 0;
-      this.is_expertsprofile = false;
-    }
-
-    if (!this.is_expertsprofile) {
-      this.signInFrm.get('experts_profile_no')?.clearValidators();
-    } else {
-      this.signInFrm
-        .get('experts_profile_no')
-        ?.setValidators([Validators.required]); // Add any other validators you need
-    }
-  }
+ 
   onSignIn() {
     // Clear localStorage before logging in
     localStorage.clear();
@@ -612,5 +605,10 @@ export class TopSectionComponent {
 
   spinnerHide() {
     this.loadingVisible = false;
+  }
+  funcRedirectToHelpDesk(){
+    this.helpdeskUrl  = this.configService.getSafeUrl(AppSettings.help_deskurl);
+    this.printReportTitle = 'Help Desk';
+    this.isPrintReportVisible = true;
   }
 }

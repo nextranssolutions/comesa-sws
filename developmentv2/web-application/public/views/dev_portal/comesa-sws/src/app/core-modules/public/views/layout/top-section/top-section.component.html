@@ -15,6 +15,10 @@
     <div *ngIf="!authService.isLoggedIn"></div>
 
     <div *ngIf="authService.isLoggedIn" class="">
+      <span class=" cursor-pointer language-option" (click)="funcRedirectToHelpDesk()">
+        <i class="fa fa-ticket"></i> {{ "help_desk" | translate }}
+      </span>
+      ||
       <span class="logged-in-text">{{ "already_logged_in" | translate }}</span>
       <span class="username">{{ "username" | translate }} | {{ userFirstName }}</span>
       <span class="dashboard-link cursor-pointer language-option" (click)="funcRedirectToDashboard()">
@@ -27,6 +31,10 @@
     </div>
 
     <div *ngIf="!authService.isLoggedIn" class="">
+      <span class="dashboard-link cursor-pointer language-option" (click)="funcRedirectToHelpDesk()">
+        <i class="fa fa-ticket"></i> {{ "help_desk" | translate }}
+      </span>
+      ||
       <span class="form-label cursor-pointer language-option" (click)="openSignupPopup()">
         <i class="fa fa-user"></i> {{ "create_account" | translate }}
       </span>
@@ -59,130 +67,121 @@
 
 
 <dx-popup [(visible)]="isSignupPopupVisible" [showTitle]="true"
-  title="{{ 'create_account(applicants_only)' | translate }}" [width]="550" [height]="750" [dragEnabled]="true"
-  [hideOnOutsideClick]="true">
-  <dx-form [formGroup]="signUpFrm" (ngSubmit)="submitSignup()" class="futuristic-form">
+  title="{{ 'create_account(applicants_only)' | translate }}" [width]="funcpopWidth(45)"
+  [height]="funcpopHeight(70)" [dragEnabled]="true"
+  [hideOnOutsideClick]="false">
 
-    <dxi-item dataField="{{ 'trader_account_type' | translate }}" editorType="dxTextBox"
-      [editorOptions]="{ placeholder: '{select_account_type}' }">
+  <form enctype="multipart/form-data" role="form" [formGroup]="signUpFrm" (ngSubmit)="submitSignup()">
+    <div class="col-xs-12 col-md-12 col-lg-12 col-xl-12">
+      <label for="ti" class="control-label">{{ 'trader_account_type' | translate }}</label>
       <dx-select-box [dataSource]="traderAccountTypeData" formControlName="traderaccount_type_id" valueExpr="id"
         [searchEnabled]="true" displayExpr="name" class="custom-input">
       </dx-select-box>
-    </dxi-item>
+    </div>
 
-    <dxi-item dataField="{{ 'name' | translate }}" editorType="dxTextBox">
+    <div class="col-xs-12 col-md-12 col-lg-12 col-xl-12">
+      <label for="ti" class="control-label">{{ 'name' | translate }}</label>
       <dx-text-box formControlName="name" [showClearButton]="true" class="custom-input"></dx-text-box>
-    </dxi-item>
+    </div>
 
-    <dxi-item dataField="{{ 'email_address' | translate }}" editorType="dxTextBox">
+    <div class="col-xs-12 col-md-12 col-lg-12 col-xl-12">
+      <label for="ti" class="control-label">{{ 'email_address' | translate }}</label>
       <dx-text-box formControlName="email_address" [showClearButton]="true" class="custom-input"></dx-text-box>
-    </dxi-item>
-
-    <dxi-item dataField="{{ 'country' | translate }}" editorType="dxTextBox"
-      [editorOptions]="{ placeholder: '{select_country}' }">
+    </div>
+    <div class="col-xs-12 col-md-12 col-lg-12 col-xl-12">
+      <label for="ti" class="control-label">{{ 'country' | translate }}</label>
       <dx-select-box [dataSource]="Countries" formControlName="country_of_origin_id"
         (onSelectionChanged)="onCountrySelection($event)" [showClearButton]="true" valueExpr="id" [searchEnabled]="true"
         displayExpr="name" class="custom-input">
       </dx-select-box>
-    </dxi-item>
+    </div>
 
-    <dxi-item dataField="{{'phone_number' | translate }}" editorType="dxTextBox">
+    <div class="col-xs-12 col-md-12 col-lg-12 col-xl-12">
+      <label for="ti" class="control-label">{{'phone_number' | translate }}</label>
       <dx-text-box formControlName="phone_number" class="custom-input"></dx-text-box>
-    </dxi-item>
+    </div>
 
-    <dxi-item>
+    <div class="col-xs-12 col-md-12 col-lg-12 col-xl-12">
       <dx-button text="{{ 'request_otp' | translate }}" type="default" icon="fa fa-key"
         [elementAttr]="{ class: 'neon-button' }" (onClick)="onSignUpOtpRequest()">
       </dx-button>
-    </dxi-item>
+    </div>
 
-    <dxi-item editorType="dxTextBox">
+    <div class="col-xs-12 col-md-12 col-lg-12 col-xl-12">
+      <label for="ti" class="control-label">{{'enter_otp' | translate }}</label>
       <dx-number-box formControlName="otp_value" placeholder="{{'enter_otp' | translate }}" [showClearButton]="true"
         class="custom-input">
         <dx-validator>
           <dxi-validation-rule type="required" message="OTP is required"></dxi-validation-rule>
         </dx-validator>
       </dx-number-box>
-    </dxi-item>
+    </div>
 
-    <dxi-item class="d-flex custom-buttons">
+
+    <div class="col-xs-12 col-md-12 col-lg-12 col-xl-12">
       <dx-button text="{{'sign_up' | translate}}" type="success" icon="fa fa-arrow-right"
         [elementAttr]="{ class: 'neon-button' }" (onClick)="submitSignup()">
       </dx-button>
       <dx-button text="{{ 'already_have_an_account' | translate }}?" type="default" icon="fa fa-user"
         [elementAttr]="{ class: 'neon-button-outline' }" (onClick)="openSigninPopup()">
       </dx-button>
-    </dxi-item>
-
-
-
-  </dx-form>
+    </div>
+  </form>
 
 
 </dx-popup>
 
-<dx-popup [(visible)]="isSigninPopupVisible" [showTitle]="true" title="{{ 'sign-in' | translate }}" [width]="550"
-  [height]="650" [dragEnabled]="true" [hideOnOutsideClick]="true">
-  <dx-form class="futuristic-form" [formGroup]="signInFrm" (ngSubmit)="onSignIn()">
+<dx-popup [(visible)]="isSigninPopupVisible" [showTitle]="true" title="{{ 'sign-in' | translate }}" [width]="funcpopWidth(40)"
+  [height]="funcpopHeight(55)" [dragEnabled]="true" [hideOnOutsideClick]="false">
+    <form enctype="multipart/form-data" role="form" [formGroup]="signInFrm" (ngSubmit)="onSignIn()">
+    
 
-    <!-- Email Address Field -->
-    <dxi-item dataField="email_address">
+    <div class="col-xs-12 col-md-12 col-lg-12 col-xl-12">
+      <label for="ti" class="control-label">{{ 'enter_email_address' | translate }}</label>
       <dx-text-box class="dx-textbox" formControlName="email_address"
         placeholder="{{ 'enter_email_address' | translate }}" [showClearButton]="true">
       </dx-text-box>
-    </dxi-item>
-
-    <!-- Password Field with Toggle Button -->
-    <dxi-item dataField="password" editorType="dxSelectBox">
+    </div>
+    <div class="col-xs-12 col-md-12 col-lg-12 col-xl-12">
+      <label for="ti" class="control-label">{{ 'password' | translate }}</label>
       <dx-text-box formControlName="password" mode="password" placeholder="{{ 'password' | translate }}"
-        [showClearButton]="true" [inputAttr]="{ 'aria-label': 'Password' }" stylingMode="filled"
-        [(mode)]="passwordMode">
-        <dxi-button name="today" location="after" [options]="passwordButton"></dxi-button>
-      </dx-text-box>
-    </dxi-item>
-
-    <!-- Forgot Password Link -->
-    <!-- <dxi-item>
-    
-    </dxi-item> -->
-
+      [showClearButton]="true" [inputAttr]="{ 'aria-label': 'Password' }" stylingMode="filled"
+      [(mode)]="passwordMode">
+      <dxi-button name="today" location="after" [options]="passwordButton"></dxi-button>
+    </dx-text-box>
+    </div>
+  
     <!-- Send OTP Button -->
-    <dxi-item>
-      <dx-button class="dx-button" text="{{'request_otp' | translate}}" icon="fa fa-key" (onClick)="onOtpRequest()">
+    <div class="col-xs-12 col-md-12 col-lg-12 col-xl-12">
+      <dx-button class="dx-button" text="{{'request_otp' | translate}}" type="default" icon="fa fa-key" (onClick)="onOtpRequest()">
       </dx-button>
-    </dxi-item>
-
+    </div>
     <!-- OTP Input -->
-    <dxi-item>
+    <div class="col-xs-12 col-md-12 col-lg-12 col-xl-12">
       <dx-number-box class="dx-textbox" formControlName="otp_value" placeholder="{{'enter_otp' | translate}}">
         <dx-validator>
           <dxi-validation-rule type="required" message="{{ 'otp_is_required' | translate }}"></dxi-validation-rule>
         </dx-validator>
       </dx-number-box>
-    </dxi-item>
+    </div>
 
     <!-- Sign In Button -->
-    <dxi-item>
-      <dx-button class="dx-button" text="{{'sign_in' | translate}}" icon="fas fa-sign-in-alt" (onClick)="onSignIn()">
+    <div class="col-xs-12 col-md-12 col-lg-12 col-xl-12">
+      <dx-button type="success" class="dx-button" text="{{'sign_in' | translate}}" icon="fas fa-sign-in-alt" (onClick)="onSignIn()">
       </dx-button>
 
-    </dxi-item>
+    </div>
 
-    <!-- Create Account Link -->
-    <dxi-item class="d-flex custom-buttons">
-      <span class="cursor-pointer text-primary">
-        <a href="javascript:void(0)" (click)="openSignupPopup()">
-          <i class="fas fa-user-plus"></i> {{ 'create_account' | translate }}
-        </a>
-      </span>
-      <span class="cursor-pointer text-primary">
-        <a href="javascript:void(0)" (click)="funcLostPassord()">
-          <i class="fa fa-key"></i> {{ 'lost_password' | translate }}
-        </a>
-      </span>
-    </dxi-item>
+    <div class="col-xs-12 col-md-12 col-lg-12 col-xl-12 margin-top">
+      <dx-button text="{{ 'create_account' | translate }}" type="success" icon="fa fa-user-plus"
+        [elementAttr]="{ class: 'neon-button' }" (onClick)="openSignupPopup()">
+      </dx-button>
+      <dx-button text="{{ 'lost_password' | translate }}?" type="default" icon="fa fa-key"
+        [elementAttr]="{ class: 'neon-button-outline' }" (onClick)="funcLostPassord()">
+      </dx-button>
+    </div>
 
-  </dx-form>
+  </form>
 
 
 </dx-popup>
@@ -216,3 +215,13 @@
 <dx-load-panel #loadPanel shadingColor="rgba(0,0,0,0.4)" [position]="{ of: '#employee' }" [(visible)]="loadingVisible"
   [showIndicator]="true" [showPane]="true" [shading]="true" [message]="spinnerMessage" [hideOnOutsideClick]="false">
 </dx-load-panel>
+
+
+<dx-popup class="popup" [width]="funcpopWidth(80)" [height]="700" [showTitle]="true" title="{{printReportTitle}}"
+  [dragEnabled]="false" [hideOnOutsideClick]="false" [(visible)]="isPrintReportVisible">
+  <div *dxTemplate="let data of 'content'" class="row">
+
+    <iframe *ngIf="helpdeskUrl" [src]="helpdeskUrl" width="100%" height="650" class="col-lg-12"
+      frameborder="0"></iframe>
+  </div>
+</dx-popup>

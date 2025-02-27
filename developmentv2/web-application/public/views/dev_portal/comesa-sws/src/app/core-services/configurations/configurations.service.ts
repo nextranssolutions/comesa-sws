@@ -75,7 +75,8 @@ export class ConfigurationsService {
   }
 
   getSafeUrl(url) {
-    return this.sanitizer.bypassSecurityTrustResourceUrl(url)
+    return this.sanitizer.bypassSecurityTrustResourceUrl(url);
+    
   }
   onLoadAppSubmissionGuidelines(sub_module_id, section_id) {
     var headers = new HttpHeaders({

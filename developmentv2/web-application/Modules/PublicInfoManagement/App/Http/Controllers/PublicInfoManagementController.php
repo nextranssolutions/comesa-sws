@@ -958,4 +958,19 @@ class PublicInfoManagementController extends Controller
         }
         return response()->json($res, 200);
     }
+
+    public function onGetHelpDeskAccessDetails(Request $req){
+        try{
+              $helpdesk_url = getHelpDeskAccessUrl();
+            $res = array('success'=>true, 'helpdesk_url'=>$helpdesk_url);
+            
+
+        } catch (\Exception $exception) {
+            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        } catch (\Throwable $throwable) {
+            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        }
+        return response()->json($res, 200);
+
+    }
 }

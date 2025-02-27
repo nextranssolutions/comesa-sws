@@ -32,6 +32,7 @@ import { RestrictionsprohibitsComponent } from './views/restrictionsprohibits/re
 import { FaqsComponent } from './views/faqs/faqs.component';
 import { SearchProceduresComponent } from './views/search-procedures/search-procedures.component';
 import { AllProceduresComponent } from './views/all-procedures/all-procedures.component';
+import { SafePipe } from 'src/app/safe.pipe';
 
 @NgModule({
   declarations: [TopSectionComponent,
@@ -39,7 +40,7 @@ import { AllProceduresComponent } from './views/all-procedures/all-procedures.co
     FooterComponent, SystemguudelinesDetailsComponent,
     NavigationComponent, HomePageComponent,
     CenterPageComponent,
-
+    SafePipe,
     SystemmanualPageComponent, EcredSecretariatsigninComponent, EcredSecretariatsigninComponent,
 
     ReportingAndAnalyticsComponent,

@@ -73,7 +73,7 @@
   align-items: center;
   display: flex !important;
   width: 100%;
-
+  padding: 15px  10px !important;
   /* padding-top: 15px; */
   /* padding-left: 20px; */
   /* padding: 10px 0 10px 0; */
