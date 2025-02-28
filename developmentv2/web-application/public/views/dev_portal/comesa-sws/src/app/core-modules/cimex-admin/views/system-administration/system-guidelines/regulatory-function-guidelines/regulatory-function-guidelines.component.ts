@@ -5,6 +5,7 @@ import { DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
 import { SpinnerVisibilityService } from 'ng-http-loader';
 import { ToastrService } from 'ngx-toastr';
 import { ReportsService } from 'src/app/core-services/reports/reports.service';
+import { ServiceAdmnistrationService } from 'src/app/core-services/system-admnistration/system-admnistration.service';
 import { UtilityService } from 'src/app/core-services/utilities/utility.service';
 import { WokflowManagementService } from 'src/app/core-services/workflow-management/wokflow-management.service';
 
@@ -31,6 +32,7 @@ export class RegulatoryFunctionGuidelinesComponent {
   spinnerMessage: string;
   resetcolumns:string;
   regFunctionsData: any;
+  record_id: number;
   loading = false;
   statusOptions = [
     { value: true, text: 'Yes' },
@@ -59,6 +61,7 @@ export class RegulatoryFunctionGuidelinesComponent {
       public utilityService: UtilityService,
       private reportingAnalytics: ReportsService,
       public toastr: ToastrService,
+      private admnistrationService: ServiceAdmnistrationService,
   
     ) {
       this.table_name = 'sys_regulatoryfunction_guidelines';
@@ -70,7 +73,7 @@ export class RegulatoryFunctionGuidelinesComponent {
         regulatory_function_id: new FormControl('', Validators.compose([])),
         links: new FormControl('', Validators.compose([])),
         is_enabled: new FormControl('', Validators.compose([])),
-        documents_upload: new FormControl('', Validators.compose([])),
+        document_path: new FormControl('', Validators.compose([])),
        
       });
 
@@ -78,17 +81,17 @@ export class RegulatoryFunctionGuidelinesComponent {
     
     }
     ngOnInit() {
-      this.fetchWorkflowItemsDetails();
+      this.fetchGuidelineDetails();
       this.onLoadRegulatoryFunctionsDetails();
     }
 
 
 
-  fetchWorkflowItemsDetails() {
+  fetchGuidelineDetails() {
     var data_submit = {
       'table_name': this.table_name,    
     }
-    this.workflowService.getWorkflowConfigs(data_submit)
+    this.admnistrationService.onLoadSystemAdministrationData(data_submit)
       .subscribe(
         data => {
           this.data_record = data;
@@ -103,7 +106,7 @@ export class RegulatoryFunctionGuidelinesComponent {
     var data_submit = {
       'table_name': 'par_regulatory_functions',    
     }
-    this.workflowService.getWorkflowConfigs(data_submit)
+    this.admnistrationService.onLoadSystemAdministrationData(data_submit)
       .subscribe(
         data => {
           this.data_record = data;
@@ -115,46 +118,73 @@ export class RegulatoryFunctionGuidelinesComponent {
         });
   }
 
-  onFuncSaveRecordData() {
+  // onFuncSaveRecordData() {
+  //   const formData = new FormData();
+  //   const invalid = [];
+  //   const controls = this.guidelinesFrm.controls;
 
-
-    const formData = new FormData();
-    const invalid = [];
-    const controls = this.guidelinesFrm.controls;
-    for (const name in controls) {
-      if (controls[name].invalid) {
-        this.toastr.error('Fill In All Mandatory fields with (*), missing value on ' + name.replace('_id', ''), 'Alert');
-        return;
-      }
-    }
-    if (this.guidelinesFrm.invalid) {
-      return;
-    }
+    
+  //   for (const name in controls) {
+  //     if (controls[name].invalid) {
+  //       this.toastr.error('Fill In All Mandatory fields with (*), missing value on ' + name.replace('_id', ''), 'Alert');
+  //       return;
+  //     }
+  //   }
+  //   if (this.guidelinesFrm.invalid) {
+  //     return;
+  //   }
   
   
-    this.guidelinesFrm.get('resetcolumns')?.setValue(this.resetcolumns);
-    this.guidelinesFrm.get('table_name')?.setValue(this.table_name);
-    this.spinnerShow('Saving ' + this.parameter_name);
+  //   this.guidelinesFrm.get('resetcolumns')?.setValue(this.resetcolumns);
+  //   this.guidelinesFrm.get('table_name')?.setValue(this.table_name);
+  //   this.spinnerShow('Saving ' + this.parameter_name);
    
-    this.spinner.show();
-    this.workflowService.onSaveWorkflowDetailsDetails(this.table_name, this.guidelinesFrm.value, 'onsaveWorkflowConfigData')
+  //   this.spinner.show();
+  //   this.admnistrationService.onSaveSystemAdministrationDetails(this.table_name, this.guidelinesFrm.value, 'onSaveRegulatoryFunctionGuidelines')
+  //     .subscribe(
+  //       response => {
+  //         this.response = response;
+  //         //the details 
+  //         if (this.response.success) {
+  
+  //           this.fetchGuidelineDetails();
+  //           this.toastr.success(this.response.message, 'Response');
+  
+  //           this.spinnerHide();
+  //         } else {
+  //           this.toastr.error(this.response.message, 'Alert');
+  //           this.spinnerHide();
+  //         }
+  //         this.spinnerHide();
+  //       },
+  //       error => {
+  //         this.toastr.error('Error Occurred', 'Alert');
+  //         this.spinnerHide();
+  //       });
+  // }
+
+  onFuncSaveRecordData() {
+    const formData = new FormData();
+    Object.keys(this.guidelinesFrm.controls).forEach(key => {
+      formData.append(key, this.guidelinesFrm.get(key)?.value);
+    });
+    formData.append('table_name', this.table_name);
+    formData.append('resetcolumns', this.resetcolumns);
+
+    this.spinnerShow('Saving ' + this.parameter_name);
+    this.admnistrationService.onSaveSystemAdministrationDetails(this.table_name, formData, 'onSaveRegulatoryFunctionGuidelines')
       .subscribe(
         response => {
           this.response = response;
-          //the details 
           if (this.response.success) {
-  
-            this.fetchWorkflowItemsDetails();
+            this.fetchGuidelineDetails();
+            this.guidelineDetailsVisible = false;
+            this.record_id = this.response.record_id;
+            this.guidelinesFrm.get('id')?.setValue(this.record_id);
             this.toastr.success(this.response.message, 'Response');
-  
-            // this.workflow_id = this.response.record_id;
-            // this.guidelinesFrm.get('id')?.setValue(this.workflow_id);
-            // this.fetchWorkflowStagesDetails()a
-            // this.selectedTabIndex = 1;
             this.spinnerHide();
           } else {
             this.toastr.error(this.response.message, 'Alert');
-            this.spinnerHide();
           }
           this.spinnerHide();
         },
@@ -163,6 +193,21 @@ export class RegulatoryFunctionGuidelinesComponent {
           this.spinnerHide();
         });
   }
+
+
+
+
+  onFileSelected(event: any) {
+    const file = event.file;  // DevExtreme specific
+    if (file) {
+      this.guidelinesFrm.patchValue({ document_path: file });
+    } else {
+      console.error('No file uploaded or file format is incorrect.');
+    }
+  }
+
+
+
   onAddGuideline(){
     this.guidelinesFrm.reset();
     this.guidelineDetailsVisible = true;
@@ -268,7 +313,7 @@ export class RegulatoryFunctionGuidelinesComponent {
             this.spinner.hide();
             this.response = response;
             if (this.response.success) {
-              this.fetchWorkflowItemsDetails();
+              this.fetchGuidelineDetails();
               this.enablePopupVisible = false;
               this.toastr.success(this.response.message, 'Response');
               // this.deletePopupVisible = false;
@@ -292,7 +337,7 @@ export class RegulatoryFunctionGuidelinesComponent {
     
             this.response = response;
             if (this.response.success) {
-              this.fetchWorkflowItemsDetails();
+              this.fetchGuidelineDetails();
               this.toastr.success(this.response.message, 'Response');
               this.deletePopupVisible = false;
             }

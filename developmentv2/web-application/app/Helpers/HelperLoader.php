@@ -653,4 +653,3 @@ if ( !function_exists( 'generateApplicationRefNumber' ) ) {
         return ReferencingHelper::generateApplicationRefNumber( $ref_id, $codes_array, $year, $process_id, $user_id );
     }
 }
-

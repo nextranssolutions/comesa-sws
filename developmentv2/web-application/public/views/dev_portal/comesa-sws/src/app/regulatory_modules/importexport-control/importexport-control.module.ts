@@ -20,6 +20,8 @@ import { PermitgeneraldetailsComponent } from './views/impexpdata_entry/permitge
 import { NgWizardConfig, NgWizardModule, THEME } from 'ng-wizard'
 import { SafePipeModule } from '../../safe-pipe/safe-pipe.module';
 import { SharedModuleModule } from '../../shared-views/shared-module.module';
+import { ImportexportDashboardComponent } from './views/importexport-dashboard/importexport-dashboard.component';
+import { ApplicantdetailsComponent } from './views/impexpdata_entry/applicantdetails/applicantdetails.component';
 
 const ngWizardConfig: NgWizardConfig = {
   theme: THEME.default
@@ -27,9 +29,9 @@ const ngWizardConfig: NgWizardConfig = {
 
 
 @NgModule({
-  declarations: [ImportexportNavigationComponent,
+  declarations: [ImportexportNavigationComponent,ImportexportDashboardComponent,
     ImportexportLayoutComponent, DraftImportlicensedashComponent,
-    PermitproductdetailsComponent, PermitgeneraldetailsComponent,
+    PermitproductdetailsComponent, PermitgeneraldetailsComponent,ApplicantdetailsComponent,
     ImportexportHeaderComponent,InitiateImportappComponent],
   imports: [
     CommonModule, ImportexportRoutingModule,

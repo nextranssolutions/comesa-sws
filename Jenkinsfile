@@ -37,7 +37,7 @@ pipeline {
           sed -i \'4s/true/false/\' .env
           sed -i \'27s/false/true/\' .env
           php artisan optimize
-          rm .env.encrypted .env.eac.encrypted
+          rm .env.encrypted
           
           # Enable Maintenance Mode
           php artisan down

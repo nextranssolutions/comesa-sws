@@ -26,9 +26,9 @@ export class PermittypeConfigurationsComponent {
     { value: true, text: 'Yes' },
     { value: false, text: 'No' },
   ];
-  permit_type_id: number;
+  transactionpermit_type_id: number;
   account_type_id: number;
-  organization_id: number;
+  organisation_id: number;
   workflow_id: number;
   data: any[];
   editRowKey: any;
@@ -37,10 +37,19 @@ export class PermittypeConfigurationsComponent {
   workflowData: any;
   workflowStageData: any;
   operationTypeData: any;
+  srvDeliveryTimelineData: any;
+  refNumberData: any;
   productTypeData: any;
+  renewableStatusData: any;
+  permitStatusData: any;
   hsCodeData: any;
+  quotaLimitationData: any;
+  mappingStatusData: any;
+  hscodeMappingOptionData: any;
   permitTemplateTypeData: any;
+  permitTemplateData: any;
   documentTypeData: any;
+  wfStageData: any;
   checklistTypeData: any;
   checklistDefData: any;
   documentRequirementTypeData: any;
@@ -51,9 +60,9 @@ export class PermittypeConfigurationsComponent {
   regulatoryFunctionData: any;
   createNewDataFrm: FormGroup;
   hsCodeDataFrm: FormGroup;
-  PermitCertificateTemplateFrm: FormGroup;
+  PermitSignatoriesFrm: FormGroup;
   PermitChecklistFrm: FormGroup;
-  PermitRpttGenFrm: FormGroup;
+  PermitSpecialConditionsFrm: FormGroup;
   PermitRqdDocFrm: FormGroup;
   isnewrecord: boolean;
   submitted = false;
@@ -68,8 +77,8 @@ export class PermittypeConfigurationsComponent {
   showTabPanel: boolean = false;
   tabPanelPopupVisible: boolean = false;
   hscodePopupVisible: boolean = false;
-  PermitCertTempPopupVisible: boolean = false;
-  PermitRpttGenPopupVisible: boolean = false;
+  PermitSignatoriesPopupVisible: boolean = false;
+  PermitSpecialConditionsPopupVisible: boolean = false;
   PermitRqdDocPopupVisible: boolean = false;
   PermitChecklistPopupVisible: boolean = false;
   showWizard = false;
@@ -131,7 +140,7 @@ export class PermittypeConfigurationsComponent {
   selectedTabIndex = 0;
   selectTextOnEditStart: boolean;
   startEditAction: boolean;
-  tabNames = ["PermitTypes", "HsCodes", "PermitCertificateTemplates", "PermitReportGeneration", "PermitRequiredDocuments", "PermitChecklists"]
+  tabNames = ["PermitTypes", "HsCodes", "PermitRequiredDocuments", "PermitChecklists", "PermitSignatories", "PermitSpecialConditions"];
   constructor(
     private spinner: SpinnerVisibilityService,
     private router: Router,
@@ -151,49 +160,75 @@ export class PermittypeConfigurationsComponent {
       description: new FormControl('', Validators.compose([])),
       code: new FormControl('', Validators.compose([])),
       resetcolumns: new FormControl(this.resetcolumns, Validators.compose([])),
-      organization_id: new FormControl(this.resetcolumns, Validators.compose([])),
-      regulated_producttype_id: new FormControl(this.resetcolumns, Validators.compose([])),
+      organisation_id: new FormControl(this.resetcolumns, Validators.compose([])),
+      service_deliverytimeline_id: new FormControl(this.resetcolumns, Validators.compose([])),
+      reference_noformat_id: new FormControl(this.resetcolumns, Validators.compose([])),
+      permit_status_id: new FormControl(this.resetcolumns, Validators.compose([])),
+      renewable_status_id: new FormControl(this.resetcolumns, Validators.compose([])),
+      permit_validity_definition: new FormControl(this.resetcolumns, Validators.compose([])),
+      permit_validity_timeline: new FormControl(this.resetcolumns, Validators.compose([])),
+      product_category_id: new FormControl(this.resetcolumns, Validators.compose([])),
       operation_type_id: new FormControl(this.resetcolumns, Validators.compose([])),
       process_id: new FormControl(this.resetcolumns, Validators.compose([])),
       workflow_id: new FormControl('', Validators.compose([])),
-      permit_type_id: new FormControl('', Validators.compose([])),
-      is_enabled: new FormControl('', Validators.compose([]))
+      transactionpermit_type_id: new FormControl('', Validators.compose([])),
+      is_enabled: new FormControl('', Validators.compose([])),
+      service_deliverytimeline: new FormControl('', Validators.compose([])),
     });
 
     this.hsCodeDataFrm = new FormGroup({
       id: new FormControl('', Validators.compose([])),
       name: new FormControl('', Validators.compose([])),
       description: new FormControl('', Validators.compose([])),
-      code: new FormControl('', Validators.compose([])),
-      permit_type_id: new FormControl('', Validators.compose([])),
-      is_enabled: new FormControl('', Validators.compose([]))
-    });
-
-    this.PermitCertificateTemplateFrm = new FormGroup({
-      id: new FormControl('', Validators.compose([])),
       hs_code_start_int: new FormControl('', Validators.compose([])),
       hs_code_end_int: new FormControl('', Validators.compose([])),
       hs_code_specific_int: new FormControl('', Validators.compose([])),
-      permit_type_id: new FormControl('', Validators.compose([])),
-      hscode_seloption_id: new FormControl('', Validators.compose([])),
-      hs_code: new FormControl('', Validators.compose([])),
+      hs_code_selection_option: new FormControl('', Validators.compose([])),
+      quota_limitationstype_id: new FormControl('', Validators.compose([])),
+      mapping_status_id: new FormControl('', Validators.compose([])),
+      hscodemapping_option_id: new FormControl('', Validators.compose([])),
+      special_conditions: new FormControl('', Validators.compose([])),
+      limitation_description:  new FormControl('', Validators.compose([])),
+      code: new FormControl('', Validators.compose([])),
+      transactionpermit_type_id: new FormControl('', Validators.compose([])),
       is_enabled: new FormControl('', Validators.compose([]))
     });
 
-    this.PermitRpttGenFrm = new FormGroup({
+    this.PermitSignatoriesFrm = new FormGroup({
       id: new FormControl('', Validators.compose([])),
-      permit_type_id: new FormControl('', Validators.compose([])),
-      permittemplate_type_id: new FormControl('', Validators.compose([])),
-      permit_template_type: new FormControl('', Validators.compose([])),
+      name: new FormControl('', Validators.compose([])),
+      description: new FormControl('', Validators.compose([])),
+      permit_template_type_id: new FormControl('', Validators.compose([])),
+      permit_template_id: new FormControl('', Validators.compose([])),
+      workflow_stage_id: new FormControl('', Validators.compose([])),
+      permit_signatory: new FormControl('', Validators.compose([])),
+      is_approval_document: new FormControl('', Validators.compose([])),
+      code: new FormControl('', Validators.compose([])),
+      transactionpermit_type_id: new FormControl('', Validators.compose([])),
+      is_enabled: new FormControl('', Validators.compose([]))
+    });
+
+    this.PermitSpecialConditionsFrm = new FormGroup({
+      id: new FormControl('', Validators.compose([])),
+      name: new FormControl('', Validators.compose([])),
+      description: new FormControl('', Validators.compose([])),
+      transactionpermit_type_id: new FormControl('', Validators.compose([])),
+      limitation_description: new FormControl('', Validators.compose([])),
+      quota_limitationstype_id: new FormControl('', Validators.compose([])),
+      special_conditions: new FormControl('', Validators.compose([])),
       is_enabled: new FormControl('', Validators.compose([]))
 
     });
 
     this.PermitRqdDocFrm = new FormGroup({
       id: new FormControl('', Validators.compose([])),
-      permit_type_id: new FormControl('', Validators.compose([])),
+      transactionpermit_type_id: new FormControl('', Validators.compose([])),
       document_type_id: new FormControl('', Validators.compose([])),
       document_requirement_id: new FormControl('', Validators.compose([])),
+      is_mandatory: new FormControl('', Validators.compose([])),
+      allow_multiple: new FormControl('', Validators.compose([])),
+      has_validity_period: new FormControl('', Validators.compose([])),
+      status: new FormControl('', Validators.compose([])),
       document_type: new FormControl('', Validators.compose([])),
       document_requirement: new FormControl('', Validators.compose([])),
       is_enabled: new FormControl('', Validators.compose([]))
@@ -202,9 +237,12 @@ export class PermittypeConfigurationsComponent {
 
     this.PermitChecklistFrm = new FormGroup({
       id: new FormControl('', Validators.compose([])),
-      permit_type_id: new FormControl('', Validators.compose([])),
+      transactionpermit_type_id: new FormControl('', Validators.compose([])),
       checklist_type_id: new FormControl('', Validators.compose([])),
       checklist_defination_id: new FormControl('', Validators.compose([])),
+      workflow_stage_id: new FormControl('', Validators.compose([])),
+      is_mandatory: new FormControl('', Validators.compose([])),
+      has_query_check: new FormControl('', Validators.compose([])),
       checklist_type: new FormControl('', Validators.compose([])),
       checklist_defination: new FormControl('', Validators.compose([])),
       is_enabled: new FormControl('', Validators.compose([]))
@@ -218,20 +256,29 @@ export class PermittypeConfigurationsComponent {
     this.fetchPermitTypeDetails();
     this.onLoadOperationTypeData();
     this.onLoadPermitTypeData();
+    this.onLoadRenewableStatusData();
     this.onLoadproductTypeData();
     this.onLoadHsCodeData();
+    this.onLoadQuotaLimitationData();
+    this.onLoadMappingStatusData();
+    this.onLoadRefNumberData();
+    this.onLoadHscodeMappingOptionData();
+    this.onLoadPermitStatusData();
     this.onLoadOrganizationData();
     this.onLoadPermitTemplateTypeData();
+    this.onLoadPermitTemplateData();
     this.onLoadDocumentTypeData();
+    this.onLoadWfStageData();
     this.onLoadDocumentRequirementTypeData();
     this.onLoadChecklistTypeData();
     this.onLoadChecklistDefData();
+    this.onLoadSrvDeliveryTimelineData()
     //  this.onLoadProcessData(this.organization_id);
     this.spinnerShow('Loading ' + this.parameter_name);
     this.spinnerHide();
     this.checkScreenSize();
     //  this.onLoadWorkflowData();
-    this.fetchAppHsCodes(this.permit_type_id);
+    this.fetchAppHsCodes(this.transactionpermit_type_id);
 
 
   }
@@ -250,9 +297,9 @@ export class PermittypeConfigurationsComponent {
   }
 
   onOrganisationDefinationSelection($event) {
-    let organization_id = $event.selectedItem.id;
-    this.onLoadProcessData(organization_id);
-    this.onLoadWorkflowData(organization_id)
+    let organisation_id = $event.selectedItem.id;
+    this.onLoadProcessData(organisation_id);
+    this.onLoadWorkflowData(organisation_id)
   }
 
   onAccountTypeSelection($event) {
@@ -281,11 +328,11 @@ export class PermittypeConfigurationsComponent {
     this.selectedTabIndex = this.tabNames.indexOf(nextStep);
   }
 
-  onLoadWorkflowData(organization_id) {
+  onLoadWorkflowData(organisation_id) {
 
     var data_submit = {
       'table_name': 'wf_workflows',
-      organization_id: organization_id
+      organisation_id: organisation_id
     }
     this.admnistrationService.onLoadSystemAdministrationData(data_submit)
       .subscribe(
@@ -357,10 +404,10 @@ export class PermittypeConfigurationsComponent {
 
             this.fetchPermitTypeDetails();
             this.isnewrecord = false;
-            this.permit_type_id = this.response.record_id;
+            this.transactionpermit_type_id = this.response.record_id;
 
-            this.createNewDataFrm.get('id')?.setValue(this.permit_type_id);
-            this.fetchAppHsCodes(this.permit_type_id);
+            this.createNewDataFrm.get('id')?.setValue(this.transactionpermit_type_id);
+            this.fetchAppHsCodes(this.transactionpermit_type_id);
 
             this.selectedTabIndex = 1;
             this.toastr.success(this.response.message, 'Response');
@@ -401,15 +448,15 @@ export class PermittypeConfigurationsComponent {
 
 
     // this.spinner.show();
-    this.hsCodeDataFrm.get('permit_type_id')?.setValue(this.permit_type_id);
-    this.admnistrationService.onSaveSystemAdministrationDetails('par_hscode_seloptions', this.hsCodeDataFrm.value, 'onsaveSysAdminData')
+    this.hsCodeDataFrm.get('transactionpermit_type_id')?.setValue(this.transactionpermit_type_id);
+    this.admnistrationService.onSaveSystemAdministrationDetails('tra_transactionpermit_hs_codes', this.hsCodeDataFrm.value, 'onsaveSysAdminData')
       .subscribe(
         response => {
           this.response = response;
           //the details 
           if (this.response.success) {
 
-            this.fetchAppHsCodes(this.permit_type_id);
+            this.fetchAppHsCodes(this.transactionpermit_type_id);
             this.hscodePopupVisible = false;
             this.toastr.success(this.response.message, 'Response');
             this.spinnerHide();
@@ -426,37 +473,37 @@ export class PermittypeConfigurationsComponent {
   }
 
 
-  onFuncSavePermitCertificateTemplatesData() {
+  onFuncSavePermitSignatories() {
 
 
     const formData = new FormData();
     const invalid = [];
-    const controls = this.PermitCertificateTemplateFrm.controls;
+    const controls = this.PermitSignatoriesFrm.controls;
     for (const name in controls) {
       if (controls[name].invalid) {
         this.toastr.error('Fill In All Mandatory fields with (*), missing value on ' + name.replace('_id', ''), 'Alert');
         return;
       }
     }
-    if (this.PermitCertificateTemplateFrm.invalid) {
+    if (this.PermitSignatoriesFrm.invalid) {
       return;
     }
 
-    this.PermitCertificateTemplateFrm.get('resetcolumns')?.setValue(this.resetcolumns);
+    this.PermitSignatoriesFrm.get('resetcolumns')?.setValue(this.resetcolumns);
     this.spinnerShow('Saving ' + this.parameter_name);
 
 
     // this.spinner.show();
-    this.PermitCertificateTemplateFrm.get('permit_type_id')?.setValue(this.permit_type_id);
-    this.admnistrationService.onSaveSystemAdministrationDetails('tra_transactionpermit_codes', this.PermitCertificateTemplateFrm.value, 'onsaveSysAdminData')
+    this.PermitSignatoriesFrm.get('transactionpermit_type_id')?.setValue(this.transactionpermit_type_id);
+    this.admnistrationService.onSaveSystemAdministrationDetails('tra_transactionpermit_signatories', this.PermitSignatoriesFrm.value, 'onsaveSysAdminData')
       .subscribe(
         response => {
           this.response = response;
           //the details 
           if (this.response.success) {
 
-            this.fetchAppPermitCertificateTemplate(this.permit_type_id);
-            this.PermitCertTempPopupVisible = false;
+            this.fetchAppPermitSignatories(this.transactionpermit_type_id);
+            this.PermitSignatoriesPopupVisible = false;
             this.toastr.success(this.response.message, 'Response');
             this.spinnerHide();
           } else {
@@ -471,37 +518,37 @@ export class PermittypeConfigurationsComponent {
         });
   }
 
-  onFuncSavePermitReportGeneration() {
+  onFuncSavePermitSpecialConditions() {
 
 
     const formData = new FormData();
     const invalid = [];
-    const controls = this.PermitRpttGenFrm.controls;
+    const controls = this.PermitSpecialConditionsFrm.controls;
     for (const name in controls) {
       if (controls[name].invalid) {
         this.toastr.error('Fill In All Mandatory fields with (*), missing value on ' + name.replace('_id', ''), 'Alert');
         return;
       }
     }
-    if (this.PermitRpttGenFrm.invalid) {
+    if (this.PermitSpecialConditionsFrm.invalid) {
       return;
     }
 
-    this.PermitRpttGenFrm.get('resetcolumns')?.setValue(this.resetcolumns);
+    this.PermitSpecialConditionsFrm.get('resetcolumns')?.setValue(this.resetcolumns);
     this.spinnerShow('Saving ' + this.parameter_name);
 
 
     // this.spinner.show();
-    this.PermitRpttGenFrm.get('permit_type_id')?.setValue(this.permit_type_id);
-    this.admnistrationService.onSaveSystemAdministrationDetails('tra_transactionpermit_rptgeneration', this.PermitRpttGenFrm.value, 'onsaveSysAdminData')
+    this.PermitSpecialConditionsFrm.get('transactionpermit_type_id')?.setValue(this.transactionpermit_type_id);
+    this.admnistrationService.onSaveSystemAdministrationDetails('tra_permit_special_conditions', this.PermitSpecialConditionsFrm.value, 'onsaveSysAdminData')
       .subscribe(
         response => {
           this.response = response;
           //the details 
           if (this.response.success) {
 
-            this.fetchAppPermitReportGeneration(this.permit_type_id);
-            this.PermitRpttGenPopupVisible = false;
+            this.fetchAppPermitSpecialConditions(this.transactionpermit_type_id);
+            this.PermitSpecialConditionsPopupVisible = false;
             this.toastr.success(this.response.message, 'Response');
             this.spinnerHide();
           } else {
@@ -535,7 +582,7 @@ export class PermittypeConfigurationsComponent {
 
 
     // this.spinner.show();
-    this.PermitRqdDocFrm.get('permit_type_id')?.setValue(this.permit_type_id);
+    this.PermitRqdDocFrm.get('transactionpermit_type_id')?.setValue(this.transactionpermit_type_id);
     this.admnistrationService.onSaveSystemAdministrationDetails('tra_transactionpermit_requireddocuments', this.PermitRqdDocFrm.value, 'onsaveSysAdminData')
       .subscribe(
         response => {
@@ -543,7 +590,7 @@ export class PermittypeConfigurationsComponent {
           //the details 
           if (this.response.success) {
 
-            this.fetchAppPermitRequiredDocuments(this.permit_type_id);
+            this.fetchAppPermitRequiredDocuments(this.transactionpermit_type_id);
             this.PermitRqdDocPopupVisible = false;
             this.toastr.success(this.response.message, 'Response');
             this.spinnerHide();
@@ -578,7 +625,7 @@ export class PermittypeConfigurationsComponent {
 
 
     // this.spinner.show();
-    this.PermitChecklistFrm.get('permit_type_id')?.setValue(this.permit_type_id);
+    this.PermitChecklistFrm.get('transactionpermit_type_id')?.setValue(this.transactionpermit_type_id);
     this.admnistrationService.onSaveSystemAdministrationDetails('tra_transactionpermit_checklists', this.PermitChecklistFrm.value, 'onsaveSysAdminData')
       .subscribe(
         response => {
@@ -586,7 +633,7 @@ export class PermittypeConfigurationsComponent {
           //the details 
           if (this.response.success) {
 
-            this.fetchAppPermitChecklist(this.permit_type_id);
+            this.fetchAppPermitChecklist(this.transactionpermit_type_id);
             this.PermitChecklistPopupVisible = false;
             this.toastr.success(this.response.message, 'Response');
             this.spinnerHide();
@@ -620,7 +667,7 @@ export class PermittypeConfigurationsComponent {
   funcEditDetails(data) {
     this.createNewDataFrm.patchValue(data.data);
 
-    this.permit_type_id = data.data.id;
+    this.transactionpermit_type_id = data.data.id;
     //  this.account_type_id = data.data.account_type_id
     this.fetchAppNavigationMenus(data.data.id, this.account_type_id);
     this.fetchAppHsCodes(data.data.id);
@@ -629,7 +676,7 @@ export class PermittypeConfigurationsComponent {
   funcEditPermissionDetails(data) {
     this.createNewDataFrm.patchValue(data.data);
 
-    this.permit_type_id = data.data.id;
+    this.transactionpermit_type_id = data.data.id;
     this.fetchAppNavigationMenus(data.data.id, this.account_type_id)
     //  this.fetchWorkflowPermissionData(data.data.id) 
     this.fetchAppHsCodes(data.data.id)
@@ -648,18 +695,18 @@ export class PermittypeConfigurationsComponent {
 
   }
 
-  onAddNewPermitCertificateTemplate() {
-    this.PermitCertificateTemplateFrm.reset();
-    this.PermitCertTempPopupVisible = true;
+  onAddNewPermitSignatories() {
+    this.PermitSignatoriesFrm.reset();
+    this.PermitSignatoriesPopupVisible = true;
     this.AppNavigationMenus = [];
   }
-  onAddNewPermitReportGeneration() {
-    this.PermitRpttGenFrm.reset();
-    this.PermitRpttGenPopupVisible = true;
+  onAddNewPermitSpecialConditions() {
+    this.PermitSpecialConditionsFrm.reset();
+    this.PermitSpecialConditionsPopupVisible = true;
     this.AppNavigationMenus = [];
   }
   onAddNewAppPermitRequiredDocuments() {
-    this.PermitCertificateTemplateFrm.reset();
+    this.PermitRqdDocFrm.reset();
     this.PermitRqdDocPopupVisible = true;
     this.AppNavigationMenus = [];
   }
@@ -687,12 +734,12 @@ export class PermittypeConfigurationsComponent {
 
   }
 
-  fetchAppHsCodes(permit_type_id) {
+  fetchAppHsCodes(transactionpermit_type_id) {
     this.spinnerShow('Loading User Permissions Details');
 
     var data_submit = {
-      table_name: 'par_hscode_seloptions',
-      permit_type_id: permit_type_id
+      table_name: 'par_hscode_seloption',
+      transactionpermit_type_id: transactionpermit_type_id
     }
     this.admnistrationService.onLoadDataUrl(data_submit, 'getAppHscodes')
       .subscribe(
@@ -705,14 +752,14 @@ export class PermittypeConfigurationsComponent {
     this.spinnerHide();
   }
 
-  fetchAppPermitCertificateTemplate(permit_type_id) {
+  fetchAppPermitSignatories(transactionpermit_type_id) {
     this.spinnerShow('Loading User Permissions Details');
 
     var data_submit = {
-      table_name: 'tra_transactionpermits_codes',
-      permit_type_id: permit_type_id
+      table_name: 'tra_transactionpermit_signatories',
+      transactionpermit_type_id: transactionpermit_type_id
     }
-    this.admnistrationService.onLoadDataUrl(data_submit, 'getAppPermitCertificateTemplate')
+    this.admnistrationService.onLoadDataUrl(data_submit, 'getAppPermitSignatoriesData')
       .subscribe(
         data => {
           this.data_record = data;
@@ -723,14 +770,14 @@ export class PermittypeConfigurationsComponent {
     this.spinnerHide();
   }
 
-  fetchAppPermitReportGeneration(permit_type_id) {
+  fetchAppPermitSpecialConditions(transactionpermit_type_id) {
     this.spinnerShow('Loading User Permissions Details');
 
     var data_submit = {
-      table_name: 'tra_transactionpermit_rptgeneration',
-      permit_type_id: permit_type_id
+      table_name: 'tra_permit_special_conditions',
+      transactionpermit_type_id: transactionpermit_type_id
     }
-    this.admnistrationService.onLoadDataUrl(data_submit, 'getAppPermitReportGeneration')
+    this.admnistrationService.onLoadDataUrl(data_submit, 'getAppPermitSpecialConditions')
       .subscribe(
         data => {
           this.data_record = data;
@@ -741,12 +788,12 @@ export class PermittypeConfigurationsComponent {
     this.spinnerHide();
   }
 
-  fetchAppPermitRequiredDocuments(permit_type_id) {
+  fetchAppPermitRequiredDocuments(transactionpermit_type_id) {
     this.spinnerShow('Loading User Permissions Details');
 
     var data_submit = {
       table_name: 'tra_transactionpermit_requireddocuments',
-      permit_type_id: permit_type_id
+      transactionpermit_type_id: transactionpermit_type_id
     }
     this.admnistrationService.onLoadDataUrl(data_submit, 'getAppPermitRequiredDocuments')
       .subscribe(
@@ -760,12 +807,12 @@ export class PermittypeConfigurationsComponent {
   }
 
 
-  fetchAppPermitChecklist(permit_type_id) {
+  fetchAppPermitChecklist(transactionpermit_type_id) {
     this.spinnerShow('Loading User Permissions Details');
 
     var data_submit = {
       table_name: 'tra_transactionpermit_checklists',
-      permit_type_id: permit_type_id
+      transactionpermit_type_id: transactionpermit_type_id
     }
     this.admnistrationService.onLoadDataUrl(data_submit, 'getAppPermitChecklist')
       .subscribe(
@@ -867,7 +914,7 @@ export class PermittypeConfigurationsComponent {
   }
   onLoadproductTypeData() {
     var data_submit = {
-      'table_name': 'par_regulated_productstypes'
+      'table_name': 'par_product_categories'
     }
     this.workflowService.getWorkflowConfigs(data_submit)
       .subscribe(
@@ -882,9 +929,82 @@ export class PermittypeConfigurationsComponent {
 
         });
   }
+
+  onLoadPermitStatusData() {
+    var data_submit = {
+      'table_name': 'par_permit_statuses'
+    }
+    this.workflowService.getWorkflowConfigs(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.permitStatusData = this.data_record.data;
+
+          }
+        },
+        error => {
+
+        });
+  }
+
+  onLoadRenewableStatusData() {
+    var data_submit = {
+      'table_name': 'par_renewable_statuses'
+    }
+    this.workflowService.getWorkflowConfigs(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.renewableStatusData = this.data_record.data;
+
+          }
+        },
+        error => {
+
+        });
+  }
+  
+  onLoadSrvDeliveryTimelineData() {
+    var data_submit = {
+      'table_name': 'par_service_deliverytimelines'
+    }
+    this.workflowService.getWorkflowConfigs(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.srvDeliveryTimelineData = this.data_record.data;
+
+          }
+        },
+        error => {
+
+        });
+  } 
+
+  onLoadRefNumberData() {
+    var data_submit = {
+      'table_name': 'par_refnumbers_formats'
+    }
+    this.workflowService.getWorkflowConfigs(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.refNumberData = this.data_record.data;
+
+          }
+        },
+        error => {
+
+        });
+  } 
+
   onLoadHsCodeData() {
     var data_submit = {
-      'table_name': 'par_hscode_seloptions'
+      'table_name': 'par_hscode_seloption'
     }
     this.workflowService.getWorkflowConfigs(data_submit)
       .subscribe(
@@ -892,6 +1012,60 @@ export class PermittypeConfigurationsComponent {
           this.data_record = data;
           if (this.data_record.success) {
             this.hsCodeData = this.data_record.data;
+
+          }
+        },
+        error => {
+
+        });
+  }
+
+  onLoadQuotaLimitationData() {
+    var data_submit = {
+      'table_name': 'par_quota_limitationstype'
+    }
+    this.workflowService.getWorkflowConfigs(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.quotaLimitationData = this.data_record.data;
+
+          }
+        },
+        error => {
+
+        });
+  }
+
+  onLoadMappingStatusData() {
+    var data_submit = {
+      'table_name': 'par_mapping_status'
+    }
+    this.workflowService.getWorkflowConfigs(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.mappingStatusData = this.data_record.data;
+
+          }
+        },
+        error => {
+
+        });
+  }
+
+  onLoadHscodeMappingOptionData() {
+    var data_submit = {
+      'table_name': 'par_hscodemapping_option'
+    }
+    this.workflowService.getWorkflowConfigs(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.hscodeMappingOptionData = this.data_record.data;
 
           }
         },
@@ -910,6 +1084,24 @@ export class PermittypeConfigurationsComponent {
           this.data_record = data;
           if (this.data_record.success) {
             this.permitTemplateTypeData = this.data_record.data;
+
+          }
+        },
+        error => {
+
+        });
+  }
+
+  onLoadPermitTemplateData() {
+    var data_submit = {
+      'table_name': 'par_permit_templates'
+    }
+    this.workflowService.getWorkflowConfigs(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.permitTemplateData = this.data_record.data;
 
           }
         },
@@ -989,6 +1181,24 @@ export class PermittypeConfigurationsComponent {
         });
   }
 
+  onLoadWfStageData() {
+    var data_submit = {
+      'table_name': 'wf_workflow_stages'
+    }
+    this.workflowService.getWorkflowConfigs(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.wfStageData = this.data_record.data;
+
+          }
+        },
+        error => {
+
+        });
+  }
+
 
   onLoadPermitTypeData() {
     var data_submit = {
@@ -1027,10 +1237,10 @@ export class PermittypeConfigurationsComponent {
         });
   }
 
-  onLoadProcessData(organization_id) {
+  onLoadProcessData(organisation_id) {
     var data_submit = {
       'table_name': 'wf_processes',
-      organization_id: organization_id,
+      organisation_id: organisation_id,
 
     }
     this.workflowService.getWorkflowConfigs(data_submit)

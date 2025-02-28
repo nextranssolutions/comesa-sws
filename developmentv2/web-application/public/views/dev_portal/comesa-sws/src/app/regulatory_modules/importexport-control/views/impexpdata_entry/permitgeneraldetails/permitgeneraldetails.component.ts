@@ -15,7 +15,7 @@ import { UtilityService } from 'src/app/core-services/utilities/utility.service'
 import { ConfigurationsService } from 'src/app/core-services/configurations/configurations.service';
 import { ImportExportService } from '../../../services/import-export.service';
 import { AuthenticationService } from 'src/app/core-services/authentication/authentication.service';
- 
+
 import { PremisesLicensingService } from 'src/app/regulatory_modules/premises-licensing/services/premises-licensing.service';
 
 @Component({
@@ -97,9 +97,9 @@ export class PermitgeneraldetailsComponent implements OnInit {
   mistrader_id: number;
   premise_title: string = 'Premises(Licensed Outlet(s))';
   ammendReadOnly: boolean;
-registration_process_action: string;
-select_registration_section_process: string;
-  constructor(public utilityService: UtilityService, public premappService: PremisesLicensingService, public fb: FormBuilder,   public spinner: SpinnerVisibilityService, public configService: ConfigurationsService, public appService: ImportExportService, public router: Router, public formBuilder: FormBuilder, public config: ConfigurationsService,  public toastr: ToastrService, public authService: AuthenticationService, public httpClient: HttpClient) {
+  registration_process_action: string;
+  select_registration_section_process: string;
+  constructor(public utilityService: UtilityService, public premappService: PremisesLicensingService, public fb: FormBuilder, public spinner: SpinnerVisibilityService, public configService: ConfigurationsService, public appService: ImportExportService, public router: Router, public formBuilder: FormBuilder, public config: ConfigurationsService, public toastr: ToastrService, public authService: AuthenticationService, public httpClient: HttpClient) {
   }
   ngOnInit() {
 
@@ -195,21 +195,21 @@ select_registration_section_process: string;
     var data = {
       table_name: 'par_product_categories',
       permit_category_id: permit_category_id
-      
-      
+
+
     };
 
     this.config.onLoadConfigurationData(data)
-        .subscribe(
-          data => {
-         
-            this.data_record = data;
-            
-            if (this.data_record.success) {
-              this.permitProductsCategoryData = this.data_record.data;
-              
-            }
-          });
+      .subscribe(
+        data => {
+
+          this.data_record = data;
+
+          if (this.data_record.success) {
+            this.permitProductsCategoryData = this.data_record.data;
+
+          }
+        });
   }
 
   onLoadeligibleImportersDocTypes() {
@@ -364,8 +364,8 @@ select_registration_section_process: string;
   onLoadRegulatedProdTypeData() {
     var data = {
       table_name: 'par_regulated_productstypes',
-      
-      
+
+
     };
 
     this.config.onLoadConfigurationData(data)
@@ -387,19 +387,19 @@ select_registration_section_process: string;
     };
 
     this.config.onLoadConfigurationData(data)
-        .subscribe(
-          data => {
-            this.data_record = data;
-          
-            if (this.data_record.success) {
-              this.applicationCategoryData = this.data_record.data;
-              
-            }
-          },
-          error => {
-            // console.error("HTTP Error:", error); 
+      .subscribe(
+        data => {
+          this.data_record = data;
+
+          if (this.data_record.success) {
+            this.applicationCategoryData = this.data_record.data;
+
           }
-          );
+        },
+        error => {
+          // console.error("HTTP Error:", error); 
+        }
+      );
   }
   onLoadZoneData() {
     var data = {
@@ -466,7 +466,7 @@ select_registration_section_process: string;
           headers: headers,
           params: { skip: loadOptions.skip, take: loadOptions.take, searchValue: loadOptions.filter, table_name: 'tra_permitsenderreceiver_data' }
         };
-        return me.httpClient.get(AppSettings.base_url + '/'+ 'api/import-export/getSenderreceiversDetails', me.configData)
+        return me.httpClient.get(AppSettings.base_url + '/' + 'api/import-export/getSenderreceiversDetails', me.configData)
           .toPromise()
           .then((data: any) => {
             return {

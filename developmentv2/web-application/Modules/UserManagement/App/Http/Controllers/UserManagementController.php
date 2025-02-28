@@ -1330,12 +1330,12 @@ class UserManagementController extends Controller
         try {
             $user_data = null;
             $user_id = $req->user_id;
-    
+
             // Validate user_id (ensure it's numeric)
             if (!$user_id || !filter_var($user_id, FILTER_VALIDATE_INT)) {
                 return response()->json(['success' => false, 'message' => 'Invalid or missing user ID'], 400);
             }
-    
+
             $record = DB::table('tra_importexport_applications as t1')
                 ->leftJoin('tra_consignee_data as t2', 't2.id', '=', 't1.consignee_id')
                 ->leftJoin('wf_workflow_stages as t3', 't3.id', '=', 't1.workflow_stage_id')
@@ -1352,7 +1352,7 @@ class UserManagementController extends Controller
                 ])
                 ->where('t1.applicant_id', $user_id) // Ensure you filter by user
                 ->first(); // Get only one record instead of a collection
-    
+
             if ($record) {
                 $user_data = [
                     'id' => $record->id,
@@ -1364,16 +1364,16 @@ class UserManagementController extends Controller
                     'created_on' => $record->created_on,
                 ];
             }
-    
+
             return response()->json(['success' => true, 'data' => $user_data], 200);
-    
+
         } catch (\Exception $exception) {
             return response()->json(sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__)), 500);
         } catch (\Throwable $throwable) {
             return response()->json(sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__)), 500);
         }
     }
-    
+
 
     public function onLoadUserData(Request $req)
     {
@@ -1484,16 +1484,18 @@ class UserManagementController extends Controller
         return response()->json($res);
     }
 
+
     public function onsaveTraderData(Request $req)
     {
-        // $trader_data = json_decode($req->traderData_sub);
         DB::beginTransaction();
 
         try {
-            // Generate registration number
-            $trader_no = generateUserRegistrationNo('txn_trader_account');
-
+            // Generate a unique trader registration number
+            $trader_no = generateUserRegistrationNo('tra_trader_account');
+            $email_address = $req->email_address;
+            $phone_number = $req->phone_number;
             $data = [
+                'traderaccount_type_id' => $req->traderaccount_type_id,
                 'name' => $req->name,
                 'contact_person' => $req->contact_person,
                 'contact_person_email' => $req->contact_person_email,
@@ -1507,50 +1509,83 @@ class UserManagementController extends Controller
                 'email_address' => $req->email_address,
                 'status_id' => 1,
                 'identification_no' => $trader_no,
+                'trader_category_id' => $req->trader_category_id,
+                'country' => $req->country,
+                'traderaccount_types' => $req->traderaccount_types,
+                'trader_categories' => $req->trader_categories,
+                'regions' => $req->regions,
+                'districts' => $req->districts,
+                'status' => $req->status,
+                'code_no' => $req->code_no,
+                'pacra_reg_no' => $req->pacra_reg_no,
+                'tpin_no' => $req->tpin_no,
+                'website' => $req->website,
+                'fax' => $req->fax,
+                'contact_person_telephone' => $req->contact_person_telephone,
             ];
 
             // Check if the email already exists
-            $emailExists = DB::table('txn_trader_account')
+            $emailExists = DB::table('tra_trader_account')
                 ->where('email_address', $req->email_address)
                 ->exists();
 
             if ($emailExists) {
-                // return response()->json(['success' => false, 'message' => 'Email already exists.'], 400);
+                DB::commit();
                 return $this->onUpdateTraderData($req);
-                //  write code here using the refactored function onUpdateTraderData to update the txn_trader_account in the main db as well as update the email in usr_users_information
             } else {
-
-                // Insert trader account into the primary database
-                $resp = insertRecord('txn_trader_account', $data, 'Create Trader Account');
+                // Insert new trader account into 'tra_trader_account'
+                $resp = insertRecord('tra_trader_account', $data, 'Create Trader Account');
                 if (!$resp['success']) {
-                    throw new \Exception('Failed to create trader account in the primary database.');
+                    throw new \Exception('Failed to create trader account.');
                 }
-
+                $process_id = 1;
+                $appworkflow_status_id = 1;
                 $trader_id = $resp['record_id'];
-
                 $generatedPassword = bin2hex(random_bytes(8));
+                $application_code = generateApplicationCode($process_id, 'usr_users_information');
+                $account_type_id = 1;
+                $user_group_id = 2;
 
+                $record = DB::table('usr_users_information')
+                    ->where('email_address', $email_address)
+                    // ->where('identification_number', '=', $req->identification_number)
+                    ->count();
 
+                if ($record > 0) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'There is an existing user account with the same Email Address, reset password or contact the System administrator.'
+                    ], 200);
+                }
                 $user_data = [
                     'trader_id' => $trader_id,
-                    'email_address' => $req->email_address,
-                    'name' => $req->name,
                     'password' => aes_encrypt($generatedPassword),
-                    'is_verified' => $req->is_verified ?? 0,
-                    'telephone_number' => $req->telephone_no,
+                    'country_of_origin_id' => $req->country_id,
+                    'account_type_id' => $account_type_id,
+                    'user_group_id' => $user_group_id,
+                    'email_address' => aes_encrypt($email_address),
+                    'surname' => aes_encrypt($req->surname),
+                    'first_name' => aes_encrypt($req->first_name),
+                    'phone_number' => aes_encrypt($phone_number),
+                    'process_id' => $process_id,
+                    'appworkflow_status_id' => $appworkflow_status_id,
+                    'identification_number' => $req->identification_number,
+                    'application_code' => $application_code,
                     'is_initiatepassword_change' => 1,
-                    'country_id' => $req->country_id,
-                    'account_type_id' => $req->account_type_id ?? null,
                     'is_initiateprofile_update' => 1,
                     'created_by' => $req->email_address,
                     'created_on' => now(),
                 ];
 
-                // Insert user account details into the 'portal' database
+                // Insert user details into 'usr_users_information'
                 $userResp = insertRecord('usr_users_information', $user_data, '');
-
                 if (!$userResp['success']) {
-                    throw new \Exception('Failed to create user.');
+                    // print_r('User creation failed:', ['error' => $userResp['message']]);
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Failed to create user.',
+                        'error' => $userResp['message']
+                    ], 500);
                 }
 
                 // Send email notification
@@ -1563,10 +1598,7 @@ class UserManagementController extends Controller
                     '{identification_no}' => $trader_no
                 ];
 
-                $decodedEmail = $req->email_address;
-                // $mailResp = sendMailNotification($req->name, $req->email_address, $subject, '', '', '', '', '', $template_id, $vars);
-
-                $mailResp = sendMailNotification($decodedEmail, $subject, '', '', '', '', '', $template_id, $vars);
+                $mailResp = sendMailNotification($req->email_address, $subject, '', '', '', '', '', $template_id, $vars);
 
                 if (!$mailResp['success']) {
                     DB::rollBack();
@@ -1591,6 +1623,7 @@ class UserManagementController extends Controller
             return response()->json(sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__)), 500);
         }
     }
+
 
     public function onUpdateTraderData(Request $req)
     {

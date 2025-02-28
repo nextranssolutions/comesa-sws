@@ -34,11 +34,7 @@
         <dx-menu (onItemClick)="funcActionColClick($event,data)" [items]="actionsMenuItems"></dx-menu>
       </div>
     </dxi-column>
-    <dxi-column [groupIndex]="0" *ngIf="table_name == 'chk_checklist_types'" dataField="process_id"
-      caption="{{ 'process' | translate }}">
-      <dxo-lookup [dataSource]="processData" displayExpr="name" valueExpr="id">
-      </dxo-lookup>
-    </dxi-column>
+    
     <dxi-column [groupIndex]="0" *ngIf="table_name == 'dms_document_requirements'" dataField="document_type_id"
       caption="{{ 'document_type' | translate }}">
       <dxo-lookup [dataSource]="documentTypeData" displayExpr="name" valueExpr="id">
@@ -128,12 +124,7 @@
                 [searchEnabled]="true" displayExpr="name">
               </dx-select-box>
             </div>
-            <div *ngIf="table_name == 'chk_checklist_types'" class="col-lg-6">
-              <label>{{ 'process_name' | translate }}</label>
-              <dx-select-box [dataSource]="processData" formControlName="process_id" valueExpr="id" [searchEnabled]="true"
-                displayExpr="name">
-              </dx-select-box>
-            </div>
+           
   
             <div *ngIf="table_name == 'par_system_labels' || table_name == 'tra_translation_management'" class="col-lg-6">
               <label>{{ 'language' | translate }}</label>
@@ -171,7 +162,7 @@
               </dx-text-box>
             </div>
             <div *ngIf="table_name == 'chk_checklist_definations'" class="col-lg-6">
-              <label>{{ 'system_labels' | translate }}</label>
+              <label>{{ 'performancescoring_scale' | translate }}</label>
               <dx-select-box [dataSource]="performanceScoringScaleData" formControlName="performancescoring_scale_id"
                 valueExpr="id" [searchEnabled]="true" displayExpr="name">
               </dx-select-box>

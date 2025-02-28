@@ -108,11 +108,11 @@
       <dxo-lookup [dataSource]="Countries" displayExpr="name" valueExpr="id">
       </dxo-lookup>
     </dxi-column>
-    <dxi-column *ngIf="table_name == 'par_institutions_department'" dataField="institution_id"
+    <!-- <dxi-column *ngIf="table_name == 'par_institutions_department'" dataField="institution_id"
       caption="{{ 'institution_department' | translate }}">
       <dxo-lookup [dataSource]="institutionData" displayExpr="name" valueExpr="id">
       </dxo-lookup>
-    </dxi-column>
+    </dxi-column> -->
     <!-- <dxi-column *ngIf="table_name == 'par_institutions'" dataField="institution_type_id"
       caption="{{ 'institution_type' | translate }}">
       <dxo-lookup [dataSource]="institutionTypesData" displayExpr="name" valueExpr="id">
@@ -204,8 +204,8 @@
 [showIndicator]="true" [showPane]="true" [shading]="true" [message]="spinnerMessage" [hideOnOutsideClick]="false">
 </dx-load-panel>
 
-<dx-popup class="popup" [width]="funcpopWidth(75)" [height]="440" [showTitle]="true" [@flyInOut]
-title="{{ 'add_new' | translate }} {{parameter_name | translate }}" [dragEnabled]="false" [hideOnOutsideClick]="true"
+<dx-popup class="popup" [width]="funcpopWidth(75)" [height]="660" [showTitle]="true" [@flyInOut]
+title="{{ 'add' | translate }} {{parameter_name | translate }}" [dragEnabled]="false" [hideOnOutsideClick]="true"
 [(visible)]="isnewproduct">
 
 <div *dxTemplate="let data of 'content'">
@@ -219,19 +219,19 @@ title="{{ 'add_new' | translate }} {{parameter_name | translate }}" [dragEnabled
           <label>{{ 'name' | translate }}</label>
           <dx-text-box formControlName="name" [showClearButton]="true" ></dx-text-box>  
         </div>
-        <div class="col-lg-6">
+        <div *ngIf="table_name == 'tra_organisation_information'" class="col-lg-6">
           <label>{{ 'physical_address' | translate }}</label>
           <dx-text-box formControlName="physical_address" [showClearButton]="true" ></dx-text-box>  
         </div>
-        <div class="col-lg-6">
+        <div *ngIf="table_name == 'tra_organisation_information'" class="col-lg-6">
           <label>{{ 'email_address' | translate }}</label>
           <dx-text-box formControlName="email_address" [showClearButton]="true" ></dx-text-box>  
         </div>
-        <div class="col-lg-6">
+        <div *ngIf="table_name == 'tra_organisation_information'" class="col-lg-6">
           <label>{{ 'ministry_name' | translate }}</label>
           <dx-text-box formControlName="ministry_name" [showClearButton]="true" ></dx-text-box>
         </div>
-        <div class="col-lg-6">
+        <div *ngIf="table_name == 'tra_organisation_information'" class="col-lg-6">
           <label>{{ 'telephone_number' | translate }}</label>
           <dx-text-box formControlName="telephone_number" [showClearButton]="true" ></dx-text-box>  
         </div>
@@ -306,7 +306,7 @@ title="{{ 'add_new' | translate }} {{parameter_name | translate }}" [dragEnabled
 
         <div *ngIf="table_name == 'tra_applicationinvoicedata_queries'" class="col-lg-6">
           <label>{{ 'regulatory_function' | translate }}</label>
-          <dx-select-box formControlName="regulatory_function_id" [showClearButton]="true" [dataSource]="regulatoryFunctionData"
+          <dx-select-box formControlName="regulatory_function_id" [showClearButton]="true"(onSelectionChanged)="onRegulatoryFunctionChange($event)" [dataSource]="regulatoryFunctionData"
             valueExpr="value" displayExpr="text">
           </dx-select-box>
         </div>

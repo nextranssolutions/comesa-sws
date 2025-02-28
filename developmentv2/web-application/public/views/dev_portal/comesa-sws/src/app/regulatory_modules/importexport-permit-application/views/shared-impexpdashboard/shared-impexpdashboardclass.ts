@@ -204,11 +204,8 @@ export class SharedImpExpdashboardClass {
           this.spinner.hide();
           if (data.success) {
             this.processData = data.data.process_infor;
-            
-            // this.processData = data;
-            this.processingData = data.data.application_form;
 
-            this.title = this.processingData.field_name;
+            // this.title = this.processingData.field_name;
        
             this.router_link = this.processData.router_link;
             // this.productsapp_details = { regulatory_function_id: this.regulatory_function_id, prodclass_category_id: this.prodclass_category_id, process_title: this.title, regulatory_subfunction_id: this.regulatory_subfunction_id, product_type_id: this.product_type_id, status_id: 1, status_name: 'New', form_fields: this.processData.form_fields, appsubmissions_type_id: appsubmissions_type_id };

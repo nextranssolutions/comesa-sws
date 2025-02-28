@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
 import { SpinnerVisibilityService } from 'ng-http-loader';
-// import { NgxSmartModalService } from 'ngx-smart-modal';
 import { ToastrService } from 'ngx-toastr';
 import { ConfigurationsService } from 'src/app/core-services/configurations/configurations.service';
 import { ReportsService } from 'src/app/core-services/reports/reports.service';
@@ -36,6 +35,7 @@ export class SharedDmsComponent {
   sopIdData: any;
   nodeRefData: any;
   isMandatoryData: any;
+  organisationData: any;
   isDmsSideRoot: any;
   nodeNameData: any;
   regulatoryFunctionIdData: any;
@@ -81,7 +81,6 @@ export class SharedDmsComponent {
     public viewRef: ViewContainerRef,
     public translate: TranslateService,
     public utilityService: UtilityService,
-    // public modalService: NgxSmartModalService,
     public reportingAnalytics: ReportsService,
     public configService: ConfigurationsService,
   ) {
@@ -92,8 +91,10 @@ export class SharedDmsComponent {
         name: new FormControl('', Validators.compose([Validators.required])),
         description: new FormControl('', Validators.compose([Validators.required])),
         is_enabled: new FormControl('', Validators.compose([])),
-        product_type_id: new FormControl('', Validators.compose([])),
+        // product_type_id: new FormControl('', Validators.compose([])),
+        document_no: new FormControl('', Validators.compose([])),
         code: new FormControl('', Validators.compose([])),
+        organisation_id: new FormControl('', Validators.compose([Validators.required]))
         
       });
     
@@ -108,7 +109,7 @@ export class SharedDmsComponent {
     this.fetchDocumentRequirementIdData();
     this.fetchNodeRefData();
     this.fetchRegulatoryFunctionIdData();
-    this.fetchRegulatorySubFunctionIdData();
+    // this.fetchRegulatorySubFunctionIdData();
     this.fetchNewConfigurations();
     this.fetchSideRoot();
     this.fetchNodeNameData();
@@ -119,7 +120,8 @@ export class SharedDmsComponent {
     this.fetchPharmaceuticalLicenseIdData();
     this.fetchPharmaceuticalLicenseTypeIdData();
     this.fetchGmpTypeIdData();
-    this.fetchSopIdData();
+    // this.fetchSopIdData();
+    this.fetchorganisationData();
 
     }
 
@@ -379,6 +381,12 @@ export class SharedDmsComponent {
         });
 
   }
+  onRegulatoryFunctionChange($event) {
+    if ($event.selectedItem) {
+      let regulatory_function = $event.selectedItem;
+      this.fetchRegulatorySubFunctionIdData(regulatory_function.id)
+    }
+  }
 
 
   fetchRegulatoryFunctionIdData() {
@@ -400,10 +408,11 @@ export class SharedDmsComponent {
 
   }
 
-  fetchRegulatorySubFunctionIdData() {
+  fetchRegulatorySubFunctionIdData(regulatory_function_id) {
 
     var data_submit = {
-      'table_name': 'par_regulatory_subfunctions'
+      'table_name': 'par_regulatory_subfunctions',
+      regulatory_function_id: regulatory_function_id
     }
     this.configService.onLoadConfigurationData(data_submit)
       .subscribe(
@@ -566,11 +575,24 @@ export class SharedDmsComponent {
           }
         },
         error => {
-
         });
-
   }
-  
+  fetchorganisationData() {
+
+    var data_submit = {
+      'table_name': 'tra_organisation_information'
+    }
+    this.configService.onLoadConfigurationData(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.organisationData = this.data_record.data
+          }
+        },
+        error => {
+        });
+  }
   
   funcpopWidth(percentage_width) {
     return window.innerWidth * percentage_width / 100;

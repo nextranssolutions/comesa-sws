@@ -2,7 +2,7 @@
 
 <div id="navbar" class="navbar navbar-default          ace-save-state">
   <div class="navbar-container ace-save-state" id="navbar-container">
-    
+
     <button type="button" class="navbar-toggle menu-toggler pull-left" id="menu-toggler" data-target="#sidebar">
       <span class="sr-only">Toggle sidebar</span>
 
@@ -16,60 +16,63 @@
     <div class="navbar-header pull-left">
       <a routerLink="index.html" class="navbar-brand">
         <small>
-          <i class="fa fa-leaf"></i>
-          CIMEX ADMIN </small>
+          <i class="fa fa-user"></i>
+          {{'cimex_admin' | translate}}</small>
       </a>
     </div>
     <div class="navbar-buttons navbar-header pull-right dropdown" role="navigation">
       <ul class="nav ace-nav">
         <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" role="button" data-toggle="dropdown"
-            aria-haspopup="true" aria-expanded="false"  data-bs-toggle="dropdown" href="#">
+          <a class="nav-link dropdown-toggle" role="button" data-toggle="dropdown" aria-haspopup="true"
+            aria-expanded="false" data-bs-toggle="dropdown" href="#">
             <i class="fa fa-language"></i> {{'select_language' | translate}}
           </a>
-          <ul class="dropdown-menu user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close" aria-labelledby="navbarLanguageDropdownMenuLink">
+          <ul
+            class="dropdown-menu user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close"
+            aria-labelledby="navbarLanguageDropdownMenuLink">
             <li *ngFor="let language of translate.getLangs()">
               <a class="dropdown-item" (click)="switchClickLang(language)"> {{ language }}</a>
-    
+
             </li>
           </ul>
         </li>
         
         <li class="light-blue dropdown-modal">
-          <a  data-toggle="dropdown" class="dropdown-toggle"  data-bs-toggle="dropdown" href="#">
+          <a data-toggle="dropdown" class="dropdown-toggle" data-bs-toggle="dropdown">
             <i class="fas fa-user"></i>
             <span class="user-info">
-              <small>Welcome,</small>{{ userFirstName }}
+              <small>{{'welcome' | translate}},</small>{{ userFirstName }}
             </span>
-
             <i class="ace-icon fa fa-caret-down"></i>
           </a>
 
           <ul class="user-menu dropdown-menu-right dropdown-menu dropdown-yellow dropdown-caret dropdown-close">
-            <li>
-              <a class="dropdown-item" (click)="funcViewUserProfiledetails()">{{'view_profile' | translate}}</a>
 
+            <li>
+              <a class="dropdown-item" (click)="funcViewUserProfiledetails()"><i
+                  class="ace-icon fa fa-user bigger-120 green"></i>{{'my_profile' | translate}}</a>
             </li>
 
             <li class="divider"></li>
 
             <li>
-              <a class="dropdown-item" (click)="onFuncChangePassword()">{{'change_password' | translate}}</a>
+              <a class="dropdown-item" (click)="onFuncChangePassword()"><i
+                  class="ace-icon fa fa-key bigger-120 green"></i>{{'change_password' | translate}}</a>
             </li>
 
             <li class="divider"></li>
 
             <li>
               <a (click)="funcUserLogOut()" class="dropdown-item" data-toggle="tooltip" data-placement="bottom"
-                title="{{'logout_of_system' | translate}}">
-                {{ 'logout' | translate }}<i class="pl-2 fas fa-sign-out-alt"></i>
+                title="{{'logout_of_system' | translate}}"><i class="ace-icon fa fa-power-off bigger-120 green"></i>
+                {{ 'logout' | translate }}<i class="fa fa-sign-out-alt"></i>
               </a>
             </li>
           </ul>
         </li>
       </ul>
     </div>
-  </div><!-- /.navbar-container -->
+  </div>
 </div>
 
 <dx-popup class="popup" [width]="funcpopWidth(45)" [height]="funcpopHeight(50)" [showTitle]="true"

@@ -99,7 +99,7 @@ export class SharedDocumentchecklistingComponent {
         translation: new FormControl('', Validators.compose([])),
         is_default_language: new FormControl('', Validators.compose([])),
         notification_type_id: new FormControl('', Validators.compose([])),
-        process_id: new FormControl('', Validators.compose([])),
+        // process_id: new FormControl('', Validators.compose([])),
         email_template: new FormControl('', Validators.compose([])),
         marks_allocated: new FormControl('', Validators.compose([])),
         is_enabled: new FormControl('', Validators.compose([])),
