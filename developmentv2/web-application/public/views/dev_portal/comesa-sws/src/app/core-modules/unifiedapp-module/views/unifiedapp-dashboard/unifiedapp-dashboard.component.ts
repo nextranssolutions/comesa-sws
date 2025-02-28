@@ -14,6 +14,10 @@ import { WokflowManagementService } from 'src/app/core-services/workflow-managem
 })
 export class UnifiedappDashboardComponent {
   data_record: any;
+  reminderNotificationData:any;
+  pendingtasksTasksdetailsData:any;
+  pendingAsignmentsData:any;
+  
   regulatory_functionsdata: any;
   regulatory_function_id: number;
   regulatory_function: number;
@@ -111,6 +115,9 @@ export class UnifiedappDashboardComponent {
 
   onCellPrepared(e) {
     this.utilityService.onCellCountriesPrepared(e);
+  }
+  onViewPendingTasksDetails(data){
+
   }
    onExporting(e: DxDataGridTypes.ExportingEvent) {
   

@@ -2,17 +2,17 @@
 
 
     <div class="sidebar-shortcuts" id="sidebar-shortcuts">
-        
 
-        
+
+
     </div><!-- /.sidebar-shortcuts -->
 
     <ul class="nav nav-list">
         <li class="active open hover">
-            <a href="#" class="dropdown-toggle">
+            <a routerLink="./unified-dashboard" class="dropdown-toggle">
                 <i class="menu-icon fa fa-desktop"></i>
                 <span class="menu-text">
-                    Dashboard
+                    {{'unified-dashboard' | translate}}
                 </span>
 
                 <b class="arrow fa fa-angle-down"></b>
@@ -20,23 +20,16 @@
 
             <b class="arrow"></b>
 
-        
         </li>
-       
-        <li class="hover">
-            <a routerLink="./../admin-cimex">
-                
+
+        <li class=" active open  hover">
+            <a routerLink="./reports-analytics">
+
                 <i class="menu-icon fa fa-file"></i>
-                <span class="menu-text"> Reports & Analytics</span>
+                <span class="menu-text">{{'reports_analytics' | translate}}</span>
             </a>
 
             <b class="arrow"></b>
         </li>
-
-       
-
-
     </ul><!-- /.nav-list -->
 </div>
-
-

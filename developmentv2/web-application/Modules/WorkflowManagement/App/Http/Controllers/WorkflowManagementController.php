@@ -148,17 +148,20 @@ class WorkflowManagementController extends Controller
         try {
             $user_id = $req->user_id;
             $usergroups = 0;
-            //note one user can have more than one user group
             if (validateIsNumeric($user_id)) {
-                $usergroups = DB::table(table: 'tra_user_group as t1')
+                $usergroups = DB::table('tra_user_group as t1')
                     ->select('group_id')
                     ->where(array('user_id' => $user_id))
                     ->get();
 
-
                 $usergroups = convertStdClassObjToArray($usergroups);
 
                 $usergroups = convertAssArrayToSimpleArray($usergroups, 'group_id');
+            }else{
+                return response()->json([
+                    'success' => false,
+                    'message' => 'The User ID is not set, trying loggin-out.',
+                ], 200);
             }
             //  $is_super_admin = false;
             // $is_super_admin = getRecordValFromWhere('usr_users_groups', array('id' => $userGroupId), 'is_super_admin');
@@ -216,9 +219,6 @@ class WorkflowManagementController extends Controller
         $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
     }
 }
-
-
-
     public function getUserNavigationItems(Request $req)
     {
         try {
@@ -237,7 +237,7 @@ class WorkflowManagementController extends Controller
                     $users_groups = getSingleRecord('usr_users_information', array('id' => $user_id));
                     $is_super_admin = $users_groups->is_super_admin;
                     // $user_account_type = $users_groups->account_type_id;
-                    $usergroups = DB::table(table: 'tra_user_group as t1')
+                    $usergroups = DB::table('tra_user_group as t1')
                         ->select('group_id')
                         ->where(array('user_id' => $user_id))
                         ->get();
