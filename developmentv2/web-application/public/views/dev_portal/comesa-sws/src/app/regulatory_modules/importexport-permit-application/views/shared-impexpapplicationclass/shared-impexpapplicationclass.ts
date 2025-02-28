@@ -8,7 +8,7 @@ import { SpinnerVisibilityService } from 'ng-http-loader';
 
 import { DxDataGridComponent } from 'devextreme-angular';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
-
+import { NgWizardConfig, NgWizardService, STEP_STATE, StepChangedArgs, THEME } from "ng-wizard";
 import { UtilityService } from 'src/app/core-services/utilities/utility.service';
 import { ImportExportService } from '../../services/import-export.service';
 import { AuthenticationService } from 'src/app/core-services/authentication/authentication.service';
@@ -93,7 +93,8 @@ export class SharedImpexpApplicationClass {
   app_resp: any;
   consignee_options_id: number;
   consignee_options_check: boolean = true;
-
+  userAccountFrm: FormGroup;
+  applicantDetailsForm: FormGroup;
   isPermitproductsPopupVisible: boolean = false;
   isDocumentUploadPopupVisible: boolean = false;
 
@@ -156,7 +157,7 @@ export class SharedImpexpApplicationClass {
 
   filesToUpload: Array<File> = [];
   producttype_defination_id: number;
-  constructor(private configService:ConfigurationsService, public utilityService: UtilityService, public fb: FormBuilder, 
+  constructor(public ngWizardService: NgWizardService, private configService:ConfigurationsService, public utilityService: UtilityService, public fb: FormBuilder, 
     public spinner: SpinnerVisibilityService, public appService: ImportExportService, public router: Router, 
     public formBuilder: FormBuilder, public toastr: ToastrService, public authService: AuthenticationService, public httpClient: HttpClient) {
     //form 
@@ -587,6 +588,22 @@ export class SharedImpexpApplicationClass {
           this.toastr.error(error.message, 'Alert');
           this.spinner.hide();
         });
+  }
+
+  resetWizard(event?: Event) {
+    this.ngWizardService.reset();
+  }
+
+  setTheme(theme: THEME) {
+    this.ngWizardService.theme(theme);
+  }
+
+  nextStep() {
+    this.ngWizardService.next();
+  }
+
+  previousStep() {
+    this.ngWizardService.previous();
   }
   
 

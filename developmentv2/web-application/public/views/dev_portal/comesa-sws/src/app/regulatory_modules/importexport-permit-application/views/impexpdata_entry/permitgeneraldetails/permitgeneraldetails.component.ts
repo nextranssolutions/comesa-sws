@@ -108,20 +108,7 @@ select_registration_section_process: string;
   ngOnInit() {
 
     this.maxDate = new Date();
-    if (this.regulatory_subfunction_id == 78 || this.regulatory_subfunction_id == 81) {
-      this.is_licensepermit = true;
-      this.invoice_title = "Commercial Invoice";
-    } else if (this.regulatory_subfunction_id == 82) {
-      this.is_licensepermit = true;
-      this.invoice_title = "Commercial Invoice";
-      this.hide_visalicensedetails = true;
-      this.has_registred_outlet = false;
-      this.showreason_fornonregister_outlet = false;
-
-    } else {
-      this.is_licensepermit = false;
-      this.invoice_title = "Proforma Invoice";
-    }
+   
     let user_details = this.authService.getUserDetails();
 
     this.trader_id = user_details.trader_id;
