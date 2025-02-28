@@ -573,21 +573,30 @@ class WorkflowManagementController extends Controller
     public function getAppNavigationMenus(Request $req)
     {
         try {
+            $navigation_type_id = $req->navigation_type_id;
+            $account_type_id = $req->account_type_id;
+            
             $level = 0;
             $navigationItems = DB::table('wf_navigation_items as t1')
                 ->leftJoin('wf_system_interfaces as t3', 't1.system_interface_id', 't3.id')
                 ->select('t1.*', 't3.routerlink', 't1.iconsCls')
-                ->orderBy('t1.order_no')->where(array('level' => $level))
-                ->get();
+                ->orderBy('t1.order_no')->where(array('level' => $level));
+
             $rootItems = array();
             // This will store items in a hierarchical structure
-
+            if(validateIsNumeric($navigation_type_id)){
+                $navigationItems->where(array('t1.navigation_type_id' => $navigation_type_id));
+            }
+            if(validateIsNumeric($account_type_id)){
+                $navigationItems->where(array('t1.account_type_id' => $account_type_id));
+            }
+            $navigationItems =  $navigationItems->get();
             // Group items by their parent_id to create a hierarchical structure
             foreach ($navigationItems as $item) {
 
                 $parent_id = $item->id;
                 $level = 1;
-                $childrens = $this->getNavigationItemsChildrens($parent_id, $level);
+                $childrens = $this->getNavigationItemsChildrens($parent_id, $level,$account_type_id,$navigation_type_id );
                 if (!empty($childrens)) {
                     $item->children = $childrens;
                     $rootItems[] = $item;
@@ -604,7 +613,7 @@ class WorkflowManagementController extends Controller
         }
         return response()->json($res, 200);
     }
-    function getNavigationItemsChildrens($parent_id, $level)
+    function getNavigationItemsChildrens($parent_id, $level,$account_type_id,$navigation_type_id)
     {
         $childrens = array();
         $navigationItems = DB::table('wf_navigation_items as t1')
@@ -613,13 +622,21 @@ class WorkflowManagementController extends Controller
             ->leftJoin('par_regulatory_subfunctions as t5', 't5.id', 't5.regulatory_function_id')
             ->select('t1.*', 't3.routerlink', 't1.iconsCls', 't4.name', 't5.name')
             ->orderBy('order_no')
-            ->where(array('level' => $level, 'parent_id' => $parent_id))->get();
+            ->where(array('level' => $level, 'parent_id' => $parent_id));
+
+            if(validateIsNumeric($navigation_type_id)){
+                $navigationItems->where(array('t1.navigation_type_id' => $navigation_type_id));
+            }
+            if(validateIsNumeric($account_type_id)){
+                $navigationItems->where(array('t1.account_type_id' => $account_type_id));
+            }
+            $navigationItems =  $navigationItems->get();
         foreach ($navigationItems as $item) {
 
             $child_id = $item->id;
             $level_child = 2;
             //check for the next level 
-            $grand_children = $this->grandNavigationschildfunction($child_id, $level_child);
+            $grand_children = $this->grandNavigationschildfunction($child_id, $level_child,$account_type_id,$navigation_type_id);
             if (!empty($grand_children)) {
 
                 $item->children = $grand_children;
@@ -631,14 +648,21 @@ class WorkflowManagementController extends Controller
 
         return $childrens;
     }
-    function grandNavigationschildfunction($parent_id, $level)
+    function grandNavigationschildfunction($parent_id, $level,$account_type_id,$navigation_type_id)
     {
         $childrens = array();
         $navigationItems = DB::table('wf_navigation_items as t1')
             ->leftJoin('wf_system_interfaces as t3', 't1.system_interface_id', 't3.id')
             ->select('t1.*', 't3.routerlink', 't1.iconsCls')
-            ->where(array('level' => $level, 'parent_id' => $parent_id))->get();
+            ->where(array('level' => $level, 'parent_id' => $parent_id));
 
+            if(validateIsNumeric($navigation_type_id)){
+                $navigationItems->where(array('t1.navigation_type_id' => $navigation_type_id));
+            }
+            if(validateIsNumeric($account_type_id)){
+                $navigationItems->where(array('t1.account_type_id' => $account_type_id));
+            }
+            $navigationItems =  $navigationItems->get();
         foreach ($navigationItems as $child) {
 
             $childrens[] = $child;

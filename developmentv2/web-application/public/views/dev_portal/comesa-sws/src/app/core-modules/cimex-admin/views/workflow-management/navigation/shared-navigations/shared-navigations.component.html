@@ -2,9 +2,22 @@
     [elementAttr]="{ class: '' }" (onClick)="hasReadpermissions=false;onAddNavigationItem()">
 </dx-button>
 
-<dx-tree-list *ngIf="table_name == 'wf_navigation_items'" id="navigations" class="col-lg-12"
+<div class="row" *ngIf="table_name == 'wf_navigation_items'">
+    <div class="col-lg-4">
+        <label for="unitName">{{ 'navigation_type' | translate }}</label>
+        <dx-select-box [dataSource]="navigationTypesData"  (onSelectionChanged)="onNavigationTypeSelection($event)"
+            [showClearButton]="true" valueExpr="id" [searchEnabled]="true" displayExpr="name">
+        </dx-select-box>
+    </div>
+    <div class="col-lg-4">
+        <label for="account_type_id">{{ 'account_type' | translate }}</label>
+        <dx-select-box [dataSource]="AppAccountTypeData" formControlName="account_type_id"  (onSelectionChanged)="onAccountTypeSelection($event)"
+            [showClearButton]="true" valueExpr="id" [searchEnabled]="true" displayExpr="name">
+        </dx-select-box>
+    </div>
+    <dx-tree-list  id="navigations" class="col-lg-12"
     dataStructure="tree" [wordWrapEnabled]="true" [dataSource]="AppNavigationMenus" itemsExpr="children" 
-    parentIdExpr="parent_id" [expandedRowKeys]="[1, 2]" [selectedRowKeys]="[1, 29, 42]">
+    keyExpr="id"  parentIdExpr="parent_id" [expandedRowKeys]="[1, 2]" [selectedRowKeys]="[1, 29, 42]">
     <dxo-paging [enabled]="true">
         <dxo-pager [showInfo]="true" infoText="Page #{0}. Total: {1} ({2} items)" [showPageSizeSelector]="true"
             [allowedPageSizes]="[50,100]"></dxo-pager>
@@ -66,6 +79,8 @@
     <dxo-paging [pageSize]="500"></dxo-paging>
 
 </dx-tree-list>
+</div>
+
 <dx-data-grid *ngIf="table_name != 'wf_navigation_items'" (onCellPrepared)="onCellPrepared($event)"
     class="col-lg-12 table row-border hover" (onExporting)="onExporting($event)" [wordWrapEnabled]="true"
     [dataSource]="countriesinfoData" [remoteOperations]="true" [showBorders]="true" [allowColumnResizing]="true"

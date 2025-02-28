@@ -152,9 +152,9 @@ export class SharedNavigationsComponent {
     this.onLoadnavigationItemsParentData(level);
 
   }
-  fetchAppNavigationMenus() {
+  fetchAppNavigationMenus(account_type_id=0, navigation_type_id=0) {
     this.spinnerShow('Loading Navigation items......')
-    this.workflowService.getAppNavigationMenus().subscribe(
+    this.workflowService.getAppNavigationMenus(account_type_id, navigation_type_id).subscribe(
       (data) => {
         this.AppNavigationMenus = data; // Assuming the field as an array
         this.spinnerHide();
@@ -164,6 +164,25 @@ export class SharedNavigationsComponent {
         // Handle error, show message, etc.
       }
     );
+  }
+  onNavigationTypeSelection($event) {
+
+    if ($event.selectedItem) {
+
+      let navigation_type = $event.selectedItem;
+      this.fetchAppNavigationMenus(0, navigation_type.id);
+    } 
+  }
+  onAccountTypeSelection($event) {
+    if ($event.selectedItem) {
+      let account_type = $event.selectedItem;
+      this.fetchAppNavigationMenus(account_type.id, 0);
+    } 
+  }
+  onRowPrepared(e) {
+    if (e.rowType === "group") {
+      e.rowData.id = `group-${e.key}`; // Assign a unique id
+    }
   }
   onLoadnavigationItemsParentData(level) {
     let level_no = level - 1;
