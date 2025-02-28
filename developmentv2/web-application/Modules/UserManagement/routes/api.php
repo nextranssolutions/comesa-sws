@@ -16,9 +16,9 @@ use Modules\UserManagement\App\Http\Controllers\UserManagementController;
 */
 
 Route::middleware(['XssSanitizer', 'clear_cache_config', 'firewall.all'])->prefix('usermanagement')->group(function () {
-    Route::post('onsaveUserData', [UserManagementController::class, 'onsaveUserData']);
+    Route::post('onsaveUserRegistrationData', [UserManagementController::class, 'onsaveUserRegistrationData']);
     Route::post('onDeleteUserData', [UserManagementController::class, 'onDeleteUserData']);
-    Route::post('onUserAccountRegistration', [UserManagementController::class, 'onUserAccountRegistration']);
+    Route::post('onUserAccountRegistration', [UserManagementController::class, 'onTraderAccountRegistration']);
     Route::post('onUserPasswordRequestRecovery', [UserManagementController::class, 'onUserPasswordRequestRecovery']);
     Route::post('onsaveUserGroupDetails', [UserManagementController::class, 'onsaveUserGroupDetails']);
     Route::post('onUserSubscriptionRequest', [UserManagementController::class, 'onUserSubscriptionRequest']);
@@ -39,4 +39,13 @@ Route::middleware(['XssSanitizer', 'clear_cache_config', 'firewall.all'])->prefi
     Route::get('onLoadUserAccountStatusCounters', [UserManagementController::class, 'onLoadUserAccountStatusCounters']);
     Route::get('onGetUserInformation', [UserManagementController::class, 'onGetUserInformation']);
     Route::get('onGetTraderInformation', [UserManagementController::class, 'onGetTraderInformation']);
+
+    Route::get('onGetUsersworkflowPermissionData', [UserManagementController::class, 'onGetUsersworkflowPermissionData']);
+    Route::get('onGetappNavigationMenusPermisData', [UserManagementController::class, 'onGetappNavigationMenusPermisData']);
+    Route::get('onGetappRegulatoryFunctionPermissionData', [UserManagementController::class, 'onGetappRegulatoryFunctionPermissionData']);
+    Route::get('onGetUsergroupInformation', [UserManagementController::class, 'onGetUsergroupInformation']);
+
+    Route::get('onGetMyCurrentTasksAssignments', [UserManagementController::class, 'onGetMyCurrentTasksAssignments']);
+
+    
 });

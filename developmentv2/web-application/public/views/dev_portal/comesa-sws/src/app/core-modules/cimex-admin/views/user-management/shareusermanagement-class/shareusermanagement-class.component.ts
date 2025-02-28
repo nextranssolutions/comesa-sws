@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewContainerRef } from '@angular/core';
+import { Component, Directive, OnInit, ViewContainerRef } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { AppSettings } from 'src/app/app-settings';
 import { ToastrService } from 'ngx-toastr';
@@ -11,15 +11,13 @@ import { UtilityService } from 'src/app/core-services/utilities/utility.service'
 import { DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
 import { ReportsService } from 'src/app/core-services/reports/reports.service';
 import { ExpressionOfInterestManagementService } from 'src/app/core-services/expresion-of-interest-management/expression-of-interest-management.service';
-@Component({
-  selector: 'app-shareusermanagement-class',
-  templateUrl: './shareusermanagement-class.component.html',
-  styleUrl: './shareusermanagement-class.component.css'
+
+@Directive({
+  selector: '[appShareusermanagementClass]' // ✅ Use attribute selector for directives
 })
 export class ShareusermanagementClassComponent {
   userAccountFrm: FormGroup;
-  assignUserGroupFrm: FormGroup;
-  userGroupData: any;
+  userAccountRolesData:any;
   loadingVisible: boolean;
   spinnerMessage: string;
   table_name: string;
@@ -52,59 +50,38 @@ export class ShareusermanagementClassComponent {
   dashboard_type_id: number;
   partnerStatesData: any;
   userAccountTypeData: any;
-  InstitutionDepartments: any;
+  organisationDepartmentsdata: any;
   expertSelectionAndAppointmentForm: FormGroup;
   secretariateAccountss: any;
-  Institutions: any;
+  institutionsData: any;
   IdentificationType: any;
   Countries: any;
   userTitles: any;
   is_readonly: boolean = true;
   appointPopupVisible: boolean;
   usergroupPopupVisible: boolean;
-  expressionofinterest_posting_id: number;
   show_advancesearch: boolean;
   alluserGroupData: any;
   accountStatuseData: any;
-  AllInstitutionsdata: any;
+  organisationData: any;
   usrapprovalPopupVisible: boolean;
   decision_description: string;
   appworkflow_status_id: number;
   user_group_id: number;
-  updateUsrPermissNewDataFrm: FormGroup;
   usrrejectionPopupVisible: boolean;
   apiUserAccounts: any;
   user_group_data: any;
   externalUsersData: any;
   userGroupId: number;
+  systemUserGroupsData:any;
   permitActiveExpertAccountsMenuItems = [
     {
       text: "Action",
       icon: 'menu',
       items: [
         { text: "Edit/Preview User Account", action: 'edit_record', icon: 'fa fa-edit' },
-        // { text: "Assign & Approve User Group", action: 'assign_group', icon: 'fa fa-edit' },
-        // { text: "Approve User Account", action: 'approve_useraccount', icon: 'fa fa-file' },
         { text: "Disable/Reject User Account", action: 'disable_useraccount', icon: 'fa fa-trash' },
-        { text: "View Profile", action: 'view_profile', icon: 'fa fa-eye' },
-        { text: "Appoint Expert", action: 'appoint_expert', icon: 'fa fa-check' },
-        // { text: "View User Operations", action: 'user_operations', icon: 'fa fa-file' },
-      ]
-    }
-  ];
-
-  permitSecretariateAccountsMenuItems = [
-    {
-      text: "Action",
-      icon: 'menu',
-      items: [
-        { text: "Edit/Preview User Account", action: 'edit_record', icon: 'fa fa-edit' },
-        { text: "Assign & Approve User Group", action: 'assign_group', icon: 'fa fa-edit' },
-        // { text: "Approve User Account", action: 'approve_useraccount', icon: 'fa fa-file' },
-        { text: "Disable/Reject User Account", action: 'disable_useraccount', icon: 'fa fa-trash' },
-        { text: "View Profile", action: 'view_profile', icon: 'fa fa-eye' },
-        
-        // { text: "View User Operations", action: 'user_operations', icon: 'fa fa-file' },
+    
       ]
     }
   ];
@@ -116,31 +93,21 @@ export class ShareusermanagementClassComponent {
     public toastr: ToastrService,
     public viewRef: ViewContainerRef,
     public utilityService: UtilityService,
-    
     private userManagementService: UserManagementService,
-    private userservice:UserManagementService,
+    private userservice: UserManagementService,
     private reportingAnalytics: ReportsService,
     private eoiService: ExpressionOfInterestManagementService
   ) {
-    
-    // this.table_name = 'exp_expertsprofile_information';
-    // this.parameter_name = "Active User Accounts";
-
-
-    
 
     this.userAccountFrm = new FormGroup({
       id: new FormControl('', Validators.compose([])),
       user_title_id: new FormControl('', Validators.compose([Validators.required])),
       account_type_id: new FormControl('', Validators.compose([Validators.required])),
       country_of_origin_id: new FormControl('', Validators.compose([])),
-      member_state_id: new FormControl('', Validators.compose([])),
-      institution_type_id: new FormControl('', Validators.compose([])),
-      institution_id: new FormControl('', Validators.compose([])),
-      institution_department_id: new FormControl('', Validators.compose([])),
-      registration_number: new FormControl('', Validators.compose([])),
-      secretariat_department_id: new FormControl('', Validators.compose([])),
-      user_group_id: new FormControl('', Validators.compose([])),
+      account_roles_id: new FormControl('', Validators.compose([Validators.required])),
+      organisation_id: new FormControl('', Validators.compose([Validators.required])),
+      organisation_department_id: new FormControl('', Validators.compose([])),
+      user_groups_ids: new FormControl('', Validators.compose([])),
       identification_type_id: new FormControl('', Validators.compose([Validators.required])),
       identification_number: new FormControl('', Validators.compose([Validators.required])),
       first_name: new FormControl('', Validators.compose([Validators.required])),
@@ -149,48 +116,19 @@ export class ShareusermanagementClassComponent {
       phone_number: new FormControl('', Validators.compose([])),
     });
 
-    this.updateUsrPermissNewDataFrm = new FormGroup({
-      id: new FormControl('', Validators.compose([])),
-      user_title_id: new FormControl('', Validators.compose([Validators.required])),
-      account_type_id: new FormControl('', Validators.compose([Validators.required])),
-      country_of_origin_id: new FormControl('', Validators.compose([])),
-      member_state_id: new FormControl('', Validators.compose([])),
-      institution_type_id: new FormControl('', Validators.compose([])),
-      institution_id: new FormControl('', Validators.compose([])),
-      institution_department_id: new FormControl('', Validators.compose([])),
-      registration_number: new FormControl('', Validators.compose([])),
-      secretariat_department_id: new FormControl('', Validators.compose([])),
-      user_group_id: new FormControl('', Validators.compose([])),
-      identification_type_id: new FormControl('', Validators.compose([Validators.required])),
-      identification_number: new FormControl('', Validators.compose([Validators.required])),
-      first_name: new FormControl('', Validators.compose([Validators.required])),
-      other_names: new FormControl('', Validators.compose([])),
-      email_address: new FormControl('', Validators.compose([Validators.required])),
-      phone_number: new FormControl('', Validators.compose([Validators.required])),
-    });
-
-    this.expertSelectionAndAppointmentForm = new FormGroup({
-      user_information_id: new FormControl('', Validators.compose([])),
-
-      
-    })
-
     this.onLoadAccountTypesData();
-    // this.onLoadinstituionTypeData();
-    this.fetchUserCountryOfOrigin();
-    this.onLoadpartnerStatesData();
     this.fetchUserTitles()
     this.fetchUserIdentificationType();
     this.onloadUserTitleData();
-    this.onLoadAllUserGroups();
     this.onLoadAccountTypeData();
     this.onLoadCountries();
     this.onLoadIdentificationTypeData();
     // this.onLoadsecreraitetDepartemData();
     this.spinnerHide();
     this.onLoadaccountStatuseData();
-    // this.onLoadAllInstrutions();
-    this.onLoadUserAccountStatusCounters();
+
+    this.onLoadorganisationData();
+    this.onLoaduserAccountRolesData();
 
   }
   scrollToTop(): void {
@@ -202,24 +140,23 @@ export class ShareusermanagementClassComponent {
   onActionEditDetails() {
     this.is_readonly = false;
   }
-  onLoadUserGroups(account_type_id) {
+  
+  onLoaduserAccountRolesData() {
     var data_submit = {
-      'table_name': 'usr_users_groups',
-      'account_type_id': account_type_id
+      'table_name': 'usr_usersaccount_roles'
     }
     this.userManagementService.onLoadUserData(data_submit)
       .subscribe(
         data => {
           this.data_record = data;
           if (this.data_record.success) {
-            this.userGroupData = this.data_record.data;
+            this.userAccountRolesData = this.data_record.data;
           }
         },
         error => {
-          
+
         });
   }
-
   onLoadaccountStatuseData() {
     var data_submit = {
       'table_name': 'wf_workflow_statuses'
@@ -233,44 +170,47 @@ export class ShareusermanagementClassComponent {
           }
         },
         error => {
-          
+
         });
   }
-  // onLoadAllInstrutions() {
-  //   var data_submit = {
-  //     'table_name': 'par_institutions'
-  //   }
-  //   this.userManagementService.onLoadUserData(data_submit)
-  //     .subscribe(
-  //       data => {
-  //         this.data_record = data;
-  //         if (this.data_record.success) {
-  //           this.AllInstitutionsdata = this.data_record.data;
-  //         }
-  //       },
-  //       error => {
-          
-  //       });
-  // }
-  onLoadAllUserGroups() {
+  onLoadorganisationData() {
     var data_submit = {
-      'table_name': 'usr_users_groups'
+      'table_name': 'tra_organisation_information'
     }
     this.userManagementService.onLoadUserData(data_submit)
       .subscribe(
         data => {
           this.data_record = data;
           if (this.data_record.success) {
-            this.alluserGroupData = this.data_record.data;
+            this.organisationData = this.data_record.data;
           }
         },
         error => {
-          
+
+        });
+  }
+  
+  onLoadAllUserGroups(account_type_id) {
+    var data_submit = {
+      'table_name': 'usr_users_groups',
+      'account_type_id':account_type_id,
+      is_default_usergroup: true
+    }
+    this.userManagementService.onLoadUserData(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.systemUserGroupsData = this.data_record.data;
+          }
+        },
+        error => {
+
         });
   }
 
 
-  onAdvanceProductRegistrySearch(e){
+  onAdvanceProductRegistrySearch(e) {
     e.toolbarOptions.items.unshift({
       location: 'after',
       widget: 'dxCheckBox',
@@ -283,11 +223,11 @@ export class ShareusermanagementClassComponent {
     });
   }
 
-  onActivatetheAdvanceSearch(e){
+  onActivatetheAdvanceSearch(e) {
 
-    this.show_advancesearch =  e.value;
+    this.show_advancesearch = e.value;
 
-}
+  }
 
   // onLoadsecreraitetDepartemData() {
   //   var data_submit = {
@@ -302,7 +242,7 @@ export class ShareusermanagementClassComponent {
   //         }
   //       },
   //       error => {
-          
+
   //       });
   // }
 
@@ -319,7 +259,7 @@ export class ShareusermanagementClassComponent {
           }
         },
         error => {
-          
+
         });
   }
   onLoadpartnerStatesData() {
@@ -336,7 +276,7 @@ export class ShareusermanagementClassComponent {
           }
         },
         error => {
-          
+
         });
   }
   fetchUserCountryOfOrigin() {
@@ -352,7 +292,7 @@ export class ShareusermanagementClassComponent {
           }
         },
         error => {
-          
+
         });
   }
   // onLoadinstituionTypeData() {
@@ -368,7 +308,7 @@ export class ShareusermanagementClassComponent {
   //         }
   //       },
   //       error => {
-          
+
   //       });
   // }
   fetchUserIdentificationType() {
@@ -384,7 +324,7 @@ export class ShareusermanagementClassComponent {
           }
         },
         error => {
-          
+
         });
   }
   onLoadAccountTypesData() {
@@ -400,7 +340,7 @@ export class ShareusermanagementClassComponent {
           }
         },
         error => {
-          
+
         });
   }
   //onPatnerStateSelection
@@ -409,83 +349,45 @@ export class ShareusermanagementClassComponent {
     if ($event.selectedItem) {
 
       let account_type = $event.selectedItem;
-      this.onLoadUserGroups(account_type.id)
-
+      this.onLoadAllUserGroups(account_type.id)
       this.dashboard_type_id = account_type.dashboard_type_id;
-      this.has_partnerstate_defination = account_type.has_partnerstate_defination;
-      this.is_eacsecretariat = account_type.is_eacsecretariat;
 
     } else {
       this.dashboard_type_id = 0;
-      this.has_partnerstate_defination = false;
-      this.is_eacsecretariat = false;
     }
 
-    if (!this.has_partnerstate_defination) {
-      this.userAccountFrm.get('institution_id')?.clearValidators();
-      this.userAccountFrm.get('institution_department_id')?.clearValidators();
-      this.userAccountFrm.get('institution_type_id')?.clearValidators();
-    }
-    else {
-      this.userAccountFrm.get('institution_id')?.setValidators([Validators.required]); // Add any other validators you need
-      this.userAccountFrm.get('institution_department_id')?.setValidators([Validators.required]); // Add any other validators you need
-      this.userAccountFrm.get('institution_type_id')?.setValidators([Validators.required]);
-    }
   }
-  // onInstitutionChange(institution_id) {
+ 
+   onLoadorganisationDepartmentsdata(organisation_id) {
+     var data_submit = {
+       'table_name': 'par_organisation_departments',
+       'organisation_id': organisation_id
+     }
+     this.userManagementService.onLoadUserData(data_submit)
+       .subscribe(
+         data => {
+           this.data_record = data;
+           if (this.data_record.success) {
+             this.organisationDepartmentsdata = this.data_record.data;
+           }
+         },
+         error => {
 
-  //   this.onLoadInstitutionDepartments(institution_id);
+         });
+   }
 
-  // }
-  // onLoadInstitutionDepartments(institution_id) {
-  //   var data_submit = {
-  //     'table_name': 'par_institutions_department',
-  //     'institution_id': institution_id
-  //   }
-  //   this.userManagementService.onLoadUserData(data_submit)
-  //     .subscribe(
-  //       data => {
-  //         this.data_record = data;
-  //         if (this.data_record.success) {
-  //           this.InstitutionDepartments = this.data_record.data;
-  //         }
-  //       },
-  //       error => {
-          
-  //       });
-  // }
-  // onPartnerStateChange(member_state_id) {
-  //   let institution_type_id = this.userAccountFrm.get('institution_type_id')?.value;
+  
+  onOrganisationSelectionChange($event) {
+     
+     if ($event.selectedItem) {
 
-  //   this.onLoadInstitutions(institution_type_id, member_state_id);
+      let organisation = $event.selectedItem;
+    
+      this.onLoadorganisationDepartmentsdata(organisation.id)
 
-  // }
-  // onInstitutionTypeChange(institution_type_id) {
-  //   let member_state_id = this.userAccountFrm.get('member_state_id')?.value;
-
-  //   this.onLoadInstitutions(institution_type_id, member_state_id);
-  // }
-  // onLoadInstitutions(institution_type_id, member_state_id) {
-  //   this.spinnerShow('Loading Institutions Details');
-  //   var data_submit = {
-  //     'table_name': 'par_institutions',
-  //     'institution_type_id': institution_type_id,
-  //     'member_state_id': member_state_id
-  //   }
-  //   this.userManagementService.onLoadUserData(data_submit)
-  //     .subscribe(
-  //       data => {
-  //         this.data_record = data;
-  //         if (this.data_record.success) {
-  //           this.Institutions = this.data_record.data;
-  //         }
-  //         this.spinnerHide();
-  //       },
-  //       error => {
-          
-  //         this.spinnerHide();
-  //       });
-  // }
+     }
+   }
+  
 
   onAddActiveUserAccountsClick() {
     this.is_readonly = false;
@@ -502,14 +404,14 @@ export class ShareusermanagementClassComponent {
       .subscribe(
         data => {
           this.data_record = data;
-          
+
           if (this.data_record.success) {
             this.IdentificationTypeData = this.data_record.data;
           }
 
         },
         error => {
-          
+
         });
 
   }
@@ -530,14 +432,14 @@ export class ShareusermanagementClassComponent {
       .subscribe(
         data => {
           this.data_record = data;
-          
+
           if (this.data_record.success) {
             this.CountriesData = this.data_record.data;
           }
 
         },
         error => {
-          
+
         });
 
   }
@@ -550,14 +452,14 @@ export class ShareusermanagementClassComponent {
       .subscribe(
         data => {
           this.data_record = data;
-          
+
           if (this.data_record.success) {
             this.AccountTypeData = this.data_record.data;
           }
 
         },
         error => {
-          
+
         });
 
   }
@@ -570,19 +472,19 @@ export class ShareusermanagementClassComponent {
       .subscribe(
         data => {
           this.data_record = data;
-          
+
           if (this.data_record.success) {
             this.UserTitleData = this.data_record.data;
           }
 
         },
         error => {
-          
+
         });
 
   }
-  
-  fetchUserDetails(appworkflow_status_id= 0, user_group_id=0) {
+
+  fetchUserDetails(appworkflow_status_id = 0, user_group_id = 0) {
     this.spinnerShow('Loading Active Users ...........');
 
     var data_submit = {
@@ -600,12 +502,12 @@ export class ShareusermanagementClassComponent {
           this.spinnerHide();
         },
         error => {
-          
+
         });
 
   }
 
-  fetchApiUserDetails(appworkflow_status_id= 0, is_eacsecretariat=true) {
+  fetchApiUserDetails(appworkflow_status_id = 0, is_eacsecretariat = true) {
     this.spinnerShow('Loading Active Users ...........');
 
     var data_submit = {
@@ -623,12 +525,12 @@ export class ShareusermanagementClassComponent {
           this.spinnerHide();
         },
         error => {
-          
+
         });
 
   }
 
-  fetchExternalUserDetails(appworkflow_status_id= 0, is_eacsecretariat=true) {
+  fetchExternalUserDetails(appworkflow_status_id = 0, is_eacsecretariat = true) {
     this.spinnerShow('Loading Active Users ...........');
 
     var data_submit = {
@@ -646,35 +548,10 @@ export class ShareusermanagementClassComponent {
           this.spinnerHide();
         },
         error => {
-          
+
         });
 
   }
-  
-
-  // fetchExpertDetails(appworkflow_status_id= 0, is_eacsecretariat=false) {
-  //   this.spinnerShow('Loading Active Users ...........');
-
-  //   var data_submit = {
-  //     'table_name': 'usr_users_information',
-  //     'appworkflow_status_id': appworkflow_status_id,
-  //     is_eacsecretariat: is_eacsecretariat
-  //   }
-  //   this.userManagementService.onGetUserInformation(data_submit, 'onGetExpertInformation')
-  //     .subscribe(
-  //       data => {
-  //         this.data_record = data;
-  //         if (this.data_record.success) {
-  //           this.ActiveUserAccountss = this.data_record.data;
-  //         }
-  //         this.spinnerHide();
-  //       },
-  //       error => {
-          
-  //       });
-
-  // }
-
 
 
   permitActiveUserAccountsActionColClick(e, data) {
@@ -686,27 +563,21 @@ export class ShareusermanagementClassComponent {
     } else if (action_btn.action === 'view_profile') {
       this.is_readonly = true;
       this.funcprofileDetails(data);
-    }else if (action_btn.action == 'assign_group') {
-      this.is_readonly = true;
-      this.funcAssignUserGroupdDetails(data, 2);
-    }else if (action_btn.action === 'approve_useraccount') {
+    } else if (action_btn.action === 'approve_useraccount') {
 
       this.decision_description = 'Approve User Account ';
       this.funcApprovaUserData(data, 2);
-    }else if (action_btn.action === 'appoint_expert') {
+    } else if (action_btn.action === 'appoint_expert') {
       this.decision_description = 'Appoint Expert Account ';
       this.funcappointExpert(data, 9);
     } else if (action_btn.action === 'disable_useraccount') {
       this.decision_description = 'Reject/Disable User Account ';
       this.funcRejectUserData(data, 3);
     }
-    else if (action_btn.action === 'delete_record') {
-      this.funcDeleteDetails(data);
-    }
-
+    
   }
 
-  
+
   funcApprovaUserData(data, decision_id) {
     this.userAccountFrm.patchValue(data.data);
     this.config_record = data.data.name;
@@ -722,27 +593,15 @@ export class ShareusermanagementClassComponent {
     this.usrrejectionPopupVisible = true;
   }
 
-  funcappointExpert(data, decision_id){
+  funcappointExpert(data, decision_id) {
     this.userAccountFrm.patchValue(data.data);
     this.config_record = data.data.name;
     this.appworkflow_status_id = decision_id;
     this.appointPopupVisible = true;
   }
   onPopupHidden() {
-    this.fetchUserDetails(0,this.user_group_id);
+    this.fetchUserDetails(0, this.user_group_id);
   }
-
-
-
-  funcAssignUserGroupdDetails(data, decision_id) {
-    this.updateUsrPermissNewDataFrm.patchValue(data.data);
-    this.usergroupPopupVisible = true;
-    this.appworkflow_status_id = decision_id;
-    this.is_readonly = true;
-
-  }
-
- 
 
   funcEditDetails(data) {
     this.userAccountFrm.patchValue(data.data);
@@ -765,72 +624,6 @@ export class ShareusermanagementClassComponent {
     this.approvalPopupVisible = false;
   }
 
-  // onconfirmInitiateSelectionAndAppoitment() {
-  //   // Save the details
-  //   this.expertSelectionAndAppointmentForm.get('user_information_id')?.setValue(this.user_information_id)
-
-  //   // Show spinner while processing
-  //   this.spinnerShow('Initiating Selection and Appointment of Experts ');
-
-  //   this.eoiService.onSaveExpressionOfInterestSDetails(this.table_name, this.expertSelectionAndAppointmentForm.value, 'onInitiateExpertsSelectionAndAppointment')
-  //     .subscribe(
-  //       response => {
-  //         this.response = response;
-  //         if (this.response.success) {
-  //           this.application_code = this.response.application_code;
-  //           this.eoiService.setApplicationDetail(this.response.record);
-  //           const targetRoute = '/admin-ecres/expert-selectionandappointment';
-  //           this.router.navigate([targetRoute])
-  //            this.scrollToTop();
-  //             .then(navigationSuccess => {
-  //               if (navigationSuccess) {
-  //                 this.toastr.success(this.response.message, 'Response');
-  //                  this.scrollToTop();
-  //               } else {
-  //                 this.toastr.error('Navigation to the route failed', 'Alert');
-  //               }
-  //             })
-  //             .catch(error => {
-  //               this.toastr.error('Navigation error: ' + error.message, 'Alert');
-  //             });
-  //         } else {
-  //           this.toastr.error(this.response.message, 'Alert');
-  //         }
-  //         this.spinnerHide();
-  //       },
-  //       error => {
-  //         this.toastr.error('Error Occurred: ' + error.message, 'Alert');
-  //         this.spinnerHide();
-  //       });
-  // }
-
-
-  // onconfirmInitiateSelectionAndAppoitment() {
-  //   this.spinnerShow(this.decision_description + ' Expert Account.......................... ');
-
-  //   this.userManagementService.onconfirmInitiateSelectionAndAppoitment(this.userAccountFrm.value, this.appworkflow_status_id, this.decision_description)
-  //     .subscribe(
-  //       response => {
-          
-  //         this.response = response;
-  //         if (this.response.success) {
-  //           this.fetchExpertDetails(0, this.is_eacsecretariat);
-  //           this.appointPopupVisible = false;
-  //           this.toastr.success(this.response.message, 'Response');
-  //         }
-  //         else {
-
-  //           this.toastr.success(this.response.message, 'Response');
-
-  //         }
-  //         this.spinnerHide();
-  //       },
-  //       error => {
-  //         this.loading = false;
-  //       });
-
-  // }
-
 
   onDeleteUserData() {
     this.spinner.show();
@@ -840,7 +633,7 @@ export class ShareusermanagementClassComponent {
           this.spinner.hide();
           this.response = response;
           if (this.response.success) {
-            this.fetchUserDetails(0,this.user_group_id);
+            this.fetchUserDetails(0, this.user_group_id);
             this.toastr.success(this.response.message, 'Response');
           }
           else {
@@ -865,7 +658,7 @@ export class ShareusermanagementClassComponent {
           this.spinner.hide();
           this.response = response;
           if (this.response.success) {
-            this.fetchUserDetails(0,this.user_group_id);
+            this.fetchUserDetails(0, this.user_group_id);
             this.usrapprovalPopupVisible = false;
             this.toastr.success(this.response.message, 'Response');
           }
@@ -888,7 +681,7 @@ export class ShareusermanagementClassComponent {
     this.userManagementService.onUserAccountRejection(this.userAccountFrm.value, this.appworkflow_status_id, this.decision_description)
       .subscribe(
         response => {
-          
+
           this.response = response;
           if (this.response.success) {
             this.fetchUserDetails(0, this.user_group_id);
@@ -920,25 +713,25 @@ export class ShareusermanagementClassComponent {
     if (this.userAccountFrm.invalid) {
       return;
     }
-    this.spinner.show();
-    this.userservice.onUserAccountRegistration(this.userAccountFrm.value, 'onsaveUserData')
+    this.spinnerShow('');
+    this.userservice.onUserAccountRegistration(this.userAccountFrm.value, 'onsaveUserRegistrationData')
       .subscribe(
         response => {
           this.response = response;
           //the details 
           if (this.response.success) {
-            this.fetchUserDetails(0,this.user_group_id);
+            this.fetchUserDetails(0, this.user_group_id);
             this.addPopupVisible = false;
             this.toastr.success(this.response.message, 'Response');
 
           } else {
             this.toastr.error(this.response.message, 'Alert');
           }
-          this.spinner.hide();
+          this.spinnerHide();
         },
         error => {
           this.toastr.error('Error Occurred', 'Alert');
-          this.spinner.hide();
+          this.spinnerHide();
         });
   }
   funcpopWidth(percentage_width) {
@@ -948,41 +741,6 @@ export class ShareusermanagementClassComponent {
     return window.innerHeight * percentage_height / 100;
   }
 
-
-  onsaveUserGroupDetails() {
-    const formData = new FormData();
-    const invalid = [];
-    const controls = this.updateUsrPermissNewDataFrm.controls;
-    for (const name in controls) {
-      if (controls[name].invalid) {
-        this.toastr.error('Fill In All Mandatory fields with (*), missing value on ' + name.replace('_id', ''), 'Alert');
-        return;
-      }
-    }
-    if (this.updateUsrPermissNewDataFrm.invalid) {
-      return;
-    }
-    this.spinner.show();
-    this.userManagementService.onsaveUserData(this.table_name, this.updateUsrPermissNewDataFrm.value, 'onsaveUserGroupDetails')
-      .subscribe(
-        response => {
-          this.response = response;
-          //the details 
-          if (this.response.success) {
-            this.fetchUserDetails(0,this.user_group_id);
-            this.addPopupVisible = false;
-            this.toastr.success(this.response.message, 'Response');
-
-          } else {
-            this.toastr.error(this.response.message, 'Alert');
-          }
-          this.spinner.hide();
-        },
-        error => {
-          this.toastr.error('Error Occurred', 'Alert');
-          this.spinner.hide();
-        });
-  }
   onCellPrepared(e) {
     this.onCellUserAccountPrepared(e);
   }
@@ -1031,40 +789,13 @@ export class ShareusermanagementClassComponent {
 
 
   }
-
-  onLoadUserAccountStatusCounters() {
-
-    this.userManagementService.onLoadUserAccountStatusCounters()
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            let records = this.data_record.data;
-            // this.dtPremisesApplicationData = data.data;
-            for (let rec of records) {
-              if (rec.appworkflow_status_id == 1) {
-                this.pending_approval = rec.statuses_counter;
-              } if (rec.appworkflow_status_id == 2) {
-                this.active_accounts = rec.statuses_counter;
-              } if (rec.appworkflow_status_id == 3) {
-                this.pending_verification = rec.statuses_counter;
-              } if (rec.appworkflow_status_id == 4) {
-                this.rejected_accounts = rec.statuses_counter;
-              }
-            }
-          }
-
-        },
-        error => {
-          
-        });
-
+  onCountrySelection($event) {
+    if ($event.selectedItem) {
+      let country_data = $event.selectedItem,
+        country_code = '+' + country_data.phonecode;
+      this.userAccountFrm.get('phone_number')?.setValue(country_code);
+    }
   }
-  onReloadUserCounter() {
-    this.fetchUserDetails(0,this.user_group_id);
-    this.onLoadUserAccountStatusCounters();
-  }
-
   onExporting(e: DxDataGridTypes.ExportingEvent) {
 
     if (e.format == 'pdf') {
