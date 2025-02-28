@@ -87,12 +87,8 @@
                     icon="fa fa-angle-double-left" [elementAttr]="{ id: 'elementId', }" (onClick)="previousStep()">
                 </dx-button>
 
-                <dx-button text="{{'dashboard' | translate}}" type="success" icon="fa fa-eraser"
-                    [elementAttr]="{  class: 'pull-left' }" (onClick)="onApplicationDashboard()">
-                </dx-button>
-
                 <dx-button text="{{'save_permit_application' | translate}}" type="default" icon="fa fa-save"
-                    [elementAttr]="{ id: 'elementId', class: 'pull-right' }"
+                    [elementAttr]="{ id: 'elementId'}"
                     (onClick)="onSaveImportExportApplication()">
                 </dx-button>
                 <dx-button text="{{'permit_product_information' | translate}}" iconPosition="right" type="success"

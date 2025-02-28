@@ -215,6 +215,22 @@ export class SharedImpexpApplicationClass {
       tin_no: new FormControl('', Validators.compose([]))
     });
 
+    this.applicantDetailsForm = new FormGroup({
+      id: new FormControl('', Validators.compose([])),
+      applicant_name: new FormControl('', Validators.compose([Validators.required])),
+      country_id: new FormControl('', Validators.compose([Validators.required])),
+      region_id: new FormControl('', Validators.compose([])),
+      district_id: new FormControl('', Validators.compose([])),
+      email_address: new FormControl('', Validators.compose([Validators.required])),
+      postal_address: new FormControl('', Validators.compose([])),
+      telephone_no: new FormControl('', Validators.compose([])),
+      mobile_no: new FormControl('', Validators.compose([])),
+      physical_address: new FormControl('', Validators.compose([])),
+      application_options_id: new FormControl('', Validators.compose([])),
+
+      
+    });
+
     this.documentUploadfrm = this.fb.group({
       file: null,
       document_requirement_id: [null, Validators.required],
@@ -599,9 +615,24 @@ export class SharedImpexpApplicationClass {
     this.ngWizardService.theme(theme);
   }
 
+  
+
   nextStep() {
+    // Extract `applicant_id` from the first form
+    const applicantId = this.applicantDetailsForm.get('id')?.value;
+    console.log(applicantId);
+    if (applicantId) {
+      // Patch `applicant_id` into the next form
+      this.applicationGeneraldetailsfrm.patchValue({ applicant_id: applicantId });
+    }
+
+    // Move to the next wizard step
     this.ngWizardService.next();
   }
+  
+
+  
+
 
   previousStep() {
     this.ngWizardService.previous();
