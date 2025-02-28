@@ -102,6 +102,7 @@ export class ServiceAdmnistrationService {
         return <any>data;
       }));
   }
+  
 
   onLoadTransactionPermitTypeData(data) {
     data.table_name = btoa(data.table_name);

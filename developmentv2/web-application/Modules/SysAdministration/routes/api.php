@@ -38,4 +38,7 @@ Route::middleware(['XssSanitizer','clear_cache_config','firewall.all'])->prefix(
     Route::post('onSaveSystemAdminWithImage', [SysAdministrationController::class, 'onSaveSystemAdminWithImage']);
     Route::get('getAppUserGroupRegulatoryFunctions', [SysAdministrationController::class, 'getAppUserGroupRegulatoryFunctions']);
     Route::post('onSavingRegulatoryFunctionPermissions', [SysAdministrationController::class, 'onSavingRegulatoryFunctionPermissions']);
+
+    Route::post('onSaveRegulatoryFunctionGuidelines', [SysAdministrationController::class, 'onSaveRegulatoryFunctionGuidelines']);
+
 });

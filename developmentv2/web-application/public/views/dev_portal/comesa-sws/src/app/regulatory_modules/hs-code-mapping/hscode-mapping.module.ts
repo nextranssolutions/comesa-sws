@@ -36,6 +36,11 @@ import { ServiceDeliveryTimelineComponent } from './views/service_delivery_timel
 import { ServiceTypesComponent } from './views/service_delivery_timeline/service-types/service-types.component';
 import { ServicedeliveryConfigsetupComponent } from './views/service_delivery_timeline/servicedelivery-configsetup/servicedelivery-configsetup.component';
 import { SharedServiceDeliveryComponent } from './views/service_delivery_timeline/shared-service-delivery/shared-service-delivery.component';
+import { ImportexportProceduredetailsComponent } from './views/trader_database_procedures/importexport-proceduredetails/importexport-proceduredetails.component';
+import { ProcedureCategoriesComponent } from './views/trader_database_procedures/procedure-categories/procedure-categories.component';
+import { ProcedureSubcategoriesComponent } from './views/trader_database_procedures/procedure-subcategories/procedure-subcategories.component';
+import { SharedTraderdbproceduresComponent } from './views/trader_database_procedures/shared-traderdbprocedures/shared-traderdbprocedures.component';
+import { TraderdbproceduresSetupComponent } from './views/trader_database_procedures/traderdbprocedures-setup/traderdbprocedures-setup.component';
 
 const ngWizardConfig: NgWizardConfig = {
   theme: THEME.default
@@ -46,7 +51,8 @@ const ngWizardConfig: NgWizardConfig = {
     HscodesSectionsComponent, HscodesheadingDefinationsComponent, HscodesmappingConfigsetupComponent, HscodeRegistryproductsComponent, HscodesproductsRegistryComponent,
     HscodessubheadingDefinationComponent, HscodestariffDetailsComponent, SharedhscodesConfigurationsComponent, HscodeDashboardComponent,RestrictionsProhibitionsComponent,
     HscodeInstitutionDepartmentsComponent, HscodeInstitutionsComponent, HscodeinstitutionsConfigsetupComponent, SharedHscodeInstitutionsComponent, PermittypeConfigurationsComponent,ServiceDeliveryTimelineComponent,
-    ServiceTypesComponent,ServicedeliveryConfigsetupComponent,SharedServiceDeliveryComponent
+    ServiceTypesComponent,ServicedeliveryConfigsetupComponent,SharedServiceDeliveryComponent,TraderdbproceduresSetupComponent,SharedTraderdbproceduresComponent,ProcedureSubcategoriesComponent,ProcedureCategoriesComponent,
+    ImportexportProceduredetailsComponent
   ],
   imports: [
     CommonModule,

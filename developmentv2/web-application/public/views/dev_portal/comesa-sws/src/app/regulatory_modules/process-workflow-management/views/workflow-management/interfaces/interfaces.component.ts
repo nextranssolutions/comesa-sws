@@ -26,7 +26,7 @@ export class InterfacesComponent {
        enablePopupVisible: boolean;
        enabledisable_interface: string;
        enabledisable_interfacedescription: string;
- 
+      organisationData: any;
        productCategoryData: any;
        checklistConfigVisible = false;
        premiseTypeData: any;
@@ -81,15 +81,12 @@ export class InterfacesComponent {
          description: new FormControl('', Validators.compose([])),
          code: new FormControl('', Validators.compose([])),
          order_no: new FormControl('', Validators.compose([])),
-         
+         organisation_id:new FormControl('', Validators.compose([Validators.required])),
          resetcolumns: new FormControl('', Validators.compose([])),
-         
          table_name: new FormControl('', Validators.compose([])),
          action: new FormControl('', Validators.compose([])),
-         
          regulatory_function_id: new FormControl('', Validators.compose([])),
          regulatory_subfunction_id: new FormControl('', Validators.compose([])),
-         
          routerlink: new FormControl('', Validators.compose([])),
          is_enabled: new FormControl('', Validators.compose([])),
         
@@ -102,6 +99,7 @@ export class InterfacesComponent {
      this.onLoadproductTypeData();
      this.onLoadproductClassCategoryData();
      this.onLoadPremiseTypeData();
+     this.onLoadOrganisationData();
      
      }
      @HostListener('window:resize', ['$event'])
@@ -187,6 +185,24 @@ export class InterfacesComponent {
            });
      
      }
+     onLoadOrganisationData() {
+      var data_submit = {
+        'table_name': 'tra_organisation_information',
+        
+      }
+      this.workflowService.getWorkflowConfigs(data_submit)
+        .subscribe(
+          data => {
+            this.data_record = data;
+            if (this.data_record.success) {
+              this.organisationData = this.data_record.data;
+            }
+          },
+          error => {
+    
+          });
+    
+    }
      
      onLoadregulatorySubFunctionsData(regulatory_function_id) {
        var data_submit = {

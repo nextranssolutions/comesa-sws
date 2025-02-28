@@ -73,13 +73,9 @@
     </dxo-lookup>
   </dxi-column>
 
-  <dxi-column *ngIf="table_name == 'tra_documentrequirements_defination'" dataField="product_type_id"
-  caption="{{ 'product_type_id' | translate }}">
-    <dxo-lookup [dataSource]="productTypeIdData" displayExpr="name" valueExpr="id">
-    </dxo-lookup>
-  </dxi-column>
+ 
 
-  <dxi-column *ngIf="table_name == 'tra_documentrequirements_defination'" dataField="regulatory_function_id"
+  <dxi-column *ngIf="table_name == 'tra_documentrequirements_defination' || table_name == 'dms_sites_repository_defination' " dataField="regulatory_function_id"
   caption="{{ 'regulatory_function_id' | translate }}">
     <dxo-lookup [dataSource]="regulatoryFunctionIdData" displayExpr="name" valueExpr="id">
     </dxo-lookup>
@@ -91,11 +87,7 @@
     </dxo-lookup>
   </dxi-column>
 
-  <dxi-column *ngIf="table_name == 'tra_documentrequirements_defination'" dataField="prodclass_category_id"
-  caption="{{ 'prodclass_category_id' | translate }}">
-    <dxo-lookup [dataSource]="prodClassIdData" displayExpr="name" valueExpr="id">
-    </dxo-lookup>
-  </dxi-column>
+ 
 
   <dxi-column *ngIf="table_name == 'tra_documentrequirements_defination'" dataField="importexport_permittype_id"
   caption="{{ 'importexport_permittype_id' | translate }}">
@@ -135,9 +127,9 @@
   caption="{{ 'document_no' | translate }}">
   </dxi-column>
 
-  <dxi-column *ngIf="table_name == 'par_document_types'" dataField="sop_id"
-  caption="{{ 'sop_id' | translate }}">
-    <dxo-lookup [dataSource]="sopIdData" displayExpr="name" valueExpr="id">
+  <dxi-column *ngIf="table_name == 'par_document_types' || table_name == 'dms_sites_repository_defination' || table_name == 'tra_nonstructured_docdefination' || table_name == 'tra_documentrequirements_defination'" dataField="organisation_id"
+  caption="{{ 'organisation' | translate }}">
+    <dxo-lookup [dataSource]="organisationData" displayExpr="name" valueExpr="id">
     </dxo-lookup>
   </dxi-column>
 
@@ -164,7 +156,7 @@
   [showIndicator]="true" [showPane]="true" [shading]="true" [message]="spinnerMessage" [hideOnOutsideClick]="false">
 </dx-load-panel>
 
-<dx-popup class="popup" [width]="funcpopWidth(75)" [height]="440" [showTitle]="true" 
+<dx-popup class="popup" [width]="funcpopWidth(75)" [height]="400" [showTitle]="true" 
   title="{{ 'add_new' | translate }} {{parameter_name | translate }}" [dragEnabled]="false" [hideOnOutsideClick]="true"
   [(visible)]="onAddNewConfiVisible">
 
@@ -219,14 +211,12 @@
           <dx-select-box [dataSource]="documentTypeIdData" formControlName="document_type_id" valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
         </div>
 
-        <div *ngIf="table_name == 'tra_documentrequirements_defination'" class="col-lg-6">
-          <label>{{ 'product type id' | translate }}</label>
-          <dx-select-box [dataSource]="productTypeIdData" formControlName="product_type_id" valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
-        </div>
+       
 
-        <div *ngIf="table_name == 'tra_documentrequirements_defination'" class="col-lg-6">
+        <div *ngIf="table_name == 'tra_documentrequirements_defination' || table_name == 'dms_sites_repository_defination'" class="col-lg-6">
           <label>{{ 'regulatory function id' | translate }}</label>
-          <dx-select-box [dataSource]="regulatoryFunctionIdData" formControlName="regulatory_function_id" valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
+          <dx-select-box [dataSource]="regulatoryFunctionIdData" formControlName="regulatory_function_id" valueExpr="id" 
+          (onSelectionChanged)="onRegulatoryFunctionChange($event)" [searchEnabled]="true" displayExpr="name"></dx-select-box>
         </div>
 
         <div *ngIf="table_name == 'tra_documentrequirements_defination'" class="col-lg-6">
@@ -234,19 +224,14 @@
           <dx-select-box [dataSource]="regulatorySubFunctionIdData" formControlName="regulatory_subfunction_id" valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
         </div>
 
-        <div *ngIf="table_name == 'tra_documentrequirements_defination'" class="col-lg-6">
-          <label>{{ 'prodclass category id' | translate }}</label>
-          <dx-select-box [dataSource]="prodClassIdData" formControlName="prodclass_category_id" valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
-        </div>
-
         <div *ngIf="table_name == 'par_document_types'" class="col-lg-6">
           <label>{{ 'document_no' | translate }}</label>
           <dx-text-box formControlName="document_no" [showClearButton]="true"></dx-text-box>
         </div>
 
-        <div *ngIf="table_name == 'par_document_types'" class="col-lg-6">
-          <label>{{ 'sop id' | translate }}</label>
-          <dx-select-box [dataSource]="sopIdData" formControlName="sop_id" valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
+        <div *ngIf="table_name == 'par_document_types' || table_name == 'dms_sites_repository_defination' || table_name == 'tra_nonstructured_docdefination' || table_name == 'tra_documentrequirements_defination'" class="col-lg-6">
+          <label>{{ 'organisation' | translate }}</label>
+          <dx-select-box [dataSource]="organisationData" formControlName="organisation_id" valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
         </div>
 
         <div *ngIf="table_name == 'par_sop_masterlist'" class="col-lg-6">

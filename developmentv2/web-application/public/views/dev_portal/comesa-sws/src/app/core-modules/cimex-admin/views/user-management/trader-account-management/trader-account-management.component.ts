@@ -100,7 +100,7 @@ export class TraderAccountManagementComponent {
     private reportingAnalytics: ReportsService,
     private spinner: SpinnerVisibilityService,
   ) {
-    this.table_name = 'txn_trader_account';
+    this.table_name = 'tra_trader_account';
 
     this.userAccountFrm = new FormGroup({
       id: new FormControl(Validators.compose([])),
@@ -165,7 +165,7 @@ export class TraderAccountManagementComponent {
   onGetSingleUserProfileDetails() {
 
     var data_submit = {
-      'table_name': 'txn_trader_account'
+      'table_name': 'tra_trader_account'
     }
     this.spinnerShow('Loading user Profile Details');
 
@@ -327,7 +327,7 @@ export class TraderAccountManagementComponent {
 
   fetchAccountStatusData() {
     var data_submit = {
-      'table_name': 'par_districts'
+      'table_name': 'par_workflow_status'
     }
     this.configService.onLoadConfigurationData(data_submit)
       .subscribe(
@@ -347,7 +347,7 @@ export class TraderAccountManagementComponent {
     this.spinnerShow('Loading Traders ...........');
 
     var data_submit = {
-      'table_name': 'txn_trader_account',
+      'table_name': 'tra_trader_account',
       // 'appworkflow_status_id': appworkflow_status_id,
 
     }
