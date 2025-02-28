@@ -46,6 +46,10 @@ export class UserManagementService {
   }
   onGetUserInformation(data, action_url) {
     data.table_name = btoa(data.table_name);
+    
+    const loggedInUserId = localStorage.getItem('id');
+    data.user_id =  loggedInUserId;
+    
     this.user = {
       params: data,
       headers: { 'Accept': 'application/json' }
@@ -230,9 +234,11 @@ export class UserManagementService {
 
   //
   onUserAccountRegistration(data, action_url) {
-
+    const loggedInUserId = localStorage.getItem('id');
+    const loggedInUserName = localStorage.getItem('first_name');
     this.user = {
-      headers: { 'Accept': 'application/json' }
+      headers: { 'Accept': 'application/json' },
+      params: { 'loggedInUserId': loggedInUserId,  'user_name': loggedInUserName},
     };
     return this.http.post(this.baseUrl + '/' + action_url, data, this.user)
       .pipe(map(data => {

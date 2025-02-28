@@ -5,6 +5,7 @@ import { AuthGuard } from 'src/app/guards/auth.guard';
 import { ImportexportLayoutComponent } from './views/layout/importexport-layout/importexport-layout.component';
 import { DraftImportlicensedashComponent } from './views/import-license/draft-importlicensedash/draft-importlicensedash.component';
 import { InitiateImportappComponent } from './views/import-license/initiate-importapp/initiate-importapp.component';
+import { ImportexportDashboardComponent } from './views/importexport-dashboard/importexport-dashboard.component';
 
 const routes: Routes = [{
   path: '',
@@ -12,7 +13,7 @@ const routes: Routes = [{
   canActivate: [AuthGuard],
   children: [{
     path: '',
-    component: DraftImportlicensedashComponent
+    component: ImportexportDashboardComponent
   },{
     path: 'draft-importlicense-dashboard',
     component: DraftImportlicensedashComponent

@@ -7,7 +7,6 @@ import { HscodesmappingConfigsetupComponent } from './views/hscodes-mapping/hsco
 import { HscodechaptersDefinationComponent } from './views/hscodes-mapping/hscodechapters-defination/hscodechapters-defination.component';
 import { HscodesSectionsComponent } from './views/hscodes-mapping/hscodes-sections/hscodes-sections.component';
 import { HscodesheadingDefinationsComponent } from './views/hscodes-mapping/hscodesheading-definations/hscodesheading-definations.component';
-import { HscodesproductsRegistryComponent } from './views/hscodes-mapping/hscodesproducts-registry/hscodesproducts-registry.component';
 import { HscodessubheadingDefinationComponent } from './views/hscodes-mapping/hscodessubheading-defination/hscodessubheading-defination.component';
 import { HscodestariffDetailsComponent } from './views/hscodes-mapping/hscodestariff-details/hscodestariff-details.component';
 import { SharedhscodesConfigurationsComponent } from './views/hscodes-mapping/sharedhscodes-configurations/sharedhscodes-configurations.component';
@@ -17,6 +16,7 @@ import { HscodeInstitutionsComponent } from './views/hscode-institutional-inform
 import { HscodeinstitutionsConfigsetupComponent } from './views/hscode-institutional-information/hscodeinstitutions-configsetup/hscodeinstitutions-configsetup.component';
 import { SharedHscodeInstitutionsComponent } from './views/hscode-institutional-information/shared-hscode-institutions/shared-hscode-institutions.component';
 import { PermittypeConfigurationsComponent } from './views/permittype-configurations/permittype-configurations.component';
+<<<<<<< HEAD
 import { ChecklistDefinationsComponent } from './views/permit_type_management_config/checklist-definations/checklist-definations.component';
 import { ChecklistTypesComponent } from './views/permit_type_management_config/checklist-types/checklist-types.component';
 import { HscodeSeloptionComponent } from './views/permit_type_management_config/hscode-seloption/hscode-seloption.component';
@@ -30,6 +30,20 @@ import { QuotaLimitationstypeComponent } from './views/permit_type_management_co
 import { RenewableStatusesComponent } from './views/permit_type_management_config/renewable-statuses/renewable-statuses.component';
 import { SharedPermitTypeManagementConfigComponent } from './views/permit_type_management_config/shared-permit-type-management-config/shared-permit-type-management-config.component';
 import { WorkflowStagesComponent } from './views/permit_type_management_config/workflow-stages/workflow-stages.component';
+=======
+import { HscodeRegistryproductsComponent } from './views/hscode-registryproducts/hscode-registryproducts.component';
+import { HscodesproductsRegistryComponent } from './views/hscodes-mapping/hscodesproducts-registry/hscodesproducts-registry.component';
+import { RestrictionsProhibitionsComponent } from './views/restrictions-prohibitions/restrictions-prohibitions.component';
+import { ServiceDeliveryTimelineComponent } from './views/service_delivery_timeline/service-delivery-timeline/service-delivery-timeline.component';
+import { ServiceTypesComponent } from './views/service_delivery_timeline/service-types/service-types.component';
+import { ServicedeliveryConfigsetupComponent } from './views/service_delivery_timeline/servicedelivery-configsetup/servicedelivery-configsetup.component';
+import { SharedServiceDeliveryComponent } from './views/service_delivery_timeline/shared-service-delivery/shared-service-delivery.component';
+import { ImportexportProceduredetailsComponent } from './views/trader_database_procedures/importexport-proceduredetails/importexport-proceduredetails.component';
+import { ProcedureCategoriesComponent } from './views/trader_database_procedures/procedure-categories/procedure-categories.component';
+import { ProcedureSubcategoriesComponent } from './views/trader_database_procedures/procedure-subcategories/procedure-subcategories.component';
+import { SharedTraderdbproceduresComponent } from './views/trader_database_procedures/shared-traderdbprocedures/shared-traderdbprocedures.component';
+import { TraderdbproceduresSetupComponent } from './views/trader_database_procedures/traderdbprocedures-setup/traderdbprocedures-setup.component';
+>>>>>>> daf3b3fee7de3c6c51f5ed78fd60f7c210682d37
 
 
 const routes: Routes = [{
@@ -58,6 +72,10 @@ const routes: Routes = [{
   {
     path: 'app-hscodesproducts-registry',
     component: HscodesproductsRegistryComponent
+  },
+  {
+    path: 'app-hscode-registryproducts',
+    component: HscodeRegistryproductsComponent
   },
   {
     path: 'app-hscodessubheading-defination',
@@ -93,6 +111,7 @@ const routes: Routes = [{
     component: PermittypeConfigurationsComponent
   },
   {
+<<<<<<< HEAD
     path: 'app-checklist-definations',
     component: ChecklistDefinationsComponent
   },
@@ -145,6 +164,48 @@ const routes: Routes = [{
     component: WorkflowStagesComponent
   },
 ]
+=======
+    path: 'app-restrictions-prohibitions',
+    component: RestrictionsProhibitionsComponent
+  },
+  {
+    path: 'app-shared-service-delivery',
+    component: SharedServiceDeliveryComponent
+  },
+  {
+    path: 'app-servicedelivery-configsetup',
+    component: ServicedeliveryConfigsetupComponent
+  },
+  {
+    path: 'app-service-types',
+    component: ServiceTypesComponent
+  },
+  {
+    path: 'app-service-delivery-timeline',
+    component: ServiceDeliveryTimelineComponent
+  },
+  {
+    path: 'app-importexport-proceduredetails',
+    component: ImportexportProceduredetailsComponent
+  },
+  {
+    path: 'app-procedure-categories',
+    component: ProcedureCategoriesComponent
+  },
+  {
+    path: 'app-procedure-subcategories',
+    component: ProcedureSubcategoriesComponent
+  },
+  {
+    path: 'app-shared-traderdbprocedures',
+    component: SharedTraderdbproceduresComponent
+  },
+  {
+    path: 'app-traderdbprocedures-setup',
+    component: TraderdbproceduresSetupComponent
+  },
+  ]
+>>>>>>> daf3b3fee7de3c6c51f5ed78fd60f7c210682d37
 }]
 
 @NgModule({

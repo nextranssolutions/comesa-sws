@@ -2,6 +2,10 @@
 
 namespace App\Helpers;
 use GuzzleHttp\Client;
+use Carbon\Carbon;
+
+use Illuminate\Support\Facades\DB;
+use Illuminate\Database\QueryException;
 
 class AuthHelper {
 
@@ -77,6 +81,33 @@ class AuthHelper {
             $helpdesk_url = $helpdesk_url.'/login?token=' . $token;
 
         }
+        return $helpdesk_url;
+    }
+   static function onFuncUserGroupUpdate($user_groups_ids,$user_id,$loggedInUserId){
+
+        $table_name = 'tra_user_group';
+                
+        $user_groupsdata = array();
+        if(is_array($user_groups_ids)){
+            DB::table('tra_user_group')->where('user_id',$user_id)->delete();
+            foreach($user_groups_ids as $user_groups_id){
+                    $user_groupsdata = array('user_id'=>$user_id, 
+                                    'group_id'=>$user_groups_id, 
+                                    'created_by'=>$loggedInUserId, 
+                                    'created_on'=>Carbon::now(),
+                                    'altered_by'=>$loggedInUserId, 
+                                    'dola'=>Carbon::now());
+                   DB::table('tra_user_group')->insert($user_groupsdata);
+
+                   $user_resp = insertRecord('tra_user_group', $user_groupsdata);
+
+            }
+        }
+        return $user_resp;
+    }
+    static function getHelpDeskAccessUrl() {
+        
+        $helpdesk_url = env( 'helpdesk_url' );
         return $helpdesk_url;
     }
 

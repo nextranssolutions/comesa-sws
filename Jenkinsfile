@@ -18,7 +18,7 @@ pipeline {
       steps {
 
           sh '''#!/bin/bash
-
+######################### NOTE: UNCHECK LIGHTWEIGHT CHECKOUT OPTION FOR FIRST TIME BUILDING THEN CHECK AFTER FIRST COMPLETE BUILD #####################
           ##### TRANSFER TO THE SERVER ###############
           sudo rm -rf /var/www/cimex
           sudo mkdir /var/www/cimex
@@ -37,7 +37,7 @@ pipeline {
           sed -i \'4s/true/false/\' .env
           sed -i \'27s/false/true/\' .env
           php artisan optimize
-          rm .env.encrypted .env.eac.encrypted
+          rm .env.encrypted
           
           # Enable Maintenance Mode
           php artisan down

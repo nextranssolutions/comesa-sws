@@ -12,136 +12,29 @@ use Illuminate\Support\Facades\Hash;
 
 class UserManagementController extends Controller
 {
-    // public function onsaveUserGroupDetails(Request $req)
-    // {
-    //     try {
-    //         $record_id = $req->input("id");
-    //         $appworkflow_status_id = 2;
-    //         $record = Db::table('usr_users_information')
-    //             ->where('email_address', '=', $record_id)
-    //             ->count();
-
-    //         if ($record > 0) {
-    //             $table_name = 'usr_users_information';
-    //             $full_names = $req->first_name . ' ' . $req->other_names;
-
-    //             $user_data = array(
-    //                 'account_type_id' => $req->account_type_id,
-    //                 'account_group_id' => $req->account_group_id,
-    //                 'user_title_id' => $req->user_title_id,
-    //                 'country_of_origin_id' => $req->country_of_origin_id,
-    //                 'member_state_id' => $req->member_state_id,
-    //                 'institution_type_id' => $req->institution_type_id,
-    //                 'email_address' => aes_encrypt($req->email_address),
-    //                 'other_names' => aes_encrypt($req->other_names),
-    //                 'first_name' => aes_encrypt($req->first_name),
-    //                 'appworkflow_status_id' => $appworkflow_status_id,
-    //                 'identification_number' => $req->identification_number,
-    //                 'institution_id' => $req->institution_id,
-    //                 'institution_department_id' => $req->institution_department_id,
-    //                 'secretariat_department_id' => $req->secretariat_department_id,
-    //                 'identification_type_id' => $req->identification_type_id
-    //             );
-
-    //             $user_data['altered_by'] = $req->email_address;
-    //             $user_data['dola'] = Carbon::now();
-
-    //             $where = array('id' => $record_id);
-    //             if (recordExists($table_name, $where)) {
-
-    //                 $previous_data = getPreviousRecords($table_name, $where);
-    //                 $resp = updateRecord($table_name, $previous_data['results'], $where, $user_data, '');
-
-    //             }
-    //             if ($resp['success']) {
-    //                 $template_id = 5;
-    //                 $subject = 'User Permissions & Approval';
-    //                 $vars = array(
-    //                     '{user_name}' => $full_names,
-    //                     '{email_address}' => $req->email_address
-    //                 );
-    //                 $res = sendMailNotification($full_names, $req->email_address, $subject, '', '', '', '', '', $template_id, $vars);
-
-    //                 $res = array(
-    //                     'success' => true,
-    //                     'message' => 'The User Account has been Updated has been sent to you email.',
-
-    //                 );
-    //             } else {
-    //                 $res = array(
-    //                     'success' => false,
-    //                     'resp' => $resp,
-    //                     'message' => 'Error Occurred in updating the user Account Details.',
-
-    //                 );
-    //             }
-    //         } else {
-    //             $res = array(
-    //                 'success' => false,
-    //                 'message' => 'There is no existing user account with the same Email Address, contact the System administrator.'
-    //             );
-
-    //         }
-    //     } catch (\Exception $exception) {
-    //         $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
-    //     } catch (\Throwable $throwable) {
-    //         $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
-    //     }
-    //     return response()->json($res, 200);
-    // }
-
+    
     public function onsaveUserGroupDetails(Request $req)
     {
         try {
-            $record_id = $req->input("id");
-            $appworkflow_status_id = 2;
+            $user_id = $req->input("id");
+            $loggedInUserId = $rec->input('loggedInUserId');
+
+            $user_resp = array('success'=>false, 'message'=>'No Record Saved');
+			$user_groups_ids =$req->user_groups_ids;
             $record = Db::table('usr_users_information')
-                ->where('id', '=', $record_id)
+                ->where('id', '=', $user_id)
                 ->count();
             if ($record > 0) {
-                $table_name = 'usr_users_information';
-                $full_names = $req->first_name . ' ' . $req->other_names;
-
-                $user_data = array(
-
-                    'account_type_id' => $req->account_type_id,
-                    'account_group_id' => $req->account_group_id,
-                    'user_title_id' => $req->user_title_id,
-                    'country_of_origin_id' => $req->country_of_origin_id,
-                    'partner_state_id' => $req->partner_state_id,
-                    'institution_type_id' => $req->institution_type_id,
-                    'email_address' => aes_encrypt($req->email_address),
-                    'other_names' => aes_encrypt($req->other_names),
-                    'first_name' => aes_encrypt($req->first_name),
-                    'appworkflow_status_id' => $appworkflow_status_id,
-                    'identification_number' => $req->identification_number,
-                    'institution_id' => $req->institution_id,
-                    'institution_department_id' => $req->institution_department_id,
-                    'secretariat_department_id' => $req->secretariat_department_id,
-                    'identification_type_id' => $req->identification_type_id,
-                    'user_group_id' => $req->user_group_id
-                );
-
-                $user_data['altered_by'] = $req->email_address;
-                $user_data['dola'] = Carbon::now();
-
-                $where = array('id' => $record_id);
-                if (recordExists($table_name, $where)) {
-
-                    $previous_data = getPreviousRecords($table_name, $where);
-
-                    $resp = updateRecord($table_name, $previous_data['results'], $where, $user_data, '');
-
-                }
-                if ($resp['success']) {
+                $table_name = 'tra_user_group';
+                $user_resp = onFuncUserGroupUpdate($user_groups_ids,$user_id,$loggedInUserId);
+                if ($user_resp['success']) {
                     $template_id = 5;
-                    $subject = 'User Permissions & Approval';
+                    $subject = 'User Permissions Updates';
                     $vars = array(
                         '{user_name}' => $full_names,
                         '{email_address}' => $req->email_address
                     );
                     $res = sendMailNotification($req->email_address, $subject, '', '', '', '', '', $template_id, $vars);
-
 
                     $res = array(
                         'success' => true,
@@ -175,18 +68,18 @@ class UserManagementController extends Controller
     public function onUpdateUserProfileInformation(Request $req)
     {
         try {
-            $record_id = $req->input("id");
+            $user_id = $req->input("id");
+            $loggedInUserId = $req->input("loggedInUserId");
             $appworkflow_status_id = 2;
+            $user_groups_ids =$req->user_groups_ids;
             $record = DB::table('usr_users_information')
-                ->where('id', '=', $record_id)
+                ->where('id', '=', $user_id)
                 ->count();
             if ($record > 0) {
                 $table_name = 'usr_users_information';
                 $full_names = $req->first_name . ' ' . $req->other_names;
-
                 $user_data = array(
                     'account_type_id' => $req->account_type_id,
-                    'account_group_id' => $req->account_group_id,
                     'user_title_id' => $req->user_title_id,
                     'country_of_origin_id' => $req->country_of_origin_id,
                     'member_state_id' => $req->member_state_id,
@@ -196,23 +89,26 @@ class UserManagementController extends Controller
                     'first_name' => aes_encrypt($req->first_name),
                     'appworkflow_status_id' => $appworkflow_status_id,
                     'identification_number' => $req->identification_number,
-                    'institution_id' => $req->institution_id,
-                    'institution_department_id' => $req->institution_department_id,
-                    'secretariat_department_id' => $req->secretariat_department_id,
+                    'organisation_id' => $req->organisation_id,
+                    'organisation_department_id' => $req->organisation_department_id,
                     'identification_type_id' => $req->identification_type_id
                 );
                 $user_data['altered_by'] = $req->email_address;
                 $user_data['dola'] = Carbon::now();
 
-                $where = array('id' => $record_id);
+                $where = array('id' => $user_id);
                 if (recordExists($table_name, $where)) {
                     $previous_data = getPreviousRecords($table_name, $where);
 
                     $resp = updateRecord($table_name, $previous_data['results'], $where, $user_data, '');
                 }
                 if ($resp['success']) {
+
+                    //update the User groups details 
+                    $user_resp = onFuncUserGroupUpdate($user_groups_ids,$user_id,$loggedInUserId);
+                   
                     $template_id = 5;
-                    $subject = 'User Permissions & Approval';
+                    $subject = 'User Details Update';
                     $vars = array(
                         '{user_name}' => $full_names,
                         '{email_address}' => $req->email_address
@@ -311,12 +207,11 @@ class UserManagementController extends Controller
                     $previous_data = getPreviousRecords($table_name, $where);
                     $resp = updateRecord($table_name, $previous_data['results'], $where, $trader_data, '');
 
-                    if ($resp) {
+                    if ($resp['success']) {
                         $table_name = 'usr_users_information';
 
                         // Update the user password directly
                         $user_data = array(
-
                             'is_initiateprofile_update' => 0,
                             'dola' => Carbon::now(),
                             'altered_by' => $email_address
@@ -393,11 +288,12 @@ class UserManagementController extends Controller
     }
 
 
-    public function onUserAccountRegistration(Request $req)
+    public function onTraderAccountRegistration(Request $req)
     {
         try {
             DB::beginTransaction(); // Start transaction
 
+            $user_groups_ids =$req->user_groups_ids;
             $process_id = 1;
             $appworkflow_status_id = 1;
             $email_address = $req->email_address;
@@ -408,34 +304,17 @@ class UserManagementController extends Controller
             $trader_no = generateUserRegistrationNo('tra_trader_account');
 
             $validator = Validator::make($req->all(), [
-                // 'account_type_id' => 'required|integer',
-                // 'country_of_origin_id' => 'required|integer',
-                // 'identification_no' => $trader_no,
-                // 'identification_type_id' => 'required|integer',
-                // 'identification_number' => 'required',
-                // 'first_name' => 'required|string',
-                // 'email_address' => 'required|string|email:rfc,dns,spoof|indisposable',
-                // 'created_by' => 'nullable|max:255',
+               
             ]);
 
             if ($validator->fails()) {
                 return response()->json([
-                    'status' => 'error',
+                   
+                    'success' => false,
                     'message' => $validator->errors()->first(),
-                ], 422);
+                ], 200);
             }
-            // $app_statusrecord = getInitialWorkflowStatusId($process_id);
-            // if (!$app_statusrecord) {
-
-            //     return response()->json([
-            //         'success' => false,
-            //         'message' => 'The Initial Workflow Status Has not been set, contact the system admin',
-            //     ], 200);
-            // }
-
-            // $appworkflow_status_id = $app_statusrecord->appworkflow_status_id;
-
-            //OTP validation
+            
             if ($otp_value) {
                 $encryptedEmail = aes_encrypt($req->email_address);
                 $otpRecord = DB::table('usr_onetimepwd_tokens')
@@ -503,8 +382,6 @@ class UserManagementController extends Controller
             $user_data = [
                 'trader_id' => $trader_id,
                 'account_type_id' => $account_type_id,
-                'user_group_id' => $user_group_id,
-                // 'user_title_id' => $req->user_title_id,
                 'country_of_origin_id' => $req->country_of_origin_id,
                 'email_address' => aes_encrypt($email_address),
                 'password' => Hash::make($generatedPassword),
@@ -546,12 +423,6 @@ class UserManagementController extends Controller
                     ], 200);
                 }
             }
-
-
-            // **Step 3: Process Submission & Send Email Notification**
-            initiateInitialProcessSubmission('usr_users_information', $application_code, $process_id, $user_resp['record_id']);
-
-            // Send email notification
             $template_id = 1;
             $subject = 'Trader Account Creation Notification';
             $vars = [
@@ -744,7 +615,7 @@ class UserManagementController extends Controller
                     '{email_address}' => $email_address,
                     '{user_password}' => $generatedPassword
                 );
-                $subject = 'Password Reset Instructions - COMESA IMPORT/EXPORT SYSTEM (cIMEX)';
+                $subject = 'Password Reset Instructions';
                 $template_id = 2;
                 $res = sendMailNotification($req->email_address, $subject, '', '', '', '', '', $template_id, $vars);
 
@@ -981,111 +852,26 @@ class UserManagementController extends Controller
 
         return response()->json($res, 200);
     }
-
-
-    public function onconfirmInitiateSelectionAndAppoitment(Request $req)
-    {
-        try {
-
-            $email_address = $req->email_address;
-            $appworkflow_status_id = $req->appworkflow_status_id;
-            $loggedInUserId = $req->loggedInUserId;
-            $id = $req->id;
-
-
-            $record = DB::table('exp_expertsprofile_information')
-                ->where('id', $id)
-                ->first();
-
-            if ($record) {
-
-                $full_names = aes_decrypt($record->first_name) . ' ' . aes_decrypt($record->other_names);
-
-                $vars = array(
-                    '{user_name}' => $full_names,
-                    '{email_address}' => $email_address
-                );
-
-                $subject = 'Selection and Appointment';
-
-                $template_id = 10;
-
-                $res = sendMailNotification($req->email_address, $subject, '', '', '', '', '', $template_id, $vars);
-                // print_r($res);
-                if ($res['success']) {
-                    $user_data = array(
-                        'appworkflow_status_id' => $appworkflow_status_id,
-                        'dola' => Carbon::now(),
-                        'altered_by' => $loggedInUserId
-                    );
-                    $where = array('id' => $id);
-
-                    if (recordExists('exp_expertsprofile_information', $where)) {
-                        $previous_data = getPreviousRecords('exp_expertsprofile_information', $where);
-                        $resp = updateRecord('exp_expertsprofile_information', $previous_data['results'], $where, $user_data, '');
-                    }
-
-                    if ($resp['success']) {
-                        $res = array(
-                            'success' => true,
-                            'message' => 'The user account has been appointed and the user has been notified.',
-                        );
-                    } else {
-                        $res = array(
-                            'success' => false,
-                            'resp' => $resp,
-                            'message' => 'Error occured while updating the user account details.',
-                        );
-                    }
-
-                } else {
-                    $res = array(
-                        'success' => false,
-                        'message' => 'Error sending email notification. Please try again or contact the system administrator.',
-                    );
-                }
-            } else {
-                $res = array(
-                    'success' => false,
-                    'message' => 'No user account associated with this email address exists. Please verify the email address or contact the system administrator.',
-                );
-            }
-        } catch (\Exception $exception) {
-            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
-        } catch (\Throwable $throwable) {
-            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
-        }
-
-        return response()->json($res, 200);
-    }
-
-
-
-
-    public function onsaveUserData(Request $req)
+    public function onsaveUserRegistrationData(Request $req)
     {
         try {
             $user_id = $req->id;
             $process_id = 1;
             $account_type_id = $req->account_type_id;
             $email_address = $req->email_address;
-
-            // $telephone_no = $phone_number['internationalNumber'];
+            $user_groups_ids = $req->user_groups_ids;
+            $loggedInUserId = $req->loggedInUserId;
+            
             $telephone_n = $req->telephone_no;
             $phone_number = $req->phone_number;
-            // $experts_profile_no = '';
-
-
             $validator = Validator::make($req->all(), [
                 'user_title_id' => 'required|integer',
                 'account_type_id' => 'required|integer',
                 'country_of_origin_id' => 'required|integer',
                 'member_state_id' => 'nullable|integer',
-                'institution_type_id' => 'nullable|integer',
-                'institution_id' => 'nullable|integer',
-                'institution_department_id' => 'nullable|integer',
+                'organisation_id' => 'nullable|integer',
+                'organisation_department_id' => 'nullable|integer',
                 'registration_number' => 'nullable|max:50',
-                'secretariat_department_id' => 'nullable|integer',
                 'identification_type_id' => 'required|integer',
                 'identification_number' => 'required',
                 'first_name' => 'required|string',
@@ -1098,36 +884,36 @@ class UserManagementController extends Controller
 
             if ($validator->fails()) {
                 return response()->json([
-                    'status' => 'error',
+                    'success' => false,
                     'message' => $validator->errors()->first(),
-                ], 422);
+                ], 200);
             }
-
-            // Check if a user with the given identification number already exists
-
-
-            // If the user exists, update their information
+            $user_data = [
+                'account_roles_id' => $req->account_roles_id,
+                'account_type_id' => $req->account_type_id,
+                'country_of_origin_id' => $req->country_of_origin_id,
+                'institution_type_id' => $req->institution_type_id,
+                'user_title_id'=>$req->user_title_id,
+                'email_address' => aes_encrypt($email_address),
+                'surname' => aes_encrypt($req->surname),
+                'first_name' => aes_encrypt($req->first_name),
+                'other_names' => aes_encrypt($req->other_names),
+                	
+                'phone_number' => aes_encrypt($phone_number),
+                'process_id' => $process_id,
+                'identification_number' => $req->identification_number,
+                'identification_type_id'=>$req->identification_type_id,
+                'organisation_id' => $req->organisation_id,
+                'organisation_department_id'=>$req->organisation_department_id,
+            ];
             if (validateIsNumeric($req->id)) {
 
                 $existingRecord = DB::table('usr_users_information')
                     ->where('id', '=', $req->id)
                     ->first();
-
-                $user_data = [
-                    'account_type_id' => $req->account_type_id,
-                    'user_title_id' => $req->user_title_id,
-                    'country_of_origin_id' => $req->country_of_origin_id,
-                    'institution_type_id' => $req->institution_type_id,
-                    'email_address' => aes_encrypt($email_address),
-                    'surname' => aes_encrypt($req->surname),
-                    'first_name' => aes_encrypt($req->first_name),
-                    'phone_number' => aes_encrypt($phone_number),
-                    'process_id' => $process_id,
-                    'identification_number' => $req->identification_number,
-                    'institution_id' => $req->institution_id,
-                    'altered_by' => $req->email_address,
-                    'dola' => now(), // Set the altered timestamp
-                ];
+                $user_id= $req->id;
+                $user_data['dola']= Carbon::now();
+                $user_data['altered_by'] =$loggedInUserId;
 
                 $where = ['id' => $existingRecord->id];
                 $table_name = 'usr_users_information';
@@ -1137,6 +923,8 @@ class UserManagementController extends Controller
 
                 $resp = updateRecord($table_name, $previous_data, $where, $user_data, '');
                 if ($resp['success']) {
+                    $user_resp = onFuncUserGroupUpdate($user_groups_ids,$user_id,$loggedInUserId);
+                   
                     $res = [
                         'success' => true,
                         'message' => 'The account has been updated successfully.',
@@ -1162,68 +950,16 @@ class UserManagementController extends Controller
 
                     $full_names = $req->first_name . ' ' . $req->other_names;
 
-                    $user_data = [
-                        'account_type_id' => $req->account_type_id,
-                        'user_title_id' => $req->user_title_id,
-                        'country_of_origin_id' => $req->country_of_origin_id,
-                        'institution_type_id' => $req->institution_type_id,
-                        'email_address' => aes_encrypt($email_address),
-                        'password' => Hash::make($generatedPassword),
-                        'surname' => aes_encrypt($req->surname),
-                        'first_name' => aes_encrypt($req->first_name),
-                        'phone_number' => aes_encrypt($phone_number),
-                        'process_id' => $process_id,
-                        'is_initiatepassword_change' => 1,
-                        'appworkflow_status_id' => $appworkflow_status_id,
-                        'identification_number' => $req->identification_number,
-                        'institution_id' => $req->institution_id,
-                        'application_code' => $application_code,
-                        'institution_department_id' => $req->institution_department_id,
-                        'secretariat_department_id' => $req->secretariat_department_id,
-                        'identification_type_id' => $req->identification_type_id,
-                        'created_by' => $req->email_address,
-                        'created_on' => now(), // Set the created_on timestamp
-                    ];
+                    $user_data['created_on']= Carbon::now();
+                     $user_data['created_by'] =$loggedInUserId;
 
                     $resp = insertRecord($table_name, $user_data);
 
                     if ($resp['success']) {
-                        // $exp_table = 'exp_expertsprofile_information';
+                        
                         $user_information_id = $resp['record_id'];
-                        // if ($account_type_id == 1) {
-                        //     $experts_profile_no = generateUserRegistrationNo($exp_table);
-                        //     $process_id = 2;
-                        //     $appworkflow_status_id = 1;
-                        //     $application_code = generateApplicationCode($process_id, $exp_table);
-                        //     $app_reference_no = generateAppReferenceNo($process_id, $exp_table, $req->email_address);
-
-                        //     $experts_profile = [
-                        //         'user_information_id' => $user_information_id,
-                        //         'app_reference_no' => $app_reference_no,
-                        //         'experts_profile_no' => $experts_profile_no,
-                        //         'process_id' => $process_id,
-                        //         'appworkflow_status_id' => 1,
-                        //         'email_address' => aes_encrypt($email_address),
-                        //         'first_name' => aes_encrypt($req->first_name),
-                        //         'other_names' => aes_encrypt($req->other_names),
-                        //         'user_title_id' => $req->user_title_id,
-                        //         'identification_type_id' => $req->identification_type_id,
-                        //         'identification_number' => $req->identification_number,
-                        //         'country_of_origin_id' => $req->country_of_origin_id,
-                        //         'physical_address' => aes_encrypt($req->physical_address),
-                        //         'present_telephone_no' => aes_encrypt($phone_number),
-                        //         'application_code' => $application_code,
-                        //         'created_by' => $req->email_address,
-                        //         'created_on' => now(),
-                        //     ];
-                        //     $exp_resp = insertRecord($exp_table, $experts_profile);
-                        //     if ($exp_resp['success']) {
-                        //         $res = [
-                        //             'success' => true,
-                        //             'message' => 'Your expert profile has been created successfully.',
-                        //         ];
-                        //     }
-                        // }
+                        $user_resp = onFuncUserGroupUpdate($user_groups_ids,$user_information_id,$loggedInUserId);
+                   
                         initiateInitialProcessSubmission($table_name, $application_code, $process_id, $user_information_id);
 
                         $template_id = 1;
@@ -1232,8 +968,7 @@ class UserManagementController extends Controller
                         $vars = [
                             '{user_name}' => $full_names,
                             '{email_address}' => $req->email_address,
-                            '{user_password}' => $generatedPassword,
-                            // '{experts_profile_no}' => $experts_profile_no
+                            '{user_password}' => $generatedPassword
                         ];
                         $res = sendMailNotification($full_names, $req->email_address, $subject, '', '', '', '', '', $template_id, $vars);
                         if ($res['success']) {
@@ -1284,8 +1019,8 @@ class UserManagementController extends Controller
                         'user_group_id',
                         'identification_type_id',
                         'country_of_origin_id',
-                        'institution_id',
-                        'institution_department_id',
+                        'organisation_id',
+                        'organisation_department_id',
                         'user_status',
                         'email_address',
                         'first_name',
@@ -1315,8 +1050,8 @@ class UserManagementController extends Controller
                         'user_group_id' => $record->user_group_id,
                         'identification_type_id' => $record->identification_type_id,
                         'country_of_origin_id' => $record->country_of_origin_id,
-                        'institution_id' => $record->institution_id,
-                        'institution_department_id' => $record->institution_department_id,
+                        'organisation_id' => $record->organisation_id,
+                        'organisation_department_id' => $record->organisation_department_id,
                         'user_status' => $record->user_status,
                         'email_address' => aes_decrypt($record->email_address),
                         'first_name' => aes_decrypt($record->first_name),
@@ -1349,10 +1084,6 @@ class UserManagementController extends Controller
 
         return response()->json($res, 200);
     }
-
-
-
-
     public function onGetUserInformation(Request $req)
     {
         try {
@@ -1362,44 +1093,61 @@ class UserManagementController extends Controller
             $table_name = $req->table_name;
             $appworkflow_status_id = $req->appworkflow_status_id;
             $phone_number = $req->phone_number;
-            $user_group_id = $req->user_group_id;
+            
+            $user_id = $req->user_id;
+
             $table_name = 'usr_users_information';
             $process_id = 1;
             $sectionSelection = $req->sectionSelection;
             unset($requestData['table_name']);
-
+            //get the users details 
+            $user_information = getTableData('usr_users_information', array('id' => $user_id));
+            $account_type_id = $user_information->account_type_id;
+            $organisation_id = $user_information->organisation_id;
+            
             $sql = DB::table($table_name . ' as t1')
                 ->leftJoin('wf_workflow_statuses as t2', 't2.id', 't1.appworkflow_status_id')
-                ->select('t1.*', 't2.name as appworkflow_status');
+                ->leftJoin('sys_account_types as t3', 't3.id', 't1.account_type_id')
+                ->leftJoin('usr_usersaccount_roles as t4', 't4.id', 't1.account_roles_id')
+                ->leftJoin('usr_identification_type as t5', 't5.id', 't1.identification_type_id')
+                ->leftJoin('tra_organisation_information as t6', 't6.id', 't1.organisation_id')
+                ->leftJoin('par_organisation_departments as t7', 't7.id', 't1.organisation_department_id')
+                ->leftJoin('par_countries as t8', 't8.id', 't1.country_of_origin_id')
+                ->leftJoin('usr_users_title as t9', 't9.id', 't1.user_title_id')
+                ->select('t1.*','t9.name as user_title','t6.name as organisation_name','t7.name as organisation_department', 't3.name as account_type','t4.name as account_role', 't5.name as identification_type',   't2.name as appworkflow_status');
             if (validateIsNumeric($appworkflow_status_id)) {
                 $sql->where('appworkflow_status_id', $appworkflow_status_id);
             }
-
-            if (validateIsNumeric($user_group_id)) {
-                $sql->where('user_group_id', $user_group_id);
+            $sql->where('t3.has_selfregistration', false);
+            if($account_type_id != 2){
+                //get only the specific organisation users 
+                $sql->where('organisation_id', $organisation_id);
             }
-
             $actionColumnData = returnContextMenuActions($process_id);
             $data = $sql->get();
 
             foreach ($data as $rec) {
-                if ($rec->appworkflow_status_id == 2) {
-                    $appworkflow_status_id = 6;
-                } else {
-
-                    $appworkflow_status_id = $rec->appworkflow_status_id;
-                }
-
+            
+                $appworkflow_status_id = $rec->appworkflow_status_id;
+                $qry = DB::table('tra_user_group')
+						->where('user_id', $rec->id)
+						->select('group_id');
+					$user_groups = $qry->get();
+                    $user_groups_ids = '';
+					if($user_groups->count() >0){
+						$user_groups = convertStdClassObjToArray($user_groups);
+						$user_groups_ids = convertAssArrayToSimpleArray($user_groups, 'group_id');
+						
+					}
                 $user_data[] = array(
                     'id' => $rec->id,
+                    'user_groups_ids'=>$user_groups_ids,
                     'user_title_id' => $rec->user_title_id,
-                    'user_group_id' => $rec->user_group_id,
                     'appworkflow_status' => $rec->appworkflow_status,
                     'identification_type_id' => $rec->identification_type_id,
                     'country_of_origin_id' => $rec->country_of_origin_id,
-                    'institution_id' => $rec->institution_id,
-                    'institution_department_id' => $rec->institution_department_id,
-                    'user_status' => $rec->user_status,
+                    'organisation_id' => $rec->organisation_id,
+                    'organisation_department_id' => $rec->organisation_department_id,
                     'email_address' => aes_decrypt($rec->email_address),
                     'first_name' => aes_decrypt($rec->first_name),
                     'surname' => aes_decrypt($rec->surname),
@@ -1411,15 +1159,21 @@ class UserManagementController extends Controller
                     'account_type_id' => $rec->account_type_id,
                     'application_code' => $rec->application_code,
                     'account_registration_no' => $rec->account_registration_no,
-                    'member_state_id' => $rec->member_state_id,
                     'identification_number' => $rec->identification_number,
-                    'secretariat_department_id' => $rec->secretariat_department_id,
                     'process_id' => $rec->process_id,
+                    'date_registered'=>$rec->created_on,
+
+                    
+                    'organisation_name'=>$rec->organisation_name,
+                    'organisation_department'=>$rec->organisation_department,
+                    'account_type'=>$rec->account_type,
+                    'account_role'=>$rec->account_role,
+
+                    'identification_type'=>$rec->identification_type,
+                    'user_title'=>$rec->user_title,
                     'appworkflow_status_id' => $rec->appworkflow_status_id,
                     'contextMenu' => returnActionColumn($rec->appworkflow_status_id, $actionColumnData)
                 );
-
-
             }
             $res = array('success' => true, 'data' => $user_data);
 
@@ -1520,25 +1274,11 @@ class UserManagementController extends Controller
                 ->leftJoin('par_account_statuses as t6', 't6.id', 't1.status_id')
                 ->leftJoin('par_countries as t7', 't7.id', 't1.country_id')
                 ->select('t1.id as trader_id', 't1.*', 't2.name as trader_categories', 't3.name as traderaccount_types', 't4.name as regions', 't5.name as districts', 't6.name as status', 't7.name as country');
-            // if (validateIsNumeric($appworkflow_status_id)) {
-            //     $sql->where('appworkflow_status_id', $appworkflow_status_id);
-            // }
-
-            // if (validateIsNumeric($user_group_id)) {
-            //     $sql->where('user_group_id', $user_group_id);
-            // }
-
-            // $actionColumnData = returnContextMenuActions($process_id);
+           
             $data = $sql->get();
 
             foreach ($data as $rec) {
-                // if ($rec->appworkflow_status_id == 2) {
-                //     $appworkflow_status_id = 6;
-                // } else {
-
-                //     $appworkflow_status_id = $rec->appworkflow_status_id;
-                // }
-
+               
                 $user_data[] = array(
                     'id' => $rec->trader_id,
                     'country_id' => $rec->country_id,
@@ -1569,22 +1309,7 @@ class UserManagementController extends Controller
                     'physical_address' => $rec->physical_address,
                     'contact_person_telephone' => $rec->contact_person_telephone,
                     'contact_person_email' => $rec->contact_person_email,
-                    'contact_person' => $rec->contact_person,
-                    // 'surname' => aes_decrypt($rec->surname),
-                    // 'phone_number' => aes_decrypt($rec->phone_number),
-                    // 'workflow_status_id' => $rec->workflow_status_id,
-                    // 'account_roles_id' => $rec->account_roles_id,
-                    // 'last_login_time' => $rec->last_login_time,
-                    // 'is_verified' => $rec->is_verified,
-                    // 'account_type_id' => $rec->account_type_id,
-                    // 'application_code' => $rec->application_code,
-                    // 'account_registration_no' => $rec->account_registration_no,
-                    // 'member_state_id' => $rec->member_state_id,
-                    // 'identification_number' => $rec->identification_number,
-                    // 'secretariat_department_id' => $rec->secretariat_department_id,
-                    // 'process_id' => $rec->process_id,
-                    // 'appworkflow_status_id' => $rec->appworkflow_status_id,
-                    // 'contextMenu' => returnActionColumn($rec->appworkflow_status_id, $actionColumnData)
+                    'contact_person' => $rec->contact_person
                 );
 
 
@@ -1605,12 +1330,12 @@ class UserManagementController extends Controller
         try {
             $user_data = null;
             $user_id = $req->user_id;
-    
+
             // Validate user_id (ensure it's numeric)
             if (!$user_id || !filter_var($user_id, FILTER_VALIDATE_INT)) {
                 return response()->json(['success' => false, 'message' => 'Invalid or missing user ID'], 400);
             }
-    
+
             $record = DB::table('tra_importexport_applications as t1')
                 ->leftJoin('tra_consignee_data as t2', 't2.id', '=', 't1.consignee_id')
                 ->leftJoin('wf_workflow_stages as t3', 't3.id', '=', 't1.workflow_stage_id')
@@ -1627,7 +1352,7 @@ class UserManagementController extends Controller
                 ])
                 ->where('t1.applicant_id', $user_id) // Ensure you filter by user
                 ->first(); // Get only one record instead of a collection
-    
+
             if ($record) {
                 $user_data = [
                     'id' => $record->id,
@@ -1639,16 +1364,16 @@ class UserManagementController extends Controller
                     'created_on' => $record->created_on,
                 ];
             }
-    
+
             return response()->json(['success' => true, 'data' => $user_data], 200);
-    
+
         } catch (\Exception $exception) {
             return response()->json(sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__)), 500);
         } catch (\Throwable $throwable) {
             return response()->json(sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__)), 500);
         }
     }
-    
+
 
     public function onLoadUserData(Request $req)
     {
@@ -1759,16 +1484,18 @@ class UserManagementController extends Controller
         return response()->json($res);
     }
 
+
     public function onsaveTraderData(Request $req)
     {
-        // $trader_data = json_decode($req->traderData_sub);
         DB::beginTransaction();
 
         try {
-            // Generate registration number
-            $trader_no = generateUserRegistrationNo('txn_trader_account');
-
+            // Generate a unique trader registration number
+            $trader_no = generateUserRegistrationNo('tra_trader_account');
+            $email_address = $req->email_address;
+            $phone_number = $req->phone_number;
             $data = [
+                'traderaccount_type_id' => $req->traderaccount_type_id,
                 'name' => $req->name,
                 'contact_person' => $req->contact_person,
                 'contact_person_email' => $req->contact_person_email,
@@ -1782,50 +1509,83 @@ class UserManagementController extends Controller
                 'email_address' => $req->email_address,
                 'status_id' => 1,
                 'identification_no' => $trader_no,
+                'trader_category_id' => $req->trader_category_id,
+                'country' => $req->country,
+                'traderaccount_types' => $req->traderaccount_types,
+                'trader_categories' => $req->trader_categories,
+                'regions' => $req->regions,
+                'districts' => $req->districts,
+                'status' => $req->status,
+                'code_no' => $req->code_no,
+                'pacra_reg_no' => $req->pacra_reg_no,
+                'tpin_no' => $req->tpin_no,
+                'website' => $req->website,
+                'fax' => $req->fax,
+                'contact_person_telephone' => $req->contact_person_telephone,
             ];
 
             // Check if the email already exists
-            $emailExists = DB::table('txn_trader_account')
+            $emailExists = DB::table('tra_trader_account')
                 ->where('email_address', $req->email_address)
                 ->exists();
 
             if ($emailExists) {
-                // return response()->json(['success' => false, 'message' => 'Email already exists.'], 400);
+                DB::commit();
                 return $this->onUpdateTraderData($req);
-                //  write code here using the refactored function onUpdateTraderData to update the txn_trader_account in the main db as well as update the email in usr_users_information
             } else {
-
-                // Insert trader account into the primary database
-                $resp = insertRecord('txn_trader_account', $data, 'Create Trader Account');
+                // Insert new trader account into 'tra_trader_account'
+                $resp = insertRecord('tra_trader_account', $data, 'Create Trader Account');
                 if (!$resp['success']) {
-                    throw new \Exception('Failed to create trader account in the primary database.');
+                    throw new \Exception('Failed to create trader account.');
                 }
-
+                $process_id = 1;
+                $appworkflow_status_id = 1;
                 $trader_id = $resp['record_id'];
-
                 $generatedPassword = bin2hex(random_bytes(8));
+                $application_code = generateApplicationCode($process_id, 'usr_users_information');
+                $account_type_id = 1;
+                $user_group_id = 2;
 
+                $record = DB::table('usr_users_information')
+                    ->where('email_address', $email_address)
+                    // ->where('identification_number', '=', $req->identification_number)
+                    ->count();
 
+                if ($record > 0) {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'There is an existing user account with the same Email Address, reset password or contact the System administrator.'
+                    ], 200);
+                }
                 $user_data = [
                     'trader_id' => $trader_id,
-                    'email_address' => $req->email_address,
-                    'name' => $req->name,
                     'password' => aes_encrypt($generatedPassword),
-                    'is_verified' => $req->is_verified ?? 0,
-                    'telephone_number' => $req->telephone_no,
+                    'country_of_origin_id' => $req->country_id,
+                    'account_type_id' => $account_type_id,
+                    'user_group_id' => $user_group_id,
+                    'email_address' => aes_encrypt($email_address),
+                    'surname' => aes_encrypt($req->surname),
+                    'first_name' => aes_encrypt($req->first_name),
+                    'phone_number' => aes_encrypt($phone_number),
+                    'process_id' => $process_id,
+                    'appworkflow_status_id' => $appworkflow_status_id,
+                    'identification_number' => $req->identification_number,
+                    'application_code' => $application_code,
                     'is_initiatepassword_change' => 1,
-                    'country_id' => $req->country_id,
-                    'account_type_id' => $req->account_type_id ?? null,
                     'is_initiateprofile_update' => 1,
                     'created_by' => $req->email_address,
                     'created_on' => now(),
                 ];
 
-                // Insert user account details into the 'portal' database
+                // Insert user details into 'usr_users_information'
                 $userResp = insertRecord('usr_users_information', $user_data, '');
-
                 if (!$userResp['success']) {
-                    throw new \Exception('Failed to create user.');
+                    // print_r('User creation failed:', ['error' => $userResp['message']]);
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'Failed to create user.',
+                        'error' => $userResp['message']
+                    ], 500);
                 }
 
                 // Send email notification
@@ -1838,10 +1598,7 @@ class UserManagementController extends Controller
                     '{identification_no}' => $trader_no
                 ];
 
-                $decodedEmail = $req->email_address;
-                // $mailResp = sendMailNotification($req->name, $req->email_address, $subject, '', '', '', '', '', $template_id, $vars);
-
-                $mailResp = sendMailNotification($decodedEmail, $subject, '', '', '', '', '', $template_id, $vars);
+                $mailResp = sendMailNotification($req->email_address, $subject, '', '', '', '', '', $template_id, $vars);
 
                 if (!$mailResp['success']) {
                     DB::rollBack();
@@ -1867,6 +1624,7 @@ class UserManagementController extends Controller
         }
     }
 
+
     public function onUpdateTraderData(Request $req)
     {
         try {
@@ -1882,9 +1640,9 @@ class UserManagementController extends Controller
 
             if ($validator->fails()) {
                 return response()->json([
-                    'status' => 'error',
+                    'success' => false,
                     'message' => $validator->errors()->first(),
-                ], 422);
+                ], 200);
             }
 
             if (validateIsNumeric($req->id)) {
@@ -2028,9 +1786,9 @@ class UserManagementController extends Controller
 
             if ($validator->fails()) {
                 return response()->json([
-                    'status' => 'error',
+                    'success' => false,
                     'message' => $validator->errors()->first(),
-                ], 422);
+                ], 200);
             }
             $table_name = 'tra_subscription_registration';
             $where = array('email_address' => $email_address);
@@ -2052,8 +1810,6 @@ class UserManagementController extends Controller
 
                 $user_data = array(
                     'email_address' => aes_encrypt($req->email_address),
-                    // 'publications_types_id' => $req->publication_types,
-                    //'publications_informations_id' => $req->publication_information,
                     'application_code' => $application_code,
                     'process_id' => $process_id,
                     'created_by' => $req->input('email_address'),
@@ -2116,5 +1872,107 @@ class UserManagementController extends Controller
         }
         return response()->json($res, 200);
     }
+    
+    public function onGetUsersworkflowPermissionData(Request $req)
+    {
+        try {
+            $user_id = $req->user_id;
 
+            $records = DB::table('sys_user_workflowstagepermissions as t1')
+                            ->join('wf_workflow_stages as t2', 't1.workflow_stage_id', 't2.id')
+                            ->join('usr_users_accesslvls as t3', 't1.user_access_levels_id', 't3.id')
+                            ->join('tra_user_group as t4', 't1.user_group_id', 't4.group_id')
+                            ->join('wf_workflows as t5', 't2.workflow_id', 't5.id')
+                            ->select('t1.*', 't5.name as wofkflow_name','t2.name as workflow_stage', 't3.name as user_access_levels' )
+                            ->where('t4.user_id', $user_id)
+                            ->get();
+            $res = array('success' => true, 'data' => $records);
+
+        } catch (\Exception $exception) {
+            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        } catch (\Throwable $throwable) {
+            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        }
+
+        return response()->json($res, 200);
+    }
+    public function onGetappRegulatoryFunctionPermissionData(Request $req)
+    {
+        try {
+            $user_id = $req->user_id;
+            
+            $records = DB::table('par_regulatoryfunctionaccess_groups as t1')
+                            ->join('par_regulatory_functions as t2', 't1.regulatory_function_id', 't2.id')
+                            ->join('usr_users_accesslvls as t3', 't1.user_access_levels_id', 't3.id')
+                            ->join('tra_user_group as t4', 't1.user_group_id', 't4.group_id')
+                            ->select('t1.*','t2.name as regulatory_function', 't3.name as user_access_levels' )
+                            ->where('t4.user_id', $user_id)
+                            ->get();
+            $res = array('success' => true, 'data' => $records);
+
+
+        } catch (\Exception $exception) {
+            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        } catch (\Throwable $throwable) {
+            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        }
+
+        return response()->json($res, 200);
+    }
+    public function onGetUsergroupInformation(Request $req)
+    {
+        try {
+            $user_id = $req->user_id;
+            $records = DB::table('tra_user_group as t1')
+            ->join('usr_users_groups as t2', 't1.group_id', 't2.id')
+            ->join('sys_account_types as t3', 't2.account_type_id', 't3.id')
+            ->select('t1.*', 't2.name as user_groupname','t2.name as account_type' )
+            ->where('t1.user_id', $user_id)
+            ->get();
+                $res = array('success' => true, 'data' => $records);
+        } catch (\Exception $exception) {
+            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        } catch (\Throwable $throwable) {
+            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        }
+
+        return response()->json($res, 200);
+    }
+    public function onGetappNavigationMenusPermisData(Request $req)
+    {
+        try {
+            $user_id = $req->user_id;
+            $records = DB::table('sys_usergroup_navpermissions as t1')
+                            ->join('wf_navigation_items as t2', 't1.navigation_item_id', 't2.id')
+                            ->join('usr_users_accesslvls as t3', 't1.user_access_levels_id', 't3.id')
+                            ->join('tra_user_group as t4', 't1.user_group_id', 't4.group_id')
+                            ->select('t1.*','t2.name as navigation_item', 't3.name as user_access_levels' )
+                            ->where(array('level'=>0, 't4.user_id'=>$user_id))
+                            ->get();
+            $res = array('success' => true, 'data' => $records);
+
+        } catch (\Exception $exception) {
+            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        } catch (\Throwable $throwable) {
+            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        }
+
+        return response()->json($res, 200);
+    }
+    public function onGetMyCurrentTasksAssignments(Request $req)
+    {
+        try {
+            $user_id = $req->user_id;
+            $records = array();
+            $res = array('success' => true, 'data' => $records);
+
+        } catch (\Exception $exception) {
+            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        } catch (\Throwable $throwable) {
+            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        }
+
+        return response()->json($res, 200);
+    }
+    
 }

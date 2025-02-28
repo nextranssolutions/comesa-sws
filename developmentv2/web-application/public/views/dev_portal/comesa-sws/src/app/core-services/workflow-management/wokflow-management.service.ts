@@ -104,8 +104,9 @@ export class WokflowManagementService {
         return <any>data;
       }));
   }
-  getAppNavigationMenus() {
+  getAppNavigationMenus(account_type_id=0, navigation_type_id=0) {
     this.workflow = {
+      params: {account_type_id:account_type_id,navigation_type_id:navigation_type_id},
       headers: { 'Accept': 'application/json' }
     };
 
@@ -306,6 +307,28 @@ export class WokflowManagementService {
     };
 
     return this.http.get(this.baseUrl + '/getUserNavigationItems', this.config)
+      .pipe(map(navigations => {
+
+        return navigations;
+      }));
+
+
+  }
+
+
+  getApplicantNavigationItems(navigation_type_id,regulatory_function_id=0) {
+
+    this.userGroupId = this.userData.user_group_id;
+    this.account_type_id = this.userData.account_type_id;
+    const loggedInUserId = localStorage.getItem('id');
+    const loggedInUserName = localStorage.getItem('first_name');
+    
+    this.config = {
+      headers: { 'Accept': 'application/json' },
+      params: {'user_id': loggedInUserId, 'user_name': loggedInUserName,regulatory_function_id:regulatory_function_id, userGroupId: this.userGroupId, navigation_type_id:navigation_type_id, account_type_id:this.account_type_id },
+    };
+
+    return this.http.get(this.baseUrl + '/getApplicantNavigationItems', this.config)
       .pipe(map(navigations => {
 
         return navigations;

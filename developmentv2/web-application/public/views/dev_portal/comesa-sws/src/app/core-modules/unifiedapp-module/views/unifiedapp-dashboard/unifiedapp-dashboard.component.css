@@ -3,7 +3,24 @@
     border-radius: 10px!important;
     margin: 5px!important;
 } */
-
+ .div_headerpanel{
+    height: 45px !important;
+    padding: 10px 10px !important;
+    font-size: 20px !important;
+    font-weight: bold !important;
+    background: #fafafa  !important;
+ }
+ .widget-pnltoolbar{
+    border-top: 1px solid #ccc !important;
+    background: #fafafa  !important;
+    display: flex;
+    padding: 5px 0 !important;
+    justify-content: flex-end; /* Aligns buttons to the right */
+    gap: 10px;
+ }
+.col-lg-3{
+    padding: 0px !important;
+}
 .widget-box.card:hover {
     /* transform: translateY(-5px)!important; */
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2)!important;

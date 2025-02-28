@@ -28,13 +28,12 @@
         <div class="container-fluid">
     <dx-tab-panel id="Navigation Tab" [swipeEnabled]="false" [showNavButtons]="true" [tabsPosition]="tabsPosition"
         [animationEnabled]="true">
-       
-        <dxi-item title="{{ 'checklist_definations' | translate }}" icon="fa fa-setup">
-            <app-app-checklist-defination></app-app-checklist-defination>
-        </dxi-item>
-
         <dxi-item title="{{ 'performance_scales' | translate }}" icon="fa fa-table">
             <app-app-performancescoring-scales></app-app-performancescoring-scales>
+        </dxi-item>
+
+        <dxi-item title="{{ 'checklist_definations' | translate }}" icon="fa fa-setup">
+            <app-app-checklist-defination></app-app-checklist-defination>
         </dxi-item>
 
     </dx-tab-panel>

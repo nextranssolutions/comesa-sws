@@ -1,0 +1,63 @@
+<div class="main-content-inner">
+    <div class="breadcrumbs ace-save-state" id="breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="ace-icon fa fa-home home-icon"></i>
+                <a href="#">Home</a>
+            </li>
+            <li class="active">{{parameter_name | translate}}</li>
+        </ul>
+
+    </div>
+
+
+    <div class="page-content">
+        <div class="page-header">
+            <h1>
+                {{parameter_name | translate}}
+                <small>
+                    <i class="ace-icon fa fa-angle-double-right"></i>
+                    overview &amp; stats
+                </small>
+            </h1>
+        </div>
+
+
+        <div class="container-fluid">
+            <dx-tab-panel class="fullpage-tab" id="Navigation Tab" [stylingMode]="stylingMode"
+                [tabsPosition]="tabsPosition" [swipeEnabled]="false" [showNavButtons]="true" [animationEnabled]="true">
+               
+                <dxi-item title="{{ 'mode_of_transport' | translate }}" icon="fa fa-th-list">
+                    <app-mode-of-transport></app-mode-of-transport>
+
+                </dxi-item>
+
+                <dxi-item title="{{ 'port_entry_type' | translate }}" icon="fa fa-th-list">
+
+                    <app-port-entry-type></app-port-entry-type>
+                </dxi-item>
+
+                <dxi-item title="{{ 'port_entry_exit' | translate }}" icon="fa fa-th-list">
+                    <app-port-entry-exit></app-port-entry-exit>
+
+                </dxi-item>
+
+                <dxi-item title="{{ 'invoice_type' | translate }}" icon="fa fa-th-list">
+                    <app-invoice-type></app-invoice-type>
+
+                </dxi-item>
+
+                <dxi-item title="{{ 'transaction_currency' | translate }}" icon="fa fa-th-list">
+                    <app-transaction-currency></app-transaction-currency>
+
+                </dxi-item>
+
+                <dxi-item title="{{ 'storage_conditions' | translate }}" icon="fa fa-th-list">
+                    <app-permit-storage-conditions></app-permit-storage-conditions>
+
+                </dxi-item>
+
+            </dx-tab-panel>
+        </div>
+    </div>
+</div>

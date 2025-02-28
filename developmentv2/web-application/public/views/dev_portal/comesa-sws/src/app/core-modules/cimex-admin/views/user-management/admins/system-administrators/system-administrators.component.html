@@ -1,36 +1,23 @@
 <div class="main-content-inner">
-    <div class="row mb-2">
-        <div class="col-sm-6">
-            <h5 class="m-0">{{'secretariate_accounts' | translate}}</h5>
-        </div>
-        <div class="col-sm-6">
-            <ol class="breadcrumb float-sm-right">
-                <li class="breadcrumb-item"><a href="#">{{'home' | translate}}</a></li>
-                <li class="breadcrumb-item active">{{'user_management' | translate}}
-                <li>
-            </ol>
-        </div>
-    </div>
 
     <div class="page-content">
         <div class="page-header">
             <h1>
-                {{parameter_name | translate}}
+                {{ parameter_name | translate }}
                 <small>
                     <i class="ace-icon fa fa-angle-double-right"></i>
-
+                    overview &amp; stats
                 </small>
             </h1>
         </div>
-
-        <!-- Adding a ActiveUserAccounts< -->
         <dx-button text="{{'add_user_account' | translate}}" type="default" icon="fa fa-plus"
             [elementAttr]="{ id: 'elementId', class: '' }" (onClick)="onAddActiveUserAccountsClick()">
         </dx-button>
-        <dx-data-grid class="table row-border hover" (onExporting)="onExporting($event)"
-            [dataSource]="ActiveUserAccounts" [remoteOperations]='true' [showBorders]="true"
-            [allowColumnResizing]="true" [columnHidingEnabled]="false" keyExpr="id"
-            (onToolbarPreparing)="onAdvanceProductRegistrySearch($event)">
+
+        <dx-data-grid (onCellPrepared)="onCellPrepared($event)" class="table row-border hover"
+            (onExporting)="onExporting($event)" [dataSource]="ActiveUserAccounts" [remoteOperations]='true'
+            [showBorders]="true" [allowColumnResizing]="true" [columnHidingEnabled]="true" [wordWrapEnabled]="true"
+            keyExpr="id" (onToolbarPreparing)="onAdvanceProductRegistrySearch($event)">
             <!-- Replace [dataSource]="ActiveUserAccounts" with your appropriate data source -->
 
             <dxo-filter-row [visible]="show_advancesearch"></dxo-filter-row>
@@ -39,7 +26,7 @@
             <dxo-paging [enabled]="true">
             </dxo-paging>
             <dxo-pager [showInfo]="true" infoText="Page #{0}. Total: {1} ({2} items)" [showPageSizeSelector]="true"
-                [allowedPageSizes]="[50,100]">
+                [allowedPageSizes]="[50,100,200]">
             </dxo-pager>
             <dxo-export [enabled]="true" [fileName]="'records' | translate" [formats]="['pdf', 'xlsx']"
                 [allowExportSelectedData]="true">
@@ -49,366 +36,184 @@
             <dxo-selection mode="multiple"></dxo-selection>
             <dxo-group-panel [visible]="true"></dxo-group-panel>
 
-            <!-- Code for displaying Edit and Delete actions -->
-            <dxi-column [width]="200" caption="{{'action' | translate}}" name="command-editing" [allowFiltering]="false"
+            <dxi-column [width]="100" caption="{{'action' | translate}}" name="command-editing" [allowFiltering]="false"
                 [allowSorting]="false" cellTemplate="cellTemplate">
                 <div *dxTemplate="let data of 'cellTemplate'">
                     <dx-menu (onItemClick)="permitActiveUserAccountsActionColClick($event,data)"
-                        [items]="permitSecretariateAccountsMenuItems"></dx-menu>
+                        [items]="permitActiveExpertAccountsMenuItems"></dx-menu>
                 </div>
             </dxi-column>
-            <!-- Code for displaying Edit and Delete actions -->
 
-            <dxi-column dataField="id" caption="ID" [visible]="false"></dxi-column>
+            <dxi-column dataField="account_type" caption="{{'account_type' | translate}}">
 
-            <dxi-column [width]="75" dataField="user_title_id" caption="{{'user_title' | translate}}">
-                <dxo-lookup [dataSource]="UserTitleData" displayExpr="name" valueExpr="id">
-                </dxo-lookup>
+            </dxi-column>
+            <dxi-column dataField="account_role" caption="{{'account_role' | translate}}">
+
+            </dxi-column>
+            <dxi-column [width]="75" dataField="user_title" caption="{{'user_title' | translate}}">
+
             </dxi-column>
 
-            <dxi-column dataField="appworkflow_status" [width]="150" caption="{{ 'account_status' | translate }}"
-                cellTemplate="appworkflow_status">
-                <div *dxTemplate="let d of 'appworkflow_status'">
-                    <div class="truncate-text" title="{{d.data.appworkflow_status}}">
-                        {{d.data.appworkflow_status | translate}}
-                    </div>
-                </div>
+            <dxi-column dataField="first_name" caption="{{'first_name' | translate}}"></dxi-column>
+
+            <dxi-column dataField="surname" caption="{{'surname' | translate}}"></dxi-column>
+
+            <dxi-column dataField="email_address" caption="{{'email_address' | translate}}"></dxi-column>
+
+            <dxi-column dataField="identification_type" caption="{{'identification_type' | translate}}">
+
             </dxi-column>
-            <dxi-column [width]="150" dataField="user_group_id" caption="{{'user_group' | translate}}">
-                <dxo-lookup [dataSource]="alluserGroupData" displayExpr="name" valueExpr="id">
-                </dxo-lookup>
-            </dxi-column>
-            <dxi-column [width]="120" dataField="first_name" caption="{{'first_name' | translate}}"></dxi-column>
-
-            <dxi-column dataField="other_names" caption="{{'other_names' | translate}}"></dxi-column>
-
-            <dxi-column dataField="email_address" caption="{{'email-address' | translate}}"></dxi-column>
-
-            <dxi-column [width]="150" dataField="phone_number" caption="{{'phone_no' | translate}}"></dxi-column>
 
             <dxi-column [width]="100" dataField="identification_number" caption="Identification Number"></dxi-column>
+            <dxi-column dataField="organisation_name" caption="{{'organisation_name' | translate}}"></dxi-column>
+            <dxi-column dataField="organisation_department"
+                caption="{{'organisation_department' | translate}}"></dxi-column>
 
+            <dxi-column dataField="country_of_origin" caption="{{'country' | translate}}">
 
-
-            <dxi-column [width]="150" dataField="country_of_origin_id" caption="{{'country' | translate}}">
-                <dxo-lookup [dataSource]="CountriesData" displayExpr="name" valueExpr="id">
-                </dxo-lookup>
             </dxi-column>
+            <dxi-column dataField="date_registered" caption="{{'date_registered' | translate}}">
 
-            <dxi-column [width]="100" dataField="is_verified" caption="{{'is_verified' | translate}}"></dxi-column>
+            </dxi-column>
+            <dxi-column dataField="last_login_time" caption="{{'last_login_time' | translate}}">
 
-
-
-            <dxo-paging [pageSize]="10"></dxo-paging>
+            </dxi-column>
+            <dxo-paging [pageSize]="200"></dxo-paging>
         </dx-data-grid>
-
 
     </div>
 </div>
+<!-- </div>
+    </section> -->
 
 
-<dx-popup [(visible)]="addPopupVisible" [width]="1000" [height]="500" [showTitle]="true"
-    title="{{'add_new_user_account' | translate}}" (onHidden)="onPopupHidden()">
-    <form (ngSubmit)="onsaveActiveUserAccountsDetails()" [formGroup]="userAccountFrm">
+<dx-popup [(visible)]="addPopupVisible" [width]="funcpopWidth(85)" [height]="funcpopHeight(65)" [showTitle]="true"
+    title="{{'add_new_user_account' | translate}}">
+    <dx-scroll-view>
+        <form (ngSubmit)="onsaveActiveUserAccountsDetails()" [formGroup]="userAccountFrm">
+            <div class="row">
 
-        <div class="row">
-            <div class="col-lg-3">
-                <label>{{'account_type' | translate}}</label>
-                <dx-select-box [dataSource]="AccountTypeData" formControlName="account_type_id" valueExpr="id"
-                    [searchEnabled]="true" displayExpr="name">
-                </dx-select-box>
-            </div>
-            <div class="col-lg-4">
-                <label>{{'user_title' | translate}}</label>
-                <dx-select-box [dataSource]="UserTitleData" formControlName="user_title_id" valueExpr="id"
-                    [searchEnabled]="true" displayExpr="name">
-                </dx-select-box>
-            </div>
-
-            <div class="col-lg-4">
-                <label for="Email Address">{{'email_address' | translate}}</label>
-                <dx-text-box formControlName="email_address" placeholder="Email Address">
-                </dx-text-box>
-
-            </div>
-
-            <div class="col-lg-4">
-                <label for="First Name">{{'first_name' | translate}}</label>
-                <dx-text-box formControlName="first_name" placeholder="First Name">
-                </dx-text-box>
-            </div>
-
-
-
-            <div class="col-lg-12">
-                <label for="Other Names">{{'other_names' | translate}}</label>
-                <dx-text-box formControlName="other_names" placeholder="Other Names">
-                </dx-text-box>
-            </div>
-
-
-            <div class="col-lg-6">
-                <label for="Phone Number">{{'phone_no' | translate}}</label>
-                <dx-text-box formControlName="phone_number" placeholder="Phone Number">
-                </dx-text-box>
-            </div>
-            <div class="col-lg-3">
-                <label>{{'identification_type' | translate}}</label>
-                <dx-select-box [dataSource]="IdentificationTypeData" formControlName="identification_type_id"
-                    valueExpr="id" [searchEnabled]="true" displayExpr="name">
-                </dx-select-box>
-            </div>
-
-            <div class="col-lg-6">
-                <label for="{{'identification_number' | translate}}"></label>
-                <dx-text-box formControlName="identification_number" placeholder="Identification number">
-                </dx-text-box>
-            </div>
-
-            <div class="col-lg-3">
-                <label>{{'country' | translate}}</label>
-                <dx-select-box [dataSource]="CountriesData" formControlName="country_of_origin_id" valueExpr="id"
-                    [searchEnabled]="true" displayExpr="name">
-                </dx-select-box>
-            </div>
-        </div>
-        <div class="button-container">
-            <dx-button text="{{'save_user_account_details' | translate}}" type="default" icon="fa fa-plus"
-                [elementAttr]="{ class: 'pull-left' }" (onClick)="onsaveActiveUserAccountsDetails()">
-            </dx-button>
-            <dx-button text="Cancel" type="danger" icon="fa fa-times" [elementAttr]="{ class: 'pull-left' }"
-                (onClick)="addPopupVisible = false">
-            </dx-button>
-        </div>
-    </form>
-</dx-popup>
-<dx-popup [(visible)]="usergroupPopupVisible" [width]="funcpopWidth(65)" [height]="funcpopHeight(55)" [showTitle]="true"
-    [title]="'update_user_group_details' | translate" (onHidden)="onPopupHidden()">
-    <form (ngSubmit)="onsaveUserGroupDetails()" [formGroup]="updateUsrPermissNewDataFrm">
-
-        <div class="row">
-
-            <div class="col-lg-12">
-                <label>{{'account_type' | translate}}</label>
-                <dx-select-box [dataSource]="userAccountTypeData" (onSelectionChanged)="onAccountTypeSelection($event)"
-                    formControlName="account_type_id" valueExpr="id" [searchEnabled]="true" displayExpr="name">
-                </dx-select-box>
-            </div>
-
-            <!-- <div class="col-lg-6" *ngIf="has_partnerstate_defination">
-                    <label>{{'partner_states' | translate}}</label>
-                    <dx-select-box [dataSource]="partnerStatesData" formControlName="partner_state_id"
-                        [showClearButton]="true" valueExpr="id" [searchEnabled]="true" displayExpr="name"
-                        (onValueChanged)="onPartnerStateChange($event.value)">
-                    </dx-select-box>
-                </div> -->
-            <div class="col-lg-6" *ngIf="is_eacsecretariat">
-                <label>{{'secretariat_department' | translate}}</label>
-                <dx-select-box [dataSource]="secretariatDepartmentsData" formControlName="secretariat_department_id"
-                    [showClearButton]="true" valueExpr="id" [searchEnabled]="true" displayExpr="name">
-                </dx-select-box>
-            </div>
-
-            <!-- <div class="col-lg-6" *ngIf="has_partnerstate_defination">
-                    <label>{{'institutions_type' | translate}}</label>
-                    <dx-select-box [dataSource]="instituionTypeData" formControlName="institution_type_id"
-                        [showClearButton]="true" valueExpr="id" [searchEnabled]="true" displayExpr="name"
-                        (onValueChanged)="onInstitutionTypeChange($event.value)">
+                <div class="col-lg-4">
+                    <label>{{'account_type' | translate}}</label>
+                    <dx-select-box [dataSource]="userAccountTypeData" [readOnly]="is_readonly"  (onSelectionChanged)="onAccountTypeSelection($event)"
+                        formControlName="account_type_id" valueExpr="id" [searchEnabled]="true" displayExpr="name">
                     </dx-select-box>
                 </div>
-                <div class="col-lg-6" *ngIf="has_partnerstate_defination">
-                    <label>{{'institutions' | translate}}</label>
-                    <dx-select-box [dataSource]="Institutions" formControlName="institution_id" [showClearButton]="true"
-                        valueExpr="id" [searchEnabled]="true" displayExpr="name"
-                        (onValueChanged)="onInstitutionChange($event.value)">
-                    </dx-select-box>
-                </div> -->
-
-            <div class="col-lg-6" *ngIf="has_partnerstate_defination">
-                <label>{{'institutions_department' | translate}}</label>
-                <dx-select-box [dataSource]="InstitutionDepartments" formControlName="institution_department_id"
-                    [showClearButton]="true" valueExpr="id" [searchEnabled]="true" displayExpr="name">
-                </dx-select-box>
-            </div>
-
-            <div class="col-lg-6">
-                <label>{{'first_name' | translate}}</label>
-                <dx-text-box formControlName="first_name" [readOnly]="is_readonly" placeholder=""
-                    [showClearButton]="true"></dx-text-box>
-            </div>
-            <div class="col-lg-6">
-                <label>{{'other_names' | translate}}</label>
-                <dx-text-box formControlName="other_names" [readOnly]="is_readonly" placeholder=""
-                    [showClearButton]="true"></dx-text-box>
-            </div>
-
-            <div class="col-lg-6">
-                <label>{{'email_address' | translate}}</label>
-                <dx-text-box formControlName="email_address" [readOnly]="is_readonly"
-                    [showClearButton]="true"></dx-text-box>
-            </div>
-
-            <div class="col-lg-12">
-                <label>{{'user_group' | translate}}</label>
-                <dx-select-box [dataSource]="userGroupData" formControlName="user_group_id" [showClearButton]="true"
-                    valueExpr="id" [searchEnabled]="true" displayExpr="name">
-                </dx-select-box>
-            </div>
-        </div>
-        <div class="button-container">
-
-            <dx-button text="{{'update_user_group_permissions' | translate}}" type="default" icon="fa fa-plus"
-                [elementAttr]="{ class: 'pull-left' }" (onClick)="onsaveUserGroupDetails()">
-            </dx-button>
-            <dx-button text="Cancel" type="default" icon="fa fa-times" [elementAttr]="{ class: 'pull-left' }"
-                (onClick)="usergroupPopupVisible = false">
-            </dx-button>
-        </div>
-    </form>
-</dx-popup>
-
-<dx-popup [(visible)]="seeprofile" [width]="funcpopWidth(85)" [height]="funcpopHeight(65)" [showTitle]="true"
-    title="{{'profile_information' | translate}}" (onHidden)="onPopupHidden()">
-    <form [formGroup]="userAccountFrm">
-
-
-        <div class="row">
-
-            <div class="col-lg-12">
-                <label>{{'account_type' | translate}}</label>
-                <dx-select-box [dataSource]="userAccountTypeData" (onSelectionChanged)="onAccountTypeSelection($event)"
-                    [readOnly]="is_readonly" formControlName="account_type_id" valueExpr="id" [searchEnabled]="true"
-                    displayExpr="name">
-                </dx-select-box>
-            </div>
-
-            <div class="col-lg-12">
-
-                <label>{{'country_of_residence' | translate}}</label>
-                <dx-select-box [dataSource]="Countries" [readOnly]="is_readonly" formControlName="country_of_origin_id"
-                    [showClearButton]="true" valueExpr="id" [searchEnabled]="true" displayExpr="name">
-                </dx-select-box>
-            </div>
-
-            <!-- <div class="col-lg-6" *ngIf="has_partnerstate_defination">
-                    <label>{{'member_states' | translate}}</label>
-                    <dx-select-box [dataSource]="partnerStatesData" [readOnly]="is_readonly"
-                        formControlName="member_state_id" [showClearButton]="true" valueExpr="id" [searchEnabled]="true"
-                        displayExpr="name" (onValueChanged)="onPartnerStateChange($event.value)">
-                    </dx-select-box>
-                </div> -->
-            <div class="col-lg-6" *ngIf="is_eacsecretariat">
-                <label>{{'secretariate_department' | translate}}</label>
-                <dx-select-box [dataSource]="secretariatDepartmentsData" [readOnly]="is_readonly"
-                    formControlName="secretariat_department_id" [showClearButton]="true" valueExpr="id"
-                    [searchEnabled]="true" displayExpr="name">
-                </dx-select-box>
-            </div>
-
-            <!-- <div class="col-lg-6" *ngIf="has_partnerstate_defination">
-                    <label>{{'institutions_types' | translate}}</label>
-                    <dx-select-box [dataSource]="instituionTypeData" [readOnly]="is_readonly"
-                        formControlName="institution_type_id" [showClearButton]="true" valueExpr="id"
-                        [searchEnabled]="true" displayExpr="name"
-                        (onValueChanged)="onInstitutionTypeChange($event.value)">
+                <div class="col-lg-4">
+                    <label>{{'user_role' | translate}}</label>
+                    <dx-select-box [dataSource]="userAccountRolesData" [readOnly]="is_readonly"
+                        formControlName="account_roles_id" valueExpr="id" [searchEnabled]="true" displayExpr="name">
                     </dx-select-box>
                 </div>
-                <div class="col-lg-6" *ngIf="has_partnerstate_defination">
-                    <label>{{'institutions' | translate}}</label>
-                    <dx-select-box [dataSource]="Institutions" [readOnly]="is_readonly" formControlName="institution_id"
-                        [showClearButton]="true" valueExpr="id" [searchEnabled]="true" displayExpr="name"
-                        (onValueChanged)="onInstitutionChange($event.value)">
-                    </dx-select-box>
-                </div> -->
-
-            <div class="col-lg-6" *ngIf="has_partnerstate_defination">
-                <label>{{'institutions_department' | translate}}</label>
-                <dx-select-box [dataSource]="InstitutionDepartments" [readOnly]="is_readonly"
-                    formControlName="institution_department_id" [showClearButton]="true" valueExpr="id"
-                    [searchEnabled]="true" displayExpr="name">
-                </dx-select-box>
-            </div>
-
-            <div class="col-lg-12 row">
-                <div class="col-lg-2">
+                <div class="col-lg-4">
                     <label>{{'user_title' | translate}}</label>
                     <dx-select-box [dataSource]="userTitles" [readOnly]="is_readonly" formControlName="user_title_id"
                         [showClearButton]="true" valueExpr="id" [searchEnabled]="true" displayExpr="name">
                     </dx-select-box>
-
-
                 </div>
-                <div class="col-lg-5">
+                <div class="col-lg-4">
                     <label>{{'first_name' | translate}}</label>
                     <dx-text-box formControlName="first_name" [readOnly]="is_readonly" placeholder=""
                         [showClearButton]="true"></dx-text-box>
                 </div>
-                <div class="col-lg-5">
+                <div class="col-lg-4">
                     <label>{{'other_names' | translate}}</label>
                     <dx-text-box formControlName="other_names" [readOnly]="is_readonly" placeholder=""
                         [showClearButton]="true"></dx-text-box>
                 </div>
+                <div class="col-xs-12 col-md-12 col-lg-12 col-xl-12">
+                    <label for="ti" class="control-label">{{ 'country_of_origin' | translate }}</label>
+                    <dx-select-box [dataSource]="CountriesData" formControlName="country_of_origin_id"
+                      (onSelectionChanged)="onCountrySelection($event)" [showClearButton]="true" valueExpr="id" [searchEnabled]="true"
+                      displayExpr="name" class="custom-input">
+                    </dx-select-box>
+                  </div>
+                <div class="col-lg-4">
+                    <label>{{'identification_type' | translate}}</label>
+                    <dx-select-box [dataSource]="IdentificationType" [readOnly]="is_readonly"
+                        formControlName="identification_type_id" [showClearButton]="true" valueExpr="id"
+                        [searchEnabled]="true" displayExpr="name">
+                    </dx-select-box>
+                </div>
 
+                <div class="col-lg-4">
+                    <label>{{'identification_number' | translate}}</label>
+                    <dx-text-box formControlName="identification_number" [readOnly]="is_readonly" placeholder=""
+                        [showClearButton]="true"></dx-text-box>
+                </div>
+
+                <div class="col-lg-4">
+                    <label>{{'email-address' | translate}}</label>
+                    <dx-text-box formControlName="email_address" [readOnly]="is_readonly"
+                        [showClearButton]="true"></dx-text-box>
+                </div>
+
+                <div class="col-lg-4">
+                    <label>{{'phone_no' | translate}}</label>
+                    <br>
+                    <dx-text-box formControlName="phone_number" class="custom-input"></dx-text-box>
+                </div>
+                <div class="col-lg-4">
+                    <label>{{'organisation' | translate}}</label>
+                    <dx-select-box (onSelectionChanged)="onOrganisationSelectionChange($event)"
+                        [dataSource]="organisationData" [readOnly]="is_readonly" formControlName="organisation_id"
+                        [showClearButton]="true" valueExpr="id" [searchEnabled]="true" displayExpr="name">
+                    </dx-select-box>
+                </div>
+                <div class="col-lg-4">
+                    <label>{{'organisation_department' | translate}}</label>
+                    <dx-select-box [dataSource]="organisationDepartmentsdata" [readOnly]="is_readonly"
+                        formControlName="organisation" [showClearButton]="true" valueExpr="id" [searchEnabled]="true"
+                        displayExpr="name">
+                    </dx-select-box>
+                </div>
+                <div class="col-lg-12">
+                    <label>{{'user_group' | translate}}</label>
+
+                    <dx-tag-box [items]="systemUserGroupsData" formControlName="user_groups_ids"
+                        placeholder="{{'user_group' | translate}}" valueExpr="id" [readOnly]="is_readonly"
+                        [showSelectionControls]="true" applyValueMode="useButtons" displayExpr="name">
+                    </dx-tag-box>
+                </div>
+
+
+                <div class="col-lg-12">
+                    <dx-button text="Enable Edit" type="default" icon="fa fa-edit"
+                        [elementAttr]="{ class: 'pull-left' }" (onClick)="onActionEditDetails()">
+                    </dx-button>
+                    <dx-button text="Save User Account Details" [disabled]="is_readonly" type="default"
+                        icon="fa fa-plus" [elementAttr]="{ class: 'pull-left' }"
+                        (onClick)="onsaveActiveUserAccountsDetails()">
+                    </dx-button>
+                    <dx-button text="Cancel" type="danger" icon="fa fa-times" [elementAttr]="{ class: 'pull-left' }"
+                        (onClick)="addPopupVisible = false">
+                    </dx-button>
+                </div>
             </div>
 
-            <div class="col-lg-6">
-                <label>{{'email-address' | translate}}</label>
-                <dx-text-box formControlName="email_address" [readOnly]="is_readonly"
-                    [showClearButton]="true"></dx-text-box>
-            </div>
+        </form>
+    </dx-scroll-view>
 
-            <div class="col-lg-6">
-                <label>{{'phone_no' | translate}}</label>
-                <br>
-                <ngx-intl-tel-input [cssClass]="'custom'" [enableAutoCountrySelect]="false" [enablePlaceholder]="true"
-                    [searchCountryFlag]="true" [selectFirstCountry]="false" [maxLength]="15" [phoneValidation]="false"
-                    name="phone_number" formControlName="phone_number"></ngx-intl-tel-input>
-            </div>
-
-            <div class="col-lg-6">
-                <label>{{'identification_type' | translate}}</label>
-                <dx-select-box [dataSource]="IdentificationType" [readOnly]="is_readonly"
-                    formControlName="identification_type_id" [showClearButton]="true" valueExpr="id"
-                    [searchEnabled]="true" displayExpr="name">
-                </dx-select-box>
-            </div>
-
-            <div class="col-lg-6">
-                <label>{{'identification_number' | translate}}</label>
-                <dx-text-box formControlName="identification_number" [readOnly]="is_readonly" placeholder=""
-                    [showClearButton]="true"></dx-text-box>
-            </div>
-
-        </div>
-
-        <div class="col-lg-6">
-            <label>{{'user_group' | translate}}</label>
-            <dx-select-box [dataSource]="alluserGroupData" [readOnly]="is_readonly" formControlName="user_group_id"
-                [showClearButton]="true" valueExpr="id" [searchEnabled]="true" displayExpr="name">
-            </dx-select-box>
-        </div>
-
-
-    </form>
 </dx-popup>
 
-<dx-popup [visible]="usrapprovalPopupVisible" [width]="funcpopWidth(30)" [height]="funcpopHeight(25)" [showTitle]="true"
-    title="{{ decision_description | translate }}" (onHidden)="usrapprovalPopupVisible = false">
+<dx-popup [visible]="deletePopupVisible" [width]="funcpopWidth(30)" [height]="funcpopHeight(25)" [showTitle]="true"
+    title="{{ 'delete_confirmation_of '+parameter_name | translate }}" (onHidden)="deletePopupVisible = false">
 
     <div>
         <p class="confirmation-text">
-            {{ 'Are you sure you want to '+decision_description | translate }}
-            ?
+            {{ 'are_you_sure_you_want_to_delete' | translate }}
+            "<strong>{{config_record}}</strong>"?
         </p>
         <div class="button-container">
-            <dx-button text="{{ decision_description | translate }}" type="default" (onClick)="onUserAccountApproval()">
+            <dx-button text="{{ 'yes' | translate }}" type="danger" (onClick)="onDeleteUserData()">
             </dx-button>
-            <dx-button text="{{ 'No' | translate }}" (onClick)="usrapprovalPopupVisible = false">
+            <dx-button text="{{ 'no' | translate }}" (onClick)="deletePopupVisible = false">
             </dx-button>
         </div>
     </div>
 
 </dx-popup>
+
 
 <dx-popup [visible]="usrrejectionPopupVisible" [width]="funcpopWidth(30)" [height]="funcpopHeight(25)"
     [showTitle]="true" title="{{ decision_description | translate }}" (onHidden)="usrrejectionPopupVisible = false">
@@ -429,25 +234,23 @@
 
 </dx-popup>
 
-<dx-popup [visible]="deletePopupVisible" [width]="funcpopWidth(30)" [height]="funcpopHeight(25)" [showTitle]="true"
-    title="{{ 'delete_confirmation_of'+parameter_name | translate }}" (onHidden)="deletePopupVisible = false">
+<dx-popup [visible]="usrapprovalPopupVisible" [width]="funcpopWidth(30)" [height]="funcpopHeight(25)" [showTitle]="true"
+    title="{{ decision_description | translate }}" (onHidden)="usrapprovalPopupVisible = false">
 
     <div>
         <p class="confirmation-text">
-            {{ 'are_you_sure_you_want_to_delete' | translate }}
-            "<strong>{{config_record}}</strong>"?
+            {{ 'Are you sure you want to '+decision_description | translate }}
+            ?
         </p>
         <div class="button-container">
-            <dx-button text="{{ 'yes' | translate }}" type="danger" (onClick)="onDeleteUserData()">
+            <dx-button text="{{ decision_description | translate }}" type="danger" (onClick)="onUserAccountApproval()">
             </dx-button>
-            <dx-button text="{{ 'no' | translate }}" (onClick)="deletePopupVisible = false">
+            <dx-button text="{{ 'No' | translate }}" (onClick)="usrapprovalPopupVisible = false">
             </dx-button>
         </div>
     </div>
 
 </dx-popup>
-
-
 
 <dx-load-panel #loadPanel shadingColor="rgba(0,0,0,0.4)" [position]="{ of: '#employee' }" [(visible)]="loadingVisible"
     [showIndicator]="true" [showPane]="true" [shading]="true" [message]="spinnerMessage" [hideOnOutsideClick]="false">

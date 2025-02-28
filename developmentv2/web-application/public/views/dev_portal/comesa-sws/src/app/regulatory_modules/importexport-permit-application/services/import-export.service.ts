@@ -19,7 +19,7 @@ export class ImportExportService {
   constructor(private authService: AuthenticationService,private http: HttpClient, private myRoute: Router, private httpClient: HttpClient) {
     let user = this.authService.getUserDetails();
 
-    this.baseUrl = AppSettings.base_url + '/api/permits';
+    this.baseUrl = AppSettings.base_url + '/api/import-export';
     this.trader_id = user.trader_id;
     this.mistrader_id = user.mistrader_id;
     this.email_address = user.email_address;
@@ -181,7 +181,7 @@ export class ImportExportService {
         return <any>data;
       }));
   }
-  onAddPermitReceiverSender(table_name, data) {//tra_permitsenderreceiver_data
+  onAddPermitReceiverSender(table_name, data, action_url) {//tra_permitsenderreceiver_data
 
     let data_header = {
       params: { 'trader_id': this.trader_id, 'traderemail_address': this.email_address, table_name: table_name },
@@ -189,7 +189,7 @@ export class ImportExportService {
       headers: { 'Accept': 'application/json', "Authorization": "Bearer " + this.authService.getAccessToken() }
     };
 
-    return this.httpClient.post(this.baseUrl + '/' + 'onAddUniformApplicantDataset', data, data_header)
+    return this.httpClient.post(this.baseUrl + '/' + action_url, data, data_header)
       .pipe(map(data => {
         return data;
       }));
