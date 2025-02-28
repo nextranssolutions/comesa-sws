@@ -148,17 +148,20 @@ class WorkflowManagementController extends Controller
         try {
             $user_id = $req->user_id;
             $usergroups = 0;
-            //note one user can have more than one user group
             if (validateIsNumeric($user_id)) {
-                $usergroups = DB::table(table: 'tra_user_group as t1')
+                $usergroups = DB::table('tra_user_group as t1')
                     ->select('group_id')
                     ->where(array('user_id' => $user_id))
                     ->get();
 
-
                 $usergroups = convertStdClassObjToArray($usergroups);
 
                 $usergroups = convertAssArrayToSimpleArray($usergroups, 'group_id');
+            }else{
+                return response()->json([
+                    'success' => false,
+                    'message' => 'The User ID is not set, trying loggin-out.',
+                ], 200);
             }
             //  $is_super_admin = false;
             // $is_super_admin = getRecordValFromWhere('usr_users_groups', array('id' => $userGroupId), 'is_super_admin');
@@ -216,9 +219,6 @@ public function getRegulatoryFunctionGuidelines(Request $req)
         $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
     }
 }
-
-
-
     public function getUserNavigationItems(Request $req)
     {
         try {
@@ -237,7 +237,7 @@ public function getRegulatoryFunctionGuidelines(Request $req)
                     $users_groups = getSingleRecord('usr_users_information', array('id' => $user_id));
                     $is_super_admin = $users_groups->is_super_admin;
                     // $user_account_type = $users_groups->account_type_id;
-                    $usergroups = DB::table(table: 'tra_user_group as t1')
+                    $usergroups = DB::table('tra_user_group as t1')
                         ->select('group_id')
                         ->where(array('user_id' => $user_id))
                         ->get();
@@ -573,21 +573,30 @@ public function getRegulatoryFunctionGuidelines(Request $req)
     public function getAppNavigationMenus(Request $req)
     {
         try {
+            $navigation_type_id = $req->navigation_type_id;
+            $account_type_id = $req->account_type_id;
+            
             $level = 0;
             $navigationItems = DB::table('wf_navigation_items as t1')
                 ->leftJoin('wf_system_interfaces as t3', 't1.system_interface_id', 't3.id')
                 ->select('t1.*', 't3.routerlink', 't1.iconsCls')
-                ->orderBy('t1.order_no')->where(array('level' => $level))
-                ->get();
+                ->orderBy('t1.order_no')->where(array('level' => $level));
+
             $rootItems = array();
             // This will store items in a hierarchical structure
-
+            if(validateIsNumeric($navigation_type_id)){
+                $navigationItems->where(array('t1.navigation_type_id' => $navigation_type_id));
+            }
+            if(validateIsNumeric($account_type_id)){
+                $navigationItems->where(array('t1.account_type_id' => $account_type_id));
+            }
+            $navigationItems =  $navigationItems->get();
             // Group items by their parent_id to create a hierarchical structure
             foreach ($navigationItems as $item) {
 
                 $parent_id = $item->id;
                 $level = 1;
-                $childrens = $this->getNavigationItemsChildrens($parent_id, $level);
+                $childrens = $this->getNavigationItemsChildrens($parent_id, $level,$account_type_id,$navigation_type_id );
                 if (!empty($childrens)) {
                     $item->children = $childrens;
                     $rootItems[] = $item;
@@ -604,7 +613,7 @@ public function getRegulatoryFunctionGuidelines(Request $req)
         }
         return response()->json($res, 200);
     }
-    function getNavigationItemsChildrens($parent_id, $level)
+    function getNavigationItemsChildrens($parent_id, $level,$account_type_id,$navigation_type_id)
     {
         $childrens = array();
         $navigationItems = DB::table('wf_navigation_items as t1')
@@ -613,13 +622,21 @@ public function getRegulatoryFunctionGuidelines(Request $req)
             ->leftJoin('par_regulatory_subfunctions as t5', 't5.id', 't5.regulatory_function_id')
             ->select('t1.*', 't3.routerlink', 't1.iconsCls', 't4.name', 't5.name')
             ->orderBy('order_no')
-            ->where(array('level' => $level, 'parent_id' => $parent_id))->get();
+            ->where(array('level' => $level, 'parent_id' => $parent_id));
+
+            if(validateIsNumeric($navigation_type_id)){
+                $navigationItems->where(array('t1.navigation_type_id' => $navigation_type_id));
+            }
+            if(validateIsNumeric($account_type_id)){
+                $navigationItems->where(array('t1.account_type_id' => $account_type_id));
+            }
+            $navigationItems =  $navigationItems->get();
         foreach ($navigationItems as $item) {
 
             $child_id = $item->id;
             $level_child = 2;
             //check for the next level 
-            $grand_children = $this->grandNavigationschildfunction($child_id, $level_child);
+            $grand_children = $this->grandNavigationschildfunction($child_id, $level_child,$account_type_id,$navigation_type_id);
             if (!empty($grand_children)) {
 
                 $item->children = $grand_children;
@@ -631,14 +648,21 @@ public function getRegulatoryFunctionGuidelines(Request $req)
 
         return $childrens;
     }
-    function grandNavigationschildfunction($parent_id, $level)
+    function grandNavigationschildfunction($parent_id, $level,$account_type_id,$navigation_type_id)
     {
         $childrens = array();
         $navigationItems = DB::table('wf_navigation_items as t1')
             ->leftJoin('wf_system_interfaces as t3', 't1.system_interface_id', 't3.id')
             ->select('t1.*', 't3.routerlink', 't1.iconsCls')
-            ->where(array('level' => $level, 'parent_id' => $parent_id))->get();
+            ->where(array('level' => $level, 'parent_id' => $parent_id));
 
+            if(validateIsNumeric($navigation_type_id)){
+                $navigationItems->where(array('t1.navigation_type_id' => $navigation_type_id));
+            }
+            if(validateIsNumeric($account_type_id)){
+                $navigationItems->where(array('t1.account_type_id' => $account_type_id));
+            }
+            $navigationItems =  $navigationItems->get();
         foreach ($navigationItems as $child) {
 
             $childrens[] = $child;

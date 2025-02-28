@@ -9,7 +9,10 @@ body {
   font-family: 'Nunito Sans', sans-serif;
 
 }
+.widget-toolbar > a{
+  padding:0 5px !important;
 
+}
 
 
 .dx-texteditor-input-container {
@@ -414,10 +417,6 @@ form .ng-invalid:before {
 
 }
 
-.ng-invalid:not(form) {
-  /* border-left: 1px solid #ff0000 !important; */
-}
-
 form .ng-valid {
 
   border-left: 1px solid #033721 !important;
@@ -433,10 +432,6 @@ form .ng-valid {
 } */
 .ng-valid:not(form) {
   border-left: 1px solid #033721 !important;
-}
-
-.ng-invalid:not(form) {
-  /* border-left: 1px solid #ff0000 !important; */
 }
 
 .dx-button-text {

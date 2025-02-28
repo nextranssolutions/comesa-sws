@@ -104,8 +104,9 @@ export class WokflowManagementService {
         return <any>data;
       }));
   }
-  getAppNavigationMenus() {
+  getAppNavigationMenus(account_type_id=0, navigation_type_id=0) {
     this.workflow = {
+      params: {account_type_id:account_type_id,navigation_type_id:navigation_type_id},
       headers: { 'Accept': 'application/json' }
     };
 
