@@ -77,8 +77,8 @@ export class SharedNavigationsComponent {
     public viewRef: ViewContainerRef,
     public translate: TranslateService,
     public workflowService: WokflowManagementService,
-    public utilityService: UtilityService, 
-    
+    public utilityService: UtilityService,
+
     public reportingAnalytics: ReportsService,
   ) {
 
@@ -102,7 +102,7 @@ export class SharedNavigationsComponent {
         resetcolumns: new FormControl('', Validators.compose([])),
         regulatory_function_id: new FormControl('', Validators.compose([])),
         regulatory_subfunction_id: new FormControl('', Validators.compose([])),
-        account_type_id : new FormControl('', Validators.compose([])),
+        account_type_id: new FormControl('', Validators.compose([])),
 
       });
     }
@@ -126,7 +126,7 @@ export class SharedNavigationsComponent {
     this.fetchNavigationItemsDetails();
     this.onLoadnavigationTypesData();
     this.onLoadnavigationLevelsData();
-    
+
     this.onloadworkflowData();
     if (this.table_name == 'wf_navigation_items') {
       this.fetchAppNavigationMenus();
@@ -152,9 +152,9 @@ export class SharedNavigationsComponent {
     this.onLoadnavigationItemsParentData(level);
 
   }
-  fetchAppNavigationMenus() {
+  fetchAppNavigationMenus(account_type_id = 0, navigation_type_id = 0) {
     this.spinnerShow('Loading Navigation items......')
-    this.workflowService.getAppNavigationMenus().subscribe(
+    this.workflowService.getAppNavigationMenus(account_type_id, navigation_type_id).subscribe(
       (data) => {
         this.AppNavigationMenus = data; // Assuming the field as an array
         this.spinnerHide();
@@ -164,6 +164,25 @@ export class SharedNavigationsComponent {
         // Handle error, show message, etc.
       }
     );
+  }
+  onNavigationTypeSelection($event) {
+
+    if ($event.selectedItem) {
+
+      let navigation_type = $event.selectedItem;
+      this.fetchAppNavigationMenus(0, navigation_type.id);
+    }
+  }
+  onAccountTypeSelection($event) {
+    if ($event.selectedItem) {
+      let account_type = $event.selectedItem;
+      this.fetchAppNavigationMenus(account_type.id, 0);
+    }
+  }
+  onRowPrepared(e) {
+    if (e.rowType === "group") {
+      e.rowData.id = `group-${e.key}`; // Assign a unique id
+    }
   }
   onLoadnavigationItemsParentData(level) {
     let level_no = level - 1;
@@ -214,7 +233,7 @@ export class SharedNavigationsComponent {
 
   }
 
-  
+
 
   onloadworkflowData() {
     var data_submit = {
@@ -234,7 +253,7 @@ export class SharedNavigationsComponent {
 
   }
 
-  onAdvanceProductRegistrySearch(e){
+  onAdvanceProductRegistrySearch(e) {
     e.toolbarOptions.items.unshift({
       location: 'after',
       widget: 'dxCheckBox',
@@ -247,11 +266,11 @@ export class SharedNavigationsComponent {
     });
   }
 
-  onActivatetheAdvanceSearch(e){
+  onActivatetheAdvanceSearch(e) {
 
-    this.show_advancesearch =  e.value;
+    this.show_advancesearch = e.value;
 
-}
+  }
 
   onLoadAppSystemInterfaceData() {
     var data_submit = {

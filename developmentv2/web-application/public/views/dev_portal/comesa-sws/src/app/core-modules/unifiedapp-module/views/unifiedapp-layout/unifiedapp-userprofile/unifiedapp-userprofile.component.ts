@@ -3,6 +3,7 @@ import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { DxButtonTypes } from 'devextreme-angular/ui/button';
+import { DxTabPanelTypes } from 'devextreme-angular/ui/tab-panel';
 import { DxTextBoxTypes } from 'devextreme-angular/ui/text-box';
 import { ToastrService } from 'ngx-toastr';
 import { AuthenticationService } from 'src/app/core-services/authentication/authentication.service';
@@ -15,7 +16,20 @@ import { UserManagementService } from 'src/app/core-services/user-management/use
   styleUrl: './unifiedapp-userprofile.component.css'
 })
 export class UnifiedappUserprofileComponent {
-
+  is_viewuserpermissionswin: boolean;
+  is_viewmycurrentassignments:boolean;
+  iconPosition: any = 'top';
+  userGroupData: any;
+  appRegulatoryFunctionData: any;
+  appNavigationMenusPermisData: any;
+  workflowPermissionData: any;
+  usersTasksData: any;
+  tabsPositions: DxTabPanelTypes.Position[] = [
+    'left', 'top', 'right', 'bottom',
+  ];
+  tabsPosition: DxTabPanelTypes.Position = this.tabsPositions[1];
+  stylingModes: DxTabPanelTypes.TabsStyle[] = ['primary', 'secondary'];
+  stylingMode: DxTabPanelTypes.TabsStyle = this.stylingModes[0];
   changePaswordWFrm: FormGroup;
   userAccountFrm: FormGroup;
   loadingVisible: boolean;
@@ -41,55 +55,55 @@ export class UnifiedappUserprofileComponent {
     ],
   };
 
-    passwordMode: DxTextBoxTypes.TextBoxType = 'password';
-    passwordButton: DxButtonTypes.Properties = {
-      icon: 'eyeopen',
-      stylingMode: 'text',
-      onClick: () => {
-        this.passwordMode = this.passwordMode === 'text' ? 'password' : 'text';
-      },
-    };
-  
+  passwordMode: DxTextBoxTypes.TextBoxType = 'password';
+  passwordButton: DxButtonTypes.Properties = {
+    icon: 'eyeopen',
+    stylingMode: 'text',
+    onClick: () => {
+      this.passwordMode = this.passwordMode === 'text' ? 'password' : 'text';
+    },
+  };
+
 
   constructor(
     public translate: TranslateService,
-        public toastr: ToastrService,
-        public AuthService: AuthenticationService,
-        private translationService: LanguagesService,
-        public userservice: UserManagementService,
-        private router: Router,
+    public toastr: ToastrService,
+    public AuthService: AuthenticationService,
+    private translationService: LanguagesService,
+    public userservice: UserManagementService,
+    private router: Router,
   ) {
-        this.changePaswordWFrm = new FormGroup({
-          password: new FormControl('', Validators.compose([Validators.required])),
-          new_password: new FormControl('', Validators.compose([Validators.required])),
-          confirm_password: new FormControl('', Validators.compose([Validators.required]))
-        });
+    this.changePaswordWFrm = new FormGroup({
+      password: new FormControl('', Validators.compose([Validators.required])),
+      new_password: new FormControl('', Validators.compose([Validators.required])),
+      confirm_password: new FormControl('', Validators.compose([Validators.required]))
+    });
 
-        this.userAccountFrm = new FormGroup({
-          id: new FormControl('', Validators.compose([])),
-          user_title_id: new FormControl('', Validators.compose([])),
-          identification_type_id: new FormControl('', Validators.compose([])),
-          country_of_origin_id: new FormControl('', Validators.compose([])),
-          institution_id: new FormControl('', Validators.compose([])),
-          institution_department_id: new FormControl('', Validators.compose([])),
-          user_status: new FormControl('', Validators.compose([])),
-          email_address: new FormControl('', Validators.compose([])),
-          first_name: new FormControl('', Validators.compose([])),
-          surname: new FormControl('', Validators.compose([])),
-          phone_number: new FormControl('', Validators.compose([Validators.required])),
-          workflow_status_id: new FormControl('', Validators.compose([])),
-          account_roles_id: new FormControl('', Validators.compose([])),
-          last_login_time: new FormControl('', Validators.compose([])),
-          account_type_id: new FormControl('', Validators.compose([])),
-          directorate_id: new FormControl('', Validators.compose([])),
-          identification_number: new FormControl('', Validators.compose([])),
-          website: new FormControl('', Validators.compose([])),
-          status_id: new FormControl('', Validators.compose([])),
-          directorate_units: new FormControl('', Validators.compose([])),
-          created_on: new FormControl('', Validators.compose([Validators.required])),
-          postal_address: new FormControl('', Validators.compose([])),
-          name: new FormControl('', Validators.compose([])),
-        });
+    this.userAccountFrm = new FormGroup({
+      id: new FormControl('', Validators.compose([])),
+      user_title_id: new FormControl('', Validators.compose([])),
+      identification_type_id: new FormControl('', Validators.compose([])),
+      country_of_origin_id: new FormControl('', Validators.compose([])),
+      institution_id: new FormControl('', Validators.compose([])),
+      institution_department_id: new FormControl('', Validators.compose([])),
+      user_status: new FormControl('', Validators.compose([])),
+      email_address: new FormControl('', Validators.compose([])),
+      first_name: new FormControl('', Validators.compose([])),
+      surname: new FormControl('', Validators.compose([])),
+      phone_number: new FormControl('', Validators.compose([Validators.required])),
+      workflow_status_id: new FormControl('', Validators.compose([])),
+      account_roles_id: new FormControl('', Validators.compose([])),
+      last_login_time: new FormControl('', Validators.compose([])),
+      account_type_id: new FormControl('', Validators.compose([])),
+      directorate_id: new FormControl('', Validators.compose([])),
+      identification_number: new FormControl('', Validators.compose([])),
+      website: new FormControl('', Validators.compose([])),
+      status_id: new FormControl('', Validators.compose([])),
+      directorate_units: new FormControl('', Validators.compose([])),
+      created_on: new FormControl('', Validators.compose([Validators.required])),
+      postal_address: new FormControl('', Validators.compose([])),
+      name: new FormControl('', Validators.compose([])),
+    });
   }
 
   ngOnInit(): void {
@@ -143,21 +157,28 @@ export class UnifiedappUserprofileComponent {
 
   viewProfile() {
     // Navigate to Profile page
-    
+
   }
 
   changePassword() {
     // Open change password modal/page
-    
+
   }
 
   logout() {
     // Perform logout action
-    
+
   }
 
   funcViewUserProfiledetails() {
     this.is_viewprofilewin = true;
+  }
+  funcViewUserPermissions() {
+
+    this.onGetUsergroupInformation()
+    this.onGetappRegulatoryFunctionPermissionData()
+    this.onGetappNavigationMenusPermisData()
+    this.onGetUsersworkflowPermissionData()
   }
 
   funcUserLogOut() {
@@ -194,11 +215,10 @@ export class UnifiedappUserprofileComponent {
 
       return;
     }
-    if(old_password == new_password || old_password == confirm_password)
-      {
-        this.toastr.error('Old Password cannot be your new password', 'Error', { timeOut: 10000 });
-        return;
-      }
+    if (old_password == new_password || old_password == confirm_password) {
+      this.toastr.error('Old Password cannot be your new password', 'Error', { timeOut: 10000 });
+      return;
+    }
     this.spinnerShow('Change User Password........');
 
     this.userservice.onsaveUserData('usr_users_information', this.changePaswordWFrm.value, 'onUserChangePassword').subscribe(
@@ -257,8 +277,125 @@ export class UnifiedappUserprofileComponent {
         });
   }
 
-  onGetSingleUserProfileDetails(){
-   
+  // userGroupData:any;
+  // appRegulatoryFunctionData:any;
+  // appNavigationMenusPermisData:any;
+  // workflowPermissionData:any;
+
+
+  onGetUsergroupInformation() {
+    var data_submit = {
+      'table_name': 'usr_users_groups'
+    }
+    this.spinnerShow('Loading');
+    this.userservice.onGetUserInformation(data_submit, 'onGetUsergroupInformation')
+      .subscribe(
+        data => {
+          this.data_record = data;
+
+          if (this.data_record.success) {
+            this.userGroupData = this.data_record.data;
+          }
+
+          this.is_viewuserpermissionswin = true;
+          this.spinnerHide()
+        },
+        error => {
+
+          this.spinnerHide()
+        });
+  }
+
+  funcViewMyCurrentAssignmentsTasks() {
+    var data_submit = {
+      'table_name': 'tra_applicationprocess_submissions'
+    }
+    this.spinnerShow('Loading');
+    this.userservice.onGetUserInformation(data_submit, 'onGetMyCurrentTasksAssignments')
+      .subscribe(
+        data => {
+          this.data_record = data;
+
+          if (this.data_record.success) {
+            this.usersTasksData = this.data_record.data;
+          }
+
+          this.is_viewmycurrentassignments = true;
+          this.spinnerHide()
+        },
+        error => {
+
+          this.spinnerHide()
+        });
+
+  }
+
+
+  onGetappRegulatoryFunctionPermissionData() {
+    var data_submit = {
+      'table_name': 'usr_users_groups'
+    }
+    this.spinnerShow('Loading');
+    this.userservice.onGetUserInformation(data_submit, 'onGetappRegulatoryFunctionPermissionData')
+      .subscribe(
+        data => {
+          this.data_record = data;
+
+          if (this.data_record.success) {
+            this.appRegulatoryFunctionData = this.data_record.data;
+          }
+          this.spinnerHide()
+        },
+        error => {
+
+          this.spinnerHide()
+        });
+  }
+
+  onGetappNavigationMenusPermisData() {
+    var data_submit = {
+      'table_name': 'usr_users_groups'
+    }
+    this.spinnerShow('Loading');
+    this.userservice.onGetUserInformation(data_submit, 'onGetappNavigationMenusPermisData')
+      .subscribe(
+        data => {
+          this.data_record = data;
+
+          if (this.data_record.success) {
+            this.appNavigationMenusPermisData = this.data_record.data;
+          }
+          this.spinnerHide()
+        },
+        error => {
+
+          this.spinnerHide()
+        });
+  }
+
+  onGetUsersworkflowPermissionData() {
+    var data_submit = {
+      'table_name': 'usr_users_groups'
+    }
+    this.spinnerShow('Loading');
+    this.userservice.onGetUserInformation(data_submit, 'onGetUsersworkflowPermissionData')
+      .subscribe(
+        data => {
+          this.data_record = data;
+
+          if (this.data_record.success) {
+            this.workflowPermissionData = this.data_record.data;
+          }
+          this.spinnerHide()
+        },
+        error => {
+
+          this.spinnerHide()
+        });
+  }
+
+  onGetSingleUserProfileDetails() {
+
     var data_submit = {
       'table_name': 'usr_users_information'
     }
@@ -279,7 +416,7 @@ export class UnifiedappUserprofileComponent {
           this.spinnerHide()
         });
 
-}
+  }
 
   onLoadAccountTypesData() {
     var data_submit = {

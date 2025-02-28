@@ -520,7 +520,7 @@ class SysAdministrationController extends Controller
                     't4.name as organisation',
                     't5.name as process',
                     't6.name as workflow',
-                    't7.name as service_deliverytimeline',
+                    't7.name as service_delivery_timeline',
                     't8.name as ref_number_format',
                     't9.name as permit_status',
                     't10.name as renewable_status'
@@ -548,7 +548,7 @@ class SysAdministrationController extends Controller
                     'organisation' => $rec->organisation,
                     'process' => $rec->process,
                     'workflow' => $rec->workflow,
-                    'service_deliverytimeline' => $rec->service_deliverytimeline,
+                    'service_delivery_timeline' => $rec->service_delivery_timeline,
                     'ref_number_format' => $rec->ref_number_format,
                     'permit_status' => $rec->permit_status,
                     'renewable_status' => $rec->renewable_status,

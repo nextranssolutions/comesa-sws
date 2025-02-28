@@ -9,7 +9,10 @@ body {
   font-family: 'Nunito Sans', sans-serif;
 
 }
+.widget-toolbar > a{
+  padding:0 5px !important;
 
+}
 
 
 .dx-texteditor-input-container {

@@ -16,11 +16,12 @@ import { httpTranslateLoader } from '../public/public.module';
 import { UnifiedappCalenderdetailsComponent } from './views/unifiedapp-layout/unifiedapp-calenderdetails/unifiedapp-calenderdetails.component';
 import { UnifiedappUserprofileComponent } from './views/unifiedapp-layout/unifiedapp-userprofile/unifiedapp-userprofile.component';
 import { UnifiedappRoutingModule } from './unifiedapp-routing.module';
+import { UnifieddashReportsanalyticsComponent } from './views/unifieddash-reportsanalytics/unifieddash-reportsanalytics.component';
 @NgModule({
   declarations: [UnifiedappLayoutComponent,
       UnifiedappDashboardComponent,
         TopUnisectionComponent,UnifiedappCalenderdetailsComponent,
-        FooterUnisectionComponent,UnifiedappNavigationComponent,UnifiedappUserprofileComponent],
+        FooterUnisectionComponent,UnifiedappNavigationComponent,UnifiedappUserprofileComponent,UnifieddashReportsanalyticsComponent],
  
   imports: [
       CommonModule, DxButtonModule, DxProgressBarModule,
