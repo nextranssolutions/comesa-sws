@@ -563,6 +563,7 @@ export class SharedImpexpApplicationClass {
   onApplicationDashboard() {
     this.app_route = this.funcREturnApplicationDashboardROute();
     this.router.navigate(this.app_route);
+    this.scrollToTop();
   }
   funcREturnApplicationDashboardROute() {
     if (this.regulatory_subfunction_id == 12) {
