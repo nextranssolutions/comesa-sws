@@ -21,6 +21,7 @@ import { SafePipeModule } from '../../safe-pipe/safe-pipe.module';
 import { SharedModuleModule } from '../../shared-views/shared-module.module';
 import { DashboardComponent } from './views/dashboard/dashboard.component';
 import { ImportexportapplicationRoutingModule } from './importexport-applicationrouting.module';
+import { ApplicantDetailsComponent } from './views/impexpdata_entry/applicant-details/applicant-details.component';
 
 
 const ngWizardConfig: NgWizardConfig = {
@@ -32,6 +33,7 @@ const ngWizardConfig: NgWizardConfig = {
   declarations: [ImportexportNavigationComponent,
     ImportexportLayoutComponent, DraftImportlicensedashComponent,
     PermitproductdetailsComponent, PermitgeneraldetailsComponent,
+    ApplicantDetailsComponent,
     ImportexportHeaderComponent,InitiateImportappComponent, DashboardComponent],
   imports: [
     CommonModule, ImportexportapplicationRoutingModule,

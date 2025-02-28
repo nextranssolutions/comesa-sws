@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
 import { SpinnerVisibilityService } from 'ng-http-loader';
-// import { NgxSmartModalService } from 'ngx-smart-modal';
 import { ToastrService } from 'ngx-toastr';
 import { ConfigurationsService } from 'src/app/core-services/configurations/configurations.service';
 import { ReportsService } from 'src/app/core-services/reports/reports.service';
@@ -82,7 +81,6 @@ export class SharedDmsComponent {
     public viewRef: ViewContainerRef,
     public translate: TranslateService,
     public utilityService: UtilityService,
-    // public modalService: NgxSmartModalService,
     public reportingAnalytics: ReportsService,
     public configService: ConfigurationsService,
   ) {

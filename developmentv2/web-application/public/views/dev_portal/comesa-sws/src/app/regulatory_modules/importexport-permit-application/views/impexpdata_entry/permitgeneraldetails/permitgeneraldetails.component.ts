@@ -50,6 +50,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
   permit_category_id: any;
   application_code: any;
   ispremisesSearchWinVisible: any;
+  transportModeData: any;
   countryData: any;
   invoiceTypeData: any;
   registered_premisesData: any = {};
@@ -107,30 +108,17 @@ select_registration_section_process: string;
   ngOnInit() {
 
     this.maxDate = new Date();
-    if (this.regulatory_subfunction_id == 78 || this.regulatory_subfunction_id == 81) {
-      this.is_licensepermit = true;
-      this.invoice_title = "Commercial Invoice";
-    } else if (this.regulatory_subfunction_id == 82) {
-      this.is_licensepermit = true;
-      this.invoice_title = "Commercial Invoice";
-      this.hide_visalicensedetails = true;
-      this.has_registred_outlet = false;
-      this.showreason_fornonregister_outlet = false;
-
-    } else {
-      this.is_licensepermit = false;
-      this.invoice_title = "Proforma Invoice";
-    }
+   
     let user_details = this.authService.getUserDetails();
 
     this.trader_id = user_details.trader_id;
     this.mistrader_id = user_details.mistrader_id;
 
 
-    // this.onLoadCountries();
     this.onLoadEligibleImportersData;
     // this.onLoadeligibleImportersDocTypes();
     this.onLoadconfirmDataParm();
+    this.onLoadmodeofTransportData();
     this.onLoadapplicationTypeData();
     this.onLoadportTypeData();
     this.onLoadpermitTypeData();
@@ -476,6 +464,28 @@ select_registration_section_process: string;
         });
   }
 
+  // 
+
+  onLoadmodeofTransportData() {
+    var data = {
+      table_name: 'par_mode_oftransport',
+      is_enabled: true,
+      
+    };
+
+    this.config.onLoadConfigurationData(data)
+      .subscribe(
+        data => {
+          this.data_record = data;
+
+          if (this.data_record.success) {
+            this.transportModeData = this.data_record.data;
+
+          }
+        });
+  }
+
+
   onLoadcountryData() {
     var data = {
       table_name: 'par_countries',
@@ -486,7 +496,6 @@ select_registration_section_process: string;
     this.config.onLoadConfigurationData(data)
       .subscribe(
         data => {
-          console.log(data.record);
           this.data_record = data;
 
           if (this.data_record.success) {
@@ -786,11 +795,11 @@ select_registration_section_process: string;
   }
   funcSelectReceiverSender(data) {
     if (this.checkifsenderreceiver) {
-      this.applicationGeneraldetailsfrm.get('sender_receiver_id')?.setValue(data.data.id);
-      this.applicationGeneraldetailsfrm.get('sender_receiver')?.setValue(data.data.name);
+      this.applicationGeneraldetailsfrm.get('importer_exporter_id')?.setValue(data.data.id);
+      this.applicationGeneraldetailsfrm.get('importer_exporter_name')?.setValue(data.data.name);
     } else {
-      this.applicationGeneraldetailsfrm.get('consignee_id')?.setValue(data.data.id);
-      this.applicationGeneraldetailsfrm.get('consignee_name')?.setValue(data.data.name);
+      this.applicationGeneraldetailsfrm.get('importer_exporter_id')?.setValue(data.data.id);
+      this.applicationGeneraldetailsfrm.get('importer_exporter_name')?.setValue(data.data.name);
     }
     this.issenderreceiverSearchWinVisible = false;
     this.isconsigneeSearchWinVisible = false;
@@ -798,18 +807,20 @@ select_registration_section_process: string;
 
   onLoadDistricts(region_id) {
     var data = {
-      table_name: ' par_districts',
+      table_name: 'par_districts',
       region_id: region_id
     };
     this.config.onLoadConfigurationData(data)
-      //.pipe(first())
-      .subscribe(
-        data => {
-          this.districts = data
-        },
-        error => {
-          return false;
-        });
+        .subscribe(
+          data => {
+            console.log(data.record);
+            this.data_record = data;
+  
+            if (this.data_record.success) {
+              this.districts = this.data_record.data;
+  
+            }
+          });
   }
   onRegionsCboSelect($event) {
 
@@ -819,53 +830,46 @@ select_registration_section_process: string;
   onLoadRegions(country_id) {
 
     var data = {
-      table_name: ' par_regions',
+      table_name: 'par_regions',
       country_id: country_id
     };
     this.config.onLoadConfigurationData(data)
-      //.pipe(first())
-      .subscribe(
-        data => {
-          this.regions = data;
-        },
-        error => {
-          return false
-        });
+    
+        .subscribe(
+          data => {
+            console.log(data.record);
+            this.data_record = data;
+  
+            if (this.data_record.success) {
+              this.regions = this.data_record.data;
+  
+            }
+          });
   }
 
   onCoutryCboSelect($event) {
-
+    if ($event.selectedItem) {
+      let country_data = $event.selectedItem,
+        country_code = '+' + country_data.phonecode;
+      this.permitReceiverSenderFrm.get('telephone_no')?.setValue(country_code);
+    }
 
     this.onLoadRegions($event.selectedItem.id);
 
   }
-  onLoadCountries() {
 
-    var data = {
-      table_name: ' par_countries',
-      // id: 36
-    };
-    this.config.onLoadConfigurationData(data)
-
-      .subscribe(
-        data => {
-          this.countries = data;
-        },
-        error => {
-          return false;
-        });
-  }
+ 
 
   onsavePermitReceiverSender() {
     this.spinner.show();
     let table_name;
     if (this.checkifsenderreceiver) {
-      table_name = 'txn_permitsenderreceiver_data';
+      table_name = 'tra_permitsenderreceiver_data';
     } else {
-      table_name = 'txn_consignee_data';
+      table_name = 'tra_consignee_data';
     }
     let name = this.permitReceiverSenderFrm.get('name')?.value;
-    this.appService.onAddPermitReceiverSender(table_name, this.permitReceiverSenderFrm.value)
+    this.appService.onAddPermitReceiverSender(table_name, this.permitReceiverSenderFrm.value, 'onSaveUniformApplicantDataset')
       .subscribe(
         response => {
           this.app_resp = response;
