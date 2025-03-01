@@ -29,30 +29,6 @@ import { HscodeInstitutionsComponent } from './views/hscode-institutional-inform
 import { HscodeinstitutionsConfigsetupComponent } from './views/hscode-institutional-information/hscodeinstitutions-configsetup/hscodeinstitutions-configsetup.component';
 import { SharedHscodeInstitutionsComponent } from './views/hscode-institutional-information/shared-hscode-institutions/shared-hscode-institutions.component';
 import { PermittypeConfigurationsComponent } from './views/permittype-configurations/permittype-configurations.component';
-<<<<<<< HEAD
-<<<<<<< HEAD
-import { ChecklistTypesComponent } from './views/permit_type_management_config/checklist-types/checklist-types.component';
-import { HscodeSeloptionComponent } from './views/permit_type_management_config/hscode-seloption/hscode-seloption.component';
-import { HscodemappingOptionComponent } from './views/permit_type_management_config/hscodemapping-option/hscodemapping-option.component';
-import { MappingStatusComponent } from './views/permit_type_management_config/mapping-status/mapping-status.component';
-import { PermitStatusesComponent } from './views/permit_type_management_config/permit-statuses/permit-statuses.component';
-import { PermitTemplateTypesComponent } from './views/permit_type_management_config/permit-template-types/permit-template-types.component';
-import { PermitTemplatesComponent } from './views/permit_type_management_config/permit-templates/permit-templates.component';
-import { PermitTypeManagementConfigsetupComponent } from './views/permit_type_management_config/permit-type-management-configsetup/permit-type-management-configsetup.component';
-import { QuotaLimitationstypeComponent } from './views/permit_type_management_config/quota-limitationstype/quota-limitationstype.component';
-import { RenewableStatusesComponent } from './views/permit_type_management_config/renewable-statuses/renewable-statuses.component';
-import { SharedPermitTypeManagementConfigComponent } from './views/permit_type_management_config/shared-permit-type-management-config/shared-permit-type-management-config.component';
-import { WorkflowStagesComponent } from './views/permit_type_management_config/workflow-stages/workflow-stages.component';
-import { ChecklistDefinationsComponent } from './views/permit_type_management_config/checklist-definations/checklist-definations.component';
-
-
-
-
-
-
-=======
-=======
->>>>>>> 415a18472ae21860fa7985e4fde35e92c6839f41
 import { HscodeRegistryproductsComponent } from './views/hscode-registryproducts/hscode-registryproducts.component';
 import { HscodesproductsRegistryComponent } from './views/hscodes-mapping/hscodesproducts-registry/hscodesproducts-registry.component';
 import { RestrictionsProhibitionsComponent } from './views/restrictions-prohibitions/restrictions-prohibitions.component';
@@ -65,64 +41,13 @@ import { ProcedureCategoriesComponent } from './views/trader_database_procedures
 import { ProcedureSubcategoriesComponent } from './views/trader_database_procedures/procedure-subcategories/procedure-subcategories.component';
 import { SharedTraderdbproceduresComponent } from './views/trader_database_procedures/shared-traderdbprocedures/shared-traderdbprocedures.component';
 import { TraderdbproceduresSetupComponent } from './views/trader_database_procedures/traderdbprocedures-setup/traderdbprocedures-setup.component';
-<<<<<<< HEAD
->>>>>>> daf3b3fee7de3c6c51f5ed78fd60f7c210682d37
-=======
->>>>>>> 415a18472ae21860fa7985e4fde35e92c6839f41
 
 const ngWizardConfig: NgWizardConfig = {
   theme: THEME.default
 };
 
 @NgModule({
-<<<<<<< HEAD
-<<<<<<< HEAD
-  declarations: [HscodemappingHeaderComponent, HscodemappingLayoutComponent, HscodemappingNavigationComponent,HscodechaptersDefinationComponent,
-    HscodesSectionsComponent,HscodesheadingDefinationsComponent,HscodesmappingConfigsetupComponent,HscodesproductsRegistryComponent,
-    HscodessubheadingDefinationComponent,HscodestariffDetailsComponent,SharedhscodesConfigurationsComponent,HscodeDashboardComponent,
-    HscodeInstitutionDepartmentsComponent,HscodeInstitutionsComponent,HscodeinstitutionsConfigsetupComponent,SharedHscodeInstitutionsComponent,PermittypeConfigurationsComponent,
-    ChecklistDefinationsComponent, ChecklistTypesComponent, HscodeSeloptionComponent, HscodemappingOptionComponent, MappingStatusComponent, PermitStatusesComponent, PermitTemplatesComponent,
-    PermitTypeManagementConfigsetupComponent, PermitTemplateTypesComponent, QuotaLimitationstypeComponent, RenewableStatusesComponent, SharedPermitTypeManagementConfigComponent, WorkflowStagesComponent],
-  imports: [
-     CommonModule,
-        SharedModuleModule,HscodeRoutingModule,RouterModule,  
-        NgWizardModule.forRoot(ngWizardConfig),
-        NgHttpLoaderModule, DxButtonModule, DxProgressBarModule,
-        FormsModule,
-        ReactiveFormsModule,
-        NgxCaptchaModule, DxLoadPanelModule,
-        DxPopupModule, DxDataGridModule, DxActionSheetModule, DxFileUploaderModule, DxNumberBoxModule, DxCheckBoxModule, DxSelectBoxModule, DxTextAreaModule, DxContextMenuModule, DxMenuModule, DxTagBoxModule,
-        DxDateBoxModule, DxTabPanelModule, DxFormModule, DxScrollViewModule,DxTreeListModule,
-        DxTextBoxModule,
-        DxDateBoxModule, DxDataGridModule,
-        HttpClientModule, DxValidatorModule,
-        NgxIntlTelInputModule, DxToolbarModule,
-        TranslateModule.forRoot({
-          loader: {
-            provide: TranslateLoader,
-            useFactory: httpTranslateLoader,
-            deps: [HttpClient]
-          }
-        }),
-        DxDataGridModule,
-        DxPopupModule, DxGalleryModule,
-        DxFileUploaderModule,
-        DxActionSheetModule,
-        DxFileUploaderModule, DxNumberBoxModule, DxCheckBoxModule, DxSelectBoxModule, DxTextAreaModule, DxContextMenuModule, DxMenuModule, DxScrollViewModule, DxTabPanelModule,
-        DxHtmlEditorModule,
-        DxDropDownBoxModule, DxTagBoxModule,
-        DxRadioGroupModule,
-        SafePipeModule,
-      ],
-  exports: [
-    HscodemappingHeaderComponent, HscodemappingLayoutComponent, HscodemappingNavigationComponent,HscodechaptersDefinationComponent,
-    HscodesSectionsComponent,HscodesheadingDefinationsComponent,HscodesmappingConfigsetupComponent,HscodesproductsRegistryComponent,
-    HscodessubheadingDefinationComponent, HscodestariffDetailsComponent, SharedhscodesConfigurationsComponent, HscodeDashboardComponent,
-    HscodeInstitutionDepartmentsComponent, HscodeInstitutionsComponent, HscodeinstitutionsConfigsetupComponent, SharedHscodeInstitutionsComponent,
-    PermittypeConfigurationsComponent, ChecklistDefinationsComponent, ChecklistTypesComponent, HscodeSeloptionComponent, HscodemappingOptionComponent, 
-    MappingStatusComponent, PermitStatusesComponent, PermitTemplatesComponent, PermitTypeManagementConfigsetupComponent, PermitTemplateTypesComponent, 
-    QuotaLimitationstypeComponent, RenewableStatusesComponent, SharedPermitTypeManagementConfigComponent, WorkflowStagesComponent]
-=======
+
   declarations: [HscodemappingHeaderComponent, HscodemappingLayoutComponent, HscodemappingNavigationComponent, HscodechaptersDefinationComponent,
     HscodesSectionsComponent, HscodesheadingDefinationsComponent, HscodesmappingConfigsetupComponent, HscodeRegistryproductsComponent, HscodesproductsRegistryComponent,
     HscodessubheadingDefinationComponent, HscodestariffDetailsComponent, SharedhscodesConfigurationsComponent, HscodeDashboardComponent,RestrictionsProhibitionsComponent,
@@ -131,16 +56,6 @@ const ngWizardConfig: NgWizardConfig = {
     ImportexportProceduredetailsComponent
   ],
   imports: [
-=======
-  declarations: [HscodemappingHeaderComponent, HscodemappingLayoutComponent, HscodemappingNavigationComponent, HscodechaptersDefinationComponent,
-    HscodesSectionsComponent, HscodesheadingDefinationsComponent, HscodesmappingConfigsetupComponent, HscodeRegistryproductsComponent, HscodesproductsRegistryComponent,
-    HscodessubheadingDefinationComponent, HscodestariffDetailsComponent, SharedhscodesConfigurationsComponent, HscodeDashboardComponent,RestrictionsProhibitionsComponent,
-    HscodeInstitutionDepartmentsComponent, HscodeInstitutionsComponent, HscodeinstitutionsConfigsetupComponent, SharedHscodeInstitutionsComponent, PermittypeConfigurationsComponent,ServiceDeliveryTimelineComponent,
-    ServiceTypesComponent,ServicedeliveryConfigsetupComponent,SharedServiceDeliveryComponent,TraderdbproceduresSetupComponent,SharedTraderdbproceduresComponent,ProcedureSubcategoriesComponent,ProcedureCategoriesComponent,
-    ImportexportProceduredetailsComponent
-  ],
-  imports: [
->>>>>>> 415a18472ae21860fa7985e4fde35e92c6839f41
     CommonModule,
     SharedModuleModule, HscodeRoutingModule, RouterModule,
     NgWizardModule.forRoot(ngWizardConfig),
@@ -171,11 +86,6 @@ const ngWizardConfig: NgWizardConfig = {
     DxRadioGroupModule,
     SafePipeModule,
   ]
-
-<<<<<<< HEAD
->>>>>>> daf3b3fee7de3c6c51f5ed78fd60f7c210682d37
-=======
->>>>>>> 415a18472ae21860fa7985e4fde35e92c6839f41
 })
 export class HscodeMappingModule {
 
