@@ -615,11 +615,6 @@ export class SharedImpexpApplicationClass {
     this.ngWizardService.theme(theme);
   }
 
-<<<<<<< HEAD
-  nextStep() {
-    this.ngWizardService.next();
-  }
-=======
   
 
   nextStep() {
@@ -638,7 +633,6 @@ export class SharedImpexpApplicationClass {
 
   
 
->>>>>>> 415a18472ae21860fa7985e4fde35e92c6839f41
 
   previousStep() {
     this.ngWizardService.previous();
