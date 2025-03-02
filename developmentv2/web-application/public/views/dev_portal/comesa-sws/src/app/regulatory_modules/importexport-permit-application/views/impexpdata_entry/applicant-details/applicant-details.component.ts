@@ -12,7 +12,6 @@ import { UserManagementService } from 'src/app/core-services/user-management/use
 
 @Component({
   selector: 'app-applicant-details',
-
   templateUrl: './applicant-details.component.html',
   styleUrl: './applicant-details.component.css'
 })

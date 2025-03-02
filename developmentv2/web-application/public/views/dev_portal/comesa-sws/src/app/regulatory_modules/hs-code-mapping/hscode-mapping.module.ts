@@ -47,6 +47,7 @@ const ngWizardConfig: NgWizardConfig = {
 };
 
 @NgModule({
+
   declarations: [HscodemappingHeaderComponent, HscodemappingLayoutComponent, HscodemappingNavigationComponent, HscodechaptersDefinationComponent,
     HscodesSectionsComponent, HscodesheadingDefinationsComponent, HscodesmappingConfigsetupComponent, HscodeRegistryproductsComponent, HscodesproductsRegistryComponent,
     HscodessubheadingDefinationComponent, HscodestariffDetailsComponent, SharedhscodesConfigurationsComponent, HscodeDashboardComponent,RestrictionsProhibitionsComponent,
@@ -85,7 +86,6 @@ const ngWizardConfig: NgWizardConfig = {
     DxRadioGroupModule,
     SafePipeModule,
   ]
-
 })
 export class HscodeMappingModule {
 
