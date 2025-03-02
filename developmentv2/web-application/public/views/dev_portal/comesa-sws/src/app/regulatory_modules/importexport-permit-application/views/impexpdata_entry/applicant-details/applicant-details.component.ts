@@ -19,6 +19,8 @@ import { UserManagementService } from 'src/app/core-services/user-management/use
 export class ApplicantDetailsComponent {
   @Input() applicantDetailsForm: FormGroup;
   @Input() userAccountFrm: FormGroup;
+  applicationGeneraldetailsfrm: FormGroup;
+
   countriesData: any;
   subcribe: any;
   traderAccountsDetailsData: any = {};
@@ -304,17 +306,17 @@ export class ApplicantDetailsComponent {
 
   funcSelectTraderDetails(data) {
     let record = data.data;
-    console.log('record', record);
-
+    this.applicantDetailsForm.get('id')?.setValue(record.id);
     this.applicantDetailsForm.get('applicant_name')?.setValue(record.applicant_name);
     this.applicantDetailsForm.get('region_name')?.setValue(record.region_name);
     this.applicantDetailsForm.get('district_name')?.setValue(record.district_name);
     this.applicantDetailsForm.get('email_address')?.setValue(record.email_address);
     this.applicantDetailsForm.get('country_id')?.setValue(record.country_id);
     this.applicantDetailsForm.get('region_id')?.setValue(record.region_id);
-    this.applicantDetailsForm.get('district_id')?.setValue(record.district_id);
     this.applicantDetailsForm.get('telephone_no')?.setValue(record.telephone_no);
+    this.applicantDetailsForm.get('district_id')?.setValue(record.district_id);
     this.applicantDetailsForm.get('physical_address')?.setValue(record.physical_address);
+    this.applicantDetailsForm.get('application_options_id')?.setValue(record.application_options_id);
 
     this.isRegistrantDetailsWinshow = false;
   }
@@ -363,6 +365,7 @@ export class ApplicantDetailsComponent {
         });
   }
 
+  applicant_id: any;
   onApplicationOptionChange(event: any) {
     const selectedId = event.value; // Get the selected option ID
     this.application_options_id = selectedId; // Store it for use in the template
@@ -389,16 +392,26 @@ export class ApplicantDetailsComponent {
 
     if (storedTraderData) {
       const traderData = JSON.parse(storedTraderData);
+      console.log(traderData);
 
       this.applicantDetailsForm.patchValue({
+        id: traderData.id,
         applicant_name: traderData.name,
         email_address: traderData.email_address,
         country_id: traderData.country_id,
         region_id: traderData.region_id,
         district_id: traderData.district_id,
         telephone_no: traderData.telephone_no,
-        physical_address: traderData.physical_address
+        physical_address: traderData.physical_address,
+        application_options_id: traderData.application_options_id
       });
+
+      this.applicationGeneraldetailsfrm.patchValue({
+        applicant_id: traderData.id,
+        application_options_id: traderData.application_options_id
+        
+      });
+      
     }
   }
 

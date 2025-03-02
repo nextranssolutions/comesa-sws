@@ -78,7 +78,7 @@ class ImportExportController extends Controller
         try {
             DB::beginTransaction();
             $application_id = $req->application_id;
-
+            $applicant_id = $req->applicant_id;
             $product_type_id = $req->product_type_id;
             $trader_initiator_id = $req->trader_id;
             $applicant_id = $req->trader_id;
@@ -105,7 +105,7 @@ class ImportExportController extends Controller
                 'applicant_application_code' => $req->applicant_application_code,
                 'regulatory_subfunction_id' => $req->regulatory_subfunction_id,
                 'application_id' => $application_id,
-               
+                'applicant_id' => $req->applicant_id,
                 'regulatory_function_id' => $regulatory_function_id,
                 'product_type_id' => $req->product_type_id,
                 'zone_id' => $req->zone_id,

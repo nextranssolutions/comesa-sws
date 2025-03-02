@@ -64,7 +64,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
   product_type_id: number;
   deviceTypeData: any;
   permitProductsCategoryData: any;
-
+  today: Date = new Date();
   proforma_currency_id: number;
   @Output() onProformaInvoiceEvent = new EventEmitter();
 
@@ -857,6 +857,8 @@ select_registration_section_process: string;
     this.onLoadRegions($event.selectedItem.id);
 
   }
+
+  
 
  
 
