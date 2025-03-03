@@ -298,9 +298,9 @@ export class ApplicantDetailsComponent {
           .catch(error => { throw 'Data Loading Error' });
 
       }
-    });
-
+    })
   }
+
 
 
   funcSelectTraderDetails(data) {
@@ -338,6 +338,26 @@ export class ApplicantDetailsComponent {
         this.toastr.error('Fill In All Mandatory fields with (*), missing value on ' + name.replace('_id', ''), 'Alert');
         return;
       }
+      this.spinner.show();
+      this.userservice.onsaveUserData(this.table_name, this.userAccountFrm.value, 'onsaveTraderData')
+        .subscribe(
+          response => {
+            this.response = response;
+            //the details 
+            if (this.response.success) {
+              this.onSearchConsignorName(1);
+              this.addPopupVisible = false;
+              this.toastr.success(this.response.message, 'Response');
+  
+            } else {
+              this.toastr.error(this.response.message, 'Alert');
+            }
+            this.spinner.hide();
+          },
+          error => {
+            this.toastr.error('Error Occurred', 'Alert');
+            this.spinner.hide();
+          });
     }
     if (this.userAccountFrm.invalid) {
       return;

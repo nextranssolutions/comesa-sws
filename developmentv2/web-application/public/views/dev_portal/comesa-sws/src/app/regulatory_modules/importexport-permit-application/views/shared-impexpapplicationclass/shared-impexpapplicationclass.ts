@@ -185,9 +185,9 @@ export class SharedImpexpApplicationClass {
 
     if (this.application_details) {
 
-
       this.regulatory_subfunction_id = this.application_details.regulatory_subfunction_id;
       this.process_title = this.application_details.process_title;
+      this.application_type_id = this.application_details.application_type_id;
       this.application_type_id = this.application_details.application_type_id;
 
       this.application_id = this.application_details.application_id;
@@ -286,6 +286,7 @@ export class SharedImpexpApplicationClass {
     this.app_route = this.funcREturnApplicationDashboardROute();
 
     this.router.navigate(this.app_route);
+    this.scrollToTop();
     this.scrollToTop();
   }
   funcREturnApplicationDashboardROute() {
@@ -629,6 +630,8 @@ export class SharedImpexpApplicationClass {
   previousStep() {
     this.ngWizardService.previous();
   }
-
+  nextStep() {
+    this.ngWizardService.next();
+  }
 
 }
