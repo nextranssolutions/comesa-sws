@@ -9,7 +9,6 @@ import { SpinnerVisibilityService } from 'ng-http-loader';
 import { DxDataGridComponent } from 'devextreme-angular';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { NgWizardConfig, NgWizardService, STEP_STATE, StepChangedArgs, THEME } from "ng-wizard";
-import { NgWizardConfig, NgWizardService, STEP_STATE, StepChangedArgs, THEME } from "ng-wizard";
 import { UtilityService } from 'src/app/core-services/utilities/utility.service';
 import { ImportExportService } from '../../services/import-export.service';
 import { AuthenticationService } from 'src/app/core-services/authentication/authentication.service';
@@ -68,7 +67,6 @@ export class SharedImpexpApplicationClass {
   appDocumentsUploadRequirement: any = {};
   appDocumentsVersionsUploadData: any = {};
   application_type_id: any;
-  application_type_id: any;
 
   application_details: any;
   status_id: number;
@@ -95,8 +93,6 @@ export class SharedImpexpApplicationClass {
   app_resp: any;
   consignee_options_id: number;
   consignee_options_check: boolean = true;
-  userAccountFrm: FormGroup;
-  applicantDetailsForm: FormGroup;
   userAccountFrm: FormGroup;
   applicantDetailsForm: FormGroup;
   isPermitproductsPopupVisible: boolean = false;
@@ -157,19 +153,12 @@ export class SharedImpexpApplicationClass {
   has_invoicegeneration: boolean;
   app_routing: any;
   form_fielddata: any;
-  form_fielddata: any;
   isprodnextdisable: boolean = true;
 
   filesToUpload: Array<File> = [];
   producttype_defination_id: number;
-<<<<<<< HEAD
-  constructor(public ngWizardService: NgWizardService, private configService:ConfigurationsService, public utilityService: UtilityService, public fb: FormBuilder, 
-  constructor(public ngWizardService: NgWizardService, private configService:ConfigurationsService, public utilityService: UtilityService, public fb: FormBuilder, 
-    public spinner: SpinnerVisibilityService, public appService: ImportExportService, public router: Router, 
-=======
   constructor(public ngWizardService: NgWizardService, private configService: ConfigurationsService, public utilityService: UtilityService, public fb: FormBuilder,
     public spinner: SpinnerVisibilityService, public appService: ImportExportService, public router: Router,
->>>>>>> 587b9122227c62257eb6c413d0e0c3b2bc074c97
     public formBuilder: FormBuilder, public toastr: ToastrService, public authService: AuthenticationService, public httpClient: HttpClient) {
     //form 
     let user = this.authService.getUserDetails();
@@ -195,29 +184,6 @@ export class SharedImpexpApplicationClass {
     }
 
     if (this.application_details) {
-<<<<<<< HEAD
-      
-    this.form_fielddata = this.application_details.application_form;
-    this.applicationGeneraldetailsfrm = this.formBuilder.group({});
-    
-
-    for (let form_field of this.form_fielddata) {
-      let field_name = form_field['field_name'];
-      if (form_field['is_mandatory'] == 1) {
-        this.applicationGeneraldetailsfrm.addControl(field_name, new FormControl('', Validators.compose([Validators.required])));
-
-      } else {
-        this.applicationGeneraldetailsfrm.addControl(field_name, new FormControl('', Validators.compose([])));
-
-      }
-
-    }
-    
-    if (this.application_details) {
-      
-=======
-
->>>>>>> 587b9122227c62257eb6c413d0e0c3b2bc074c97
 
       this.regulatory_subfunction_id = this.application_details.regulatory_subfunction_id;
       this.process_title = this.application_details.process_title;
@@ -228,15 +194,8 @@ export class SharedImpexpApplicationClass {
       this.tracking_no = this.application_details.tracking_no;
 
     }
-<<<<<<< HEAD
-  
-  
-  
-  
-=======
 
 
->>>>>>> 587b9122227c62257eb6c413d0e0c3b2bc074c97
 
     this.onApplicationSubmissionFrm = new FormGroup({
       paying_currency_id: new FormControl('', Validators.compose([])),
@@ -279,15 +238,8 @@ export class SharedImpexpApplicationClass {
       id: null,
       description: [null]
     });
-<<<<<<< HEAD
-    
-    
-    
-    
-=======
 
 
->>>>>>> 587b9122227c62257eb6c413d0e0c3b2bc074c97
     this.import_typecategory_visible = true;
 
 
@@ -396,14 +348,9 @@ export class SharedImpexpApplicationClass {
     }
     return input;
   }
-<<<<<<< HEAD
-  
-  
-=======
 
 
 
->>>>>>> 587b9122227c62257eb6c413d0e0c3b2bc074c97
 
   onSaveImportExportApplication() {
 
@@ -430,11 +377,6 @@ export class SharedImpexpApplicationClass {
     this.applicationGeneraldetailsfrm.value['application_options_id'] = application_options_id;
     
     this.applicationGeneraldetailsfrm.value['regulatory_subfunction_id'] = this.regulatory_subfunction_id;
-<<<<<<< HEAD
-    console.log(this.applicationGeneraldetailsfrm.value);
-    console.log(this.applicationGeneraldetailsfrm.value);
-=======
->>>>>>> 587b9122227c62257eb6c413d0e0c3b2bc074c97
     this.spinner.show();
     this.appService.onSavePermitApplication(this.applicationGeneraldetailsfrm.value, uploadData, 'saveImportExportApplication')
       .subscribe(
@@ -683,17 +625,15 @@ export class SharedImpexpApplicationClass {
     this.ngWizardService.theme(theme);
   }
 
-<<<<<<< HEAD
-  nextStep() {
-=======
   nextTab() {
->>>>>>> 587b9122227c62257eb6c413d0e0c3b2bc074c97
     this.ngWizardService.next();
   }
 
   previousStep() {
     this.ngWizardService.previous();
   }
-
+  nextStep() {
+    this.ngWizardService.next();
+  }
 
 }
