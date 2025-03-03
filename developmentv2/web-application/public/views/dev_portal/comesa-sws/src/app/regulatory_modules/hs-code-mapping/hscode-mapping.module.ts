@@ -71,6 +71,7 @@ const ngWizardConfig: NgWizardConfig = {
 
 @NgModule({
 <<<<<<< HEAD
+<<<<<<< HEAD
   declarations: [HscodemappingHeaderComponent, HscodemappingLayoutComponent, HscodemappingNavigationComponent,HscodechaptersDefinationComponent,
     HscodesSectionsComponent,HscodesheadingDefinationsComponent,HscodesmappingConfigsetupComponent,HscodesproductsRegistryComponent,
     HscodessubheadingDefinationComponent,HscodestariffDetailsComponent,SharedhscodesConfigurationsComponent,HscodeDashboardComponent,
@@ -117,6 +118,9 @@ const ngWizardConfig: NgWizardConfig = {
     MappingStatusComponent, PermitStatusesComponent, PermitTemplatesComponent, PermitTypeManagementConfigsetupComponent, PermitTemplateTypesComponent, 
     QuotaLimitationstypeComponent, RenewableStatusesComponent, SharedPermitTypeManagementConfigComponent, WorkflowStagesComponent]
 =======
+=======
+
+>>>>>>> 587b9122227c62257eb6c413d0e0c3b2bc074c97
   declarations: [HscodemappingHeaderComponent, HscodemappingLayoutComponent, HscodemappingNavigationComponent, HscodechaptersDefinationComponent,
     HscodesSectionsComponent, HscodesheadingDefinationsComponent, HscodesmappingConfigsetupComponent, HscodeRegistryproductsComponent, HscodesproductsRegistryComponent,
     HscodessubheadingDefinationComponent, HscodestariffDetailsComponent, SharedhscodesConfigurationsComponent, HscodeDashboardComponent,RestrictionsProhibitionsComponent,
@@ -155,8 +159,11 @@ const ngWizardConfig: NgWizardConfig = {
     DxRadioGroupModule,
     SafePipeModule,
   ]
+<<<<<<< HEAD
 
 >>>>>>> daf3b3fee7de3c6c51f5ed78fd60f7c210682d37
+=======
+>>>>>>> 587b9122227c62257eb6c413d0e0c3b2bc074c97
 })
 export class HscodeMappingModule {
 
