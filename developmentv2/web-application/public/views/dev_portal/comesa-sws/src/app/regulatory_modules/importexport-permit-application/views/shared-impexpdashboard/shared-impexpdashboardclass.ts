@@ -141,13 +141,13 @@ export class SharedImpExpdashboardClass {
   }
 
   onInitiatenewImportExpApplications() {
-    this.onClickSubModuleAppSelection(1, 'New Import Application')
-    this.app_route = ['./importexport-control/initiate-importapp'];
+    // this.onClickSubModuleAppSelection(1, 'New Import Application')
+    this.app_route = ['./importexport-permit-application/initiate-importapp'];
 
-    // this.router.navigate(this.app_route);
+    this.router.navigate(this.app_route);
   }
 
-  //is_approvedVisaPermit
+
 
   onClickSubModuleAppSelection(regulatory_subfunction_id, sub_module_name) {
 
@@ -204,8 +204,9 @@ export class SharedImpExpdashboardClass {
           this.spinner.hide();
           if (data.success) {
             this.processData = data.data.process_infor;
-
-            // this.title = this.processingData.field_name;
+            
+           
+            
        
             this.router_link = this.processData.router_link;
             // this.productsapp_details = { regulatory_function_id: this.regulatory_function_id, prodclass_category_id: this.prodclass_category_id, process_title: this.title, regulatory_subfunction_id: this.regulatory_subfunction_id, product_type_id: this.product_type_id, status_id: 1, status_name: 'New', form_fields: this.processData.form_fields, appsubmissions_type_id: appsubmissions_type_id };
