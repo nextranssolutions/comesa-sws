@@ -76,7 +76,7 @@ export class PremisesBusinessoperationsComponent {
   }
   onLoadproductCategoryData(regulated_productstype_id) {
     var data = {
-      table_name: 'cfg_product_categories',
+      table_name: 'par_product_categories',
       regulated_productstype_id: regulated_productstype_id
     };
     this.config.onLoadConfigurationData(data)

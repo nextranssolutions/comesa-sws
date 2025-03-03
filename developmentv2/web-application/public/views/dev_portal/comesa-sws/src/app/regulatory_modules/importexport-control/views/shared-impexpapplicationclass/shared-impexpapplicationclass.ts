@@ -35,6 +35,7 @@ export class SharedImpexpApplicationClass {
   applicant_id: number;
   product_resp: any; confirmDataParam: any;
   applicationGeneraldetailsfrm: FormGroup;
+  permitReceiverSenderFrm: FormGroup;
   applicantDetailsForm: FormGroup;
   documentUploadfrm: FormGroup;
   permitProductsFrm: FormGroup;
@@ -109,8 +110,6 @@ export class SharedImpexpApplicationClass {
   issenderreceiverSearchWinVisible: boolean = false;
   issenderreceiverAddWinVisible: boolean = false;
   registered_premisesData: any = {};
-  permitReceiverSenderFrm: FormGroup;
-  productGeneraldetailsfrm: FormGroup;
 
   consignee_sendertitle: string;
   checkifsenderreceiver: boolean;
@@ -146,10 +145,12 @@ export class SharedImpexpApplicationClass {
   is_regulatedproducts: boolean = false;
   proforma_currency_id: number;
   isInitalQueryResponseFrmVisible: boolean = false;
-  initqueryresponsefrm: FormGroup;
+  
   applicationPreckingQueriesData: any;
   query_sectioncheck: string;
   onApplicationSubmissionFrm: FormGroup;
+  productGeneraldetailsfrm: FormGroup;
+  initqueryresponsefrm: FormGroup;
   userAccountFrm: FormGroup;
   permitProductsCategoryData: any;
   has_invoicegeneration: boolean;
@@ -210,6 +211,21 @@ export class SharedImpexpApplicationClass {
       this.applicationGeneraldetailsfrm = this.formBuilder.group({});
       this.applicantDetailsForm = this.formBuilder.group({});
     }
+    this.permitReceiverSenderFrm = new FormGroup({
+      name: new FormControl('', Validators.compose([Validators.required])),
+      country_id: new FormControl('', Validators.compose([Validators.required])),
+      region_id: new FormControl('', Validators.compose([])),
+      district_id: new FormControl('', Validators.compose([])),
+      email_address: new FormControl('', Validators.compose([Validators.required])),
+      postal_address: new FormControl('', Validators.compose([])),
+      telephone_no: new FormControl('', Validators.compose([])),
+      mobile_no: new FormControl('', Validators.compose([])),
+      physical_address: new FormControl('', Validators.compose([Validators.required])),
+      tin_no: new FormControl('', Validators.compose([]))
+    });
+   
+ 
+
     this.userAccountFrm = new FormGroup({
       id: new FormControl(Validators.compose([])),
       last_login_time: new FormControl('', Validators.compose([])),
@@ -271,6 +287,60 @@ export class SharedImpexpApplicationClass {
       tin_no: new FormControl('', Validators.compose([]))
     });
 
+    this.permitProductsFrm = new FormGroup({
+      brand_name: new FormControl('', Validators.compose([Validators.required])),
+      product_name: new FormControl('', Validators.compose([])),
+      product_category_id: new FormControl('', Validators.compose([])),
+      regulated_product_category: new FormControl('', Validators.compose([])),
+      regulated_productcategory_id: new FormControl('', Validators.compose([])),
+      unit_of_measure: new FormControl('', Validators.compose([])),
+      unit_of_measure_id: new FormControl('', Validators.compose([])),
+      country_of_origin_id: new FormControl('', Validators.compose([])),
+      permit_product_purposes_id: new FormControl('', Validators.compose([])),
+      weight_unit_id: new FormControl('', Validators.compose([])),
+      product_value: new FormControl('', Validators.compose([])),
+      consignment_id: new FormControl('', Validators.compose([])),
+      product_batch_no: new FormControl('', Validators.compose([])),
+      batch_number: new FormControl('', Validators.compose([])),
+      product_strength: new FormControl('', Validators.compose([])),
+      product_manufacturing_date: new FormControl('', Validators.compose([])),
+      manufacturing_date: new FormControl('', Validators.compose([])),
+      product_expiry_date: new FormControl('', Validators.compose([])),
+      expiry_date: new FormControl('', Validators.compose([])),
+      storage_condition: new FormControl('', Validators.compose([])),
+      country_oforigin_id: new FormControl('', Validators.compose([])),
+      country_id: new FormControl('', Validators.compose([])),
+      region_id: new FormControl('', Validators.compose([])),
+      unit_price: new FormControl(this.quantity, Validators.compose([])),
+      currency_id: new FormControl('', Validators.compose([Validators.required])),
+      packaging_unit_id: new FormControl('', Validators.compose([])),
+      quantity: new FormControl(this.quantity, Validators.compose([])),
+      laboratory_no: new FormControl('', Validators.compose([])),
+      regulated_prodpermit_id: new FormControl('', Validators.compose([])),
+      prodcertificate_no: new FormControl('', Validators.compose([])),
+      product_id: new FormControl('', Validators.compose([])),
+      unitpack_unit_id: new FormControl('', Validators.compose([])),
+      unitpack_size: new FormControl('', Validators.compose([])),
+      visa_quantity: new FormControl('', Validators.compose([])),
+      total_weight: new FormControl('', Validators.compose([])),
+      weights_units_id: new FormControl('', Validators.compose([])),
+      id: new FormControl('', Validators.compose([])),
+      device_type_id: new FormControl('', Validators.compose([])),
+      is_regulated_product: new FormControl('', Validators.compose([])),
+      productphysical_description: new FormControl('', Validators.compose([])),
+      common_name_id: new FormControl('', Validators.compose([])),
+      manufacturer_id: new FormControl('', Validators.compose([])),
+      manufacturer_name: new FormControl('', Validators.compose([])),
+      product_subcategory_id: new FormControl('', Validators.compose([])),
+      productclassification_id: new FormControl('', Validators.compose([])),
+      productdosage_id: new FormControl('', Validators.compose([])),
+      // consignment_quantity: new FormControl('', Validators.compose([Validators.required])),
+      approvedvisa_product_id: new FormControl('', Validators.compose([])),
+      approvedlicense_product_id: new FormControl('', Validators.compose([])),
+      licensebalance_quantity: new FormControl('', Validators.compose([])),
+      product_packaging: new FormControl('', Validators.compose([])),
+    });
+
     this.documentUploadfrm = this.fb.group({
       file: null,
       document_requirement_id: [null, Validators.required],
@@ -278,189 +348,200 @@ export class SharedImpexpApplicationClass {
       id: null,
       description: [null]
     });
-    if (this.regulatory_subfunction_id == 49 || this.regulatory_subfunction_id == 84) {
-      this.permitProductsFrm = this.fb.group({
-        brand_name: new FormControl('', Validators.compose([Validators.required])),
-        product_category_id: new FormControl('', Validators.compose([])),
-        product_batch_no: new FormControl('', Validators.compose([])),
-        product_strength: new FormControl('', Validators.compose([])),
-        product_manufacturing_date: new FormControl('', Validators.compose([])),
-        product_expiry_date: new FormControl('', Validators.compose([])),
-        country_oforigin_id: new FormControl('', Validators.compose([])),
-        unit_price: new FormControl(this.quantity, Validators.compose([])),
-        currency_id: new FormControl('', Validators.compose([Validators.required])),
-        packaging_unit_id: new FormControl('', Validators.compose([])),
-        quantity: new FormControl(this.quantity, Validators.compose([])),
-        laboratory_no: new FormControl('', Validators.compose([])),
-        regulated_prodpermit_id: new FormControl('', Validators.compose([])),
-        prodcertificate_no: new FormControl('', Validators.compose([])),
-        product_id: new FormControl('', Validators.compose([])),
-        unitpack_unit_id: new FormControl('', Validators.compose([])),
-        unitpack_size: new FormControl('', Validators.compose([])),
-        visa_quantity: new FormControl('', Validators.compose([])),
-        total_weight: new FormControl('', Validators.compose([])),
-        weights_units_id: new FormControl('', Validators.compose([])),
-        id: new FormControl('', Validators.compose([])),
-        device_type_id: new FormControl('', Validators.compose([])),
-        is_regulated_product: new FormControl('', Validators.compose([])),
-        productphysical_description: new FormControl('', Validators.compose([])),
-        common_name_id: new FormControl('', Validators.compose([])),
-        manufacturer_id: new FormControl('', Validators.compose([])),
-        manufacturer_name: new FormControl('', Validators.compose([])),
-        product_subcategory_id: new FormControl('', Validators.compose([])),
-        productclassification_id: new FormControl('', Validators.compose([])),
-        productdosage_id: new FormControl('', Validators.compose([])),
-        consignment_quantity: new FormControl('', Validators.compose([Validators.required])),
-        approvedvisa_product_id: new FormControl('', Validators.compose([])),
-        approvedlicense_product_id: new FormControl('', Validators.compose([])),
-        licensebalance_quantity: new FormControl('', Validators.compose([])),
-        certificate_of_conformity: null,
-
-      });
-
-
-    } else if (this.regulatory_subfunction_id == 83) {
-      if (this.producttype_defination_id == 2) {
-        this.permitProductsFrm = this.fb.group({
-          brand_name: new FormControl('', Validators.compose([Validators.required])),
-          product_category_id: new FormControl('', Validators.compose([])),
-          product_batch_no: new FormControl('', Validators.compose([])),
-          product_strength: new FormControl('', Validators.compose([])),
-          product_manufacturing_date: new FormControl('', Validators.compose([])),
-          product_expiry_date: new FormControl('', Validators.compose([])),
-          country_oforigin_id: new FormControl('', Validators.compose([Validators.required])),
-          unit_price: new FormControl(this.quantity, Validators.compose([Validators.required])),
-          currency_id: new FormControl('', Validators.compose([Validators.required])),
-          packaging_unit_id: new FormControl('', Validators.compose([])),
-          quantity: new FormControl(this.quantity, Validators.compose([Validators.required])),
-          laboratory_no: new FormControl('', Validators.compose([])),
-          regulated_prodpermit_id: new FormControl('', Validators.compose([])),
-          prodcertificate_no: new FormControl('', Validators.compose([])),
-          product_id: new FormControl('', Validators.compose([])),
-          unitpack_unit_id: new FormControl('', Validators.compose([])),
-          unitpack_size: new FormControl('', Validators.compose([Validators.required])),
-          visa_quantity: new FormControl('', Validators.compose([])),
-          total_weight: new FormControl('', Validators.compose([])),
-          weights_units_id: new FormControl('', Validators.compose([])),
-          id: new FormControl('', Validators.compose([])),
-          device_type_id: new FormControl('', Validators.compose([])),
-          is_regulated_product: new FormControl('', Validators.compose([])),
-          productphysical_description: new FormControl('', Validators.compose([])),
-          common_name_id: new FormControl('', Validators.compose([])),
-          manufacturer_id: new FormControl('', Validators.compose([])),
-          manufacturer_name: new FormControl('', Validators.compose([Validators.required])),
-          product_subcategory_id: new FormControl('', Validators.compose([])),
-          productclassification_id: new FormControl('', Validators.compose([])),
-          productdosage_id: new FormControl('', Validators.compose([])),
-          consignment_quantity: new FormControl('', Validators.compose([])),
-          approvedvisa_product_id: new FormControl('', Validators.compose([])),
-          approvedlicense_product_id: new FormControl('', Validators.compose([])),
-          licensebalance_quantity: new FormControl('', Validators.compose([])),
-          dosage_form_id: new FormControl('', Validators.compose([])),
-          certificate_of_conformity: null
-        });
+    // if (this.regulatory_subfunction_id == 49 || this.regulatory_subfunction_id == 84) {
+    //   this.permitProductsFrm = this.fb.group({
+    //     brand_name: new FormControl('', Validators.compose([Validators.required])),
+    //     product_name: new FormControl('', Validators.compose([])),
+    //     product_category_id: new FormControl('', Validators.compose([])),
+    //     regulated_product_category: new FormControl('', Validators.compose([])),
+    //     regulated_productcategory_id: new FormControl('', Validators.compose([])),
+    //     unit_of_measure: new FormControl('', Validators.compose([])),
+    //     product_value: new FormControl('', Validators.compose([])),
+    //     consignment_id: new FormControl('', Validators.compose([])),
+    //     product_batch_no: new FormControl('', Validators.compose([])),
+    //     batch_number: new FormControl('', Validators.compose([])),
+    //     product_strength: new FormControl('', Validators.compose([])),
+    //     product_manufacturing_date: new FormControl('', Validators.compose([])),
+    //     manufacturing_date: new FormControl('', Validators.compose([])),
+    //     product_expiry_date: new FormControl('', Validators.compose([])),
+    //     expiry_date: new FormControl('', Validators.compose([])),
+    //     storage_condition: new FormControl('', Validators.compose([])),
+    //     country_oforigin_id: new FormControl('', Validators.compose([])),
+    //     country_id: new FormControl('', Validators.compose([])),
+    //     unit_price: new FormControl(this.quantity, Validators.compose([])),
+    //     currency_id: new FormControl('', Validators.compose([Validators.required])),
+    //     packaging_unit_id: new FormControl('', Validators.compose([])),
+    //     quantity: new FormControl(this.quantity, Validators.compose([])),
+    //     laboratory_no: new FormControl('', Validators.compose([])),
+    //     regulated_prodpermit_id: new FormControl('', Validators.compose([])),
+    //     prodcertificate_no: new FormControl('', Validators.compose([])),
+    //     product_id: new FormControl('', Validators.compose([])),
+    //     unitpack_unit_id: new FormControl('', Validators.compose([])),
+    //     unitpack_size: new FormControl('', Validators.compose([])),
+    //     visa_quantity: new FormControl('', Validators.compose([])),
+    //     total_weight: new FormControl('', Validators.compose([])),
+    //     weights_units_id: new FormControl('', Validators.compose([])),
+    //     id: new FormControl('', Validators.compose([])),
+    //     device_type_id: new FormControl('', Validators.compose([])),
+    //     is_regulated_product: new FormControl('', Validators.compose([])),
+    //     productphysical_description: new FormControl('', Validators.compose([])),
+    //     common_name_id: new FormControl('', Validators.compose([])),
+    //     manufacturer_id: new FormControl('', Validators.compose([])),
+    //     manufacturer_name: new FormControl('', Validators.compose([])),
+    //     product_subcategory_id: new FormControl('', Validators.compose([])),
+    //     productclassification_id: new FormControl('', Validators.compose([])),
+    //     productdosage_id: new FormControl('', Validators.compose([])),
+    //     consignment_quantity: new FormControl('', Validators.compose([Validators.required])),
+    //     approvedvisa_product_id: new FormControl('', Validators.compose([])),
+    //     approvedlicense_product_id: new FormControl('', Validators.compose([])),
+    //     licensebalance_quantity: new FormControl('', Validators.compose([])),
+    //     certificate_of_conformity: null,
+    //   });
 
 
-      }
-      else {
-
-        this.permitProductsFrm = this.fb.group({
-          brand_name: new FormControl('', Validators.compose([Validators.required])),
-          product_category_id: new FormControl('', Validators.compose([])),
-          product_batch_no: new FormControl('', Validators.compose([])),
-          product_strength: new FormControl('', Validators.compose([Validators.required])),
-          product_manufacturing_date: new FormControl('', Validators.compose([])),
-          product_expiry_date: new FormControl('', Validators.compose([])),
-          country_oforigin_id: new FormControl('', Validators.compose([Validators.required])),
-          unit_price: new FormControl(this.quantity, Validators.compose([Validators.required])),
-          currency_id: new FormControl('', Validators.compose([Validators.required])),
-          packaging_unit_id: new FormControl('', Validators.compose([])),
-          quantity: new FormControl(this.quantity, Validators.compose([Validators.required])),
-          laboratory_no: new FormControl('', Validators.compose([])),
-          regulated_prodpermit_id: new FormControl('', Validators.compose([])),
-          prodcertificate_no: new FormControl('', Validators.compose([])),
-          product_id: new FormControl('', Validators.compose([])),
-          unitpack_unit_id: new FormControl('', Validators.compose([])),
-          unitpack_size: new FormControl('', Validators.compose([Validators.required])),
-          visa_quantity: new FormControl('', Validators.compose([])),
-          total_weight: new FormControl('', Validators.compose([])),
-          weights_units_id: new FormControl('', Validators.compose([])),
-          id: new FormControl('', Validators.compose([])),
-          device_type_id: new FormControl('', Validators.compose([])),
-          is_regulated_product: new FormControl('', Validators.compose([])),
-          productphysical_description: new FormControl('', Validators.compose([])),
-          common_name_id: new FormControl('', Validators.compose([Validators.required])),
-          manufacturer_id: new FormControl('', Validators.compose([])),
-          manufacturer_name: new FormControl('', Validators.compose([Validators.required])),
-          product_subcategory_id: new FormControl('', Validators.compose([])),
-          productclassification_id: new FormControl('', Validators.compose([Validators.required])),
-          productdosage_id: new FormControl('', Validators.compose([])),
-          consignment_quantity: new FormControl('', Validators.compose([])),
-          approvedvisa_product_id: new FormControl('', Validators.compose([])),
-          approvedlicense_product_id: new FormControl('', Validators.compose([])),
-          licensebalance_quantity: new FormControl('', Validators.compose([])),
-          dosage_form_id: new FormControl('', Validators.compose([Validators.required])),
-          certificate_of_conformity: null
-        });
-
-
-      }
+    // } 
+    // else if (this.regulatory_subfunction_id == 83) {
+    //   if (this.producttype_defination_id == 2) {
+    //     this.permitProductsFrm = this.fb.group({
+    //       brand_name: new FormControl('', Validators.compose([Validators.required])),
+    //       product_category_id: new FormControl('', Validators.compose([])),
+    //       product_batch_no: new FormControl('', Validators.compose([])),
+    //       product_strength: new FormControl('', Validators.compose([])),
+    //       product_manufacturing_date: new FormControl('', Validators.compose([])),
+    //       product_expiry_date: new FormControl('', Validators.compose([])),
+    //       country_oforigin_id: new FormControl('', Validators.compose([Validators.required])),
+    //       unit_price: new FormControl(this.quantity, Validators.compose([Validators.required])),
+    //       currency_id: new FormControl('', Validators.compose([Validators.required])),
+    //       packaging_unit_id: new FormControl('', Validators.compose([])),
+    //       quantity: new FormControl(this.quantity, Validators.compose([Validators.required])),
+    //       laboratory_no: new FormControl('', Validators.compose([])),
+    //       regulated_prodpermit_id: new FormControl('', Validators.compose([])),
+    //       prodcertificate_no: new FormControl('', Validators.compose([])),
+    //       product_id: new FormControl('', Validators.compose([])),
+    //       unitpack_unit_id: new FormControl('', Validators.compose([])),
+    //       unitpack_size: new FormControl('', Validators.compose([Validators.required])),
+    //       visa_quantity: new FormControl('', Validators.compose([])),
+    //       total_weight: new FormControl('', Validators.compose([])),
+    //       weights_units_id: new FormControl('', Validators.compose([])),
+    //       id: new FormControl('', Validators.compose([])),
+    //       device_type_id: new FormControl('', Validators.compose([])),
+    //       is_regulated_product: new FormControl('', Validators.compose([])),
+    //       productphysical_description: new FormControl('', Validators.compose([])),
+    //       common_name_id: new FormControl('', Validators.compose([])),
+    //       manufacturer_id: new FormControl('', Validators.compose([])),
+    //       manufacturer_name: new FormControl('', Validators.compose([Validators.required])),
+    //       product_subcategory_id: new FormControl('', Validators.compose([])),
+    //       productclassification_id: new FormControl('', Validators.compose([])),
+    //       productdosage_id: new FormControl('', Validators.compose([])),
+    //       consignment_quantity: new FormControl('', Validators.compose([])),
+    //       approvedvisa_product_id: new FormControl('', Validators.compose([])),
+    //       approvedlicense_product_id: new FormControl('', Validators.compose([])),
+    //       licensebalance_quantity: new FormControl('', Validators.compose([])),
+    //       dosage_form_id: new FormControl('', Validators.compose([])),
+    //       certificate_of_conformity: null
+    //     });
 
 
+    //   }
+    //   else {
 
-    }
-    else {
-      this.permitProductsFrm = this.fb.group({
-        brand_name: new FormControl('', Validators.compose([Validators.required])),
-        product_category_id: new FormControl('', Validators.compose([])),
-        product_batch_no: new FormControl('', Validators.compose([])),
-        product_strength: new FormControl('', Validators.compose([])),
-        product_manufacturing_date: new FormControl('', Validators.compose([])),
-        product_expiry_date: new FormControl('', Validators.compose([])),
-        country_oforigin_id: new FormControl('', Validators.compose([Validators.required])),
-        unit_price: new FormControl(this.quantity, Validators.compose([Validators.required])),
-        currency_id: new FormControl('', Validators.compose([Validators.required])),
-        packaging_unit_id: new FormControl('', Validators.compose([Validators.required])),
-        quantity: new FormControl(this.quantity, Validators.compose([Validators.required])),
-        laboratory_no: new FormControl('', Validators.compose([])),
-        regulated_prodpermit_id: new FormControl('', Validators.compose([])),
-        prodcertificate_no: new FormControl('', Validators.compose([])),
-        product_id: new FormControl('', Validators.compose([])),
-        unitpack_unit_id: new FormControl('', Validators.compose([])),
-        unitpack_size: new FormControl('', Validators.compose([])),
-        visa_quantity: new FormControl('', Validators.compose([])),
-        total_weight: new FormControl('', Validators.compose([])),
-        weights_units_id: new FormControl('', Validators.compose([])),
-        id: new FormControl('', Validators.compose([])),
-        device_type_id: new FormControl('', Validators.compose([])),
-        is_regulated_product: new FormControl('', Validators.compose([])),
-        productphysical_description: new FormControl('', Validators.compose([])),
-        common_name_id: new FormControl('', Validators.compose([])),
-        manufacturer_id: new FormControl('', Validators.compose([])),
-        manufacturer_name: new FormControl('', Validators.compose([Validators.required])),
-        product_subcategory_id: new FormControl('', Validators.compose([])),
-        productclassification_id: new FormControl('', Validators.compose([])),
-        productdosage_id: new FormControl('', Validators.compose([])),
-        consignment_quantity: new FormControl('', Validators.compose([])),
-        approvedvisa_product_id: new FormControl('', Validators.compose([])),
-        approvedlicense_product_id: new FormControl('', Validators.compose([])),
-        licensebalance_quantity: new FormControl('', Validators.compose([])),
-        dosage_form_id: new FormControl('', Validators.compose([])),
-        certificate_of_conformity: null
-      });
-      if (this.regulated_productstype_id == 2 || this.regulated_productstype_id == 7) {
-        this.permitProductsFrm.addControl('dosage_form_id', new FormControl('', Validators.required));
-      }
-      if (this.regulated_productstype_id != 4 && this.regulated_productstype_id != 18) {
-        this.permitProductsFrm.addControl('product_batch_no', new FormControl('', Validators.required));
-      }
-      if (this.regulatory_subfunction_id != 12 && this.regulatory_subfunction_id != 83) {
-        //  this.permitProductsFrm.addControl('product_batch_no',new FormControl('', Validators.required));
-      }
-    }
-    if ((this.regulated_productstype_id == 2 || this.regulated_productstype_id == 7)) {
-      this.permitProductsFrm.addControl('common_name_id', new FormControl('', Validators.required));
-    }
+    //     this.permitProductsFrm = this.fb.group({
+    //       brand_name: new FormControl('', Validators.compose([Validators.required])),
+    //       product_category_id: new FormControl('', Validators.compose([])),
+    //       product_batch_no: new FormControl('', Validators.compose([])),
+    //       product_strength: new FormControl('', Validators.compose([Validators.required])),
+    //       product_manufacturing_date: new FormControl('', Validators.compose([])),
+    //       product_expiry_date: new FormControl('', Validators.compose([])),
+    //       country_oforigin_id: new FormControl('', Validators.compose([Validators.required])),
+    //       unit_price: new FormControl(this.quantity, Validators.compose([Validators.required])),
+    //       currency_id: new FormControl('', Validators.compose([Validators.required])),
+    //       packaging_unit_id: new FormControl('', Validators.compose([])),
+    //       quantity: new FormControl(this.quantity, Validators.compose([Validators.required])),
+    //       laboratory_no: new FormControl('', Validators.compose([])),
+    //       regulated_prodpermit_id: new FormControl('', Validators.compose([])),
+    //       prodcertificate_no: new FormControl('', Validators.compose([])),
+    //       product_id: new FormControl('', Validators.compose([])),
+    //       unitpack_unit_id: new FormControl('', Validators.compose([])),
+    //       unitpack_size: new FormControl('', Validators.compose([Validators.required])),
+    //       visa_quantity: new FormControl('', Validators.compose([])),
+    //       total_weight: new FormControl('', Validators.compose([])),
+    //       weights_units_id: new FormControl('', Validators.compose([])),
+    //       id: new FormControl('', Validators.compose([])),
+    //       device_type_id: new FormControl('', Validators.compose([])),
+    //       is_regulated_product: new FormControl('', Validators.compose([])),
+    //       productphysical_description: new FormControl('', Validators.compose([])),
+    //       common_name_id: new FormControl('', Validators.compose([Validators.required])),
+    //       manufacturer_id: new FormControl('', Validators.compose([])),
+    //       manufacturer_name: new FormControl('', Validators.compose([Validators.required])),
+    //       product_subcategory_id: new FormControl('', Validators.compose([])),
+    //       productclassification_id: new FormControl('', Validators.compose([Validators.required])),
+    //       productdosage_id: new FormControl('', Validators.compose([])),
+    //       consignment_quantity: new FormControl('', Validators.compose([])),
+    //       approvedvisa_product_id: new FormControl('', Validators.compose([])),
+    //       approvedlicense_product_id: new FormControl('', Validators.compose([])),
+    //       licensebalance_quantity: new FormControl('', Validators.compose([])),
+    //       dosage_form_id: new FormControl('', Validators.compose([Validators.required])),
+    //       certificate_of_conformity: null
+    //     });
+
+
+    //   }
+
+
+
+    // }
+    // else {
+    //   this.permitProductsFrm = this.fb.group({
+    //     brand_name: new FormControl('', Validators.compose([Validators.required])),
+    //     product_category_id: new FormControl('', Validators.compose([])),
+    //     product_batch_no: new FormControl('', Validators.compose([])),
+    //     product_strength: new FormControl('', Validators.compose([])),
+    //     product_manufacturing_date: new FormControl('', Validators.compose([])),
+    //     product_expiry_date: new FormControl('', Validators.compose([])),
+    //     country_oforigin_id: new FormControl('', Validators.compose([Validators.required])),
+    //     unit_price: new FormControl(this.quantity, Validators.compose([Validators.required])),
+    //     currency_id: new FormControl('', Validators.compose([Validators.required])),
+    //     packaging_unit_id: new FormControl('', Validators.compose([Validators.required])),
+    //     quantity: new FormControl(this.quantity, Validators.compose([Validators.required])),
+    //     laboratory_no: new FormControl('', Validators.compose([])),
+    //     regulated_prodpermit_id: new FormControl('', Validators.compose([])),
+    //     prodcertificate_no: new FormControl('', Validators.compose([])),
+    //     product_id: new FormControl('', Validators.compose([])),
+    //     unitpack_unit_id: new FormControl('', Validators.compose([])),
+    //     unitpack_size: new FormControl('', Validators.compose([])),
+    //     visa_quantity: new FormControl('', Validators.compose([])),
+    //     total_weight: new FormControl('', Validators.compose([])),
+    //     weights_units_id: new FormControl('', Validators.compose([])),
+    //     id: new FormControl('', Validators.compose([])),
+    //     device_type_id: new FormControl('', Validators.compose([])),
+    //     is_regulated_product: new FormControl('', Validators.compose([])),
+    //     productphysical_description: new FormControl('', Validators.compose([])),
+    //     common_name_id: new FormControl('', Validators.compose([])),
+    //     manufacturer_id: new FormControl('', Validators.compose([])),
+    //     manufacturer_name: new FormControl('', Validators.compose([Validators.required])),
+    //     product_subcategory_id: new FormControl('', Validators.compose([])),
+    //     productclassification_id: new FormControl('', Validators.compose([])),
+    //     productdosage_id: new FormControl('', Validators.compose([])),
+    //     consignment_quantity: new FormControl('', Validators.compose([])),
+    //     approvedvisa_product_id: new FormControl('', Validators.compose([])),
+    //     approvedlicense_product_id: new FormControl('', Validators.compose([])),
+    //     licensebalance_quantity: new FormControl('', Validators.compose([])),
+    //     dosage_form_id: new FormControl('', Validators.compose([])),
+    //     certificate_of_conformity: null
+    //   });
+    //   if (this.regulated_productstype_id == 2 || this.regulated_productstype_id == 7) {
+    //     this.permitProductsFrm.addControl('dosage_form_id', new FormControl('', Validators.required));
+    //   }
+    //   if (this.regulated_productstype_id != 4 && this.regulated_productstype_id != 18) {
+    //     this.permitProductsFrm.addControl('product_batch_no', new FormControl('', Validators.required));
+    //   }
+    //   if (this.regulatory_subfunction_id != 12 && this.regulatory_subfunction_id != 83) {
+    //     //  this.permitProductsFrm.addControl('product_batch_no',new FormControl('', Validators.required));
+    //   }
+    // }
+    // if ((this.regulated_productstype_id == 2 || this.regulated_productstype_id == 7)) {
+    //   this.permitProductsFrm.addControl('common_name_id', new FormControl('', Validators.required));
+    // }
 
     this.productGeneraldetailsfrm = new FormGroup({
       regulated_productstype_id: new FormControl('', Validators.compose([])),
@@ -585,6 +666,32 @@ export class SharedImpexpApplicationClass {
   }
   onSectionsCboSelect($event) {
     //this.onBusinessTypesLoad($event.value)
+  }
+
+  onLoadPermitProductsData(application_code) {
+    this.spinner.show();
+    this.appService.getPermitsOtherDetails({ 'application_code': application_code }, 'getPermitProductsDetails')
+      .subscribe(
+        data => {
+          if (data.success) {
+
+            this.permitProductsData = data.data;
+            // if (this.permitProductsData.length > 0) {
+            //   this.isprodnextdisable = false;
+            // }
+            // else {
+            //   this.isprodnextdisable = true;
+            // }
+
+          }
+          else {
+            this.toastr.success(data.message, 'Alert');
+          }
+          this.spinner.hide();
+        },
+        error => {
+          return false
+        });
   }
 
   onconsigneeOptionsChange($event) {
@@ -724,7 +831,7 @@ export class SharedImpexpApplicationClass {
     this.applicationGeneraldetailsfrm.value['applicant_id'] = this.applicant_id;
     // console.log(this.productGeneraldetailsfrm.value);
     this.spinner.show();
-    this.appService.onSavePermitApplication(this.applicationGeneraldetailsfrm.value, uploadData, 'saveImportExportApplication')
+    this.appService.onSavePermitApplication(this.applicationGeneraldetailsfrm.value, uploadData, 'saveOgaImportExportApplication')
       .subscribe(
         response => {
           this.product_resp = response;
@@ -737,7 +844,8 @@ export class SharedImpexpApplicationClass {
             this.applicationGeneraldetailsfrm.get('applicant_id')?.patchValue(this.applicant_id);
             this.applicationGeneraldetailsfrm.patchValue({ permit_id: this.permit_id })
             this.toastr.success(this.product_resp.message, 'Response');
-
+            // this.wizard.model.navigationMode.goToStep(nextStep);
+            this.ngWizardService.next();
 
           } else {
             this.toastr.error(this.product_resp.message, 'Alert');

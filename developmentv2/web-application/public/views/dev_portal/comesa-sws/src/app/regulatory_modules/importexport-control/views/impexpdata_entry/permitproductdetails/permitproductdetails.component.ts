@@ -17,6 +17,7 @@ import { AuthenticationService } from 'src/app/core-services/authentication/auth
 import { ConfigurationsService } from 'src/app/core-services/configurations/configurations.service';
 import { ImportExportService } from '../../../services/import-export.service';
 import { UtilityService } from 'src/app/core-services/utilities/utility.service';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-permitproductdetails',
@@ -25,6 +26,8 @@ import { UtilityService } from 'src/app/core-services/utilities/utility.service'
 })
 export class PermitproductdetailsComponent implements OnInit {
   @Input() productGeneraldetailsfrm: FormGroup;
+  @Input() permitProductsFrm: FormGroup;
+  @Input() permitProductsData: any;
   requireUnitPackData: boolean = false;
   isprodnextdisable: boolean;
   device_type_visible: boolean;
@@ -35,22 +38,21 @@ export class PermitproductdetailsComponent implements OnInit {
   trader_id: number;
   mistrader_id: number;
   dataGrid: DxDataGridComponent; printiframeUrl: any;
-  permitProductsData: any;
   isPermitproductsPopupVisible: boolean;
   isApprovedVisaproductsPopupVisible: boolean;
   registeredProductsData: any;
   approvedVisaProducts: any = {};
   isPermitproductsAddPopupVisible: boolean;
   confirmDataParam: any;
+  unitOfMeasureData: any;
   premisesOtherDetailsRows: any;
   is_regulatedproducts: boolean;
-  productCategoryData: any;
+  productCategoryData: any = {};
   deviceTypeData: any;
   packagingUnitsData: any;
   siUnitsData: any;
   weightsUnitData: any;
   currencyData: any;
-  permitProductsFrm: FormGroup;
   classificationData: any;
   commonNamesData: any;
   application_code: number;
@@ -84,7 +86,7 @@ export class PermitproductdetailsComponent implements OnInit {
   mis_url: string = AppSettings.mis_url;
   isInvoiceProductsUploadVisable: boolean;
   isApprovedVisaProductsUploadVisable: boolean;
-
+  isProductCategoryPopupVisible: boolean;
   isUploadedInvoiceProductsWin: boolean;
   enabled_uploadproductadd: boolean;
   isreadOnlyProducts: boolean;
@@ -115,19 +117,21 @@ export class PermitproductdetailsComponent implements OnInit {
   manufacturerFrm: FormGroup;
   issenderreceiverSearchWinVisible: boolean;
   issenderreceiverAddWinVisible: boolean;
-
+  storageConditionsData: any;
   product_resp: any;
+  countryData: any;
   is_visaapplication: boolean;
   commonNameData: any;
   filesToUpload: Array<File> = [];
   printReportTitle: string;
   isPrintReportVisible: boolean = false;
   document_previewurl: any;
-
+  data_record: any;
   isDocumentPreviewDownloadwin: boolean = false;
   is_brandreadonly: boolean = true;
   common_name_title: string = 'Common Name';
   productSubCategoryData: any;
+  weightUnitData: any;
   document_type_id: number = 25;
   @Output() premitProductIdEvent = new EventEmitter();
   invoiceProductsUploadFrm: FormGroup;
@@ -146,6 +150,7 @@ export class PermitproductdetailsComponent implements OnInit {
     });
 
     this.manufacturerFrm = new FormGroup({
+      id: new FormControl('', Validators.compose([])),
       name: new FormControl('', Validators.compose([Validators.required])),
       country_id: new FormControl('', Validators.compose([Validators.required])),
       region_id: new FormControl('', Validators.compose([])),
@@ -156,7 +161,7 @@ export class PermitproductdetailsComponent implements OnInit {
       mobile_no: new FormControl('', Validators.compose([])),
       physical_address: new FormControl('', Validators.compose([]))
     });
-
+    this.onLoadConfirmationData()
     this.onLoadcommonNameData();
     if (this.regulated_productstype_id == 2 || this.regulated_productstype_id == 7) {
       this.requireUnitPackData = true;
@@ -223,6 +228,13 @@ export class PermitproductdetailsComponent implements OnInit {
     else {
       this.ammendReadOnly = false;
     }
+
+    this.onLoadPermitProductsData(this.application_code);
+    this.onLoadUnitOfMeasureData();
+    this.onLoadWeightUnitData();
+    this.onLoadCountryData();
+    this.onLoadStorageConditions();
+    this.onLoadCurrencyData();
   }
 
   onProductCategoryCboSelect($event) {
@@ -232,7 +244,7 @@ export class PermitproductdetailsComponent implements OnInit {
   }
   onLoadproductSubCategory(product_category_id) {
     var data = {
-      table_name: 'cfg_subproduct_categories',
+      table_name: 'par_subproduct_categories',
       product_category_id: product_category_id
     };
     this.config.onLoadConfigurationData(data)
@@ -241,13 +253,110 @@ export class PermitproductdetailsComponent implements OnInit {
           this.productSubCategoryData = data;
         });
   }
+ 
+
+  onLoadConfirmationData() {
+    var data = {
+      table_name: 'par_confirmations',
+    };
+
+    this.config.onLoadConfigurationData(data)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.confirmDataParam = this.data_record.data;
+
+          }
+        });
+  }
+
+  onLoadUnitOfMeasureData() {
+    var data = {
+      table_name: 'par_unit_of_measure',
+    };
+
+    this.config.onLoadConfigurationData(data)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.unitOfMeasureData = this.data_record.data;
+
+          }
+        });
+  }
+
+  onLoadWeightUnitData() {
+    var data = {
+      table_name: 'par_weight_units',
+    };
+
+    this.config.onLoadConfigurationData(data)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.weightUnitData = this.data_record.data;
+
+          }
+        });
+  }
+
+  onLoadCurrencyData() {
+    var data = {
+      table_name: 'par_currencies',
+    };
+
+    this.config.onLoadConfigurationData(data)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.currencyData = this.data_record.data;
+
+          }
+        });
+  }
+  
+  onLoadStorageConditions() {
+    var data = {
+      table_name: 'par_storage_conditions',
+    };
+
+    this.config.onLoadConfigurationData(data)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.storageConditionsData = this.data_record.data;
+
+          }
+        });
+  }
+
+  onLoadCountryData() {
+    var data = {
+      table_name: 'par_countries',
+    };
+
+    this.config.onLoadConfigurationData(data)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.countries = this.data_record.data;
+
+          }
+        });
+  }
   onAddNewGenericDetails() {
 
 
     this.addproductCommonNameModal = true;
   } onLoaddosageForms() {
     var data = {
-      table_name: 'cfg_dosage_forms'
+      table_name: 'par_dosage_forms'
     };
     this.config.onLoadConfigurationData(data)
       .subscribe(
@@ -271,7 +380,7 @@ export class PermitproductdetailsComponent implements OnInit {
     this.permit_product_id = data.id;
     this.premitProductIdEvent.emit(this.permit_product_id);
 
-    this.isPermitproductsAddPopupVisible = true;
+    this.isPermitproductsPopupVisible = true;
 
   }
 
@@ -539,7 +648,7 @@ export class PermitproductdetailsComponent implements OnInit {
   }
   onLoadcommonNameData() {
     var data = {
-      table_name: 'cfg_common_names',
+      table_name: 'par_common_names',
 
     };
     this.config.onLoadConfigurationData(data)
@@ -677,7 +786,7 @@ export class PermitproductdetailsComponent implements OnInit {
       return;
     }
     this.spinner.show();
-    this.appService.onsavePermitProductdetails(this.application_code, this.permitProductsFrm.value, this.tracking_no, 'savePermitProductdetails')
+    this.appService.onsavePermitProductdetails(this.application_code, this.permitProductsFrm.value, this.tracking_no, 'onSavePermitProductsDetails')
       .subscribe(
         response => {
           this.app_resp = response;
@@ -1011,23 +1120,23 @@ export class PermitproductdetailsComponent implements OnInit {
         });
   }
   onPermitProductGridToolbar(e) {
-    if (this.regulated_productstype_id == 2 || this.regulated_productstype_id == 7) {
+    // if (this.regulated_productstype_id == 2 || this.regulated_productstype_id == 7) {
 
-      this.enabled_uploadproductadd = false;
-    }
-    else {
+    //   this.enabled_uploadproductadd = false;
+    // }
+    // else {
 
-      this.enabled_uploadproductadd = true;
-    }
-    if (this.regulatory_subfunction_id == 78) {
-      this.enabled_uploadproductadd = false;
-    }
+    //   this.enabled_uploadproductadd = true;
+    // }
+    // if (this.regulatory_subfunction_id == 78) {
+    //   this.enabled_uploadproductadd = false;
+    // }
     //regulatory_subfunction_id
     e.toolbarOptions.items.unshift({
       location: 'before',
       widget: 'dxButton',
       options: {
-        text: 'Add Invoice Products',
+        text: 'Add Permit Products',
         type: 'default',
         icon: 'fa fa-plus',
         visible: this.enabled_productadd,
@@ -1038,7 +1147,7 @@ export class PermitproductdetailsComponent implements OnInit {
       location: 'before',
       widget: 'dxButton',
       options: {
-        text: 'Upload Invoice Products(Templated Option)',
+        text: 'Upload Permit Products(Templated Option)',
         type: 'success',
         icon: 'fa fa-upload',
         visible: this.enabled_uploadproductadd,
@@ -1057,10 +1166,9 @@ export class PermitproductdetailsComponent implements OnInit {
   funAddPermitProducts() {
     //reset the permit form
     this.permitProductsFrm.reset();
-    this.OnReloadPermitProducts();
+
     this.isPermitproductsPopupVisible = true;
-
-
+    this.OnReloadPermitProducts();
   }
   funUploadPermitProducts() {
 
@@ -1109,7 +1217,7 @@ export class PermitproductdetailsComponent implements OnInit {
           headers: headers,
           params: { skip: loadOptions.skip, take: loadOptions.take, searchValue: loadOptions.filter, table_name: 'registered_products', 'regulatory_function_id': me.regulatory_function_id, 'regulatory_subfunction_id': me.regulatory_subfunction_id, regulated_productstype_id: me.regulated_productstype_id, trader_id: me.trader_id, mistrader_id: me.mistrader_id }
         };
-        return me.httpClient.get(AppSettings.base_url + 'importexportapp/getRegisteredNonRegisteredProducts', me.configData)
+        return me.httpClient.get(AppSettings.base_url + 'api/import-export/getRegisteredNonRegisteredProducts', me.configData)
           .toPromise()
           .then((data: any) => {
             return {
@@ -1160,40 +1268,97 @@ export class PermitproductdetailsComponent implements OnInit {
   onAddManufacturerDetails() {
     this.spinner.show();
     let manufacturer_name = this.manufacturerFrm.get('name')?.value;
-    /*
-    this.appProdService.onAddManufacturingSite('tra_manufacturers_information', this.manufacturerFrm.value)
-      .subscribe(
-        response => {
-          this.product_resp = response.json();
-          //the details 
+
+    this.appService.onAddManufacturingSite('tra_manufacturer_info', this.manufacturerFrm.value, 'saveManufacturerDetails')
+      .subscribe({
+        next: (response) => {
+          this.product_resp = response;
+          
           if (this.product_resp.success) {
             this.isnewmanufacturerModalShow = false;
             this.isproductManufacturerModalShow = false;
-            let manufacturer_id = this.product_resp.record_id;
-            //load Manufactureing Sites 
-            this.permitProductsFrm.patchValue({ manufacturer_name: manufacturer_name, manufacturer_id: manufacturer_id });
 
-            this.isManufacturerSitePopupVisible = false;
+            let manufacturer_id = this.product_resp.record_id; // Ensure API sends this value
 
-            this.toastr.success(this.product_resp.message, 'Response');
+            if (manufacturer_id) {
+              this.permitProductsFrm.patchValue({ 
+                manufacturer_name: manufacturer_name, 
+                manufacturer_id: manufacturer_id 
+              });
 
+              this.isManufacturerSitePopupVisible = false;
+              this.toastr.success(this.product_resp.message, 'Success');
+            } else {
+              this.toastr.warning('Manufacturer saved, but ID not returned.', 'Warning');
+            }
           } else {
             this.toastr.error(this.product_resp.message, 'Alert');
           }
-          this.spinner.hide();
         },
-        error => {
-          this.toastr.error('Error Occurred', 'Alert');
-        });
-        */
-  }
-  funcSearchManufacturingSite() {
+        error: (error) => {
+          console.error('Error Occurred:', error);
+          this.toastr.error('An error occurred while saving manufacturer details.', 'Error');
+        },
+        complete: () => {
+          this.spinner.hide();
+        }
+      });
+}
 
+  funcSearchManufacturingSite() {
     this.isManufacturerSitePopupVisible = true;
+    const me = this;
+  
+    this.manufacturersData.store = new CustomStore({
+      load: async function (loadOptions: any) {
+        console.log(loadOptions);
+  
+        // Extract pagination parameters safely
+        const skip = loadOptions.skip ?? 0;
+        const take = loadOptions.take ?? 50;
+  
+        // Extract search filter properly
+        let searchValue = '';
+        if (Array.isArray(loadOptions.filter) && loadOptions.filter.length > 0) {
+          searchValue = loadOptions.filter[2] || ''; // Adjust index based on actual filter structure
+        }
+  
+        // Set up request headers
+        const headers = new HttpHeaders({
+          "Accept": "application/json",
+          "Authorization": "Bearer " + me.authService.getAccessToken(),
+        });
+  
+        // API request configuration
+        const configData = {
+          headers,
+          params: { skip, take, searchValue },
+        };
+  
+        try {
+          const response: any = await lastValueFrom(
+            me.httpClient.get(AppSettings.base_url + '/api/import-export/onLoadManufacturingSitesDetails', configData)
+          );
+  
+          return {
+            data: response.data || [],
+            totalCount: response.totalCount || 0
+          };
+        } catch (error) {
+          console.error('Data Loading Error', error);
+          throw 'Data Loading Error';
+        }
+      }
+    });
+  }
+  
+  onsearchProductCategory() {
+
+    this.isProductCategoryPopupVisible = true;
     var me = this;
 
 
-    this.manufacturersData.store = new CustomStore({
+    this.productCategoryData.store = new CustomStore({
       load: function (loadOptions: any) {
         console.log(loadOptions)
         var params = '?';
@@ -1208,7 +1373,7 @@ export class PermitproductdetailsComponent implements OnInit {
           headers: headers,
           params: { skip: loadOptions.skip, take: loadOptions.take, searchValue: loadOptions.filter }
         };
-        return me.httpClient.get(AppSettings.base_url + 'productregistration/getManufacturersInformation', me.configData)
+        return me.httpClient.get(AppSettings.base_url + '/api/import-export/onGetRegulatedProductCategory', me.configData)
           .toPromise()
           .then((data: any) => {
             return {
@@ -1219,9 +1384,15 @@ export class PermitproductdetailsComponent implements OnInit {
           .catch(error => { throw 'Data Loading Error' });
       }
     });
-  } funcAddManufacturerSite() {
+  } 
+  
+  funcAddManufacturerSite() {
     this.isnewmanufacturerModalShow = true;
     this.manufacturerFrm.reset();
+  }
+
+  funcProductCategory() {
+
   }
   funcSelectManufacturer(data) {
     let data_resp = data.data;
@@ -1230,9 +1401,41 @@ export class PermitproductdetailsComponent implements OnInit {
     this.isManufacturerSitePopupVisible = false;
 
   }
+ 
+  // funcSelectProductCategory(data) {
+  //   let data_resp = data.data;
+  //   this.permitProductsFrm.patchValue({ regulated_product_category: data_resp.regulated_product_category, regulated_product_category_id: data_resp.regulated_product_category_id, });
+
+  //   this.isProductCategoryPopupVisible = false;
+  // }
+
+  funcSelectProductCategory(data) {
+    let data_resp = data.data;
+
+    // Prioritize values in order: hscodessubheading -> hscodesheading -> hscodechapters
+    let selectedCategory = data_resp.hscodessubheading || 
+                           data_resp.hscodesheading || 
+                           data_resp.hscodechapters || '';
+
+    // Patch the form with selected values
+    this.permitProductsFrm.patchValue({ 
+        regulated_product_category: selectedCategory, 
+        regulated_product_category_id: data_resp.regulated_product_category_id 
+    });
+
+    // Close the popup
+    this.isProductCategoryPopupVisible = false;
+}
+
   onManufacturerPreparing(e) {
     this.functDataGridToolbar(e, this.funcAddManufacturerSite, 'Manufacturers');
-  } onCoutryCboSelect($event) {
+  } 
+  // onProductCategoryPreparing(e) {
+  //   this.functDataGridToolbar(e, this.funcProductCategory, 'product_category');
+  // } 
+  
+  
+  onCoutryCboSelect($event) {
 
 
     this.onLoadRegions($event.selectedItem.id);
@@ -1240,7 +1443,7 @@ export class PermitproductdetailsComponent implements OnInit {
   } onLoadRegions(country_id) {
 
     var data = {
-      table_name: 'cfg_regions',
+      table_name: 'par_regions',
       country_id: country_id
     };
     this.config.onLoadConfigurationData(data)
@@ -1261,7 +1464,7 @@ export class PermitproductdetailsComponent implements OnInit {
   }
   onLoadDistricts(region_id) {
     var data = {
-      table_name: 'cfg_districts',
+      table_name: 'par_districts',
       region_id: region_id
     };
     this.config.onLoadConfigurationData(data)
@@ -1389,5 +1592,12 @@ export class PermitproductdetailsComponent implements OnInit {
 
         });
   }
+
+  showConsignmentDetails: boolean = false; // Initialize
+
+  toggleDetailsVisibility(event: any): void {
+    this.showConsignmentDetails = event.value === 1; // Show only if the selected value is 1 (Yes)
+}
+
 
 }

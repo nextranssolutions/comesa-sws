@@ -232,7 +232,7 @@ export class PermitproductdetailsComponent implements OnInit {
   }
   onLoadproductSubCategory(product_category_id) {
     var data = {
-      table_name: 'cfg_subproduct_categories',
+      table_name: 'par_subproduct_categories',
       product_category_id: product_category_id
     };
     this.config.onLoadConfigurationData(data)
@@ -247,7 +247,7 @@ export class PermitproductdetailsComponent implements OnInit {
     this.addproductCommonNameModal = true;
   } onLoaddosageForms() {
     var data = {
-      table_name: 'cfg_dosage_forms'
+      table_name: 'par_dosage_forms'
     };
     this.config.onLoadConfigurationData(data)
       .subscribe(
@@ -539,7 +539,7 @@ export class PermitproductdetailsComponent implements OnInit {
   }
   onLoadcommonNameData() {
     var data = {
-      table_name: 'cfg_common_names',
+      table_name: 'par_common_names',
 
     };
     this.config.onLoadConfigurationData(data)
@@ -1240,7 +1240,7 @@ export class PermitproductdetailsComponent implements OnInit {
   } onLoadRegions(country_id) {
 
     var data = {
-      table_name: 'cfg_regions',
+      table_name: 'par_regions',
       country_id: country_id
     };
     this.config.onLoadConfigurationData(data)
@@ -1261,7 +1261,7 @@ export class PermitproductdetailsComponent implements OnInit {
   }
   onLoadDistricts(region_id) {
     var data = {
-      table_name: 'cfg_districts',
+      table_name: 'par_districts',
       region_id: region_id
     };
     this.config.onLoadConfigurationData(data)
