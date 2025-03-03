@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
 import { AuthenticationService } from 'src/app/core-services/authentication/authentication.service';
 import { AppSettings } from 'src/app/app-settings';
 
@@ -127,6 +127,32 @@ export class ImportExportService {
         return <any>data;
       }));
   }
+
+   onAddManufacturingSite(table_name: string, data: any, action_url: string) {
+      // Add table_name directly into the data object
+      let requestData = {
+          ...data,  // Spread operator to include all form values
+          table_name: table_name,
+          trader_id: this.trader_id,
+          traderemail_address: this.email_address
+      };
+  
+      // Set headers properly
+      let headers = new HttpHeaders({
+          'Accept': 'application/json',
+          'Authorization': `Bearer ${this.authService.getAccessToken()}`
+      });
+  
+      return this.httpClient.post(`${this.baseUrl}/${action_url}`, requestData, { headers })
+        .pipe(
+          map(response => response),
+          catchError(error => {
+            console.error("API Error: ", error);
+            return throwError(() => new Error('An error occurred while saving manufacturer details.'));
+          })
+        );
+  }
+  
 
   onPermitApplicationArchive(application_id, tracking_no) {
 

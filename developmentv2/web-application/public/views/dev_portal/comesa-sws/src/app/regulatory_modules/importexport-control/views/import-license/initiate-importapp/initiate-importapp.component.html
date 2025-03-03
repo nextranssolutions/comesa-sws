@@ -73,7 +73,7 @@
 
                     <div>
                         <app-permitgeneraldetails
-                            [applicationGeneraldetailsfrm]="applicationGeneraldetailsfrm"></app-permitgeneraldetails>
+                            [applicationGeneraldetailsfrm]="applicationGeneraldetailsfrm" [permitReceiverSenderFrm]="permitReceiverSenderFrm"></app-permitgeneraldetails>
                     </div>
 
                     <!-- Add more content to see the scroll effect -->
@@ -91,11 +91,15 @@
                     (onClick)="onSaveImportExportApplication()">
                 </dx-button>
 
+                <dx-button text="{{'permit_product_details' | translate}}" iconPosition="right" type="success"
+                icon="fa fa-angle-double-right" [elementAttr]="{ id: 'elementId', }" (onClick)="onNextStep()">
+            </dx-button>
+
             </div>
 
         </ng-wizard-step>
 
-        <ng-wizard-step [title]="'step_three' | translate" [description]="'permit_product_information'| translate"
+        <ng-wizard-step [title]="'step_three' | translate" [description]="'permit_product_details'| translate"
             [canEnter]="isValidTypeBoolean">
             <div class="container_div">
 
@@ -103,7 +107,7 @@
                 <div class="scrollable-content">
                     <!-- Your content goes here -->
                     <div>
-                        <!-- <app-permitproductdetails [productGeneraldetailsfrm]="productGeneraldetailsfrm"></app-permitproductdetails> -->
+                        <app-permitproductdetails [productGeneraldetailsfrm]="productGeneraldetailsfrm" [permitProductsData]="permitProductsData" [permitProductsFrm]="permitProductsFrm"></app-permitproductdetails>
                     </div>
 
                 </div>
@@ -120,7 +124,7 @@
         </ng-wizard-step>
 
 
-        <ng-wizard-step [title]="'step_four' | translate" [description]="'documetn_requirement_submission' | translate"
+        <ng-wizard-step [title]="'step_four' | translate" [description]="'document_requirement_submission' | translate"
             [canEnter]="isValidTypeBoolean">
             <div class="container_div">
                 <div class="scrollable-content">
@@ -145,7 +149,25 @@
             </div>
         </ng-wizard-step>
 
-        <ng-wizard-step [title]="'step_five'| translate" [description]="'billing_&_payment'| translate"
+        <ng-wizard-step [title]="'step_five' | translate" [description]="'screening_checklist' | translate"
+        [canEnter]="isValidTypeBoolean">
+        <div class="container_div">
+            <div class="scrollable-content">
+
+            </div>
+        </div>
+        <div class="div_footer button-container">
+            <dx-button text="{{'previous_step' | translate}}" iconPosition="left" type="danger"
+                icon="fa fa-angle-double-left" [elementAttr]="{ id: 'elementId', }" (onClick)="previousStep()">
+            </dx-button>
+            <dx-button text="{{'next_step' | translate}}" iconPosition="right" type="success"
+                icon="fa fa-angle-double-right" [elementAttr]="{ id: 'elementId', }" (onClick)="nextStep()">
+            </dx-button>
+
+        </div>
+    </ng-wizard-step>
+
+        <ng-wizard-step [title]="'step_six'| translate" [description]="'billing_&_payment'| translate"
             [canEnter]="isValidTypeBoolean">
             <div class="container_div">
                 <div class="scrollable-content">

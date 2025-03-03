@@ -149,7 +149,7 @@ export class SharedImpExpdashboardClass {
     this. onApplicationSelection(1);
     this.app_route = ['./importexport-permit-application/initiate-importapp'];
     
-    this.spinner.show();
+    
     // this.router.navigate(this.app_route);
   }
 
@@ -164,7 +164,7 @@ export class SharedImpExpdashboardClass {
     this.app_typeItem = this.applicationGeneraldetailsfrm.controls['regulatory_subfunction_id'];
     this.regulatory_subfunction_id = this.app_typeItem.value;
 
-    this.configService.getSectionUniformApplicationProces(this.regulatory_subfunction_id)
+    this.configService.getSectionUniformApplication(this.regulatory_subfunction_id)
       .subscribe(
         data => {
           this.spinner.hide();
