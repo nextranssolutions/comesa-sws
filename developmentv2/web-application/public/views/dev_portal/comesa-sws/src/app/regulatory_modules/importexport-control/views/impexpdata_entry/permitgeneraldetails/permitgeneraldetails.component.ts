@@ -194,8 +194,6 @@ export class PermitgeneraldetailsComponent implements OnInit {
       var data = {
         table_name: 'par_product_categories',
         permit_category_id: permit_category_id
-        
-        
       };
   
       this.config.onLoadConfigurationData(data)
@@ -248,11 +246,8 @@ export class PermitgeneraldetailsComponent implements OnInit {
         this.showreason_fornonregister_outlet = false;
         this.applicationGeneraldetailsfrm.get('premises_name')?.setValidators([Validators.required]);
         this.applicationGeneraldetailsfrm.get('premise_id')?.setValidators([Validators.required]);
-  
       }
       else {
-  
-  
       }
   
     }

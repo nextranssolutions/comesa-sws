@@ -277,6 +277,14 @@ import { AppealsTypesComponent } from './views/configurations/process-configurat
 import { ProcessConfigsetupComponent } from './views/configurations/process-configurations/process-configsetup/process-configsetup.component';
 import { AppSectionsComponent } from './views/configurations/forms/application-section/app-sections.component';
 import { RegulatoryFunctionGuidelinesComponent } from './views/system-administration/system-guidelines/regulatory-function-guidelines/regulatory-function-guidelines.component';
+import { InvoiceTypeComponent } from './views/configurations/permit-application-parameters/invoice-type/invoice-type.component';
+import { ModeOfTransportComponent } from './views/configurations/permit-application-parameters/mode-of-transport/mode-of-transport.component';
+import { PermitStorageConditionsComponent } from './views/configurations/permit-application-parameters/permit-storage-conditions/permit-storage-conditions.component';
+import { PermitappConfigsetupComponent } from './views/configurations/permit-application-parameters/permitapp-configsetup/permitapp-configsetup.component';
+import { PortEntryExitComponent } from './views/configurations/permit-application-parameters/port-entry-exit/port-entry-exit.component';
+import { PortEntryTypeComponent } from './views/configurations/permit-application-parameters/port-entry-type/port-entry-type.component';
+import { SharedPermitapplicationComponent } from './views/configurations/permit-application-parameters/shared-permitapplication/shared-permitapplication.component';
+import { TransactionCurrencyComponent } from './views/configurations/permit-application-parameters/transaction-currency/transaction-currency.component';
 
 @NgModule({
   declarations: [AppdashboardComponent,
@@ -422,6 +430,15 @@ import { RegulatoryFunctionGuidelinesComponent } from './views/system-administra
     SharedclinicalTrialconfigurationsComponent,
     CertificateConditionComponent,
 
+    TransactionCurrencyComponent,
+    PermitStorageConditionsComponent,
+    SharedPermitapplicationComponent,
+    PortEntryTypeComponent,
+    PermitappConfigsetupComponent,
+    ModeOfTransportComponent,
+    InvoiceTypeComponent,
+    PortEntryExitComponent,
+    
     AppPartnerStates,
     ControlDocmasterlistComponent,
     AppNotificationsComponent,
@@ -670,7 +687,14 @@ import { RegulatoryFunctionGuidelinesComponent } from './views/system-administra
     PortalDocdefinationComponent,
     AppFormsComponent,
    
-
+    TransactionCurrencyComponent,
+    PermitStorageConditionsComponent,
+    SharedPermitapplicationComponent,
+    PortEntryTypeComponent,
+    PermitappConfigsetupComponent,
+    ModeOfTransportComponent,
+    InvoiceTypeComponent,
+    PortEntryExitComponent,
 
     SharedconfigurationsComponent,
     UserloginLogsComponent,

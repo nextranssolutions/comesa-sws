@@ -1,0 +1,78 @@
+<div class="main-content-inner">
+    <div class="breadcrumbs ace-save-state" id="breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="ace-icon fa fa-home home-icon"></i>
+                <a href="#">Home</a>
+            </li>
+            <li class="active">{{parameter_name | translate}}</li>
+        </ul>
+
+    </div>
+
+
+    <div class="page-content">
+        <div class="page-header">
+            <h1>
+                {{parameter_name | translate}}
+                <small>
+                    <i class="ace-icon fa fa-angle-double-right"></i>
+                    overview &amp; stats
+                </small>
+            </h1>
+        </div>
+
+
+        <div class="container-fluid">
+            <dx-tab-panel class="fullpage-tab" id="Navigation Tab" [stylingMode]="stylingMode"
+                [tabsPosition]="tabsPosition" [swipeEnabled]="false" [showNavButtons]="true" [animationEnabled]="true">
+
+                <dxi-item title="{{ 'renewable_statuses' | translate }}" icon="fa fa-th-list">
+
+                    <app-renewable-statuses></app-renewable-statuses>
+                </dxi-item>
+
+                <dxi-item title="{{ 'permit_statuses' | translate }}" icon="fa fa-th-list">
+                    <app-permit-statuses></app-permit-statuses>
+                </dxi-item>
+
+                <dxi-item title="{{ 'permit_templates' | translate }}" icon="fa fa-th-list">
+                    <app-permit-templates></app-permit-templates>
+                </dxi-item>
+
+                <dxi-item title="{{ 'hscode_seloption' | translate }}" icon="fa fa-th-list">
+                    <app-hscode-seloption></app-hscode-seloption>
+                </dxi-item>
+
+                <dxi-item title="{{ 'mapping_status' | translate }}" icon="fa fa-th-list">
+                    <app-mapping-status></app-mapping-status>
+                </dxi-item>
+
+                <dxi-item title="{{ 'hscodemapping_option' | translate }}" icon="fa fa-th-list">
+                    <app-hscodemapping-option></app-hscodemapping-option>
+                </dxi-item>
+
+                <dxi-item title="{{ 'quota_limitationstype' | translate }}" icon="fa fa-th-list">
+                    <app-quota-limitationstype></app-quota-limitationstype>
+                </dxi-item>
+
+                <dxi-item title="{{ 'permit_template_types' | translate }}" icon="fa fa-th-list">
+                    <app-permit-template-types></app-permit-template-types>
+                </dxi-item>
+
+                <dxi-item title="{{ 'checklist_definations' | translate }}" icon="fa fa-th-list">
+                    <app-checklist-definations></app-checklist-definations>
+                </dxi-item>
+
+                <dxi-item title="{{ 'checklist_types' | translate }}" icon="fa fa-th-list">
+                    <app-checklist-types></app-checklist-types>
+                </dxi-item>
+
+                <dxi-item title="{{ 'workflow_stages' | translate }}" icon="fa fa-th-list">
+                    <app-workflow-stages></app-workflow-stages>
+                </dxi-item>
+
+            </dx-tab-panel>
+        </div>
+    </div>
+</div>

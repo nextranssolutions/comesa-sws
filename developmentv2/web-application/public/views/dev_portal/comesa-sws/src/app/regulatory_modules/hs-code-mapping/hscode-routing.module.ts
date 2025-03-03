@@ -23,6 +23,24 @@ import { ServiceDeliveryTimelineComponent } from './views/service_delivery_timel
 import { ServiceTypesComponent } from './views/service_delivery_timeline/service-types/service-types.component';
 import { ServicedeliveryConfigsetupComponent } from './views/service_delivery_timeline/servicedelivery-configsetup/servicedelivery-configsetup.component';
 import { SharedServiceDeliveryComponent } from './views/service_delivery_timeline/shared-service-delivery/shared-service-delivery.component';
+import { ImportexportProceduredetailsComponent } from './views/trader_database_procedures/importexport-proceduredetails/importexport-proceduredetails.component';
+import { ProcedureCategoriesComponent } from './views/trader_database_procedures/procedure-categories/procedure-categories.component';
+import { ProcedureSubcategoriesComponent } from './views/trader_database_procedures/procedure-subcategories/procedure-subcategories.component';
+import { SharedTraderdbproceduresComponent } from './views/trader_database_procedures/shared-traderdbprocedures/shared-traderdbprocedures.component';
+import { TraderdbproceduresSetupComponent } from './views/trader_database_procedures/traderdbprocedures-setup/traderdbprocedures-setup.component';
+import { ChecklistDefinationsComponent } from './views/permit_type_management_config/checklist-definations/checklist-definations.component';
+import { ChecklistTypesComponent } from './views/permit_type_management_config/checklist-types/checklist-types.component';
+import { HscodeSeloptionComponent } from './views/permit_type_management_config/hscode-seloption/hscode-seloption.component';
+import { HscodemappingOptionComponent } from './views/permit_type_management_config/hscodemapping-option/hscodemapping-option.component';
+import { MappingStatusComponent } from './views/permit_type_management_config/mapping-status/mapping-status.component';
+import { PermitStatusesComponent } from './views/permit_type_management_config/permit-statuses/permit-statuses.component';
+import { PermitTemplateTypesComponent } from './views/permit_type_management_config/permit-template-types/permit-template-types.component';
+import { PermitTemplatesComponent } from './views/permit_type_management_config/permit-templates/permit-templates.component';
+import { PermitTypeManagementConfigsetupComponent } from './views/permit_type_management_config/permit-type-management-configsetup/permit-type-management-configsetup.component';
+import { QuotaLimitationstypeComponent } from './views/permit_type_management_config/quota-limitationstype/quota-limitationstype.component';
+import { RenewableStatusesComponent } from './views/permit_type_management_config/renewable-statuses/renewable-statuses.component';
+import { SharedPermitTypeManagementConfigComponent } from './views/permit_type_management_config/shared-permit-type-management-config/shared-permit-type-management-config.component';
+import { WorkflowStagesComponent } from './views/permit_type_management_config/workflow-stages/workflow-stages.component';
 
 
 const routes: Routes = [{
@@ -51,6 +69,10 @@ const routes: Routes = [{
   {
     path: 'app-hscodesproducts-registry',
     component: HscodesproductsRegistryComponent
+  },
+  {
+    path: 'app-hscode-registryproducts',
+    component: HscodeRegistryproductsComponent
   },
   {
     path: 'app-hscode-registryproducts',
@@ -100,7 +122,6 @@ const routes: Routes = [{
   {
     path: 'app-servicedelivery-configsetup',
     component: ServicedeliveryConfigsetupComponent
-
   },
   {
     path: 'app-service-types',
@@ -109,6 +130,78 @@ const routes: Routes = [{
   {
     path: 'app-service-delivery-timeline',
     component: ServiceDeliveryTimelineComponent
+  },
+  {
+    path: 'app-importexport-proceduredetails',
+    component: ImportexportProceduredetailsComponent
+  },
+  {
+    path: 'app-procedure-categories',
+    component: ProcedureCategoriesComponent
+  },
+  {
+    path: 'app-procedure-subcategories',
+    component: ProcedureSubcategoriesComponent
+  },
+  {
+    path: 'app-shared-traderdbprocedures',
+    component: SharedTraderdbproceduresComponent
+  },
+  {
+    path: 'app-traderdbprocedures-setup',
+    component: TraderdbproceduresSetupComponent
+  },
+  {
+    path: 'app-checklist-definations',
+    component: ChecklistDefinationsComponent
+  },
+  {
+    path: 'app-checklist-types',
+    component: ChecklistTypesComponent
+  },
+  {
+    path: 'app-hscode-seloption',
+    component: HscodeSeloptionComponent
+  },
+  {
+    path: 'app-hscodemapping-option',
+    component: HscodemappingOptionComponent
+  },
+  {
+    path: 'app-mapping-status',
+    component: MappingStatusComponent
+  },
+  {
+    path: 'app-permit-statuses',
+    component: PermitStatusesComponent
+  },
+  {
+    path: 'app-permit-template-types',
+    component: PermitTemplateTypesComponent
+  },
+  {
+    path: 'app-permit-templates',
+    component: PermitTemplatesComponent,
+  },
+  {
+    path: 'app-permit-type-management-configsetup',
+    component: PermitTypeManagementConfigsetupComponent
+  },
+  {
+    path: 'app-quota-limitationstype',
+    component: QuotaLimitationstypeComponent
+  },
+  {
+    path: 'app-renewable-statuses',
+    component: RenewableStatusesComponent
+  },
+  {
+    path: 'app-shared-permit-type-management-config',
+    component: SharedPermitTypeManagementConfigComponent
+  },
+  {
+    path: 'app-workflow-stages',
+    component: WorkflowStagesComponent
   },
   ]
 }]

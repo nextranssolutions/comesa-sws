@@ -91,11 +91,15 @@
                     (onClick)="onSaveImportExportApplication()">
                 </dx-button>
 
+                <dx-button text="{{'permit_product_details' | translate}}" iconPosition="right" type="success"
+                icon="fa fa-angle-double-right" [elementAttr]="{ id: 'elementId', }" (onClick)="onNextStep()">
+            </dx-button>
+
             </div>
 
         </ng-wizard-step>
 
-        <ng-wizard-step [title]="'step_three' | translate" [description]="'permit_product_information'| translate"
+        <ng-wizard-step [title]="'step_three' | translate" [description]="'permit_product_details'| translate"
             [canEnter]="isValidTypeBoolean">
             <div class="container_div">
 

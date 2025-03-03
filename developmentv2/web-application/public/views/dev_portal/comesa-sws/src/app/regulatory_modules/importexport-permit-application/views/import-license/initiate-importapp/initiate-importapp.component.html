@@ -44,7 +44,29 @@
 
 
 
+
+
+
     <ng-wizard [config]="config" (stepChanged)="stepChanged($event)">
+        <ng-wizard-step [title]="'step_one' | translate" [description]="'applicant_details' | translate"
+            [canEnter]="isValidTypeBoolean">
+            <div class="container_div">
+                <div class="scrollable-content">
+                    <app-applicant-details [applicantDetailsForm]="applicantDetailsForm"
+                        [userAccountFrm]="userAccountFrm"></app-applicant-details>
+                </div>
+            </div>
+
+            <div class="div_footer button-container">
+
+                <dx-button text="{{'dashboard' | translate}}" type="success" icon="fa fa-eraser"
+                    [elementAttr]="{  class: 'pull-left' }" (onClick)="onApplicationDashboard()">
+                </dx-button>
+                <dx-button text="{{'permit_general_information' | translate}}" iconPosition="right" type="success"
+                    icon="fa fa-angle-double-right" [elementAttr]="{ id: 'elementId' }" (onClick)="nextTab()">
+                </dx-button>
+            </div>
+        </ng-wizard-step>
         <ng-wizard-step [title]="'step_one' | translate" [description]="'applicant_details' | translate"
             [canEnter]="isValidTypeBoolean">
             <div class="container_div">
@@ -75,11 +97,15 @@
                     <div>
                         <app-permitgeneraldetails [applicationGeneraldetailsfrm]="applicationGeneraldetailsfrm"
                             [permitReceiverSenderFrm]="permitReceiverSenderFrm"></app-permitgeneraldetails>
+                        <app-permitgeneraldetails [applicationGeneraldetailsfrm]="applicationGeneraldetailsfrm"
+                            [permitReceiverSenderFrm]="permitReceiverSenderFrm"></app-permitgeneraldetails>
                     </div>
 
                     <!-- Add more content to see the scroll effect -->
                 </div>
             </div>
+
+
 
 
             <div class="div_footer button-container">
@@ -96,12 +122,14 @@
                     (onClick)="onSaveImportExportApplication()">
                 </dx-button>
                 <dx-button text="{{'permit_product_information' | translate}}" iconPosition="right" type="success"
+                    icon="fa fa-angle-double-right" [elementAttr]="{ id: 'elementId' }" (onClick)="nextTab()">
+                </dx-button>
+                <dx-button text="{{'permit_product_information' | translate}}" iconPosition="right" type="success"
                     icon="fa fa-angle-double-right" [elementAttr]="{ id: 'elementId' }" (onClick)="nextStep()">
                 </dx-button>
             </div>
 
         </ng-wizard-step>
-
         <ng-wizard-step [title]="'step_three' | translate" [description]="'permit_product_information'| translate"
             [canEnter]="isValidTypeBoolean">
             <div class="container_div">
@@ -120,14 +148,14 @@
                     icon="fa fa-angle-double-left" [elementAttr]="{ id: 'elementId', }" (onClick)="previousStep()">
                 </dx-button>
                 <dx-button text="{{'next_step' | translate}}" iconPosition="right" type="success"
-                    icon="fa fa-angle-double-right" [elementAttr]="{ id: 'elementId', }" (onClick)="nextStep()">
+                    icon="fa fa-angle-double-right" [elementAttr]="{ id: 'elementId', }" (onClick)="nextTab()">
                 </dx-button>
 
             </div>
         </ng-wizard-step>
 
 
-        <ng-wizard-step [title]="'step_four' | translate" [description]="'documetn_requirement_submission' | translate"
+        <ng-wizard-step [title]="'step_four' | translate" [description]="'document_requirement_submission' | translate"
             [canEnter]="isValidTypeBoolean">
             <div class="container_div">
                 <div class="scrollable-content">
@@ -146,13 +174,13 @@
                     icon="fa fa-angle-double-left" [elementAttr]="{ id: 'elementId', }" (onClick)="previousStep()">
                 </dx-button>
                 <dx-button text="{{'next_step' | translate}}" iconPosition="right" type="success"
-                    icon="fa fa-angle-double-right" [elementAttr]="{ id: 'elementId', }" (onClick)="nextStep()">
+                    icon="fa fa-angle-double-right" [elementAttr]="{ id: 'elementId', }" (onClick)="nextTab()">
                 </dx-button>
 
             </div>
         </ng-wizard-step>
 
-        <ng-wizard-step [title]="'step_five'| translate" [description]="'billing_&_payment'| translate"
+        <ng-wizard-step [title]="'step_five'| translate" [description]="'permit_checklists'| translate"
             [canEnter]="isValidTypeBoolean">
             <div class="container_div">
                 <div class="scrollable-content">
@@ -162,11 +190,31 @@
                 </div>
             </div>
             <div class="div_footer button-container">
-                <dx-button text="{{'previous_step' | translate}}" iconPosition="left" type="success"
+                <dx-button text="{{'previous_step' | translate}}" iconPosition="left" type="danger"
                     icon="fa fa-angle-double-left" [elementAttr]="{ id: 'elementId', }" (onClick)="previousStep()">
                 </dx-button>
                 <dx-button text="{{'next_step' | translate}}" iconPosition="right" type="success"
-                    icon="fa fa-angle-double-right" [elementAttr]="{ id: 'elementId', }" (onClick)="nextStep()">
+                    icon="fa fa-angle-double-right" [elementAttr]="{ id: 'elementId', }" (onClick)="nextTab()">
+                </dx-button>
+
+            </div>
+        </ng-wizard-step>
+
+        <ng-wizard-step [title]="'step_six'| translate" [description]="'expected_fees_charges'| translate"
+            [canEnter]="isValidTypeBoolean">
+            <div class="container_div">
+                <div class="scrollable-content">
+                    <!-- Your content goes here -->
+                    <div>Step 1 content</div>
+                    <!-- Add more content to see the scroll effect -->
+                </div>
+            </div>
+            <div class="div_footer button-container">
+                <dx-button text="{{'previous_step' | translate}}" iconPosition="left" type="danger"
+                    icon="fa fa-angle-double-left" [elementAttr]="{ id: 'elementId', }" (onClick)="previousStep()">
+                </dx-button>
+                <dx-button text="{{'next_step' | translate}}" iconPosition="right" type="success"
+                    icon="fa fa-angle-double-right" [elementAttr]="{ id: 'elementId', }" (onClick)="nextTab()">
                 </dx-button>
 
             </div>
@@ -181,11 +229,11 @@
                 </div>
             </div>
             <div class="div_footer button-container">
-                <dx-button text="{{'previous_step' | translate}}" iconPosition="left" type="success"
+                <dx-button text="{{'previous_step' | translate}}" iconPosition="left" type="danger"
                     icon="fa fa-angle-double-left" [elementAttr]="{ id: 'elementId', }" (onClick)="previousStep()">
                 </dx-button>
                 <dx-button text="{{'submission' | translate}}" iconPosition="right" type="success"
-                    icon="fa fa-angle-double-right" [elementAttr]="{ id: 'elementId', }" (onClick)="nextStep()">
+                    icon="fa fa-angle-double-right" [elementAttr]="{ id: 'elementId', }" (onClick)="nextTab()">
                 </dx-button>
 
             </div>

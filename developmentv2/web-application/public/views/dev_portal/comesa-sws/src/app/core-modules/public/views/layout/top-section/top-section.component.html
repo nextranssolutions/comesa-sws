@@ -190,27 +190,30 @@
 
 <dx-popup [(visible)]="islostpassword" [showTitle]="true" title="{{ 'password_recovery' | translate }}" [width]="550"
   [height]="350" [dragEnabled]="false" [hideOnOutsideClick]="false">
-  <dx-form [formData]="forgotPasswordFrm" [colCount]="1">
+    <form enctype="multipart/form-data" role="form" [formGroup]="forgotPasswordFrm" (ngSubmit)="onFuncRecoverPasswordRequest()">
 
     <dxi-item dataField="email_address" editorType="dxTextBox">
+     
+    </dxi-item>
+    <div class="col-xs-12 col-md-12 col-lg-12 col-xl-12">
+      <label for="ti" class="control-label">{{ 'enter_email_address' | translate }}</label>
       <dx-text-box formControlName="email_address" placeholder="{{ 'enter_email_address' | translate }}"
         [showClearButton]="true">
       </dx-text-box>
-    </dxi-item>
+    </div>
 
-    <dxi-item>
+    <div class="col-xs-12 col-md-12 col-lg-12 col-xl-12">
       <dx-button text="{{ 'request_password_recovery' | translate }}" type="default" icon="fa fa-key"
         (onClick)="onFuncRecoverPasswordRequest()">
       </dx-button>
-    </dxi-item>
-
-    <dxi-item>
+    </div>
+   
+    <div class="col-xs-12 col-md-12 col-lg-12 col-xl-12">
       <dx-button class="form-label cursor-pointer" (click)="openSigninPopup()" type="success">
         <i class="fa fa-arrow-left"></i> {{ 'back_to_login' | translate }}
       </dx-button>
-    </dxi-item>
-
-  </dx-form>
+    </div>
+  </form>
 </dx-popup>
 
 <dx-load-panel #loadPanel shadingColor="rgba(0,0,0,0.4)" [position]="{ of: '#employee' }" [(visible)]="loadingVisible"

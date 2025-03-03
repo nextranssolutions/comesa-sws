@@ -155,6 +155,7 @@ export class SharedImpexpApplicationClass {
   permitProductsCategoryData: any;
   has_invoicegeneration: boolean;
   app_routing: any;
+  isSaved: boolean = false; // Track save state
   isprodnextdisable: boolean = true;
   response: any;
   addPopupVisible: boolean;
@@ -730,45 +731,7 @@ export class SharedImpexpApplicationClass {
     }
     return input;
   }
-  // onSaveImportExportApplication() {
-
-  //   const invalid = [];
-  //   const controls = this.applicationGeneraldetailsfrm.controls;
-  //   for (const name in controls) {
-  //     if (controls[name].invalid) {
-  //       this.toastr.error('Fill In All Mandatory fields with (*), missing value on ' + name.replace('_id', ''), 'Alert');
-  //       return;
-  //     }
-  //   }
-  //   if (this.applicationGeneraldetailsfrm.invalid) {
-  //     return;
-  //   }
-  //   const uploadData = this.prepareSavePermitDoc();
-
-  //   this.spinner.show();
-
-  //   this.appService.onSavePermitApplication(this.application_id, this.applicationGeneraldetailsfrm.value, this.tracking_no, 'saveImportExportApplication', uploadData)
-  //     .subscribe(
-  //       response => {
-  //         this.app_resp = response;
-  //         console.log(this.app_resp);
-  //         //the details 
-  //         this.spinner.hide();
-
-  //         if (this.app_resp.success) {
-  //           this.tracking_no = this.app_resp.tracking_no;
-  //           this.application_id = this.app_resp.application_id;
-  //           this.application_code = this.app_resp.application_code;
-  //           this.toastr.success(this.app_resp.message, 'Response');
-  //           //this.wizard.model.navigationMode.goToStep(1);
-  //         } else {
-  //           this.toastr.error(this.app_resp.message, 'Alert');
-  //         }
-  //       },
-  //       error => {
-  //         this.loading = false;
-  //       });
-  // }
+  
   fetchTraderDetails(appworkflow_status_id = 0, is_eacsecretariat = false) {
     this.spinnerShow('Loading...........');
 
@@ -792,15 +755,6 @@ export class SharedImpexpApplicationClass {
 
   }
   nextStep() {
-    // Extract `applicant_id` from the first form
-    const applicantId = this.applicantDetailsForm.get('applicant_id')?.value;
-
-    if (applicantId) {
-      // Patch `applicant_id` into the next form
-      this.applicationGeneraldetailsfrm.patchValue({ applicant_id: applicantId });
-    }
-
-    // Move to the next wizard step
     this.ngWizardService.next();
   }
 
@@ -808,9 +762,7 @@ export class SharedImpexpApplicationClass {
     this.ngWizardService.previous();
   }
 
-
   onSaveImportExportApplication() {
-
     const invalid = [];
     const controls = this.applicationGeneraldetailsfrm.controls;
     for (const name in controls) {
@@ -825,10 +777,9 @@ export class SharedImpexpApplicationClass {
     const uploadData = this.prepareSavePermitDoc();
 
     this.spinner.show();
-    // let registrant_details = this.applicationApplicantdetailsfrm.value;//applicant values
-    this.applicantDetailsForm.get('applicant_id')?.setValue(this.applicant_id);
+    let applicant_id = this.applicantDetailsForm.get('id')?.value;
     this.applicationGeneraldetailsfrm.value['regulatory_subfunction_id'] = this.regulatory_subfunction_id;
-    this.applicationGeneraldetailsfrm.value['applicant_id'] = this.applicant_id;
+    this.applicationGeneraldetailsfrm.value['applicant_id'] = applicant_id;
     // console.log(this.productGeneraldetailsfrm.value);
     this.spinner.show();
     this.appService.onSavePermitApplication(this.applicationGeneraldetailsfrm.value, uploadData, 'saveOgaImportExportApplication')
@@ -845,20 +796,31 @@ export class SharedImpexpApplicationClass {
             this.applicationGeneraldetailsfrm.patchValue({ permit_id: this.permit_id })
             this.toastr.success(this.product_resp.message, 'Response');
             // this.wizard.model.navigationMode.goToStep(nextStep);
-            this.ngWizardService.next();
+            // this.ngWizardService.next();
+            this.isSaved = true; 
 
           } else {
             this.toastr.error(this.product_resp.message, 'Alert');
+            this.isSaved = false;
           }
           this.spinner.hide();
         },
         error => {
           this.loading = false;
-
+          this.isSaved = false;
           this.spinner.hide();
         });
   }
 
+  // Function to handle the next step
+onNextStep() {
+  if (!this.isSaved) {
+    this.toastr.error('Kindly save before proceeding to the next step.', 'Validation Error');
+    return;
+  }
+  this.ngWizardService.next(); // Move to the next step only if saved
+}
+  
 
   onPermitsApplicationPrint() {
 
