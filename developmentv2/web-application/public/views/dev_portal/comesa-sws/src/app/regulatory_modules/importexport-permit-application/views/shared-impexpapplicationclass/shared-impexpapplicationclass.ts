@@ -371,7 +371,6 @@ export class SharedImpexpApplicationClass {
     let applicant_id = this.applicantDetailsForm.get('id')?.value;
     let application_options_id = this.applicantDetailsForm.get('application_options_id')?.value;
 
-    console.log(application_options_id);
     this.applicationGeneraldetailsfrm.value['applicant_id'] = applicant_id;
     this.applicationGeneraldetailsfrm.value['application_options_id'] = application_options_id;
     
@@ -381,7 +380,6 @@ export class SharedImpexpApplicationClass {
       .subscribe(
         response => {
           this.product_resp = response;
-          console.log(this.product_resp);
           if (this.product_resp.success) {
             this.tracking_no = this.product_resp.tracking_no;
             this.permit_id = this.product_resp.permit_id;

@@ -110,7 +110,7 @@ class ImportExportController extends Controller
                 'product_type_id' => $req->product_type_id,
                 'zone_id' => $req->zone_id,
                 'reference_no' => $reference_no,
-                'paying_currency_id' => $req->paying_currency_id,
+                'currency_oftransaction_id' => $req->currency_oftransaction_id,
                 'application_status_id' => 1,
                 'process_id' => $process_id,
                 'document_upload_id' => $req->document_upload_id,
@@ -118,13 +118,13 @@ class ImportExportController extends Controller
                 'application_reference_number' => $req->application_reference_number,
                 'applicant_type_id' => $req->applicant_type_id,
                 'permit_type_id' => $req->permit_type_id,
-                'date_of_application' => $req->date_of_application,
+                'date_of_application' => Carbon::now(),
                 'expected_date_of_shipment' => $req->expected_date_of_shipment,
                 'importer_exporter_id' => $req->importer_exporter_id,
                 'port_type_id' => $req->port_type_id,
                 'port_of_entryexit_id' => $req->port_of_entryexit_id,
                 'customs_office' => $req->customs_office,
-                'mode_oftransport_id' => $req->mode_oftransport_id,
+                'mode_of_transport_id' => $req->mode_of_transport_id,
                 'transpoter_name' => $req->transpoter_name,
                 'transporter_contact' => $req->transporter_contact,
                 'transporter_country_id' => $req->transporter_country_id,
@@ -133,7 +133,6 @@ class ImportExportController extends Controller
                 'invoice_number' => $req->invoice_number,
                 'invoice_date' => $req->invoice_date,
                 'total_invoice_value' => $req->total_invoice_value,
-                'currency_oftransaction_id' => $req->currency_oftransaction_id,
                 'declaration_statuses_id' => $req->declaration_statuses_id,
 
             );
@@ -168,7 +167,7 @@ class ImportExportController extends Controller
                     $sql = DB::table('tra_application_documentsdefination')->where(array('application_code' => $application_code))->first();
                     if (!$sql) {
                         //print_r('test');
-                        initializeApplicationDMS($product_type_id, $regulatory_function_id, $regulatory_subfunction_id, $application_code, $tracking_no . rand(0, 100), $trader_id);
+                        // initializeApplicationDMS($product_type_id, $regulatory_function_id, $regulatory_subfunction_id, $application_code, $tracking_no . rand(0, 100), $trader_id);
                     }
                     $res = array(
                         'tracking_no' => $tracking_no,
@@ -198,9 +197,7 @@ class ImportExportController extends Controller
                 $product_res = $resp;
 
                 $ref_id = getSingleRecordColValue('tra_submodule_referenceformats', array('regulatory_function_id' => $regulatory_function_id), 'reference_format_id');
-                // print_r('Hello: ' . $ref_id);
-                // exit;
-
+       
                 $zone_code = getSingleRecordColValue('par_zones', array('id' => $req->zone_id), 'zone_code');
                 $section_code = getSingleRecordColValue('par_regulated_productstypes', array('id' => $req->product_type_id), 'code');
                 $class_code = getSingleRecordColValue('par_classifications', array('id' => $req->classification_id), 'code');
@@ -228,7 +225,7 @@ class ImportExportController extends Controller
                 }
                 $application_code = generateApplicationCode($regulatory_subfunction_id, 'wb_importexport_applications');
                 $tra_application_code = generateApplicationCode($regulatory_subfunction_id, 'tra_importexport_applications');
-                
+
                 $application_id = $resp['record_id'];
 
                 $app_data['created_by'] = $email_address;
@@ -236,7 +233,7 @@ class ImportExportController extends Controller
                 $app_data['tracking_no'] = $tracking_no;
                 $app_data['reference_no'] = $tracking_no;
                 $app_data['process_id'] = $process_id;
-             
+
                 $app_data['regulatory_function_id'] = $regulatory_function_id;
 
                 $app_data['date_added'] = Carbon::now();
@@ -266,13 +263,13 @@ class ImportExportController extends Controller
                     );
 
                     $response = insertRecord('tra_importexport_applications', $app_data, $email_address);
-                    
+
                     if ($response['success']) {
                         $res = array(
                             'tracking_no' => $tracking_no,
                             'application_id' => $application_id,
                             'regulatory_function_id' => $regulatory_function_id,
-                            
+
                             'application_code' => $application_code,
                             // 'process_id' => $process_id,
                             'success' => true,
@@ -391,37 +388,49 @@ class ImportExportController extends Controller
             $take = 50; // Default take
             $skip = 0; // Default skip
             $searchValue = $req->searchValue ?? '';
-    
+
             if (!empty($searchValue) && $searchValue !== 'undefined') {
                 $searchValue = explode(',', $searchValue);
                 $search_value = $searchValue[2] ?? '';
             }
-    
+
             $is_local_agent = $req->is_local_agent;
             $data = collect();
             $totalCount = 0;
-    
-            
-                $data = DB::table('tra_trader_account as t1')
-                    ->leftJoin('par_countries as t2', 't1.country_id', '=', 't2.id')
-                    ->leftJoin('par_regions as t3', 't1.region_id', '=', 't3.id')
-                    ->leftJoin('par_districts as t4', 't1.district_id', '=', 't4.id')
-                    ->select(
-                        't1.id', 't1.name as applicant_name', 't1.contact_person', 
-                        't1.tin_no', 't1.country_id as country_id', 't1.region_id as region_id',
-                        't1.district_id as district_id', 't4.name as district_name', 't3.name as region_name', 
-                        't1.physical_address', 't1.postal_address', 't1.telephone_no as telephone_no', 
-                        't1.fax as fax', 't1.email_address', 't1.website as website'
-                    )
-                    ->when($search_value, fn($query) => 
-                        $query->where('t1.name', 'LIKE', "%{$search_value}%")
-                    )
-                    ->orderByDesc('t1.id')
-                    ->get();
-    
-                $totalCount = $data->count();
-            
-    
+
+
+            $data = DB::table('tra_trader_account as t1')
+                ->leftJoin('par_countries as t2', 't1.country_id', '=', 't2.id')
+                ->leftJoin('par_regions as t3', 't1.region_id', '=', 't3.id')
+                ->leftJoin('par_districts as t4', 't1.district_id', '=', 't4.id')
+                ->select(
+                    't1.id',
+                    't1.name as applicant_name',
+                    't1.contact_person',
+                    't1.tin_no',
+                    't1.country_id as country_id',
+                    't1.region_id as region_id',
+                    't1.district_id as district_id',
+                    't4.name as district_name',
+                    't3.name as region_name',
+                    't1.physical_address',
+                    't1.postal_address',
+                    't1.telephone_no as telephone_no',
+                    't1.fax as fax',
+                    't1.email_address',
+                    't1.website as website'
+                )
+                ->when(
+                    $search_value,
+                    fn($query) =>
+                    $query->where('t1.name', 'LIKE', "%{$search_value}%")
+                )
+                ->orderByDesc('t1.id')
+                ->get();
+
+            $totalCount = $data->count();
+
+
             return response()->json([
                 'success' => true,
                 'data' => $data,
@@ -434,7 +443,25 @@ class ImportExportController extends Controller
             ]);
         }
     }
-    
-    
-    
+
+
+
+    public function getImportExpPermitsApplicationLoading(Request $req)
+    {
+        try {
+           
+        } catch (\Exception $e) {
+            $res = array(
+                'success' => false,
+                'message' => $e->getMessage()
+            );
+        } catch (\Throwable $throwable) {
+            $res = array(
+                'success' => false,
+                'message' => $throwable->getMessage()
+            );
+        }
+
+        return response()->json($res);
+    }
 }

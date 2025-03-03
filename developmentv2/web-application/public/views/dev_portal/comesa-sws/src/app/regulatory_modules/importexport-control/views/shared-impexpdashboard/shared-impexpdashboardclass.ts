@@ -141,7 +141,7 @@ export class SharedImpExpdashboardClass {
   }
 
   onInitiatenewImportExpApplications() {
-    this.onClickSubModuleAppSelection(1, 'New Import Application')
+    // this.onClickSubModuleAppSelection(1, 'New Import Application')
     this.app_route = ['./importexport-control/initiate-importapp'];
 
     // this.router.navigate(this.app_route);
@@ -183,22 +183,22 @@ export class SharedImpExpdashboardClass {
   
   onApplicationSelection() {
 
-    if (this.applicationSelectionfrm.invalid) {
-      this.toastr.error('Fill in all the Mandatory Fields', 'Alert!');
+    // if (this.applicationSelectionfrm.invalid) {
+    //   this.toastr.error('Fill in all the Mandatory Fields', 'Alert!');
 
-      return;
-    }
-    this.spinner.show();
-    this.sectionItem = this.applicationSelectionfrm.controls['importexport_permittype_id'];
-    this.app_typeItem = this.applicationSelectionfrm.controls['regulatory_subfunction_id'];
-    this.prodClassCategoryItem = this.applicationSelectionfrm.controls['producttype_defination_id'];
-    let appsubmissions_type_id = this.applicationSelectionfrm.get('appsubmissions_type_id')?.value;
+    //   return;
+    // }
+    // this.spinner.show();
+    // this.sectionItem = this.applicationSelectionfrm.controls['importexport_permittype_id'];
+    // this.app_typeItem = this.applicationSelectionfrm.controls['regulatory_subfunction_id'];
+    // this.prodClassCategoryItem = this.applicationSelectionfrm.controls['producttype_defination_id'];
+    // let appsubmissions_type_id = this.applicationSelectionfrm.get('appsubmissions_type_id')?.value;
 
-    this.importexport_permittype_id = this.sectionItem.value;
-    this.regulatory_subfunction_id = this.app_typeItem.value;
+    // this.importexport_permittype_id = this.sectionItem.value;
+    // this.regulatory_subfunction_id = this.app_typeItem.value;
    
-    this.producttype_defination_id = this.prodClassCategoryItem.value;
-    this.configService.getSectionUniformApplicationProces(this.regulatory_subfunction_id, this.importexport_permittype_id, this.producttype_defination_id, appsubmissions_type_id)
+    // this.producttype_defination_id = this.prodClassCategoryItem.value;
+    this.configService.getSectionUniformApplicationProces(this.regulatory_subfunction_id)
       .subscribe(
         data => {
           this.spinner.hide();

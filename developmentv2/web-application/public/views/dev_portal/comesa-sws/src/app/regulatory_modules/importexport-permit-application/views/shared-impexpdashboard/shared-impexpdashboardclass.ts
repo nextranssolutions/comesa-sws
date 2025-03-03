@@ -14,12 +14,15 @@ export class SharedImpExpdashboardClass {
 
   @ViewChild(DxDataGridComponent) dataGrid: DxDataGridComponent;
   is_popupguidelines: boolean;
+  application_status_id: any;
   approved_applications: number = 0;
   pending_submission: number = 0;
   queried_applications: number = 0;
   rejected_applications: number = 0;
   submitted_application: number = 0;
   productsapp_details: any;
+  loadingVisible: boolean;
+  spinnerMessage: string;
   prodClassCategoryItem: any;
   release_underseal: number = 0;
   dtImportExpApplicationData: any = [];
@@ -39,6 +42,7 @@ export class SharedImpExpdashboardClass {
   printiframeUrl: string;
   isPreviewApplicationDetails: boolean = false;
   frmPreviewAppDetails: FormGroup;
+  applicationGeneraldetailsfrm: FormGroup;
   regulated_productstype_id: number;
   applicationSelectionfrm: FormGroup;
   applicationRejectionData: any;
@@ -81,11 +85,11 @@ export class SharedImpExpdashboardClass {
   constructor(public utilityService: UtilityService, public viewRef: ViewContainerRef, public spinner: SpinnerVisibilityService, public toastr: ToastrService, public router: Router, public configService: ConfigurationsService, public appService: ImportExportService) { // this.onLoadApplicationCounterDetails();
 
 
-    this.applicationSelectionfrm = new FormGroup({
-      regulated_productstype_id: new FormControl(this.productTypeData, Validators.compose([Validators.required])),
+  
+
+    this.applicationGeneraldetailsfrm = new FormGroup({
       regulatory_subfunction_id: new FormControl('', Validators.compose([])),
-      producttype_defination_id: new FormControl('', Validators.compose([])),
-      importexport_permittype_id: new FormControl('', Validators.compose([]))
+
     });
 
 
@@ -105,12 +109,13 @@ export class SharedImpExpdashboardClass {
     });
   }
 
-  ngOnInit() {
+  ngOnInit(): void {
     this.onLoadProductTypes();
     this.onLoadconfirmDataParam();
     this.onLoadproducttypeDefinationData();
-
     this.onLoadimportExportPermitTypesData();
+    this.reloadPermitApplicationsApplications();
+    // this.onLoadImportApplciations();
   }
   scrollToTop(): void {
     window.scrollTo({
@@ -141,76 +146,32 @@ export class SharedImpExpdashboardClass {
   }
 
   onInitiatenewImportExpApplications() {
-    // this.onClickSubModuleAppSelection(1, 'New Import Application')
+    this. onApplicationSelection(1);
     this.app_route = ['./importexport-permit-application/initiate-importapp'];
-
-    this.router.navigate(this.app_route);
+    
+    this.spinner.show();
+    // this.router.navigate(this.app_route);
   }
 
 
+  onApplicationSelection(regulatory_subfunction_id) {
 
-  onClickSubModuleAppSelection(regulatory_subfunction_id, sub_module_name) {
+    if (regulatory_subfunction_id == 1) {
+      this.applicationGeneraldetailsfrm.get('regulatory_subfunction_id')?.setValue(regulatory_subfunction_id);
 
-    if (regulatory_subfunction_id == 1 || regulatory_subfunction_id == 91) {
-      this.isPermitInitialisation = true;
-      this.applicationSelectionfrm.get('regulatory_subfunction_id')?.setValue(regulatory_subfunction_id);
-
-    } else if (regulatory_subfunction_id == 30) {
-      this.isPermitInitialisation = true;
-      this.applicationSelectionfrm.get('regulatory_subfunction_id')?.setValue(regulatory_subfunction_id);
-
-    } else if (regulatory_subfunction_id == 94) {
-
-      this.application_details = { regulatory_function_id: this.regulatory_function_id, process_title: sub_module_name, regulatory_subfunction_id: regulatory_subfunction_id };
-      this.appService.setApplicationDetail(this.application_details);
-
-      this.app_route = ['./importexport-control/product-variantapp-selection'];
-
-      this.router.navigate(this.app_route);
-      this.scrollToTop();
-    } else {
-
-      this.application_details = { regulatory_function_id: this.regulatory_function_id, process_title: sub_module_name, regulatory_subfunction_id: regulatory_subfunction_id };
-      this.appService.setApplicationDetail(this.application_details);
-
-      this.app_route = ['./importexport-control/registered-product-selection'];
-
-      this.router.navigate(this.app_route);
-      this.scrollToTop();
-    }
-
-  }
-  
-  onApplicationSelection() {
-
-    if (this.applicationSelectionfrm.invalid) {
-      this.toastr.error('Fill in all the Mandatory Fields', 'Alert!');
-
-      return;
     }
     this.spinner.show();
-    this.sectionItem = this.applicationSelectionfrm.controls['importexport_permittype_id'];
-    this.app_typeItem = this.applicationSelectionfrm.controls['regulatory_subfunction_id'];
-    this.prodClassCategoryItem = this.applicationSelectionfrm.controls['producttype_defination_id'];
-    let appsubmissions_type_id = this.applicationSelectionfrm.get('appsubmissions_type_id')?.value;
-
-    this.importexport_permittype_id = this.sectionItem.value;
+    this.app_typeItem = this.applicationGeneraldetailsfrm.controls['regulatory_subfunction_id'];
     this.regulatory_subfunction_id = this.app_typeItem.value;
-   
-    this.producttype_defination_id = this.prodClassCategoryItem.value;
-    this.configService.getSectionUniformApplicationProces(this.regulatory_subfunction_id, this.importexport_permittype_id, this.producttype_defination_id, appsubmissions_type_id)
+
+    this.configService.getSectionUniformApplicationProces(this.regulatory_subfunction_id)
       .subscribe(
         data => {
           this.spinner.hide();
           if (data.success) {
             this.processData = data.data.process_infor;
-            
-           
-            
-       
+
             this.router_link = this.processData.router_link;
-            // this.productsapp_details = { regulatory_function_id: this.regulatory_function_id, prodclass_category_id: this.prodclass_category_id, process_title: this.title, regulatory_subfunction_id: this.regulatory_subfunction_id, product_type_id: this.product_type_id, status_id: 1, status_name: 'New', form_fields: this.processData.form_fields, appsubmissions_type_id: appsubmissions_type_id };
-          
             this.productsapp_details = this.processData;
             this.appService.setApplicationDetail(data.data);
             localStorage.setItem('application_details', JSON.stringify(data.data));
@@ -235,20 +196,30 @@ export class SharedImpExpdashboardClass {
     return window.innerWidth * percentage_width / 100;
   }
 
-  reloadPermitApplicationsApplications(filter_params) {
-
-    this.appService.onPermitApplicationLoading('getImportExpPermitsApplicationLoading', filter_params)
+  reloadPermitApplicationsApplications(filter_params  = { application_status_id: this.application_status_id }) {
+    this.spinnerShow('Loading Information...........');
+    this.appService.onPermitApplicationLoading(filter_params, 'getImportExpPermitsApplicationLoading')
       .subscribe(
-        resp_data => {
-          if (resp_data.success) {
-            this.dtImportExpApplicationData = resp_data.data;
+        data => {
 
+          this.data_record = data;
+          // console.log(this.data_record);
+          if (this.data_record.success) {
+            this.dtImportExpApplicationData = this.data_record.data;
           }
-          else {
-            this.toastr.error(resp_data.message, 'Alert!');
+          this.spinnerHide();
+        },
+      );
+  }
 
-          }
-        });
+
+
+  spinnerShow(spinnerMessage) {
+    this.loadingVisible = true;
+    this.spinnerMessage = spinnerMessage;
+  }
+  spinnerHide() {
+    this.loadingVisible = false;
   }
 
 
@@ -555,7 +526,7 @@ export class SharedImpExpdashboardClass {
 
 
   } funcProductRestoreArchiveApplication(data) {
-    this.utilityService.funcApplicationRestoreArchiceCall(this.viewRef, data, 'txn_importexport_applications', this.reloadPermitApplicationsApplications)
+    this.utilityService.funcApplicationRestoreArchiceCall(this.viewRef, data, 'wb_importexport_applications', this.reloadPermitApplicationsApplications)
   }
   funcUploadPaymentDetails(data) {
     this.appregulatory_subfunction_id = data.regulatory_subfunction_id;
@@ -703,7 +674,7 @@ export class SharedImpExpdashboardClass {
     this.FilterDetailsFrm.reset();
     this.FilterDetailsFrm.reset();
 
-    this.reloadPermitApplicationsApplications({});
+    this.reloadPermitApplicationsApplications();
 
 
   }
@@ -805,10 +776,7 @@ export class SharedImpExpdashboardClass {
     this.utilityService.onCellPrepared(e);
 
   }
-  // onInitiatenewImportExpApplications(){
-  //       this.isPermitInitialisation = true; 
 
-  // }
 
 
 }
