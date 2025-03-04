@@ -365,6 +365,9 @@ onAddWorkFlowTransition(){
 onAddWorkFlowStageActions(){
   this.workflowStageActionsItemsFrm.reset();
   this.workflowStageActionDetailsVisible = true;
+
+  this.workflowTransitionFrm.get('table_name')?.setValue('wf_workflow_actions');
+  this.workflowTransitionFrm.get('workflow_id')?.setValue(this.workflow_id);
  }
  
 
