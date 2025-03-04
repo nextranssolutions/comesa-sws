@@ -102,7 +102,7 @@ class ImportExportController extends Controller
                 'trader_id' => $trader_id,
                 'local_agent_id' => $local_agent_id,
                 'application_code' => $req->application_code,
-                'applicant_application_code' => $req->applicant_application_code,
+                // 'oga_application_code' => $req->oga_application_code,
                 'regulatory_subfunction_id' => $req->regulatory_subfunction_id,
                 'application_id' => $application_id,
                 'regulatory_function_id' => $regulatory_function_id,
@@ -695,11 +695,11 @@ class ImportExportController extends Controller
                     'dosage_form_id' => $req->dosage_form_id
                 );
 
-                if (validateIsNumeric($permitprod_recommendation_id)) {
+                // if (validateIsNumeric($permitprod_recommendation_id)) {
 
-                    $data['permitprod_recommendation_id'] = $req->permitprod_recommendation_id;
-                    $data['permitprod_recommendation'] = $req->permitprod_recommendation;
-                }
+                //     $data['permitprod_recommendation_id'] = $req->permitprod_recommendation_id;
+                //     $data['permitprod_recommendation'] = $req->permitprod_recommendation;
+                // }
 
                 if (validateIsNumeric($record_id)) {
                     $where = array('id' => $record_id);
@@ -716,7 +716,7 @@ class ImportExportController extends Controller
                 } else {
 
                     //insert 
-                    $data['permitprod_recommendation_id'] = 1;
+                    // $data['permitprod_recommendation_id'] = 1;
                     $data['created_by'] = $user_id;
                     $data['created_on'] = Carbon::now();
                     $resp = insertRecord($table_name, $data, $user_id);
@@ -1156,4 +1156,91 @@ class ImportExportController extends Controller
             ]);
         }
     }
+
+
+    public function getImportExpPermitsApplicationLoading(Request $req)
+    {
+        try {
+            $trader_id = $req->trader_id;
+            $application_status_id = $req->application_status_id;
+            $regulatory_subfunction_id = $req->regulatory_subfunction_id;
+
+            $application_status_ids = explode(',',  $application_status_id);
+            $sub_module_ids = explode(',',  $regulatory_subfunction_id);
+            //  $regulatory_subfunction_id = $req->regulatory_subfunction_id;
+            $product_type_id = $req->product_type_id;
+            $application_code = $req->application_code;
+            $permit_type_id = $req->permit_type_id;
+
+            $data = array();
+            //get the records 
+            $records = DB::table('tra_importexport_applications as t1')
+                ->select('t1.*', 't7.name as action_name', 't7.iconCls', 't7.action', 't3.name as status', 't3.name as status_name', 't4.router_link', 't4.name as process_title')
+                ->leftJoin('wb_statuses as t3', 't1.application_status_id', '=', 't3.id')
+                ->leftJoin('wb_processes as t4', function ($join) {
+                    $join->on('t1.regulatory_subfunction_id', '=', 't4.regulatory_subfunction_id');
+                    $join->on('t1.application_status_id', '=', 't4.status_id');
+                })
+                ->leftJoin('tra_processstatus_actions as t6', function ($join) {
+                    $join->on('t1.application_status_id', '=', 't6.status_id')
+                        ->on('t6.is_default_action', '=', DB::raw(1));
+                })
+                ->leftJoin('wb_statuses_actions as t7', 't6.action_id', 't7.id')
+
+                ->orderBy('t1.date_added', 'desc');
+            if (validateIsNumeric($trader_id)) {
+                if ($trader_id != 25) {
+                    $records->where(array('t1.trader_id' => $trader_id));
+                }
+            }
+
+            if (is_array($application_status_ids) && count($application_status_ids) > 0 && $application_status_id != '') {
+
+                $records =  $records->whereIn('t1.application_status_id', $application_status_ids);
+            }
+            if (is_array($sub_module_ids) && count($sub_module_ids) > 0 && $regulatory_subfunction_id != '') {
+
+                $records =  $records->whereIn('t1.regulatory_subfunction_id', $sub_module_ids);
+            }
+
+            if (validateIsNumeric($regulatory_subfunction_id)) {
+                $records =  $records->where(array('t1.regulatory_subfunction_id' => $regulatory_subfunction_id));
+            }
+
+            if (validateIsNumeric($product_type_id)) {
+                $records =  $records->where(array('t1.product_type_id' => $product_type_id));
+            }
+            if (validateIsNumeric($permit_type_id)) {
+                $records->where(array('t1.regulatory_subfunction_id' => 12));
+            }
+            //the ilters 
+
+            if (validateIsNumeric($application_code)) {
+
+                $records =  $records->where(array('t1.application_code' => $application_code));
+                $data = $records->get();
+
+                $data = $this->getSinglePermitApplications($data);
+            } else {
+
+                //$records = $records->get();
+                $records = $records->groupBy('t1.application_code')->get();
+                $data = $this->getPermitApplications($records);
+            }
+            // $data = $this->getPermitApplications($records);
+            $res = array('success' => true, 'data' => $data);
+        } catch (\Exception $e) {
+            $res = array(
+                'success' => false,
+                'message' => $e->getMessage()
+            );
+        } catch (\Throwable $throwable) {
+            $res = array(
+                'success' => false,
+                'message' => $throwable->getMessage()
+            );
+        }
+        return response()->json($res);
+    }
+
 }

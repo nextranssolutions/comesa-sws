@@ -20,7 +20,7 @@ export class SharedapplicationdocumentuploadsComponent implements OnChanges {
   @Input() document_type_id: number;
   @Input() appworkflow_status_id: number;
   @Input() uploaded_by: number;
-  @Input() workallocations_assignment_id: number;
+  // @Input() workallocations_assignment_id: number;
  
   
   workflow_stage_id: number;
@@ -32,7 +32,7 @@ export class SharedapplicationdocumentuploadsComponent implements OnChanges {
   @Output() talk: EventEmitter<string> = new EventEmitter<string>();
   loadingVisible: boolean;
   spinnerMessage: string;
-  table_name: string = 'tra_uploaded_applicationdocs';
+  table_name: string = 'dms_uploaded_applicationdocs';
   data_record: any;
   documentTypeRequirements: any;
   supportingDocumentsData: any;
@@ -49,7 +49,7 @@ export class SharedapplicationdocumentuploadsComponent implements OnChanges {
   deletePopupVisible: boolean;
   previewAppDocumentUploadedData: any;
 
-  parameter_name: string = "Uploaded Application Documents";
+  parameter_name: string = "uploaded_application_documents";
   actionsMenuItems = [
     {
       text: "Action",
@@ -79,7 +79,7 @@ export class SharedapplicationdocumentuploadsComponent implements OnChanges {
     private reportingAnalytics: ReportsService,
     private encryptionService: EncryptionService
   ) {
-    this.table_name = 'tra_uploaded_applicationdocs';
+    this.table_name = 'dms_uploaded_applicationdocs';
     const base_url = AppSettings.base_url;
     this.onApplicationUploadFrm = new FormGroup({
       id: new FormControl('', Validators.compose([])),
@@ -168,45 +168,7 @@ export class SharedapplicationdocumentuploadsComponent implements OnChanges {
 
   }
 
-  onloadDocumentCategoryData() {
 
-    var data_submit = {
-      'table_name': 'eoi_document_category'
-    }
-    this.documentService.onLoadDocumentData(data_submit)
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            this.documentCategoryData = this.data_record.data;
-          }
-        },
-        error => {
-
-        });
-  }
-
-  onLoadEoiSupportingDocumentsConfig(eoi_id = 0) {
-    this.spinnerShow('Loading EOI documents...........');
-    var data_submit = {
-      'table_name': 'eoi_documents_tosubmit',
-      'eoi_id': eoi_id
-    }
-    this.eoiService.onLoadExpressionOfInterestDataUrl(data_submit, 'onLoadEoiSupportingDocuments')
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
-            this.supportingDocumentsData = this.decryptedPayload;
-          }
-          this.spinnerHide();
-        },
-        error => {
-
-          this.spinnerHide();
-        });
-  }
   onLoaddocumentTypeRequirements() {
     var data_submit = {
       'table_name': 'dms_document_requirements',
@@ -322,7 +284,6 @@ export class SharedapplicationdocumentuploadsComponent implements OnChanges {
     var data_submit = {
       'table_name': 'dms_document_requirements',
       'application_code': application_code,
-      'workallocations_assignment_id':this.workallocations_assignment_id,
       'uploaded_by': this.uploaded_by
     }
     this.documentService.onConfigurationItemswithUrl(data_submit, 'onLoaddocumentPreviewUploadedData')
@@ -349,7 +310,6 @@ export class SharedapplicationdocumentuploadsComponent implements OnChanges {
       'application_code': application_code,
       'uploaded_by': this.uploaded_by,
       'workflow_stage_id': this.workflow_stage_id,
-      'workallocations_assignment_id':this.workallocations_assignment_id,
       'appworkflow_status_id': this.appworkflow_status_id
     }
     this.documentService.onConfigurationItemswithUrl(data_submit, 'onLoadApplicationUploadeddocument')
@@ -426,8 +386,6 @@ export class SharedapplicationdocumentuploadsComponent implements OnChanges {
     this.onApplicationUploadFrm.reset();
     this.onApplicationUploadFrm.get('document_requirement_id')?.setValue(data.document_requirement_id);
     this.onApplicationUploadFrm.get('process_id')?.setValue(this.process_id);
-
-    this.onApplicationUploadFrm.get('workallocations_assignment_id')?.setValue(this.workallocations_assignment_id)
   }
 
   onExporting(e: DxDataGridTypes.ExportingEvent) {

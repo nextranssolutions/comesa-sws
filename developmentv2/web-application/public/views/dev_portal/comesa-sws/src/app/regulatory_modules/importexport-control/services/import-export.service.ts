@@ -98,7 +98,7 @@ export class ImportExportService {
     });
 
     filter_params.trader_id = this.trader_id;
-    filter_params.mistrader_id = this.mistrader_id;
+    // filter_params.mistrader_id = this.mistrader_id;
 
     this.config = {
       params: filter_params,

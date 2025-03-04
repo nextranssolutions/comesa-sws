@@ -91,6 +91,8 @@ export class PermitproductdetailsComponent implements OnInit {
   enabled_uploadproductadd: boolean;
   isreadOnlyProducts: boolean;
   isMedicinesProduct: boolean;
+  loadingVisible: boolean;
+  spinnerMessage: string;
   permitProductMenuItems = [
     {
       text: "Action",

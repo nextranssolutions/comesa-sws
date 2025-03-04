@@ -26,6 +26,7 @@ Route::middleware(['XssSanitizer','clear_cache_config','firewall.all'])->prefix(
     Route::get('getManufacturersInformation', [ImportExportController::class, 'getManufacturersInformation']);
     Route::get('onLoadManufacturingSitesDetails', [ImportExportController::class, 'onLoadManufacturingSitesDetails']);
     Route::get('onGetRegulatedProductCategory', [ImportExportController::class, 'onGetRegulatedProductCategory']);
+    Route::get('getImportExpPermitsApplicationLoading', [ImportExportController::class, 'getImportExpPermitsApplicationLoading']);
     
     Route::post('saveImportExportApplication', [ImportExportController::class,'saveImportExportApplication']);
     Route::post('onSaveUniformApplicantDataset', [ImportExportController::class,'onSaveUniformApplicantDataset']);
