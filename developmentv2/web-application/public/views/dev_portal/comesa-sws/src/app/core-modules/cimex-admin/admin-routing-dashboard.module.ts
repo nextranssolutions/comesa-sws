@@ -373,7 +373,8 @@ const routes: Routes = [{
   }, {
     path: 'app-institutions',
     component: AppInstitution
-  }, {
+  },
+  {
     path: 'app-institution-departments',
     component: AppInstitutionDepartments
   },
