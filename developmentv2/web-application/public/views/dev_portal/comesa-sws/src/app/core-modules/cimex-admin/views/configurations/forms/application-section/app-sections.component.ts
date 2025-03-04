@@ -4,7 +4,6 @@ import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
 import { SpinnerVisibilityService } from 'ng-http-loader';
-import { NgxSmartModalService } from 'ngx-smart-modal';
 import { ToastrService } from 'ngx-toastr';
 import { ConfigurationsService } from 'src/app/core-services/configurations/configurations.service';
 import { ReportsService } from 'src/app/core-services/reports/reports.service';
@@ -67,7 +66,7 @@ export class AppSectionsComponent {
      public viewRef: ViewContainerRef,
      public translate: TranslateService,
      public utilityService: UtilityService,
-     public modalService: NgxSmartModalService,
+    
      public reportingAnalytics: ReportsService,
      public configService: ConfigurationsService,
    ) {
@@ -186,7 +185,7 @@ export class AppSectionsComponent {
    fetchRegFunctionData() {
  
      var data_submit = {
-       'table_name': 'cfg_regulatory_functions'
+       'table_name': 'par_regulatory_functions'
      }
      this.configService.onLoadConfigurationData(data_submit)
        .subscribe(
@@ -204,7 +203,7 @@ export class AppSectionsComponent {
    fetchRegSubFunctionDetailsData() {
  
     var data_submit = {
-      'table_name': 'cfg_regulatory_subfunctions',
+      'table_name': 'par_regulatory_subfunctions',
       
     }
     this.configService.onLoadConfigurationData(data_submit)
@@ -224,7 +223,7 @@ export class AppSectionsComponent {
    fetchRegSubFunctionData(regulatory_function_id) {
  
      var data_submit = {
-       'table_name': 'cfg_regulatory_subfunctions',
+       'table_name': 'par_regulatory_subfunctions',
        regulatory_function_id: regulatory_function_id
      }
      this.configService.onLoadConfigurationData(data_submit)
@@ -249,7 +248,7 @@ export class AppSectionsComponent {
    fetchProductTypesData() {
  
      var data_submit = {
-       'table_name': 'cfg_regulated_productstypes'
+       'table_name': 'par_regulated_productstypes'
      }
      this.configService.onLoadConfigurationData(data_submit)
        .subscribe(

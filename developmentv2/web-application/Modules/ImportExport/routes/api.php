@@ -16,10 +16,29 @@ use Modules\ImportExport\App\Http\Controllers\ImportExportController;
     |
 */
 
+
 Route::middleware(['XssSanitizer','clear_cache_config','firewall.all'])->prefix('import-export')->group(function () {
    
     Route::get('getSenderreceiversDetails', [ImportExportController::class, 'getSenderreceiversDetails']);
     Route::get('getTraderInformationDetails', [ImportExportController::class, 'getTraderInformationDetails']);
+    Route::get('getPermitProductsDetails', [ImportExportController::class, 'getPermitProductsDetails']);
+    Route::get('getRegisteredNonRegisteredProducts', [ImportExportController::class, 'getRegisteredNonRegisteredProducts']);
+    Route::get('getManufacturersInformation', [ImportExportController::class, 'getManufacturersInformation']);
+    Route::get('onLoadManufacturingSitesDetails', [ImportExportController::class, 'onLoadManufacturingSitesDetails']);
+    Route::get('onGetRegulatedProductCategory', [ImportExportController::class, 'onGetRegulatedProductCategory']);
+    Route::get('getApplicantPermitProductsDetails', [ImportExportController::class, 'getApplicantPermitProductsDetails']);
+    Route::get('getImportExpPermitsApplicationLoading', [ImportExportController::class, 'getImportExpPermitsApplicationLoading']);
+    
     Route::post('saveImportExportApplication', [ImportExportController::class,'saveImportExportApplication']);
+    Route::post('onSaveUniformApplicantDataset', [ImportExportController::class,'onSaveUniformApplicantDataset']);
+    Route::get('getImportExpPermitsApplicationLoading', [ImportExportController::class, 'getImportExpPermitsApplicationLoading']);
+    Route::post('onSaveApplicantPermitProductsDetails', [ImportExportController::class,'onSaveApplicantPermitProductsDetails']);
+    
+    Route::get('getImportExpApplicantPermitsLoading', [ImportExportController::class, 'getImportExpApplicantPermitsLoading']);
+    
+    
+    Route::post('saveOgaImportExportApplication', [ImportExportController::class,'saveOgaImportExportApplication']);
+    Route::post('onSavePermitProductsDetails', [ImportExportController::class,'onSavePermitProductsDetails']);
+    Route::post('saveManufacturerDetails', [ImportExportController::class,'saveManufacturerDetails']);
     
 });

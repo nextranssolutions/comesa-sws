@@ -1,0 +1,302 @@
+<form role="form" enctype="multipart/form-data" role="form" [formGroup]="applicantDetailsForm">
+    <div class="row  wizard-content">
+        <fieldset class="col-lg-12 row">
+            <div class="col-lg-4 row input-group">
+                <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
+                    <label for="ti" class="control-label">{{ 'application_options' | translate }}</label>
+                    <dx-select-box [dataSource]="applicationsOptionsData" valueExpr="id" displayExpr="name"
+                        [searchEnabled]="true" formControlName="application_options_id"
+                        (onValueChanged)="onApplicationOptionChange($event)">
+                    </dx-select-box>
+                </div>
+            </div>
+
+
+            <div *ngIf="showHiddenFields">
+                <div class="col-lg-4 row input-group ">
+          
+                    <div class="col-xs-12 col-md-3 col-lg-3 col-xl-3">
+                        <label>{{ 'applicant_name' | translate }}</label>
+                        <dx-text-box [readOnly]="application_options_id === 1 || applicantDetailsSet"
+                        [readOnly]="true" formControlName="applicant_name" [placeholder]="'applicant_name' | translate"
+                            [showClearButton]="true">
+                        </dx-text-box>
+                    </div>
+                    <div *ngIf="showSearchButton" class="col-xs-12 col-md-1 col-lg-1 col-xl-1 pt-5">
+                        <dx-button [elementAttr]="{ class: 'btn btn-primary pull-left'}"
+                            style="margin-top:25px  !important;" text="{{'search_applicant' | translate}}"
+                            type="default" (onClick)="onSearchConsignorName(1)">
+                            <i class="fa fa-search"></i>{{'search_applicant' | translate}}
+                        </dx-button>
+                    </div>
+                    <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
+                        <label>{{ 'email_address' | translate }}</label>
+                        <dx-text-box formControlName="email_address" [placeholder]="'email_address' | translate"
+                        [readOnly]="true" [showClearButton]="true">
+                        </dx-text-box>
+                    </div>
+
+                    <div class="col-xs-12 col-md-3 col-lg-3 col-xl-3">
+                        <label class="control-label">{{'country' | translate}}</label>
+                        <dx-select-box [dataSource]="countriesData" valueExpr="id" displayExpr="name"
+                        [readOnly]="true" placeholder="Select Country" (onSelectionChanged)="onCoutryCboSelect($event)"
+                            [searchEnabled]="true" formControlName="country_id">
+                        </dx-select-box>
+                    </div>
+                    <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
+                        <label for="ti" class="control-label">{{'province/region/city' | translate}}</label>
+
+                        <dx-select-box [dataSource]="regionsData" valueExpr="id" displayExpr="name"
+                            (onSelectionChanged)="onRegionsCboSelect($event)" [searchEnabled]="true"
+                            [readOnly]="true" formControlName="region_id">
+                        </dx-select-box>
+
+                    </div>
+                    <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
+                        <label for="ti" class="control-label">{{'district(optional)' | translate}}</label>
+
+                        <dx-select-box [dataSource]="districtsData" valueExpr="id" placeholder="Select District"
+                        [readOnly]="true" displayExpr="name" [searchEnabled]="true" formControlName="district_id">
+                        </dx-select-box>
+                    </div>
+                    <div class="col-xs-12 col-md-3 col-lg-3 col-xl-3">
+                        <label for="ti" class="control-label">{{'telephone_no' | translate}}</label>
+
+                        <dx-text-box [readOnly]="true" formControlName="telephone_no" placeholder="{{'telephone_no' | translate}}">
+                        </dx-text-box>
+                    </div>
+                    <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
+                        <label for="ti" class="control-label">{{'mobile_no' | translate}}</label>
+
+                        <dx-text-box  [readOnly]="true" formControlName="mobile_no" placeholder="{{'mobile_no' | translate}}">
+                        </dx-text-box>
+                    </div>
+                    <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
+                        <label for="ti" class="control-label">{{'physical_address' | translate}}</label>
+
+                        <dx-text-box formControlName="physical_address"
+                        [readOnly]="true" placeholder="{{'physical_address' | translate}}">
+                        </dx-text-box>
+                    </div>
+                </div>
+            </div>
+        </fieldset>
+
+    </div>
+</form>
+
+
+
+
+
+
+<dx-popup class="popup" [width]="funcpopWidth(80)" [height]="funcpopHeight(65)" [showTitle]="true"
+    title="{{trader_title}}" [dragEnabled]="false" [closeOnOutsideClick]="true"
+    [(visible)]="isRegistrantDetailsWinshow">
+
+
+    <div *dxTemplate="let data of 'content'">
+        <dx-button text="{{ 'add' | translate }} {{ 'applicant' | translate}}" type="default" icon="fa fa-plus"
+            [elementAttr]="{ class: '' }" (onClick)="onAddTraderAccountsClick()">
+        </dx-button>
+        <dx-data-grid class="table row-border hover" [height]="450" [wordWrapEnabled]="true" [remoteOperations]='true'
+            [dataSource]="traderAccountsDetailsData" keyExpr="id">
+            <dxo-filter-row [visible]="false"></dxo-filter-row>
+            <dxo-search-panel [visible]="true">
+            </dxo-search-panel>
+            <dxo-paging [enabled]="true">
+            </dxo-paging>
+            <dxo-pager [showInfo]="true" infoText="Page #{0}. Total: {1} ({2} items)">
+            </dxo-pager>
+            <dxo-export [enabled]="true" fileName="traderFile" [allowExportSelectedData]="true"></dxo-export>
+
+            <dxo-selection mode="single"></dxo-selection>
+            <dxo-group-panel [visible]="true"></dxo-group-panel>
+            <dxi-column [width]="100" caption="Action" name="command-editing" [allowFiltering]="false"
+                [allowSorting]="false" cellTemplate="cellTemplate">
+                <div *dxTemplate="let data of 'cellTemplate'">
+                    <a (click)="funcSelectTraderDetails(data)" class="action-btn"><i class="fa fa-edit"></i>{{'select' |
+                        translate}}</a>&nbsp;
+                </div>
+            </dxi-column>
+            <dxi-column dataField="applicant_name" caption="applicant_name"></dxi-column>
+            <dxi-column dataField="country" caption="{{'country' |translate}}"></dxi-column>
+            <dxi-column dataField="physical_address" caption="{{'physical_address' |translate}}"></dxi-column>
+            <dxi-column dataField="email_address" caption="{{'email_address' |translate}}"></dxi-column>
+
+            <dxi-column dataField="contact_person" caption="{{'contact_person' |translate}}"></dxi-column>
+            <dxi-column dataField="region_name" caption="{{'region' |translate}}"></dxi-column>
+            <dxi-column dataField="postal_address" caption="{{'postal_address' |translate}}"></dxi-column>
+            <dxi-column dataField="telephone_no" caption="{{'telephone_no' |translate}}"></dxi-column>
+            <dxi-column dataField="fax" caption="{{'fax' |translate}}"></dxi-column>
+
+        </dx-data-grid>
+
+    </div>
+</dx-popup>
+
+
+
+<dx-popup [(visible)]="addTraderPopupVisible" [width]="funcpopWidth(85)" [height]="funcpopHeight(65)" [showTitle]="true"
+    title="{{'trader_account' | translate}}">
+    <div *dxTemplate="let data of 'content'">
+        <dx-scroll-view>
+            <form (ngSubmit)="onsaveConsignorAccountsDetails()" [formGroup]="userAccountFrm">
+                <div class="profile-card">
+
+                    <fieldset class="profile-section">
+                        <div class="row">
+
+                            <div class="col-xs-12 col-md-3 col-lg-3 col-xl-3">
+                                <label>{{'account_type' | translate}}</label>
+                                <dx-select-box [dataSource]="userAccountTypeData" formControlName="account_type_id"
+                                    valueExpr="id" displayExpr="name" [readOnly]="is_readonly" [searchEnabled]="true">
+                                </dx-select-box>
+                            </div>
+
+                            <div class="col-xs-12 col-md-3 col-lg-3 col-xl-3">
+                                <label>{{'traderaccount_type' | translate}}</label>
+                                <dx-select-box [dataSource]="traderAccountTypeData"
+                                    formControlName="traderaccount_type_id" valueExpr="id" displayExpr="name"
+                                    [readOnly]="is_readonly" [searchEnabled]="true">
+                                </dx-select-box>
+                            </div>
+
+                            <div class="col-xs-12 col-md-3 col-lg-3 col-xl-3">
+                                <label>{{'trader_category' | translate}}</label>
+                                <dx-select-box [dataSource]="traderCategoryData" formControlName="trader_category_id"
+                                    valueExpr="id" displayExpr="name" [readOnly]="is_readonly" [searchEnabled]="true">
+                                </dx-select-box>
+                            </div>
+
+
+                            <div class="col-xs-12 col-md-3 col-lg-3 col-xl-3">
+                                <label>{{'name' | translate}}</label>
+                                <dx-text-box formControlName="name" [readOnly]="is_readonly" placeholder=""
+                                    [showClearButton]="true"></dx-text-box>
+                            </div>
+
+                            <div class="col-xs-12 col-md-3 col-lg-3 col-xl-3">
+                                <label>{{'contact_person' | translate}}</label>
+                                <dx-text-box formControlName="contact_person" [readOnly]="is_readonly" placeholder=""
+                                    [showClearButton]="true"></dx-text-box>
+                            </div>
+
+                            <div class="col-xs-12 col-md-3 col-lg-3 col-xl-3">
+                                <label>{{'contact_person_email' | translate}}</label>
+                                <dx-text-box formControlName="contact_person_email" [readOnly]="is_readonly"
+                                    placeholder="" [showClearButton]="true"></dx-text-box>
+                            </div>
+
+                            <div class="col-xs-12 col-md-3 col-lg-3 col-xl-3">
+                                <label>{{'contact_person_telephone' | translate}}</label>
+                                <dx-text-box formControlName="contact_person_telephone" [readOnly]="is_readonly"
+                                    placeholder="" [showClearButton]="true"></dx-text-box>
+                            </div>
+
+                            <div class="col-xs-12 col-md-3 col-lg-3 col-xl-3">
+                                <label>{{'tpin_no' | translate}}</label>
+                                <dx-text-box formControlName="tpin_no" [readOnly]="is_readonly" placeholder=""
+                                    [showClearButton]="true"></dx-text-box>
+                            </div>
+
+                            <div class="col-xs-12 col-md-3 col-lg-3 col-xl-3">
+                                <label>{{'company_registration_no' | translate}}</label>
+                                <dx-text-box formControlName="pacra_reg_no" [readOnly]="is_readonly" placeholder=""
+                                    [showClearButton]="true"></dx-text-box>
+                            </div>
+
+                            <div class="col-xs-12 col-md-3 col-lg-3 col-xl-3">
+                                <label class="control-label">{{'country' | translate}}</label>
+                                <dx-select-box [dataSource]="countriesData" valueExpr="id" displayExpr="name"
+                                    placeholder="Select Country" (onSelectionChanged)="onCoutryCboSelect($event)"
+                                    [searchEnabled]="true" formControlName="country_id">
+                                </dx-select-box>
+                            </div>
+                            <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
+                                <label for="ti" class="control-label">{{'province/region/city' | translate}}</label>
+
+                                <dx-select-box [dataSource]="regionsData" valueExpr="id" displayExpr="name"
+                                    (onSelectionChanged)="onRegionsCboSelect($event)" [searchEnabled]="true"
+                                    formControlName="region_id">
+                                </dx-select-box>
+
+                            </div>
+                            <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
+                                <label for="ti" class="control-label">{{'district(optional)' | translate}}</label>
+
+                                <dx-select-box [dataSource]="districtsData" valueExpr="id" placeholder="Select District"
+                                    displayExpr="name" [searchEnabled]="true" formControlName="district_id">
+                                </dx-select-box>
+                            </div>
+
+                            <div class="col-xs-12 col-md-3 col-lg-3 col-xl-3">
+                                <label>{{'physical_address' | translate}}</label>
+                                <dx-text-box formControlName="physical_address" [readOnly]="is_readonly" placeholder=""
+                                    [showClearButton]="true"></dx-text-box>
+                            </div>
+
+                            <div class="col-xs-12 col-md-3 col-lg-3 col-xl-3">
+                                <label>{{'postal_address' | translate}}</label>
+                                <dx-text-box formControlName="postal_address" [readOnly]="is_readonly" placeholder=""
+                                    [showClearButton]="true"></dx-text-box>
+                            </div>
+
+                            <div class="col-xs-12 col-md-3 col-lg-3 col-xl-3">
+                                <label>{{'telephone_no' | translate}}</label>
+                                <dx-text-box formControlName="telephone_no" [readOnly]="is_readonly" placeholder=""
+                                    [showClearButton]="true"></dx-text-box>
+                            </div>
+
+                            <div class="col-xs-12 col-md-3 col-lg-3 col-xl-3">
+                                <label>{{'fax' | translate}}</label>
+                                <dx-text-box formControlName="fax" [readOnly]="is_readonly" placeholder=""
+                                    [showClearButton]="true"></dx-text-box>
+                            </div>
+
+                            <div class="col-xs-12 col-md-3 col-lg-3 col-xl-3">
+                                <label>{{'email_address' | translate}}</label>
+                                <dx-text-box formControlName="email_address" [readOnly]="is_readonly" placeholder=""
+                                    [showClearButton]="true"></dx-text-box>
+                            </div>
+
+                            <div class="col-xs-12 col-md-3 col-lg-3 col-xl-3">
+                                <label>{{'website' | translate}}</label>
+                                <dx-text-box formControlName="website" [readOnly]="is_readonly" placeholder=""
+                                    [showClearButton]="true"></dx-text-box>
+                            </div>
+
+                            <div class="col-xs-12 col-md-3 col-lg-3 col-xl-3">
+                                <label>{{'mobile_no' | translate}}</label>
+                                <dx-text-box formControlName="mobile_no" [readOnly]="is_readonly" placeholder=""
+                                    [showClearButton]="true"></dx-text-box>
+                            </div>
+                            <div class="col-xs-12 col-md-3 col-lg-3 col-xl-3">
+                                <label>{{'status' | translate}}</label>
+                                <dx-select-box [dataSource]="accountStatusData" formControlName="status_id"
+                                    valueExpr="id" displayExpr="name" [readOnly]="is_readonly" [searchEnabled]="true">
+                                </dx-select-box>
+                            </div>
+
+                        </div><!-- /.row -->
+
+                    </fieldset>
+                </div>
+                <div class="button-container">
+                    <!-- <dx-button text="Enable Edit" type="default" icon="fa fa-edit" [elementAttr]="{ class: 'pull-left' }"
+                (onClick)="onActionEditDetails()">
+            </dx-button> -->
+                    <dx-button text="{{'save_trader_account_details' | translate}}" type="default" icon="fa fa-plus"
+                        [elementAttr]="{ class: 'pull-left' }" (onClick)="onsaveConsignorAccountsDetails()">
+                    </dx-button>
+                    <dx-button text="Cancel" type="danger" icon="fa fa-times" [elementAttr]="{ class: 'pull-left' }"
+                        (onClick)="addTraderPopupVisible = false">
+                    </dx-button>
+                </div>
+            </form>
+        </dx-scroll-view>
+    </div>
+
+</dx-popup>
+
+

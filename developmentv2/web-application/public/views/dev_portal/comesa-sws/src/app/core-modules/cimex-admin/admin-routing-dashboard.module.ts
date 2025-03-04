@@ -227,8 +227,19 @@ import { PromotionmaterialCategoriesComponent } from './views/configurations/pro
 import { ProcessConfigsetupComponent } from './views/configurations/process-configurations/process-configsetup/process-configsetup.component';
 import { InstitutionsInformationComponent } from './views/system-administration/institutions-information/institutions-information.component';
 import { RegulatoryFunctionGuidelinesComponent } from './views/system-administration/system-guidelines/regulatory-function-guidelines/regulatory-function-guidelines.component';
+<<<<<<< HEAD
 import { DmsRepositoryDefinitionComponent } from './views/document-checklistsmng/dms/dms-repository-definition/dms-repository-definition.component';
 import { ApplicantWorkflowsetupComponent } from './views/system-administration/Applicant-workflow-Processes/applicant-workflowsetup/applicant-workflowsetup.component';
+=======
+import { InvoiceTypeComponent } from './views/configurations/permit-application-parameters/invoice-type/invoice-type.component';
+import { ModeOfTransportComponent } from './views/configurations/permit-application-parameters/mode-of-transport/mode-of-transport.component';
+import { PermitStorageConditionsComponent } from './views/configurations/permit-application-parameters/permit-storage-conditions/permit-storage-conditions.component';
+import { PermitappConfigsetupComponent } from './views/configurations/permit-application-parameters/permitapp-configsetup/permitapp-configsetup.component';
+import { PortEntryExitComponent } from './views/configurations/permit-application-parameters/port-entry-exit/port-entry-exit.component';
+import { PortEntryTypeComponent } from './views/configurations/permit-application-parameters/port-entry-type/port-entry-type.component';
+import { SharedPermitapplicationComponent } from './views/configurations/permit-application-parameters/shared-permitapplication/shared-permitapplication.component';
+import { TransactionCurrencyComponent } from './views/configurations/permit-application-parameters/transaction-currency/transaction-currency.component';
+>>>>>>> 3c405a588a5c9fa7260c0d33b48972c8d2da1515
 
 //./admin-ecres/app-dashboard
 const routes: Routes = [{
@@ -468,10 +479,41 @@ const routes: Routes = [{
   },  {
     path: "app-translationmanagement",
     component: AppTranslationmanagementComponent
-  }, {
-    path: "app-systemlanguages",
-    component: AppSystemlanguagesComponent
-  }, {
+  }, 
+  {
+    path: "app-invoice-type",
+    component: InvoiceTypeComponent
+  }, 
+   {
+    path: "app-mode-of-transport",
+    component: ModeOfTransportComponent
+  }, 
+   {
+    path: "app-permit-storage-conditions",
+    component: PermitStorageConditionsComponent
+  }, 
+   {
+    path: "app-permitapp-configsetup",
+    component: PermitappConfigsetupComponent
+  }, 
+   {
+    path: "app-port-entry-exit",
+    component: PortEntryExitComponent
+  }, 
+   {
+    path: "app-port-entry-type",
+    component: PortEntryTypeComponent
+  }, 
+   {
+    path: "app-shared-permitapplication",
+    component: SharedPermitapplicationComponent
+  }, 
+
+   {
+    path: "app-transaction-currency",
+    component: TransactionCurrencyComponent
+  }, 
+  {
     path: "app-systemlabels",
     component: AppSystemlabelsmanagementComponent
   },  {

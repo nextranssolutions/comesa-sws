@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { map } from 'rxjs/operators';
-import { Observable } from 'rxjs';
+import { catchError, map } from 'rxjs/operators';
+import { Observable, throwError } from 'rxjs';
 import { AuthenticationService } from 'src/app/core-services/authentication/authentication.service';
 import { AppSettings } from 'src/app/app-settings';
 
@@ -19,7 +19,7 @@ export class ImportExportService {
   constructor(private authService: AuthenticationService,private http: HttpClient, private myRoute: Router, private httpClient: HttpClient) {
     let user = this.authService.getUserDetails();
 
-    this.baseUrl = AppSettings.base_url + '/api/permits';
+    this.baseUrl = AppSettings.base_url + '/api/import-export';
     this.trader_id = user.trader_id;
     this.mistrader_id = user.mistrader_id;
     this.email_address = user.email_address;
@@ -98,7 +98,7 @@ export class ImportExportService {
     });
 
     filter_params.trader_id = this.trader_id;
-    filter_params.mistrader_id = this.mistrader_id;
+    // filter_params.mistrader_id = this.mistrader_id;
 
     this.config = {
       params: filter_params,
@@ -157,7 +157,7 @@ export class ImportExportService {
       params: data,
       headers: headers
     };
-    return this.httpClient.get(AppSettings.base_url + 'permits/' + path, this.config)
+    return this.httpClient.get(this.baseUrl + '/' + path, this.config)
       .pipe(map(data => {
         return <any>data;
       }));
@@ -176,12 +176,12 @@ export class ImportExportService {
       params: data,
       headers: headers
     };
-    return this.httpClient.get(AppSettings.base_url + '' + path, this.config)
+    return this.httpClient.get(this.baseUrl + '/' + path, this.config)
       .pipe(map(data => {
         return <any>data;
       }));
   }
-  onAddPermitReceiverSender(table_name, data) {//tra_permitsenderreceiver_data
+  onAddPermitReceiverSender(table_name, data, action_url) {//tra_permitsenderreceiver_data
 
     let data_header = {
       params: { 'trader_id': this.trader_id, 'traderemail_address': this.email_address, table_name: table_name },
@@ -189,7 +189,7 @@ export class ImportExportService {
       headers: { 'Accept': 'application/json', "Authorization": "Bearer " + this.authService.getAccessToken() }
     };
 
-    return this.httpClient.post(this.baseUrl + '/' + 'onAddUniformApplicantDataset', data, data_header)
+    return this.httpClient.post(this.baseUrl + '/' + action_url, data, data_header)
       .pipe(map(data => {
         return data;
       }));
@@ -207,6 +207,34 @@ export class ImportExportService {
         return data;
       }));
   }
+
+
+
+  onAddManufacturingSite(table_name: string, data: any, action_url: string) {
+    // Add table_name directly into the data object
+    let requestData = {
+        ...data,  // Spread operator to include all form values
+        table_name: table_name,
+        trader_id: this.trader_id,
+        traderemail_address: this.email_address
+    };
+
+    // Set headers properly
+    let headers = new HttpHeaders({
+        'Accept': 'application/json',
+        'Authorization': `Bearer ${this.authService.getAccessToken()}`
+    });
+
+    return this.httpClient.post(`${this.baseUrl}/${action_url}`, requestData, { headers })
+      .pipe(
+        map(response => response),
+        catchError(error => {
+          console.error("API Error: ", error);
+          return throwError(() => new Error('An error occurred while saving manufacturer details.'));
+        })
+      );
+}
+
   onDeleteClinialREgistryDetails(record_id, table_name, application_id, title) {
 
     let data_header = {

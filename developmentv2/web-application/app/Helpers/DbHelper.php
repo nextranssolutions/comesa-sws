@@ -571,7 +571,7 @@ class DbHelper
     
     
 
-    static function getSingleRecord($table, $where)
+    static function getSingleRecord($table, $where, $col)
     {
         $record = DB::table($table)->where($where)->first();
         return $record;

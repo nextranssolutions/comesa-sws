@@ -104,8 +104,9 @@ export class WokflowManagementService {
         return <any>data;
       }));
   }
-  getAppNavigationMenus() {
+  getAppNavigationMenus(account_type_id=0, navigation_type_id=0) {
     this.workflow = {
+      params: {account_type_id:account_type_id,navigation_type_id:navigation_type_id},
       headers: { 'Accept': 'application/json' }
     };
 
@@ -155,11 +156,34 @@ export class WokflowManagementService {
   } 
 
   
-  
-  
+  onGetApplicantProfileInformation(data, action_url) {
+    data.table_name = btoa(data.table_name);
+    const loggedInUserId = localStorage.getItem('id');
+    data.user_information_id = loggedInUserId; 
+    this.workflow = {
+      params: data,
+      headers: { 'Accept': 'application/json' }
+    };
+    return this.HttpClient.get(this.baseUrl + '/' + action_url, this.workflow)
+      .pipe(map(data => {
+        return <any>data;
+      }));
+  }
 
-  // 
-  
+  onSavingApplicantEvaluationChecklistDetails(table_name,data,post_data,action_url){
+    const loggedInUserId = localStorage.getItem('id');
+    const loggedInUserName = localStorage.getItem('first_name');
+    this.workflow = {
+      params: { 'user_id': loggedInUserId, 'user_name': loggedInUserName,table_name:table_name, 'experts_data': post_data},
+
+      headers: { 'Accept': 'application/json' }
+    };
+
+    return this.http.post(this.baseUrl + '/'+action_url, data,this.workflow)
+      .pipe(map(data => {
+        return data;
+      }));
+  }
   
   getWorkflowConfigsUrl(data,action_url) {
     data.table_name = btoa(data.table_name);

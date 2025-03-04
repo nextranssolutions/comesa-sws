@@ -11,8 +11,13 @@ if (window.location.hostname == 'localhost') {
 }
 if (app_connection == 'development') {
   //nextrans-solutions\comesa-sws\development\web-application
+<<<<<<< HEAD
   base_url = 'http://localhost/nextrans-solutions/comesa-sws/developmentv2/web-application/public/index.php';
   assets_url = 'http://localhost/nextrans-solutions/comesa-sws/developmentv2/web-application/public/index.php';
+=======
+  base_url = 'http://localhost:82/COMESASWS/comesa-sws/developmentv2/web-application/public/index.php';
+  assets_url = 'http://localhost:82/COMESASWS/comesa-sws/developmentv2/web-application/public/index.php';
+>>>>>>> 3c405a588a5c9fa7260c0d33b48972c8d2da1515
   // siteKey = '6LcoH54UAAAAAOqpAGCXC4cmup6N2c5KseVHmv1c';
   help_deskurl= 'http://localhost/nextrans-solutions/comesa/comesa-sws/developmentv2/help-desk/';
 }

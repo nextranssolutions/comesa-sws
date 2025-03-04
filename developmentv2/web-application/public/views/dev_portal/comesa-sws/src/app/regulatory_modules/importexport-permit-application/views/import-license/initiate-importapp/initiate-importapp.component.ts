@@ -20,12 +20,10 @@ stepChanged($event: StepChangedArgs) {
 throw new Error('Method not implemented.');
 }
 isValidTypeBoolean: any;
-previousStep() {
-throw new Error('Method not implemented.');
-}
-nextStep() {
-throw new Error('Method not implemented.');
-}
+
+
+
+
 
 
 prodclass_category_id: any;

@@ -627,7 +627,7 @@ onLoadworkflowStageStatusesData() {
 
 onLoadappWorkflowStatusData() {
   var data_submit = {
-    'table_name': 'cfg_application_statuses',
+    'table_name': 'par_application_statuses',
     
   }
   this.workflowService.getWorkflowConfigs(data_submit)

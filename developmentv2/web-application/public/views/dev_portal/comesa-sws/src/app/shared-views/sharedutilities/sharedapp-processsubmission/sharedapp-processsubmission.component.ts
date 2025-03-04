@@ -16,9 +16,9 @@ export class SharedappProcesssubmissionComponent {
   @Input() process_id: number;
   @Input() app_reference_no: any;
   @Input() appworkflow_status_id: number;
+  @Input() dashboard_url: string;
   loadingVisible: boolean;
   spinnerMessage: string;
-  @Input() dashboard_url: string;
   has_reporting_remarks:boolean = false;
   userInformationData: any;
   processData: any;
@@ -276,6 +276,11 @@ export class SharedappProcesssubmissionComponent {
           this.toastr.error('Error Occurred', 'Alert');
           this.spinnerHide();
         });
+
+  }
+
+  onSaveAppWorkflowSubmission(){
+
 
   }
 } 
