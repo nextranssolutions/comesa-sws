@@ -203,21 +203,38 @@ export class ImportExportService {
         return <any>data;
       }));
   }
-  getPermitsOtherDetails(data, path) {
+  // getPermitsOtherDetails(data, path) {
 
+  //   var headers = new HttpHeaders({
+  //     "Accept": "application/json",
+  //     "Authorization": "Bearer " + this.authService.getAccessToken(),
+  //   });
+  //   //trader_id:  
+  //   data.trader_id = this.trader_id;
+  //   data.mistrader_id = this.mistrader_id;
+
+  //   this.config = {
+  //     params: data,
+  //     headers: headers
+  //   };
+  //   return this.httpClient.get(AppSettings.base_url + '' + path, this.config)
+  //     .pipe(map(data => {
+  //       return <any>data;
+  //     }));
+  // }
+
+
+  getPermitsOtherDetails(filter_params, action_url) {
     var headers = new HttpHeaders({
       "Accept": "application/json",
       "Authorization": "Bearer " + this.authService.getAccessToken(),
     });
-    //trader_id:  
-    data.trader_id = this.trader_id;
-    data.mistrader_id = this.mistrader_id;
 
     this.config = {
-      params: data,
+      params: { filter_params },
       headers: headers
     };
-    return this.httpClient.get(AppSettings.base_url + '' + path, this.config)
+    return this.HttpClient.get(this.baseUrl + '/' + action_url, this.config)
       .pipe(map(data => {
         return <any>data;
       }));

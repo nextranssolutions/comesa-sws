@@ -451,16 +451,17 @@ export class SharedImpexpApplicationClass {
 
             this.applicationGeneraldetailsfrm.patchValue({ permit_id: this.permit_id })
             this.toastr.success(this.product_resp.message, 'Response');
-
+            this.isSaved = true; 
 
           } else {
             this.toastr.error(this.product_resp.message, 'Alert');
+            this.isSaved = false;
           }
           this.spinner.hide();
         },
         error => {
           this.loading = false;
-
+          this.isSaved = false;
           this.spinner.hide();
         });
   }
@@ -687,6 +688,14 @@ export class SharedImpexpApplicationClass {
 
   nextTab() {
     this.ngWizardService.next();
+  }
+  isSaved: boolean;
+  onNextStep() {
+    if (!this.isSaved) {
+      this.toastr.error('Kindly save before proceeding to the next step.', 'Validation Error');
+      return;
+    }
+    this.ngWizardService.next(); // Move to the next step only if saved
   }
 
   previousStep() {

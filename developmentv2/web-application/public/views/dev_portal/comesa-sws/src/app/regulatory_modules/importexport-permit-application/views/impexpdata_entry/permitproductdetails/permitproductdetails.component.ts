@@ -67,6 +67,7 @@ export class PermitproductdetailsComponent implements OnInit {
     producttype_defination_id: number;
     proforma_currency_id: number;
     countries: any;
+    loadingVisible: boolean;
     manufacturersData: any = {};
     isManufacturerSitePopupVisible: boolean = false;
     isproductManufacturerModalShow: boolean;
@@ -119,6 +120,7 @@ export class PermitproductdetailsComponent implements OnInit {
     issenderreceiverAddWinVisible: boolean;
     storageConditionsData: any;
     product_resp: any;
+    spinnerMessage: string;
     countryData: any;
     is_visaapplication: boolean;
     commonNameData: any;
@@ -131,6 +133,7 @@ export class PermitproductdetailsComponent implements OnInit {
     is_brandreadonly: boolean = true;
     common_name_title: string = 'Common Name';
     productSubCategoryData: any;
+    application_status_id: any;
     weightUnitData: any;
     document_type_id: number = 25;
     @Output() premitProductIdEvent = new EventEmitter();
@@ -229,7 +232,7 @@ export class PermitproductdetailsComponent implements OnInit {
         this.ammendReadOnly = false;
       }
   
-      this.onLoadPermitProductsData(this.application_code);
+      this.onLoadPermitProductsData();
       this.onLoadUnitOfMeasureData();
       this.onLoadproductPurposeData();
       this.onLoadCountryData();
@@ -521,31 +524,57 @@ export class PermitproductdetailsComponent implements OnInit {
       });
   */
     }
-    onLoadPermitProductsData(application_code) {
-      this.spinner.show();
-      this.appService.getPermitsOtherDetails({ 'application_code': application_code }, 'getPermitProductsDetails')
+
+
+
+    onLoadPermitProductsData(filter_params  = { application_status_id: this.application_status_id }) {
+      this.spinnerShow('Loading Information...........');
+      this.appService.getPermitsOtherDetails(filter_params, 'getPermitProductsDetails')
         .subscribe(
           data => {
-            if (data.success) {
   
-              this.permitProductsData = data.data;
-              if (this.permitProductsData.length > 0) {
-                this.isprodnextdisable = false;
-              }
-              else {
-                this.isprodnextdisable = true;
-              }
-  
+            this.data_record = data;
+            // console.log(this.data_record);
+            if (this.data_record.success) {
+              this.permitProductsData = this.data_record.data;
             }
-            else {
-              this.toastr.success(data.message, 'Alert');
-            }
-            this.spinner.hide();
+            this.spinnerHide();
           },
-          error => {
-            return false
-          });
+        );
     }
+
+    spinnerShow(spinnerMessage) {
+      this.loadingVisible = true;
+      this.spinnerMessage = spinnerMessage;
+    }
+    spinnerHide() {
+      this.loadingVisible = false;
+    }
+    // onLoadPermitProductsData(application_code) {
+    //   this.spinner.show();
+    //   this.appService.getPermitsOtherDetails({ 'application_code': application_code }, 'getPermitProductsDetails')
+    //     .subscribe(
+    //       data => {
+    //         if (data.success) {
+  
+    //           this.permitProductsData = data.data;
+    //           if (this.permitProductsData.length > 0) {
+    //             this.isprodnextdisable = false;
+    //           }
+    //           else {
+    //             this.isprodnextdisable = true;
+    //           }
+  
+    //         }
+    //         else {
+    //           this.toastr.success(data.message, 'Alert');
+    //         }
+    //         this.spinner.hide();
+    //       },
+    //       error => {
+    //         return false
+    //       });
+    // }
     onRegisteredProductGridToolbar(e) {
       if (this.regulated_productstype_id == 2 || this.regulated_productstype_id == 7) {
         if (this.regulatory_subfunction_id == 81 || this.regulatory_subfunction_id == 83) {
@@ -815,7 +844,7 @@ export class PermitproductdetailsComponent implements OnInit {
               this.isPermitproductsAddPopupVisible = false;
               this.isPermitproductsPopupVisible = false;
               this.isPermitVisaLicProductsAddPopupVisible = false;
-              this.onLoadPermitProductsData(this.application_code);
+              this.onLoadPermitProductsData();
               this.permit_product_id = this.app_resp.record_id;
               this.isPermitVisaLicProductsAddPopupVisible = false;
               this.premitProductIdEvent.emit(this.permit_product_id);
@@ -846,7 +875,7 @@ export class PermitproductdetailsComponent implements OnInit {
   
             if (this.app_resp.success) {
   
-              this.onLoadPermitProductsData(this.application_code);
+              this.onLoadPermitProductsData();
               this.toastr.success(this.app_resp.message, 'Response');
               this.isPermitproductsAddPopupVisible = false;
   
@@ -1591,7 +1620,7 @@ export class PermitproductdetailsComponent implements OnInit {
   
             if (this.response_data.success) {
   
-              this.onLoadPermitProductsData(this.application_code);
+              this.onLoadPermitProductsData();
   
               this.isApprovedVisaProductsUploadVisable = false;
               this.isApprovedVisaproductsPopupVisible = false;

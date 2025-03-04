@@ -94,8 +94,6 @@ class ImportExportController extends Controller
             $id = $req->id;
             $product_res = '';
 
-            // $regulatory_function_id = getSingleRecordColValue('par_regulatory_subfunctions', array('id' => $req->regulatory_subfunction_id), 'regulatory_function_id');
-
             $regulatory_function_id = 1;
 
             $app_data = array(
@@ -622,7 +620,6 @@ class ImportExportController extends Controller
             $resp = "";
             $user_id = $this->user_id;
 
-            $application_code = $req->application_code;
             $unit_price = $req->unit_price;
             $currency_id = $req->currency_id;
 
@@ -633,12 +630,14 @@ class ImportExportController extends Controller
             $product_id = $req->product_id;
             $record_id = $req->id;
             $device_type_id = $req->device_type_id;
-            $permitprod_recommendation_id = $req->permitprod_recommendation_id;
-
+            // $permitprod_recommendation_id = $req->permitprod_recommendation_id;
+           
+            $regulatory_subfunction_id = $req->regulatory_subfunction_id;
+           
             $batch_number = $req->batch_number;
+            $application_code = generateApplicationCode($regulatory_subfunction_id, 'tra_permit_products');
             $expiry_date = $req->expiry_date;
             $manufacturing_date = $req->manufacturing_date;
-
             $error_message = 'Error occurred, data not saved successfully';
             //check uniform currency 
             $record = DB::table('tra_permit_products')
@@ -692,11 +691,11 @@ class ImportExportController extends Controller
                     'dosage_form_id' => $req->dosage_form_id
                 );
 
-                if (validateIsNumeric($permitprod_recommendation_id)) {
+                // if (validateIsNumeric($permitprod_recommendation_id)) {
 
-                    $data['permitprod_recommendation_id'] = $req->permitprod_recommendation_id;
-                    $data['permitprod_recommendation'] = $req->permitprod_recommendation;
-                }
+                //     $data['permitprod_recommendation_id'] = $req->permitprod_recommendation_id;
+                //     $data['permitprod_recommendation'] = $req->permitprod_recommendation;
+                // }
 
                 if (validateIsNumeric($record_id)) {
                     $where = array('id' => $record_id);
@@ -713,7 +712,7 @@ class ImportExportController extends Controller
                 } else {
 
                     //insert 
-                    $data['permitprod_recommendation_id'] = 1;
+                    // $data['permitprod_recommendation_id'] = 1;
                     $data['created_by'] = $user_id;
                     $data['created_on'] = Carbon::now();
                     $resp = insertRecord($table_name, $data, $user_id);
