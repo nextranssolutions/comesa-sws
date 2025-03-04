@@ -27,6 +27,7 @@ import { UtilityService } from 'src/app/core-services/utilities/utility.service'
 export class PermitproductdetailsComponent implements OnInit {
   @Input() productGeneraldetailsfrm: FormGroup;
     @Input() permitProductsFrm: FormGroup;
+    @Input() applicationGeneraldetailsfrm: FormGroup;
     @Input() permitProductsData: any;
     requireUnitPackData: boolean = false;
     isprodnextdisable: boolean;
@@ -832,6 +833,7 @@ export class PermitproductdetailsComponent implements OnInit {
         return;
       }
       this.spinner.show();
+      
       this.appService.onsavePermitProductdetails(this.application_code, this.permitProductsFrm.value, this.tracking_no, 'onSaveApplicantPermitProductsDetails')
         .subscribe(
           response => {
