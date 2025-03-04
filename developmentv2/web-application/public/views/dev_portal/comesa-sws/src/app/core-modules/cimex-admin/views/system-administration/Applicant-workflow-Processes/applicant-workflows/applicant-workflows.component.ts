@@ -139,7 +139,7 @@ export class ApplicantWorkflowsComponent {
     public reportingAnalytics: ReportsService,
   ) {
     this.table_name = 'ptl_workflowprocesses';
-    this.parameter_name = "portal_workflows";
+    this.parameter_name = "applicant_workflows";
     this.checkScreenSize();
     this.workflowTransitionFrm = new FormGroup({
       id: new FormControl('', Validators.compose([])),

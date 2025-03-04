@@ -98,15 +98,6 @@ export class ShareusermanagementClassComponent {
     private reportingAnalytics: ReportsService,
     private eoiService: ExpressionOfInterestManagementService
   ) {
-<<<<<<< HEAD
-    
-    this.table_name = 'usr_users_information';
-    this.parameter_name = "active_user_accounts";
-
-
-    
-=======
->>>>>>> 3c405a588a5c9fa7260c0d33b48972c8d2da1515
 
     this.userAccountFrm = new FormGroup({
       id: new FormControl('', Validators.compose([])),

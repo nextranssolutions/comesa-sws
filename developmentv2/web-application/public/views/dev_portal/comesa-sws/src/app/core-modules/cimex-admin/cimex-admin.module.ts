@@ -277,14 +277,12 @@ import { AppealsTypesComponent } from './views/configurations/process-configurat
 import { ProcessConfigsetupComponent } from './views/configurations/process-configurations/process-configsetup/process-configsetup.component';
 import { AppSectionsComponent } from './views/configurations/forms/application-section/app-sections.component';
 import { RegulatoryFunctionGuidelinesComponent } from './views/system-administration/system-guidelines/regulatory-function-guidelines/regulatory-function-guidelines.component';
-<<<<<<< HEAD
 import { SharedDocumentManagementSysComponent } from './views/document-checklistsmng/dms/shared-document-management-sys/shared-document-management-sys.component';
 import { DmsRepositoryDefinitionComponent } from './views/document-checklistsmng/dms/dms-repository-definition/dms-repository-definition.component';
 import { ApplicantWorkflowInterfacesComponent } from './views/system-administration/Applicant-workflow-Processes/applicant-workflow-interfaces/applicant-workflow-interfaces.component';
 import { ApplicantWorkflowsComponent } from './views/system-administration/Applicant-workflow-Processes/applicant-workflows/applicant-workflows.component';
 import { ApplicantWorkflowsetupComponent } from './views/system-administration/Applicant-workflow-Processes/applicant-workflowsetup/applicant-workflowsetup.component';
 import { ApplicantSystemprocessesComponent } from './views/system-administration/Applicant-workflow-Processes/applicant-systemprocesses/applicant-systemprocesses.component';
-=======
 import { InvoiceTypeComponent } from './views/configurations/permit-application-parameters/invoice-type/invoice-type.component';
 import { ModeOfTransportComponent } from './views/configurations/permit-application-parameters/mode-of-transport/mode-of-transport.component';
 import { PermitStorageConditionsComponent } from './views/configurations/permit-application-parameters/permit-storage-conditions/permit-storage-conditions.component';
@@ -293,7 +291,6 @@ import { PortEntryExitComponent } from './views/configurations/permit-applicatio
 import { PortEntryTypeComponent } from './views/configurations/permit-application-parameters/port-entry-type/port-entry-type.component';
 import { SharedPermitapplicationComponent } from './views/configurations/permit-application-parameters/shared-permitapplication/shared-permitapplication.component';
 import { TransactionCurrencyComponent } from './views/configurations/permit-application-parameters/transaction-currency/transaction-currency.component';
->>>>>>> 3c405a588a5c9fa7260c0d33b48972c8d2da1515
 
 @NgModule({
   declarations: [AppdashboardComponent,
