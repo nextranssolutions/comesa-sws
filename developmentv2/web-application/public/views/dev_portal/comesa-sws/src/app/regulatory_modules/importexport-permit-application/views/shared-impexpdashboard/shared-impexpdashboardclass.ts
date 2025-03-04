@@ -325,17 +325,17 @@ export class SharedImpExpdashboardClass {
 
   }
   funcRequestforPermitAlteration() {
-    this.app_route = ['./online-services/importexport-approvedappsel'];
+    this.app_route = ['./importexport-permit-application/importexport-approvedappsel'];
     this.router.navigate(this.app_route);
     this.scrollToTop();
   }
 
   funcRequestforExportLicenseApplication() {
-    this.app_route = ['./online-services/export-licensesappselection'];
+    this.app_route = ['./importexport-permit-application/export-licensesappselection'];
     this.router.navigate(this.app_route);
     this.scrollToTop();
   } funcRequestforPermitInspections() {
-    this.app_route = ['./online-services/importexport-approvedappinspection'];
+    this.app_route = ['./importexport-permit-application/importexport-approvedappinspection'];
     this.router.navigate(this.app_route);
     this.scrollToTop();
   }
@@ -465,7 +465,6 @@ export class SharedImpExpdashboardClass {
     if (action_btn.action === 'edit') {
       this.funcApplicationPreveditDetails(data);
 
-      // this.funcApplicationPreveditDetails(data);
     }
     else if (action_btn.action === 'preview') {
       this.funcProductPreviewDetails(data);
@@ -474,9 +473,9 @@ export class SharedImpExpdashboardClass {
       this.funcPrintApplicationDetails(data);
     }
     else if (action_btn.action == 'archive') {
-      this.funcArchivePermitApplication(data);
+//this.funcArchivePermitApplication(data);
     } else if (action_btn.action == 'delete_application') {
-      this.funcDeletePermitApplication(data);
+      //this.funcDeletePermitApplication(data);
     }
 
 
@@ -521,7 +520,7 @@ export class SharedImpExpdashboardClass {
 
     } else if (action_btn.action == 'initiate_license_application' || action_btn.action == 'initiate_license_application') {
 
-      this.funcInitiateLicenseApplication(data);
+   //   this.funcInitiateLicenseApplication(data);
 
     }
     else if (action_btn.action == 'uploadsub_paymentdetails' || action_btn.action == 'uploadsub_paymentdetails') {
@@ -530,7 +529,7 @@ export class SharedImpExpdashboardClass {
 
     } else if (action_btn.action == 'inspection_booking' || action_btn.action == 'inspection_booking') {
 
-      this.funcInitiateInspectionBooking(data);
+      //this.funcInitiateInspectionBooking(data);
 
     }
     else if (action_btn == 'restorearchived') {
@@ -547,17 +546,17 @@ export class SharedImpExpdashboardClass {
     this.appregulated_productstype_id = data.regulated_productstype_id;
     this.appapplication_code = data.application_code;
     if (this.appregulatory_subfunction_id == 78 || this.appregulatory_subfunction_id == 82) {
-      this.app_routing = ['./online-services/importlicense-dashboard'];
+      this.app_routing = ['./importexport-permit-application/importlicense-dashboard'];
 
     } else {
-      this.app_routing = ['./online-services/exportlicense-dashboard'];
+      this.app_routing = ['./importexport-permit-application/exportlicense-dashboard'];
 
     }
     data.onApplicationSubmissionFrm = this.onApplicationSubmissionFrm;
     data.app_routing = this.app_routing;
 
     this.utilityService.setApplicationDetail(data);
-    this.app_route = ['./online-services/application-invoices'];
+    this.app_route = ['./importexport-permit-application/application-invoices'];
 
     this.router.navigate(this.app_route);
     this.scrollToTop();
@@ -591,7 +590,7 @@ export class SharedImpExpdashboardClass {
 
   funcPrintApplicationReceipts(app_data) {
     this.utilityService.setApplicationDetail(app_data);
-    this.app_route = ['./online-services/application-payments'];
+    this.app_route = ['./importexport-permit-application/application-payments'];
 
     this.router.navigate(this.app_route);
     this.scrollToTop();
@@ -634,42 +633,43 @@ export class SharedImpExpdashboardClass {
           }
         });
   }
-
+  application_data:any;
   funcApplicationPreveditDetails(app_data) {
-    this.router_link = app_data.router_link;
-    if (this.router_link == '') {
-      this.toastr.error("The application process route has not been mapped, contact SUpport Team!!", 'Alert!');
-      return;
-    }
-
-    if (app_data.application_status_id == 1) {
-      this.title = app_data.process_title;
-
-      this.appService.setApplicationDetail(app_data);
-      this.app_route = ['./online-services/' + this.router_link];
-
-      this.router.navigate(this.app_route);
-      this.scrollToTop();
-    }
-    else if (app_data.application_status_id == 2) {
-      this.title = app_data.process_title;
-      this.router_link = app_data.router_link;
-      this.appService.setApplicationDetail(app_data);
-      //this.app_route = ['./online-services/premises-reg-preview'];
-      this.router.navigate(this.app_route);
-      this.scrollToTop();
-    }
-    else {
-
-      this.title = app_data.process_title;
-      this.router_link = app_data.router_link;
-      this.appService.setApplicationDetail(app_data);
-      this.app_route = ['./online-services/' + this.router_link];
-      this.router.navigate(this.app_route);
-      this.scrollToTop();
-
-    }
-  }
+      this.regulatory_subfunction_id = app_data.regulatory_subfunction_id;
+      
+      this.spinner.show();
+      
+      this.configService.getSectionUniformApplication(this.regulatory_subfunction_id)
+        .subscribe(
+          data => {
+            this.spinner.hide();
+            if (data.success) {
+              this.processData = data.data.process_infor;
+              this.application_data = data.data;
+              
+              this.router_link = this.processData.router_link;
+              this.productsapp_details = this.processData;
+              let merged_appdata = Object.assign({}, this.application_data, app_data);
+              console.log(merged_appdata);
+              localStorage.setItem('application_details', JSON.stringify(merged_appdata));
+              // this.appService.setProductApplicationDetail(data.data);
+              this.app_route = ['./importexport-permit-application/' + this.router_link];
+  
+              this.router.navigate(this.app_route);
+              this.scrollToTop();
+  
+            }
+            else {
+              this.toastr.error(this.processData.message, 'Alert!');
+  
+            }
+  
+  
+          });
+      return false;
+    } 
+   
+  
   funcArchivePermitApplication(data) {
     this.utilityService.funcApplicationArchiceCall(this.viewRef, data, 'txn_importexport_applications', this.reloadPermitApplicationsApplications);
 
@@ -713,7 +713,7 @@ export class SharedImpExpdashboardClass {
                       app_data.application_status_id = 1;
                       app_data.process_title = this.title;
                       this.appService.setApplicationDetail(data.app_data);
-                      this.app_route = ['./online-services/inspection-booking'];
+                      this.app_route = ['./importexport-permit-application/inspection-booking'];
                       this.router.navigate(this.app_route);
                       this.scrollToTop();
                     }
@@ -759,7 +759,7 @@ export class SharedImpExpdashboardClass {
                       app_data.application_status_id = 1;
                       app_data.process_title = this.title;
                       this.appService.setApplicationDetail(data.app_data);
-                      this.app_route = ['./online-services/importexport-application'];
+                      this.app_route = ['./importexport-permit-application/importexport-application'];
                       this.router.navigate(this.app_route);
                       this.scrollToTop();
                     }

@@ -447,7 +447,7 @@ select_registration_section_process: string;
   onLoadcurrencyData() {
     var data = {
       table_name: 'par_currencies',
-      is_enabled: true,
+      is_enabled: 1,
       
     };
 
@@ -532,7 +532,7 @@ select_registration_section_process: string;
   onLoadpermitTypeData() {
     var data = {
       table_name: 'par_permit_typecategories',
-      is_enabled: 1,
+      is_enabled: true,
       
     };
 
