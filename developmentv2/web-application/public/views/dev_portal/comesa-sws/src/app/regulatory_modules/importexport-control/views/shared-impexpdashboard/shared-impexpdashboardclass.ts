@@ -40,7 +40,7 @@ export class SharedImpExpdashboardClass {
   isPreviewApplicationDetails: boolean = false;
   frmPreviewAppDetails: FormGroup;
   regulated_productstype_id: number;
-  permitTypesCategoryData: any;
+  permitTypesData: any;
   applicationSelectionfrm: FormGroup;
   applicationRejectionData: any;
   isApplicationRejectionVisible: boolean = false;
@@ -109,7 +109,7 @@ export class SharedImpExpdashboardClass {
     this.onLoadconfirmDataParam();
     // this.onLoadproducttypeDefinationData();
     this.reloadPermitApplicationsApplications();
-    this.onLoadPermitTypesCategoryData();
+    this.onLoadPermitTypesData();
     this.onLoadWorkflowStatusData();
   }
 
@@ -267,9 +267,9 @@ export class SharedImpExpdashboardClass {
 
   }
 
-  onLoadPermitTypesCategoryData() {
+  onLoadPermitTypesData() {
     var data = {
-      table_name: 'par_permit_typecategories',
+      table_name: 'tra_transactionpermit_types',
       // is_enabled: true
     };
 
@@ -279,7 +279,7 @@ export class SharedImpExpdashboardClass {
           this.data_record = data;
 
           if (this.data_record.success) {
-            this.permitTypesCategoryData = this.data_record.data;
+            this.permitTypesData = this.data_record.data;
             ;
           }
         });
