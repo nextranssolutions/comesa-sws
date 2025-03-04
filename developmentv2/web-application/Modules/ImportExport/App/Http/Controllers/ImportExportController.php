@@ -94,8 +94,6 @@ class ImportExportController extends Controller
             $id = $req->id;
             $product_res = '';
 
-            // $regulatory_function_id = getSingleRecordColValue('par_regulatory_subfunctions', array('id' => $req->regulatory_subfunction_id), 'regulatory_function_id');
-
             $regulatory_function_id = 1;
 
             $app_data = array(
@@ -345,7 +343,7 @@ class ImportExportController extends Controller
                 'product_type_id' => $req->product_type_id,
                 'zone_id' => $req->zone_id,
                 'reference_no' => $reference_no,
-                'paying_currency_id' => $req->paying_currency_id,
+                'currency_oftransaction_id' => $req->currency_oftransaction_id,
                 'application_status_id' => 1,
                 'process_id' => $process_id,
                 'document_upload_id' => $req->document_upload_id,
@@ -353,13 +351,13 @@ class ImportExportController extends Controller
                 'application_reference_number' => $req->application_reference_number,
                 'applicant_type_id' => $req->applicant_type_id,
                 'permit_type_id' => $req->permit_type_id,
-                'date_of_application' => $req->date_of_application,
+                'date_of_application' => Carbon::now(),
                 'expected_date_of_shipment' => $req->expected_date_of_shipment,
                 'importer_exporter_id' => $req->importer_exporter_id,
                 'port_type_id' => $req->port_type_id,
                 'port_of_entryexit_id' => $req->port_of_entryexit_id,
                 'customs_office' => $req->customs_office,
-                'mode_oftransport_id' => $req->mode_oftransport_id,
+                'mode_of_transport_id' => $req->mode_of_transport_id,
                 'transpoter_name' => $req->transpoter_name,
                 'transporter_contact' => $req->transporter_contact,
                 'transporter_country_id' => $req->transporter_country_id,
@@ -368,7 +366,6 @@ class ImportExportController extends Controller
                 'invoice_number' => $req->invoice_number,
                 'invoice_date' => $req->invoice_date,
                 'total_invoice_value' => $req->total_invoice_value,
-                'currency_oftransaction_id' => $req->currency_oftransaction_id,
                 'declaration_statuses_id' => $req->declaration_statuses_id,
 
             );
@@ -403,7 +400,7 @@ class ImportExportController extends Controller
                     $sql = DB::table('tra_application_documentsdefination')->where(array('application_code' => $application_code))->first();
                     if (!$sql) {
                         //print_r('test');
-                        initializeApplicationDMS($product_type_id, $regulatory_function_id, $regulatory_subfunction_id, $application_code, $tracking_no . rand(0, 100), $trader_id);
+                        // initializeApplicationDMS($product_type_id, $regulatory_function_id, $regulatory_subfunction_id, $application_code, $tracking_no . rand(0, 100), $trader_id);
                     }
                     $res = array(
                         'tracking_no' => $tracking_no,
@@ -433,9 +430,7 @@ class ImportExportController extends Controller
                 $product_res = $resp;
 
                 $ref_id = getSingleRecordColValue('tra_submodule_referenceformats', array('regulatory_function_id' => $regulatory_function_id), 'reference_format_id');
-                // print_r('Hello: ' . $ref_id);
-                // exit;
-
+       
                 $zone_code = getSingleRecordColValue('par_zones', array('id' => $req->zone_id), 'zone_code');
                 $section_code = getSingleRecordColValue('par_regulated_productstypes', array('id' => $req->product_type_id), 'code');
                 $class_code = getSingleRecordColValue('par_classifications', array('id' => $req->classification_id), 'code');
@@ -625,7 +620,6 @@ class ImportExportController extends Controller
             $resp = "";
             $user_id = $this->user_id;
 
-            $application_code = $req->application_code;
             $unit_price = $req->unit_price;
             $currency_id = $req->currency_id;
 
@@ -636,12 +630,14 @@ class ImportExportController extends Controller
             $product_id = $req->product_id;
             $record_id = $req->id;
             $device_type_id = $req->device_type_id;
-            $permitprod_recommendation_id = $req->permitprod_recommendation_id;
-
+            // $permitprod_recommendation_id = $req->permitprod_recommendation_id;
+           
+            $regulatory_subfunction_id = $req->regulatory_subfunction_id;
+           
             $batch_number = $req->batch_number;
+            $application_code = generateApplicationCode($regulatory_subfunction_id, 'tra_permit_products');
             $expiry_date = $req->expiry_date;
             $manufacturing_date = $req->manufacturing_date;
-
             $error_message = 'Error occurred, data not saved successfully';
             //check uniform currency 
             $record = DB::table('tra_permit_products')

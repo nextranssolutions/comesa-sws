@@ -145,7 +145,7 @@ export class SharedImpExpdashboardClass {
   }
 
   onInitiatenewImportExpApplications() {
-    this.onClickSubModuleAppSelection(1, 'New Import Application')
+    // this.onClickSubModuleAppSelection(1, 'New Import Application')
     this.app_route = ['./importexport-control/initiate-importapp'];
 
     // this.router.navigate(this.app_route);

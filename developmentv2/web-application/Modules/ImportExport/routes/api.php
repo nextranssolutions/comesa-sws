@@ -30,6 +30,10 @@ Route::middleware(['XssSanitizer','clear_cache_config','firewall.all'])->prefix(
     
     Route::post('saveImportExportApplication', [ImportExportController::class,'saveImportExportApplication']);
     Route::post('onSaveUniformApplicantDataset', [ImportExportController::class,'onSaveUniformApplicantDataset']);
+    Route::get('getImportExpPermitsApplicationLoading', [ImportExportController::class, 'getImportExpPermitsApplicationLoading']);
+    
+
+    
     Route::post('saveOgaImportExportApplication', [ImportExportController::class,'saveOgaImportExportApplication']);
     Route::post('onSavePermitProductsDetails', [ImportExportController::class,'onSavePermitProductsDetails']);
     Route::post('saveManufacturerDetails', [ImportExportController::class,'saveManufacturerDetails']);

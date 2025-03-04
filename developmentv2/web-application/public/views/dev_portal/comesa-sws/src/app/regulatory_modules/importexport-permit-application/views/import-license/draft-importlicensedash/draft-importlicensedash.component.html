@@ -61,14 +61,14 @@
         <dxo-export [enabled]="true" fileName="ImportExport" [allowExportSelectedData]="true"></dxo-export>
 
         <dxo-selection mode="single"></dxo-selection>
-        <dxi-column [width]=200 caption="{{'actions' | translate}}" name="command-editing" [allowFiltering]="false" [allowSorting]="false"
+        <!-- <dxi-column [width]=200 caption="{{'actions' | translate}}" name="command-editing" [allowFiltering]="false" [allowSorting]="false"
             cellTemplate="cellTemplateSingle">
             <div *dxTemplate="let d of 'cellTemplateSingle'">
                 <dx-button text="{{d.data.action_name}}" (click)="singleApplicationActionColClick(d.data)"
                     type="success" icon="{{d.data.iconCls}}">
                 </dx-button>
             </div>
-        </dxi-column>
+        </dxi-column> -->
         <dxi-column caption="More Actions" [width]=150 name="command-editing" [allowFiltering]="false"
             [allowSorting]="false" cellTemplate="cellTemplate">
             <div *dxTemplate="let d of 'cellTemplate'">
@@ -80,14 +80,13 @@
 
         <dxi-column dataField="reference_no" caption="{{'application_reference' | translate}}"></dxi-column>
         <dxi-column [width]=90 [groupIndex]="0" dataField="section" caption="{{'product_type' | translate}}"></dxi-column>
-        <dxi-column dataField="application_type" caption="{{'application_type' | translate}}"></dxi-column>
-        <dxi-column [width]=150 dataField="permit_category" caption="{{'permit_category' | translate}}"></dxi-column>
-        <dxi-column [width]=100 dataField="proforma_invoice_no" caption="{{'invoice_no' | translate}}"></dxi-column>
-        <dxi-column dataField="proforma_invoice_date" caption="{{'invoice_date' | translate}}"></dxi-column>
-        <dxi-column dataField="sender_receiver" caption="{{'sender_supplier' | translate}}"></dxi-column>
+        <dxi-column dataField="application_option" caption="{{'application_type' | translate}}"></dxi-column>
+        <dxi-column [width]=100 dataField="date_of_application" caption="{{'date_of_application' | translate}}"></dxi-column>
 
-        <dxi-column dataField="premises_name"   caption="{{'premises_name' | translate}}"></dxi-column>
-
+        <dxi-column [width]=100 dataField="invoice_number" caption="{{'invoice_number' | translate}}"></dxi-column>
+        <dxi-column dataField="invoice_date" caption="{{'invoice_date' | translate}}"></dxi-column>
+        <dxi-column dataField="importer_exporter_name" caption="{{'importer_exporter_name' | translate}}"></dxi-column>
+        
         <dxi-column [width]=100 [allowFiltering]="false" dataField="date_added"  caption="{{'date_added' | translate}}"></dxi-column>
         <dxi-column [groupIndex]="1" dataField="status_name"  caption="{{'status_name' | translate}}"></dxi-column>
         <dxi-column dataField="status_name" caption="{{'application_status' | translate}}"></dxi-column>
@@ -256,64 +255,6 @@
     </div>
 </dx-popup>
 
-<dx-popup class="popup" [width]="funcpopWidth(45)" [height]=550 [showTitle]="true" title="Import License Application"
-    [dragEnabled]="false" [hideOnOutsideClick]="false" [(visible)]="isPermitInitialisation">
-    <div *dxTemplate="let data of 'content'">
-        <dx-scroll-view>
-            <form enctype="multipart/form-data" style="margin:0.5px" class="row div-whiteback " role="form"
-                [formGroup]="applicationSelectionfrm" (ngSubmit)="onApplicationSelection()">
-                <div class="col-lg-12" style="margin-bottom: 30px;">
-                    <h6>Import License authorizes imported regulated products to enter the Country after complying with
-                        all importation requirements:</h6>
-                    <h6>Import License Application : Import Permit application for Registered Products</h6>
-                </div>
-                <div class="col-lg-12">
-
-                    <label>{{'import_export_permit_type' | translate}}</label>
-                    <dx-select-box  [dataSource]="importExportPermitTypesData" valueExpr="id"
-                        displayExpr="name" placeholder="{{'select_import/export_permit_type' | translate}}" [searchEnabled]="true"
-                        formControlName="importexport_permittype_id">
-                    </dx-select-box>
-                </div>
-                <div class="col-lg-12">
-                    <label>{{'product_types_definition' | translate}}</label>
-                    <dx-select-box [dataSource]="producttypeDefinationData" valueExpr="id" displayExpr="name"
-                        placeholder="{{'select_product_types_defination' | translate}}" [searchEnabled]="true"
-                        (onSelectionChanged)="onSelectionProductTypesDefination($event)"
-                        formControlName="producttype_defination_id">
-                    </dx-select-box>
-                </div>
-
-
-                <div class="col-lg-12" >
-                    <h3 class='apptype-selection'>{{'select_product_category/type' | translate}}</h3>
-                    <dx-select-box [dataSource]="productTypeData" valueExpr="id" displayExpr="name" [searchEnabled]="true"
-                        placeholder="{{'select_product_types/category' | translate}}" formControlName="regulated_productstype_id">
-                        <div *dxTemplate="let name of 'item'">
-                            <div>{{name.name}}</div>
-                        </div>
-                    </dx-select-box>
-                </div>
-                <!-- <div class="col-lg-12 ">
-                    <dx-button [elementAttr]="{ class: 'btn btn-primary  pull-left' }" icon="fa fa-arrow-right"
-                        text="{{'initiate_permit_application' | translate}}" [disabled]="!applicationSelectionfrm.valid" type="success"
-                        (onClick)="onApplicationSelection()">
-                    </dx-button>
-                </div> -->
-                    <div class="col-lg-12  pull-right row" style="text-align: center;">
-
-                        <dx-button  icon="fa fa-arrow-right"
-                            text="{{'initiate_permit_application' | translate}}"
-                            type="success" (onClick)="onApplicationSelection()">
-                        </dx-button>
-    
-    
-                    </div>
-                
-            </form>
-        </dx-scroll-view>
-    </div>
-</dx-popup>
 
 
 <dx-popup class="popup" [width]=450 [height]=150 [showTitle]="true" title="Invoice Printing and Submission"

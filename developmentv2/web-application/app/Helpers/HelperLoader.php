@@ -73,7 +73,7 @@ if ( !function_exists( 'returnTableNamefromModule' ) ) {
 
 if ( !function_exists( 'getParameterItgenems' ) ) {
     function getParameterItems( $table_name, $filter, $con = 'pgsql' ) {
-        return DbHelper::getParameterItems( $table_name, $filter, $con );
+        return DbHelper::getParameterItems( $table_name, $filter);
     }
 }
 

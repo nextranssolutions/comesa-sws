@@ -2,27 +2,11 @@
   <div class="row  wizard-content">
 
     <div class="col-lg-4">
-      <label>{{'application_type' | translate}}</label>
-      <dx-select-box [dataSource]="applicationTypeData" valueExpr="id" displayExpr="name"
-        placeholder="{{'application_type' | translate}}" [searchEnabled]="true" formControlName="application_type_id">
-      </dx-select-box>
-    </div>
-
-
-    <div class="col-lg-4">
       <label>{{'permit_type' | translate}}</label>
       <dx-select-box [dataSource]="permitTypeData" valueExpr="id" displayExpr="name"
         placeholder="{{'permit_type' | translate}}" [searchEnabled]="true" formControlName="permit_type_id">
       </dx-select-box>
     </div>
-
-    <div class="col-lg-4">
-      <label>{{'date_of_application' | translate}}</label>
-      <dx-date-box dateSerializationFormat="yyyy-MM-dd" formControlName="date_of_application"
-        [placeholder]="'date_of_application' | translate" [showClearButton]="true" [min]="today">
-      </dx-date-box>
-    </div>
-
 
 
     <div class="col-lg-6">
