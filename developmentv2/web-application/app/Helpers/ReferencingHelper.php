@@ -90,7 +90,7 @@ class ReferencingHelper
         
     }
     static function generatePremisesReferenceNo($regulated_productstype_id,$regulatory_subfunction_id){
-        $section_code = self::getRecordCodeNo('cfg_regulated_productstypes',$regulated_productstype_id);
+        $section_code = self::getRecordCodeNo('par_regulated_productstypes',$regulated_productstype_id);
         $year = date('Y');
         $data = array('regulated_productstype_id'=>$regulated_productstype_id,'regulatory_subfunction_id'=>$regulatory_subfunction_id,'year'=>$year);
         $where_state = array('year'=>$year,'regulated_productstype_id'=>$regulated_productstype_id,'regulatory_subfunction_id'=>$regulatory_subfunction_id);

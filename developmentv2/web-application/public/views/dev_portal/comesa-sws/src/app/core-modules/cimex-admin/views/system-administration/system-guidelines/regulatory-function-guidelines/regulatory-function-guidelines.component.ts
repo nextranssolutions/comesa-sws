@@ -118,50 +118,49 @@ export class RegulatoryFunctionGuidelinesComponent {
         });
   }
 
-  // onFuncSaveRecordData() {
-  //   const formData = new FormData();
-  //   const invalid = [];
-  //   const controls = this.guidelinesFrm.controls;
-
-    
-  //   for (const name in controls) {
-  //     if (controls[name].invalid) {
-  //       this.toastr.error('Fill In All Mandatory fields with (*), missing value on ' + name.replace('_id', ''), 'Alert');
-  //       return;
-  //     }
-  //   }
-  //   if (this.guidelinesFrm.invalid) {
-  //     return;
-  //   }
-  
-  
-  //   this.guidelinesFrm.get('resetcolumns')?.setValue(this.resetcolumns);
-  //   this.guidelinesFrm.get('table_name')?.setValue(this.table_name);
-  //   this.spinnerShow('Saving ' + this.parameter_name);
+// onFuncSaveRecordData() {
+//     const formData = new FormData();
+//     const invalid = [];
+//     const controls = this.guidelinesFrm.controls;
    
-  //   this.spinner.show();
-  //   this.admnistrationService.onSaveSystemAdministrationDetails(this.table_name, this.guidelinesFrm.value, 'onSaveRegulatoryFunctionGuidelines')
-  //     .subscribe(
-  //       response => {
-  //         this.response = response;
-  //         //the details 
-  //         if (this.response.success) {
+//     for (const name in controls) {
+//       if (controls[name].invalid) {
+//         this.toastr.error('Fill In All Mandatory fields with (*), missing value on ' + name.replace('_id', ''), 'Alert');
+//         return;
+//       }
+//     }
+//     if (this.guidelinesFrm.invalid) {
+//       return;
+//     }
   
-  //           this.fetchGuidelineDetails();
-  //           this.toastr.success(this.response.message, 'Response');
   
-  //           this.spinnerHide();
-  //         } else {
-  //           this.toastr.error(this.response.message, 'Alert');
-  //           this.spinnerHide();
-  //         }
-  //         this.spinnerHide();
-  //       },
-  //       error => {
-  //         this.toastr.error('Error Occurred', 'Alert');
-  //         this.spinnerHide();
-  //       });
-  // }
+//     this.guidelinesFrm.get('resetcolumns')?.setValue(this.resetcolumns);
+//     this.guidelinesFrm.get('table_name')?.setValue(this.table_name);
+//     this.spinnerShow('Saving ' + this.parameter_name);
+   
+//     this.spinner.show();
+//     this.admnistrationService.onSaveSystemAdministrationDetails(this.table_name, this.guidelinesFrm.value, 'onSaveRegulatoryFunctionGuidelines')
+//     .subscribe(
+//       response => {
+//         this.response = response;
+//         if (this.response.success) {
+//           this.fetchGuidelineDetails();
+//           this.guidelineDetailsVisible = false;
+//           this.record_id = this.response.record_id;
+//           this.guidelinesFrm.get('id')?.setValue(this.record_id);
+//           this.toastr.success(this.response.message, 'Response');
+//           this.spinnerHide();
+
+//         } else {
+//           this.toastr.error(this.response.message, 'Alert');
+//         }
+//         this.spinnerHide();
+//       },
+//       error => {
+//         this.toastr.error('Error Occurred', 'Alert');
+//         this.spinnerHide();
+//       });
+//   }
 
   onFuncSaveRecordData() {
     const formData = new FormData();
@@ -195,8 +194,6 @@ export class RegulatoryFunctionGuidelinesComponent {
   }
 
 
-
-
   onFileSelected(event: any) {
     const file = event.file;  // DevExtreme specific
     if (file) {
@@ -211,7 +208,7 @@ export class RegulatoryFunctionGuidelinesComponent {
   onAddGuideline(){
     this.guidelinesFrm.reset();
     this.guidelineDetailsVisible = true;
-    this.guidelineDetails = [];
+
   }
 
 

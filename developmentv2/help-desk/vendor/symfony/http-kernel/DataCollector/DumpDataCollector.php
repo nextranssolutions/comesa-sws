@@ -45,7 +45,7 @@ class DumpDataCollector extends DataCollector implements DataDumperInterface
 
     public function __construct(Stopwatch $stopwatch = null, string|FileLinkFormatter $fileLinkFormat = null, string $charset = null, RequestStack $requestStack = null, DataDumperInterface|Connection $dumper = null)
     {
-        $fileLinkFormat = $fileLinkFormat ?: \ini_get('xdebug.file_link_format') ?: get_cfg_var('xdebug.file_link_format');
+        $fileLinkFormat = $fileLinkFormat ?: \ini_get('xdebug.file_link_format') ?: get_par_var('xdebug.file_link_format');
         $this->stopwatch = $stopwatch;
         $this->fileLinkFormat = $fileLinkFormat instanceof FileLinkFormatter && false === $fileLinkFormat->format('', 0) ? false : $fileLinkFormat;
         $this->charset = $charset ?: \ini_get('php.output_encoding') ?: \ini_get('default_charset') ?: 'UTF-8';

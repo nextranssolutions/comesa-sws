@@ -964,13 +964,22 @@ class UserManagementController extends Controller
 
                         $template_id = 1;
                         $subject = 'Account Creation Notification';
-
+                        // $account_type_name = DB::table('sys_account_types')
+                        // ->where('id', $account_type_id)
+                        // ->value('name');
                         $vars = [
                             '{user_name}' => $full_names,
                             '{email_address}' => $req->email_address,
+<<<<<<< HEAD
+                            '{user_password}' => $generatedPassword,
+                            // '{account_type}' => $account_type_name
+                            
+=======
                             '{user_password}' => $generatedPassword
+>>>>>>> 3c405a588a5c9fa7260c0d33b48972c8d2da1515
                         ];
-                        $res = sendMailNotification($full_names, $req->email_address, $subject, '', '', '', '', '', $template_id, $vars);
+                        // $res = sendMailNotification($full_names, $req->email_address, $subject, '', '', '', '', '', $template_id, $vars);
+                        $res = sendMailNotification($req->email_address, $subject, '', '', '', '', '', $template_id, $vars);
                         if ($res['success']) {
                             $res = [
                                 'success' => true,
@@ -1093,9 +1102,13 @@ class UserManagementController extends Controller
             $table_name = $req->table_name;
             $appworkflow_status_id = $req->appworkflow_status_id;
             $phone_number = $req->phone_number;
+<<<<<<< HEAD
+            // $user_group_id = $req->user_group_id;
+=======
             
             $user_id = $req->user_id;
 
+>>>>>>> 3c405a588a5c9fa7260c0d33b48972c8d2da1515
             $table_name = 'usr_users_information';
             $process_id = 1;
             $sectionSelection = $req->sectionSelection;
@@ -1118,11 +1131,19 @@ class UserManagementController extends Controller
             if (validateIsNumeric($appworkflow_status_id)) {
                 $sql->where('appworkflow_status_id', $appworkflow_status_id);
             }
+<<<<<<< HEAD
+
+            // if (validateIsNumeric($user_group_id)) {
+            //     $sql->where('user_group_id', $user_group_id);
+            // }
+
+=======
             $sql->where('t3.has_selfregistration', false);
             if($account_type_id != 2){
                 //get only the specific organisation users 
                 $sql->where('organisation_id', $organisation_id);
             }
+>>>>>>> 3c405a588a5c9fa7260c0d33b48972c8d2da1515
             $actionColumnData = returnContextMenuActions($process_id);
             $data = $sql->get();
 
@@ -1143,6 +1164,10 @@ class UserManagementController extends Controller
                     'id' => $rec->id,
                     'user_groups_ids'=>$user_groups_ids,
                     'user_title_id' => $rec->user_title_id,
+<<<<<<< HEAD
+                    // 'user_group_id' => $rec->user_group_id,
+=======
+>>>>>>> 3c405a588a5c9fa7260c0d33b48972c8d2da1515
                     'appworkflow_status' => $rec->appworkflow_status,
                     'identification_type_id' => $rec->identification_type_id,
                     'country_of_origin_id' => $rec->country_of_origin_id,

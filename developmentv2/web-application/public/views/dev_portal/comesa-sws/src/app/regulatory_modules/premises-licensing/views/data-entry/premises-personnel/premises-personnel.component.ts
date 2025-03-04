@@ -226,7 +226,7 @@ export class PremisesPersonnelComponent {
   } onpersonnelIdentificationTypeDataLoad() {
 
     var data = {
-      table_name: 'cfg_identification_types'
+      table_name: 'par_identification_types'
     };
     this.config.onLoadConfigurationData(data)
       .subscribe(

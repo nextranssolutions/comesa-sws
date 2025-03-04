@@ -48,25 +48,7 @@
 
 
     <ng-wizard [config]="config" (stepChanged)="stepChanged($event)">
-        <ng-wizard-step [title]="'step_one' | translate" [description]="'applicant_details' | translate"
-            [canEnter]="isValidTypeBoolean">
-            <div class="container_div">
-                <div class="scrollable-content">
-                    <app-applicant-details [applicantDetailsForm]="applicantDetailsForm"
-                        [userAccountFrm]="userAccountFrm"></app-applicant-details>
-                </div>
-            </div>
-
-            <div class="div_footer button-container">
-
-                <dx-button text="{{'dashboard' | translate}}" type="success" icon="fa fa-eraser"
-                    [elementAttr]="{  class: 'pull-left' }" (onClick)="onApplicationDashboard()">
-                </dx-button>
-                <dx-button text="{{'permit_general_information' | translate}}" iconPosition="right" type="success"
-                    icon="fa fa-angle-double-right" [elementAttr]="{ id: 'elementId' }" (onClick)="nextTab()">
-                </dx-button>
-            </div>
-        </ng-wizard-step>
+        
         <ng-wizard-step [title]="'step_one' | translate" [description]="'applicant_details' | translate"
             [canEnter]="isValidTypeBoolean">
             <div class="container_div">
@@ -97,35 +79,23 @@
                     <div>
                         <app-permitgeneraldetails [applicationGeneraldetailsfrm]="applicationGeneraldetailsfrm"
                             [permitReceiverSenderFrm]="permitReceiverSenderFrm"></app-permitgeneraldetails>
-                        <app-permitgeneraldetails [applicationGeneraldetailsfrm]="applicationGeneraldetailsfrm"
-                            [permitReceiverSenderFrm]="permitReceiverSenderFrm"></app-permitgeneraldetails>
                     </div>
 
                     <!-- Add more content to see the scroll effect -->
                 </div>
             </div>
 
-
-
-
             <div class="div_footer button-container">
                 <dx-button text="{{'previous_step' | translate}}" iconPosition="left" type="danger"
                     icon="fa fa-angle-double-left" [elementAttr]="{ id: 'elementId', }" (onClick)="previousStep()">
                 </dx-button>
 
-                <dx-button text="{{'dashboard' | translate}}" type="success" icon="fa fa-eraser"
-                    [elementAttr]="{  class: 'pull-left' }" (onClick)="onApplicationDashboard()">
+                <dx-button text="{{'on_save_application' | translate}}" iconPosition="left" type="default" icon="fa fa-save"
+                (onClick)="onSaveImportExportApplication()"icon="fa fa-angle-double-left" [elementAttr]="{ id: 'elementId', }">
                 </dx-button>
-
-                <dx-button text="{{'save_permit_application' | translate}}" type="default" icon="fa fa-save"
-                    [elementAttr]="{ id: 'elementId', class: 'pull-right' }"
-                    (onClick)="onSaveImportExportApplication()">
-                </dx-button>
+              
                 <dx-button text="{{'permit_product_information' | translate}}" iconPosition="right" type="success"
-                    icon="fa fa-angle-double-right" [elementAttr]="{ id: 'elementId' }" (onClick)="nextTab()">
-                </dx-button>
-                <dx-button text="{{'permit_product_information' | translate}}" iconPosition="right" type="success"
-                    icon="fa fa-angle-double-right" [elementAttr]="{ id: 'elementId' }" (onClick)="nextStep()">
+                    icon="fa fa-angle-double-right" [elementAttr]="{ id: 'elementId' }" (onClick)="onNextStep()">
                 </dx-button>
             </div>
 
@@ -138,7 +108,7 @@
                 <div class="scrollable-content">
                     <!-- Your content goes here -->
                     <div>
-                        <!-- <app-permitproductdetails [productGeneraldetailsfrm]="productGeneraldetailsfrm"></app-permitproductdetails> -->
+                        <app-permitproductdetails [productGeneraldetailsfrm]="productGeneraldetailsfrm" [permitProductsData]="permitProductsData" [permitProductsFrm]="permitProductsFrm"></app-permitproductdetails>
                     </div>
 
                 </div>
@@ -167,6 +137,10 @@
                         [application_code]="application_code"></app-appresumable-documents> -->
 
                     <!-- Add more content to see the scroll effect -->
+                    
+                    <app-sharedapplicationdocumentuploads [application_code]="application_code" 
+                    [process_id]="process_id" ></app-sharedapplicationdocumentuploads>
+
                 </div>
             </div>
             <div class="div_footer button-container">
@@ -184,9 +158,10 @@
             [canEnter]="isValidTypeBoolean">
             <div class="container_div">
                 <div class="scrollable-content">
-                    <!-- Your content goes here -->
-                    <div>Step 1 content</div>
-                    <!-- Add more content to see the scroll effect -->
+                    <app-sharedevaluation-checklist
+                    [applicantperformance_evaluation_id]="applicantperformance_evaluation_id"
+    
+                    [application_code]="application_code"></app-sharedevaluation-checklist>
                 </div>
             </div>
             <div class="div_footer button-container">

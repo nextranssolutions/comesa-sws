@@ -299,11 +299,11 @@ class UtilityHelper
 
     public static function generateRefNumber($codes_array, $ref_id)
     {
-        $serial_format = DB::table('cfg_refnumbers_formats')
+        $serial_format = DB::table('par_refnumbers_formats')
             ->where('id', $ref_id)
             ->value('ref_format');
         $arr = explode("|", $serial_format);
-        $serial_variables = $serial_format = DB::table('cfg_refnumbers_variables')
+        $serial_variables = $serial_format = DB::table('par_refnumbers_variables')
             ->select('identifier')
             ->get();
         $serial_variables = convertStdClassObjToArray($serial_variables);

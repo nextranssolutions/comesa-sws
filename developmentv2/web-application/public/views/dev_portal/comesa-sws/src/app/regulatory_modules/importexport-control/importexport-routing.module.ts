@@ -6,6 +6,7 @@ import { ImportexportLayoutComponent } from './views/layout/importexport-layout/
 import { DraftImportlicensedashComponent } from './views/import-license/draft-importlicensedash/draft-importlicensedash.component';
 import { InitiateImportappComponent } from './views/import-license/initiate-importapp/initiate-importapp.component';
 import { ImportexportDashboardComponent } from './views/importexport-dashboard/importexport-dashboard.component';
+import { UnderprocessingImportlicencedashComponent } from './views/import-license/underprocessing-importlicencedash/underprocessing-importlicencedash.component';
 
 const routes: Routes = [{
   path: '',
@@ -14,13 +15,16 @@ const routes: Routes = [{
   children: [{
     path: '',
     component: ImportexportDashboardComponent
-  },{
+  }, {
     path: 'draft-importlicense-dashboard',
     component: DraftImportlicensedashComponent
-  },{
+  }, {
     path: 'initiate-importapp',
     component: InitiateImportappComponent
-  }
+  }, {
+    path: 'underprocessing-importlicensedash',
+    component: UnderprocessingImportlicencedashComponent
+  },
 ]
 }]
 
