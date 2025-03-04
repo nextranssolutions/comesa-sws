@@ -197,21 +197,7 @@ export class SharedImpExpdashboardClass {
     return window.innerWidth * percentage_width / 100;
   }
 
-  // reloadPermitApplicationsApplications(filter_params  = { application_status_id: this.application_status_id }) {
-  //   this.spinnerShow('Loading Information...........');
-  //   this.appService.onPermitApplicationLoading(filter_params, 'getImportExpPermitsApplicationLoading')
-  //     .subscribe(
-  //       data => {
 
-  //         this.data_record = data;
-  //         // console.log(this.data_record);
-  //         if (this.data_record.success) {
-  //           this.dtImportExpApplicationData = this.data_record.data;
-  //         }
-  //         this.spinnerHide();
-  //       },
-  //     );
-  // }
 
 
   reloadPermitApplicationsApplications(appworkflow_status_id = 0, ) {
@@ -222,7 +208,7 @@ export class SharedImpExpdashboardClass {
       
     };
 
-    this.appService.onPermitApplicationLoading(data_submit, 'getImportExpPermitsApplicationLoading')
+    this.appService.onPermitApplicationLoading(data_submit, 'getImportExpApplicantPermitsLoading')
       .subscribe(
         data => {
 

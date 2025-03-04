@@ -102,6 +102,8 @@ export class PermitgeneraldetailsComponent implements OnInit {
     mistrader_id: number;
     premise_title: string = 'Premises(Licensed Outlet(s))';
     ammendReadOnly: boolean;
+    loadingVisible: boolean;
+  spinnerMessage: string;
   registration_process_action: string;
   select_registration_section_process: string;
     constructor(public utilityService: UtilityService, public premappService: PremisesLicensingService, public fb: FormBuilder,   public spinner: SpinnerVisibilityService, public configService: ConfigurationsService, public appService: ImportExportService, public router: Router, public formBuilder: FormBuilder, public config: ConfigurationsService,  public toastr: ToastrService, public authService: AuthenticationService, public httpClient: HttpClient) {
@@ -641,7 +643,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
             .catch(error => { throw 'Data Loading Error' });
         }
       });
-  
+
     }
   
     

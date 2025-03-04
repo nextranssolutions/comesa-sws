@@ -32,4 +32,5 @@ prodclass_category_id: any;
 query_ref_id: any;
 product_type_id: any;
 
+
 }

@@ -65,7 +65,8 @@ export class SharedImpExpdashboardClass {
   win_submitinvoicepayments: boolean;
   permitProductsData: any;
 
-
+  loadingVisible: boolean;
+  spinnerMessage: string;
   appregulatory_subfunction_id: number;
   app_routing: any;
   appregulatory_function_id: number;
@@ -78,6 +79,7 @@ export class SharedImpExpdashboardClass {
   producttype_defination_id: number;
   importExportPermitTypesData: any;
   processingData: any;
+  filter_params: any;
 
   constructor(public utilityService: UtilityService, public viewRef: ViewContainerRef, public spinner: SpinnerVisibilityService, public toastr: ToastrService, public router: Router, public configService: ConfigurationsService, public appService: ImportExportService) { // this.onLoadApplicationCounterDetails();
 
@@ -112,6 +114,7 @@ export class SharedImpExpdashboardClass {
     // this.onLoadproducttypeDefinationData();
 
     this.onLoadPermitTypesCategoryData();
+    
   }
   scrollToTop(): void {
     window.scrollTo({
@@ -198,7 +201,7 @@ export class SharedImpExpdashboardClass {
     this.configService.getSectionUniformApplicationProces(this.regulatory_subfunction_id, this.permit_typecategory_id)
       .subscribe(
         data => {
-          this.spinner.hide();
+          
           if (data.success) {
             this.processData = data.data.process_infor;
             
@@ -218,11 +221,11 @@ export class SharedImpExpdashboardClass {
 
             this.router.navigate(this.app_route);
             this.scrollToTop();
-
+            this.spinner.hide();
           }
           else {
             this.toastr.error(this.processData.message, 'Alert!');
-
+            this.spinner.hide();
           }
 
 
@@ -241,7 +244,6 @@ export class SharedImpExpdashboardClass {
         resp_data => {
           if (resp_data.success) {
             this.dtImportExpApplicationData = resp_data.data;
-
           }
           else {
             this.toastr.error(resp_data.message, 'Alert!');
@@ -707,25 +709,18 @@ export class SharedImpExpdashboardClass {
     }
   }
   funcArchivePermitApplication(data) {
-    this.utilityService.funcApplicationArchiceCall(this.viewRef, data, 'txn_importexport_applications', this.reloadPermitApplicationsApplications);
-
-
+    this.utilityService.funcApplicationArchiceCall(this.viewRef, data, 'tra_importexport_applications', this.reloadPermitApplicationsApplications);
   }
 
   funcDeletePermitApplication(data) {
     //  this.utilityService.funcApplicationDeleteCall(this.viewRef, data, 'txn_importexport_applications', this.reloadPermitApplicationsApplications);
-
-
   }
 
   onClearProdutFilters() {
     this.FilterDetailsFrm.reset();
     this.FilterDetailsFrm.reset();
     this.FilterDetailsFrm.reset();
-
     this.reloadPermitApplicationsApplications({});
-
-
   }
   funcInitiateInspectionBooking(app_data) {
     /*

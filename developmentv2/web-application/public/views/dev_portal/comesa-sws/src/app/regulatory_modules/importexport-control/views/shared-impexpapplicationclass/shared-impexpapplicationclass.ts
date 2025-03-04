@@ -20,19 +20,23 @@ import { NgWizardService } from 'ng-wizard';
   selector: '[appSharedImpexpApplicationClass]' // Add a unique selector here
 })
 export class SharedImpexpApplicationClass {
+  
   //ImportexportService
   //dms 
   @ViewChild(DxDataGridComponent)
   appuploaded_document_id: number;
+  applicantperformance_evaluation_id: number;
   trader_id: number;
   mistrader_id: number;
   permit_id: any;
+  isShowAppProcessSubmission:boolean;
   dataGrid: DxDataGridComponent;
   productApplicationProcessingData: any;
   isPreviewApplicationProcessing: boolean = false;
   deviceTypeData: any;
   data_record: any;
   applicant_id: number;
+  appworkflow_status_id: number;
   product_resp: any; confirmDataParam: any;
   applicationGeneraldetailsfrm: FormGroup;
   permitReceiverSenderFrm: FormGroup;
@@ -76,6 +80,7 @@ export class SharedImpexpApplicationClass {
   regulated_productstype_id: number;
   application_id: number;
   application_code: number;
+  process_id: number;
   tracking_no: string;
   status_name: string;
   regulatory_function_id: number = 4;
@@ -998,6 +1003,10 @@ onNextStep() {
   funcpopWidth(percentage_width) {
     return window.innerWidth * percentage_width / 100;
   }
+  funcpopHeight(percentage_height) {
+    return window.innerHeight * percentage_height / 100;
+  }
+
   funcValidatePermitdetails(previous_step, direction) {
     const invalid = [];
     const controls = this.applicationGeneraldetailsfrm.controls;
@@ -1038,6 +1047,8 @@ onNextStep() {
           this.spinner.hide();
         });
   }
-
+  onFuncSubmitApplication() {
+    this.isShowAppProcessSubmission= true;
+  }
 
 }

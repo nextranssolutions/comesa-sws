@@ -22,6 +22,8 @@ import { SafePipeModule } from '../../safe-pipe/safe-pipe.module';
 import { SharedModuleModule } from '../../shared-views/shared-module.module';
 import { ImportexportDashboardComponent } from './views/importexport-dashboard/importexport-dashboard.component';
 import { ApplicantdetailsComponent } from './views/impexpdata_entry/applicantdetails/applicantdetails.component';
+import { SharedapplicationdocumentuploadsComponent } from 'src/app/shared-views/sharedutilities/sharedapplicationdocumentuploads/sharedapplicationdocumentuploads.component';
+import { UnderprocessingImportlicencedashComponent } from './views/import-license/underprocessing-importlicencedash/underprocessing-importlicencedash.component';
 
 const ngWizardConfig: NgWizardConfig = {
   theme: THEME.default
@@ -32,7 +34,9 @@ const ngWizardConfig: NgWizardConfig = {
   declarations: [ImportexportNavigationComponent,ImportexportDashboardComponent,
     ImportexportLayoutComponent, DraftImportlicensedashComponent,
     PermitproductdetailsComponent, PermitgeneraldetailsComponent,ApplicantdetailsComponent,
-    ImportexportHeaderComponent,InitiateImportappComponent],
+    ImportexportHeaderComponent,InitiateImportappComponent,
+    UnderprocessingImportlicencedashComponent,
+  ],
   imports: [
     CommonModule, ImportexportRoutingModule,
     SharedModuleModule,
