@@ -137,6 +137,10 @@
                         [application_code]="application_code"></app-appresumable-documents> -->
 
                     <!-- Add more content to see the scroll effect -->
+                    
+                    <app-sharedapplicationdocumentuploads [application_code]="application_code" 
+                    [process_id]="process_id" ></app-sharedapplicationdocumentuploads>
+
                 </div>
             </div>
             <div class="div_footer button-container">
@@ -154,9 +158,10 @@
             [canEnter]="isValidTypeBoolean">
             <div class="container_div">
                 <div class="scrollable-content">
-                    <!-- Your content goes here -->
-                    <div>Step 1 content</div>
-                    <!-- Add more content to see the scroll effect -->
+                    <app-sharedevaluation-checklist
+                    [applicantperformance_evaluation_id]="applicantperformance_evaluation_id"
+    
+                    [application_code]="application_code"></app-sharedevaluation-checklist>
                 </div>
             </div>
             <div class="div_footer button-container">

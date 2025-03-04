@@ -24,6 +24,9 @@ export class SharedImpexpApplicationClass {
   appuploaded_document_id: number;
   trader_id: number;
   mistrader_id: number;
+  process_id: number;
+  applicantperformance_evaluation_id: number;
+
   permit_id: any;
   dataGrid: DxDataGridComponent;
   productApplicationProcessingData: any;
