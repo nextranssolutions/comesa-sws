@@ -6,6 +6,11 @@ import { ImportexportLayoutComponent } from './views/layout/importexport-layout/
 import { DraftImportlicensedashComponent } from './views/import-license/draft-importlicensedash/draft-importlicensedash.component';
 import { InitiateImportappComponent } from './views/import-license/initiate-importapp/initiate-importapp.component';
 import { DashboardComponent } from './views/dashboard/dashboard.component';
+import { UnderProcessingComponent } from './views/import-license/under-processing/under-processing.component';
+import { RequestForadditionalInformationComponent } from './views/import-license/request-foradditional-information/request-foradditional-information.component';
+import { ApprovedPermitsComponent } from './views/import-license/approved-permits/approved-permits.component';
+import { AwaitingPaymentRemittanceComponent } from './views/import-license/awaiting-payment-remittance/awaiting-payment-remittance.component';
+import { RejectedPermitsComponent } from './views/import-license/rejected-permits/rejected-permits.component';
 
 const routes: Routes = [{
   path: '',
@@ -20,8 +25,26 @@ const routes: Routes = [{
   },{
     path: 'initiate-importapp',
     component: InitiateImportappComponent
+  },{
+    path: 'underprocessing-importapp',
+    component: UnderProcessingComponent
+  },{
+    path: 'request-additional-info',
+    component: RequestForadditionalInformationComponent
+  },{
+    path: 'rejected-importapp',
+    component: RejectedPermitsComponent
+  },{
+    path: 'awaitingpayment-remittance',
+    component: AwaitingPaymentRemittanceComponent
+  },{
+    path: 'approved-permits',
+    component: ApprovedPermitsComponent
   }
 
+  
+  
+  
 ]
 }]
 

@@ -172,7 +172,9 @@ export class SharedImpexpApplicationClass {
     this.application_details = JSON.parse(this.application_details);
     this.form_fielddata = this.application_details.application_form;
     this.applicationGeneraldetailsfrm = this.formBuilder.group({});
+    
     // this.permitProductsFrm = this.formBuilder.group({});
+    
 
 
 
@@ -200,12 +202,14 @@ export class SharedImpexpApplicationClass {
       this.application_id = this.application_details.application_id;
       this.tracking_no = this.application_details.tracking_no;
 
+      this.applicationGeneraldetailsfrm.patchValue(this.application_details);
+ 
     }
 
 
     this.permitProductsFrm = new FormGroup({
       brand_name: new FormControl('', Validators.compose([Validators.required])),
-      product_name: new FormControl('', Validators.compose([])),
+      product_description: new FormControl('', Validators.compose([])),
       product_category_id: new FormControl('', Validators.compose([])),
       regulated_product_category: new FormControl('', Validators.compose([])),
       regulated_productcategory_id: new FormControl('', Validators.compose([])),
@@ -436,6 +440,8 @@ export class SharedImpexpApplicationClass {
     // let registrant_details = this.applicationApplicantdetailsfrm.value;//applicant values
     let applicant_id = this.applicantDetailsForm.get('id')?.value;
     let application_options_id = this.applicantDetailsForm.get('application_options_id')?.value;
+    let process_id = 2;
+    this.applicationGeneraldetailsfrm.value['process_id'] = process_id;
 
     this.applicationGeneraldetailsfrm.value['applicant_id'] = applicant_id;
     this.applicationGeneraldetailsfrm.value['application_options_id'] = application_options_id;

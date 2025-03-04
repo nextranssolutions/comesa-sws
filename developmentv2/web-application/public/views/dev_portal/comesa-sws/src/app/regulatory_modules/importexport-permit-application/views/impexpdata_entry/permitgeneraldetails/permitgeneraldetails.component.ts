@@ -448,8 +448,8 @@ export class PermitgeneraldetailsComponent implements OnInit {
   onLoadcurrencyData() {
     var data = {
       table_name: 'par_currencies',
-      is_enabled: true,
-
+      is_enabled: 1,
+      
     };
 
     this.config.onLoadConfigurationData(data)
@@ -533,8 +533,8 @@ export class PermitgeneraldetailsComponent implements OnInit {
   onLoadpermitTypeData() {
     var data = {
       table_name: 'par_permit_typecategories',
-      is_enabled: 1,
-
+      is_enabled: true,
+      
     };
 
     this.config.onLoadConfigurationData(data)

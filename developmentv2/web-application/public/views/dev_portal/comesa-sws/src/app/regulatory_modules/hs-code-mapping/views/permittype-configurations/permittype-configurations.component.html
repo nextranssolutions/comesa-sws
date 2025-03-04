@@ -57,7 +57,7 @@
 
             </dxi-column>
 
-            <dxi-column dataField="service_deliverytimeline" caption="{{ 'service_delivery_timeline' | translate }}">
+            <dxi-column dataField="service_type" caption="{{ 'service_type' | translate }}">
 
             </dxi-column>
 
@@ -139,9 +139,17 @@
                         </div>
 
                         <div class="col-lg-6">
-                            <label>{{ 'service_delivery_timeline' | translate }}</label>
-                            <dx-select-box [searchEnabled]="true" formControlName="service_deliverytimeline_id"
-                                [showClearButton]="true" [dataSource]="srvDeliveryTimelineData" valueExpr="id"
+                            <label>{{ 'service_type' | translate }}</label>
+                            <dx-select-box [searchEnabled]="true" formControlName="service_type_id"
+                                [showClearButton]="true" [dataSource]="serviceTypeData" valueExpr="id"
+                                displayExpr="name">
+                            </dx-select-box>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <label>{{ 'timeline_type' | translate }}</label>
+                            <dx-select-box [searchEnabled]="true" formControlName="timeline_type_id"
+                                [showClearButton]="true" [dataSource]="timelineTypeData" valueExpr="id"
                                 displayExpr="name">
                             </dx-select-box>
                         </div>
@@ -191,14 +199,14 @@
                         </div>
 
                         <div class="col-lg-6">
-                            <label>{{ 'renewable_status' | translate }}</label>
+                            <label>{{ 'permit_extension' | translate }}</label>
                             <dx-select-box [searchEnabled]="true" formControlName="renewable_status_id"
                                 [showClearButton]="true" [dataSource]="renewableStatusData" valueExpr="id"
                                 displayExpr="name">
                             </dx-select-box>
                         </div>
 
-                        <div class="col-lg-6">
+                        <div class="col-lg-12">
                             <label>{{ 'description' | translate }}</label>
                             <dx-text-area formControlName="description">
                             </dx-text-area>
@@ -213,10 +221,10 @@
 
                 <div class="col-lg-12">
                     <dx-button text="{{ 'save' + parameter_name | translate }}" type="default" icon="fa fa-save"
-                        [elementAttr]="{ id: 'elementId', class: 'pull-right' }" (onClick)="onFuncSaveRecordData()">
+                        [elementAttr]="{ id: 'elementId', class: 'pull-left' }" (onClick)="onFuncSaveRecordData()">
                     </dx-button>
                     <dx-button text="{{ 'next_hs_codes' | translate }}" type="default" icon="fa fa-arrow-right"
-                        (onClick)="onNextNavigationItems('HsCodes')">
+                    [elementAttr]="{ id: 'elementId', class: 'pull-right' }" (onClick)="onNextNavigationItems('HsCodes')">
                     </dx-button>
                 </div>
 

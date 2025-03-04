@@ -579,7 +579,7 @@ class UtilityHelper
     public static function returnContextMenuActions($process_id)
     {
         //return records
-        $records = DB::table('wf_workflowstatuses_actions as t1')
+        $records = DB::table('wb_workflowstageprocess_actions as t1')
             ->select('t2.*', 't1.workflow_status_id as appworkflow_status_id', 't2.name as text', 't2.iconCls as icon')
             ->join('wf_statuses_actions as t2', 't1.statuses_action_id', '=', 't2.id')
             ->where('t1.process_id', $process_id)
@@ -600,7 +600,7 @@ class UtilityHelper
     public static function returnContxtMenuActions()
     {
         //return records
-        $records = DB::table('wf_workflowstatuses_actions as t1')
+        $records = DB::table('wb_workflowstageprocess_actions as t1')
             ->select('t2.*', 't1.workflow_status_id as appworkflow_status_id', 't2.name as text', 't2.iconCls as icon')
             ->join('wf_statuses_actions as t2', 't1.statuses_action_id', '=', 't2.id')
             ->get();
