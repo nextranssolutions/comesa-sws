@@ -15,14 +15,18 @@ import { UtilityService } from 'src/app/core-services/utilities/utility.service'
   styleUrl: './shared-service-delivery.component.css'
 })
 export class SharedServiceDeliveryComponent {
- @Input() table_name: string;
+  @Input() table_name: string;
   @Input() parameter_name: string;
   hasReadpermissions: boolean;
   createNewDataFrm: FormGroup;
   onAddNewConfiVisible: boolean;
-  NewConfigData: any[] = [];
-  organisationData: any[] = [];
-  serviceTypeData: any[] = [];
+  timeline_type_id: number;
+  NewConfigData: any;
+  organisationData: any;
+  timelineTypeData: any;
+  estimatedDaysData: any;
+  serviceTypeData: any;
+  specialConditionsData: any;
   show_advancesearch: boolean;
   isnewprocess: boolean;
   config_record: string;
@@ -68,17 +72,22 @@ export class SharedServiceDeliveryComponent {
   ) {
 
 
-      this.createNewDataFrm = new FormGroup({
-        id: new FormControl('', Validators.compose([])),
-        name: new FormControl('', Validators.compose([Validators.required])),
-        description: new FormControl('', Validators.compose([Validators.required])),
-        is_enabled: new FormControl('', Validators.compose([])),
-        product_type_id: new FormControl('', Validators.compose([])),
-        code: new FormControl('', Validators.compose([])),
-        
-      });
-    
-  
+    this.createNewDataFrm = new FormGroup({
+      id: new FormControl('', Validators.compose([])),
+      name: new FormControl('', Validators.compose([])),
+      timeline_type_id: new FormControl('', Validators.compose([])),
+      service_type_id: new FormControl('', Validators.compose([])),
+      estimated_days_id: new FormControl('', Validators.compose([])),
+      special_conditions_id: new FormControl('', Validators.compose([])),
+      organisation_id: new FormControl('', Validators.compose([])),
+      description: new FormControl('', Validators.compose([])),
+      is_enabled: new FormControl('', Validators.compose([])),
+      product_type_id: new FormControl('', Validators.compose([])),
+      code: new FormControl('', Validators.compose([])),
+
+    });
+
+
 
   }
 
@@ -86,19 +95,25 @@ export class SharedServiceDeliveryComponent {
     this.fetchNewConfigData();
     this.fetchOrganisationData();
     this.fetchNewConfigurations();
-    this.fetchServiceTypeData()
-   
-  
-    }
+    this.fetchServiceTypeData();
+    this.fetchSpecialConditionsData();
+    this.fetchTimelineTypeData();
 
-    spinnerShow(spinnerMessage) {
-      this.loadingVisible = true;
-      this.spinnerMessage = spinnerMessage;
-    }
-    spinnerHide() {
-      this.loadingVisible = false;
-    }
-  
+  }
+
+  spinnerShow(spinnerMessage) {
+    this.loadingVisible = true;
+    this.spinnerMessage = spinnerMessage;
+  }
+  spinnerHide() {
+    this.loadingVisible = false;
+  }
+
+  onTimelineTypeSelection($event) {
+    let timeline_type_id = $event.selectedItem.id;
+    this.fetchEstimatedDaysData(timeline_type_id);
+
+  }
   resetcolumns(resetcolumns: any) {
     throw new Error('Method not implemented.');
   }
@@ -152,7 +167,7 @@ export class SharedServiceDeliveryComponent {
           this.response = response;
           //the details 
           if (this.response.success) {
-            this. fetchNewConfigurations();
+            this.fetchNewConfigurations();
             this.onAddNewConfiVisible = false;
             this.toastr.success(this.response.message, 'Response');
 
@@ -167,7 +182,7 @@ export class SharedServiceDeliveryComponent {
         });
   }
 
-  
+
   fetchNewConfigData() {
 
     var data_submit = {
@@ -202,6 +217,65 @@ export class SharedServiceDeliveryComponent {
             this.organisationData = this.data_record.data
           }
         },
+        
+        error => {
+
+        });
+        
+  }
+
+
+  fetchTimelineTypeData() {
+
+    var data_submit = {
+      'table_name': 'par_timeline_type'
+    }
+    this.configService.onLoadConfigurationData(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.timelineTypeData = this.data_record.data
+          }
+        },
+        error => {
+
+        });
+
+  }
+
+  fetchEstimatedDaysData(timeline_type_id) {
+
+    var data_submit = {
+      'table_name': 'par_estimated_days',
+      timeline_type_id: timeline_type_id
+    }
+    this.configService.onLoadConfigurationData(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.estimatedDaysData = this.data_record.data
+          }
+        },
+        error => {
+
+        });
+        console.log(this.data_record);
+  }
+
+  fetchSpecialConditionsData() {
+    var data_submit = {
+      'table_name': 'tra_permit_special_conditions'
+    }
+    this.configService.onLoadConfigurationData(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.specialConditionsData = this.data_record.data
+          }
+        },
         error => {
 
         });
@@ -211,7 +285,7 @@ export class SharedServiceDeliveryComponent {
   fetchServiceTypeData() {
 
     var data_submit = {
-      'table_name': 'par_service_deliverytimelines'
+      'table_name': 'par_service_type'
     }
     this.configService.onLoadConfigurationData(data_submit)
       .subscribe(
@@ -227,7 +301,7 @@ export class SharedServiceDeliveryComponent {
 
   }
 
-  
+
   funcpopWidth(percentage_width) {
     return window.innerWidth * percentage_width / 100;
   }
@@ -304,7 +378,7 @@ export class SharedServiceDeliveryComponent {
         });
   }
 
-  
+
   onAdvanceProductRegistrySearch(e) {
     e.toolbarOptions.items.unshift({
       location: 'after',
@@ -352,13 +426,13 @@ export class SharedServiceDeliveryComponent {
 
 
 
-    onExporting(e: DxDataGridTypes.ExportingEvent) {
-  
-      if (e.format == 'pdf') {
-        this.reportingAnalytics.onExportingPDF(e)
-      }
-      else {
-        this.reportingAnalytics.onExportingExcelData(e)
-      }
+  onExporting(e: DxDataGridTypes.ExportingEvent) {
+
+    if (e.format == 'pdf') {
+      this.reportingAnalytics.onExportingPDF(e)
     }
+    else {
+      this.reportingAnalytics.onExportingExcelData(e)
+    }
+  }
 }

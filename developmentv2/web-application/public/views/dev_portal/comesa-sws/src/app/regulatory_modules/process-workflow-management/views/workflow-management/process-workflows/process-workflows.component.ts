@@ -19,7 +19,8 @@ export class ProcessWorkflowsComponent {
   parameter_name: string;
   resetcolumns:string;
   show_advancesearch: boolean;
-  workflowItemsFrm: FormGroup
+  workflowItemsFrm: FormGroup;
+  workflowStageProcessActionsFrm:  FormGroup;
   onAddWorkFlowItemVisible: boolean;
   hasReadpermissions: boolean;
   deletePopupVisible = false;
@@ -32,6 +33,7 @@ export class ProcessWorkflowsComponent {
   workflowStageData: any;
   workflowApplicationStatusData: any;
   enablePopupVisible: boolean;
+  workflowStageProcessActionsVisible: boolean;
   is_enabled: boolean;
   enabledisable_workflow: string;
   enabledisable_workflowdescription: string;
@@ -838,8 +840,6 @@ onLoadApplicationStatusData() {
 
 
 onFuncSaveWorlflowData() {
-
-
   const formData = new FormData();
   const invalid = [];
   const controls = this.workflowItemsFrm.controls;

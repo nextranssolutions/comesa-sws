@@ -508,7 +508,7 @@ class SysAdministrationController extends Controller
                 ->leftJoin('tra_organisation_information as t4', 't1.organisation_id', 't4.id')
                 ->leftJoin('wf_processes as t5', 't1.process_id', 't5.id')
                 ->leftJoin('wf_workflows as t6', 't1.workflow_id', 't6.id')
-                ->leftJoin('par_service_deliverytimelines as t7', 't1.service_deliverytimeline_id', 't7.id')
+                ->leftJoin('par_service_type as t7', 't1.service_type_id', 't7.id')
                 ->leftJoin('par_refnumbers_formats as t8', 't1.reference_noformat_id', 't8.id')
                 ->leftJoin('par_permit_statuses as t9', 't1.permit_status_id', 't9.id')
                 ->leftJoin('par_renewable_statuses as t10', 't1.renewable_status_id', 't10.id')
@@ -520,7 +520,7 @@ class SysAdministrationController extends Controller
                     't4.name as organisation',
                     't5.name as process',
                     't6.name as workflow',
-                    't7.name as service_delivery_timeline',
+                    't7.name as service_type',
                     't8.name as ref_number_format',
                     't9.name as permit_status',
                     't10.name as renewable_status'
@@ -539,7 +539,7 @@ class SysAdministrationController extends Controller
                     'organisation_id' => $rec->organisation_id,
                     'process_id' => $rec->process_id,
                     'workflow_id' => $rec->workflow_id,
-                    'service_deliverytimeline_id' => $rec->service_deliverytimeline_id,
+                    'service_type_id' => $rec->service_type_id,
                     'reference_noformat_id' => $rec->reference_noformat_id,
                     'permit_status_id' => $rec->permit_status_id,
                     'renewable_status_id' => $rec->renewable_status_id,
@@ -548,7 +548,7 @@ class SysAdministrationController extends Controller
                     'organisation' => $rec->organisation,
                     'process' => $rec->process,
                     'workflow' => $rec->workflow,
-                    'service_delivery_timeline' => $rec->service_delivery_timeline,
+                    'service_type' => $rec->service_type,
                     'ref_number_format' => $rec->ref_number_format,
                     'permit_status' => $rec->permit_status,
                     'renewable_status' => $rec->renewable_status,
