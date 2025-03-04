@@ -970,9 +970,6 @@ class UserManagementController extends Controller
                         $vars = [
                             '{user_name}' => $full_names,
                             '{email_address}' => $req->email_address,
-                            '{user_password}' => $generatedPassword,
-                            // '{account_type}' => $account_type_name
-                            
                             '{user_password}' => $generatedPassword
                         ];
                         // $res = sendMailNotification($full_names, $req->email_address, $subject, '', '', '', '', '', $template_id, $vars);
@@ -1099,7 +1096,6 @@ class UserManagementController extends Controller
             $table_name = $req->table_name;
             $appworkflow_status_id = $req->appworkflow_status_id;
             $phone_number = $req->phone_number;
-            // $user_group_id = $req->user_group_id;
             
             $user_id = $req->user_id;
 
@@ -1150,7 +1146,6 @@ class UserManagementController extends Controller
                     'id' => $rec->id,
                     'user_groups_ids'=>$user_groups_ids,
                     'user_title_id' => $rec->user_title_id,
-                    // 'user_group_id' => $rec->user_group_id,
                     'appworkflow_status' => $rec->appworkflow_status,
                     'identification_type_id' => $rec->identification_type_id,
                     'country_of_origin_id' => $rec->country_of_origin_id,

@@ -1,38 +1,16 @@
 <form role="form" enctype="multipart/form-data" role="form" [formGroup]="applicationGeneraldetailsfrm">
   <div class="row  wizard-content">
 
-    <div class="col-lg-4">
-      <label>{{'permit_type' | translate}}</label>
-      <dx-select-box [dataSource]="permitTypeData" valueExpr="id" displayExpr="name"
-        placeholder="{{'permit_type' | translate}}" [searchEnabled]="true" formControlName="permit_type_id">
-      </dx-select-box>
-    </div>
-
-
-    <div class="col-lg-6">
-      <label>{{ 'expected_date_of_shipment' | translate }}</label>
-      <dx-date-box dateSerializationFormat="yyyy-MM-dd" [min]="today" formControlName="expected_date_of_shipment"
-        [placeholder]="'expected_date_of_shipment' | translate" [showClearButton]="true">
-      </dx-date-box>
-    </div>
-
-    <div class="col-lg-6">
-      <label>{{'mode_of_transport' | translate}}</label>
-      <dx-select-box [dataSource]="transportModeData" valueExpr="id" displayExpr="name"
-        placeholder="{{'mode_of_transport' | translate}}" [searchEnabled]="true" formControlName="mode_of_transport_id">
-      </dx-select-box>
-    </div>
-
 
     <div class="input-group">
-      <div class="col-lg-6">
+      <div class="col-lg-10">
         <label>{{'importer_exporter_details' | translate}}</label>
         <dx-text-box [readOnly]="true" formControlName="importer_exporter_name"
           [placeholder]="'importer_exporter_details' | translate" [showClearButton]="true">
         </dx-text-box>
         <input type="hidden" formControlName="importer_exporter_id" />
       </div>
-      <div class="col-lg-6 pt-5">
+      <div class="col-lg-2 pt-5">
         <dx-button [elementAttr]="{ class: 'btn btn-primary pull-left' }" [disabled]="ammendReadOnly"
           style="margin-top:25px !important;" text="{{ 'search_details' | translate }}" type="default"
           (onClick)="onsearchSenderreceiver()">
@@ -41,6 +19,31 @@
       </div>
     </div>
 
+
+    <div class="col-lg-4">
+      <label>{{'permit_type' | translate}}</label>
+      <dx-select-box [dataSource]="permitTypeData" valueExpr="id" displayExpr="name"
+        placeholder="{{'permit_type' | translate}}" [searchEnabled]="true" formControlName="permit_type_id">
+      </dx-select-box>
+    </div>
+
+
+    <div class="col-lg-4">
+      <label>{{ 'expected_date_of_shipment' | translate }}</label>
+      <dx-date-box dateSerializationFormat="yyyy-MM-dd" [min]="today" formControlName="expected_date_of_shipment"
+        [placeholder]="'expected_date_of_shipment' | translate" [showClearButton]="true">
+      </dx-date-box>
+    </div>
+
+    <div class="col-lg-4">
+      <label>{{'mode_of_transport' | translate}}</label>
+      <dx-select-box [dataSource]="transportModeData" valueExpr="id" displayExpr="name"
+        placeholder="{{'mode_of_transport' | translate}}" [searchEnabled]="true" formControlName="mode_of_transport_id">
+      </dx-select-box>
+    </div>
+
+
+   
     <div class="col-lg-4">
       <label>{{ 'port_type' | translate}}</label>
       <dx-select-box [dataSource]="portTypeData" valueExpr="id" displayExpr="name"
@@ -68,31 +71,6 @@
       <dx-select-box [dataSource]="modeOfTransportData" valueExpr="id" displayExpr="name"
         [placeholder]="'select_mode_of_transport' | translate" [searchEnabled]="true"
         formControlName="mode_oftransport_id">
-      </dx-select-box>
-    </div>
-
-    <div class="col-lg-4">
-      <label>{{'transpoter_name'| translate}}</label>
-      <dx-text-box formControlName="transpoter_name" placeholder="{{'transpoter_name' | translate}}"
-        [showClearButton]="true">
-      </dx-text-box>
-
-    </div>
-
-    <div class="col-lg-4">
-      <label>{{'transporter_contact'| translate}}</label>
-      <dx-text-box formControlName="transporter_contact" placeholder="{{'transporter_contact' | translate}}"
-        [showClearButton]="true">
-      </dx-text-box>
-
-    </div>
-
-
-    <div class="col-lg-4">
-      <label>{{ 'transporter_country' | translate}}</label>
-      <dx-select-box [dataSource]="countryData" valueExpr="id" displayExpr="name"
-        placeholder="{{ 'transporter_country' | translate}}" [readOnly]="ammendReadOnly" [searchEnabled]="true"
-        formControlName="transporter_country_id">
       </dx-select-box>
     </div>
 

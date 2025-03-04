@@ -7,7 +7,7 @@ import { DxTabPanelTypes } from 'devextreme-angular/ui/tab-panel';
   styleUrl: './hscodeinstitutions-configsetup.component.css'
 })
 export class HscodeinstitutionsConfigsetupComponent {
-parameter_name: string = "institution_information";
+parameter_name: string = "organisation_information";
   tabsPositions: DxTabPanelTypes.Position[] = [
     'left', 'top', 'right', 'bottom',
   ];

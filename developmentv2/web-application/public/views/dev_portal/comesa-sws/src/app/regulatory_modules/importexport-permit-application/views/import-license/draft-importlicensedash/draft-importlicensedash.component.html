@@ -61,11 +61,13 @@
         <dxo-export [enabled]="true" fileName="ImportExport" [allowExportSelectedData]="true"></dxo-export>
 
         <dxo-selection mode="single"></dxo-selection>
-        <dxi-column [width]=200 caption="{{'actions' | translate}}" name="command-editing" [allowFiltering]="false" [allowSorting]="false"
-            cellTemplate="cellTemplateSingle">
+    
+
+        <dxi-column [width]=160 caption="{{'actions' | translate }}" name="command-editing" [allowFiltering]="false"
+            [allowSorting]="false" cellTemplate="cellTemplateSingle">
             <div *dxTemplate="let d of 'cellTemplateSingle'">
-                <dx-button text="{{d.data.action_name}}" (click)="singleApplicationActionColClick(d.data)"
-                    type="success" icon="{{d.data.iconCls}}">
+                <dx-button text="{{d.data.action_name}}"
+                    (click)="singleApplicationActionColClick(d.data)" type="default" icon="{{d.data.iconCls}}">
                 </dx-button>
             </div>
         </dxi-column>
@@ -79,17 +81,24 @@
         </dxi-column>
 
         <dxi-column dataField="reference_no" caption="{{'application_reference' | translate}}"></dxi-column>
-        <dxi-column [width]=90 [groupIndex]="0" dataField="section" caption="{{'product_type' | translate}}"></dxi-column>
-        <dxi-column dataField="application_option" caption="{{'application_type' | translate}}"></dxi-column>
-        <dxi-column [width]=100 dataField="date_of_application" caption="{{'date_of_application' | translate}}"></dxi-column>
+        <dxi-column  [groupIndex]="0" dataField="permit_type"
+            caption="{{'permit_type' | translate}}"></dxi-column>
+
+        <dxi-column [width]=100 dataField="date_of_application"
+            caption="{{'date_of_application' | translate}}"></dxi-column>
 
         <dxi-column [width]=100 dataField="invoice_number" caption="{{'invoice_number' | translate}}"></dxi-column>
         <dxi-column dataField="invoice_date" caption="{{'invoice_date' | translate}}"></dxi-column>
-        <dxi-column dataField="importer_exporter_name" caption="{{'importer_exporter_name' | translate}}"></dxi-column>
+        <dxi-column dataField="total_invoice_value" caption="{{'total_invoice_value' | translate}}"></dxi-column>
+        <dxi-column dataField="currency_name" caption="{{'currency_of_transaction' | translate}}"></dxi-column>
         
-        <dxi-column [width]=100 [allowFiltering]="false" dataField="date_added"  caption="{{'date_added' | translate}}"></dxi-column>
-        <dxi-column [groupIndex]="1" dataField="status_name"  caption="{{'status_name' | translate}}"></dxi-column>
-        <dxi-column dataField="status_name" caption="{{'application_status' | translate}}"></dxi-column>
+        
+        <dxi-column dataField="importer_exporter_name" caption="{{'importer_exporter_name' | translate}}"></dxi-column>
+
+    
+        <dxi-column [groupIndex]="1" dataField="application_status"
+            caption="{{'status_name' | translate}}"></dxi-column>
+        <dxi-column dataField="application_status" caption="{{'application_status' | translate}}"></dxi-column>
         <dxo-grouping #expand [autoExpandAll]="true"></dxo-grouping>
     </dx-data-grid>
 
@@ -119,12 +128,13 @@
                     [allowExportSelectedData]="true"></dxo-export>
 
                 <dxo-selection mode="single"></dxo-selection>
-                <dxi-column dataField="tracking_no"  caption="{{'tracking_no' | translate}}"></dxi-column>
+                <dxi-column dataField="tracking_no" caption="{{'tracking_no' | translate}}"></dxi-column>
                 <dxi-column dataField="reference_no" caption="{{'reference_no' | translate}}"></dxi-column>
                 <dxi-column dataField="process_name" caption="{{'process_name' | translate}}"></dxi-column>
                 <dxi-column dataField="prev_stage" caption="{{'prev_stage' | translate}}"></dxi-column>
                 <dxi-column dataField="current_stage" caption="{{'current_stage' | translate}}"></dxi-column>
-                <dxi-column [groupIndex]="0" dataField="processing_date" caption="{{'processing_date' | translate}}"></dxi-column>
+                <dxi-column [groupIndex]="0" dataField="processing_date"
+                    caption="{{'processing_date' | translate}}"></dxi-column>
 
                 <dxo-grouping #expand [autoExpandAll]="true"></dxo-grouping>
             </dx-data-grid>
@@ -195,12 +205,13 @@
                     </dxo-paging>
                     <dxo-selection mode="single"></dxo-selection>
 
-                    <dxi-column dataField="brand_name"  caption="{{'brand_name_product_name' | translate}}"></dxi-column>
+                    <dxi-column dataField="brand_name" caption="{{'brand_name_product_name' | translate}}"></dxi-column>
                     <dxi-column dataField="product_type" caption="{{'product_type' | translate}}"></dxi-column>
-                    <dxi-column dataField="product_subcategory" caption="{{'product_subcategory' | translate}}"></dxi-column>
-                    <dxi-column dataField="quantity"  caption="{{'quantity' | translate}}"></dxi-column>
+                    <dxi-column dataField="product_subcategory"
+                        caption="{{'product_subcategory' | translate}}"></dxi-column>
+                    <dxi-column dataField="quantity" caption="{{'quantity' | translate}}"></dxi-column>
                     <dxi-column dataField="packaging_units" caption="{{'packaging_units' | translate}}"></dxi-column>
-                    <dxi-column dataField="currency_name"  caption="{{'currency_name' | translate}}"></dxi-column>
+                    <dxi-column dataField="currency_name" caption="{{'currency_name' | translate}}"></dxi-column>
                     <dxi-column dataField="unit_price" caption="{{'unit_price' | translate}}"></dxi-column>
                     <dxi-column dataField="total_value" caption="{{'total_value' | translate}}"></dxi-column>
                     <dxo-paging [enabled]="true">
@@ -241,7 +252,8 @@
 
             <dxi-column [width]=100 dataField="tracking_no" caption="{{'tracking_no' | translate}}"></dxi-column>
             <dxi-column [width]=90 dataField="added_on" caption="{{'added_on' | translate}}"></dxi-column>
-            <dxi-column [width]=200 cssClass='WrappedColumnClass' dataField="rejection_remarks" caption="{{'rejection_remarks' | translate}}"></dxi-column>
+            <dxi-column [width]=200 cssClass='WrappedColumnClass' dataField="rejection_remarks"
+                caption="{{'rejection_remarks' | translate}}"></dxi-column>
 
 
         </dx-data-grid>

@@ -365,6 +365,7 @@ import { TransactionCurrencyComponent } from './views/configurations/permit-appl
     ApplicantWorkflowsComponent,
     ApplicantWorkflowsetupComponent,
     ApplicantSystemprocessesComponent,
+   
 
 
     RefNumbertypesComponent,
@@ -438,6 +439,7 @@ import { TransactionCurrencyComponent } from './views/configurations/permit-appl
     ClinicaltrialConfigsetupComponent,
     SharedclinicalTrialconfigurationsComponent,
     CertificateConditionComponent,
+  
 
     TransactionCurrencyComponent,
     PermitStorageConditionsComponent,
@@ -696,6 +698,8 @@ import { TransactionCurrencyComponent } from './views/configurations/permit-appl
     PortalProcesstransitionComponent,
     PortalDocdefinationComponent,
     AppFormsComponent,
+
+   
    
     TransactionCurrencyComponent,
     PermitStorageConditionsComponent,

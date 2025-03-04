@@ -37,7 +37,8 @@ export class PermittypeConfigurationsComponent {
   workflowData: any;
   workflowStageData: any;
   operationTypeData: any;
-  srvDeliveryTimelineData: any;
+  serviceTypeData: any;
+  timelineTypeData: any;
   refNumberData: any;
   productTypeData: any;
   renewableStatusData: any;
@@ -91,6 +92,7 @@ export class PermittypeConfigurationsComponent {
   addPopupVisible = false;
   deletePopupVisible = false;
   data_record: any;
+  action_url: string;
   config_record: string;
   isLoading: boolean;
   permitTypes: any;
@@ -161,7 +163,8 @@ export class PermittypeConfigurationsComponent {
       code: new FormControl('', Validators.compose([])),
       resetcolumns: new FormControl(this.resetcolumns, Validators.compose([])),
       organisation_id: new FormControl(this.resetcolumns, Validators.compose([])),
-      service_deliverytimeline_id: new FormControl(this.resetcolumns, Validators.compose([])),
+      service_type_id: new FormControl(this.resetcolumns, Validators.compose([])),
+      timeline_type_id: new FormControl(this.resetcolumns, Validators.compose([])),
       reference_noformat_id: new FormControl(this.resetcolumns, Validators.compose([])),
       permit_status_id: new FormControl(this.resetcolumns, Validators.compose([])),
       renewable_status_id: new FormControl(this.resetcolumns, Validators.compose([])),
@@ -272,7 +275,8 @@ export class PermittypeConfigurationsComponent {
     this.onLoadDocumentRequirementTypeData();
     this.onLoadChecklistTypeData();
     this.onLoadChecklistDefData();
-    this.onLoadSrvDeliveryTimelineData()
+    this.onLoadServiceTypeData();
+    this.onLoadTimelineTypeData();
     //  this.onLoadProcessData(this.organization_id);
     this.spinnerShow('Loading ' + this.parameter_name);
     this.spinnerHide();
@@ -392,10 +396,13 @@ export class PermittypeConfigurationsComponent {
       return;
     }
     this.createNewDataFrm.get('resetcolumns')?.setValue(this.resetcolumns);
-
+    this.createNewDataFrm.get('table_name')?.setValue(this.table_name);
     this.spinnerShow('Saving ' + this.parameter_name);
+    this.action_url = 'onsaveSysAdminData';
+    this.spinner.show();
 
-    this.admnistrationService.onSaveSystemAdministrationDetails(this.table_name, this.createNewDataFrm.value, 'onsaveSysAdminData')
+
+    this.admnistrationService.onSaveSystemAdministrationDetails(this.table_name, this.createNewDataFrm.value, this.action_url)
       .subscribe(
         response => {
           this.response = response;
@@ -403,14 +410,13 @@ export class PermittypeConfigurationsComponent {
           if (this.response.success) {
 
             this.fetchPermitTypeDetails();
-            this.isnewrecord = false;
-            this.transactionpermit_type_id = this.response.record_id;
-
-            this.createNewDataFrm.get('id')?.setValue(this.transactionpermit_type_id);
-            this.fetchAppHsCodes(this.transactionpermit_type_id);
-
-            this.selectedTabIndex = 1;
             this.toastr.success(this.response.message, 'Response');
+            // this.isnewrecord = false;
+            this.transactionpermit_type_id = this.response.record_id;
+            this.createNewDataFrm.get('id')?.setValue(this.transactionpermit_type_id);
+            this.fetchAppHsCodes(this.transactionpermit_type_id)
+            this.selectedTabIndex = 1;
+            // this.toastr.success(this.response.message, 'Response');
             this.spinnerHide();
 
           } else {
@@ -738,7 +744,7 @@ export class PermittypeConfigurationsComponent {
     this.spinnerShow('Loading User Permissions Details');
 
     var data_submit = {
-      table_name: 'par_hscode_seloption',
+      table_name: 'tra_transactionpermit_hs_codes',
       transactionpermit_type_id: transactionpermit_type_id
     }
     this.admnistrationService.onLoadDataUrl(data_submit, 'getAppHscodes')
@@ -966,16 +972,35 @@ export class PermittypeConfigurationsComponent {
         });
   }
   
-  onLoadSrvDeliveryTimelineData() {
+  onLoadServiceTypeData() {
     var data_submit = {
-      'table_name': 'par_service_deliverytimelines'
+      'table_name': 'par_service_type'
     }
     this.workflowService.getWorkflowConfigs(data_submit)
       .subscribe(
         data => {
           this.data_record = data;
           if (this.data_record.success) {
-            this.srvDeliveryTimelineData = this.data_record.data;
+            this.serviceTypeData = this.data_record.data;
+
+          }
+        },
+        error => {
+
+        });
+        console.log(this.data_record);
+  } 
+
+  onLoadTimelineTypeData() {
+    var data_submit = {
+      'table_name': 'par_timeline_type'
+    }
+    this.workflowService.getWorkflowConfigs(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.timelineTypeData = this.data_record.data;
 
           }
         },
@@ -983,7 +1008,6 @@ export class PermittypeConfigurationsComponent {
 
         });
   } 
-
   onLoadRefNumberData() {
     var data_submit = {
       'table_name': 'par_refnumbers_formats'
