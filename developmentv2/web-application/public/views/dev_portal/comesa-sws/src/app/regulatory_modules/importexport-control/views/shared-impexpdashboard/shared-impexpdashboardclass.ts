@@ -191,8 +191,7 @@ export class SharedImpExpdashboardClass {
             this.title = this.processingData.field_name;
             this.router_link = this.processData.router_link;
             this.productsapp_details = this.processData;
-  
-            this.appService.setApplicationDetail(data.data);
+            data.data.permit_type_id = permit_type_id;
             localStorage.setItem('application_details', JSON.stringify(data.data));
   
             this.app_route = ['./importexport-control/' + this.router_link];
@@ -591,28 +590,41 @@ export class SharedImpExpdashboardClass {
   } funcProductRestoreArchiveApplication(data) {
     this.utilityService.funcApplicationRestoreArchiceCall(this.viewRef, data, 'txn_importexport_applications', this.reloadPermitApplicationsApplications)
   }
-  funcApplicationPreveditDetails(data) {
-    this.appregulatory_subfunction_id = data.regulatory_subfunction_id;
-    this.appregulatory_function_id = data.regulatory_function_id;
-    this.appregulated_productstype_id = data.regulated_productstype_id;
-    this.appapplication_code = data.application_code;
-    if (this.appregulatory_subfunction_id == 78 || this.appregulatory_subfunction_id == 82) {
-      this.app_routing = ['./import-export/importlicense-dashboard'];
-
-    } else {
-      this.app_routing = ['./import-export/exportlicense-dashboard'];
-
-    }
-    data.onApplicationSubmissionFrm = this.onApplicationSubmissionFrm;
-    data.app_routing = this.app_routing;
-
-    this.utilityService.setApplicationDetail(data);
-    this.app_route = ['./import-export/application-invoices'];
-
-    this.router.navigate(this.app_route);
-    this.scrollToTop();
-
-  }
+  application_data:any;
+  funcApplicationPreveditDetails(app_data) {
+      this.regulatory_subfunction_id = app_data.regulatory_subfunction_id;
+      
+      this.spinner.show();
+      
+      this.configService.getSectionUniformApplication(this.regulatory_subfunction_id)
+        .subscribe(
+          data => {
+            this.spinner.hide();
+            if (data.success) {
+              this.processData = data.data.process_infor;
+              this.application_data = data.data;
+              
+              this.router_link = this.processData.router_link;
+              this.productsapp_details = this.processData;
+              let merged_appdata = Object.assign({}, this.application_data, app_data);
+              console.log(merged_appdata);
+              localStorage.setItem('application_details', JSON.stringify(merged_appdata));
+              // this.appService.setProductApplicationDetail(data.data);
+              this.app_route = ['./importexport-permit-application/' + this.router_link];
+  
+              this.router.navigate(this.app_route);
+              this.scrollToTop();
+  
+            }
+            else {
+              this.toastr.error(this.processData.message, 'Alert!');
+  
+            }
+  
+  
+          });
+      return false;
+    } 
 
   funcApplicationRejection(app_data) {
 

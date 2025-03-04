@@ -14,13 +14,30 @@ import { ImportExportService } from '../../services/import-export.service';
 import { AuthenticationService } from 'src/app/core-services/authentication/authentication.service';
 import { ConfigurationsService } from 'src/app/core-services/configurations/configurations.service';
 import { UserManagementService } from 'src/app/core-services/user-management/user-management.service';
-import { NgWizardService } from 'ng-wizard';
+import { NgWizardConfig, NgWizardService, STEP_STATE, THEME } from 'ng-wizard';
 
 @Directive({
   selector: '[appSharedImpexpApplicationClass]' // Add a unique selector here
 })
 export class SharedImpexpApplicationClass {
   
+  //start test wizrd 
+  stepStates = {
+    normal: STEP_STATE.normal,
+    disabled: STEP_STATE.disabled,
+    error: STEP_STATE.error,
+    hidden: STEP_STATE.hidden
+
+  };
+
+  config: NgWizardConfig = {
+    selected: 0,
+    theme: THEME.arrows,
+    toolbarSettings: {
+      showNextButton: false,
+      showPreviousButton: false
+    }
+  };
   //ImportexportService
   //dms 
   @ViewChild(DxDataGridComponent)
@@ -412,6 +429,7 @@ export class SharedImpexpApplicationClass {
 
 
   }
+
   funcAutoLoadedParamters() {
 
     if (this.application_details) {
