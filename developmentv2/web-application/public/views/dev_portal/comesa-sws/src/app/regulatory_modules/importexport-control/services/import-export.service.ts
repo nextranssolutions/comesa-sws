@@ -155,6 +155,33 @@ export class ImportExportService {
         return <any>data;
       }));
   }
+  onGetApplicantProfileInformation(data, action_url) {
+    data.table_name = btoa(data.table_name);
+    const loggedInUserId = localStorage.getItem('id');
+    data.user_information_id = loggedInUserId; 
+    this.config = {
+      params: data,
+      headers: { 'Accept': 'application/json' }
+    };
+    return this.httpClient.get(this.baseUrl + '/' + action_url, this.config)
+      .pipe(map(data => {
+        return <any>data;
+      }));
+  }
+  onSavingApplicantEvaluationChecklistDetails(table_name,data,post_data,action_url){
+    const loggedInUserId = localStorage.getItem('id');
+    const loggedInUserName = localStorage.getItem('first_name');
+    this.config = {
+      params: { 'user_id': loggedInUserId, 'user_name': loggedInUserName,table_name:table_name, 'permit_data': post_data},
+
+      headers: { 'Accept': 'application/json' }
+    };
+
+    return this.http.post(this.baseUrl + '/'+action_url, data,this.config)
+      .pipe(map(data => {
+        return data;
+      }));
+  }
   getPermitsOtherDetails(data, path) {
 
     var headers = new HttpHeaders({

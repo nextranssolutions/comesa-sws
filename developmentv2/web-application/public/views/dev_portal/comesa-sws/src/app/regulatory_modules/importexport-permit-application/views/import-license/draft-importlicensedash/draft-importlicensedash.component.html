@@ -69,7 +69,7 @@
                 </dx-button>
             </div>
         </dxi-column>
-        <dxi-column caption="More Actions" [width]=150 name="command-editing" [allowFiltering]="false"
+        <dxi-column caption="{{'more_actions' | translate}}" [width]=150 name="command-editing" [allowFiltering]="false"
             [allowSorting]="false" cellTemplate="cellTemplate">
             <div *dxTemplate="let d of 'cellTemplate'">
                 <dx-menu [items]="d.data.contextMenu" displayExpr="text"

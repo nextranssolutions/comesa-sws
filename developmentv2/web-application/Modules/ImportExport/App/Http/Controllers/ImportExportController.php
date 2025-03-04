@@ -88,6 +88,7 @@ class ImportExportController extends Controller
             $local_agent_id = $req->local_agent_id;
 
             $reference_no = $req->reference_no;
+            $application_reference_number = $req->application_reference_number;
             $regulatory_subfunction_id = $req->regulatory_subfunction_id;
             $zone_id = $req->zone_id;
             $process_id = $req->process_id;
@@ -109,6 +110,7 @@ class ImportExportController extends Controller
                 'reference_no' => $reference_no,
                 'paying_currency_id' => $req->paying_currency_id,
                 'application_status_id' => 1,
+                'appworkflow_status_id' => 1,
                 'process_id' => $process_id,
                 'document_upload_id' => $req->document_upload_id,
                 'application_type_id' => $req->application_type_id,
@@ -132,7 +134,6 @@ class ImportExportController extends Controller
                 'total_invoice_value' => $req->total_invoice_value,
                 'currency_oftransaction_id' => $req->currency_oftransaction_id,
                 'declaration_statuses_id' => $req->declaration_statuses_id,
-
             );
             $table_name = 'wb_importexport_applications';
             /** Already Saved */
@@ -157,7 +158,7 @@ class ImportExportController extends Controller
                     $previous_data = getPreviousRecords('wb_importexport_applications', $where_app);
                     $tracking_no = $previous_data['results'][0]['tracking_no'];
                     $application_code = $previous_data['results'][0]['application_code'];
-
+                    $application_reference_number = $tracking_no;
                     $resp = updateRecord('wb_importexport_applications', $previous_data, $where_app, $app_data, $email_address);
                 }
 
@@ -188,6 +189,7 @@ class ImportExportController extends Controller
                     'product_type_id' => $product_type_id,
                     'trader_initiator_id' => $trader_initiator_id,
                     'applicant_id' => $applicant_id,
+                    'application_reference_number' => $application_reference_number,
                 );
 
                 $resp = insertRecord('tra_application_documentsdefination', $product_infor, $email_address);
@@ -211,9 +213,7 @@ class ImportExportController extends Controller
                     'zone_code' => $zone_code,
                     'class_code' => $class_code,
                     'process_id' => $process_id,
-
                 );
-
 
                 $tracking_no = generateApplicationRefNumber($ref_id, $codes_array, date('Y'), $process_id, $trader_id);
 
@@ -754,6 +754,150 @@ class ImportExportController extends Controller
         return response()->json($res);
     }
 
+    public function onSaveApplicantPermitProductsDetails(Request $req)
+    {
+        try {
+            $resp = "";
+            $user_id = $this->user_id;
+
+            $unit_price = $req->unit_price;
+            $currency_id = $req->currency_id;
+
+            $packaging_unit_id = $req->packaging_unit_id;
+            $quantity = $req->quantity;
+            $laboratory_no = $req->laboratory_no;
+            $regulated_prodpermit_id = $req->regulated_prodpermit_id;
+            $product_id = $req->product_id;
+            $record_id = $req->id;
+            $device_type_id = $req->device_type_id;
+            // $permitprod_recommendation_id = $req->permitprod_recommendation_id;
+           
+            $regulatory_subfunction_id = $req->regulatory_subfunction_id;
+           
+            $batch_number = $req->batch_number;
+            $application_code = generateApplicationCode($regulatory_subfunction_id, 'tra_permit_products');
+            $expiry_date = $req->expiry_date;
+            $manufacturing_date = $req->manufacturing_date;
+            $error_message = 'Error occurred, data not saved successfully';
+            //check uniform currency 
+            $record = DB::table('wb_permit_products')
+                ->where(array('application_code' => $application_code))
+                ->whereNotIn('currency_id', [$currency_id])
+                ->get();
+
+            if (!count($record) > 0) {
+                $table_name = 'wb_permit_products';
+
+
+                $data = array(
+                    'unit_price' => $unit_price,
+
+                    'section_id' => $req->section_id,
+                    'productphysical_description' => $req->productphysical_description,
+                    'packaging_unit_id' => $packaging_unit_id,
+
+
+                    'product_name' => $req->product_name,
+                    'brand_name' => $req->brand_name,
+                    'quantity' => $quantity,
+                    'regulated_productcategory_id' => $req->regulated_productcategory_id,
+                    'manufacturer_id' => $req->manufacturer_id,
+                    'country_of_origin_id' => $req->country_of_origin_id,
+                    'unit_of_measure_id' => $req->unit_of_measure_id,
+                    'product_value' => $req->product_value,
+                    'currency_id' => $currency_id,
+                    'weight_unit_id' => $req->weight_unit_id,
+                    'product_packaging' => $req->product_packaging,
+                    'permit_product_purposes_id' => $req->permit_product_purposes_id,
+                    'consignment_id' => $req->consignment_id,
+                    'batch_number' => $batch_number,
+                    'manufacturing_date' => $manufacturing_date,
+                    'expiry_date' => $expiry_date,
+                    'storage_condition_id' => $req->storage_condition_id,
+
+                    'common_name_id' => $req->common_name_id,
+                    'classification_id' => $req->classification_id,
+                    'product_category_id' => $req->product_category_id,
+                    'product_subcategory_id' => $req->product_subcategory_id,
+                    'product_strength' => $req->product_strength,
+                    'weights_units_id' => $req->weights_units_id,
+                    'total_weight' => $req->total_weight,
+                    'device_type_id' => $device_type_id,
+                    'product_id' => $product_id,
+                    'prodclass_category_id' => $req->prodclass_category_id,
+                    'unitpack_size' => $req->unitpack_size,
+                    'unitpack_unit_id' => $req->unitpack_unit_id,
+                    'application_code' => $req->application_code,
+                    'dosage_form_id' => $req->dosage_form_id
+                );
+
+                // if (validateIsNumeric($permitprod_recommendation_id)) {
+
+                //     $data['permitprod_recommendation_id'] = $req->permitprod_recommendation_id;
+                //     $data['permitprod_recommendation'] = $req->permitprod_recommendation;
+                // }
+
+                if (validateIsNumeric($record_id)) {
+                    $where = array('id' => $record_id);
+                    if (recordExists($table_name, $where)) {
+
+                        $data['dola'] = Carbon::now();
+                        $data['altered_by'] = $user_id;
+
+                        $previous_data = getPreviousRecords($table_name, $where);
+                        $previous_data = $previous_data['results'];
+
+                        $resp = updateRecord($table_name, $previous_data, $where, $data, $user_id);
+                    }
+                } else {
+
+                    //insert 
+                    // $data['permitprod_recommendation_id'] = 1;
+                    $data['created_by'] = $user_id;
+                    $data['created_on'] = Carbon::now();
+                    $resp = insertRecord($table_name, $data, $user_id);
+
+                    $record_id = $resp['record_id'];
+                }
+                if ($resp['success']) {
+                    $res =  array(
+                        'success' => true,
+                        'record_id' => $record_id,
+                        'message' => 'Saved Successfully'
+                    );
+                } else {
+                    $res =  array(
+                        'success' => false,
+                        'message1' => $resp['message'],
+                        'message' => $error_message
+                    );
+                }
+            } else {
+                $res = array(
+                    'success' => false,
+                    'message' => 'Mis-match product permits currency, confirm the previous currency and make sure currencies match'
+                );
+            }
+        } catch (\Exception $exception) {
+            $res = array(
+                'success' => false,
+                'resp' => $resp,
+                'message' => $exception->getMessage()
+            );
+        } catch (\Throwable $throwable) {
+            $res = array(
+                'success' => false,
+                'message' => $throwable->getMessage()
+            );
+        }
+
+        return response()->json($res);
+    }
+
+
+
+
+
     public function saveManufacturerDetails(Request $req)
     {
         try {
@@ -835,7 +979,158 @@ class ImportExportController extends Controller
             ]);
         }
     }
-    
+
+    public function onLoadEvaluationChecklistDetails(Request $req)
+    {
+        try {
+            $application_code = $req->application_code;
+            $transactionpermit_type_id = $req->transactionpermit_type_id;
+            $process_id = $req->process_id;
+            $permittype_data = array();
+            $table_name = 'tra_transactionpermit_checklists';
+            $table_name = base64_decode($table_name);
+
+            $sql = DB::table('chk_checklist_types as t1')
+                ->join('chk_checklist_definations as t2', 't1.id', 't2.checklist_type_id')
+                ->leftJoin('tra_transactionpermit_checklists as t3', function ($join) use ($application_code, $transactionpermit_type_id) {
+                    $join->on('t3.checklist_defination_id', '=', 't2.id');
+                    if (validateIsNumeric($application_code)) {
+                        $join->on('t3.application_code', '=', DB::raw($application_code));
+                    }
+                    if (validateIsNumeric($transactionpermit_type_id)) {
+                        $join->on('t3.transactionpermit_type_id', '=', DB::raw($transactionpermit_type_id));
+                    }
+                })
+                ->select(DB::raw("t3.*,t1.name as main_factor,t2.id as checklist_defination_id, t2.name as checklist_type, t2.marks_allocated as total_marks"));
+            // if (validateIsNumeric($process_id)) {
+            //     $sql->where('t1.process_id', $process_id);
+            // }
+            $permittype_data = $sql->orderBy('t1.order_no', 'desc')->orderBy('t2.order_no', 'desc')->get();
+
+            $res = array('success' => true, 'data' => $permittype_data);
+
+        } catch (\Exception $exception) {
+            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        } catch (\Throwable $throwable) {
+            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        }
+
+        return response()->json($res, 200);
+    }
+    public function onSavingApplicantEvaluationChecklistDetails(Request $req)
+    {
+        try {
+
+            $resp = "";
+            $user_id = $req->user_id;
+            $user_name = $req->user_name;
+
+            $data = $req->all();
+
+            $table_name = 'tra_transactionpermit_checklists';
+            $permit_data = $req->permit_data;
+            $record_id = $req->id;
+
+            $permit_data = json_decode($permit_data);
+            if (is_array($permit_data)) {
+                //"system_label_id":1,"system_language_id":2,"translation":"Besoin daide ou de clarification"
+                foreach ($permit_data as $rec) {
+                    $transactionpermit_type_id = $rec->transactionpermit_type_id;
+                    $application_code = $rec->application_code;
+                    $checklist_defination_id = $rec->checklist_defination_id;
+
+                    $checklist_type_id = $rec->checklist_type_id;
+                    $checklist_defination_id = $rec->checklist_defination_id;
+                    $checklist_item_id = $rec->checklist_item_id;
+                    $self_assessment = $rec->self_assessment;
+                    $assessment = $rec->assessment;
+                    $assessment_review = $rec->assessment_review;
+                    //get data 
+                    $checklist_data = getSingleRecord('chk_checklist_definations', array('id' => $checklist_defination_id));
+                    $marks_allocated = $checklist_data->marks_allocated;
+
+                    $where = array(
+                        'transactionpermit_type_id' => $transactionpermit_type_id,
+                        'application_code' => $application_code,
+                        'checklist_defination_id' => $checklist_defination_id,
+                        'checklist_type_id' => $checklist_type_id,
+                        
+                    );
+                    $data = array(
+                        'application_code' => $application_code,
+                        'transactionpermit_type_id' => $transactionpermit_type_id,
+                        'checklist_defination_id' => $checklist_defination_id,
+                        'checklist_item_id' => $checklist_item_id,
+                        'self_assessment' => $self_assessment,
+                        'assessment' => $assessment,
+                        'assessment_review' => $assessment_review,
+                    );
+
+                    if (isset($rec->supervisors_marks)) {
+                        if ($rec->supervisors_marks > $marks_allocated) {
+                            $res = array('success' => false, 'message' => 'Supervisors marks should be less or equal to the allocated marks');
+                            return response()->json($res);
+                        }
+
+                        $data['supervisors_marks'] = $rec->supervisors_marks;
+                    }
+                    if (isset($rec->second_appraisor_marks)) {
+                        if ($rec->second_appraisor_marks > $marks_allocated) {
+                            $res = array('success' => false, 'message' => 'Second appraisor_marks should whoul be less or equal to the allocated marks');
+                            return response()->json($res);
+                        }
+
+                        $data['second_appraisor_marks'] = $rec->second_appraisor_marks;
+                    }
+                    if (isset($rec->third_appraisor_marks)) {
+                        if ($rec->third_appraisor_marks > $marks_allocated) {
+                            $res = array('success' => false, 'message' => 'Third appraisor_marks should whoul be less or equal to the allocated marks');
+
+                            return response()->json($res);
+                        }
+
+                        $data['third_appraisor_marks'] = $rec->third_appraisor_marks;
+                    }
+
+                    $records = DB::table($table_name)->where($where)->get();
+                    if (count($records) > 0) {
+                        $data['dola'] = Carbon::now();
+                        $data['altered_by'] = $user_id;
+                        $previous_data = getPreviousRecords($table_name, $where);
+                        $resp = updateRecord($table_name, $previous_data['results'], $where, $data, $user_name);
+                    } else {
+
+                        $data['created_by'] = $user_id;
+                        $data['created_on'] = Carbon::now();
+                        $resp = insertRecord($table_name, $data, $user_name);
+                    }
+
+                }
+            }
+            if ($resp['success']) {
+
+                $res = array(
+                    'success' => true,
+                    'record_id' => $resp['record_id'],
+                    'message' => 'Saved Successfully'
+                );
+            } else {
+                $res = array(
+                    'success' => false,
+                    'message' => $resp['message']
+                );
+            }
+
+
+        } catch (\Exception $exception) {
+            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        } catch (\Throwable $throwable) {
+            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        }
+
+        return response()->json($res);
+    }
+
     public function saveManufacturerDetailsa(Request $req)
     {
         try {
@@ -1021,6 +1316,62 @@ class ImportExportController extends Controller
         }
     }
 
+
+
+    public function getApplicantPermitProductsDetails(Request $req)
+    {
+        try {
+            $search_value = '';
+            $take = 50; // Default take
+            $skip = 0; // Default skip
+            $searchValue = $req->searchValue ?? '';
+
+            if (!empty($searchValue) && $searchValue !== 'undefined') {
+                $searchValue = explode(',', $searchValue);
+                $search_value = $searchValue[2] ?? '';
+            }
+
+            $is_local_agent = $req->is_local_agent;
+            $data = collect();
+            $totalCount = 0;
+
+            $data = DB::table('wb_permit_products as t1')
+                // ->leftJoin('par_regulatedproduct_categories as t2', 't1.regulated_productcategory_id', '=', 't2.id')
+                ->leftJoin('tra_manufacturer_info as t3', 't1.manufacturer_id', '=', 't3.id')
+                ->leftJoin('par_unit_of_measure as t4', 't1.unit_of_measure_id', '=', 't4.id')
+                ->leftJoin('par_currencies as t5', 't1.currency_id', '=', 't5.id')
+                ->leftJoin('par_storage_conditions as t6', 't1.storage_conditions_id', '=', 't6.id')
+                ->select(
+                    't1.id',
+                    't1.*',
+                    't3.name as manufacturer_name',
+                    't4.name as unit_of_measure',
+                    't5.name as storage_conditions'
+                )
+                ->when(
+                    $search_value,
+                    fn($query) =>
+                    $query->where('t1.name', 'LIKE', "%{$search_value}%")
+                )
+                ->orderByDesc('t1.id')
+                ->get();
+
+            $totalCount = $data->count();
+
+
+            return response()->json([
+                'success' => true,
+                'data' => $data,
+                'totalCount' => $totalCount
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+
     public function onLoadManufacturingSitesDetails(Request $req)
     {
         try {
@@ -1154,89 +1505,162 @@ class ImportExportController extends Controller
     }
 
 
-    public function getImportExpPermitsApplicationLoading(Request $req)
+    public function getImportExpPermitApplicationLoading(Request $req)
     {
         try {
-            $trader_id = $req->trader_id;
+            $process_id = $req->process_id;
+            $user_id = $req->user_id;
+
+            $requestData = $req->all();
+            $filter = $req->filter;
+            $table_name = 'tra_importexport_applications';
+            $appworkflow_status_id = $req->appworkflow_status_id;
             $application_status_id = $req->application_status_id;
-            $regulatory_subfunction_id = $req->regulatory_subfunction_id;
+            $workflow_status_id = $req->workflow_status_id;
+            $appworkflowstatus_category_id = $req->appworkflowstatus_category_id;
 
-            $application_status_ids = explode(',',  $application_status_id);
-            $sub_module_ids = explode(',',  $regulatory_subfunction_id);
-            //  $regulatory_subfunction_id = $req->regulatory_subfunction_id;
-            $product_type_id = $req->product_type_id;
-            $application_code = $req->application_code;
-            $permit_type_id = $req->permit_type_id;
+            $permit_product_data = array();
+            $sectionSelection = $req->sectionSelection;
+            unset($requestData['table_name']);
 
-            $data = array();
-            //get the records 
-            $records = DB::table('tra_importexport_applications as t1')
-                ->select('t1.*', 't7.name as action_name', 't7.iconCls', 't7.action', 't3.name as status', 't3.name as status_name', 't4.router_link', 't4.name as process_title')
-                ->leftJoin('wb_statuses as t3', 't1.application_status_id', '=', 't3.id')
-                ->leftJoin('wb_processes as t4', function ($join) {
-                    $join->on('t1.regulatory_subfunction_id', '=', 't4.regulatory_subfunction_id');
-                    $join->on('t1.application_status_id', '=', 't4.status_id');
+            $sql = DB::table($table_name . ' as t1')
+                ->leftJoin('par_permit_typecategories as t2', 't2.id', 't1.permit_type_id')
+                ->leftJoin('par_port_type as t3', 't3.id', 't1.port_type_id')
+                ->leftJoin('tra_permitsenderreceiver_data as t4', 't4.id', 't1.importer_exporter_id')
+                ->leftJoin('par_entryexit_port as t5', 't1.port_of_entryexit_id', 't5.id')
+
+                ->leftJoin('wf_workflowstageprocess_actions as t7', function ($join) use ($process_id) {
+                    $join->on('t1.appworkflow_status_id', '=', 't7.workflow_status_id');
+                    if (validateIsNumeric($process_id)) {
+                        $join->on('t7.process_id', '=', DB::raw($process_id));
+                    }
+                    $join->on('t7.is_default_action', '=', DB::raw(True));
                 })
-                ->leftJoin('tra_processstatus_actions as t6', function ($join) {
-                    $join->on('t1.application_status_id', '=', 't6.status_id')
-                        ->on('t6.is_default_action', '=', DB::raw(1));
-                })
-                ->leftJoin('wb_statuses_actions as t7', 't6.action_id', 't7.id')
-
-                ->orderBy('t1.date_added', 'desc');
-            if (validateIsNumeric($trader_id)) {
-                if ($trader_id != 25) {
-                    $records->where(array('t1.trader_id' => $trader_id));
-                }
+                ->leftJoin('wf_statuses_actions as t8', 't7.statuses_action_id', 't8.id')
+                ->leftJoin('wf_workflow_statuses as t9', 't1.appworkflow_status_id', 't9.id')
+                ->select('t1.*',  't8.name as action_name', 't5.name as reporting_quarter', 't8.iconCls as iconcls', 't8.action', 't2.name as permit_name', 't3.name as port_type', 't1.id');
+                
+            if ($workflow_status_id != '') {
+                $workflow_status = explode(',', $workflow_status_id);
+                $sql->whereIn('appworkflow_status_id', $workflow_status);
+            }
+            if (validateIsNumeric($appworkflowstatus_category_id)) {
+                $sql->where(array('t9.appworkflowstatus_category_id' => $appworkflowstatus_category_id));
+            }
+            if (validateIsNumeric($appworkflow_status_id)) {
+                $sql->where('appworkflow_status_id', $appworkflow_status_id);
             }
 
-            if (is_array($application_status_ids) && count($application_status_ids) > 0 && $application_status_id != '') {
+            $actionColumnData = returnContextMisMenuActions($process_id);
+            //check the usres 
+           
+            $data = $sql->get();
 
-                $records =  $records->whereIn('t1.application_status_id', $application_status_ids);
+            foreach ($data as $rec) {
+                $permit_product_id = $rec->id;
+                $application_data[] = array(
+                    'id' => $rec->id,
+                    'action_name' => $rec->action_name,
+                    'iconcls' => $rec->iconcls,
+                    'action' => $rec->action,
+                    'date_of_application' => formatDaterpt($rec->date_of_application),
+                    'created_on' => $rec->created_on,
+                    'process_id' => $rec->process_id,
+                    'application_code' => $rec->application_code,
+                    'reference_no' => $rec->reference_no,
+                    'appworkflow_status_id' => $rec->appworkflow_status_id,
+                    'created_by' => $rec->created_by,
+                   
+                    'contextMenu' => returnActionColumn($rec->appworkflow_status_id, $actionColumnData)
+                );
             }
-            if (is_array($sub_module_ids) && count($sub_module_ids) > 0 && $regulatory_subfunction_id != '') {
 
-                $records =  $records->whereIn('t1.regulatory_subfunction_id', $sub_module_ids);
-            }
-
-            if (validateIsNumeric($regulatory_subfunction_id)) {
-                $records =  $records->where(array('t1.regulatory_subfunction_id' => $regulatory_subfunction_id));
-            }
-
-            if (validateIsNumeric($product_type_id)) {
-                $records =  $records->where(array('t1.product_type_id' => $product_type_id));
-            }
-            if (validateIsNumeric($permit_type_id)) {
-                $records->where(array('t1.regulatory_subfunction_id' => 12));
-            }
-            //the ilters 
-
-            if (validateIsNumeric($application_code)) {
-
-                $records =  $records->where(array('t1.application_code' => $application_code));
-                $data = $records->get();
-
-                $data = $this->getSinglePermitApplications($data);
-            } else {
-
-                //$records = $records->get();
-                $records = $records->groupBy('t1.application_code')->get();
-                $data = $this->getPermitApplications($records);
-            }
-            // $data = $this->getPermitApplications($records);
-            $res = array('success' => true, 'data' => $data);
-        } catch (\Exception $e) {
-            $res = array(
-                'success' => false,
-                'message' => $e->getMessage()
-            );
+            $res = array('success' => true, 'data' => $application_data);
+        } catch (\Exception $exception) {
+            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
         } catch (\Throwable $throwable) {
-            $res = array(
-                'success' => false,
-                'message' => $throwable->getMessage()
-            );
+            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
         }
-        return response()->json($res);
+        return response()->json($res, 200);
     }
 
+    public function getImportExpApplicantPermitsLoading(Request $req)
+    {
+        try {
+            $process_id = $req->process_id;
+            $user_id = $req->user_id;
+
+            $requestData = $req->all();
+            $filter = $req->filter;
+            $table_name = 'wb_importexport_applications';
+            $appworkflow_status_id = $req->appworkflow_status_id;
+            $application_status_id = $req->application_status_id;
+            $workflow_status_id = $req->workflow_status_id;
+            $appworkflowstatus_category_id = $req->appworkflowstatus_category_id;
+
+            $permit_product_data = array();
+            $sectionSelection = $req->sectionSelection;
+            unset($requestData['table_name']);
+
+
+            $sql = DB::table($table_name . ' as t1')
+                ->leftJoin('par_permit_typecategories as t2', 't2.id', 't1.permit_type_id')
+                ->leftJoin('par_port_type as t3', 't3.id', 't1.port_type_id')
+                ->leftJoin('tra_permitsenderreceiver_data as t4', 't4.id', 't1.importer_exporter_id')
+                ->leftJoin('par_entryexit_port as t5', 't1.port_of_entryexit_id', 't5.id')
+
+                ->leftJoin('wf_workflowstatuses_actions as t7', function ($join) use ($process_id) {
+                    $join->on('t1.appworkflow_status_id', '=', 't7.workflow_status_id');
+                    if (validateIsNumeric($process_id)) {
+                        $join->on('t7.process_id', '=', DB::raw($process_id));
+                    }
+                    $join->on('t7.is_default_action', '=', DB::raw(True));
+                })
+                ->leftJoin('wf_statuses_actions as t8', 't7.statuses_action_id', 't8.id')
+                ->leftJoin('wf_workflow_statuses as t9', 't1.appworkflow_status_id', 't9.id')
+                ->select('t1.*',  't8.name as action_name', 't5.name as reporting_quarter', 't8.iconCls as iconcls', 't8.action', 't2.name as permit_name', 't3.name as port_type', 't1.id');
+                
+            if ($workflow_status_id != '') {
+                $workflow_status = explode(',', $workflow_status_id);
+                $sql->whereIn('appworkflow_status_id', $workflow_status);
+            }
+            if (validateIsNumeric($appworkflowstatus_category_id)) {
+                $sql->where(array('t9.appworkflowstatus_category_id' => $appworkflowstatus_category_id));
+            }
+            if (validateIsNumeric($appworkflow_status_id)) {
+                $sql->where('appworkflow_status_id', $appworkflow_status_id);
+            }
+
+            $actionColumnData = returnContextMenuActions($process_id);
+            //check the usres 
+           
+            $data = $sql->get();
+
+            foreach ($data as $rec) {
+                $permit_product_id = $rec->id;
+                $application_data[] = array(
+                    'id' => $rec->id,
+                    'action_name' => $rec->action_name,
+                    'iconcls' => $rec->iconcls,
+                    'action' => $rec->action,
+                    'date_of_application' => formatDaterpt($rec->date_of_application),
+                    'created_on' => $rec->created_on,
+                    'process_id' => $rec->process_id,
+                    'application_code' => $rec->application_code,
+                    'reference_no' => $rec->reference_no,
+                    'appworkflow_status_id' => $rec->appworkflow_status_id,
+                    'created_by' => $rec->created_by,
+                   
+                    'contextMenu' => returnActionColumn($rec->appworkflow_status_id, $actionColumnData)
+                );
+            }
+
+            $res = array('success' => true, 'data' => $application_data);
+        } catch (\Exception $exception) {
+            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        } catch (\Throwable $throwable) {
+            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        }
+        return response()->json($res, 200);
+    }
 }

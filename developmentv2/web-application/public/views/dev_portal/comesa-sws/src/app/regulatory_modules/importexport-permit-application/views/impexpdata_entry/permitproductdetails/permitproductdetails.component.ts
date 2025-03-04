@@ -529,7 +529,7 @@ export class PermitproductdetailsComponent implements OnInit {
 
     onLoadPermitProductsData(filter_params  = { application_status_id: this.application_status_id }) {
       this.spinnerShow('Loading Information...........');
-      this.appService.getPermitsOtherDetails(filter_params, 'getPermitProductsDetails')
+      this.appService.getPermitsOtherDetails(filter_params, 'getApplicantPermitProductsDetails')
         .subscribe(
           data => {
   
@@ -832,7 +832,7 @@ export class PermitproductdetailsComponent implements OnInit {
         return;
       }
       this.spinner.show();
-      this.appService.onsavePermitProductdetails(this.application_code, this.permitProductsFrm.value, this.tracking_no, 'onSavePermitProductsDetails')
+      this.appService.onsavePermitProductdetails(this.application_code, this.permitProductsFrm.value, this.tracking_no, 'onSaveApplicantPermitProductsDetails')
         .subscribe(
           response => {
             this.app_resp = response;

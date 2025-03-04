@@ -586,6 +586,17 @@ class UtilityHelper
             ->get();
         return convertStdClassObjToArray($records);
     }
+
+    public static function returnContextMisMenuActions($process_id)
+    {
+        //return records
+        $records = DB::table('wf_workflowstageprocess_actions as t1')
+            ->select('t2.*', 't1.workflow_status_id as appworkflow_status_id', 't2.name as text', 't2.iconCls as icon')
+            ->join('wf_statuses_actions as t2', 't1.statuses_action_id', '=', 't2.id')
+            ->where('t1.process_id', $process_id)
+            ->get();
+        return convertStdClassObjToArray($records);
+    }
     public static function returnContxtMenuActions()
     {
         //return records

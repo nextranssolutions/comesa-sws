@@ -31,6 +31,12 @@ if ( !function_exists( 'returnContextMenuActions' ) ) {
         return UtilityHelper::returnContextMenuActions( $process_id );
     }
 }
+
+if ( !function_exists( 'returnContextMisMenuActions' ) ) {
+    function returnContextMisMenuActions( $process_id ) {
+        return UtilityHelper::returnContextMisMenuActions( $process_id );
+    }
+}
 if ( !function_exists( 'funcUpdateCurrentSubmission' ) ) {
     function funcUpdateCurrentSubmission( $application_code, $prevworkflow_stage_id, $user_id ) {
         return UtilityHelper::funcUpdateCurrentSubmission( $application_code, $prevworkflow_stage_id, $user_id );

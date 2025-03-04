@@ -6,6 +6,7 @@ import { DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
 import { ToastrService } from 'ngx-toastr';
 import { ReportsService } from 'src/app/core-services/reports/reports.service';
 import { WokflowManagementService } from 'src/app/core-services/workflow-management/wokflow-management.service';
+import { ImportExportService } from 'src/app/regulatory_modules/importexport-control/services/import-export.service';
 
 @Component({
   selector: 'app-sharedevaluation-checklist',
@@ -16,20 +17,19 @@ export class SharedevaluationChecklistComponent {
   response: any;
   evaluation_changes: any;
   @Input() application_code: number;
-  @Input() expertsperformance_evaluation_id: number;
+  @Input() transactionpermit_type_id: number;
   @Input() expertEvaluationFrm: FormGroup;
-  @Input() applicantperformance_evaluation_id: number;
-  @Input() issupervisors_marks: boolean;
-  @Input() issecond_appraisor_marks: boolean;
-  @Input() isthird_appraisor_marks: boolean;
+  issupervisors_marks: boolean;
+  issecond_appraisor_marks: boolean;
+  isthird_appraisor_marks: boolean;
 
-  sectionpanel_title: string = "performance_evaluation";
+  sectionpanel_title: string = "permittype_checklist";
   applicantEvaluationChecklistDetails: any;
   loadingVisible: boolean;
   show_advancesearch: boolean;
   spinnerMessage: string;
   data_record: any;
-  process_id: number = 7;
+  process_id: number = 2;
   changes: any;
   selectTextOnEditStart: boolean;
 
@@ -38,9 +38,10 @@ export class SharedevaluationChecklistComponent {
     public toastr: ToastrService, 
     private http: HttpClient,
     private reportingAnalytics: ReportsService,
-    public workflowService: WokflowManagementService
+    public workflowService: WokflowManagementService,
+    public appService: ImportExportService,
   ) {
-
+this.onLoadEvaluationChecklistDetails();
   }
 
   spinnerShow(spinnerMessage) {
@@ -57,15 +58,15 @@ export class SharedevaluationChecklistComponent {
     return window.innerHeight * percentage_height / 100;
   }
 
-  onLoadexpertEvaluationChecklistDetails() {
+  onLoadEvaluationChecklistDetails() {
     this.spinnerShow('Loading Experts Performance Evaluation details ...........');
 
     var data_submit = {
-      'applicantperformance_evaluation_id': this.applicantperformance_evaluation_id,
+      'transactionpermit_type_id': this.transactionpermit_type_id,
       'application_code': this.application_code,
       'process_id': this.process_id
     }
-    this.workflowService.onGetApplicantProfileInformation(data_submit, 'onLoadexpertEvaluationChecklistDetails')
+    this.appService.onGetApplicantProfileInformation(data_submit, 'onLoadEvaluationChecklistDetails')
       .subscribe(
         data => {
           this.data_record = data;
@@ -116,26 +117,26 @@ export class SharedevaluationChecklistComponent {
 
       let data_changeobj = {
         checklist_defination_id: rec.key.checklist_defination_id,
-        marks_allocated: rec.data.marks_allocated,
-        supervisors_marks: rec.data.supervisors_marks,
-        second_appraisor_marks: rec.data.second_appraisor_marks,
-        third_appraisor_marks: rec.data.third_appraisor_marks,
+        // marks_allocated: rec.data.marks_allocated,
+        self_assessment: rec.data.self_assessment,
+        assessment: rec.data.assessment,
+        assessment_review: rec.data.assessment_review,
         application_code: this.application_code,
-        expertsperformance_evaluation_id: this.expertsperformance_evaluation_id
+        transactionpermit_type_id: this.transactionpermit_type_id
       };
       this.changes.push(data_changeobj);
     }
     //call to the back end 
     if (this.changes) {
       let post_data = JSON.stringify(this.changes);
-      this.spinnerShow('Saving Experts Evaluation Performance');
-      this.workflowService.onSavingApplicantEvaluationChecklistDetails('tra_expertsperformance_evaluation', '', post_data, 'onSavingexpertEvaluationChecklistDetails')
+      this.spinnerShow('Saving....');
+      this.appService.onSavingApplicantEvaluationChecklistDetails('tra_transactionpermit_checklists', '', post_data, 'onSavingApplicantEvaluationChecklistDetails')
         .subscribe(
           response => {
             this.response = response;
             //the details 
             if (this.response.success) {
-              this.onLoadexpertEvaluationChecklistDetails();
+              this.onLoadEvaluationChecklistDetails();
               this.toastr.success(this.response.message, 'Response');
               this.spinnerHide();
 

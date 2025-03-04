@@ -67,7 +67,7 @@ export class SharedImpExpdashboardClass {
   is_approvedVisaPermit: boolean = false;
   win_submitinvoicepayments: boolean;
   permitProductsData: any;
-
+  table_name: string;
 
   appregulatory_subfunction_id: number;
   app_routing: any;
@@ -107,6 +107,7 @@ export class SharedImpExpdashboardClass {
       paying_currency_id: new FormControl('', Validators.compose([])),
       submission_comments: new FormControl('', Validators.compose([]))
     });
+    this.table_name = 'wb_importexport_applications'
   }
 
   ngOnInit(): void {
@@ -196,19 +197,31 @@ export class SharedImpExpdashboardClass {
     return window.innerWidth * percentage_width / 100;
   }
 
-  reloadPermitApplicationsApplications(filter_params  = { application_status_id: this.application_status_id }) {
-    this.spinnerShow('Loading Information...........');
-    this.appService.onPermitApplicationLoading(filter_params, 'getImportExpPermitsApplicationLoading')
+
+
+
+  reloadPermitApplicationsApplications(appworkflow_status_id = 0, ) {
+    this.spinnerShow('Loading...........');
+    var data_submit = {
+      'table_name': this.table_name,
+      'appworkflow_status_id': appworkflow_status_id,
+      
+    };
+
+    this.appService.onPermitApplicationLoading(data_submit, 'getImportExpApplicantPermitsLoading')
       .subscribe(
         data => {
 
           this.data_record = data;
-          // console.log(this.data_record);
           if (this.data_record.success) {
             this.dtImportExpApplicationData = this.data_record.data;
           }
           this.spinnerHide();
         },
+        error => {
+          console.error('Error fetching applications information data:', error); // Log the error
+          this.spinnerHide();
+        }
       );
   }
 

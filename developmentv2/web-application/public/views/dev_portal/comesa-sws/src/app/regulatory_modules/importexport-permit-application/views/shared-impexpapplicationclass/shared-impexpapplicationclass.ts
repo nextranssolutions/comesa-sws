@@ -1,4 +1,4 @@
-import { ViewChild, Directive } from '@angular/core';
+import { ViewChild, Directive, Input } from '@angular/core';
 
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
@@ -24,6 +24,9 @@ export class SharedImpexpApplicationClass {
   appuploaded_document_id: number;
   trader_id: number;
   mistrader_id: number;
+  process_id: number;
+  transactionpermit_type_id: number;
+  
   permit_id: any;
   dataGrid: DxDataGridComponent;
   productApplicationProcessingData: any;
