@@ -59,7 +59,7 @@
                     </div>
                 </dxi-column>
 
-
+                <dxi-column dataField="account_type_id" caption="{{'account_type' | translate}}"></dxi-column>
                 <dxi-column dataField="traderaccount_types" caption="{{'traderaccount_type' | translate}}"></dxi-column>
                 <dxi-column dataField="trader_categories" caption="{{'trader_category' | translate}}"></dxi-column>
                 <dxi-column dataField="identification_no" caption="{{'trader_no' | translate}}"></dxi-column>
@@ -70,7 +70,7 @@
                     caption="{{'contact_person_email' | translate}}"></dxi-column>
                 <dxi-column dataField="contact_person_telephone"
                     caption="{{'contact_person_telephone' | translate}}"></dxi-column>
-                <dxi-column dataField="tpin_no" caption="{{'tpin_no' | translate}}"></dxi-column>
+                <dxi-column dataField="tpin_no" caption="{{'tax_registration' | translate}}"></dxi-column>
                 <dxi-column dataField="pacra_reg_no" caption="{{'pacra_reg_no' | translate}}"></dxi-column>
                 <dxi-column dataField="countries" caption="{{'country' | translate}}"></dxi-column>
 
@@ -165,7 +165,7 @@
                                 </div>
 
                                 <div class="col-lg-4">
-                                    <label>{{'tpin_no' | translate}}</label>
+                                    <label>{{'tax_registration' | translate}}</label>
                                     <dx-text-box formControlName="tpin_no" [readOnly]="is_readonly" placeholder=""
                                         [showClearButton]="true"></dx-text-box>
                                 </div>
@@ -347,7 +347,7 @@
                             </div>
 
                             <div class="col-lg-4">
-                                <label>{{'tpin_no' | translate}}</label>
+                                <label>{{'tax_registration' | translate}}</label>
                                 <dx-text-box formControlName="tpin_no" [readOnly]="is_readonly" placeholder=""
                                     [showClearButton]="true"></dx-text-box>
                             </div>

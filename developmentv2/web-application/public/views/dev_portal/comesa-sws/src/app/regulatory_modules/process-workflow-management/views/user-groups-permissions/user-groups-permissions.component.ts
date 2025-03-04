@@ -33,10 +33,11 @@ resetcolumns = 'dashboard_type_id,resetcolumns,routerLink,has_partnerstate_defin
   changes: Array<any>;
   workflowData:any;
   workflowStageData:any;
-
+  usersData: any;
   navigationTypesData:any;
   regulatoryFunctionData: any;
   createNewDataFrm: FormGroup;
+  addUserDataFrm: FormGroup;
   isnewrecord: boolean;
   submitted = false;
   loading = false;
@@ -46,6 +47,7 @@ resetcolumns = 'dashboard_type_id,resetcolumns,routerLink,has_partnerstate_defin
   response: any;
   showTabPanel: boolean = false;
   tabPanelPopupVisible: boolean = false;
+  isUserVisible: boolean = false;
   showWizard = false; // Add this variable to control the visibility of the wizard
   AccountTypesData:any;
   allAccountTypesData:any;
@@ -65,6 +67,7 @@ resetcolumns = 'dashboard_type_id,resetcolumns,routerLink,has_partnerstate_defin
   AppNavigationMenus:any;
   updateUsrPermissNewDataFrm:FormGroup;
   AppRegulatoryFunction: any;
+  usersDetails: any;
   actionsMenuItems = [
     {
       text: "Action",
@@ -102,7 +105,7 @@ resetcolumns = 'dashboard_type_id,resetcolumns,routerLink,has_partnerstate_defin
   selectedTabIndex = 0;
   selectTextOnEditStart:boolean;
   startEditAction:boolean;
-  tabNames = ["UserGroup","RegulatoryFunctions", "NavigationPermission", "WorkflowPermission"]
+  tabNames = ["UserGroup","RegulatoryFunctions", "NavigationPermission", "WorkflowPermission","Users"]
   constructor(
     
     private router: Router,
@@ -130,6 +133,12 @@ resetcolumns = 'dashboard_type_id,resetcolumns,routerLink,has_partnerstate_defin
       is_super_admin: new FormControl('', Validators.compose([]))
 
     });
+
+    this.addUserDataFrm = new FormGroup({
+      id: new FormControl('', Validators.compose([])),
+      user_id: new FormControl('', Validators.compose([Validators.required])),
+
+    });
    // this.resetcolumns = 'resetcolumns,account_type_id,routerLink,has_partnerstate_defination';
     
   }
@@ -144,6 +153,7 @@ ngOnInit() {
   this.checkScreenSize();
   this.onLoadWorkflowData();
   this.onloadOrganisationData();
+  this.onLoadUsersData();
 
   //for the action menu
 
@@ -157,6 +167,7 @@ ngOnInit() {
   this.onLoadAllAccountTypeData();
   this.onloaddashboardTypeData();
   this.fetchAppRegulatoryFunction(this.user_group_id);
+  // this.fetchUserData(this.user_group_id);
   // this.onloadallinstutitionTypesData();
 
 }
@@ -448,6 +459,26 @@ fetchSysAdminDetails(account_type_id) {
       });
 
 }
+// fetchUsersDetails(account_type_id) {
+
+//   var data_submit = {
+//     'table_name': 'tra_user_group',
+//     account_type_id:account_type_id
+//   }
+//   this.admnistrationService.onLoadSystemAdministrationData(data_submit)
+//     .subscribe(
+//       data => {
+//         this.data_record = data;
+//         if (this.data_record.success) {
+//           this.usersData = this.data_record.data;
+//         }
+
+//       },
+//       error => {
+        
+//       });
+
+// }
 
 
 
@@ -498,6 +529,53 @@ onFuncSaveRecordData() {
         this.spinnerHide();
       });
 }
+onFuncUserData() {
+
+  const formData = new FormData();
+  const invalid = [];
+  const controls = this.addUserDataFrm.controls;
+  for (const name in controls) {
+    if (controls[name].invalid) {
+      this.toastr.error('Fill In All Mandatory fields with (*), missing value on ' + name.replace('_id', ''), 'Alert');
+      return;
+    }
+  }
+  if (this.addUserDataFrm.invalid) {
+    return;
+  }
+  this.addUserDataFrm.get('resetcolumns')?.setValue(this.resetcolumns);
+
+  this.spinnerShow('Saving '+this.parameter_name);
+  
+  this.admnistrationService.onSaveSystemAdministrationDetails('tra_user_group', this.addUserDataFrm.value, 'onsaveSysAdminData')
+    .subscribe(
+      response => {
+        this.response = response;
+        //the details 
+        if (this.response.success) {
+
+            this.fetchUserData(this.user_group_id);
+            this.isUserVisible = false;
+            this.user_group_id = this.response.record_id;
+            
+            // this.createNewDataFrm.get('id')?.setValue(this.user_group_id);
+            // this.fetchAppNavigationMenus(this.user_group_id, this.account_type_id);
+            this.selectedTabIndex = 1;
+            this.toastr.success(this.response.message, 'Response');
+            this.spinnerHide();
+
+        } else {
+          this.toastr.error(this.response.message, 'Alert');
+        }
+        // 
+        this.spinnerHide();
+      },
+      error => {
+        this.toastr.error('Error Occurred', 'Alert');
+        // 
+        this.spinnerHide();
+      });
+}
 
 funcpopWidth(percentage_width) {
   return window.innerWidth * percentage_width / 100;
@@ -521,6 +599,7 @@ funcEditDetails(data) {
   this.fetchAppNavigationMenus(data.data.id, this.account_type_id);
   this.fetchAppRegulatoryFunction(data.data.id);
   this.fetchWorkflowPermissionData(data.data.id) 
+  this.fetchUserData(data.data.id);
 }
 funcEditPermissionDetails(data) {
   this.createNewDataFrm.patchValue(data.data);
@@ -537,6 +616,12 @@ onAddNewRecord() {
   this.AppNavigationMenus = []; 
 
 }
+
+onAddUserData(){
+  this.addUserDataFrm.reset();
+  this.isUserVisible = true;
+}
+
 fetchAppNavigationMenus(user_group_id, account_type_id) {
   this.spinnerShow('Loading User Permissions Details');
   this.admnistrationService.getAppUserGroupNavigationMenus(user_group_id, account_type_id)
@@ -581,6 +666,41 @@ fetchWorkflowPermissionData(user_group_id) {
       this.spinnerHide();
     }
   );
+}
+fetchUserData(user_group_id) {
+  this.spinnerShow('Loading User Permissions Details');
+  this.admnistrationService.getAppUserGroupUsers(user_group_id)
+  .subscribe(
+    data => {
+      this.data_record = data;
+      if (this.data_record.success) {
+        this.usersDetails = this.data_record.data;
+      }
+    });
+    this.spinnerHide();
+
+}
+
+onLoadUsersData() {
+
+  var data_submit = {
+    'table_name': 'usr_users_information',
+    // is_enabled: true,
+  }
+  this.admnistrationService.onLoadSystemAdministrationData(data_submit)
+    .subscribe(
+      data => {
+        this.data_record = data;
+
+        if (this.data_record.success) {
+          this.usersData = this.data_record.data;
+        }
+
+      },
+      error => {
+
+      });
+
 }
 
 funcDeleteDetails(data) {

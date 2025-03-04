@@ -40,5 +40,6 @@ Route::middleware(['XssSanitizer','clear_cache_config','firewall.all'])->prefix(
     Route::post('onSavingRegulatoryFunctionPermissions', [SysAdministrationController::class, 'onSavingRegulatoryFunctionPermissions']);
 
     Route::post('onSaveRegulatoryFunctionGuidelines', [SysAdministrationController::class, 'onSaveRegulatoryFunctionGuidelines']);
+    Route::get('getAppUserGroupUsers', [SysAdministrationController::class, 'getAppUserGroupUsers']);
 
 });

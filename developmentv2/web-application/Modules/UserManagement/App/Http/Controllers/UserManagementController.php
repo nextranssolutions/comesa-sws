@@ -1228,14 +1228,18 @@ class UserManagementController extends Controller
 
                         $template_id = 1;
                         $subject = 'Account Creation Notification';
-
+                        // $account_type_name = DB::table('sys_account_types')
+                        // ->where('id', $account_type_id)
+                        // ->value('name');
                         $vars = [
                             '{user_name}' => $full_names,
                             '{email_address}' => $req->email_address,
                             '{user_password}' => $generatedPassword,
-                            // '{experts_profile_no}' => $experts_profile_no
+                            // '{account_type}' => $account_type_name
+                            
                         ];
-                        $res = sendMailNotification($full_names, $req->email_address, $subject, '', '', '', '', '', $template_id, $vars);
+                        // $res = sendMailNotification($full_names, $req->email_address, $subject, '', '', '', '', '', $template_id, $vars);
+                        $res = sendMailNotification($req->email_address, $subject, '', '', '', '', '', $template_id, $vars);
                         if ($res['success']) {
                             $res = [
                                 'success' => true,
@@ -1362,7 +1366,7 @@ class UserManagementController extends Controller
             $table_name = $req->table_name;
             $appworkflow_status_id = $req->appworkflow_status_id;
             $phone_number = $req->phone_number;
-            $user_group_id = $req->user_group_id;
+            // $user_group_id = $req->user_group_id;
             $table_name = 'usr_users_information';
             $process_id = 1;
             $sectionSelection = $req->sectionSelection;
@@ -1375,9 +1379,9 @@ class UserManagementController extends Controller
                 $sql->where('appworkflow_status_id', $appworkflow_status_id);
             }
 
-            if (validateIsNumeric($user_group_id)) {
-                $sql->where('user_group_id', $user_group_id);
-            }
+            // if (validateIsNumeric($user_group_id)) {
+            //     $sql->where('user_group_id', $user_group_id);
+            // }
 
             $actionColumnData = returnContextMenuActions($process_id);
             $data = $sql->get();
@@ -1393,7 +1397,7 @@ class UserManagementController extends Controller
                 $user_data[] = array(
                     'id' => $rec->id,
                     'user_title_id' => $rec->user_title_id,
-                    'user_group_id' => $rec->user_group_id,
+                    // 'user_group_id' => $rec->user_group_id,
                     'appworkflow_status' => $rec->appworkflow_status,
                     'identification_type_id' => $rec->identification_type_id,
                     'country_of_origin_id' => $rec->country_of_origin_id,

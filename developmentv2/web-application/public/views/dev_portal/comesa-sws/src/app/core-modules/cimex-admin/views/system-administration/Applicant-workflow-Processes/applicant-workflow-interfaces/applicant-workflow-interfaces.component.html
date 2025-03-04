@@ -1,12 +1,3 @@
-<div class="page-header">
-    <h3>
-        {{ parameter_name | translate }}
-        <small>
-            <i class="ace-icon fa fa-angle-double-right"></i>
-        </small>
-    </h3>
- </div><!-- /.page-header -->
-
 
 <dx-button text="{{ 'add_new' | translate }} {{ parameter_name | translate }}" type="default" icon="fa fa-save"
     [elementAttr]="{ id: 'elementId', class: '' }" (onClick)="hasReadpermissions=false;onAddWorkFlowItem()">
@@ -36,20 +27,16 @@
         </div>
     </dxi-column>
     <dxi-column  dataField="name" caption="{{'name' | translate}}"> </dxi-column> 
-    <dxi-column [groupIndex]="0"  dataField="regulatory_function_id" caption="{{'regulatory_functions' | translate}}">
+    <dxi-column  dataField="regulatory_function_id"
+    caption="{{'regulatory_functions' | translate}}">
     <dxo-lookup [dataSource]="regulatoryFunctionsData" displayExpr="name" valueExpr="id"></dxo-lookup>
     </dxi-column>
-    <dxi-column dataField="regulatory_subfunction_id"
+    <dxi-column  dataField="regulatory_subfunction_id"
     caption="{{'regulatory_subfunctions' | translate}}">
     <dxo-lookup [dataSource]="regulatorySubFunctionsData" displayExpr="name" valueExpr="id"></dxo-lookup>
     </dxi-column>
-   
-    
-    <dxi-column dataField="organisation_id" caption="{{'organisation' | translate}}">
-        <dxo-lookup [dataSource]="organisationData" displayExpr="name" valueExpr="id"></dxo-lookup>
-    </dxi-column>
-    <dxi-column dataField="workflow_id" caption="{{'workflow' | translate}}">
-        <dxo-lookup [dataSource]="workflowData" displayExpr="name" valueExpr="id"></dxo-lookup>
+    <dxi-column  dataField="routerlink"
+    caption="{{'routerlink' | translate}}">
     </dxi-column>
     <dxi-column  dataField="description" caption="{{'description' | translate}}"> </dxi-column> 
     <dxi-column [width]="50" dataField="is_enabled" caption="{{ 'enabled_disabledoption' | translate }}">
@@ -78,30 +65,23 @@
                         <dx-text-box formControlName="name" placeholder="{{ 'label' | translate }}">
                         </dx-text-box>
                     </div>
-                    <div class="col-lg-6">
+                    <div class="col-lg-6" >
                         <label for="unitName">{{ 'regulatory_function' | translate }}</label>
                         <dx-select-box [dataSource]="regulatoryFunctionsData" formControlName="regulatory_function_id"
                         (onSelectionChanged)="onRegulatoryFunctionChange($event)" [showClearButton]="true" valueExpr="id" [searchEnabled]="true" displayExpr="name">
                         </dx-select-box>
                     </div>
-                    <div class="col-lg-6">
+                    <div class="col-lg-6" >
                         <label for="unitName">{{ 'regulatory_subfunction' | translate }}</label>
                         <dx-select-box [dataSource]="regulatorySubFunctionsData" formControlName="regulatory_subfunction_id"
                             [showClearButton]="true" valueExpr="id" [searchEnabled]="true" displayExpr="name">
                         </dx-select-box>
                     </div>
-                   
-                    <div class="col-lg-6">
-                        <label for="unitName">{{ 'organisation' | translate }}</label>
-                        <dx-select-box [dataSource]="organisationData" formControlName="organisation_id"
-                            [showClearButton]="true" valueExpr="id" [searchEnabled]="true" displayExpr="name">
-                        </dx-select-box>
-                    </div>
                     <div class="col-lg-6" >
-                        <label for="unitName">{{ 'workflow' | translate }}</label>
-                        <dx-select-box [dataSource]="workflowData" formControlName="workflow_id"
-                            [showClearButton]="true" valueExpr="id" [searchEnabled]="true" displayExpr="name">
-                        </dx-select-box>
+                        <label for="unitName">{{ 'routerlink' | translate }}</label>
+                        <dx-text-box formControlName="routerlink" [showClearButton]="true">
+
+                        </dx-text-box>
                     </div>
                     <div class="col-lg-4">
                         <label for="description">{{ 'description' | translate }}</label>
@@ -135,7 +115,7 @@
             "<strong>{{config_record}}</strong>"?
         </p>
         <div class="button-container">
-            <dx-button text="{{ 'yes' | translate }}" type="danger" (onClick)="onDeleteWorkflowDetails()">
+            <dx-button text="{{ 'yes' | translate }}" type="danger" (onClick)="onDeletePortalWorkflowDetails()">
             </dx-button>
             <dx-button text="{{ 'no' | translate }}" (onClick)="deletePopupVisible = false">
             </dx-button>
@@ -146,9 +126,24 @@
 <dx-popup [visible]="checklistConfigVisible" [width]="funcpopWidth(80)" [height]="funcpopHeight(65)" [showTitle]="true"
     title="{{ 'Checklist_configuration' | translate }}" (onHidden)="checklistConfigVisible = false">
     
+</dx-popup>
 
-  
-   
+<dx-popup [visible]="enablePopupVisible" [width]="funcpopWidth(30)" [height]="funcpopHeight(25)" [showTitle]="true"
+  title="{{ enabledisable_interface | translate }}" (onHidden)="enablePopupVisible = false">
+
+  <div>
+    <p class="confirmation-text">
+      {{ enabledisable_interfacedescription | translate }}
+      "<strong>{{config_record}}</strong>"?
+    </p>
+    <div class="button-container">
+      <dx-button text="{{ 'yes' | translate }}" type="danger" (onClick)="iniateEnableDisableRecord()">
+      </dx-button>
+      <dx-button text="{{ 'no' | translate }}" (onClick)="enablePopupVisible = false">
+      </dx-button>
+    </div>
+  </div>
+
 </dx-popup>
 
 <dx-load-panel #loadPanel shadingColor="rgba(0,0,0,0.4)" [position]="{ of: '#employee' }" [(visible)]="loadingVisible"

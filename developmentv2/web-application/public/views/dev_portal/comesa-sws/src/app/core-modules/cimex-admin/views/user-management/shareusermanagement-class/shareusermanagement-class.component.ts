@@ -123,8 +123,8 @@ export class ShareusermanagementClassComponent {
     private eoiService: ExpressionOfInterestManagementService
   ) {
     
-    // this.table_name = 'exp_expertsprofile_information';
-    // this.parameter_name = "Active User Accounts";
+    this.table_name = 'usr_users_information';
+    this.parameter_name = "active_user_accounts";
 
 
     

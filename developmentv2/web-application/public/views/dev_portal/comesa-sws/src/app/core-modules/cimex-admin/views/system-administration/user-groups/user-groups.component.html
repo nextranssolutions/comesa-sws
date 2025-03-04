@@ -85,10 +85,9 @@
             [iconPosition]="iconPosition" [tabsPosition]="tabsPosition">
 
             <!-- DevExtreme Group Name -->
-            <dxi-item title="UserGroup" icon="group">
+            <dxi-item title="{{'user_group' | translate}}" icon="group">
                 <form (ngSubmit)="onUpdateUserPermissionSubmit()" [formGroup]="createNewDataFrm"
                     formControlName="description">
-
                     <div class="row">
                         <div class="col-lg-6">
                             <label>{{ 'account_type?' | translate }}</label>
@@ -114,10 +113,8 @@
                         </div>
 
                         <div class="col-lg-3">
-
                             <label>{{ 'code' | translate }}</label>
                             <dx-text-box formControlName="code" [showClearButton]="true">
-
                             </dx-text-box>
                         </div>
 
@@ -141,7 +138,7 @@
                 </div>
 
             </dxi-item>
-            <dxi-item title="regulatory_functions" icon="map">
+            <dxi-item title="{{'regulatory_functions' | translate}}" icon="map">
                 <dx-tree-list id="regulatory_functions" (onCellPrepared)="onRolesCellPrepared($event)"
                     (onSaving)="onSavingRegulatoryFunctionPermissions($event)" class="table row-border hover"
                     dataStructure="tree" [wordWrapEnabled]="true" [dataSource]="AppRegulatoryFunction" itemsExpr="children"
@@ -173,7 +170,7 @@
 
                     </dxi-column>
 
-                    <dxi-column dataField="user_access_levels_id" caption="Access Level">
+                    <dxi-column dataField="user_access_levels_id" caption="{{'access_level' | translate}}">
                         <dxo-lookup [dataSource]="userAccessLevels" displayExpr="name" valueExpr="id">
                         </dxo-lookup>
                     </dxi-column>
@@ -183,7 +180,7 @@
                 <div class="col-lg-12 row">
                     <div class="col-lg-3">
                         <dx-button text="{{ 'previous_group_details' | translate }}" type="default"
-                            icon="fa fa-arrow-right" (onClick)="onNextNavigationItems('UserGroup')">
+                            icon="fa fa-arrow-left" (onClick)="onNextNavigationItems('UserGroup')">
                         </dx-button>
                     </div>
                     <div class="col-lg-3">
@@ -193,7 +190,7 @@
                     </div>
                 </div>
             </dxi-item>
-            <dxi-item title="NavigationPermission" icon="map">
+            <dxi-item title="{{'navigation_permission' | translate}}" icon="map">
                 <dx-tree-list id="navigations" (onCellPrepared)="onRolesCellPrepared($event)"
                     (onSaving)="onSavingUserNavigationPermissions($event)" class="table row-border hover"
                     dataStructure="tree" [wordWrapEnabled]="true" [dataSource]="AppNavigationMenus" itemsExpr="children"
@@ -213,7 +210,7 @@
                         </div>
                     </dxi-column>
 
-                    <dxi-column dataField="navigation_type_id" caption="Navigation Type">
+                    <dxi-column dataField="navigation_type_id" caption="{{'navigation_type'| translate}}">
                         <dxo-lookup [dataSource]="navigationTypesData" displayExpr="name" valueExpr="id">
                         </dxo-lookup>
                     </dxi-column>
@@ -228,7 +225,7 @@
                     <dxi-column [allowEditing]="false" dataField="iconsCls" caption="iconsCls">
 
                     </dxi-column>
-                    <dxi-column dataField="user_access_levels_id" caption="Access Level">
+                    <dxi-column dataField="user_access_levels_id" caption="{{'access_level'| translate}}">
                         <dxo-lookup [dataSource]="userAccessLevels" displayExpr="name" valueExpr="id">
                         </dxo-lookup>
                     </dxi-column>
@@ -238,7 +235,7 @@
                 <div class="col-lg-12 row">
                     <div class="col-lg-3">
                         <dx-button text="{{ 'regulatory_functions'| translate }}" type="default"
-                            icon="fa fa-arrow-right" (onClick)="onNextNavigationItems('RegulatoryFunctions')">
+                            icon="fa fa-arrow-left" (onClick)="onNextNavigationItems('RegulatoryFunctions')">
                         </dx-button>
                     </div>
                     <div class="col-lg-3">
@@ -248,7 +245,7 @@
                     </div>
                 </div>
             </dxi-item>
-            <dxi-item title="WorkflowPermission" icon="map">
+            <dxi-item title="{{'workflow_permission' | translate}}" icon="map">
                 <dx-data-grid [allowColumnReordering]="true" (onCellPrepared)="onCellPrepared($event)"
                     (onSaving)="onSavingUserWorkflowPermissions($event)" class="table row-border hover"
                     [wordWrapEnabled]="true" [dataSource]="workflowPermissionData" [remoteOperations]="true"
@@ -264,13 +261,13 @@
                             [showPageSizeSelector]="true" [allowedPageSizes]="[50,100]"></dxo-pager>
                     </dxo-paging>
 
-                    <dxi-column [allowEditing]="false" [groupIndex]="0" dataField="workflow_id" caption="Workflow">
+                    <dxi-column [allowEditing]="false" [groupIndex]="0" dataField="workflow_id" caption="{{'workflow'|translate}}">
                         <dxo-lookup [dataSource]="workflowData" displayExpr="name" valueExpr="id">
                         </dxo-lookup>
                     </dxi-column>
-                    <dxi-column [allowEditing]="false" dataField="workflow_stage" caption="Workflow Stage">
+                    <dxi-column [allowEditing]="false" dataField="workflow_stage" caption="{{'workflow_stage'|translate}}">
                     </dxi-column>
-                    <dxi-column dataField="user_access_levels_id" caption="Access Level">
+                    <dxi-column dataField="user_access_levels_id" caption="{{'access_level'}}">
                         <dxo-lookup [dataSource]="userAccessLevels" displayExpr="name" valueExpr="id">
                         </dxo-lookup>
                     </dxi-column>
