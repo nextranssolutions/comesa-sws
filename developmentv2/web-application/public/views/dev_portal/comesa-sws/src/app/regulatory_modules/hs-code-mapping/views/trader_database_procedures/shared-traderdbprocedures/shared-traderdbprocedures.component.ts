@@ -76,8 +76,8 @@ export class SharedTraderdbproceduresComponent {
 
       this.createNewDataFrm = new FormGroup({
         id: new FormControl('', Validators.compose([])),
-        name: new FormControl('', Validators.compose([Validators.required])),
-        description: new FormControl('', Validators.compose([Validators.required])),
+        name: new FormControl('', Validators.compose([])),
+        description: new FormControl('', Validators.compose([])),
         is_enabled: new FormControl('', Validators.compose([])),
         procedure_category_id: new FormControl('', Validators.compose([])),
         organisation_id: new FormControl('', Validators.compose([])),

@@ -115,7 +115,7 @@ data_record: any;
   onLoadRegions(country_id) {
 
     var data = {
-      table_name: 'cfg_regions',
+      table_name: 'par_regions',
       country_id: country_id
     };
     this.config.onLoadConfigurationData(data)
@@ -160,7 +160,7 @@ data_record: any;
   onBusinessTypesDetailsLoad(business_type_id) {
 
     var data = {
-      table_name: 'cfg_business_type_details',
+      table_name: 'par_business_type_details',
       business_type_id: business_type_id
     };
     this.config.onLoadConfigurationData(data)
@@ -175,7 +175,7 @@ data_record: any;
 
   onLoadDistricts(region_id) {
     var data = {
-      table_name: 'cfg_districts',
+      table_name: 'par_districts',
       region_id: region_id
     };
     this.config.onLoadConfigurationData(data)
@@ -194,7 +194,7 @@ data_record: any;
   }
   onLoadSectors(district_id) {
     var data = {
-      table_name: 'cfg_sectors',
+      table_name: 'par_sectors',
       district_id: district_id
     };
     this.config.onLoadConfigurationData(data)
@@ -228,7 +228,7 @@ data_record: any;
 
   onLoadCells(sector_id) {
     var data = {
-      table_name: 'cfg_cells',
+      table_name: 'par_cells',
       sector_id: sector_id
     };
     this.config.onLoadConfigurationData(data)
@@ -339,7 +339,7 @@ data_record: any;
   onBusinessTypesLoad(regulated_productstype_id) {
 
     var data = {
-      table_name: 'cfg_business_types',
+      table_name: 'par_business_types',
       regulated_productstype_id: regulated_productstype_id
     };
     this.config.onLoadConfigurationData(data)
@@ -358,7 +358,7 @@ data_record: any;
   OnLoadBusinesstypeCategories(regulated_productstype_id) {
 
     var data = {
-      table_name: 'cfg_businesstype_categories',
+      table_name: 'par_businesstype_categories',
       regulated_productstype_id: regulated_productstype_id
     };
     this.config.onLoadConfigurationData(data)
@@ -425,7 +425,7 @@ data_record: any;
   }
   onLoadprodProductTypeData() {
     var data = {
-      table_name: 'cfg_premises_types'
+      table_name: 'par_premises_types'
     };
     this.configService.onLoadConfigurationData(data)
       .subscribe(
@@ -442,7 +442,7 @@ data_record: any;
   }
   onLoadcurrencyData() {
     var data = {
-      table_name: 'cfg_currencies'
+      table_name: 'par_currencies'
     };
     this.configService.onLoadConfigurationData(data)
       .subscribe(
@@ -460,7 +460,7 @@ data_record: any;
 
   onLoadZoneData() {
     var data = {
-      table_name: 'cfg_zones'
+      table_name: 'par_zones'
     };
     this.configService.onLoadConfigurationData(data)
       .subscribe(
@@ -478,7 +478,7 @@ data_record: any;
 
   onLoadCountries() {
     var data = {
-      table_name: 'cfg_countries'
+      table_name: 'par_countries'
     };
     this.configService.onLoadConfigurationData(data)
       .subscribe(

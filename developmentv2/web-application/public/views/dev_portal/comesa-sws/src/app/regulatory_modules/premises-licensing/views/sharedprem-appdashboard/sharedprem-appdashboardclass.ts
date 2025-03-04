@@ -645,7 +645,7 @@ export class SharedpremAppdashboardClass {
   onBusinessTypesLoad(regulated_productstype_id) {
 
     var data = {
-      table_name: 'cfg_business_types',
+      table_name: 'par_business_types',
       regulated_productstype_id: regulated_productstype_id
     };
     this.configService.onLoadConfigurationData(data)
@@ -663,7 +663,7 @@ export class SharedpremAppdashboardClass {
 
   onLoadprodProductTypeData() {
     var data = {
-      table_name: 'cfg_regulated_productstypes'
+      table_name: 'par_regulated_productstypes'
     };
     this.configService.onLoadConfigurationData(data)
       .subscribe(
@@ -684,7 +684,7 @@ export class SharedpremAppdashboardClass {
 
   onLoadRegulatedSectionsData(regulated_producttype_id) {
     var data = {
-      table_name: 'cfg_regulated_productstypes'
+      table_name: 'par_regulated_productstypes'
     };
 
     this.configService.onLoadConfigurationData(data)

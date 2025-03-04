@@ -105,7 +105,7 @@
 </div>
 <!-- /.main-content -->
 <dx-popup class="popup" [(visible)]="refFunctionGuidelines" [width]="funcpopWidth(75)" [height]="funcpopHeight(55)"
-  [showTitle]="true" [@flyInOut] title="{{ 'regulatory_function_guidelines' | translate }}" [dragEnabled]="false"
+  [showTitle]="true"  title="{{ 'regulatory_function_guidelines' | translate }}" [dragEnabled]="false"
   [hideOnOutsideClick]="true" (onHidden)="refFunctionGuidelines = false">
   <div class="row col-lg-12">
     <dx-data-grid (onCellPrepared)="onCellPrepared($event)" class="table row-border hover"
@@ -145,7 +145,7 @@
 </dx-load-panel>
 
 <dx-popup class="popup" [(visible)]="refFunctionGuidelines" [width]="funcpopWidth(75)" [height]="funcpopHeight(55)"
-  [showTitle]="true" [@flyInOut] title="{{ 'regulatory_function_guidelines' | translate }}" [dragEnabled]="false"
+  [showTitle]="true"  title="{{ 'regulatory_function_guidelines' | translate }}" [dragEnabled]="false"
   [hideOnOutsideClick]="true" (onHidden)="refFunctionGuidelines = false">
   <dx-scroll-view>
     <dx-data-grid class="w-200  table row-border hover dxtabpanel" [wordWrapEnabled]="true"

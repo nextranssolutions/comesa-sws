@@ -252,6 +252,18 @@ export class ServiceAdmnistrationService {
         return <any>data;
       }));
   }
+  getAppUserGroupUsers(user_group_id) {
+
+    this.system = {
+      headers: { 'Accept': 'application/json' },
+      params: { user_group_id: user_group_id }
+    };
+
+    return this.HttpClient.get(this.baseUrl + '/getAppUserGroupUsers', this.system)
+      .pipe(map(data => {
+        return <any>data;
+      }));
+  }
 
   getAppHsCodes(permit_type_id) {
 

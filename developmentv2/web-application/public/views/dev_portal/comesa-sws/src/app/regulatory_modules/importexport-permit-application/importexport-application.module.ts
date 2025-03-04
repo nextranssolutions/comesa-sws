@@ -22,6 +22,11 @@ import { SharedModuleModule } from '../../shared-views/shared-module.module';
 import { DashboardComponent } from './views/dashboard/dashboard.component';
 import { ImportexportapplicationRoutingModule } from './importexport-applicationrouting.module';
 import { ApplicantDetailsComponent } from './views/impexpdata_entry/applicant-details/applicant-details.component';
+import { ApprovedPermitsComponent } from './views/import-license/approved-permits/approved-permits.component';
+import { AwaitingPaymentRemittanceComponent } from './views/import-license/awaiting-payment-remittance/awaiting-payment-remittance.component';
+import { RequestForadditionalInformationComponent } from './views/import-license/request-foradditional-information/request-foradditional-information.component';
+import { UnderProcessingComponent } from './views/import-license/under-processing/under-processing.component';
+import { RejectedPermitsComponent } from './views/import-license/rejected-permits/rejected-permits.component';
 
 
 const ngWizardConfig: NgWizardConfig = {
@@ -32,7 +37,9 @@ const ngWizardConfig: NgWizardConfig = {
 @NgModule({
   declarations: [ImportexportNavigationComponent,
     ImportexportLayoutComponent, DraftImportlicensedashComponent,
-    PermitproductdetailsComponent, PermitgeneraldetailsComponent,
+    PermitproductdetailsComponent, PermitgeneraldetailsComponent,ApprovedPermitsComponent,
+    AwaitingPaymentRemittanceComponent,RejectedPermitsComponent,RequestForadditionalInformationComponent,
+    UnderProcessingComponent,
     ApplicantDetailsComponent,
     ImportexportHeaderComponent,InitiateImportappComponent, DashboardComponent],
   imports: [

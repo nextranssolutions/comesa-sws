@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { SharedImpExpdashboardClass } from '../../shared-impexpdashboard/shared-impexpdashboardclass';
 
 @Component({
@@ -6,6 +6,6 @@ import { SharedImpExpdashboardClass } from '../../shared-impexpdashboard/shared-
   templateUrl: './draft-importlicensedash.component.html',
   styleUrl: './draft-importlicensedash.component.css'
 })
-export class DraftImportlicensedashComponent extends SharedImpExpdashboardClass{
-
+export class DraftImportlicensedashComponent extends SharedImpExpdashboardClass {
+  
 }

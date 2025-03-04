@@ -22,6 +22,12 @@ import { SafePipeModule } from '../../safe-pipe/safe-pipe.module';
 import { SharedModuleModule } from '../../shared-views/shared-module.module';
 import { ImportexportDashboardComponent } from './views/importexport-dashboard/importexport-dashboard.component';
 import { ApplicantdetailsComponent } from './views/impexpdata_entry/applicantdetails/applicantdetails.component';
+import { SharedapplicationdocumentuploadsComponent } from 'src/app/shared-views/sharedutilities/sharedapplicationdocumentuploads/sharedapplicationdocumentuploads.component';
+import { UnderprocessingImportlicencedashComponent } from './views/import-license/underprocessing-importlicencedash/underprocessing-importlicencedash.component';
+import { ApprovedPermitsComponent } from './views/import-license/approved-permits/approved-permits.component';
+import { AwaitingPaymentRemittanceComponent } from './views/import-license/awaiting-payment-remittance/awaiting-payment-remittance.component';
+import { RejectedPermitsComponent } from './views/import-license/rejected-permits/rejected-permits.component';
+import { RequestAdditionalInfoComponent } from './views/import-license/request-additional-info/request-additional-info.component';
 
 const ngWizardConfig: NgWizardConfig = {
   theme: THEME.default
@@ -30,9 +36,12 @@ const ngWizardConfig: NgWizardConfig = {
 
 @NgModule({
   declarations: [ImportexportNavigationComponent,ImportexportDashboardComponent,
-    ImportexportLayoutComponent, DraftImportlicensedashComponent,
+    ImportexportLayoutComponent, DraftImportlicensedashComponent,ApprovedPermitsComponent,AwaitingPaymentRemittanceComponent,
+    RejectedPermitsComponent,RequestAdditionalInfoComponent,
     PermitproductdetailsComponent, PermitgeneraldetailsComponent,ApplicantdetailsComponent,
-    ImportexportHeaderComponent,InitiateImportappComponent],
+    ImportexportHeaderComponent,InitiateImportappComponent,
+    UnderprocessingImportlicencedashComponent,
+  ],
   imports: [
     CommonModule, ImportexportRoutingModule,
     SharedModuleModule,

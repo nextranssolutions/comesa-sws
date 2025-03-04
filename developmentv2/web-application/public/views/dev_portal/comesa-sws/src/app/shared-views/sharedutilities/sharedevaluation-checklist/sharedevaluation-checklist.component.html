@@ -1,0 +1,51 @@
+<dx-data-grid class="table row-border hover" (onExporting)="onExporting($event)" [wordWrapEnabled]="true" [dataSource]="applicantEvaluationChecklistDetails"
+    [remoteOperations]="true" [keyExpr]="['id','checklist_defination_id']" [repaintChangesOnly]="false"
+    (onSaving)="onSavingApplicantEvaluationChecklistDetails($event)" [showBorders]="true" [allowColumnResizing]="true"
+    [columnHidingEnabled]="false" (onToolbarPreparing)="onAdvancedSearch($event)">
+    <dxo-editing mode="batch" [allowUpdating]="true" [allowAdding]="false" [allowDeleting]="false"
+        [selectTextOnEditStart]="selectTextOnEditStart">
+    </dxo-editing>
+    <dxo-export [enabled]="true" [fileName]="'records' | translate" [formats]="['pdf', 'xlsx']"
+                [allowExportSelectedData]="true">
+            </dxo-export>
+    <dxo-search-panel [visible]="true"></dxo-search-panel>
+    <dxo-filter-row [visible]="show_advancesearch"></dxo-filter-row>
+    <dxo-paging [enabled]="true">
+        <dxo-pager [showInfo]="true" infoText="Page #{0}. Total: {1} ({2} items)" [showPageSizeSelector]="true"
+            [allowedPageSizes]="[50,100]"></dxo-pager>
+    </dxo-paging>
+    <dxi-column [allowEditing]="false" [groupIndex]="0" dataField="main_factor"
+        caption="{{ 'main_factor' | translate }}">
+    </dxi-column>
+    
+    <dxi-column [allowEditing]="false" dataField="checklist_type"
+        caption="{{ 'checklist_type' | translate }}"></dxi-column>
+    <!-- <dxi-column [allowEditing]="false" dataField="checklist_item_id" caption="{{ 'checklist_item' | translate }}">
+    </dxi-column> -->
+    <dxi-column width="100" [allowEditing]="issupervisors_marks" dataField="self_assessment"
+        caption="{{ 'self_assessment' | translate }}"></dxi-column>
+    <dxi-column width="100" *ngIf ="isthird_appraisor_marks || issecond_appraisor_marks"  [allowEditing]="issecond_appraisor_marks" dataField="assessment"
+        caption="{{ 'assessment' | translate }}"></dxi-column>
+        
+    <dxi-column width="100"  *ngIf ="isthird_appraisor_marks && !issecond_appraisor_marks" [allowEditing]="isthird_appraisor_marks" [allowEditing]="isthird_appraisor_marks" dataField="assessment_review"
+        caption="{{ 'assessment_review' | translate }}"></dxi-column>
+
+    <dxi-column width="100"  [allowEditing]="false" dataField="total_marks" caption="{{ 'total_marks' | translate }}"></dxi-column>
+    <dxi-column width="100"  [allowEditing]="false" dataField="percentage_average_score"
+        caption="{{ 'average_percentage_score' | translate }}"></dxi-column>
+
+    <dxo-selection mode="multiple"></dxo-selection>
+    <dxo-group-panel [visible]="true"></dxo-group-panel>
+
+    <dxo-paging [pageSize]="500"></dxo-paging>
+    <dxo-summary>
+        <dxi-total-item
+            column="assessment_marks"
+            summaryType="sum">
+        </dxi-total-item>
+    </dxo-summary>
+
+    
+   
+</dx-data-grid>
+

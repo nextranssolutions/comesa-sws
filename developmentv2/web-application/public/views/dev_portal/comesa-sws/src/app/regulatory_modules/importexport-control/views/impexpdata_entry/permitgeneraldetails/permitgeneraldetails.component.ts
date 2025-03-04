@@ -25,14 +25,17 @@ import { PremisesLicensingService } from 'src/app/regulatory_modules/premises-li
 })
 export class PermitgeneraldetailsComponent implements OnInit {
   @Input() applicationGeneraldetailsfrm: FormGroup;
+  @Input() permitReceiverSenderFrm: FormGroup;
+  today: Date = new Date();
   configData: any;
   regulatedProdTypeData: any;
   regulatedSubfunctionData: any;
   producttypeDefinationData: any;
   data_record: any;
-
+  has_declaration_statuses: boolean;
   premises_title: string;
   applicationTypeData: any;
+  portTypeData: any;
   applicationCategoryData: any;
   regulatory_subfunction_id: any;
   applicationTypeCategoryData: any;
@@ -40,7 +43,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
   portOfEntryExitData: any;
   payingCurrencyData: any;
   modeOfTransportData: any;
-
+  permitTypeData: any;
   currencyData: any;
   consigneeOptionsData: any;
   consignee_options_check: any;
@@ -49,12 +52,14 @@ export class PermitgeneraldetailsComponent implements OnInit {
   permit_category_id: any;
   application_code: any;
   ispremisesSearchWinVisible: any;
-
+  transportModeData: any;
+  countryData: any;
+  invoiceTypeData: any;
   registered_premisesData: any = {};
   issenderreceiverSearchWinVisible: any;
   consignee_sendertitle: any;
   issenderreceiverAddWinVisible: any;
-  permitReceiverSenderFrm: FormGroup;
+
   countries: any;
   regions: any;
   districts: any;
@@ -82,6 +87,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
   confirmDataParam: any;
   is_licensepermit: boolean = false;
   consignor_title: string = 'Consignor(Supplier/Receiver)';
+  importerexporter_title: string = 'Import/Exporter'
   eligibleImportersData: any;
   eligibleImportersDocTypes: any;
   filesToUpload: Array<File> = [];
@@ -95,40 +101,40 @@ export class PermitgeneraldetailsComponent implements OnInit {
   maxDate: any;
   trader_id: number;
   mistrader_id: number;
+  applicant_id: number;
   premise_title: string = 'Premises(Licensed Outlet(s))';
   ammendReadOnly: boolean;
+  loadingVisible: boolean;
+  spinnerMessage: string;
   registration_process_action: string;
   select_registration_section_process: string;
-  constructor(public utilityService: UtilityService, public premappService: PremisesLicensingService, public fb: FormBuilder, public spinner: SpinnerVisibilityService, public configService: ConfigurationsService, public appService: ImportExportService, public router: Router, public formBuilder: FormBuilder, public config: ConfigurationsService, public toastr: ToastrService, public authService: AuthenticationService, public httpClient: HttpClient) {
+  constructor(public utilityService: UtilityService, public premappService: PremisesLicensingService, public fb: FormBuilder,
+    public spinner: SpinnerVisibilityService, public configService: ConfigurationsService, public appService: ImportExportService,
+    public router: Router, public formBuilder: FormBuilder, public config: ConfigurationsService, public toastr: ToastrService,
+    public authService: AuthenticationService, public httpClient: HttpClient) {
   }
   ngOnInit() {
 
     this.maxDate = new Date();
-    if (this.regulatory_subfunction_id == 78 || this.regulatory_subfunction_id == 81) {
-      this.is_licensepermit = true;
-      this.invoice_title = "Commercial Invoice";
-    } else if (this.regulatory_subfunction_id == 82) {
-      this.is_licensepermit = true;
-      this.invoice_title = "Commercial Invoice";
-      this.hide_visalicensedetails = true;
-      this.has_registred_outlet = false;
-      this.showreason_fornonregister_outlet = false;
 
-    } else {
-      this.is_licensepermit = false;
-      this.invoice_title = "Proforma Invoice";
-    }
     let user_details = this.authService.getUserDetails();
 
+    this.applicant_id = user_details.trader_id;
     this.trader_id = user_details.trader_id;
-    this.mistrader_id = user_details.mistrader_id;
 
 
-    // this.onLoadCountries();
     this.onLoadEligibleImportersData;
     // this.onLoadeligibleImportersDocTypes();
     this.onLoadconfirmDataParm();
-    this.onLoadRegulatedProdTypeData();
+    this.onLoadmodeofTransportData();
+    this.onLoadapplicationTypeData();
+    this.onLoadportTypeData();
+    this.onLoadpermitTypeData();
+    this.onLoadportOfEntryExitData();
+    this.onLoadmodeOfTransportData();
+    this.onLoadcountryData();
+    this.onLoadinvoiceTypeData();
+    this.onLoadcurrencyData();
     this.onLoadpermitProductsCategoryData(this.permit_category_id);
     this.onLoadproducttypeDefinationData();
     // this.onsavePermitReceiverSender();
@@ -173,7 +179,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
   }
   onLoadapplicationCategoryData(producttype_defination_id) {
     var data = {
-      table_name: ' par_importexport_permittypes',
+      table_name: 'par_importexport_permittypes',
       producttype_defination_id: producttype_defination_id,
       regulatory_subfunction_id: this.regulatory_subfunction_id
     };
@@ -195,8 +201,6 @@ export class PermitgeneraldetailsComponent implements OnInit {
     var data = {
       table_name: 'par_product_categories',
       permit_category_id: permit_category_id
-
-
     };
 
     this.config.onLoadConfigurationData(data)
@@ -249,11 +253,8 @@ export class PermitgeneraldetailsComponent implements OnInit {
       this.showreason_fornonregister_outlet = false;
       this.applicationGeneraldetailsfrm.get('premises_name')?.setValidators([Validators.required]);
       this.applicationGeneraldetailsfrm.get('premise_id')?.setValidators([Validators.required]);
-
     }
     else {
-
-
     }
 
   }
@@ -361,10 +362,10 @@ export class PermitgeneraldetailsComponent implements OnInit {
           }
         });
   }
-  onLoadRegulatedProdTypeData() {
+  onLoadapplicationTypeData() {
     var data = {
-      table_name: 'par_regulated_productstypes',
-
+      table_name: 'par_application_types',
+      is_enabled: true,
 
     };
 
@@ -375,7 +376,177 @@ export class PermitgeneraldetailsComponent implements OnInit {
           this.data_record = data;
 
           if (this.data_record.success) {
-            this.regulatedProdTypeData = this.data_record.data;
+            this.applicationTypeData = this.data_record.data;
+
+          }
+        });
+  }
+
+
+  onLoadportOfEntryExitData() {
+    var data = {
+      table_name: 'par_entryexit_port',
+      is_enabled: true,
+
+    };
+
+    this.config.onLoadConfigurationData(data)
+      .subscribe(
+        data => {
+          console.log(data.record);
+          this.data_record = data;
+
+          if (this.data_record.success) {
+            this.portOfEntryExitData = this.data_record.data;
+
+          }
+        });
+  }
+  // 
+
+  onLoadmodeOfTransportData() {
+    var data = {
+      table_name: 'par_transport_mode',
+      is_enabled: true,
+
+    };
+
+    this.config.onLoadConfigurationData(data)
+      .subscribe(
+        data => {
+          console.log(data.record);
+          this.data_record = data;
+
+          if (this.data_record.success) {
+            this.modeOfTransportData = this.data_record.data;
+
+          }
+        });
+  }
+
+
+  onLoadportTypeData() {
+    var data = {
+      table_name: 'par_port_type',
+      is_enabled: true,
+
+    };
+
+    this.config.onLoadConfigurationData(data)
+      .subscribe(
+        data => {
+          console.log(data.record);
+          this.data_record = data;
+
+          if (this.data_record.success) {
+            this.portTypeData = this.data_record.data;
+
+          }
+        });
+  }
+
+  // currencyData
+
+  onLoadcurrencyData() {
+    var data = {
+      table_name: 'par_currencies',
+      is_enabled: true,
+
+    };
+
+    this.config.onLoadConfigurationData(data)
+      .subscribe(
+        data => {
+          console.log(data.record);
+          this.data_record = data;
+
+          if (this.data_record.success) {
+            this.currencyData = this.data_record.data;
+
+          }
+        });
+  }
+
+  // 
+
+  onLoadmodeofTransportData() {
+    var data = {
+      table_name: 'par_mode_oftransport',
+      is_enabled: true,
+
+    };
+
+    this.config.onLoadConfigurationData(data)
+      .subscribe(
+        data => {
+          this.data_record = data;
+
+          if (this.data_record.success) {
+            this.transportModeData = this.data_record.data;
+
+          }
+        });
+  }
+
+
+  onLoadcountryData() {
+    var data = {
+      table_name: 'par_countries',
+      is_enabled: true,
+
+    };
+
+    this.config.onLoadConfigurationData(data)
+      .subscribe(
+        data => {
+          this.data_record = data;
+
+          if (this.data_record.success) {
+            this.countryData = this.data_record.data;
+
+          }
+        });
+  }
+
+  onLoadinvoiceTypeData() {
+    var data = {
+      table_name: 'par_invoice_types',
+      is_enabled: true,
+
+    };
+
+    this.config.onLoadConfigurationData(data)
+      .subscribe(
+        data => {
+          console.log(data.record);
+          this.data_record = data;
+
+          if (this.data_record.success) {
+            this.invoiceTypeData = this.data_record.data;
+
+          }
+        });
+  }
+
+
+
+
+
+  onLoadpermitTypeData() {
+    var data = {
+      table_name: 'par_permit_typecategories',
+      is_enabled: 1,
+
+    };
+
+    this.config.onLoadConfigurationData(data)
+      .subscribe(
+        data => {
+          console.log(data.record);
+          this.data_record = data;
+
+          if (this.data_record.success) {
+            this.permitTypeData = this.data_record.data;
 
           }
         });
@@ -479,6 +650,8 @@ export class PermitgeneraldetailsComponent implements OnInit {
     });
 
   }
+
+
   onsearchConsignee() {
 
     this.consignee_sendertitle = 'Consignee Details';
@@ -625,29 +798,32 @@ export class PermitgeneraldetailsComponent implements OnInit {
   }
   funcSelectReceiverSender(data) {
     if (this.checkifsenderreceiver) {
-      this.applicationGeneraldetailsfrm.get('sender_receiver_id')?.setValue(data.data.id);
-      this.applicationGeneraldetailsfrm.get('sender_receiver')?.setValue(data.data.name);
+      this.applicationGeneraldetailsfrm.get('importer_exporter_id')?.setValue(data.data.id);
+      this.applicationGeneraldetailsfrm.get('importer_exporter_name')?.setValue(data.data.name);
     } else {
-      this.applicationGeneraldetailsfrm.get('consignee_id')?.setValue(data.data.id);
-      this.applicationGeneraldetailsfrm.get('consignee_name')?.setValue(data.data.name);
+      this.applicationGeneraldetailsfrm.get('importer_exporter_id')?.setValue(data.data.id);
+      this.applicationGeneraldetailsfrm.get('importer_exporter_name')?.setValue(data.data.name);
     }
     this.issenderreceiverSearchWinVisible = false;
     this.isconsigneeSearchWinVisible = false;
   }
 
+
+
   onLoadDistricts(region_id) {
     var data = {
-      table_name: ' par_districts',
+      table_name: 'par_districts',
       region_id: region_id
     };
     this.config.onLoadConfigurationData(data)
-      //.pipe(first())
       .subscribe(
         data => {
-          this.districts = data
-        },
-        error => {
-          return false;
+          this.data_record = data;
+
+          if (this.data_record.success) {
+            this.districts = this.data_record.data;
+
+          }
         });
   }
   onRegionsCboSelect($event) {
@@ -658,53 +834,45 @@ export class PermitgeneraldetailsComponent implements OnInit {
   onLoadRegions(country_id) {
 
     var data = {
-      table_name: ' par_regions',
+      table_name: 'par_regions',
       country_id: country_id
     };
     this.config.onLoadConfigurationData(data)
-      //.pipe(first())
+
       .subscribe(
         data => {
-          this.regions = data;
-        },
-        error => {
-          return false
+          this.data_record = data;
+
+          if (this.data_record.success) {
+            this.regions = this.data_record.data;
+
+          }
         });
   }
 
   onCoutryCboSelect($event) {
-
+    if ($event.selectedItem) {
+      let country_data = $event.selectedItem,
+        country_code = '+' + country_data.phonecode;
+      this.permitReceiverSenderFrm.get('telephone_no')?.setValue(country_code);
+    }
 
     this.onLoadRegions($event.selectedItem.id);
 
   }
-  onLoadCountries() {
 
-    var data = {
-      table_name: ' par_countries',
-      // id: 36
-    };
-    this.config.onLoadConfigurationData(data)
 
-      .subscribe(
-        data => {
-          this.countries = data;
-        },
-        error => {
-          return false;
-        });
-  }
 
   onsavePermitReceiverSender() {
     this.spinner.show();
     let table_name;
     if (this.checkifsenderreceiver) {
-      table_name = 'txn_permitsenderreceiver_data';
+      table_name = 'tra_permitsenderreceiver_data';
     } else {
-      table_name = 'txn_consignee_data';
+      table_name = 'tra_consignee_data';
     }
     let name = this.permitReceiverSenderFrm.get('name')?.value;
-    this.appService.onAddPermitReceiverSender(table_name, this.permitReceiverSenderFrm.value)
+    this.appService.onAddPermitReceiverSender(table_name, this.permitReceiverSenderFrm.value, 'onSaveUniformApplicantDataset')
       .subscribe(
         response => {
           this.app_resp = response;

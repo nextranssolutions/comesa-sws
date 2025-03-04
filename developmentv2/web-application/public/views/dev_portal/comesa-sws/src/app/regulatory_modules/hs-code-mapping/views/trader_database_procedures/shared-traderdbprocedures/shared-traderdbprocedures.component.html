@@ -26,8 +26,7 @@
     </dxi-column>
 
     <dxi-column dataField="name" caption="{{ 'name' | translate }}"></dxi-column>
-    <dxi-column dataField="description" caption="{{ 'description' | translate }}"></dxi-column>
-
+    
     <dxi-column *ngIf="table_name == 'par_procedures_subcategories' || table_name == 'tra_importexport_proceduredetails'"
         dataField="procedures_category_id" caption="{{ 'procedure_category' | translate }}">
         <dxo-lookup [dataSource]="prodCategoryTypeData" displayExpr="name" valueExpr="id">
@@ -74,6 +73,7 @@
     <dxi-column *ngIf="table_name == 'tra_importexport_proceduredetails'" dataField="procedure_accesslink"
         caption="{{ 'procedure_accesslink' | translate }}"></dxi-column>
 
+    <dxi-column dataField="description" caption="{{ 'description' | translate }}"></dxi-column>
     <dxi-column dataField="code" caption="{{ 'code' | translate }}"></dxi-column>
     <dxi-column dataField="is_enabled" caption="{{ 'is_enabled' | translate }}" [dataType]="'boolean'" [width]="100">
         <dxo-editing [allowUpdating]="true" [allowDeleting]="true" [allowAdding]="true"></dxo-editing>
@@ -99,11 +99,6 @@
                 <div class="col-lg-6">
                     <label>{{ 'name' | translate }}</label>
                     <dx-text-box formControlName="name" [showClearButton]="true"></dx-text-box>
-                </div>
-
-                <div class="col-lg-6">
-                    <label>{{ 'description' | translate }}</label>
-                    <dx-text-box formControlName="description" [showClearButton]="true"></dx-text-box>
                 </div>
 
                 <div *ngIf="table_name == 'par_service_deliverytimelines'" class="col-lg-6">
@@ -153,6 +148,11 @@
                         <dx-select-box [dataSource]="operationTypeData" formControlName="operation_type_id" valueExpr="id"
                             [searchEnabled]="true" displayExpr="name"></dx-select-box>
                     </div>
+                    
+                    <div class="col-lg-12">
+                        <label>{{ 'description' | translate }}</label>
+                        <dx-text-box formControlName="description" [showClearButton]="true"></dx-text-box>
+                    </div>
 
                     <div class="col-lg-6">
                         <label>{{ 'code' | translate }}</label>
@@ -169,7 +169,7 @@
                 <div class="row">
                     <div class="col-lg-4 pull-right">
                         <dx-button text="{{ 'save' | translate }} {{ parameter_name | translate }}" type="default"
-                            icon="fa fa-save" [elementAttr]="{ id: 'elementId', class: 'pull-right' }"
+                            icon="fa fa-save" [elementAttr]="{ id: 'elementId', class: 'pull-left' }"
                             (onClick)="onFuncSaveNewConfigData()">
                         </dx-button>
                     </div>

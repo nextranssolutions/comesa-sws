@@ -22,8 +22,9 @@ export class SharedHscodeInstitutionsComponent {
   onAddNewConfiVisible: boolean;
   NewConfigData: any[] = [];
   countryData: any[] = [];
-  institutionData: any[] = [];
-  institutionDeptData: any[] = [];
+  organisationData: any[] = [];
+  regionsData: any[] = [];
+  countriesData:  any[] = [];
   show_advancesearch: boolean;
   isnewprocess: boolean;
   config_record: string;
@@ -73,10 +74,14 @@ export class SharedHscodeInstitutionsComponent {
         id: new FormControl('', Validators.compose([])),
         name: new FormControl('', Validators.compose([Validators.required])),
         description: new FormControl('', Validators.compose([Validators.required])),
+        email_address: new FormControl('', Validators.compose([Validators.required])),
+        physical_address: new FormControl('', Validators.compose([Validators.required])),
+        telephone_number: new FormControl('', Validators.compose([Validators.required])),
+        ministry_name: new FormControl('', Validators.compose([Validators.required])),
         is_enabled: new FormControl('', Validators.compose([])),
         country_id: new FormControl('', Validators.compose([])),
-        institution_type_id: new FormControl('', Validators.compose([])),
-        institution_id: new FormControl('', Validators.compose([])),
+        organisation_id: new FormControl('', Validators.compose([])),
+        region_id: new FormControl('', Validators.compose([])),
         code: new FormControl('', Validators.compose([])),
         
       });
@@ -89,8 +94,9 @@ export class SharedHscodeInstitutionsComponent {
     this.fetchNewConfigData();
     this. fetchCountryData();
     this.fetchNewConfigurations();
-    this.fetchInstitutionData();
-    this.fetchInstitutionDeptData();
+    this.fetchOrganisationData();
+    this.fetchRegionsData();
+    this.fetchCountriesData()
 
    
   
@@ -213,17 +219,17 @@ export class SharedHscodeInstitutionsComponent {
 
   }
 
-  fetchInstitutionData() {
+  fetchOrganisationData() {
 
     var data_submit = {
-      'table_name': 'par_institutions_types'
+      'table_name': 'tra_organisation_information'
     }
     this.configService.onLoadConfigurationData(data_submit)
       .subscribe(
         data => {
           this.data_record = data;
           if (this.data_record.success) {
-            this.institutionData = this.data_record.data
+            this.organisationData = this.data_record.data
           }
         },
         error => {
@@ -232,23 +238,41 @@ export class SharedHscodeInstitutionsComponent {
 
   }
 
-  fetchInstitutionDeptData() {
-
+  fetchRegionsData() {
+  
     var data_submit = {
-      'table_name': 'par_institutions'
+      'table_name': 'par_regions',
     }
     this.configService.onLoadConfigurationData(data_submit)
       .subscribe(
         data => {
           this.data_record = data;
           if (this.data_record.success) {
-            this.institutionDeptData = this.data_record.data
+            // this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
+            this.regionsData = this.data_record.data;
           }
         },
         error => {
-
         });
+  }
 
+  
+  fetchCountriesData() {
+  
+    var data_submit = {
+      'table_name': 'par_countries',
+    }
+    this.configService.onLoadConfigurationData(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            // this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
+            this.countriesData = this.data_record.data;
+          }
+        },
+        error => {
+        });
   }
   
   funcpopWidth(percentage_width) {

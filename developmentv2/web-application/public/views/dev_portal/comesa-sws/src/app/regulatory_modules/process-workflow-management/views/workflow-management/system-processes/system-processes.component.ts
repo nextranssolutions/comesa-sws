@@ -96,9 +96,6 @@ export class SystemProcessesComponent {
             dashboard_type_id: new FormControl('', Validators.compose([])),
             regulatory_function_id: new FormControl('', Validators.compose([])),
             regulatory_subfunction_id: new FormControl('', Validators.compose([])),
-            product_type_id: new FormControl('', Validators.compose([])),
-            prodclass_category_id:  new FormControl('', Validators.compose([])),
-            premise_type_id: new FormControl('', Validators.compose([])),
             is_enabled: new FormControl('', Validators.compose([])),
            
       
