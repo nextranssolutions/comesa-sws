@@ -61,14 +61,14 @@
         <dxo-export [enabled]="true" fileName="ImportExport" [allowExportSelectedData]="true"></dxo-export>
 
         <dxo-selection mode="single"></dxo-selection>
-        <!-- <dxi-column [width]=200 caption="{{'actions' | translate}}" name="command-editing" [allowFiltering]="false" [allowSorting]="false"
+        <dxi-column [width]=200 caption="{{'actions' | translate}}" name="command-editing" [allowFiltering]="false" [allowSorting]="false"
             cellTemplate="cellTemplateSingle">
             <div *dxTemplate="let d of 'cellTemplateSingle'">
                 <dx-button text="{{d.data.action_name}}" (click)="singleApplicationActionColClick(d.data)"
                     type="success" icon="{{d.data.iconCls}}">
                 </dx-button>
             </div>
-        </dxi-column> -->
+        </dxi-column>
         <dxi-column caption="More Actions" [width]=150 name="command-editing" [allowFiltering]="false"
             [allowSorting]="false" cellTemplate="cellTemplate">
             <div *dxTemplate="let d of 'cellTemplate'">

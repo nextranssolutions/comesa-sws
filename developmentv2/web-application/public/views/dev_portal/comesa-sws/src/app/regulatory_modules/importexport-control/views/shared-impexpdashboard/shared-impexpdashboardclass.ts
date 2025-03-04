@@ -64,8 +64,8 @@ export class SharedImpExpdashboardClass {
   is_approvedVisaPermit: boolean = false;
   win_submitinvoicepayments: boolean;
   permitProductsData: any;
-
-  loadingVisible: boolean;
+  application_status_id: any;
+loadingVisible: boolean;
   spinnerMessage: string;
   appregulatory_subfunction_id: number;
   app_routing: any;
@@ -79,7 +79,6 @@ export class SharedImpExpdashboardClass {
   producttype_defination_id: number;
   importExportPermitTypesData: any;
   processingData: any;
-  filter_params: any;
 
   constructor(public utilityService: UtilityService, public viewRef: ViewContainerRef, public spinner: SpinnerVisibilityService, public toastr: ToastrService, public router: Router, public configService: ConfigurationsService, public appService: ImportExportService) { // this.onLoadApplicationCounterDetails();
 
@@ -114,7 +113,6 @@ export class SharedImpExpdashboardClass {
     // this.onLoadproducttypeDefinationData();
 
     this.onLoadPermitTypesCategoryData();
-    
   }
   scrollToTop(): void {
     window.scrollTo({
@@ -145,7 +143,7 @@ export class SharedImpExpdashboardClass {
   }
 
   onInitiatenewImportExpApplications() {
-    // this.onClickSubModuleAppSelection(1, 'New Import Application')
+    this.onClickSubModuleAppSelection(1, 'New Import Application')
     this.app_route = ['./importexport-control/initiate-importapp'];
 
     // this.router.navigate(this.app_route);
@@ -237,20 +235,49 @@ export class SharedImpExpdashboardClass {
     return window.innerWidth * percentage_width / 100;
   }
 
-  reloadPermitApplicationsApplications(filter_params) {
-
-    this.appService.onPermitApplicationLoading('getImportExpPermitsApplicationLoading', filter_params)
-      .subscribe(
-        resp_data => {
-          if (resp_data.success) {
-            this.dtImportExpApplicationData = resp_data.data;
-          }
-          else {
-            this.toastr.error(resp_data.message, 'Alert!');
-
-          }
-        });
+  funcpopHeight(percentage_height) {
+    return window.innerHeight * percentage_height / 100;
   }
+  // reloadPermitApplicationsApplications(filter_params) {
+
+  //   this.appService.onPermitApplicationLoading('getImportExpPermitsApplicationLoading', filter_params)
+  //     .subscribe(
+  //       resp_data => {
+  //         if (resp_data.success) {
+  //           this.dtImportExpApplicationData = resp_data.data;
+
+  //         }
+  //         else {
+  //           this.toastr.error(resp_data.message, 'Alert!');
+
+  //         }
+  //       });
+  // }
+
+  reloadPermitApplicationsApplications(filter_params  = { application_status_id: this.application_status_id }) {
+    this.spinnerShow('Loading...........');
+    this.appService.onPermitApplicationLoading(filter_params, 'getImportExpPermitsApplicationLoading')
+      .subscribe(
+        data => {
+
+          this.data_record = data;
+          // console.log(this.data_record);
+          if (this.data_record.success) {
+            this.dtImportExpApplicationData = this.data_record.data;
+          }
+          this.spinnerHide();
+        },
+      );
+  }
+
+  spinnerShow(spinnerMessage) {
+    this.loadingVisible = true;
+    this.spinnerMessage = spinnerMessage;
+  }
+  spinnerHide() {
+    this.loadingVisible = false;
+  }
+
 
 
   onLoadimportExportPermitTypesData() {
@@ -709,18 +736,25 @@ export class SharedImpExpdashboardClass {
     }
   }
   funcArchivePermitApplication(data) {
-    this.utilityService.funcApplicationArchiceCall(this.viewRef, data, 'tra_importexport_applications', this.reloadPermitApplicationsApplications);
+    this.utilityService.funcApplicationArchiceCall(this.viewRef, data, 'txn_importexport_applications', this.reloadPermitApplicationsApplications);
+
+
   }
 
   funcDeletePermitApplication(data) {
     //  this.utilityService.funcApplicationDeleteCall(this.viewRef, data, 'txn_importexport_applications', this.reloadPermitApplicationsApplications);
+
+
   }
 
   onClearProdutFilters() {
     this.FilterDetailsFrm.reset();
     this.FilterDetailsFrm.reset();
     this.FilterDetailsFrm.reset();
-    this.reloadPermitApplicationsApplications({});
+
+    this.reloadPermitApplicationsApplications();
+
+
   }
   funcInitiateInspectionBooking(app_data) {
     /*

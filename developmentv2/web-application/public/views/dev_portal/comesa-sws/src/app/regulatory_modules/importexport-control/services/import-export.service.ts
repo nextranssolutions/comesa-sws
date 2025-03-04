@@ -90,26 +90,19 @@ export class ImportExportService {
     this.application_details = data;
   }
 
-  onPermitApplicationLoading(action_url, filter_params) {
-
+  onPermitApplicationLoading(filter_params, action_url) {
     var headers = new HttpHeaders({
       "Accept": "application/json",
-      "Authorization": 'Bearer ' + this.authService.getAccessToken(),
+      "Authorization": "Bearer " + this.authService.getAccessToken(),
     });
 
-    filter_params.trader_id = this.trader_id;
-    // filter_params.mistrader_id = this.mistrader_id;
-
     this.config = {
-      params: filter_params,
+      params: { filter_params },
       headers: headers
     };
-
-    return this.httpClient.get(AppSettings.base_url + action_url, this.config)
+    return this.httpClient.get(this.baseUrl + '/' + action_url, this.config)
       .pipe(map(data => {
-
         return <any>data;
-
       }));
   }
 

@@ -1,14 +1,14 @@
 <form role="form" enctype="multipart/form-data" role="form" [formGroup]="applicationGeneraldetailsfrm" >
   <div class="row  wizard-content">
    
-        <div class="col-lg-6">
+        <!-- <div class="col-lg-6">
           <label>{{'application_type' | translate}}</label>
           <dx-select-box  [dataSource]="applicationTypeData" valueExpr="id" displayExpr="name"
             placeholder= "{{'application_type' | translate}}" [searchEnabled]="true" formControlName="application_type_id">
           </dx-select-box>
         </div>
         
-        
+         -->
         <div class="col-lg-6">
           <label>{{'permit_type' | translate}}</label>
           <dx-select-box  [dataSource]="permitTypeData" valueExpr="id" displayExpr="name"
@@ -39,16 +39,16 @@
         
 
         <div class="input-group">
-          <div class="col-lg-10">
+          <div class="col-lg-6">
             <label>{{'importer_exporter_details' | translate}}</label>
-            <dx-text-box [readOnly]="true" formControlName="importer_exporter_name" 
+            <dx-text-box [readOnly]="true" formControlName="importer_exporter_name"
               [placeholder]="'importer_exporter_details' | translate" [showClearButton]="true">
             </dx-text-box>
             <input type="hidden" formControlName="importer_exporter_id" />
           </div>
-          <div class="col-lg-2 pt-5">
-            <dx-button [elementAttr]="{ class: 'btn btn-primary pull-left' }" [disabled]="ammendReadOnly" 
-              style="margin-top:25px !important;" text="{{ 'search_details' | translate }}" type="default" 
+          <div class="col-lg-6 pt-5">
+            <dx-button [elementAttr]="{ class: 'btn btn-primary pull-left' }" [disabled]="ammendReadOnly"
+              style="margin-top:25px !important;" text="{{ 'search_details' | translate }}" type="default"
               (onClick)="onsearchSenderreceiver()">
               <i class="fa fa-search"></i> {{ 'search' | translate }} {{ importerexporter_title }}
             </dx-button>
@@ -246,9 +246,6 @@
             type="success" icon="edit" [elementAttr]="{ class: 'btn btn-primary' }">
           </dx-button>
           </div>
-  
-          
-         
         </dxi-column>
         <dxi-column dataField="name" caption="{{ 'name' | translate }}"></dxi-column>
         <dxi-column dataField="country" caption="{{ 'country' | translate }}"></dxi-column>

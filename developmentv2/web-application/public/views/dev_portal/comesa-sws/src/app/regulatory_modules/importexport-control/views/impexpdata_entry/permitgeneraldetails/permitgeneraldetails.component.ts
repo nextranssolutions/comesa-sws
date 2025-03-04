@@ -610,41 +610,41 @@ export class PermitgeneraldetailsComponent implements OnInit {
     funcpopWidth(percentage_width) {
       return window.innerWidth * percentage_width / 100;
     }
-    onsearchSenderreceiver() {
-      this.consignee_sendertitle = this.consignor_title;
-      this.checkifsenderreceiver = true;
-  
-      this.issenderreceiverSearchWinVisible = true;
-  
-      let me = this;
-      this.senderReceiverData.store = new CustomStore({
-        load: function (loadOptions: any) {
-          console.log(loadOptions)
-          var params = '?';
-          params += 'skip=' + loadOptions.skip;
-          params += '&take=' + loadOptions.take;//searchValue
-          var headers = new HttpHeaders({
-            "Accept": "application/json",
-            "Authorization": "Bearer " + me.authService.getAccessToken(),
-          });
-  
-          me.configData = {
-            headers: headers,
-            params: { skip: loadOptions.skip, take: loadOptions.take, searchValue: loadOptions.filter, table_name: 'tra_permitsenderreceiver_data' }
-          };
-          return me.httpClient.get(AppSettings.base_url + '/'+ 'api/import-export/getSenderreceiversDetails', me.configData)
-            .toPromise()
-            .then((data: any) => {
-              return {
-                data: data.data,
-                totalCount: data.totalCount
-              }
-            })
-            .catch(error => { throw 'Data Loading Error' });
-        }
-      });
+ onsearchSenderreceiver() {
+    this.consignee_sendertitle = this.consignor_title;
+    this.checkifsenderreceiver = true;
 
-    }
+    this.issenderreceiverSearchWinVisible = true;
+
+    let me = this;
+    this.senderReceiverData.store = new CustomStore({
+      load: function (loadOptions: any) {
+        console.log(loadOptions)
+        var params = '?';
+        params += 'skip=' + loadOptions.skip;
+        params += '&take=' + loadOptions.take;//searchValue
+        var headers = new HttpHeaders({
+          "Accept": "application/json",
+          "Authorization": "Bearer " + me.authService.getAccessToken(),
+        });
+
+        me.configData = {
+          headers: headers,
+          params: { skip: loadOptions.skip, take: loadOptions.take, searchValue: loadOptions.filter, table_name: 'tra_permitsenderreceiver_data' }
+        };
+        return me.httpClient.get(AppSettings.base_url + '/'+ 'api/import-export/getSenderreceiversDetails', me.configData)
+          .toPromise()
+          .then((data: any) => {
+            return {
+              data: data.data,
+              totalCount: data.totalCount
+            }
+          })
+          .catch(error => { throw 'Data Loading Error' });
+      }
+    });
+
+  }
   
     
     onsearchConsignee() {
