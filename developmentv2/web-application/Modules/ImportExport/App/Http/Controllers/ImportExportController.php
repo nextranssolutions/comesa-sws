@@ -1488,9 +1488,13 @@ class ImportExportController extends Controller
                 ->leftJoin('par_permit_typecategories as t11', 't1.permit_type_id', 't11.id')
                 ->leftJoin('par_currencies as t12', 't1.currency_oftransaction_id', 't12.id')
                 ->leftJoin('par_mode_oftransport as t13', 't1.mode_of_transport_id', 't13.id')
+                ->leftJoin('par_countries as t14', 't1.final_destination_country_id', 't14.id')
+                ->leftJoin('par_invoice_types as t15', 't1.invoice_type_id', 't15.id')
+                ->leftJoin('par_currencies as t16', 't1.currency_oftransaction_id', 't16.id')
+                ->leftJoin('par_confirmations as t17', 't1.declaration_statuses', 't17.id')
                 
                 
-                ->select('t1.*','t13.name as mode_of_transport','t12.name as currency_name', 't11.name as permit_type','t10.name as application_status','t8.name as action_name','t8.iconCls as iconCls','t8.action as action', 't2.name as permit_name', 't3.name as port_type', 't1.id', 't4.name as importer_exporter_name');
+                ->select('t1.*','t17.name as declaration','t16.name as currency_name','t15.name as invoice_type', 't14.name as final_destination_country','t5.name as port_of_entry', 't13.name as mode_of_transport','t12.name as currency_name', 't11.name as permit_type','t10.name as application_status','t8.name as action_name','t8.iconCls as iconCls','t8.action as action', 't2.name as permit_name', 't3.name as port_type', 't1.id', 't4.name as importer_exporter_name');
                 
             if ($workflow_status_id != '') {
                 $workflow_status = explode(',', $workflow_status_id);
@@ -1514,17 +1518,31 @@ class ImportExportController extends Controller
                     'action_name' => $rec->action_name,
                     'iconCls' => $rec->iconCls,
                     'application_status' =>$rec->application_status,
-                    'permit_type' =>$rec->permit_type,
+                    'permit_type_id' =>$rec->permit_type_id,
                     'permit_name' =>$rec->permit_name,
                     'port_type' =>$rec->port_type,
+                    'port_type_id' =>$rec->port_type_id,
+                    'port_of_entry' =>$rec->port_of_entry,
+                    'port_of_entryexit_id' =>$rec->port_of_entryexit_id,
+                    'customs_office' =>$rec->customs_office,
+                    'invoice_type' =>$rec->invoice_type,
+                    'invoice_type_id' =>$rec->invoice_type_id,
+                    'final_destination_country_id' =>$rec->final_destination_country_id,
+                    'final_destination_country' =>$rec->final_destination_country,
                     'invoice_number' =>$rec->invoice_number,
                     'invoice_date' => formatDaterpt($rec->invoice_date),
                     'importer_exporter_name' =>$rec->importer_exporter_name,
                     'action' => $rec->action,
                     'currency_name' =>$rec->currency_name,
+                    'declaration' =>$rec->declaration,
+                    'declaration_statuses_id' =>$rec->declaration_statuses_id,
+                    'currency_oftransaction_id' =>$rec->currency_oftransaction_id,
+                    'mode_of_transport_id' =>$rec->mode_of_transport_id,
                     'mode_of_transport' =>$rec->mode_of_transport,
                     'total_invoice_value' =>$rec->total_invoice_value,
                     'date_of_application' => formatDaterpt($rec->date_of_application),
+                    'expected_date_of_shipment' => $rec->expected_date_of_shipment,
+                    'tracking_no' => $rec->tracking_no,
                     'created_on' => $rec->created_on,
                     'process_id' => $rec->process_id,
                     'application_code' => $rec->application_code,

@@ -106,16 +106,14 @@ export class SharedImpExpdashboardClass {
       paying_currency_id: new FormControl('', Validators.compose([])),
       submission_comments: new FormControl('', Validators.compose([]))
     });
-  }
-
-  ngOnInit() {
     this.onLoadProductTypes();
     this.onLoadconfirmDataParam();
     // this.onLoadproducttypeDefinationData();
 
     this.onLoadPermitTypesCategoryData();
-    
   }
+
+
   scrollToTop(): void {
     window.scrollTo({
       top: 0,
@@ -503,7 +501,6 @@ export class SharedImpExpdashboardClass {
     if (action_btn.action === 'edit') {
       this.funcApplicationPreveditDetails(data);
 
-      // this.funcApplicationPreveditDetails(data);
     }
     else if (action_btn.action === 'preview') {
       this.funcProductPreviewDetails(data);
@@ -564,7 +561,7 @@ export class SharedImpExpdashboardClass {
     }
     else if (action_btn.action == 'uploadsub_paymentdetails' || action_btn.action == 'uploadsub_paymentdetails') {
 
-      this.funcUploadPaymentDetails(data);
+      // this.funcUploadPaymentDetails(data);
 
     } else if (action_btn.action == 'inspection_booking' || action_btn.action == 'inspection_booking') {
 
@@ -579,7 +576,7 @@ export class SharedImpExpdashboardClass {
   } funcProductRestoreArchiveApplication(data) {
     this.utilityService.funcApplicationRestoreArchiceCall(this.viewRef, data, 'txn_importexport_applications', this.reloadPermitApplicationsApplications)
   }
-  funcUploadPaymentDetails(data) {
+  funcApplicationPreveditDetails(data) {
     this.appregulatory_subfunction_id = data.regulatory_subfunction_id;
     this.appregulatory_function_id = data.regulatory_function_id;
     this.appregulated_productstype_id = data.regulated_productstype_id;
@@ -673,41 +670,7 @@ export class SharedImpExpdashboardClass {
         });
   }
 
-  funcApplicationPreveditDetails(app_data) {
-    this.router_link = app_data.router_link;
-    if (this.router_link == '') {
-      this.toastr.error("The application process route has not been mapped, contact SUpport Team!!", 'Alert!');
-      return;
-    }
 
-    if (app_data.application_status_id == 1) {
-      this.title = app_data.process_title;
-
-      this.appService.setApplicationDetail(app_data);
-      this.app_route = ['./online-services/' + this.router_link];
-
-      this.router.navigate(this.app_route);
-      this.scrollToTop();
-    }
-    else if (app_data.application_status_id == 2) {
-      this.title = app_data.process_title;
-      this.router_link = app_data.router_link;
-      this.appService.setApplicationDetail(app_data);
-      //this.app_route = ['./online-services/premises-reg-preview'];
-      this.router.navigate(this.app_route);
-      this.scrollToTop();
-    }
-    else {
-
-      this.title = app_data.process_title;
-      this.router_link = app_data.router_link;
-      this.appService.setApplicationDetail(app_data);
-      this.app_route = ['./online-services/' + this.router_link];
-      this.router.navigate(this.app_route);
-      this.scrollToTop();
-
-    }
-  }
   funcArchivePermitApplication(data) {
     this.utilityService.funcApplicationArchiceCall(this.viewRef, data, 'tra_importexport_applications', this.reloadPermitApplicationsApplications);
   }

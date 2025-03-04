@@ -172,7 +172,9 @@ export class SharedImpexpApplicationClass {
     this.application_details = JSON.parse(this.application_details);
     this.form_fielddata = this.application_details.application_form;
     this.applicationGeneraldetailsfrm = this.formBuilder.group({});
+    
     // this.permitProductsFrm = this.formBuilder.group({});
+    
 
 
 
@@ -201,7 +203,7 @@ export class SharedImpexpApplicationClass {
       this.tracking_no = this.application_details.tracking_no;
 
       this.applicationGeneraldetailsfrm.patchValue(this.application_details);
-      
+ 
     }
 
 
