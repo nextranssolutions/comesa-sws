@@ -175,9 +175,6 @@ export class SharedImpexpApplicationClass {
     
     // this.permitProductsFrm = this.formBuilder.group({});
     
-
-
-
     for (let form_field of this.form_fielddata) {
       let field_name = form_field['field_name'];
       if (form_field['is_mandatory'] == 1) {
@@ -189,7 +186,6 @@ export class SharedImpexpApplicationClass {
        
 
       }
-
     }
 
     if (this.application_details) {
