@@ -114,6 +114,84 @@ class SysAdministrationController extends Controller
         return response()->json($res, 200);
     }
 
+    public function onSaveRegulatoryFunctionGuidelines(Request $req)
+    {
+        try {
+            // Gather inputs from the request
+            $record_id = $req->id;
+            $user_id = $req->user_id;
+            $user_name = $req->user_name;
+            $table_name = 'sys_regulatoryfunction_guidelines';
+    
+            // Prepare data for insert/update
+            $data = array(
+                'name' => $req->name,
+                'guideline_descriptions' => $req->guideline_descriptions,
+                'links' => $req->links,
+                'regulatory_function_id' => $req->regulatory_function_id,
+                'is_enabled' => $req->boolean('is_enabled')
+            );
+    
+            // Handle file upload if present
+            if ($req->hasFile('document_path')) {
+                $file = $req->file('document_path');
+                $extension = $file->getClientOriginalExtension();   
+                $upload_directory = 'views/dev_portal/comesa-sws/src/assets/dist/docs';
+                $savedName = 'assets/dist/docs/doc-' . rand(0, 10000) . '.' . $extension;
+    
+                if ($file->move($upload_directory, $savedName)) {
+                    // Save the file path to the data array
+                    $data['document_path'] = $savedName;
+                } else {
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'File upload failed'
+                    ], 500);
+                }
+            }
+    
+            // Update if record ID is provided
+            if (validateIsNumeric($record_id)) {
+                $where = ['id' => $record_id];
+    
+                // Update if record exists
+                if (recordExists($table_name, $where)) {
+                    $data['dola'] = Carbon::now();
+                    $data['altered_by'] = $user_id;
+                    $previous_data = getPreviousRecords($table_name, $where);
+    
+                    // Perform the update
+                    $resp = updateRecord($table_name, $previous_data['results'], $where, $data, $user_name);
+                }
+            } else {
+                // Insert a new record if no ID is provided
+                $data['created_by'] = $user_id;
+                $data['created_on'] = Carbon::now();
+                $resp = insertRecord($table_name, $data, $user_name);
+            }
+    
+            // Handle response based on success or failure of the operation
+            if ($resp['success']) {
+                $res = [
+                    'success' => true,
+                    'record_id' => $resp['record_id'],
+                    'message' => 'Saved Successfully'
+                ];
+            } else {
+                $res = [
+                    'success' => false,
+                    'message' => $resp['message']
+                ];
+            }
+        } catch (\Exception $exception) {
+            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        } catch (\Throwable $throwable) {
+            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        }
+    
+        return response()->json($res, 200);
+        }
+
     public function onEnablePermitTypeDetails(Request $req)
     {
         try {
@@ -330,83 +408,7 @@ class SysAdministrationController extends Controller
         return response()->json($res, 200);
     }
 
-    public function onSaveRegulatoryFunctionGuidelines(Request $req)
-{
-    try {
-        // Gather inputs from the request
-        $record_id = $req->id;
-        $user_id = $req->user_id;
-        $user_name = $req->user_name;
-        $table_name = 'sys_regulatoryfunction_guidelines';
 
-        // Prepare data for insert/update
-        $data = array(
-            'name' => $req->name,
-            'title' => $req->title,
-            'slide_content' => $req->slide_content,
-            'footer' => $req->footer,
-            'is_enabled' => $req->boolean('is_enabled')
-        );
-
-        // Handle file upload if present
-        if ($req->hasFile('document_path')) {
-            $file = $req->file('document_path');
-            $extension = $file->getClientOriginalExtension();   
-            $upload_directory = 'views/dev_portal/comesa-sws/src/assets/dist/docs';
-            $savedName = 'assets/dist/docs/doc-' . rand(0, 10000) . '.' . $extension;
-
-            if ($file->move($upload_directory, $savedName)) {
-                // Save the file path to the data array
-                $data['document_path'] = $savedName;
-            } else {
-                return response()->json([
-                    'success' => false,
-                    'message' => 'File upload failed'
-                ], 500);
-            }
-        }
-
-        // Update if record ID is provided
-        if (validateIsNumeric($record_id)) {
-            $where = ['id' => $record_id];
-
-            // Update if record exists
-            if (recordExists($table_name, $where)) {
-                $data['dola'] = Carbon::now();
-                $data['altered_by'] = $user_id;
-                $previous_data = getPreviousRecords($table_name, $where);
-
-                // Perform the update
-                $resp = updateRecord($table_name, $previous_data['results'], $where, $data, $user_name);
-            }
-        } else {
-            // Insert a new record if no ID is provided
-            $data['created_by'] = $user_id;
-            $data['created_on'] = Carbon::now();
-            $resp = insertRecord($table_name, $data, $user_name);
-        }
-
-        // Handle response based on success or failure of the operation
-        if ($resp['success']) {
-            $res = [
-                'success' => true,
-                'record_id' => $resp['record_id'],
-                'message' => 'Saved Successfully'
-            ];
-        } else {
-            $res = [
-                'success' => false,
-                'message' => $resp['message']
-            ];
-        }
-    } catch (\Exception $exception) {
-        $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
-    } catch (\Throwable $throwable) {
-        $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
-    }
-
-    return response()->json($res, 200);
-}
 
     public function onSaveSystemAdminWithImage(Request $req)
     {
@@ -508,7 +510,7 @@ class SysAdministrationController extends Controller
                 ->leftJoin('tra_organisation_information as t4', 't1.organisation_id', 't4.id')
                 ->leftJoin('wf_processes as t5', 't1.process_id', 't5.id')
                 ->leftJoin('wf_workflows as t6', 't1.workflow_id', 't6.id')
-                ->leftJoin('par_service_deliverytimelines as t7', 't1.service_deliverytimeline_id', 't7.id')
+                ->leftJoin('par_service_type as t7', 't1.service_type_id', 't7.id')
                 ->leftJoin('par_refnumbers_formats as t8', 't1.reference_noformat_id', 't8.id')
                 ->leftJoin('par_permit_statuses as t9', 't1.permit_status_id', 't9.id')
                 ->leftJoin('par_renewable_statuses as t10', 't1.renewable_status_id', 't10.id')
@@ -520,7 +522,7 @@ class SysAdministrationController extends Controller
                     't4.name as organisation',
                     't5.name as process',
                     't6.name as workflow',
-                    't7.name as service_delivery_timeline',
+                    't7.name as service_type',
                     't8.name as ref_number_format',
                     't9.name as permit_status',
                     't10.name as renewable_status'
@@ -539,7 +541,7 @@ class SysAdministrationController extends Controller
                     'organisation_id' => $rec->organisation_id,
                     'process_id' => $rec->process_id,
                     'workflow_id' => $rec->workflow_id,
-                    'service_deliverytimeline_id' => $rec->service_deliverytimeline_id,
+                    'service_type_id' => $rec->service_type_id,
                     'reference_noformat_id' => $rec->reference_noformat_id,
                     'permit_status_id' => $rec->permit_status_id,
                     'renewable_status_id' => $rec->renewable_status_id,
@@ -548,7 +550,7 @@ class SysAdministrationController extends Controller
                     'organisation' => $rec->organisation,
                     'process' => $rec->process,
                     'workflow' => $rec->workflow,
-                    'service_delivery_timeline' => $rec->service_delivery_timeline,
+                    'service_type' => $rec->service_type,
                     'ref_number_format' => $rec->ref_number_format,
                     'permit_status' => $rec->permit_status,
                     'renewable_status' => $rec->renewable_status,
@@ -941,6 +943,48 @@ class SysAdministrationController extends Controller
         }
         return response()->json($res, 200);
     }
+
+    // public function getAppUserGroupUsers(Request $req)
+    // {
+    //     try {
+    //         $user_group_id = $req->user_group_id;
+
+    //         $data = DB::table('par_regulatory_functions as t1')
+    //             ->leftJoin('par_regulatoryfunctionaccess_groups as t2', function ($join) use ($user_group_id) {
+    //                 $join->on('t1.id', '=', 't2.regulatory_function_id')
+    //                     ->on('t2.user_group_id', '=', DB::raw($user_group_id));
+    //             })
+    //             ->select('t1.*')
+    //             ->orderBy('t1.order_no')
+    //             ->get();
+
+    //         $res = array('success' => true, 'data' => $data);
+    //     } catch (\Exception $exception) {
+    //         $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+    //     } catch (\Throwable $throwable) {
+    //         $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+    //     }
+    //     return response()->json($res, 200);
+    // }
+
+    public function getAppUserGroupUsers(Request $req)
+{
+    try {
+        $data = DB::table('tra_user_group')
+            ->select('*')
+            ->orderBy('order_no')
+            ->get();
+
+        $res = ['success' => true, 'data' => $data];
+       
+    } catch (\Exception $exception) {
+        $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+    } catch (\Throwable $throwable) {
+        $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+    }
+    
+    return response()->json($res, 200);
+}
 
 
     public function getAppHscodes(Request $req)

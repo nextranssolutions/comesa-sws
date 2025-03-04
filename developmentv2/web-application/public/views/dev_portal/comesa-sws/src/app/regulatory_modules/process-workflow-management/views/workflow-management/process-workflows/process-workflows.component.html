@@ -8,7 +8,7 @@
 </div><!-- /.page-header -->
 
 
-<dx-button text="{{ 'add_new' | translate }} {{ parameter_name | translate }}" type="default" icon="fa fa-save"
+<dx-button text="{{ 'add' | translate }} {{ parameter_name | translate }}" type="default" icon="fa fa-save"
     [elementAttr]="{ id: 'elementId', class: '' }" (onClick)="hasReadpermissions=false;onAddWorkFlowItem()">
 </dx-button>
 
@@ -136,7 +136,7 @@
 
         </dxi-item>
         <dxi-item title="{{'workflow_stages' |translate}}" icon="map">
-            <dx-button text="{{ 'add_new' | translate }} {{ 'workflow_stage' | translate }}" type="default"
+            <dx-button text="{{ 'add' | translate }} {{ 'workflow_stage' | translate }}" type="default"
                 icon="fa fa-save" [elementAttr]="{ id: 'elementId', class: '' }"
                 (onClick)="hasReadpermissions=false;onAddWorkFlowStage()">
             </dx-button>
@@ -188,8 +188,9 @@
             </dx-data-grid>
 
             <div class="col-lg-12 row">
+            <!-- <div class="div_contentfooter"> -->
                 <div class="col-lg-3">
-                    <dx-button text="{{ 'previous_workflows' | translate }}" type="default" icon="fa fa-arrow-right"
+                    <dx-button text="{{ 'previous_workflows' | translate }}" type="default" icon="fa fa-arrow-left"
                         (onClick)="onNextNavigationItems('Workflows')">
                     </dx-button>
                 </div>
@@ -204,7 +205,7 @@
 
         </dxi-item>
         <dxi-item title="{{'workflow_transitions' | translate}}" icon="map">
-            <dx-button text="{{ 'add_new' | translate }} {{ 'workflow_transition' | translate }}" type="default"
+            <dx-button text="{{ 'add' | translate }} {{ 'workflow_transition' | translate }}" type="default"
                 icon="fa fa-save" [elementAttr]="{ id: 'elementId', class: '' }"
                 (onClick)="hasReadpermissions=false;onAddWorkFlowTransition()">
             </dx-button>
@@ -264,7 +265,7 @@
 
             <div class="col-lg-12 row">
                 <div class="col-lg-3">
-                    <dx-button text="{{ 'prev_workflow_stage'| translate }}" type="default" icon="fa fa-arrow-right"
+                    <dx-button text="{{ 'prev_workflow_stage'| translate }}" type="default" icon="fa fa-arrow-left"
                         (onClick)="onNextNavigationItems('WorkflowStages')">
                     </dx-button>
                 </div>
@@ -336,10 +337,10 @@
 
 <dx-popup [visible]="workflowStagesVisible" [width]="funcpopWidth(65)" [height]="funcpopHeight(50)" [showTitle]="true"
     title="{{'workflow_stages' | translate}}" (onHidden)="workflowStagesVisible = false">
+  
     <form (ngSubmit)="onUpdateWorkflowsSubmit()" [formGroup]="workflowStageItemsFrm" formControlName="description">
 
         <div class="row">
-
 
             <div class="col-lg-6">
                 <label>{{ 'name' | translate }}</label>
@@ -416,6 +417,12 @@
                 </dx-text-box>
             </div>
             <div class="col-lg-6">
+                <label for="unitName">{{ 'current_stage' | translate }}</label>
+                <dx-select-box [dataSource]="workflowAllStageData" formControlName="prevworkflow_stage_id"
+                    [showClearButton]="true" valueExpr="id" [searchEnabled]="true" displayExpr="name">
+                </dx-select-box>
+            </div>
+            <div class="col-lg-6">
                 <label for="unitName">{{ 'workflow_action' | translate }}</label>
                 <dx-select-box [dataSource]="workflowSubmissionActionsData" formControlName="workflow_action_id"
                     [showClearButton]="true" valueExpr="id" [searchEnabled]="true" displayExpr="name">
@@ -427,12 +434,7 @@
                     [showClearButton]="true" valueExpr="id" [searchEnabled]="true" displayExpr="name">
                 </dx-select-box>
             </div>
-            <div class="col-lg-6">
-                <label for="unitName">{{ 'current_stage' | translate }}</label>
-                <dx-select-box [dataSource]="workflowAllStageData" formControlName="prevworkflow_stage_id"
-                    [showClearButton]="true" valueExpr="id" [searchEnabled]="true" displayExpr="name">
-                </dx-select-box>
-            </div>
+           
             <div class="col-lg-6">
                 <label for="unitName">{{ 'next_stage' | translate }}</label>
                 <dx-select-box [dataSource]="workflowAllStageData" formControlName="nextworkflow_stage_id"
@@ -490,7 +492,7 @@
             <form (ngSubmit)="onUpdateWorkflowsSubmit()" [formGroup]="workflowStagesFrm" formControlName="description">
 
                 <div class="row">
-                    <div class="col-lg-12">
+                    <div class="col-lg-4">
                         <label>{{ 'name' | translate }}</label>
                         <dx-text-box formControlName="name" [showClearButton]="true"> </dx-text-box>
                     </div>
@@ -578,7 +580,7 @@
 
         </dxi-item>
         <dxi-item title="{{'workflow_stages_actions' | translate}}" icon="map">
-            <dx-button text="{{ 'add_new' | translate }} {{ 'workflow_stage_actions' | translate }}" type="default"
+            <dx-button text="{{ 'add' | translate }} {{ 'workflow_stage_actions' | translate }}" type="default"
                 icon="fa fa-save" [elementAttr]="{ id: 'elementId', class: '' }"
                 (onClick)="hasReadpermissions=false;onAddWorkFlowStageActions()">
             </dx-button>
@@ -622,162 +624,18 @@
                     <dxo-lookup [dataSource]="workflowApplicationStatusData" displayExpr="name" valueExpr="id">
                     </dxo-lookup>
                 </dxi-column>
-                <dxi-column dataField="is_inspection_submission" caption="{{ 'is_inspection_submission' | translate }}">
-                    <dxo-lookup [dataSource]="is_inspection_submission" displayExpr="name" valueExpr="id">
-                    </dxo-lookup>
-                </dxi-column>
+     
                 <dxi-column dataField="is_checklist_tied" caption="{{ 'is_checklist_tied' | translate }}">
                     <dxo-lookup [dataSource]="is_checklist_tied" displayExpr="name" valueExpr="id">
                     </dxo-lookup>
                 </dxi-column>
-                <dxi-column dataField="is_declarationstatus_tied"
-                    caption="{{ 'is_declarationstatus_tied' | translate }}">
-                    <dxo-lookup [dataSource]="is_declarationstatus_tied" displayExpr="name" valueExpr="id">
-                    </dxo-lookup>
-                </dxi-column>
+      
                 <dxi-column dataField="is_paymentrequest_submission"
                     caption="{{ 'is_paymentrequest_submission' | translate }}">
                     <dxo-lookup [dataSource]="is_paymentrequest_submission" displayExpr="name" valueExpr="id">
                     </dxo-lookup>
                 </dxi-column>
-                <dxi-column dataField="is_staticappprocess_defination"
-                    caption="{{ 'is_staticappprocess_defination' | translate }}">
-                    <dxo-lookup [dataSource]="is_staticappprocess_defination" displayExpr="name" valueExpr="id">
-                    </dxo-lookup>
-                </dxi-column>
-                <dxi-column dataField="permitsubmission_status_id"
-                    caption="{{ 'permitsubmission_status' | translate }}">
-                    <dxo-lookup [dataSource]="permitsubmission_status" displayExpr="name" valueExpr="id">
-                    </dxo-lookup>
-                </dxi-column>
-                <dxi-column dataField="is_external_usersubmission"
-                    caption="{{ 'is_external_usersubmission' | translate }}">
-                    <dxo-lookup [dataSource]="is_external_usersubmission" displayExpr="name" valueExpr="id">
-                    </dxo-lookup>
-                </dxi-column>
-                <dxi-column dataField="checklist_category_id" caption="{{ 'checklist_category' | translate }}">
-                    <dxo-lookup [dataSource]="checklist_category" displayExpr="name" valueExpr="id">
-                    </dxo-lookup>
-                </dxi-column>
-                <dxi-column dataField="is_to_portal" caption="{{ 'is_to_portal' | translate }}">
-                    <dxo-lookup [dataSource]="is_to_portal" displayExpr="name" valueExpr="id">
-                    </dxo-lookup>
-                </dxi-column>
-                <dxi-column dataField="needs_directive" caption="{{ 'needs_directive' | translate }}">
-                    <dxo-lookup [dataSource]="needs_directive" displayExpr="name" valueExpr="id">
-                    </dxo-lookup>
-                </dxi-column>
-
-                <dxi-column dataField="directive_category" caption="{{ 'directive_category' | translate }}">
-                    <dxo-lookup [dataSource]="" displayExpr="name" valueExpr="id">
-                    </dxo-lookup>
-                </dxi-column>
-                <dxi-column dataField="action_type_id" caption="{{ 'action_type' | translate }}">
-                    <dxo-lookup [dataSource]="" displayExpr="name" valueExpr="id">
-                    </dxo-lookup>
-                </dxi-column>
-                <dxi-column dataField="email_message_id" caption="{{ 'email_message' | translate }}">
-                    <dxo-lookup [dataSource]="" displayExpr="name" valueExpr="id">
-                    </dxo-lookup>
-                </dxi-column>
-                <dxi-column dataField="has_technicalmeeting_notification"
-                    caption="{{ 'has_technicalmeeting_notification' | translate }}">
-                    <dxo-lookup [dataSource]="" displayExpr="name" valueExpr="id">
-                    </dxo-lookup>
-                </dxi-column>
-                <dxi-column dataField="has_process_defination" caption="{{ 'has_process_defination' | translate }}">
-                    <dxo-lookup [dataSource]="" displayExpr="name" valueExpr="id">
-                    </dxo-lookup>
-                </dxi-column>
-                <dxi-column dataField="appprocess_defination_id" caption="{{ 'appprocess_defination' | translate }}">
-                    <dxo-lookup [dataSource]="" displayExpr="name" valueExpr="id">
-                    </dxo-lookup>
-                </dxi-column>
-                <dxi-column dataField="has_appdate_defination" caption="{{ 'has_appdate_defination' | translate }}">
-                    <dxo-lookup [dataSource]="" displayExpr="name" valueExpr="id">
-                    </dxo-lookup>
-                </dxi-column>
-                <dxi-column dataField="appdate_defination_id" caption="{{ 'appdate_defination' | translate }}">
-                    <dxo-lookup [dataSource]="" displayExpr="name" valueExpr="id">
-                    </dxo-lookup>
-                </dxi-column>
-                <dxi-column dataField="has_email_notification" caption="{{ 'has_email_notification' | translate }}">
-                    <dxo-lookup [dataSource]="" displayExpr="name" valueExpr="id">
-                    </dxo-lookup>
-                </dxi-column>
-                <dxi-column dataField="recommendation_table" caption="{{ 'recommendation_table' | translate }}">
-                    <dxo-lookup [dataSource]="" displayExpr="name" valueExpr="id">
-                    </dxo-lookup>
-                </dxi-column>
-                <dxi-column dataField="is_approval_submission" caption="{{ 'is_approval_submission' | translate }}">
-                    <dxo-lookup [dataSource]="" displayExpr="name" valueExpr="id">
-                    </dxo-lookup>
-                </dxi-column>
-                <dxi-column dataField="generate_refno" caption="{{ 'generate_refno' | translate }}">
-                    <dxo-lookup [dataSource]="" displayExpr="name" valueExpr="id">
-                    </dxo-lookup>
-                </dxi-column>
-                <dxi-column dataField="keep_status" caption="{{ 'keep_status' | translate }}">
-                    <dxo-lookup [dataSource]="" displayExpr="name" valueExpr="id">
-                    </dxo-lookup>
-                </dxi-column>
-                <dxi-column dataField="update_portal_status" caption="{{ 'update_portal_status' | translate }}">
-                    <dxo-lookup [dataSource]="" displayExpr="name" valueExpr="id">
-                    </dxo-lookup>
-                </dxi-column>
-                <dxi-column dataField="update_checklistref" caption="{{ 'update_checklistref' | translate }}">
-                    <dxo-lookup [dataSource]="" displayExpr="name" valueExpr="id">
-                    </dxo-lookup>
-                </dxi-column>
-                <dxi-column dataField="portal_status_id" caption="{{ 'portal_status' | translate }}">
-                    <dxo-lookup [dataSource]="" displayExpr="name" valueExpr="id">
-                    </dxo-lookup>
-                </dxi-column>
-                <dxi-column dataField="pms_analysis_type_id" caption="{{ 'pms_analysis_type' | translate }}">
-                    <dxo-lookup [dataSource]="" displayExpr="name" valueExpr="id">
-                    </dxo-lookup>
-                </dxi-column>
-                <dxi-column dataField="pms_recommendation_id" caption="{{ 'pms_recommendation' | translate }}">
-                    <dxo-lookup [dataSource]="" displayExpr="name" valueExpr="id">
-                    </dxo-lookup>
-                </dxi-column>
-                <dxi-column dataField="gmp_inspection_type_id" caption="{{ 'gmp_inspection_type' | translate }}">
-                    <dxo-lookup [dataSource]="" displayExpr="name" valueExpr="id">
-                    </dxo-lookup>
-                </dxi-column>
-                <dxi-column dataField="preminspection_recomm_id"
-                    caption="{{ 'preminspection_recommendation' | translate }}">
-                    <dxo-lookup [dataSource]="" displayExpr="name" valueExpr="id">
-                    </dxo-lookup>
-                </dxi-column>
-                <dxi-column dataField="query_raised_submission" caption="{{ 'query_raised_submission' | translate }}">
-                    <dxo-lookup [dataSource]="" displayExpr="name" valueExpr="id">
-                    </dxo-lookup>
-                </dxi-column>
-                <dxi-column dataField="invalidate_checklistcategory_id"
-                    caption="{{ 'invalidate_checklistcategory' | translate }}">
-                    <dxo-lookup [dataSource]="" displayExpr="name" valueExpr="id">
-                    </dxo-lookup>
-                </dxi-column>
-                <dxi-column dataField="invalidate_checklistitems"
-                    caption="{{ 'invalidate_checklistitems' | translate }}">
-                    <dxo-lookup [dataSource]="" displayExpr="name" valueExpr="id">
-                    </dxo-lookup>
-                </dxi-column>
-                <dxi-column dataField="technicalmeetinemail_msg_id"
-                    caption="{{ 'technicalmeetinemail_msg' | translate }}">
-                    <dxo-lookup [dataSource]="" displayExpr="name" valueExpr="id">
-                    </dxo-lookup>
-                </dxi-column>
-                <dxi-column dataField="has_preminsp_notification"
-                    caption="{{ 'has_preminsp_notification' | translate }}">
-                    <dxo-lookup [dataSource]="" displayExpr="name" valueExpr="id">
-                    </dxo-lookup>
-                </dxi-column>
-                <dxi-column dataField="preminspmail_msg_id" caption="{{ 'preminspmail_msg' | translate }}">
-                    <dxo-lookup [dataSource]="" displayExpr="name" valueExpr="id">
-                    </dxo-lookup>
-                </dxi-column>
+               
 
 
                 <dxi-column dataField="description" caption="{{ 'description' | translate }}">
@@ -792,13 +650,13 @@
 </dx-popup>
 
 <dx-popup [visible]="workflowStageActionDetailsVisible" [width]="funcpopWidth(80)" [height]="funcpopHeight(65)"
-    [showTitle]="true" title="{{ 'workflow_stage_Actions' | translate }}"
+    [showTitle]="true" title="{{ 'workflow_stage_actions' | translate }}"
     (onHidden)="workflowStageActionDetailsVisible = false">
     <form (ngSubmit)="onUpdateWorkflowsSubmit()" [formGroup]="workflowStageActionsItemsFrm"
         formControlName="description">
 
         <div class="row">
-            <div class="col-lg-12">
+            <div class="col-lg-4">
                 <label>{{ 'name' | translate }}</label>
                 <dx-text-box formControlName="name" [showClearButton]="true"> </dx-text-box>
             </div>
@@ -817,21 +675,15 @@
             <div class="col-lg-4">
                 <label for="unitName">{{ 'is_status_tied' | translate }}</label>
                 <dx-select-box [dataSource]="is_status_tied" formControlName="is_status_tied" [showClearButton]="true"
-                    valueExpr="value" [searchEnabled]="true" displayExpr="text"> </dx-select-box>
+                    valueExpr="value" [searchEnabled]="true" displayExpr="text" (onSelectionChanged)="onIsStatusTied($event)" > </dx-select-box>
             </div>
 
-            <div class="col-lg-4">
+            <div class="col-lg-4" [hidden]="!this.workflowStageActionsItemsFrm.get('is_status_tied')?.value">
                 <label for="unitName">{{ 'application_status' | translate }}</label>
                 <dx-select-box [dataSource]="workflowApplicationStatusData" formControlName="application_status_id"
-                    [showClearButton]="true" valueExpr="id" [searchEnabled]="true" displayExpr="name"> </dx-select-box>
+                    [showClearButton]="true" valueExpr="id" [searchEnabled]="true" displayExpr="name" > </dx-select-box>
             </div>
 
-            <div class="col-lg-4">
-                <label for="unitName">{{ 'is_inspection_submission' | translate }}</label>
-                <dx-select-box [dataSource]="is_inspection_submission" formControlName="is_inspection_submission"
-                    [showClearButton]="true" valueExpr="value" [searchEnabled]="true" displayExpr="text">
-                </dx-select-box>
-            </div>
 
             <div class="col-lg-4">
                 <label for="unitName">{{ 'is_checklist_tied' | translate }}</label>
@@ -839,13 +691,7 @@
                     [showClearButton]="true" valueExpr="value" [searchEnabled]="true" displayExpr="text">
                 </dx-select-box>
             </div>
-            <div class="col-lg-4">
-                <label for="unitName">{{ 'is_declarationstatus_tied' | translate }}</label>
-                <dx-select-box [dataSource]="is_declarationstatus_tied" formControlName="is_declarationstatus_tied"
-                    [showClearButton]="true" valueExpr="value" [searchEnabled]="true" displayExpr="text">
-                </dx-select-box>
-            </div>
-
+           
             <div class="col-lg-4">
                 <label for="unitName">{{ 'is_paymentrequest_submission' | translate }}</label>
                 <dx-select-box [dataSource]="is_paymentrequest_submission"
@@ -853,42 +699,7 @@
                     [searchEnabled]="true" displayExpr="text"> </dx-select-box>
             </div>
 
-            <div class="col-lg-4">
-                <label for="unitName">{{ 'is_staticappprocess_defination' | translate }}</label>
-                <dx-select-box [dataSource]="is_staticappprocess_defination"
-                    formControlName="is_staticappprocess_defination" [showClearButton]="true" valueExpr="value"
-                    [searchEnabled]="true" displayExpr="text"> </dx-select-box>
-            </div>
-            <div class="col-lg-4">
-                <label for="unitName">{{ 'permitsubmission_status' | translate }}</label>
-                <dx-select-box [dataSource]="permitsubmission_status" formControlName="permitsubmission_status_id"
-                    [showClearButton]="true" valueExpr="value" [searchEnabled]="true" displayExpr="text">
-                </dx-select-box>
-            </div>
-            <div class="col-lg-4">
-                <label for="unitName">{{ 'is_external_usersubmission' | translate }}</label>
-                <dx-select-box [dataSource]="is_external_usersubmission" formControlName="is_external_usersubmission"
-                    [showClearButton]="true" valueExpr="value" [searchEnabled]="true" displayExpr="text">
-                </dx-select-box>
-            </div>
-            <div class="col-lg-4">
-                <label for="unitName">{{ 'checklist_category' | translate }}</label>
-                <dx-select-box [dataSource]="checklist_category" formControlName="checklist_category_id"
-                    [showClearButton]="true" valueExpr="value" [searchEnabled]="true" displayExpr="text">
-                </dx-select-box>
-            </div>
-            <div class="col-lg-4">
-                <label for="unitName">{{ 'is_to_portal' | translate }}</label>
-                <dx-select-box [dataSource]="is_to_portal" formControlName="is_to_portal" [showClearButton]="true"
-                    valueExpr="value" [searchEnabled]="true" displayExpr="text"> </dx-select-box>
-            </div>
-            <div class="col-lg-4">
-                <label for="unitName">{{ 'needs_directive' | translate }}</label>
-                <dx-select-box [dataSource]="needs_directive" formControlName="needs_directive" [showClearButton]="true"
-                    valueExpr="value" [searchEnabled]="true" displayExpr="text"> </dx-select-box>
-            </div>
-
-
+           
             <div class="col-lg-12">
 
                 <label>{{ 'description' | translate }}</label>

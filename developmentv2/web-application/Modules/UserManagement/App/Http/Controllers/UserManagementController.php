@@ -964,13 +964,16 @@ class UserManagementController extends Controller
 
                         $template_id = 1;
                         $subject = 'Account Creation Notification';
-
+                        // $account_type_name = DB::table('sys_account_types')
+                        // ->where('id', $account_type_id)
+                        // ->value('name');
                         $vars = [
                             '{user_name}' => $full_names,
                             '{email_address}' => $req->email_address,
                             '{user_password}' => $generatedPassword
                         ];
-                        $res = sendMailNotification($full_names, $req->email_address, $subject, '', '', '', '', '', $template_id, $vars);
+                        // $res = sendMailNotification($full_names, $req->email_address, $subject, '', '', '', '', '', $template_id, $vars);
+                        $res = sendMailNotification($req->email_address, $subject, '', '', '', '', '', $template_id, $vars);
                         if ($res['success']) {
                             $res = [
                                 'success' => true,

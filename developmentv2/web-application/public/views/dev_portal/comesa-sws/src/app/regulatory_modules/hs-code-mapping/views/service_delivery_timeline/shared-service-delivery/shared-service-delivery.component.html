@@ -26,21 +26,39 @@
   </dxi-column>
 
   <dxi-column dataField="name" caption="{{ 'name' | translate }}"></dxi-column>
-  <dxi-column dataField="description" caption="{{ 'description' | translate }}"></dxi-column>
-  <dxi-column *ngIf="table_name == 'par_service_deliverytimelines'" dataField="service_description" caption="{{ 'service_description' | translate }}"></dxi-column>
-  <dxi-column *ngIf="table_name == 'par_service_deliverytimelines'" dataField="service_delivery_timeline" caption="{{ 'service_delivery_timeline' | translate }}"></dxi-column>
 
-  <dxi-column *ngIf="table_name == 'par_service_deliverytimelines'" dataField="organisation_id"
-      caption="{{ 'organisation' | translate }}">
-      <dxo-lookup [dataSource]="organisationData" displayExpr="name" valueExpr="id">
-      </dxo-lookup>
-  </dxi-column>
   <dxi-column *ngIf="table_name == 'par_service_deliverytimelines'" dataField="service_type_id"
   caption="{{ 'service_type' | translate }}">
   <dxo-lookup [dataSource]="serviceTypeData" displayExpr="name" valueExpr="id">
   </dxo-lookup>
+  </dxi-column>
+
+  <dxi-column *ngIf="table_name == 'par_service_deliverytimelines'" dataField="timeline_type_id"
+  caption="{{ 'timeline_type' | translate }}">
+  <dxo-lookup [dataSource]="timelineTypeData" displayExpr="name" valueExpr="id">
+  </dxo-lookup>
 </dxi-column>
-  
+
+
+<dxi-column *ngIf="table_name == 'par_service_deliverytimelines'" dataField="estimated_days_id"
+caption="{{ 'estimated_time_days' | translate }}">
+<dxo-lookup [dataSource]="estimatedDaysData" displayExpr="name" valueExpr="id">
+</dxo-lookup>
+</dxi-column>
+
+  <dxi-column *ngIf="table_name == 'par_service_deliverytimelines'" dataField="special_conditions_id"
+      caption="{{ 'special_conditions' | translate }}">
+      <dxo-lookup [dataSource]="specialConditionsData" displayExpr="name" valueExpr="id">
+      </dxo-lookup>
+  </dxi-column>
+
+  <dxi-column *ngIf="table_name == 'par_service_deliverytimelines'" dataField="organisation_id"
+  caption="{{ 'organisation' | translate }}">
+  <dxo-lookup [dataSource]="organisationData" displayExpr="name" valueExpr="id">
+  </dxo-lookup>
+</dxi-column>
+
+  <dxi-column dataField="description" caption="{{ 'description' | translate }}"></dxi-column>
   <dxi-column dataField="code" caption="{{ 'code' | translate }}"></dxi-column>
   <dxi-column dataField="is_enabled" caption="{{ 'is_enabled' | translate }}" [dataType]="'boolean'" [width]="100">
       <dxo-editing [allowUpdating]="true" [allowDeleting]="true" [allowAdding]="true"></dxo-editing>
@@ -61,35 +79,42 @@
     <dx-scroll-view>
 
       <form role="form" enctype="multipart/form-data" [formGroup]="createNewDataFrm" (ngSubmit)="onFuncSaveNewConfigData()">
+        <div class="row">
+
         <div class="col-lg-6">
           <label>{{ 'name' | translate }}</label>
           <dx-text-box formControlName="name" [showClearButton]="true"></dx-text-box>
         </div>
-      
-        <div class="col-lg-6">
-          <label>{{ 'description' | translate }}</label>
-          <dx-text-box formControlName="description" [showClearButton]="true"></dx-text-box>
-        </div>
 
         <div *ngIf="table_name == 'par_service_deliverytimelines'" class="col-lg-6">
-            <label>{{ 'service_description' | translate }}</label>
-            <dx-text-box formControlName="service_description" [showClearButton]="true"></dx-text-box>
+            <label>{{ 'service_type' | translate }}</label>
+            <dx-select-box [dataSource]="serviceTypeData" formControlName="service_type_id" valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
           </div>
 
           <div *ngIf="table_name == 'par_service_deliverytimelines'" class="col-lg-6">
-            <label>{{ 'service_delivery_timeline' | translate }}</label>
-            <dx-text-box formControlName="service_delivery_timeline" [showClearButton]="true"></dx-text-box>
+            <label>{{ 'timeline_type' | translate }}</label>
+            <dx-select-box [dataSource]="timelineTypeData" formControlName="timeline_type_id" valueExpr="id" [searchEnabled]="true"
+             displayExpr="name" (onSelectionChanged)="onTimelineTypeSelection($event)"></dx-select-box>
           </div>
-      
-        <div class="row">
+
           <div *ngIf="table_name == 'par_service_deliverytimelines'" class="col-lg-6">
-            <label>{{ 'organisation' | translate }}</label>
-            <dx-select-box [dataSource]="organisationData" formControlName="organisation_id" valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
+            <label>{{ 'estimated_days' | translate }}</label>
+            <dx-select-box [dataSource]="estimatedDaysData" formControlName="estimated_days_id" valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
           </div>
-      
+
           <div *ngIf="table_name == 'par_service_deliverytimelines'" class="col-lg-6">
-            <label>{{ 'service_type' | translate }}</label>
-            <dx-select-box [dataSource]="serviceTypeData" formControlName="service_type_id" valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
+            <label>{{ 'special_conditions' | translate }}</label>
+            <dx-select-box [dataSource]="specialConditionsData" formControlName="special_conditions_id" valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
+          </div>
+         
+          <div *ngIf="table_name == 'par_service_deliverytimelines'" class="col-lg-6">
+              <label>{{ 'organisation' | translate }}</label>
+              <dx-select-box [dataSource]="organisationData" formControlName="organisation_id" valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
+          </div>
+
+          <div class="col-lg-12">
+            <label>{{ 'description' | translate }}</label>
+            <dx-text-box formControlName="description" [showClearButton]="true"></dx-text-box>
           </div>
 
           <div class="col-lg-6">
@@ -106,7 +131,7 @@
         <div class="row">
           <div class="col-lg-4 pull-right">
             <dx-button text="{{ 'save' | translate }} {{ parameter_name | translate }}" type="default" icon="fa fa-save"
-              [elementAttr]="{ id: 'elementId', class: 'pull-right' }" (onClick)="onFuncSaveNewConfigData()">
+              [elementAttr]="{ id: 'elementId', class: 'pull-left' }" (onClick)="onFuncSaveNewConfigData()">
             </dx-button>
           </div>
         </div>
