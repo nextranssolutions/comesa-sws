@@ -43,6 +43,7 @@ export class SharedImpexpApplicationClass {
   mistrader_id: number;
   process_id: number;
   transactionpermit_type_id: number;
+  appworkflow_status_id: number;
   
   permit_id: any;
   dataGrid: DxDataGridComponent;
@@ -159,6 +160,8 @@ export class SharedImpexpApplicationClass {
   classificationData: any;
   quantity: number = 100;
   unit_price: number;
+  isShowAppProcessSubmission:boolean;
+
   isnewproductAddWinVisible: boolean = false;
   enabled_newproductadd: boolean = false;
   showProductAddOption: boolean = false;
@@ -407,6 +410,10 @@ export class SharedImpexpApplicationClass {
       this.consignee_options_check = false;
     }
   }
+
+  funcpopHeight(percentage_height) {
+    return window.innerHeight * percentage_height / 100;
+  }
   funcValidatePermitDetails(validation_title, nextStep) {
 
 
@@ -515,6 +522,9 @@ export class SharedImpexpApplicationClass {
 
   }
 
+  onFuncSubmitApplication() {
+    this.isShowAppProcessSubmission= true;
+  }
   onApplicationDocumentToolbar(e) {
     this.functDataGridToolbar(e, this.funAddApplicationUploadDetails, 'Upload Document');
 
