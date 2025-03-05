@@ -355,7 +355,7 @@ export class SharedImpexpApplicationClass {
       product_subcategory_id: new FormControl('', Validators.compose([])),
       productclassification_id: new FormControl('', Validators.compose([])),
       productdosage_id: new FormControl('', Validators.compose([])),
-      // consignment_quantity: new FormControl('', Validators.compose([Validators.required])),
+      product_description: new FormControl('', Validators.compose([Validators.required])),
       approvedvisa_product_id: new FormControl('', Validators.compose([])),
       approvedlicense_product_id: new FormControl('', Validators.compose([])),
       licensebalance_quantity: new FormControl('', Validators.compose([])),
