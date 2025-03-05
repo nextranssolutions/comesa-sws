@@ -7,8 +7,7 @@
             <ul class="nav nav-list">
                 <li class="link-bggreen">
                     <a (click)="onInitiatenewImportExpApplications()" href="javascript:void(0)"><span class=""> <i
-                                class="menu-icon fa fa-plus"></i> &nbsp; {{'initiate_importexport_application' |
-                            translate}}</span>
+                                class="menu-icon fa fa-plus"></i> &nbsp; {{'initiate_importexport_application' |translate}}</span>
                     </a> <b class="arrow"></b>
                 </li>
                 <li class="link-bgorange">
@@ -68,18 +67,18 @@
                 </dx-button>
             </div>
         </dxi-column>
-        <dxi-column caption="More Actions" [width]=150 name="command-editing" [allowFiltering]="false"
-            [allowSorting]="false" cellTemplate="cellTemplate">
-            <div *dxTemplate="let d of 'cellTemplate'">
-                <dx-menu [items]="d.data.contextMenu" displayExpr="text"
-                    (onItemClick)="applicationActionColClick($event,d)">
-                </dx-menu>
-            </div>
-        </dxi-column>
+        <!-- <dxi-column caption="{{'more_actions' | translate}}" [width]=150 name="command-editing" [allowFiltering]="false"
+        [allowSorting]="false" cellTemplate="cellTemplate">
+        <div *dxTemplate="let d of 'cellTemplate'">
+            <dx-menu [items]="d.data.contextMenu" displayExpr="text"
+                (onItemClick)="applicationActionColClick($event,d)">
+            </dx-menu>
+        </div>
+    </dxi-column> -->
 
         <dxi-column dataField="reference_no" caption="{{'application_reference' | translate}}"></dxi-column>
-        <dxi-column [width]=90 [groupIndex]="0" dataField="section"
-            caption="{{'product_type' | translate}}"></dxi-column>
+        <dxi-column [width]=90 [groupIndex]="0" dataField="permit_name"
+            caption="{{'permit_type' | translate}}"></dxi-column>
         <dxi-column dataField="application_type" caption="{{'application_type' | translate}}"></dxi-column>
         <dxi-column [width]=150 dataField="permit_category" caption="{{'permit_category' | translate}}"></dxi-column>
         <dxi-column [width]=100 dataField="proforma_invoice_no" caption="{{'invoice_no' | translate}}"></dxi-column>
@@ -90,7 +89,7 @@
 
         <dxi-column [width]=100 [allowFiltering]="false" dataField="date_added"
             caption="{{'date_added' | translate}}"></dxi-column>
-        <dxi-column [groupIndex]="1" dataField="status_name" caption="{{'status_name' | translate}}"></dxi-column>
+        <!-- <dxi-column [groupIndex]="1" dataField="status_name" caption="{{'status_name' | translate}}"></dxi-column> -->
         <dxi-column dataField="status_name" caption="{{'application_status' | translate}}"></dxi-column>
         <dxo-grouping #expand [autoExpandAll]="true"></dxo-grouping>
     </dx-data-grid>
@@ -251,8 +250,6 @@
             <dxi-column [width]=90 dataField="added_on" caption="{{'added_on' | translate}}"></dxi-column>
             <dxi-column [width]=200 cssClass='WrappedColumnClass' dataField="rejection_remarks"
                 caption="{{'rejection_remarks' | translate}}"></dxi-column>
-
-
         </dx-data-grid>
     </div>
 </dx-popup>
@@ -264,23 +261,22 @@
     </div>
 </dx-popup>
 
-<dx-popup class="popup" [width]="funcpopWidth(45)" [height]=550 [showTitle]="true" title="Import License Application"
+<dx-popup class="popup" [width]="funcpopWidth(45)" [height]="funcpopHeight(45)" [showTitle]="true" title="Import License Application"
     [dragEnabled]="false" [hideOnOutsideClick]="false" [(visible)]="isPermitInitialisation">
     <div *dxTemplate="let data of 'content'">
         <dx-scroll-view>
             <form enctype="multipart/form-data" style="margin:0.5px" class="row div-whiteback " role="form"
                 [formGroup]="applicationSelectionfrm" (ngSubmit)="onApplicationSelection()">
                 <div class="col-lg-12" style="margin-bottom: 30px;">
-                    <h6>Import License authorizes imported regulated products to enter the Country after complying with
-                        all importation requirements:</h6>
-                    <h6>Import License Application : Import Permit application for Registered Products</h6>
+                    <h6>{{'permit_type_selection_description' | translate}}</h6>
+    
                 </div>
                 <div class="col-lg-12">
 
                     <label>{{'permit_type' | translate}}</label>
-                    <dx-select-box [dataSource]="permitTypesCategoryData" valueExpr="id" displayExpr="name"
-                        placeholder="{{'select_permit_type_category' | translate}}" [searchEnabled]="true"
-                        formControlName="permit_typecategory_id">
+                    <dx-select-box [dataSource]="permitTypesData" valueExpr="id" displayExpr="name"
+                        placeholder="{{'select_permit_type' | translate}}" [searchEnabled]="true"
+                        formControlName="transactionpermit_type_id">
                     </dx-select-box>
                 </div>
                 <div class="col-lg-12  pull-right row" style="text-align: center;">

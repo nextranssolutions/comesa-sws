@@ -603,6 +603,7 @@ class ConfigurationsController extends Controller
             $regulatory_subfunction_id = $req->regulatory_subfunction_id;
             $regulatory_function_id = $req->regulatory_function_id;
             $appsubmissions_type_id = $req->appsubmissions_type_id;
+            $tracsactionpermit_type_id = $req->tracsactionpermit_type_id;
 
             // Qualify ambiguous columns with table aliases
             $filter = array('t1.regulatory_subfunction_id' => $regulatory_subfunction_id);
@@ -629,7 +630,7 @@ class ConfigurationsController extends Controller
             // Process application data
             if ($data) {
                 $app_data['process_infor'] = $data;
-
+                $app_data['tracsactionpermit_type_id'] = $tracsactionpermit_type_id;
                 $form_fields = getApplicationGeneralFormsFields($req);
 
                 $app_data['application_form'] = $form_fields;

@@ -15,7 +15,7 @@ import { UtilityService } from 'src/app/core-services/utilities/utility.service'
 import { ConfigurationsService } from 'src/app/core-services/configurations/configurations.service';
 import { ImportExportService } from '../../../services/import-export.service';
 import { AuthenticationService } from 'src/app/core-services/authentication/authentication.service';
- 
+
 import { PremisesLicensingService } from 'src/app/regulatory_modules/premises-licensing/services/premises-licensing.service';
 
 @Component({
@@ -25,6 +25,7 @@ import { PremisesLicensingService } from 'src/app/regulatory_modules/premises-li
 })
 export class PermitgeneraldetailsComponent implements OnInit {
   @Input() applicationGeneraldetailsfrm: FormGroup;
+  @Input() applicantDetailsForm: FormGroup;
   configData: any;
   regulatedProdTypeData: any;
   regulatedSubfunctionData: any;
@@ -101,14 +102,14 @@ export class PermitgeneraldetailsComponent implements OnInit {
   mistrader_id: number;
   premise_title: string = 'Premises(Licensed Outlet(s))';
   ammendReadOnly: boolean;
-registration_process_action: string;
-select_registration_section_process: string;
-  constructor(public utilityService: UtilityService, public premappService: PremisesLicensingService, public fb: FormBuilder,   public spinner: SpinnerVisibilityService, public configService: ConfigurationsService, public appService: ImportExportService, public router: Router, public formBuilder: FormBuilder, public config: ConfigurationsService,  public toastr: ToastrService, public authService: AuthenticationService, public httpClient: HttpClient) {
+  registration_process_action: string;
+  select_registration_section_process: string;
+  constructor(public utilityService: UtilityService, public premappService: PremisesLicensingService, public fb: FormBuilder, public spinner: SpinnerVisibilityService, public configService: ConfigurationsService, public appService: ImportExportService, public router: Router, public formBuilder: FormBuilder, public config: ConfigurationsService, public toastr: ToastrService, public authService: AuthenticationService, public httpClient: HttpClient) {
   }
   ngOnInit() {
 
     this.maxDate = new Date();
-   
+
     let user_details = this.authService.getUserDetails();
 
     this.trader_id = user_details.trader_id;
@@ -171,7 +172,7 @@ select_registration_section_process: string;
   }
   onLoadapplicationCategoryData(producttype_defination_id) {
     var data = {
-      table_name: ' par_importexport_permittypes',
+      table_name: 'par_importexport_permittypes',
       producttype_defination_id: producttype_defination_id,
       regulatory_subfunction_id: this.regulatory_subfunction_id
     };
@@ -193,21 +194,21 @@ select_registration_section_process: string;
     var data = {
       table_name: 'par_product_categories',
       permit_category_id: permit_category_id
-      
-      
+
+
     };
 
     this.config.onLoadConfigurationData(data)
-        .subscribe(
-          data => {
-         
-            this.data_record = data;
-            
-            if (this.data_record.success) {
-              this.permitProductsCategoryData = this.data_record.data;
-              
-            }
-          });
+      .subscribe(
+        data => {
+
+          this.data_record = data;
+
+          if (this.data_record.success) {
+            this.permitProductsCategoryData = this.data_record.data;
+
+          }
+        });
   }
 
   onLoadeligibleImportersDocTypes() {
@@ -363,7 +364,7 @@ select_registration_section_process: string;
     var data = {
       table_name: 'par_application_types',
       is_enabled: true,
-      
+
     };
 
     this.config.onLoadConfigurationData(data)
@@ -384,7 +385,7 @@ select_registration_section_process: string;
     var data = {
       table_name: 'par_entryexit_port',
       is_enabled: true,
-      
+
     };
 
     this.config.onLoadConfigurationData(data)
@@ -405,7 +406,7 @@ select_registration_section_process: string;
     var data = {
       table_name: 'par_transport_mode',
       is_enabled: true,
-      
+
     };
 
     this.config.onLoadConfigurationData(data)
@@ -426,7 +427,7 @@ select_registration_section_process: string;
     var data = {
       table_name: 'par_port_type',
       is_enabled: true,
-      
+
     };
 
     this.config.onLoadConfigurationData(data)
@@ -470,7 +471,7 @@ select_registration_section_process: string;
     var data = {
       table_name: 'par_mode_oftransport',
       is_enabled: true,
-      
+
     };
 
     this.config.onLoadConfigurationData(data)
@@ -490,7 +491,7 @@ select_registration_section_process: string;
     var data = {
       table_name: 'par_countries',
       is_enabled: true,
-      
+
     };
 
     this.config.onLoadConfigurationData(data)
@@ -509,7 +510,7 @@ select_registration_section_process: string;
     var data = {
       table_name: 'par_invoice_types',
       is_enabled: true,
-      
+
     };
 
     this.config.onLoadConfigurationData(data)
@@ -555,19 +556,19 @@ select_registration_section_process: string;
     };
 
     this.config.onLoadConfigurationData(data)
-        .subscribe(
-          data => {
-            this.data_record = data;
-          
-            if (this.data_record.success) {
-              this.applicationCategoryData = this.data_record.data;
-              
-            }
-          },
-          error => {
-            // console.error("HTTP Error:", error); 
+      .subscribe(
+        data => {
+          this.data_record = data;
+
+          if (this.data_record.success) {
+            this.applicationCategoryData = this.data_record.data;
+
           }
-          );
+        },
+        error => {
+          // console.error("HTTP Error:", error); 
+        }
+      );
   }
   onLoadZoneData() {
     var data = {
@@ -634,7 +635,7 @@ select_registration_section_process: string;
           headers: headers,
           params: { skip: loadOptions.skip, take: loadOptions.take, searchValue: loadOptions.filter, table_name: 'tra_permitsenderreceiver_data' }
         };
-        return me.httpClient.get(AppSettings.base_url + '/'+ 'api/import-export/getSenderreceiversDetails', me.configData)
+        return me.httpClient.get(AppSettings.base_url + '/' + 'api/import-export/getSenderreceiversDetails', me.configData)
           .toPromise()
           .then((data: any) => {
             return {
@@ -648,7 +649,7 @@ select_registration_section_process: string;
 
   }
 
-  
+
   onsearchConsignee() {
 
     this.consignee_sendertitle = 'Consignee Details';
@@ -811,16 +812,16 @@ select_registration_section_process: string;
       region_id: region_id
     };
     this.config.onLoadConfigurationData(data)
-        .subscribe(
-          data => {
-            console.log(data.record);
-            this.data_record = data;
-  
-            if (this.data_record.success) {
-              this.districts = this.data_record.data;
-  
-            }
-          });
+      .subscribe(
+        data => {
+          console.log(data.record);
+          this.data_record = data;
+
+          if (this.data_record.success) {
+            this.districts = this.data_record.data;
+
+          }
+        });
   }
   onRegionsCboSelect($event) {
 
@@ -834,17 +835,17 @@ select_registration_section_process: string;
       country_id: country_id
     };
     this.config.onLoadConfigurationData(data)
-    
-        .subscribe(
-          data => {
-            console.log(data.record);
-            this.data_record = data;
-  
-            if (this.data_record.success) {
-              this.regions = this.data_record.data;
-  
-            }
-          });
+
+      .subscribe(
+        data => {
+          console.log(data.record);
+          this.data_record = data;
+
+          if (this.data_record.success) {
+            this.regions = this.data_record.data;
+
+          }
+        });
   }
 
   onCoutryCboSelect($event) {
@@ -858,9 +859,9 @@ select_registration_section_process: string;
 
   }
 
-  
 
- 
+
+
 
   onsavePermitReceiverSender() {
     this.spinner.show();

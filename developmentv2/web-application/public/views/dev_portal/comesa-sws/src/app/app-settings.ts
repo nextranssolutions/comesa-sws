@@ -14,7 +14,7 @@ if (app_connection == 'development') {
   base_url = 'http://localhost:82/COMESASWS/comesa-sws/developmentv2/web-application/public/index.php';
   assets_url = 'http://localhost:82/COMESASWS/comesa-sws/developmentv2/web-application/public/index.php';
   // siteKey = '6LcoH54UAAAAAOqpAGCXC4cmup6N2c5KseVHmv1c';
-  help_deskurl= 'http://localhost/nextrans-solutions/comesa/comesa-sws/developmentv2/help-desk/';
+  help_deskurl= 'http://localhost/nextranssolutions/comesa/comesa-sws/developmentv2/help-desk/';
 }
 else if (app_connection == 'fixed_acess') {
   base_url = ''

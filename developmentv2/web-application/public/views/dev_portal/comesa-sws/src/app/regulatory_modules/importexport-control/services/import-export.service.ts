@@ -90,26 +90,19 @@ export class ImportExportService {
     this.application_details = data;
   }
 
-  onPermitApplicationLoading(action_url, filter_params) {
-
+  onPermitApplicationLoading(filter_params, action_url) {
     var headers = new HttpHeaders({
       "Accept": "application/json",
-      "Authorization": 'Bearer ' + this.authService.getAccessToken(),
+      "Authorization": "Bearer " + this.authService.getAccessToken(),
     });
 
-    filter_params.trader_id = this.trader_id;
-    // filter_params.mistrader_id = this.mistrader_id;
-
     this.config = {
-      params: filter_params,
+      params: { filter_params },
       headers: headers
     };
-
-    return this.httpClient.get(AppSettings.base_url + action_url, this.config)
+    return this.httpClient.get(this.baseUrl + '/' + action_url, this.config)
       .pipe(map(data => {
-
         return <any>data;
-
       }));
   }
 
@@ -160,6 +153,33 @@ export class ImportExportService {
     return this.httpClient.get(this.baseUrl + '/' + path, this.config)
       .pipe(map(data => {
         return <any>data;
+      }));
+  }
+  onGetApplicantProfileInformation(data, action_url) {
+    data.table_name = btoa(data.table_name);
+    const loggedInUserId = localStorage.getItem('id');
+    data.user_information_id = loggedInUserId; 
+    this.config = {
+      params: data,
+      headers: { 'Accept': 'application/json' }
+    };
+    return this.httpClient.get(this.baseUrl + '/' + action_url, this.config)
+      .pipe(map(data => {
+        return <any>data;
+      }));
+  }
+  onSavingApplicantEvaluationChecklistDetails(table_name,data,post_data,action_url){
+    const loggedInUserId = localStorage.getItem('id');
+    const loggedInUserName = localStorage.getItem('first_name');
+    this.config = {
+      params: { 'user_id': loggedInUserId, 'user_name': loggedInUserName,table_name:table_name, 'permit_data': post_data},
+
+      headers: { 'Accept': 'application/json' }
+    };
+
+    return this.http.post(this.baseUrl + '/'+action_url, data,this.config)
+      .pipe(map(data => {
+        return data;
       }));
   }
   getPermitsOtherDetails(data, path) {

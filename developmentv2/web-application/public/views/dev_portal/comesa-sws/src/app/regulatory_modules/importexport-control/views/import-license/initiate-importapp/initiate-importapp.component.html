@@ -33,6 +33,12 @@
                         style="font-weight: bold;margin: 5px; font-style:italics;font-size: 15px;font-style: italics;color: green;">Application
                         {{'status' | translate}}:<i> {{status_name}}</i> </label>
                 </small>
+                <small>
+                    <i class="ace-icon fa fa-angle-double-right"></i>
+                    <label
+                        style="font-weight: bold;margin: 5px; font-style:italics;font-size: 15px;font-style: italics;color: green;">
+                        {{'permit_name' | translate}}:<i> {{permit_name}}</i> </label>
+                </small>
             </h1>
         </div>
 
@@ -86,9 +92,9 @@
                 <dx-button text="{{'applicant_details' | translate}}" type="success" icon="fa fa-angle-double-left"
                     [elementAttr]="{  class: 'pull-left'}" (onClick)="previousStep()">
                 </dx-button>
-                <dx-button text="{{'save_application &&_next_steps' | translate}}" type="default" icon="fa fa-save"
-                    [elementAttr]="{ id: 'elementId', class: 'pull-right' }"
-                    (onClick)="onSaveImportExportApplication()">
+              
+                <dx-button text="{{'save_application' | translate}}" iconPosition="left" type="default" icon="fa fa-save"
+                (onClick)="onSaveImportExportApplication()"icon="fa fa-angle-double-right" [elementAttr]="{ id: 'elementId', }">
                 </dx-button>
 
                 <dx-button text="{{'permit_product_details' | translate}}" iconPosition="right" type="success"
@@ -157,7 +163,7 @@
         <div class="container_div">
             <div class="scrollable-content">
                 <app-sharedevaluation-checklist
-                [applicantperformance_evaluation_id]="applicantperformance_evaluation_id"
+                [transactionpermit_type_id]="transactionpermit_type_id"
 
                 [application_code]="application_code"></app-sharedevaluation-checklist>
             </div>

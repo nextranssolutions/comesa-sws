@@ -24,10 +24,8 @@ export class SharedPermitTypeManagementConfigComponent {
   NewConfigData: any[] = [];
   transactionpermitTypeIdData: any[] = [];
   organisationIDData: any[] = [];
-  checklist_type_idData: any[] = [];
   performancescoring_scale_idData: any[] = [];
   processIdData: any[] = [];
-  workflowIdData: any[] = [];
   stage_status_IdData: any[] = [];
   interface_IdData: any[] = [];
   process_category_IdData: any[] = [];
@@ -82,12 +80,10 @@ export class SharedPermitTypeManagementConfigComponent {
       is_enabled: new FormControl('', Validators.compose([])),
       hscode: new FormControl('', Validators.compose([])),
       chapters_defination_id: new FormControl('', Validators.compose([])),
-      checklist_type_id: new FormControl('', Validators.compose([])),
       transactionpermit_type_id: new FormControl('', Validators.compose([])),
       organisationIDData: new FormControl('', Validators.compose([])),
       performancescoring_scale_id: new FormControl('', Validators.compose([])),
       process_id: new FormControl('', Validators.compose([])),
-      workflow_id: new FormControl('', Validators.compose([])),
       code: new FormControl('', Validators.compose([])),
     });
 
@@ -100,10 +96,8 @@ export class SharedPermitTypeManagementConfigComponent {
     this.fetchTransactionpermitTypeIdData();
     this.fetchNewConfigurations();
     this.fetchOrganisationIDData();
-    this.fetchChecklist_type_idData();
     this.fetchPerformancescoring_scale_idData();
     this.fetchProcessIdData();
-    this.fetchWorkflowIdData();
     this.fetchStage_status_IdData();
     this.fetchInterface_IdData();
     this.fetchProcess_category_IdData();
@@ -243,23 +237,7 @@ export class SharedPermitTypeManagementConfigComponent {
         });
   }
 
-  fetchChecklist_type_idData() {
-
-    var data_submit = {
-      'table_name': 'chk_checklist_types'
-    }
-    this.configService.onLoadConfigurationData(data_submit)
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            this.checklist_type_idData = this.data_record.data
-          }
-        },
-        error => {
-
-        });
-  }
+  
 
   fetchPerformancescoring_scale_idData() {
 
@@ -297,23 +275,7 @@ export class SharedPermitTypeManagementConfigComponent {
         });
   }
 
-  fetchWorkflowIdData() {
 
-    var data_submit = {
-      'table_name': 'wf_workflows'
-    }
-    this.configService.onLoadConfigurationData(data_submit)
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            this.workflowIdData = this.data_record.data
-          }
-        },
-        error => {
-
-        });
-  }
 
   fetchStage_status_IdData() {
 

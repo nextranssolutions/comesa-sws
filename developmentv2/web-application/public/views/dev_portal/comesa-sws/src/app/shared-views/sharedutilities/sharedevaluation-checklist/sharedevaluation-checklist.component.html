@@ -17,17 +17,18 @@
     <dxi-column [allowEditing]="false" [groupIndex]="0" dataField="main_factor"
         caption="{{ 'main_factor' | translate }}">
     </dxi-column>
-    <dxi-column [allowEditing]="false" dataField="performance_attribute"
-        caption="{{ 'performance_attribute' | translate }}"></dxi-column>
-    <dxi-column [allowEditing]="false" dataField="marks_allocated" caption="{{ 'marks_allocated' | translate }}">
-    </dxi-column>
-    <dxi-column width="100" [allowEditing]="issupervisors_marks" dataField="supervisors_marks"
-        caption="{{ 'supervisors_marks' | translate }}"></dxi-column>
-    <dxi-column width="100" *ngIf ="isthird_appraisor_marks || issecond_appraisor_marks"  [allowEditing]="issecond_appraisor_marks" dataField="second_appraisor_marks"
-        caption="{{ 'second_appraisor_marks' | translate }}"></dxi-column>
+    
+    <dxi-column [allowEditing]="false" dataField="checklist_type"
+        caption="{{ 'checklist_type' | translate }}"></dxi-column>
+    <!-- <dxi-column [allowEditing]="false" dataField="checklist_item_id" caption="{{ 'checklist_item' | translate }}">
+    </dxi-column> -->
+    <dxi-column width="100" [allowEditing]="issupervisors_marks" dataField="self_assessment"
+        caption="{{ 'self_assessment' | translate }}"></dxi-column>
+    <dxi-column width="100" *ngIf ="isthird_appraisor_marks || issecond_appraisor_marks"  [allowEditing]="issecond_appraisor_marks" dataField="assessment"
+        caption="{{ 'assessment' | translate }}"></dxi-column>
         
-    <dxi-column width="100"  *ngIf ="isthird_appraisor_marks && !issecond_appraisor_marks" [allowEditing]="isthird_appraisor_marks" [allowEditing]="isthird_appraisor_marks" dataField="third_appraisor_marks"
-        caption="{{ 'third_appraisor_marks' | translate }}"></dxi-column>
+    <dxi-column width="100"  *ngIf ="isthird_appraisor_marks && !issecond_appraisor_marks" [allowEditing]="isthird_appraisor_marks" [allowEditing]="isthird_appraisor_marks" dataField="assessment_review"
+        caption="{{ 'assessment_review' | translate }}"></dxi-column>
 
     <dxi-column width="100"  [allowEditing]="false" dataField="total_marks" caption="{{ 'total_marks' | translate }}"></dxi-column>
     <dxi-column width="100"  [allowEditing]="false" dataField="percentage_average_score"
@@ -39,7 +40,7 @@
     <dxo-paging [pageSize]="500"></dxo-paging>
     <dxo-summary>
         <dxi-total-item
-            column="supervisors_marks"
+            column="assessment_marks"
             summaryType="sum">
         </dxi-total-item>
     </dxo-summary>

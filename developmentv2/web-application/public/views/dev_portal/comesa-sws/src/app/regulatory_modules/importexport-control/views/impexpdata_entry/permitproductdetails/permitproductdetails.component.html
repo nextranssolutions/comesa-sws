@@ -27,7 +27,7 @@
                     </dx-button>
                 </div>
             </dxi-column>
-            <dxi-column dataField="product_name" caption="{{ 'product_name' | translate }}"></dxi-column>
+
             <dxi-column dataField="brand_name" caption="{{'brand_name' | translate}}"></dxi-column>
             <dxi-column dataField="quantity" caption="{{'quantity' | translate}}"></dxi-column>
             <dxi-column dataField="packaging_units" caption="{{'packaging_units' | translate}}"></dxi-column>
@@ -82,8 +82,7 @@
                                             text="{{ 'search_details' | translate }}" type="default"
                                             (onClick)="onsearchProductCategory()">
                                             <i class="fa fa-search"></i> {{ 'search' | translate }} {{
-                                            'product_category' |
-                                            translate }}
+                                            'product_category' | translate }}
                                         </dx-button>
                                     </div>
                                 </div>
@@ -95,8 +94,8 @@
                                 </div>
 
                                 <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
-                                    <label class="control-label">{{'product_name'| translate}}</label>
-                                    <dx-text-box formControlName="product_name">
+                                    <label class="control-label">{{'product_description'| translate}}</label>
+                                    <dx-text-box formControlName="product_description">
                                     </dx-text-box>
                                 </div>
 

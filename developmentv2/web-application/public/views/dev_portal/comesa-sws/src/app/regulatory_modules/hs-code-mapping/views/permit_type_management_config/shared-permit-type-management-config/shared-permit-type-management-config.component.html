@@ -26,91 +26,22 @@
     </dxi-column>
 
     <dxi-column dataField="name" caption="{{ 'name' | translate }}"></dxi-column>
-    <dxi-column *ngIf="table_name == 'par_renewable_statuses' || table_name == 'par_permit_statuses' || table_name == 'par_hscode_seloption' || table_name == 'par_mapping_status' || table_name == 'par_hscodemapping_option' || table_name == 'par_quota_limitationstype' || table_name == 'par_permittemplate_types' || table_name == 'chk_checklist_definations'|| table_name == 'chk_checklist_types' || table_name == 'wf_workflow_stages'" 
+    <dxi-column *ngIf="table_name == 'par_renewable_statuses' || table_name == 'par_permit_statuses' || table_name == 'par_hscode_seloption' || table_name == 'par_mapping_status' || table_name == 'par_hscodemapping_option' || table_name == 'par_quota_limitationstype' || table_name == 'par_permittemplate_types'" 
         dataField="description" caption="{{ 'description' | translate }}">
     </dxi-column>
     <dxi-column *ngIf="table_name == 'par_hscodechapters_defination'" dataField="hscode" caption="{{ 'hscode' | translate }}"></dxi-column>
 
-    <dxi-column *ngIf="table_name == 'par_renewable_statuses' || table_name == 'par_permit_statuses' || table_name == 'par_permit_templates' "
-        dataField="transactionpermit_type_id" caption="{{ 'transactionpermit_type_id' | translate }}">
-        <dxo-lookup [dataSource]="transactionpermitTypeIdData" displayExpr="name" valueExpr="id">
-        </dxo-lookup>
-    </dxi-column>
 
-    <dxi-column *ngIf="table_name == 'par_renewable_statuses' || table_name == 'par_permit_statuses' || table_name == 'par_hscode_seloption' || table_name == 'par_mapping_status' || table_name == 'par_hscodemapping_option' || table_name == 'par_quota_limitationstype' || table_name == 'par_permittemplate_types' || table_name == 'chk_checklist_definations' || table_name == 'chk_checklist_types' || table_name == 'wf_workflow_stages'" 
+    <dxi-column *ngIf="table_name == 'par_renewable_statuses' || table_name == 'par_permit_statuses' || table_name == 'par_hscode_seloption' || table_name == 'par_mapping_status' || table_name == 'par_hscodemapping_option' || table_name == 'par_quota_limitationstype' || table_name == 'par_permittemplate_types' " 
         dataField="code" caption="{{ 'Code' | translate }}">
     </dxi-column>
-
-    <dxi-column *ngIf="table_name == 'par_permit_templates' || table_name == 'chk_checklist_definations'"
-        dataField="organisation_id" caption="{{ 'organisation_id' | translate }}">
-        <dxo-lookup [dataSource]="organisationIDData" displayExpr="name" valueExpr="id">
-        </dxo-lookup>
-    </dxi-column>
-
-    <dxi-column *ngIf="table_name == 'par_permit_templates'"
-        dataField="permit_description" caption="{{ 'permit_description' | translate }}">
-    </dxi-column>
-
-    <dxi-column *ngIf="table_name == 'par_permit_templates'"
-        dataField="reference_toreport_designer" caption="{{ 'reference_toreport_designer' | translate }}">
-    </dxi-column>
-
+    
     <dxi-column *ngIf="table_name == 'par_hscode_seloption'"
         dataField="selection_type" caption="{{ 'selection_type' | translate }}">
     </dxi-column>
 
     <dxi-column *ngIf="table_name == 'par_hscode_seloption'"
         dataField="sort_order" caption="{{ 'sort_order' | translate }}">
-    </dxi-column>
-
-    <dxi-column *ngIf="table_name == 'chk_checklist_definations' || table_name == 'chk_checklist_types' "
-        dataField="order_no" caption="{{ 'order_no' | translate }}">
-    </dxi-column>
-
-    <dxi-column *ngIf="table_name == 'chk_checklist_definations'"
-        dataField="checklist_type_id" caption="{{ 'checklist_type_id' | translate }}">
-        <dxo-lookup [dataSource]="checklist_type_idData" displayExpr="name" valueExpr="id">
-        </dxo-lookup>
-    </dxi-column>
-
-    <dxi-column *ngIf="table_name == 'chk_checklist_definations'"
-        dataField="performancescoring_scale_id" caption="{{ 'performancescoring_scale_id' | translate }}">
-        <dxo-lookup [dataSource]="performancescoring_scale_idData" displayExpr="name" valueExpr="id">
-        </dxo-lookup>
-    </dxi-column>
-
-    <dxi-column *ngIf="table_name == 'chk_checklist_definations'"
-        dataField="marks_allocated" caption="{{ 'marks_allocated' | translate }}">
-    </dxi-column>
-
-    <dxi-column *ngIf="table_name == 'chk_checklist_types' || table_name == 'wf_workflow_stages'"
-        dataField="process_id" caption="{{ 'process_id' | translate }}">
-        <dxo-lookup [dataSource]="processIdData" displayExpr="name" valueExpr="id">
-        </dxo-lookup>
-    </dxi-column>
-
-    <dxi-column *ngIf="table_name == 'wf_workflow_stages'"
-        dataField="workflow_id" caption="{{ 'workflow_id' | translate }}">
-        <dxo-lookup [dataSource]="workflowIdData" displayExpr="name" valueExpr="id">
-        </dxo-lookup>
-    </dxi-column>
-
-    <dxi-column *ngIf="table_name == 'wf_workflow_stages'"
-        dataField="stage_status_id" caption="{{ 'stage_status_id' | translate }}">
-        <dxo-lookup [dataSource]="stage_status_IdData" displayExpr="name" valueExpr="id">
-        </dxo-lookup>
-    </dxi-column>
-
-    <dxi-column *ngIf="table_name == 'wf_workflow_stages'"
-        dataField="interface_id" caption="{{ 'interface_id' | translate }}">
-        <dxo-lookup [dataSource]="interface_IdData" displayExpr="name" valueExpr="id">
-        </dxo-lookup>
-    </dxi-column>
-
-    <dxi-column *ngIf="table_name == 'wf_workflow_stages'"
-        dataField="process_category_id" caption="{{ 'process_category_id' | translate }}">
-        <dxo-lookup [dataSource]="process_category_IdData" displayExpr="name" valueExpr="id">
-        </dxo-lookup>
     </dxi-column>
 
     <dxi-column dataField="is_enabled" caption="{{ 'is_enabled' | translate }}" [dataType]="'boolean'" [width]="100">
@@ -138,30 +69,11 @@
                     <dx-text-box formControlName="name" [showClearButton]="true"></dx-text-box>
                 </div>
 
-                <div *ngIf="table_name == 'par_renewable_statuses' || table_name == 'par_permit_statuses' || table_name == 'par_hscode_seloption' || table_name == 'par_mapping_status' || table_name == 'par_hscodemapping_option' || table_name == 'par_quota_limitationstype' || table_name == 'par_permittemplate_types' || table_name == 'chk_checklist_definations' || table_name == 'chk_checklist_types' || table_name == 'wf_workflow_stages'"  class="col-lg-6">
+                <div *ngIf="table_name == 'par_renewable_statuses' || table_name == 'par_permit_statuses' || table_name == 'par_hscode_seloption' || table_name == 'par_mapping_status' || table_name == 'par_hscodemapping_option' || table_name == 'par_quota_limitationstype' || table_name == 'par_permittemplate_types'"  class="col-lg-6">
                     <label>{{ 'description' | translate }}</label>
                     <dx-text-box formControlName="description" [showClearButton]="true"></dx-text-box>
                 </div>
 
-                <div *ngIf="table_name == 'par_renewable_statuses' || table_name == 'par_permit_statuses' || table_name == 'par_permit_templates'" class="col-lg-6">
-                    <label>{{ 'transactionpermit_type_id' | translate }}</label>
-                    <dx-text-box formControlName="transactionpermit_type_id" [showClearButton]="true"></dx-text-box>
-                </div>
-
-                <div *ngIf="table_name == 'par_permit_templates' || table_name == 'chk_checklist_definations' " class="col-lg-6">
-                    <label>{{ 'organisation_id' | translate }}</label>
-                    <dx-text-box formControlName="organisation_id" [showClearButton]="true"></dx-text-box>
-                </div>
-
-                <div *ngIf="table_name == 'par_permit_templates' " class="col-lg-6">
-                    <label>{{ 'permit_description' | translate }}</label>
-                    <dx-text-box formControlName="permit_description" [showClearButton]="true"></dx-text-box>
-                </div>
-
-                <div *ngIf="table_name == 'par_permit_templates' " class="col-lg-6">
-                    <label>{{ 'reference_toreport_designer' | translate }}</label>
-                    <dx-text-box formControlName="reference_toreport_designer" [showClearButton]="true"></dx-text-box>
-                </div>
 
                 <div *ngIf="table_name == 'par_hscode_seloption' " class="col-lg-6">
                     <label>{{ 'selection_type' | translate }}</label>
@@ -171,51 +83,6 @@
                 <div *ngIf="table_name == 'par_hscode_seloption' " class="col-lg-6">
                     <label>{{ 'sort_order' | translate }}</label>
                     <dx-text-box formControlName="sort_order" [showClearButton]="true"></dx-text-box>
-                </div>
-
-                <div *ngIf="table_name == 'chk_checklist_definations' || table_name == 'chk_checklist_types' " class="col-lg-6">
-                    <label>{{ 'order_no' | translate }}</label>
-                    <dx-text-box formControlName="order_no" [showClearButton]="true"></dx-text-box>
-                </div>
-
-                <div *ngIf="table_name == 'chk_checklist_definations' " class="col-lg-6">
-                    <label>{{ 'checklist_type_id' | translate }}</label>
-                    <dx-text-box formControlName="checklist_type_id" [showClearButton]="true"></dx-text-box>
-                </div>
-
-                <div *ngIf="table_name == 'chk_checklist_definations' " class="col-lg-6">
-                    <label>{{ 'performancescoring_scale_id' | translate }}</label>
-                    <dx-text-box formControlName="performancescoring_scale_id" [showClearButton]="true"></dx-text-box>
-                </div>
-
-                <div *ngIf="table_name == 'chk_checklist_definations' " class="col-lg-6">
-                    <label>{{ 'marks_allocated' | translate }}</label>
-                    <dx-text-box formControlName="marks_allocated" [showClearButton]="true"></dx-text-box>
-                </div>
-
-                <div *ngIf="table_name == 'chk_checklist_types' || table_name == 'wf_workflow_stages'" class="col-lg-6">
-                    <label>{{ 'process_id' | translate }}</label>
-                    <dx-text-box formControlName="process_id" [showClearButton]="true"></dx-text-box>
-                </div>
-
-                <div *ngIf="table_name == 'wf_workflow_stages' " class="col-lg-6">
-                    <label>{{ 'workflow_id' | translate }}</label>
-                    <dx-text-box formControlName="workflow_id" [showClearButton]="true"></dx-text-box>
-                </div>
-
-                <div *ngIf="table_name == 'wf_workflow_stages' " class="col-lg-6">
-                    <label>{{ 'stage_status_id' | translate }}</label>
-                    <dx-text-box formControlName="stage_status_id" [showClearButton]="true"></dx-text-box>
-                </div>
-
-                <div *ngIf="table_name == 'wf_workflow_stages' " class="col-lg-6">
-                    <label>{{ 'interface_id' | translate }}</label>
-                    <dx-text-box formControlName="interface_id" [showClearButton]="true"></dx-text-box>
-                </div>
-
-                <div *ngIf="table_name == 'wf_workflow_stages' " class="col-lg-6">
-                    <label>{{ 'process_category_id' | translate }}</label>
-                    <dx-text-box formControlName="process_category_id" [showClearButton]="true"></dx-text-box>
                 </div>
 
                 <div class="row">
