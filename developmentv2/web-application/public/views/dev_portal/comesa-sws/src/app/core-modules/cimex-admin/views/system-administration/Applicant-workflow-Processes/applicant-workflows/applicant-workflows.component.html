@@ -328,41 +328,77 @@ title="{{ 'delete_confirmation_of '+'workflow_transition' | translate }}" (onHid
     </dx-popup>
 </div>
 
-<!-- <dx-popup [visible]="workflowStageDetailsVisible" [width]="funcpopWidth(80)" [height]="funcpopHeight(65)"
+<dx-popup [visible]="workflowStagesVisible" [width]="funcpopWidth(80)" [height]="funcpopHeight(65)"
     [showTitle]="true" title="{{ 'workflow_stage_details' | translate }}"
-    (onHidden)="workflowStageDetailsVisible = false">
+    (onHidden)="workflowStagesVisible = false">
     <dx-scroll-view>
         <form (ngSubmit)="onFuncSaveWorlflowStageData()" [formGroup]="workflowStagesFrm" formControlName="description">
 
             <div class="row">
-                <div class="col-lg-12">
+                <div class="col-lg-4">
                     <label>{{ 'name' | translate }}</label>
                     <dx-text-box formControlName="name" [showClearButton]="true"> </dx-text-box>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-4">
                     <label for="unitName">{{ 'stage/state_status' | translate }}</label>
-                    <dx-select-box [dataSource]="stageStatusData" formControlName="stage_status_id"
+                    <dx-select-box [dataSource]="stageStatusData" formControlName="stage_status"
                         [showClearButton]="true" valueExpr="id" [searchEnabled]="true" displayExpr="name">
                     </dx-select-box>
                 </div>
-                <div class="col-lg-6">
+                <div class="col-lg-4">
                     <label for="unitName">{{ 'order_no' | translate }}</label>
                     <dx-text-box formControlName="order_no" [showClearButton]="true">
 
                     </dx-text-box>
                 </div>
 
-                <div class="col-lg-6">
-                    <label for="unitName">{{ 'workflow_interface' | translate }}</label>
-                    <dx-select-box [dataSource]="workflowInterfaceData" formControlName="workflow_interface_id"
+                <div class="col-lg-4">
+                    <label for="unitName">{{ 'stage_category' | translate }}</label>
+                    <dx-select-box [dataSource]="stageCategoryData" formControlName="stage_category_id"
                         [showClearButton]="true" valueExpr="id" [searchEnabled]="true" displayExpr="name">
                     </dx-select-box>
                 </div>
-                <div class="col-lg-6">
-                    <label for="unitName">{{ 'application_status' | translate }}</label>
-                    <dx-select-box [dataSource]="applicationStatusesData" formControlName="application_status_id"
+
+                <div class="col-lg-4">
+                    <label for="unitName">{{ 'process_category' | translate }}</label>
+                    <dx-select-box [dataSource]="workflowProcessCategoryData" formControlName="process_category_id"
                         [showClearButton]="true" valueExpr="id" [searchEnabled]="true" displayExpr="name">
                     </dx-select-box>
+                </div>
+
+                <div class="col-lg-4">
+                    <label for="unitName">{{ 'needs_responsible_user' | translate }}</label>
+                    <dx-select-box [dataSource]="needResponsibleUsrData" formControlName="needs_responsible_user"
+                        [showClearButton]="true" valueExpr="value" [searchEnabled]="true" displayExpr="text">
+                    </dx-select-box>
+                </div>
+
+                <div class="col-lg-4">
+                    <label for="unitName">{{ 'is_manager_submission(set_schedule_details)' | translate }}</label>
+                    <dx-select-box [dataSource]="isManagerSubmissionData" formControlName="is_manager_submission"
+                        [showClearButton]="true" valueExpr="value" [searchEnabled]="true" displayExpr="text">
+                    </dx-select-box>
+                </div>
+                <div class="col-lg-4">
+                    <label for="unitName">{{ 'process_type' | translate }}</label>
+                    <dx-select-box [dataSource]="processTypeData" formControlName="process_type_id"
+                        [showClearButton]="true" valueExpr="id" [searchEnabled]="true" displayExpr="name">
+                    </dx-select-box>
+                </div>
+
+                <div class="col-lg-4">
+                    <label for="unitName">{{ 'workflow_interface' | translate }}</label>
+                    <dx-select-box [dataSource]="workflowInterfaceData" formControlName="interface_id"
+                        [showClearButton]="true" valueExpr="id" [searchEnabled]="true" displayExpr="name">
+                    </dx-select-box>
+                </div>
+
+                <div class="col-lg-12">
+
+                    <label>{{ 'service_delivery_timeline(per_stage)' | translate }}</label>
+                    <dx-text-box formControlName="servicedelivery_timeline" [showClearButton]="true">
+
+                    </dx-text-box>
                 </div>
 
                 <div class="col-lg-12">
@@ -372,6 +408,7 @@ title="{{ 'delete_confirmation_of '+'workflow_transition' | translate }}" (onHid
 
                     </dx-text-area>
                 </div>
+
 
             </div>
         </form>
@@ -383,7 +420,7 @@ title="{{ 'delete_confirmation_of '+'workflow_transition' | translate }}" (onHid
 
         </div>
     </dx-scroll-view>
-</dx-popup> -->
+</dx-popup>
 
 <dx-popup [visible]="workflowStageDetailsVisible" [width]="funcpopWidth(80)" [height]="funcpopHeight(65)"
     [showTitle]="true" title="{{ 'workflow_stage_details' | translate }}"

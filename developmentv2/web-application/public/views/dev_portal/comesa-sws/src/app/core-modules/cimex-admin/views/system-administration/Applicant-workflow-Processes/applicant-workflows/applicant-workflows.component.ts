@@ -277,6 +277,7 @@ export class ApplicantWorkflowsComponent {
       is_checklist_tied: new FormControl('', Validators.compose([])),
       is_paymentrequest_submission: new FormControl('', Validators.compose([])),
       workflow_stage_id:new FormControl('', Validators.compose([])),
+      workflowprocess_id: new FormControl('', Validators.compose([])),
     });
 
     this.workflowStageProcessActionsFrm = new FormGroup({
@@ -288,6 +289,7 @@ export class ApplicantWorkflowsComponent {
       is_enabled: new FormControl('', Validators.compose([])),
       workflow_stage_id:new FormControl('', Validators.compose([])),
       statuses_action_id: new FormControl('', Validators.compose([])),
+      workflowprocess_id: new FormControl('', Validators.compose([])),
       
     });
     this.workflowStageItemsFrm = new FormGroup({
@@ -349,19 +351,12 @@ export class ApplicantWorkflowsComponent {
 
   onAddWorkFlowStage() {
 
-    this.workflowStageItemsFrm.reset();
-    // this.workflowStagesVisible = true;
-    this.workflowStageDetailsVisible = true;
-    this.workflowStageItemsFrm.get('table_name')?.setValue('wf_workflow_stages');
-    this.workflowStageItemsFrm.get('workflow_id')?.setValue(this.workflow_id);
-    this.workflowStageActionsItemsFrm.get('workflow_stage_id')?.setValue(this.workflow_stage_id);
-    this.workflowStageProcessActionsFrm.get('workflow_stage_id')?.setValue(this.workflow_stage_id);
+    this.workflowStagesFrm.reset();
+    this.workflowStagesVisible = true;
+    // this.workflowStageDetailsVisible = true;
+    this.workflowStagesFrm.get('table_name')?.setValue('wf_workflow_stages');
     this.workflowStagesFrm.get('workflow_id')?.setValue(this.workflow_id);
 
-    // this.workflowStagesFrm.reset();
-    // this.workflowStageDetailsVisible = true
-    // this.workflowStagesFrm.get('table_name')?.setValue('ptl_workflowprocesses_stages');
-    // this.workflowStagesFrm.get('workflowprocess_id')?.setValue(this.workflowprocess_id);
 
 
   }
@@ -755,7 +750,7 @@ export class ApplicantWorkflowsComponent {
     this.action_url = 'onsavePortalWorkflowConfigData';
 
     this.spinner.show();
-
+    this.workflowTransitionFrm.get('workflowprocess_id')?.setValue(this.workflowprocess_id);
     this.workflowService.onSavePortalWorkflowDetailsDetails('ptl_workflowprocesses_transitions', this.workflowTransitionFrm.value, this.action_url)
       .subscribe(
         response => {
@@ -798,7 +793,7 @@ export class ApplicantWorkflowsComponent {
     this.action_url = 'onsavePortalWorkflowConfigData';
 
     this.spinner.show();
-
+    this.workflowStagesFrm.get('workflowprocess_id')?.setValue(this.workflowprocess_id);
     this.workflowService.onSavePortalWorkflowDetailsDetails('ptl_workflowprocesses_stages', this.workflowStagesFrm.value, this.action_url)
       .subscribe(
         response => {
@@ -995,6 +990,10 @@ export class ApplicantWorkflowsComponent {
     this.workflowStagesFrm.get('table_name')?.setValue('ptl_workflowprocesses_stages');
     this.workflowStagesFrm.get('workflowprocess_id')?.setValue(this.workflowprocess_id);
 
+    this.fetchWorkflowStageActionsDetails(data.data.workflowprocess_id);
+    this.fetchWorkflowStageProcessActions(data.data.workflowprocess_id);
+
+
   }
 
   iniateEnableDisableStage() {
@@ -1160,23 +1159,23 @@ export class ApplicantWorkflowsComponent {
     this.enableWorkflowPopupVisible = true;
   }
 
-  fetchWorkflowStagesInfo(workflow_id) {
-    this.spinnerShow('Loading Workflow Stages Details');
-    var data_submit = {
-      'table_name': 'wf_workflow_stages',
-      workflow_id: workflow_id
-    }
-    this.workflowService.getWorkflowConfigs(data_submit)
-    .subscribe(
-      data => {
+  // fetchWorkflowStagesInfo(workflow_id) {
+  //   this.spinnerShow('Loading Workflow Stages Details');
+  //   var data_submit = {
+  //     'table_name': 'wf_workflow_stages',
+  //     workflow_id: workflow_id
+  //   }
+  //   this.workflowService.getWorkflowConfigs(data_submit)
+  //   .subscribe(
+  //     data => {
         
-        this.data_record = data;
-        if (this.data_record.success) {
-          this.workflowStagesData = this.data_record.data;
-        }
-      });
-      this.spinnerHide();
-  }
+  //       this.data_record = data;
+  //       if (this.data_record.success) {
+  //         this.workflowStagesData = this.data_record.data;
+  //       }
+  //     });
+  //     this.spinnerHide();
+  // }
   onLoadStatusActionsData() {
     var data_submit = {
       'table_name': 'wf_statuses_actions',
@@ -1195,6 +1194,23 @@ export class ApplicantWorkflowsComponent {
         });
   
   }
+  fetchWorkflowStageProcessActions(workflowprocess_id) {
+    this.spinnerShow('Loading Workflow Stages Details');
+    var data_submit = {
+      'table_name': 'wb_workflowstageprocess_actions',
+      workflowprocess_id: workflowprocess_id
+    }
+    this.workflowService.getWorkflowConfigs(data_submit)
+    .subscribe(
+      data => {
+        
+        this.data_record = data;
+        if (this.data_record.success) {
+          this.workflowStagesProcessActionsData = this.data_record.data;
+        }
+      });
+      this.spinnerHide();
+  }
   onIsStatusTied(e){
     // this.selectedValue =this.workflowStageActionsItemsFrm.get('is_status_tied')?.value;
     // if(this.selectedValue == true){
@@ -1205,9 +1221,6 @@ export class ApplicantWorkflowsComponent {
   onAddWorkFlowStageActions(){
     this.workflowStageActionsItemsFrm.reset();
     this.workflowStageActionDetailsVisible = true;
-  
-    this.workflowTransitionFrm.get('table_name')?.setValue('wf_workflow_actions');
-    this.workflowTransitionFrm.get('workflow_id')?.setValue(this.workflow_id);
     this.workflowStageActionsItemsFrm.get('workflow_stage_id')?.setValue(this.workflow_stage_id);
    }
 
@@ -1215,7 +1228,7 @@ export class ApplicantWorkflowsComponent {
     this.workflowStageProcessActionsFrm.reset();
     this.workflowStageProcessActionsVisible = true;
     this.workflowStagesProcessActionsData = [];
-    console.log(this.workflowStageActionsItemsFrm.get('workflow_stage_id')?.setValue(this.workflow_stage_id));
+    this.workflowStageActionsItemsFrm.get('workflow_stage_id')?.setValue(this.workflow_stage_id);
     
     //this.workflowStageProcessActionsFrm.get('table_name')?.setValue('wf_workflow_stages');
    //this.workflowStageProcessActionsFrm.get('workflow_id')?.setValue(this.workflow_id);
@@ -1273,15 +1286,15 @@ export class ApplicantWorkflowsComponent {
     this.action_url = 'onsaveWorkflowConfigData';
   
     this.spinner.show();
-  
-    this.workflowService.onSaveWorkflowDetailsDetails('wf_workflow_actions', this.workflowStageActionsItemsFrm.value, this.action_url)
+    this.workflowStageActionsItemsFrm.get('workflowprocess_id')?.setValue(this.workflowprocess_id);
+    this.workflowService.onSaveWorkflowDetailsDetails('ptl_workflowprocess_actions', this.workflowStageActionsItemsFrm.value, this.action_url)
       .subscribe(
         response => {
           this.response = response;
           //the details 
           if (this.response.success) {
   
-            this.fetchWorkflowStagesInfo(this.workflow_id);
+            this.fetchWorkflowStageActionsDetails(this.workflowprocess_id);
             this.workflowStageDetailsVisible = false;
             this.toastr.success(this.response.message, 'Response');
             this.spinnerHide();
@@ -1318,7 +1331,7 @@ export class ApplicantWorkflowsComponent {
     this.action_url = 'onsaveWorkflowConfigData';
   
     this.spinner.show();
-  
+    this.workflowStagesFrm.get('workflow_id')?.setValue(this.workflow_id);
     this.workflowService.onSaveWorkflowDetailsDetails('wf_workflow_stages', this.workflowStagesFrm.value, this.action_url)
       .subscribe(
         response => {
@@ -1326,7 +1339,7 @@ export class ApplicantWorkflowsComponent {
           //the details 
           if (this.response.success) {
   
-            this.fetchWorkflowStagesInfo(this.workflow_id);
+            this.fetchWorkflowStagesDetails(this.workflow_id);
             this.workflowStagesVisible = false;
             this.toastr.success(this.response.message, 'Response');
             this.spinnerHide();
@@ -1361,7 +1374,7 @@ export class ApplicantWorkflowsComponent {
     this.action_url = 'onsaveWorkflowConfigData';
   
     this.spinner.show();
-  
+    this.workflowStageProcessActionsFrm.get('workflowprocess_id')?.setValue(this.workflowprocess_id);
     this.workflowService.onSaveWorkflowDetailsDetails('wb_workflowstageprocess_actions', this.workflowStageProcessActionsFrm.value, this.action_url)
       .subscribe(
         response => {
@@ -1369,7 +1382,7 @@ export class ApplicantWorkflowsComponent {
           //the details 
           if (this.response.success) {
   
-            this.fetchWorkflowStagesInfo(this.workflow_id);
+            this.fetchWorkflowStageProcessActions(this.workflowprocess_id);
             this.workflowStageProcessActionsVisible = false;
             this.toastr.success(this.response.message, 'Response');
             this.spinnerHide();
