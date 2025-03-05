@@ -147,10 +147,6 @@ export class SharedImpExpdashboardClass {
 
   onInitiatenewImportExpApplications() {
     this. onApplicationSelection(1);
-    this.app_route = ['./importexport-permit-application/initiate-importapp'];
-    
-    
-    // this.router.navigate(this.app_route);
   }
 
 
@@ -175,6 +171,8 @@ export class SharedImpExpdashboardClass {
             this.productsapp_details = this.processData;
             this.appService.setApplicationDetail(data.data);
             localStorage.setItem('application_details', JSON.stringify(data.data));
+            localStorage.setItem('permit_details', JSON.stringify(data.data));
+            
             // this.appService.setProductApplicationDetail(data.data);
             this.app_route = ['./importexport-permit-application/' + this.router_link];
 

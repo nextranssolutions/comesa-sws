@@ -351,7 +351,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
     this.config.onLoadConfigurationData(data)
       .subscribe(
         data => {
-          console.log(data.record);
+          
           this.data_record = data;
 
           if (this.data_record.success) {
@@ -370,7 +370,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
     this.config.onLoadConfigurationData(data)
       .subscribe(
         data => {
-          console.log(data.record);
+          
           this.data_record = data;
 
           if (this.data_record.success) {
@@ -391,7 +391,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
     this.config.onLoadConfigurationData(data)
       .subscribe(
         data => {
-          console.log(data.record);
+          
           this.data_record = data;
 
           if (this.data_record.success) {
@@ -412,7 +412,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
     this.config.onLoadConfigurationData(data)
       .subscribe(
         data => {
-          console.log(data.record);
+          
           this.data_record = data;
 
           if (this.data_record.success) {
@@ -433,7 +433,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
     this.config.onLoadConfigurationData(data)
       .subscribe(
         data => {
-          console.log(data.record);
+          
           this.data_record = data;
 
           if (this.data_record.success) {
@@ -455,7 +455,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
     this.config.onLoadConfigurationData(data)
       .subscribe(
         data => {
-          console.log(data.record);
+          
           this.data_record = data;
 
           if (this.data_record.success) {
@@ -516,7 +516,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
     this.config.onLoadConfigurationData(data)
       .subscribe(
         data => {
-          console.log(data.record);
+          
           this.data_record = data;
 
           if (this.data_record.success) {
@@ -540,7 +540,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
     this.config.onLoadConfigurationData(data)
       .subscribe(
         data => {
-          console.log(data.record);
+          
           this.data_record = data;
 
           if (this.data_record.success) {
@@ -622,7 +622,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
     let me = this;
     this.senderReceiverData.store = new CustomStore({
       load: function (loadOptions: any) {
-        console.log(loadOptions)
+        // console.log(loadOptions)
         var params = '?';
         params += 'skip=' + loadOptions.skip;
         params += '&take=' + loadOptions.take;//searchValue
@@ -659,7 +659,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
     let me = this;
     this.consigneeReceiverData.store = new CustomStore({
       load: function (loadOptions: any) {
-        console.log(loadOptions)
+        // console.log(loadOptions)
         var params = '?';
         params += 'skip=' + loadOptions.skip;
         params += '&take=' + loadOptions.take;//searchValue
@@ -702,7 +702,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
     let me = this;
     this.registered_premisesData.store = new CustomStore({
       load: function (loadOptions: any) {
-        console.log(loadOptions)
+        // console.log(loadOptions)
         var params = '?';
         params += 'skip=' + loadOptions.skip;
         params += '&take=' + loadOptions.take;
@@ -814,7 +814,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
     this.config.onLoadConfigurationData(data)
       .subscribe(
         data => {
-          console.log(data.record);
+          // console.log(data.record);
           this.data_record = data;
 
           if (this.data_record.success) {
@@ -838,7 +838,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
 
       .subscribe(
         data => {
-          console.log(data.record);
+          // console.log(data.record);
           this.data_record = data;
 
           if (this.data_record.success) {

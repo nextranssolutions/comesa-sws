@@ -26,7 +26,7 @@ const routes: Routes = [{
     path: 'initiate-importapp',
     component: InitiateImportappComponent
   }, {
-    path: 'underprocessing-importlicensedash',
+    path: 'underprocessing-importapp',
     component: UnderprocessingImportlicencedashComponent
   },{
       path: 'request-additional-info',

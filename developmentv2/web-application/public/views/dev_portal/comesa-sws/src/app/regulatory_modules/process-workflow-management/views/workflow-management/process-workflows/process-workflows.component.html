@@ -598,15 +598,15 @@
             </form>
 
             <div class="col-lg-12">
-                <dx-button text="{{ 'save'+ parameter_name | translate }}" type="default" icon="fa fa-save"
-                    [elementAttr]="{ id: 'elementId', class: 'pull-right' }"
+                <dx-button text="{{ 'save'+ '  workflow_stage_details' | translate }}" type="default" icon="fa fa-save"
+                    [elementAttr]="{ id: 'elementId', class: 'pull-left' }"
                     (onClick)="onFuncSaveWorkflowStageDetailsData()">
                 </dx-button>
 
             </div>
 
         </dxi-item>
-        <dxi-item title="{{'workflow_stages_actions' | translate}}" icon="map">
+        <dxi-item title="{{'workflow_stage_submission_actions' | translate}}" icon="map">
             <dx-button text="{{ 'add' | translate }} {{ 'workflow_stage_actions' | translate }}" type="default"
                 icon="fa fa-save" [elementAttr]="{ id: 'elementId', class: '' }"
                 (onClick)="hasReadpermissions=false;onAddWorkFlowStageActions()">
@@ -673,7 +673,7 @@
 
         </dxi-item>
 
-        <dxi-item title="{{'workflow_stage_process_actions' |translate}}" icon="map">
+        <dxi-item title="{{'workflow_application_process_actions' |translate}}" icon="map">
             <dx-button text="{{ 'add_new' | translate }} {{ 'workflow_stage_process_actions' | translate }}" type="default"
                 icon="fa fa-save" [elementAttr]="{ id: 'elementId', class: '' }"
                 (onClick)="hasReadpermissions=false;onAddWorkFlowStageProcessActions()">
@@ -733,7 +733,7 @@
 </dx-popup>
 
 <dx-popup [visible]="workflowStageActionDetailsVisible" [width]="funcpopWidth(80)" [height]="funcpopHeight(65)"
-    [showTitle]="true" title="{{ 'workflow_stage_actions' | translate }}"
+    [showTitle]="true" title="{{ 'workflow_stage_submission_actions' | translate }}"
     (onHidden)="workflowStageActionDetailsVisible = false">
     <form (ngSubmit)="onUpdateWorkflowsSubmit()" [formGroup]="workflowStageActionsItemsFrm"
         formControlName="description">
@@ -795,7 +795,7 @@
         </div>
     </form>
     <div class="col-lg-12">
-        <dx-button text="{{ 'save'+ parameter_name | translate }}" type="default" icon="fa fa-save"
+        <dx-button text="{{ 'save'+ ' workflow_stage_submission_actions' | translate }}" type="default" icon="fa fa-save"
             [elementAttr]="{ id: 'elementId', class: 'pull-right' }" (onClick)="onFuncSaveWorlflowStageActionData()">
         </dx-button>
 
@@ -804,7 +804,7 @@
 
 
 <dx-popup [visible]="workflowStageProcessActionsVisible" [width]="funcpopWidth(65)" [height]="funcpopHeight(50)" [showTitle]="true"
-    title="{{'workflow_stages_process_actions' | translate}}" (onHidden)="workflowStageProcessActionsVisible = false">
+    title="{{'workflow_application_process_actions' | translate}}" (onHidden)="workflowStageProcessActionsVisible = false">
   
     <form (ngSubmit)="onUpdateWorkflowsSubmit()" [formGroup]="workflowStageProcessActionsFrm" formControlName="description">
 
@@ -844,7 +844,7 @@
         </div>
 
         <div class="col-lg-12">
-            <dx-button text="{{ 'save'+ 'workflow_stage_process_action' | translate }}" type="default" icon="fa fa-save"
+            <dx-button text="{{ 'save'+ ' workflow_application_process_action' | translate }}" type="default" icon="fa fa-save"
                 [elementAttr]="{ id: 'elementId', class: 'pull-left' }" (onClick)="onFuncSaveWorkflowStageProcessActionsData()">
             </dx-button>
 

@@ -544,10 +544,7 @@ fetchWorkflowStageActionsDetails(workflow_id) {
       }
     });
     this.spinnerHide();
-
-
 }
-
 
 
 fetchWorkflowTransitionsDetails(workflow_id) {
@@ -1120,7 +1117,7 @@ onFuncSaveWorkflowStageDetailsData() {
         //the details 
         if (this.response.success) {
 
-          this.fetchWorkflowStagesInfo(this.workflow_id);
+          this.fetchWorkflowStageActionsDetails(this.workflow_stage_id);
           this.workflowStagesVisible = false;
           this.workflow_stage_id = this.response.record_id;
           

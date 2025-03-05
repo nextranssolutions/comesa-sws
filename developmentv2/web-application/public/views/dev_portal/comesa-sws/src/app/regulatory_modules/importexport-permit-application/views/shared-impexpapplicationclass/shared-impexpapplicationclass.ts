@@ -18,6 +18,23 @@ import { ConfigurationsService } from 'src/app/core-services/configurations/conf
   selector: '[appSharedImpexpApplicationClass]' // Add a unique selector here
 })
 export class SharedImpexpApplicationClass {
+    //start test wizrd 
+    stepStates = {
+      normal: STEP_STATE.normal,
+      disabled: STEP_STATE.disabled,
+      error: STEP_STATE.error,
+      hidden: STEP_STATE.hidden
+  
+    };
+  
+    config: NgWizardConfig = {
+      selected: 0,
+      theme: THEME.arrows,
+      toolbarSettings: {
+        showNextButton: false,
+        showPreviousButton: false
+      }
+    };
   //ImportexportService
   //dms 
   @ViewChild(DxDataGridComponent)
@@ -26,6 +43,7 @@ export class SharedImpexpApplicationClass {
   mistrader_id: number;
   process_id: number;
   transactionpermit_type_id: number;
+  appworkflow_status_id: number;
   
   permit_id: any;
   dataGrid: DxDataGridComponent;
@@ -74,7 +92,7 @@ export class SharedImpexpApplicationClass {
   application_details: any;
   status_id: number;
   regulatory_subfunction_id: number;
-  process_title: string;;
+  process_title: string;
   regulated_productstype_id: number;
   application_id: number;
   application_code: number;
@@ -142,11 +160,14 @@ export class SharedImpexpApplicationClass {
   classificationData: any;
   quantity: number = 100;
   unit_price: number;
+  isShowAppProcessSubmission:boolean;
+
   isnewproductAddWinVisible: boolean = false;
   enabled_newproductadd: boolean = false;
   showProductAddOption: boolean = false;
   is_regulatedproducts: boolean = false;
   proforma_currency_id: number;
+  permit_details: any;
   isInitalQueryResponseFrmVisible: boolean = false;
   initqueryresponsefrm: FormGroup;
   applicationPreckingQueriesData: any;
@@ -156,6 +177,7 @@ export class SharedImpexpApplicationClass {
   has_invoicegeneration: boolean;
   app_routing: any;
   form_fielddata: any;
+  permits_fielddata: any;
   isprodnextdisable: boolean = true;
 
   filesToUpload: Array<File> = [];
@@ -169,12 +191,13 @@ export class SharedImpexpApplicationClass {
     this.trader_id = user.trader_id;
     this.mistrader_id = user.mistrader_id;
     this.application_details = localStorage.getItem('application_details');
+
     this.application_details = JSON.parse(this.application_details);
     this.form_fielddata = this.application_details.application_form;
+  
     this.applicationGeneraldetailsfrm = this.formBuilder.group({});
-    
-    // this.permitProductsFrm = this.formBuilder.group({});
-    
+
+
     for (let form_field of this.form_fielddata) {
       let field_name = form_field['field_name'];
       if (form_field['is_mandatory'] == 1) {
@@ -187,6 +210,7 @@ export class SharedImpexpApplicationClass {
 
       }
     }
+
 
     if (this.application_details) {
 
@@ -203,6 +227,7 @@ export class SharedImpexpApplicationClass {
     }
 
 
+  
     this.permitProductsFrm = new FormGroup({
       brand_name: new FormControl('', Validators.compose([Validators.required])),
       product_description: new FormControl('', Validators.compose([])),
@@ -311,8 +336,7 @@ export class SharedImpexpApplicationClass {
 
     if (this.application_details) {
       this.applicationGeneraldetailsfrm.patchValue(this.application_details);
-      this.permitProductsFrm.patchValue(this.application_details);
-
+    
     }
 
   }
@@ -385,6 +409,10 @@ export class SharedImpexpApplicationClass {
     else {
       this.consignee_options_check = false;
     }
+  }
+
+  funcpopHeight(percentage_height) {
+    return window.innerHeight * percentage_height / 100;
   }
   funcValidatePermitDetails(validation_title, nextStep) {
 
@@ -494,6 +522,9 @@ export class SharedImpexpApplicationClass {
 
   }
 
+  onFuncSubmitApplication() {
+    this.isShowAppProcessSubmission= true;
+  }
   onApplicationDocumentToolbar(e) {
     this.functDataGridToolbar(e, this.funAddApplicationUploadDetails, 'Upload Document');
 

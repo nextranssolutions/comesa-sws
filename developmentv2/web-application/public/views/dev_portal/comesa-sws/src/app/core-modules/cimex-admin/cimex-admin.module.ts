@@ -291,6 +291,11 @@ import { PortEntryExitComponent } from './views/configurations/permit-applicatio
 import { PortEntryTypeComponent } from './views/configurations/permit-application-parameters/port-entry-type/port-entry-type.component';
 import { SharedPermitapplicationComponent } from './views/configurations/permit-application-parameters/shared-permitapplication/shared-permitapplication.component';
 import { TransactionCurrencyComponent } from './views/configurations/permit-application-parameters/transaction-currency/transaction-currency.component';
+import { ImportexportProceduredetailsComponent } from './views/configurations/import-export-procedures/importexport-proceduredetails/importexport-proceduredetails.component';
+import { ImportexportProceduresConfigsetupComponent } from './views/configurations/import-export-procedures/importexport-procedures-configsetup/importexport-procedures-configsetup.component';
+import { ProceduresCategoriesComponent } from './views/configurations/import-export-procedures/procedures-categories/procedures-categories.component';
+import { ProceduresSubcategoriesComponent } from './views/configurations/import-export-procedures/procedures-subcategories/procedures-subcategories.component';
+import { SharedImportexportProceduresComponent } from './views/configurations/import-export-procedures/shared-importexport-procedures/shared-importexport-procedures.component';
 
 @NgModule({
   declarations: [AppdashboardComponent,
@@ -597,6 +602,12 @@ import { TransactionCurrencyComponent } from './views/configurations/permit-appl
     PortalDocdefinationComponent,
     IntegrationManagementComponent,
 
+    ImportexportProceduredetailsComponent,
+    ImportexportProceduresConfigsetupComponent,
+    ProceduresCategoriesComponent,
+    ProceduresSubcategoriesComponent,
+    SharedImportexportProceduresComponent
+
 
   ],
   imports: [
@@ -883,6 +894,12 @@ import { TransactionCurrencyComponent } from './views/configurations/permit-appl
     DynamicFormComponent,
     FormFieldsComponent,
     FormTypesComponent,
+
+    ImportexportProceduredetailsComponent,
+    ImportexportProceduresConfigsetupComponent,
+    ProceduresCategoriesComponent,
+    ProceduresSubcategoriesComponent,
+    SharedImportexportProceduresComponent
   ]
 })
 export class CimexAdminModule { }
