@@ -268,16 +268,15 @@
             <form enctype="multipart/form-data" style="margin:0.5px" class="row div-whiteback " role="form"
                 [formGroup]="applicationSelectionfrm" (ngSubmit)="onApplicationSelection()">
                 <div class="col-lg-12" style="margin-bottom: 30px;">
-                    <h6>Import License authorizes imported regulated products to enter the Country after complying with
-                        all importation requirements:</h6>
-                    <h6>Import License Application : Import Permit application for Registered Products</h6>
+                    <h6>{{'permit_type_selection_description' | translate}}</h6>
+    
                 </div>
                 <div class="col-lg-12">
 
                     <label>{{'permit_type' | translate}}</label>
                     <dx-select-box [dataSource]="permitTypesData" valueExpr="id" displayExpr="name"
-                        placeholder="{{'select_permit_type_category' | translate}}" [searchEnabled]="true"
-                        formControlName="permit_type_id">
+                        placeholder="{{'select_permit_type' | translate}}" [searchEnabled]="true"
+                        formControlName="transactionpermit_type_id">
                     </dx-select-box>
                 </div>
                 <div class="col-lg-12  pull-right row" style="text-align: center;">

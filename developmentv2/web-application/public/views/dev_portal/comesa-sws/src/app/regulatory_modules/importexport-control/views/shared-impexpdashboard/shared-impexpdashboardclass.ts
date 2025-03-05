@@ -1,5 +1,5 @@
 import { Component, Directive, ViewChild, ViewContainerRef } from '@angular/core';
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DxDataGridComponent } from 'devextreme-angular';
 import { SpinnerVisibilityService } from 'ng-http-loader';
@@ -8,12 +8,14 @@ import { AppSettings } from 'src/app/app-settings';
 import { UtilityService } from 'src/app/core-services/utilities/utility.service';
 import { ImportExportService } from '../../services/import-export.service';
 import { ConfigurationsService } from 'src/app/core-services/configurations/configurations.service';
+import { AuthenticationService } from 'src/app/core-services/authentication/authentication.service';
 
 @Directive()
 export class SharedImpExpdashboardClass {
 
   @ViewChild(DxDataGridComponent) dataGrid: DxDataGridComponent;
   is_popupguidelines: boolean;
+  applicationGeneraldetailsfrm: FormGroup;
   approved_applications: number = 0;
   pending_submission: number = 0;
   queried_applications: number = 0;
@@ -47,12 +49,11 @@ export class SharedImpExpdashboardClass {
   FilterDetailsFrm: FormGroup;
   productappTypeData: any;
   applicationStatusData: any;
-  permit_typecategory_id: number;
   productTypeData: any;
   data_record: any;
   guidelines_title: string;
   regulatory_subfunction_id: string;
-  permit_type_id: 1;
+  transactionpermit_type_id: number;
   application_title: string;
   sectionItem: any;
   app_typeItem: any;
@@ -80,16 +81,31 @@ export class SharedImpExpdashboardClass {
   importExportPermitTypesData: any;
   processingData: any;
   wofklowStatusData: any;
-  constructor(public utilityService: UtilityService, public viewRef: ViewContainerRef, public spinner: SpinnerVisibilityService, public toastr: ToastrService, public router: Router, public configService: ConfigurationsService, public appService: ImportExportService) { // this.onLoadApplicationCounterDetails();
+  form_fielddata: any;
+  trader_id: number;
+  mistrader_id: number;
+  process_title: string;
+  tracking_no: string;
+  application_id: number;
+  application_code: number;
+  application_type_id: any;
+  table_name: string;
+  constructor(public utilityService: UtilityService, public viewRef: ViewContainerRef, 
+    public spinner: SpinnerVisibilityService, 
+    public toastr: ToastrService, 
+    public router: Router, public configService: ConfigurationsService, 
+    public authService: AuthenticationService,
+    public formBuilder: FormBuilder,
+    public appService: ImportExportService)
+    { // this.onLoadApplicationCounterDetails();
 
 
     this.applicationSelectionfrm = new FormGroup({
       // regulated_productstype_id: new FormControl(this.productTypeData, Validators.compose([Validators.required])),
       regulatory_subfunction_id: new FormControl('', Validators.compose([])),
       // producttype_defination_id: new FormControl('', Validators.compose([])),
-      permit_type_id: new FormControl('', Validators.compose([]))
+      transactionpermit_type_id: new FormControl('', Validators.compose([]))
     });
-
 
     this.frmPreviewAppDetails = new FormGroup({
       tracking_no: new FormControl('', Validators.compose([Validators.required])), reference_no: new FormControl('', Validators.compose([Validators.required])),
@@ -105,6 +121,8 @@ export class SharedImpExpdashboardClass {
       paying_currency_id: new FormControl('', Validators.compose([])),
       submission_comments: new FormControl('', Validators.compose([]))
     });
+   this.table_name = 'tra_importexport_applications';
+
     this.onLoadProductTypes();
     this.onLoadconfirmDataParam();
     // this.onLoadproducttypeDefinationData();
@@ -112,6 +130,8 @@ export class SharedImpExpdashboardClass {
     this.onLoadPermitTypesData();
     this.onLoadWorkflowStatusData();
   }
+
+  
 
 
   scrollToTop(): void {
@@ -152,15 +172,29 @@ export class SharedImpExpdashboardClass {
   //is_approvedVisaPermit
 
   onClickSubModuleAppSelection(regulatory_subfunction_id, subfunction_name) {
-    this.spinnerShow('Loading...........');
-    if (regulatory_subfunction_id == 1 ) {
+
+    if (regulatory_subfunction_id == 1 || regulatory_subfunction_id == 91) {
       this.isPermitInitialisation = true;
       this.applicationSelectionfrm.get('regulatory_subfunction_id')?.setValue(regulatory_subfunction_id);
-      this.applicationSelectionfrm.get('permit_type_id')?.setValue(this.permit_type_id);
+
+    } else if (regulatory_subfunction_id == 30) {
+      this.isPermitInitialisation = true;
+      this.applicationSelectionfrm.get('regulatory_subfunction_id')?.setValue(regulatory_subfunction_id);
+
+    } else if (regulatory_subfunction_id == 94) {
+
       this.application_details = { regulatory_function_id: this.regulatory_function_id, process_title: subfunction_name, regulatory_subfunction_id: regulatory_subfunction_id };
       this.appService.setApplicationDetail(this.application_details);
-      console.log(this.application_details)
-      this.spinnerHide();
+
+      this.app_route = ['./importexport-control/product-variantapp-selection'];
+
+      this.router.navigate(this.app_route);
+      this.scrollToTop();
+    } else {
+
+      this.application_details = { regulatory_function_id: this.regulatory_function_id, process_title: subfunction_name, regulatory_subfunction_id: regulatory_subfunction_id };
+      this.appService.setApplicationDetail(this.application_details);
+
       this.app_route = ['./importexport-control/registered-product-selection'];
 
       this.router.navigate(this.app_route);
@@ -177,12 +211,12 @@ export class SharedImpExpdashboardClass {
   
     this.spinner.show();
     
-    let permit_type_id = this.applicationSelectionfrm.get('permit_type_id');
+    let transactionpermit_type_id = this.applicationSelectionfrm.get('transactionpermit_type_id');
     let regulatory_subfunction_id = this.applicationSelectionfrm.get('regulatory_subfunction_id');
-    this.permit_type_id = permit_type_id?.value;
+    this.transactionpermit_type_id = transactionpermit_type_id?.value;
     this.regulatory_subfunction_id = regulatory_subfunction_id?.value;
   
-    this.configService.getSectionUniformApplicationProces(this.regulatory_subfunction_id, this.permit_type_id)
+    this.configService.getSectionUniformApplicationProces(this.regulatory_subfunction_id, 0,this.transactionpermit_type_id)
       .subscribe(
         data => {
           if (data.success) {
@@ -191,7 +225,7 @@ export class SharedImpExpdashboardClass {
             this.title = this.processingData.field_name;
             this.router_link = this.processData.router_link;
             this.productsapp_details = this.processData;
-            data.data.permit_type_id = permit_type_id;
+           
             localStorage.setItem('application_details', JSON.stringify(data.data));
   
             this.app_route = ['./importexport-control/' + this.router_link];

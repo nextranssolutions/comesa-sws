@@ -101,6 +101,7 @@ export class SharedImpexpApplicationClass {
   process_id: number;
   tracking_no: string;
   status_name: string;
+  permit_name: string;
   regulatory_function_id: number = 4;
 
   app_route: any;
@@ -215,6 +216,7 @@ export class SharedImpexpApplicationClass {
       this.tracking_no = this.application_details.tracking_no;
       this.permit_type_id = this.application_details.permit_type_id;
       this.status_name = this.application_details.status_name;
+      this.permit_name = this.application_details.permit_name;
       this.status_id = this.application_details.application_status_id;
       this.application_code = this.application_details.application_code;
       this.proforma_currency_id = this.application_details.proforma_currency_id;

@@ -229,6 +229,7 @@ public function getRegulatoryFunctionGuidelines(Request $req)
             $user_id = $req->user_id;
             $regulatory_function_id = $req->regulatory_function_id;
             $account_type_id = $req->account_type_id;
+            $account_type_id = $req->account_type_id;
             // $regulatory_function_id =1;
             if (validateIsNumeric($user_id) || $navigation_type_id != 2) {
                 //get the table data ,'user_group_id' => $userGroupId
@@ -262,7 +263,12 @@ public function getRegulatoryFunctionGuidelines(Request $req)
                 if (validateIsNumeric($regulatory_function_id)) {
                     $navigationItems->where('t1.regulatory_function_id', $regulatory_function_id);
                 }
-             
+
+                
+                if (validateIsNumeric($account_type_id)) {
+                    $navigationItems->where('t1.account_type_id', $account_type_id);
+                }
+
                 $navigationItems = $navigationItems->get();
 
                 $rootItems = array();

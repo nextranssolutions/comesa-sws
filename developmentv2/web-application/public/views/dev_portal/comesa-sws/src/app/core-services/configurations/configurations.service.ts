@@ -245,14 +245,14 @@ export class ConfigurationsService {
         return <any>data;
       }));
   } 
-  getSectionUniformApplicationProces(regulatory_subfunction_id, status_id, permit_type_id= 0,prodclass_category_id= 0,appsubmissions_type_id= null, gmp_type_id=0) {
+  getSectionUniformApplicationProces(regulatory_subfunction_id, status_id, transactionpermit_type_id= 0,prodclass_category_id= 0,appsubmissions_type_id= null, gmp_type_id=0) {
     
     var headers = new Headers({
       "Accept": "application/json",
       "Authorization": "Bearer " + this.authService.getAccessToken(),
     });
     this.config = {
-      params: { regulatory_subfunction_id: regulatory_subfunction_id,permit_type_id:permit_type_id,appsubmissions_type_id:appsubmissions_type_id,},
+      params: { regulatory_subfunction_id: regulatory_subfunction_id,transactionpermit_type_id:transactionpermit_type_id,appsubmissions_type_id:appsubmissions_type_id,},
       headers: headers
     };
     return this.HttpClient.get(this.baseUrl + '/getUniformSectionApplicationProcess', this.config)

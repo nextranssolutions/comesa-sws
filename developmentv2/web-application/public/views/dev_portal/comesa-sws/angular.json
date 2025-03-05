@@ -45,7 +45,6 @@
               "src/dist/ng-wizard/themes/ng_wizard_theme_arrows.min.css",
               "src/dist/ng-wizard/themes/ng_wizard_theme_circles.min.css",
               "src/dist/ng-wizard/themes/ng_wizard_theme_dots.min.css"
-              
             ],
             
             "scripts": [
