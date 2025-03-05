@@ -537,10 +537,10 @@ public function getRegulatoryFunctionGuidelines(Request $req)
 
             unset($requestData['table_name']);
 
-            $check_exempt = DB::connection('portal')->table('ptl_exemptedpublic_tables')
+            $check_exempt = DB::table('ptl_exemptedpublic_tables')
                 ->where(array('table_name' => $table_name))
                 ->count();
-            $sql = DB::connection('portal')->table($table_name . ' as t1');
+            $sql = DB::table($table_name . ' as t1');
 
             if ($check_exempt > 0 || $table_name == null || $table_name == '') {
                 $res = array('success' => false, 'message' => 'Table has been blocked for access');
@@ -830,20 +830,20 @@ public function getRegulatoryFunctionGuidelines(Request $req)
             }
             if (validateIsNumeric($record_id)) {
                 $where = array('id' => $record_id);
-                if (recordExists($table_name, $where, 'portal')) {
+                if (recordExists($table_name, $where, )) {
 
                     $data['dola'] = Carbon::now();
                     $data['altered_by'] = $user_id;
 
-                    $previous_data = getPreviousRecords($table_name, $where, 'portal');
+                    $previous_data = getPreviousRecords($table_name, $where, );
 
-                    $resp = updateRecord($table_name, $previous_data['results'], $where, $data, $user_name, 'portal');
+                    $resp = updateRecord($table_name, $previous_data['results'], $where, $data, $user_name, );
                 }
             } else {
                 unset($data['id']);
                 $data['created_by'] = $user_id;
                 $data['created_on'] = Carbon::now();
-                $resp = insertRecord($table_name, $data, $user_name, 'portal');
+                $resp = insertRecord($table_name, $data, $user_name, );
             }
 
             $res = getGenericResponsewithRercId($resp);
@@ -1023,7 +1023,7 @@ public function getRegulatoryFunctionGuidelines(Request $req)
             $where_state = ['id' => $record_id];
 
             // Fetch the record to confirm existence
-            $records = DB::connection('portal')->table($table_name)
+            $records = DB::table($table_name)
                 ->where($where_state)
                 ->get();
 
@@ -1035,7 +1035,7 @@ public function getRegulatoryFunctionGuidelines(Request $req)
             }
 
             // Get previous record data
-            $previous_data = getPreviousRecords($table_name, $where_state, 'portal');
+            $previous_data = getPreviousRecords($table_name, $where_state, );
 
             // Attempt to delete the record
             $resp = deleteRecordNoTransaction($table_name, $previous_data['results'], $where_state, $user_id);
@@ -1389,7 +1389,7 @@ public function getRegulatoryFunctionGuidelines(Request $req)
             $workflowprocesses_id = $req->workflowprocesses_id;
 
             // Fetch data from the ptl_workflowprocesses_stages table where workflow_id matches
-            $data = DB::connection('portal')->table('ptl_workflowprocesses_stages')
+            $data = DB::table('ptl_workflowprocesses_stages')
                 ->where('workflowprocesses_id', $workflowprocesses_id)
                 ->orderBy('order_no')
                 ->get();
@@ -1415,7 +1415,7 @@ public function getRegulatoryFunctionGuidelines(Request $req)
             $workflowprocesses_id = $req->workflowprocesses_id;
 
             // Fetch data from the wf_workflow_stages table where workflow_id matches
-            $data = DB::connection('portal')->table('ptl_workflowprocesses_transitions')
+            $data = DB::table('ptl_workflowprocesses_transitions')
                 ->where('workflowprocesses_id', $workflowprocesses_id)
                 ->orderBy('order_no')
                 ->get();
@@ -1479,7 +1479,7 @@ public function getRegulatoryFunctionGuidelines(Request $req)
 
             $where_state = array('id' => $record_id);
 
-            $record = DB::connection('portal')->table($table_name)
+            $record = DB::table($table_name)
                 ->where($where_state)
                 ->first();
             if ($record) {
@@ -1493,13 +1493,13 @@ public function getRegulatoryFunctionGuidelines(Request $req)
                 }
                 $data = array('is_enabled' => $is_enabled);
 
-                $previous_data = getPreviousPortalRecords($table_name, $where_state);
+                $previous_data = getPreviousRecords($table_name, $where_state);
 
                 $data['dola'] = Carbon::now();
                 $data['altered_by'] = $user_id;
 
-                $previous_data = getPreviousPortalRecords($table_name, $where_state);
-                $resp = updatePortalRecord($table_name, $previous_data['results'], $where_state, $data, $user_name);
+                $previous_data = getPreviousRecords($table_name, $where_state);
+                $resp = updateRecord($table_name, $previous_data['results'], $where_state, $data, $user_name);
             }
 
             if ($resp) {

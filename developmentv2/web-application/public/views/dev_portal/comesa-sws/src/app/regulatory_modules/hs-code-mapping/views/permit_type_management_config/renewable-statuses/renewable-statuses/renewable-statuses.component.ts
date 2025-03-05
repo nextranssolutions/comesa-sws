@@ -12,6 +12,6 @@ export class RenewableStatusesComponent {
     // private http: HttpClient,
   ) {
     this.table_name = 'par_renewable_statuses';
-    this.parameter_name = "renewable_statuses";
+    this.parameter_name = "renewable_permits";
   }
 }

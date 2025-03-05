@@ -1,34 +1,35 @@
 import { Component, Input, ViewContainerRef } from '@angular/core';
-import { FormGroup, FormControl, Validators } from '@angular/forms';
+import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
 import { SpinnerVisibilityService } from 'ng-http-loader';
+
 import { ToastrService } from 'ngx-toastr';
 import { ConfigurationsService } from 'src/app/core-services/configurations/configurations.service';
 import { ReportsService } from 'src/app/core-services/reports/reports.service';
 import { UtilityService } from 'src/app/core-services/utilities/utility.service';
 
 @Component({
-  selector: 'app-shared-permit-type-management-config',
-  templateUrl: './shared-permit-type-management-config.component.html',
-  styleUrl: './shared-permit-type-management-config.component.css'
+  selector: 'app-shared-importexport-procedures',
+  templateUrl: './shared-importexport-procedures.component.html',
+  styleUrl: './shared-importexport-procedures.component.css'
 })
 
-export class SharedPermitTypeManagementConfigComponent {
+export class SharedImportexportProceduresComponent {
   @Input() table_name: string;
   @Input() parameter_name: string;
   hasReadpermissions: boolean;
   createNewDataFrm: FormGroup;
   onAddNewConfiVisible: boolean;
   NewConfigData: any[] = [];
-  transactionpermitTypeIdData: any[] = [];
-  organisationIDData: any[] = [];
-  performancescoring_scale_idData: any[] = [];
-  processIdData: any[] = [];
-  stage_status_IdData: any[] = [];
-  interface_IdData: any[] = [];
-  process_category_IdData: any[] = [];
+  proceduresCategoryIdData: any[] = [];
+  proceduresSubCategoryIdData: any[] = [];
+  hscodechapters_defination_IdData: any[] = [];
+  hscodeheading_defination_IdData: any[] = [];
+  hscodesubheading_defination_IdData: any[] = [];
+  organisationIdData: any[] = [];
+  operationTypeIdData: any[] = [];
   show_advancesearch: boolean;
   isnewprocess: boolean;
   config_record: string;
@@ -78,13 +79,7 @@ export class SharedPermitTypeManagementConfigComponent {
       name: new FormControl('', Validators.compose([Validators.required])),
       description: new FormControl('', Validators.compose([Validators.required])),
       is_enabled: new FormControl('', Validators.compose([])),
-      hscode: new FormControl('', Validators.compose([])),
-      chapters_defination_id: new FormControl('', Validators.compose([])),
-      transactionpermit_type_id: new FormControl('', Validators.compose([])),
-      organisationIDData: new FormControl('', Validators.compose([])),
-      performancescoring_scale_id: new FormControl('', Validators.compose([])),
-      process_id: new FormControl('', Validators.compose([])),
-      code: new FormControl('', Validators.compose([])),
+      product_type_id: new FormControl('', Validators.compose([])),
     });
 
 
@@ -93,14 +88,14 @@ export class SharedPermitTypeManagementConfigComponent {
 
   ngOnInit() {
     this.fetchNewConfigData();
-    this.fetchTransactionpermitTypeIdData();
+    this.fetchProceduresCategoryIdData();
+    this.fetchProceduresSubCategoryIdData();
     this.fetchNewConfigurations();
-    this.fetchOrganisationIDData();
-    this.fetchPerformancescoring_scale_idData();
-    this.fetchProcessIdData();
-    this.fetchStage_status_IdData();
-    this.fetchInterface_IdData();
-    this.fetchProcess_category_IdData();
+    this.fetchHscodechapters_defination_IdData();
+    this.fetchHscodeheading_defination_IdData();
+    this.fetchHscodesubheading_defination_IdData();
+    this.fetchOrganisationIdData();
+    this.fetchOperationTypeIdData();
   }
 
   spinnerShow(spinnerMessage) {
@@ -178,8 +173,6 @@ export class SharedPermitTypeManagementConfigComponent {
           this.spinnerHide();
         });
   }
-
-
   fetchNewConfigData() {
 
     var data_submit = {
@@ -198,28 +191,106 @@ export class SharedPermitTypeManagementConfigComponent {
         error => {
 
         });
-
   }
 
-  fetchTransactionpermitTypeIdData() {
-    var data_submit = {
-      'table_name': 'tra_transactionpermit_types'
-    }
+  
 
+  fetchProceduresCategoryIdData() {
+
+    var data_submit = {
+      'table_name': 'par_procedures_categories'
+    }
     this.configService.onLoadConfigurationData(data_submit)
       .subscribe(
         data => {
           this.data_record = data;
           if (this.data_record.success) {
-            this.transactionpermitTypeIdData = this.data_record.data
+            this.proceduresCategoryIdData = this.data_record.data
           }
         },
         error => {
 
         });
+
   }
 
-  fetchOrganisationIDData() {
+  fetchProceduresSubCategoryIdData() {
+
+    var data_submit = {
+      'table_name': 'par_procedures_subcategories'
+    }
+    this.configService.onLoadConfigurationData(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.proceduresSubCategoryIdData = this.data_record.data
+          }
+        },
+        error => {
+
+        });
+
+  }
+
+  fetchHscodechapters_defination_IdData() {
+
+    var data_submit = {
+      'table_name': 'par_hscodechapters_defination'
+    }
+    this.configService.onLoadConfigurationData(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.hscodechapters_defination_IdData = this.data_record.data
+          }
+        },
+        error => {
+
+        });
+
+  }
+
+  fetchHscodeheading_defination_IdData() {
+
+    var data_submit = {
+      'table_name': 'par_hscodesheading_definations'
+    }
+    this.configService.onLoadConfigurationData(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.hscodeheading_defination_IdData = this.data_record.data
+          }
+        },
+        error => {
+
+        });
+
+  }
+
+  fetchHscodesubheading_defination_IdData() {
+
+    var data_submit = {
+      'table_name': 'par_hscodessubheading_defination'
+    }
+    this.configService.onLoadConfigurationData(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.hscodesubheading_defination_IdData = this.data_record.data
+          }
+        },
+        error => {
+
+        });
+
+  }
+
+  fetchOrganisationIdData() {
 
     var data_submit = {
       'table_name': 'par_organisation_types'
@@ -229,110 +300,33 @@ export class SharedPermitTypeManagementConfigComponent {
         data => {
           this.data_record = data;
           if (this.data_record.success) {
-            this.organisationIDData = this.data_record.data
+            this.organisationIdData = this.data_record.data
           }
         },
         error => {
 
         });
+
   }
 
-  
-
-  fetchPerformancescoring_scale_idData() {
+  fetchOperationTypeIdData() {
 
     var data_submit = {
-      'table_name': 'par_performancescoring_scales'
+      'table_name': 'par_operation_type'
     }
     this.configService.onLoadConfigurationData(data_submit)
       .subscribe(
         data => {
           this.data_record = data;
           if (this.data_record.success) {
-            this.performancescoring_scale_idData = this.data_record.data
+            this.operationTypeIdData = this.data_record.data
           }
         },
         error => {
 
         });
+
   }
-
-  fetchProcessIdData() {
-
-    var data_submit = {
-      'table_name': 'wf_processes'
-    }
-    this.configService.onLoadConfigurationData(data_submit)
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            this.processIdData = this.data_record.data
-          }
-        },
-        error => {
-
-        });
-  }
-
-
-
-  fetchStage_status_IdData() {
-
-    var data_submit = {
-      'table_name': 'wf_stage_statuses'
-    }
-    this.configService.onLoadConfigurationData(data_submit)
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            this.stage_status_IdData = this.data_record.data
-          }
-        },
-        error => {
-
-        });
-  }
-
-  fetchInterface_IdData() {
-
-    var data_submit = {
-      'table_name': 'wf_workflow_interfaces'
-    }
-    this.configService.onLoadConfigurationData(data_submit)
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            this.interface_IdData = this.data_record.data
-          }
-        },
-        error => {
-
-        });
-  }
-
-  fetchProcess_category_IdData() {
-
-    var data_submit = {
-      'table_name': 'wf_workflow_process_category'
-    }
-    this.configService.onLoadConfigurationData(data_submit)
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            this.process_category_IdData = this.data_record.data
-          }
-        },
-        error => {
-
-        });
-  }
-  
-
-  
 
   funcpopWidth(percentage_width) {
     return window.innerWidth * percentage_width / 100;
@@ -455,9 +449,6 @@ export class SharedPermitTypeManagementConfigComponent {
         });
 
   }
-
-
-
   onExporting(e: DxDataGridTypes.ExportingEvent) {
 
     if (e.format == 'pdf') {
@@ -468,4 +459,5 @@ export class SharedPermitTypeManagementConfigComponent {
     }
   }
 }
+
 

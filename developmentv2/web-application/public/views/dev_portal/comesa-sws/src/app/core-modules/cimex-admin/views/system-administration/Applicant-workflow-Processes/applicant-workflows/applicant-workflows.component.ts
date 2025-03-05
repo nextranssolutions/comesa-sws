@@ -270,7 +270,7 @@ export class ApplicantWorkflowsComponent {
     var data_submit = {
       'table_name': 'ptl_application_statuses'
     }
-    this.workflowService.getPortalWorkflowsConfigs(data_submit)
+    this.workflowService.getWorkflowConfigs(data_submit)
       .subscribe(
         data => {
           this.data_record = data;
@@ -506,7 +506,7 @@ export class ApplicantWorkflowsComponent {
       'table_name': 'ptl_workflow_interfaces',
       // process_id: process_id
     }
-    this.workflowService.getPortalWorkflowsConfigs(data_submit)
+    this.workflowService.getWorkflowConfigs(data_submit)
       .subscribe(
         data => {
           this.data_record = data;

@@ -237,6 +237,11 @@ import { PortEntryExitComponent } from './views/configurations/permit-applicatio
 import { PortEntryTypeComponent } from './views/configurations/permit-application-parameters/port-entry-type/port-entry-type.component';
 import { SharedPermitapplicationComponent } from './views/configurations/permit-application-parameters/shared-permitapplication/shared-permitapplication.component';
 import { TransactionCurrencyComponent } from './views/configurations/permit-application-parameters/transaction-currency/transaction-currency.component';
+import { ImportexportProceduredetailsComponent } from './views/configurations/import-export-procedures/importexport-proceduredetails/importexport-proceduredetails.component';
+import { ImportexportProceduresConfigsetupComponent } from './views/configurations/import-export-procedures/importexport-procedures-configsetup/importexport-procedures-configsetup.component';
+import { ProceduresCategoriesComponent } from './views/configurations/import-export-procedures/procedures-categories/procedures-categories.component';
+import { ProceduresSubcategoriesComponent } from './views/configurations/import-export-procedures/procedures-subcategories/procedures-subcategories.component';
+import { SharedImportexportProceduresComponent } from './views/configurations/import-export-procedures/shared-importexport-procedures/shared-importexport-procedures.component';
 
 //./admin-ecres/app-dashboard
 const routes: Routes = [{
@@ -1144,16 +1149,41 @@ const routes: Routes = [{
   {
     path: 'app-integration-management',
     component: IntegrationManagementComponent
-  }, {
+  },
+  {
     path: 'trader-account-management',
     component: TraderAccountManagementComponent
-  }, {
+  },
+  {
     path: 'api-users',
     component: ApiUsersComponent
-  }, {
+  },
+  {
     path: 'external-users',
     component: ExternalUsersComponent
-  }, 
+  },
+  {
+    path: 'app-importexport-proceduredetails',
+    component: ImportexportProceduredetailsComponent
+    
+  },
+  {
+    path: 'app-importexport-procedures-configsetup',
+    component: ImportexportProceduresConfigsetupComponent
+  },
+  {
+    path: 'app-procedures-categories',
+    component: ProceduresCategoriesComponent
+  },
+  {
+    path: 'app-procedures-subcategories',
+    component: ProceduresSubcategoriesComponent
+  },
+  {
+    path: 'app-shared-importexport-procedures',
+    component: SharedImportexportProceduresComponent
+  },
+  
   
   ]
 }]
