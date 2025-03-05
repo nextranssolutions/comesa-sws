@@ -79,14 +79,17 @@
         <dxi-column dataField="reference_no" caption="{{'application_reference' | translate}}"></dxi-column>
         <dxi-column [width]=90 [groupIndex]="0" dataField="permit_name"
             caption="{{'permit_type' | translate}}"></dxi-column>
-        <dxi-column dataField="application_type" caption="{{'application_type' | translate}}"></dxi-column>
-        <dxi-column [width]=150 dataField="permit_category" caption="{{'permit_category' | translate}}"></dxi-column>
-        <dxi-column [width]=100 dataField="proforma_invoice_no" caption="{{'invoice_no' | translate}}"></dxi-column>
-        <dxi-column dataField="proforma_invoice_date" caption="{{'invoice_date' | translate}}"></dxi-column>
-        <dxi-column dataField="sender_receiver" caption="{{'sender_supplier' | translate}}"></dxi-column>
+            <dxi-column [width]=100 dataField="date_of_application"
+            caption="{{'date_of_application' | translate}}"></dxi-column>
 
-        <dxi-column dataField="premises_name" caption="{{'premises_name' | translate}}"></dxi-column>
-
+            <dxi-column [width]=100 dataField="invoice_number" caption="{{'invoice_number' | translate}}"></dxi-column>
+            <dxi-column dataField="invoice_date" caption="{{'invoice_date' | translate}}"></dxi-column>
+            <dxi-column dataField="total_invoice_value" caption="{{'total_invoice_value' | translate}}"></dxi-column>
+            <dxi-column dataField="currency_name" caption="{{'currency_of_transaction' | translate}}"></dxi-column>
+            
+            
+            <dxi-column dataField="importer_exporter_name" caption="{{'importer_exporter_name' | translate}}"></dxi-column>
+    
         <dxi-column [width]=100 [allowFiltering]="false" dataField="date_added"
             caption="{{'date_added' | translate}}"></dxi-column>
         <!-- <dxi-column [groupIndex]="1" dataField="status_name" caption="{{'status_name' | translate}}"></dxi-column> -->

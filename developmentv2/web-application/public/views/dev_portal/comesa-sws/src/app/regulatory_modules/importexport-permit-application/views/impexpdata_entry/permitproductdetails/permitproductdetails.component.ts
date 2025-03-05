@@ -619,7 +619,7 @@ export class PermitproductdetailsComponent implements OnInit {
 
   funcSelectRegisteredProduct(data) {
     this.permitProductsFrm.reset();
-    console.log(data.data.product_id);
+    
     let validitystatus_id = data.data.validity_status_id;
     let retentionstatus_id = data.data.retentionstatus_id;
 
@@ -1263,7 +1263,7 @@ export class PermitproductdetailsComponent implements OnInit {
           "Accept": "application/json",
           "Authorization": "Bearer " + me.authService.getAccessToken(),
         });
-        console.log(loadOptions.filter);
+        
         me.configData = {
           headers: headers,
           params: { skip: loadOptions.skip, take: loadOptions.take, searchValue: loadOptions.filter, table_name: 'registered_products', 'regulatory_function_id': me.regulatory_function_id, 'regulatory_subfunction_id': me.regulatory_subfunction_id, regulated_productstype_id: me.regulated_productstype_id, trader_id: me.trader_id, mistrader_id: me.mistrader_id }
@@ -1363,7 +1363,7 @@ export class PermitproductdetailsComponent implements OnInit {
 
     this.manufacturersData.store = new CustomStore({
       load: async function (loadOptions: any) {
-        console.log(loadOptions);
+      // console.log(loadOptions);
 
         // Extract pagination parameters safely
         const skip = loadOptions.skip ?? 0;
@@ -1412,7 +1412,7 @@ export class PermitproductdetailsComponent implements OnInit {
 
     this.productCategoryData.store = new CustomStore({
       load: function (loadOptions: any) {
-        console.log(loadOptions)
+        // console.log(loadOptions)
         var params = '?';
         params += 'skip=' + loadOptions.skip;
         params += '&take=' + loadOptions.take;//searchValue
