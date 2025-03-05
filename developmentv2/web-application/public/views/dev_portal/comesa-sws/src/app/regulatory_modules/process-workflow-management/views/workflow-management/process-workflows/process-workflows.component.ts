@@ -541,10 +541,7 @@ fetchWorkflowStageActionsDetails(workflow_stage_id) {
       }
     });
     this.spinnerHide();
-
-
 }
-
 
 
 fetchWorkflowTransitionsDetails(workflow_id) {
@@ -1111,7 +1108,7 @@ onFuncSaveWorkflowStageDetailsData() {
         //the details 
         if (this.response.success) {
 
-          this.fetchWorkflowStagesInfo(this.workflow_id);
+          this.fetchWorkflowStageActionsDetails(this.workflow_stage_id);
           this.workflowStagesVisible = false;
           this.toastr.success(this.response.message, 'Response');
           this.spinnerHide();
@@ -1154,7 +1151,7 @@ onFuncSaveWorlflowStageActionData() {
         //the details 
         if (this.response.success) {
 
-          this.fetchWorkflowStagesInfo(this.workflow_id);
+          this.fetchWorkflowStageProcessActions(this.workflow_stage_id);
           this.workflowStageDetailsVisible = false;
           this.toastr.success(this.response.message, 'Response');
           this.spinnerHide();
