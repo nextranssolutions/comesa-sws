@@ -227,6 +227,8 @@ import { PromotionmaterialCategoriesComponent } from './views/configurations/pro
 import { ProcessConfigsetupComponent } from './views/configurations/process-configurations/process-configsetup/process-configsetup.component';
 import { InstitutionsInformationComponent } from './views/system-administration/institutions-information/institutions-information.component';
 import { RegulatoryFunctionGuidelinesComponent } from './views/system-administration/system-guidelines/regulatory-function-guidelines/regulatory-function-guidelines.component';
+import { DmsRepositoryDefinitionComponent } from './views/document-checklistsmng/dms/dms-repository-definition/dms-repository-definition.component';
+import { ApplicantWorkflowsetupComponent } from './views/system-administration/Applicant-workflow-Processes/applicant-workflowsetup/applicant-workflowsetup.component';
 import { InvoiceTypeComponent } from './views/configurations/permit-application-parameters/invoice-type/invoice-type.component';
 import { ModeOfTransportComponent } from './views/configurations/permit-application-parameters/mode-of-transport/mode-of-transport.component';
 import { PermitStorageConditionsComponent } from './views/configurations/permit-application-parameters/permit-storage-conditions/permit-storage-conditions.component';
@@ -376,7 +378,8 @@ const routes: Routes = [{
   }, {
     path: 'app-institutions',
     component: AppInstitution
-  }, {
+  },
+  {
     path: 'app-institution-departments',
     component: AppInstitutionDepartments
   },
@@ -415,7 +418,6 @@ const routes: Routes = [{
     path: 'app-form-fields',
     component: FormFieldsComponent
   }
-
     ,
   {
     path: 'app-form-types',
@@ -424,6 +426,10 @@ const routes: Routes = [{
   {
     path: 'app-shared-portal-navigations',
     component: SharedPortalNavigationsComponent
+  },
+  {
+    path: 'app-dms-repository-definition',
+    component: DmsRepositoryDefinitionComponent
   },
   {
     path: 'app-shared-portal-navigations',
@@ -797,8 +803,12 @@ const routes: Routes = [{
     path: 'app-external-dashboard',
     component: ExternalDashboardComponent
   },
+  {
+    path: 'app-applicant-workflowsetup',
+    component: ApplicantWorkflowsetupComponent
+  },
   
-
+  
   {
     path: 'app-annual-ceilconf',
     component: AnnualCeilconfComponent

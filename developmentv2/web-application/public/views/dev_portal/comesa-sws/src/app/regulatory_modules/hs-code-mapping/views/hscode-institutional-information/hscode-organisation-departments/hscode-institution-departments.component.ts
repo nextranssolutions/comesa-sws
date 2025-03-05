@@ -11,8 +11,8 @@ export class HscodeInstitutionDepartmentsComponent {
   constructor(
     // private http: HttpClient,
   ) {
-    this.table_name = 'par_institutions_department';
-    this.parameter_name = "institution_departments";
+    this.table_name = 'par_organisation_departments';
+    this.parameter_name = "organisation_departments";
   }
 
   ngOnInit() {

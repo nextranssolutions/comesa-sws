@@ -37,7 +37,7 @@
   <dxi-column dataField="name" caption="{{ 'name' | translate }}"></dxi-column>
   <dxi-column dataField="description" caption="{{ 'description' | translate }}"></dxi-column>
   
-  <dxi-column *ngIf="table_name == 'dms_sites_repository_defination' || table_name == 'tra_nonstructured_docdefination'" dataField="site_id"
+  <dxi-column *ngIf="table_name == 'tra_nonstructured_docdefination' || table_name == 'dms_sites_repository_defination'" dataField="site_id"
   caption="{{ 'site_id' | translate }}">
   <dxo-lookup [dataSource]="siteIdData" displayExpr="name" valueExpr="id">
   </dxo-lookup>
@@ -157,7 +157,7 @@
 </dx-load-panel>
 
 <dx-popup class="popup" [width]="funcpopWidth(75)" [height]="400" [showTitle]="true" 
-  title="{{ 'add_new' | translate }} {{parameter_name | translate }}" [dragEnabled]="false" [hideOnOutsideClick]="true"
+  title="{{ 'add' | translate }} {{parameter_name | translate }}" [dragEnabled]="false" [hideOnOutsideClick]="true"
   [(visible)]="onAddNewConfiVisible">
 
   <div *dxTemplate="let data of 'content'">
@@ -180,47 +180,52 @@
         </div> -->
         <div *ngIf="table_name == 'dms_sites_repository_defination'" class="col-lg-6">
             <label>{{ 'site_id' | translate }}</label>
-            <dx-select-box [dataSource]="siteIdData" formControlName="site_id" valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
+            <dx-select-box [dataSource]="siteIdData" formControlName="site_id" valueExpr="id" [searchEnabled]="true" displayExpr="name" [readOnly]= true></dx-select-box>
           </div>
         
         <div *ngIf="table_name == 'dms_sites_repository_defination'" class="col-lg-6">
-            <label>{{ 'Node Ref' | translate }}</label>
-            <dx-text-box formControlName="node" [showClearButton]="true"></dx-text-box>
+            <label>{{ 'node_ref' | translate }}</label>
+            <dx-text-box formControlName="node" [showClearButton]="true" [readOnly]= true></dx-text-box>
         </div>
 
         <div *ngIf="table_name == 'dms_sites_repository_defination'" class="col-lg-6">
             <label>{{ 'is_dms_site_root' | translate }}</label>
-            <dx-text-box formControlName="is_dms_site_root" [showClearButton]="true"></dx-text-box>
+            <dx-text-box formControlName="is_dms_site_root" [showClearButton]="true" [readOnly]= true></dx-text-box>
         </div>
 
         
 
         <div *ngIf="table_name == 'tra_nonstructured_docdefination'" class="col-lg-6">
-            <label>{{ 'document type id' | translate }}</label>
+            <label>{{ 'document_type_id' | translate }}</label>
             <dx-select-box [dataSource]="documentTypeIdData" formControlName="document_type_id" valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
         </div>
 
         <div *ngIf="table_name == 'tra_nonstructured_docdefination'" class="col-lg-6">
-            <label>{{ 'node name' | translate }}</label>
+            <label>{{ 'node_name' | translate }}</label>
             <dx-text-box formControlName="node_name" [showClearButton]="true"></dx-text-box>
         </div>
 
         
         <div *ngIf="table_name == 'tra_documentrequirements_defination'" class="col-lg-6">
-          <label>{{ 'document type id' | translate }}</label>
+          <label>{{ 'document_type_id' | translate }}</label>
           <dx-select-box [dataSource]="documentTypeIdData" formControlName="document_type_id" valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
         </div>
 
        
 
-        <div *ngIf="table_name == 'tra_documentrequirements_defination' || table_name == 'dms_sites_repository_defination'" class="col-lg-6">
-          <label>{{ 'regulatory function id' | translate }}</label>
+        <div *ngIf="table_name == 'tra_documentrequirements_defination'" class="col-lg-6">
+          <label>{{ 'regulatory_function_id' | translate }}</label>
           <dx-select-box [dataSource]="regulatoryFunctionIdData" formControlName="regulatory_function_id" valueExpr="id" 
+          (onSelectionChanged)="onRegulatoryFunctionChange($event)" [searchEnabled]="true" displayExpr="name"></dx-select-box>
+        </div>
+        <div *ngIf="table_name == 'dms_sites_repository_defination'" class="col-lg-6">
+          <label>{{ 'regulatory_function_id' | translate }}</label>
+          <dx-select-box [dataSource]="regulatoryFunctionIdData" formControlName="regulatory_function_id" valueExpr="id" [readOnly]=true
           (onSelectionChanged)="onRegulatoryFunctionChange($event)" [searchEnabled]="true" displayExpr="name"></dx-select-box>
         </div>
 
         <div *ngIf="table_name == 'tra_documentrequirements_defination'" class="col-lg-6">
-          <label>{{ 'regulatory subfunction id' | translate }}</label>
+          <label>{{ 'regulatory_subfunction_id' | translate }}</label>
           <dx-select-box [dataSource]="regulatorySubFunctionIdData" formControlName="regulatory_subfunction_id" valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
         </div>
 
@@ -229,9 +234,13 @@
           <dx-text-box formControlName="document_no" [showClearButton]="true"></dx-text-box>
         </div>
 
-        <div *ngIf="table_name == 'par_document_types' || table_name == 'dms_sites_repository_defination' || table_name == 'tra_nonstructured_docdefination' || table_name == 'tra_documentrequirements_defination'" class="col-lg-6">
+        <div *ngIf="table_name == 'par_document_types' || table_name == 'tra_nonstructured_docdefination' || table_name == 'tra_documentrequirements_defination'" class="col-lg-6">
           <label>{{ 'organisation' | translate }}</label>
           <dx-select-box [dataSource]="organisationData" formControlName="organisation_id" valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
+        </div>
+        <div *ngIf="table_name == 'dms_sites_repository_defination'" class="col-lg-6">
+          <label>{{ 'organisation' | translate }}</label>
+          <dx-select-box [dataSource]="organisationData" formControlName="organisation_id" valueExpr="id" [searchEnabled]="true" displayExpr="name" [readOnly]=true></dx-select-box>
         </div>
 
         <div *ngIf="table_name == 'par_sop_masterlist'" class="col-lg-6">

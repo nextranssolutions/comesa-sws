@@ -185,7 +185,7 @@ export class AppSectionsComponent {
    fetchRegFunctionData() {
  
      var data_submit = {
-       'table_name': 'cfg_regulatory_functions'
+       'table_name': 'par_regulatory_functions'
      }
      this.configService.onLoadConfigurationData(data_submit)
        .subscribe(
@@ -203,7 +203,7 @@ export class AppSectionsComponent {
    fetchRegSubFunctionDetailsData() {
  
     var data_submit = {
-      'table_name': 'cfg_regulatory_subfunctions',
+      'table_name': 'par_regulatory_subfunctions',
       
     }
     this.configService.onLoadConfigurationData(data_submit)
@@ -223,7 +223,7 @@ export class AppSectionsComponent {
    fetchRegSubFunctionData(regulatory_function_id) {
  
      var data_submit = {
-       'table_name': 'cfg_regulatory_subfunctions',
+       'table_name': 'par_regulatory_subfunctions',
        regulatory_function_id: regulatory_function_id
      }
      this.configService.onLoadConfigurationData(data_submit)
@@ -248,7 +248,7 @@ export class AppSectionsComponent {
    fetchProductTypesData() {
  
      var data_submit = {
-       'table_name': 'cfg_regulated_productstypes'
+       'table_name': 'par_regulated_productstypes'
      }
      this.configService.onLoadConfigurationData(data_submit)
        .subscribe(

@@ -15,7 +15,7 @@ import { UserManagementService } from 'src/app/core-services/user-management/use
   templateUrl: './applicantdetails.component.html',
   styleUrl: './applicantdetails.component.css'
 })
-export class ApplicantdetailsComponent implements OnInit{
+export class ApplicantdetailsComponent implements OnInit {
   @Input() applicantDetailsForm: FormGroup;
   @Input() userAccountFrm: FormGroup;
   countriesData: any;
@@ -48,7 +48,7 @@ export class ApplicantdetailsComponent implements OnInit{
     public httpClient: HttpClient,
     public userservice: UserManagementService,
     public toastr: ToastrService,
-     private reportingAnalytics: ReportsService,
+    private reportingAnalytics: ReportsService,
     private spinner: SpinnerVisibilityService,
   ) {
     this.onLoadCountriesData();
@@ -223,15 +223,15 @@ export class ApplicantdetailsComponent implements OnInit{
     };
     this.configService.onLoadConfigurationData(data_submit).subscribe(
 
-        (data) => {
-          this.data_record = data;
-          if(this.data_record.success) {
-            this.districtsData =this.data_record.data;
-          } 
-        },
-        error => {
-          return false;
-        });
+      (data) => {
+        this.data_record = data;
+        if (this.data_record.success) {
+          this.districtsData = this.data_record.data;
+        }
+      },
+      error => {
+        return false;
+      });
   }
 
   onSearchApplicantName(is_local_agent) {
@@ -284,12 +284,12 @@ export class ApplicantdetailsComponent implements OnInit{
     this.applicantDetailsForm.get('email_address')?.setValue(record.email_address);
     this.applicantDetailsForm.get('country_id')?.setValue(record.country_id);
     this.applicantDetailsForm.get('region_id')?.setValue(record.region_id);
-    this.applicantDetailsForm.get('district_id')?.setValue(record.district_id); 
+    this.applicantDetailsForm.get('district_id')?.setValue(record.district_id);
     this.applicantDetailsForm.get('telephone_no')?.setValue(record.telephone_no);
-    this.applicantDetailsForm.get('physical_address')?.setValue(record.physical_address); 
+    this.applicantDetailsForm.get('physical_address')?.setValue(record.physical_address);
 
     this.isRegistrantDetailsWinshow = false;
-}
+  }
 
 
   funcpopWidth(percentage_width) {

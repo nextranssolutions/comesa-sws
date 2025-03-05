@@ -14,12 +14,16 @@ export class SharedImpExpdashboardClass {
 
   @ViewChild(DxDataGridComponent) dataGrid: DxDataGridComponent;
   is_popupguidelines: boolean;
+  application_status_id: any;
+  ImportExpApplicationData: any;
   approved_applications: number = 0;
   pending_submission: number = 0;
   queried_applications: number = 0;
   rejected_applications: number = 0;
   submitted_application: number = 0;
   productsapp_details: any;
+  loadingVisible: boolean;
+  spinnerMessage: string;
   prodClassCategoryItem: any;
   release_underseal: number = 0;
   dtImportExpApplicationData: any = [];
@@ -39,6 +43,7 @@ export class SharedImpExpdashboardClass {
   printiframeUrl: string;
   isPreviewApplicationDetails: boolean = false;
   frmPreviewAppDetails: FormGroup;
+  applicationGeneraldetailsfrm: FormGroup;
   regulated_productstype_id: number;
   applicationSelectionfrm: FormGroup;
   applicationRejectionData: any;
@@ -63,7 +68,7 @@ export class SharedImpExpdashboardClass {
   is_approvedVisaPermit: boolean = false;
   win_submitinvoicepayments: boolean;
   permitProductsData: any;
-
+  table_name: string;
 
   appregulatory_subfunction_id: number;
   app_routing: any;
@@ -81,11 +86,11 @@ export class SharedImpExpdashboardClass {
   constructor(public utilityService: UtilityService, public viewRef: ViewContainerRef, public spinner: SpinnerVisibilityService, public toastr: ToastrService, public router: Router, public configService: ConfigurationsService, public appService: ImportExportService) { // this.onLoadApplicationCounterDetails();
 
 
-    this.applicationSelectionfrm = new FormGroup({
-      regulated_productstype_id: new FormControl(this.productTypeData, Validators.compose([Validators.required])),
+  
+
+    this.applicationGeneraldetailsfrm = new FormGroup({
       regulatory_subfunction_id: new FormControl('', Validators.compose([])),
-      producttype_defination_id: new FormControl('', Validators.compose([])),
-      importexport_permittype_id: new FormControl('', Validators.compose([]))
+
     });
 
 
@@ -103,15 +108,15 @@ export class SharedImpExpdashboardClass {
       paying_currency_id: new FormControl('', Validators.compose([])),
       submission_comments: new FormControl('', Validators.compose([]))
     });
-  }
-
-  ngOnInit() {
+    this.table_name = 'wb_importexport_applications'
     this.onLoadProductTypes();
     this.onLoadconfirmDataParam();
     this.onLoadproducttypeDefinationData();
-
     this.onLoadimportExportPermitTypesData();
+    this.reloadPermitApplicationsApplications();
   }
+
+ 
   scrollToTop(): void {
     window.scrollTo({
       top: 0,
@@ -141,75 +146,32 @@ export class SharedImpExpdashboardClass {
   }
 
   onInitiatenewImportExpApplications() {
-    this.onClickSubModuleAppSelection(1, 'New Import Application')
-    this.app_route = ['./importexport-control/initiate-importapp'];
-
+    this. onApplicationSelection(1);
+    this.app_route = ['./importexport-permit-application/initiate-importapp'];
+    
+    
     // this.router.navigate(this.app_route);
   }
 
-  //is_approvedVisaPermit
 
-  onClickSubModuleAppSelection(regulatory_subfunction_id, sub_module_name) {
+  onApplicationSelection(regulatory_subfunction_id) {
 
-    if (regulatory_subfunction_id == 1 || regulatory_subfunction_id == 91) {
-      this.isPermitInitialisation = true;
-      this.applicationSelectionfrm.get('regulatory_subfunction_id')?.setValue(regulatory_subfunction_id);
+    if (regulatory_subfunction_id == 1) {
+      this.applicationGeneraldetailsfrm.get('regulatory_subfunction_id')?.setValue(regulatory_subfunction_id);
 
-    } else if (regulatory_subfunction_id == 30) {
-      this.isPermitInitialisation = true;
-      this.applicationSelectionfrm.get('regulatory_subfunction_id')?.setValue(regulatory_subfunction_id);
-
-    } else if (regulatory_subfunction_id == 94) {
-
-      this.application_details = { regulatory_function_id: this.regulatory_function_id, process_title: sub_module_name, regulatory_subfunction_id: regulatory_subfunction_id };
-      this.appService.setApplicationDetail(this.application_details);
-
-      this.app_route = ['./importexport-control/product-variantapp-selection'];
-
-      this.router.navigate(this.app_route);
-      this.scrollToTop();
-    } else {
-
-      this.application_details = { regulatory_function_id: this.regulatory_function_id, process_title: sub_module_name, regulatory_subfunction_id: regulatory_subfunction_id };
-      this.appService.setApplicationDetail(this.application_details);
-
-      this.app_route = ['./importexport-control/registered-product-selection'];
-
-      this.router.navigate(this.app_route);
-      this.scrollToTop();
-    }
-
-  }
-  
-  onApplicationSelection() {
-
-    if (this.applicationSelectionfrm.invalid) {
-      this.toastr.error('Fill in all the Mandatory Fields', 'Alert!');
-
-      return;
     }
     this.spinner.show();
-    this.sectionItem = this.applicationSelectionfrm.controls['importexport_permittype_id'];
-    this.app_typeItem = this.applicationSelectionfrm.controls['regulatory_subfunction_id'];
-    this.prodClassCategoryItem = this.applicationSelectionfrm.controls['producttype_defination_id'];
-    let appsubmissions_type_id = this.applicationSelectionfrm.get('appsubmissions_type_id')?.value;
-
-    this.importexport_permittype_id = this.sectionItem.value;
+    this.app_typeItem = this.applicationGeneraldetailsfrm.controls['regulatory_subfunction_id'];
     this.regulatory_subfunction_id = this.app_typeItem.value;
-   
-    this.producttype_defination_id = this.prodClassCategoryItem.value;
-    this.configService.getSectionUniformApplicationProces(this.regulatory_subfunction_id, this.importexport_permittype_id, this.producttype_defination_id, appsubmissions_type_id)
+
+    this.configService.getSectionUniformApplication(this.regulatory_subfunction_id)
       .subscribe(
         data => {
           this.spinner.hide();
           if (data.success) {
             this.processData = data.data.process_infor;
 
-            // this.title = this.processingData.field_name;
-       
             this.router_link = this.processData.router_link;
-            // this.productsapp_details = { regulatory_function_id: this.regulatory_function_id, prodclass_category_id: this.prodclass_category_id, process_title: this.title, regulatory_subfunction_id: this.regulatory_subfunction_id, product_type_id: this.product_type_id, status_id: 1, status_name: 'New', form_fields: this.processData.form_fields, appsubmissions_type_id: appsubmissions_type_id };
-          
             this.productsapp_details = this.processData;
             this.appService.setApplicationDetail(data.data);
             localStorage.setItem('application_details', JSON.stringify(data.data));
@@ -234,20 +196,42 @@ export class SharedImpExpdashboardClass {
     return window.innerWidth * percentage_width / 100;
   }
 
-  reloadPermitApplicationsApplications(filter_params) {
 
-    this.appService.onPermitApplicationLoading('getImportExpPermitsApplicationLoading', filter_params)
+
+
+  reloadPermitApplicationsApplications(appworkflow_status_id = 0, ) {
+    this.spinnerShow('Loading...........');
+    var data_submit = {
+      'table_name': this.table_name,
+      'appworkflow_status_id': appworkflow_status_id,
+      
+    };
+
+    this.appService.onPermitApplicationLoading(data_submit, 'getImportExpApplicantPermitsLoading')
       .subscribe(
-        resp_data => {
-          if (resp_data.success) {
-            this.dtImportExpApplicationData = resp_data.data;
+        data => {
 
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.dtImportExpApplicationData = this.data_record.data;
           }
-          else {
-            this.toastr.error(resp_data.message, 'Alert!');
+          this.spinnerHide();
+        },
+        error => {
+          console.error('Error fetching applications information data:', error); // Log the error
+          this.spinnerHide();
+        }
+      );
+  }
 
-          }
-        });
+
+
+  spinnerShow(spinnerMessage) {
+    this.loadingVisible = true;
+    this.spinnerMessage = spinnerMessage;
+  }
+  spinnerHide() {
+    this.loadingVisible = false;
   }
 
 
@@ -340,17 +324,17 @@ export class SharedImpExpdashboardClass {
 
   }
   funcRequestforPermitAlteration() {
-    this.app_route = ['./online-services/importexport-approvedappsel'];
+    this.app_route = ['./importexport-permit-application/importexport-approvedappsel'];
     this.router.navigate(this.app_route);
     this.scrollToTop();
   }
 
   funcRequestforExportLicenseApplication() {
-    this.app_route = ['./online-services/export-licensesappselection'];
+    this.app_route = ['./importexport-permit-application/export-licensesappselection'];
     this.router.navigate(this.app_route);
     this.scrollToTop();
   } funcRequestforPermitInspections() {
-    this.app_route = ['./online-services/importexport-approvedappinspection'];
+    this.app_route = ['./importexport-permit-application/importexport-approvedappinspection'];
     this.router.navigate(this.app_route);
     this.scrollToTop();
   }
@@ -480,7 +464,6 @@ export class SharedImpExpdashboardClass {
     if (action_btn.action === 'edit') {
       this.funcApplicationPreveditDetails(data);
 
-      // this.funcApplicationPreveditDetails(data);
     }
     else if (action_btn.action === 'preview') {
       this.funcProductPreviewDetails(data);
@@ -489,9 +472,9 @@ export class SharedImpExpdashboardClass {
       this.funcPrintApplicationDetails(data);
     }
     else if (action_btn.action == 'archive') {
-      this.funcArchivePermitApplication(data);
+//this.funcArchivePermitApplication(data);
     } else if (action_btn.action == 'delete_application') {
-      this.funcDeletePermitApplication(data);
+      //this.funcDeletePermitApplication(data);
     }
 
 
@@ -536,7 +519,7 @@ export class SharedImpExpdashboardClass {
 
     } else if (action_btn.action == 'initiate_license_application' || action_btn.action == 'initiate_license_application') {
 
-      this.funcInitiateLicenseApplication(data);
+   //   this.funcInitiateLicenseApplication(data);
 
     }
     else if (action_btn.action == 'uploadsub_paymentdetails' || action_btn.action == 'uploadsub_paymentdetails') {
@@ -545,7 +528,7 @@ export class SharedImpExpdashboardClass {
 
     } else if (action_btn.action == 'inspection_booking' || action_btn.action == 'inspection_booking') {
 
-      this.funcInitiateInspectionBooking(data);
+      //this.funcInitiateInspectionBooking(data);
 
     }
     else if (action_btn == 'restorearchived') {
@@ -554,7 +537,7 @@ export class SharedImpExpdashboardClass {
 
 
   } funcProductRestoreArchiveApplication(data) {
-    this.utilityService.funcApplicationRestoreArchiceCall(this.viewRef, data, 'txn_importexport_applications', this.reloadPermitApplicationsApplications)
+    this.utilityService.funcApplicationRestoreArchiceCall(this.viewRef, data, 'wb_importexport_applications', this.reloadPermitApplicationsApplications)
   }
   funcUploadPaymentDetails(data) {
     this.appregulatory_subfunction_id = data.regulatory_subfunction_id;
@@ -562,17 +545,17 @@ export class SharedImpExpdashboardClass {
     this.appregulated_productstype_id = data.regulated_productstype_id;
     this.appapplication_code = data.application_code;
     if (this.appregulatory_subfunction_id == 78 || this.appregulatory_subfunction_id == 82) {
-      this.app_routing = ['./online-services/importlicense-dashboard'];
+      this.app_routing = ['./importexport-permit-application/importlicense-dashboard'];
 
     } else {
-      this.app_routing = ['./online-services/exportlicense-dashboard'];
+      this.app_routing = ['./importexport-permit-application/exportlicense-dashboard'];
 
     }
     data.onApplicationSubmissionFrm = this.onApplicationSubmissionFrm;
     data.app_routing = this.app_routing;
 
     this.utilityService.setApplicationDetail(data);
-    this.app_route = ['./online-services/application-invoices'];
+    this.app_route = ['./importexport-permit-application/application-invoices'];
 
     this.router.navigate(this.app_route);
     this.scrollToTop();
@@ -606,7 +589,7 @@ export class SharedImpExpdashboardClass {
 
   funcPrintApplicationReceipts(app_data) {
     this.utilityService.setApplicationDetail(app_data);
-    this.app_route = ['./online-services/application-payments'];
+    this.app_route = ['./importexport-permit-application/application-payments'];
 
     this.router.navigate(this.app_route);
     this.scrollToTop();
@@ -649,42 +632,43 @@ export class SharedImpExpdashboardClass {
           }
         });
   }
-
+  application_data:any;
   funcApplicationPreveditDetails(app_data) {
-    this.router_link = app_data.router_link;
-    if (this.router_link == '') {
-      this.toastr.error("The application process route has not been mapped, contact SUpport Team!!", 'Alert!');
-      return;
-    }
-
-    if (app_data.application_status_id == 1) {
-      this.title = app_data.process_title;
-
-      this.appService.setApplicationDetail(app_data);
-      this.app_route = ['./online-services/' + this.router_link];
-
-      this.router.navigate(this.app_route);
-      this.scrollToTop();
-    }
-    else if (app_data.application_status_id == 2) {
-      this.title = app_data.process_title;
-      this.router_link = app_data.router_link;
-      this.appService.setApplicationDetail(app_data);
-      //this.app_route = ['./online-services/premises-reg-preview'];
-      this.router.navigate(this.app_route);
-      this.scrollToTop();
-    }
-    else {
-
-      this.title = app_data.process_title;
-      this.router_link = app_data.router_link;
-      this.appService.setApplicationDetail(app_data);
-      this.app_route = ['./online-services/' + this.router_link];
-      this.router.navigate(this.app_route);
-      this.scrollToTop();
-
-    }
-  }
+      this.regulatory_subfunction_id = app_data.regulatory_subfunction_id;
+      
+      this.spinner.show();
+      
+      this.configService.getSectionUniformApplication(this.regulatory_subfunction_id)
+        .subscribe(
+          data => {
+            this.spinner.hide();
+            if (data.success) {
+              this.processData = data.data.process_infor;
+              this.application_data = data.data;
+              
+              this.router_link = this.processData.router_link;
+              this.productsapp_details = this.processData;
+              let merged_appdata = Object.assign({}, this.application_data, app_data);
+              console.log(merged_appdata);
+              localStorage.setItem('application_details', JSON.stringify(merged_appdata));
+              // this.appService.setProductApplicationDetail(data.data);
+              this.app_route = ['./importexport-permit-application/' + this.router_link];
+  
+              this.router.navigate(this.app_route);
+              this.scrollToTop();
+  
+            }
+            else {
+              this.toastr.error(this.processData.message, 'Alert!');
+  
+            }
+  
+  
+          });
+      return false;
+    } 
+   
+  
   funcArchivePermitApplication(data) {
     this.utilityService.funcApplicationArchiceCall(this.viewRef, data, 'txn_importexport_applications', this.reloadPermitApplicationsApplications);
 
@@ -702,7 +686,7 @@ export class SharedImpExpdashboardClass {
     this.FilterDetailsFrm.reset();
     this.FilterDetailsFrm.reset();
 
-    this.reloadPermitApplicationsApplications({});
+    this.reloadPermitApplicationsApplications();
 
 
   }
@@ -728,7 +712,7 @@ export class SharedImpExpdashboardClass {
                       app_data.application_status_id = 1;
                       app_data.process_title = this.title;
                       this.appService.setApplicationDetail(data.app_data);
-                      this.app_route = ['./online-services/inspection-booking'];
+                      this.app_route = ['./importexport-permit-application/inspection-booking'];
                       this.router.navigate(this.app_route);
                       this.scrollToTop();
                     }
@@ -774,7 +758,7 @@ export class SharedImpExpdashboardClass {
                       app_data.application_status_id = 1;
                       app_data.process_title = this.title;
                       this.appService.setApplicationDetail(data.app_data);
-                      this.app_route = ['./online-services/importexport-application'];
+                      this.app_route = ['./importexport-permit-application/importexport-application'];
                       this.router.navigate(this.app_route);
                       this.scrollToTop();
                     }
@@ -804,10 +788,7 @@ export class SharedImpExpdashboardClass {
     this.utilityService.onCellPrepared(e);
 
   }
-  // onInitiatenewImportExpApplications(){
-  //       this.isPermitInitialisation = true; 
 
-  // }
 
 
 }

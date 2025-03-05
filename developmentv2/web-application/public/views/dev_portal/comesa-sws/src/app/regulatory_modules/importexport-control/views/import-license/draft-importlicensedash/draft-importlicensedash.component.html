@@ -1,9 +1,8 @@
 <div class="page-header">
     <h1>{{'draft_applications' | translate}} </h1>
-</div><!-- /.page-header -->
+</div>
 <div class="row">
     <div class="col-xs-12">
-        <!-- PAGE CONTENT BEGINS -->
         <div class="sidebar h-sidebar navbar-collapse ace-save-state">
             <ul class="nav nav-list">
                 <li class="link-bggreen">
@@ -61,40 +60,46 @@
         <dxo-export [enabled]="true" fileName="ImportExport" [allowExportSelectedData]="true"></dxo-export>
 
         <dxo-selection mode="single"></dxo-selection>
-        <dxi-column [width]=200 caption="{{'actions' | translate}}" name="command-editing" [allowFiltering]="false" [allowSorting]="false"
-            cellTemplate="cellTemplateSingle">
+        <dxi-column [width]=200 caption="{{'actions' | translate}}" name="command-editing" [allowFiltering]="false"
+            [allowSorting]="false" cellTemplate="cellTemplateSingle">
             <div *dxTemplate="let d of 'cellTemplateSingle'">
                 <dx-button text="{{d.data.action_name}}" (click)="singleApplicationActionColClick(d.data)"
                     type="success" icon="{{d.data.iconCls}}">
                 </dx-button>
             </div>
         </dxi-column>
-        <dxi-column caption="More Actions" [width]=150 name="command-editing" [allowFiltering]="false"
-            [allowSorting]="false" cellTemplate="cellTemplate">
-            <div *dxTemplate="let d of 'cellTemplate'">
-                <dx-menu [items]="d.data.contextMenu" displayExpr="text"
-                    (onItemClick)="applicationActionColClick($event,d)">
-                </dx-menu>
-            </div>
-        </dxi-column>
+        <!-- <dxi-column caption="{{'more_actions' | translate}}" [width]=150 name="command-editing" [allowFiltering]="false"
+        [allowSorting]="false" cellTemplate="cellTemplate">
+        <div *dxTemplate="let d of 'cellTemplate'">
+            <dx-menu [items]="d.data.contextMenu" displayExpr="text"
+                (onItemClick)="applicationActionColClick($event,d)">
+            </dx-menu>
+        </div>
+    </dxi-column> -->
 
         <dxi-column dataField="reference_no" caption="{{'application_reference' | translate}}"></dxi-column>
-        <dxi-column [width]=90 [groupIndex]="0" dataField="section" caption="{{'product_type' | translate}}"></dxi-column>
+        <dxi-column [width]=90 [groupIndex]="0" dataField="section"
+            caption="{{'product_type' | translate}}"></dxi-column>
         <dxi-column dataField="application_type" caption="{{'application_type' | translate}}"></dxi-column>
         <dxi-column [width]=150 dataField="permit_category" caption="{{'permit_category' | translate}}"></dxi-column>
         <dxi-column [width]=100 dataField="proforma_invoice_no" caption="{{'invoice_no' | translate}}"></dxi-column>
         <dxi-column dataField="proforma_invoice_date" caption="{{'invoice_date' | translate}}"></dxi-column>
         <dxi-column dataField="sender_receiver" caption="{{'sender_supplier' | translate}}"></dxi-column>
 
-        <dxi-column dataField="premises_name"   caption="{{'premises_name' | translate}}"></dxi-column>
+        <dxi-column dataField="premises_name" caption="{{'premises_name' | translate}}"></dxi-column>
 
-        <dxi-column [width]=100 [allowFiltering]="false" dataField="date_added"  caption="{{'date_added' | translate}}"></dxi-column>
-        <dxi-column [groupIndex]="1" dataField="status_name"  caption="{{'status_name' | translate}}"></dxi-column>
+        <dxi-column [width]=100 [allowFiltering]="false" dataField="date_added"
+            caption="{{'date_added' | translate}}"></dxi-column>
+        <dxi-column [groupIndex]="1" dataField="status_name" caption="{{'status_name' | translate}}"></dxi-column>
         <dxi-column dataField="status_name" caption="{{'application_status' | translate}}"></dxi-column>
         <dxo-grouping #expand [autoExpandAll]="true"></dxo-grouping>
     </dx-data-grid>
 
 </div>
+
+<dx-load-panel #loadPanel shadingColor="rgba(0,0,0,0.4)" [position]="{ of: '#employee' }" [(visible)]="loadingVisible"
+[showIndicator]="true" [showPane]="true" [shading]="true" [message]="spinnerMessage" [hideOnOutsideClick]="false">
+</dx-load-panel>
 
 
 <dx-popup class="popup" [width]="funcpopWidth(80)" [height]="450" [showTitle]="true"
@@ -120,12 +125,13 @@
                     [allowExportSelectedData]="true"></dxo-export>
 
                 <dxo-selection mode="single"></dxo-selection>
-                <dxi-column dataField="tracking_no"  caption="{{'tracking_no' | translate}}"></dxi-column>
+                <dxi-column dataField="tracking_no" caption="{{'tracking_no' | translate}}"></dxi-column>
                 <dxi-column dataField="reference_no" caption="{{'reference_no' | translate}}"></dxi-column>
                 <dxi-column dataField="process_name" caption="{{'process_name' | translate}}"></dxi-column>
                 <dxi-column dataField="prev_stage" caption="{{'prev_stage' | translate}}"></dxi-column>
                 <dxi-column dataField="current_stage" caption="{{'current_stage' | translate}}"></dxi-column>
-                <dxi-column [groupIndex]="0" dataField="processing_date" caption="{{'processing_date' | translate}}"></dxi-column>
+                <dxi-column [groupIndex]="0" dataField="processing_date"
+                    caption="{{'processing_date' | translate}}"></dxi-column>
 
                 <dxo-grouping #expand [autoExpandAll]="true"></dxo-grouping>
             </dx-data-grid>
@@ -196,12 +202,13 @@
                     </dxo-paging>
                     <dxo-selection mode="single"></dxo-selection>
 
-                    <dxi-column dataField="brand_name"  caption="{{'brand_name_product_name' | translate}}"></dxi-column>
+                    <dxi-column dataField="brand_name" caption="{{'brand_name_product_name' | translate}}"></dxi-column>
                     <dxi-column dataField="product_type" caption="{{'product_type' | translate}}"></dxi-column>
-                    <dxi-column dataField="product_subcategory" caption="{{'product_subcategory' | translate}}"></dxi-column>
-                    <dxi-column dataField="quantity"  caption="{{'quantity' | translate}}"></dxi-column>
+                    <dxi-column dataField="product_subcategory"
+                        caption="{{'product_subcategory' | translate}}"></dxi-column>
+                    <dxi-column dataField="quantity" caption="{{'quantity' | translate}}"></dxi-column>
                     <dxi-column dataField="packaging_units" caption="{{'packaging_units' | translate}}"></dxi-column>
-                    <dxi-column dataField="currency_name"  caption="{{'currency_name' | translate}}"></dxi-column>
+                    <dxi-column dataField="currency_name" caption="{{'currency_name' | translate}}"></dxi-column>
                     <dxi-column dataField="unit_price" caption="{{'unit_price' | translate}}"></dxi-column>
                     <dxi-column dataField="total_value" caption="{{'total_value' | translate}}"></dxi-column>
                     <dxo-paging [enabled]="true">
@@ -242,9 +249,8 @@
 
             <dxi-column [width]=100 dataField="tracking_no" caption="{{'tracking_no' | translate}}"></dxi-column>
             <dxi-column [width]=90 dataField="added_on" caption="{{'added_on' | translate}}"></dxi-column>
-            <dxi-column [width]=200 cssClass='WrappedColumnClass' dataField="rejection_remarks" caption="{{'rejection_remarks' | translate}}"></dxi-column>
-
-
+            <dxi-column [width]=200 cssClass='WrappedColumnClass' dataField="rejection_remarks"
+                caption="{{'rejection_remarks' | translate}}"></dxi-column>
         </dx-data-grid>
     </div>
 </dx-popup>
@@ -256,7 +262,7 @@
     </div>
 </dx-popup>
 
-<dx-popup class="popup" [width]="funcpopWidth(45)" [height]=550 [showTitle]="true" title="Import License Application"
+<dx-popup class="popup" [width]="funcpopWidth(45)" [height]="funcpopHeight(45)" [showTitle]="true" title="Import License Application"
     [dragEnabled]="false" [hideOnOutsideClick]="false" [(visible)]="isPermitInitialisation">
     <div *dxTemplate="let data of 'content'">
         <dx-scroll-view>
@@ -269,47 +275,19 @@
                 </div>
                 <div class="col-lg-12">
 
-                    <label>{{'import_export_permit_type' | translate}}</label>
-                    <dx-select-box  [dataSource]="importExportPermitTypesData" valueExpr="id"
-                        displayExpr="name" placeholder="{{'select_import/export_permit_type' | translate}}" [searchEnabled]="true"
-                        formControlName="importexport_permittype_id">
+                    <label>{{'permit_type' | translate}}</label>
+                    <dx-select-box [dataSource]="permitTypesCategoryData" valueExpr="id" displayExpr="name"
+                        placeholder="{{'select_permit_type_category' | translate}}" [searchEnabled]="true"
+                        formControlName="permit_type_id">
                     </dx-select-box>
                 </div>
-                <div class="col-lg-12">
-                    <label>{{'product_types_definition' | translate}}</label>
-                    <dx-select-box [dataSource]="producttypeDefinationData" valueExpr="id" displayExpr="name"
-                        placeholder="{{'select_product_types_defination' | translate}}" [searchEnabled]="true"
-                        (onSelectionChanged)="onSelectionProductTypesDefination($event)"
-                        formControlName="producttype_defination_id">
-                    </dx-select-box>
-                </div>
+                <div class="col-lg-12  pull-right row" style="text-align: center;">
 
-
-                <div class="col-lg-12" >
-                    <h3 class='apptype-selection'>{{'select_product_category/type' | translate}}</h3>
-                    <dx-select-box [dataSource]="productTypeData" valueExpr="id" displayExpr="name" [searchEnabled]="true"
-                        placeholder="{{'select_product_types/category' | translate}}" formControlName="regulated_productstype_id">
-                        <div *dxTemplate="let name of 'item'">
-                            <div>{{name.name}}</div>
-                        </div>
-                    </dx-select-box>
-                </div>
-                <!-- <div class="col-lg-12 ">
-                    <dx-button [elementAttr]="{ class: 'btn btn-primary  pull-left' }" icon="fa fa-arrow-right"
-                        text="{{'initiate_permit_application' | translate}}" [disabled]="!applicationSelectionfrm.valid" type="success"
-                        (onClick)="onApplicationSelection()">
+                    <dx-button icon="fa fa-arrow-right" text="{{'initiate_permit_application' | translate}}"
+                        type="success" (onClick)="onApplicationSelection()">
                     </dx-button>
-                </div> -->
-                    <div class="col-lg-12  pull-right row" style="text-align: center;">
+                </div>
 
-                        <dx-button  icon="fa fa-arrow-right"
-                            text="{{'initiate_permit_application' | translate}}"
-                            type="success" (onClick)="onApplicationSelection()">
-                        </dx-button>
-    
-    
-                    </div>
-                
             </form>
         </dx-scroll-view>
     </div>

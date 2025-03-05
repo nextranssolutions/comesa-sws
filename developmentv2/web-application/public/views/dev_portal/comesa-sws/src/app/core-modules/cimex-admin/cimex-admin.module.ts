@@ -277,6 +277,12 @@ import { AppealsTypesComponent } from './views/configurations/process-configurat
 import { ProcessConfigsetupComponent } from './views/configurations/process-configurations/process-configsetup/process-configsetup.component';
 import { AppSectionsComponent } from './views/configurations/forms/application-section/app-sections.component';
 import { RegulatoryFunctionGuidelinesComponent } from './views/system-administration/system-guidelines/regulatory-function-guidelines/regulatory-function-guidelines.component';
+import { SharedDocumentManagementSysComponent } from './views/document-checklistsmng/dms/shared-document-management-sys/shared-document-management-sys.component';
+import { DmsRepositoryDefinitionComponent } from './views/document-checklistsmng/dms/dms-repository-definition/dms-repository-definition.component';
+import { ApplicantWorkflowInterfacesComponent } from './views/system-administration/Applicant-workflow-Processes/applicant-workflow-interfaces/applicant-workflow-interfaces.component';
+import { ApplicantWorkflowsComponent } from './views/system-administration/Applicant-workflow-Processes/applicant-workflows/applicant-workflows.component';
+import { ApplicantWorkflowsetupComponent } from './views/system-administration/Applicant-workflow-Processes/applicant-workflowsetup/applicant-workflowsetup.component';
+import { ApplicantSystemprocessesComponent } from './views/system-administration/Applicant-workflow-Processes/applicant-systemprocesses/applicant-systemprocesses.component';
 import { InvoiceTypeComponent } from './views/configurations/permit-application-parameters/invoice-type/invoice-type.component';
 import { ModeOfTransportComponent } from './views/configurations/permit-application-parameters/mode-of-transport/mode-of-transport.component';
 import { PermitStorageConditionsComponent } from './views/configurations/permit-application-parameters/permit-storage-conditions/permit-storage-conditions.component';
@@ -305,6 +311,7 @@ import { SharedImportexportProceduresComponent } from './views/configurations/im
     AppCountriesComponent,
     RegFunctionsComponent,
     AppealsTypesComponent,
+    SharedDocumentManagementSysComponent,
     ProcessConfigsetupComponent,
     AppUserTitle, DisclaimerStatementTypesComponent, DisclaimerStatementsComponent,
     AppUserIdentificationType,
@@ -343,6 +350,7 @@ import { SharedImportexportProceduresComponent } from './views/configurations/im
     CtrlDrugssubstancesComponent,
     CtrlDrugstypeComponent,
     SharedCtrldrugsconfigurationComponent,
+    DmsRepositoryDefinitionComponent,
     ImportExportconfsetupComponent,
     PermitReasonsComponent,
     PermittypeCategoriesComponent,
@@ -358,9 +366,11 @@ import { SharedImportexportProceduresComponent } from './views/configurations/im
     PromotionMaterialsComponent,
     PromotionalAdvertconfigsetupComponent,
     SharedPromotionAdvertConfigurationsComponent,
-
-
-
+    ApplicantWorkflowInterfacesComponent,
+    ApplicantWorkflowsComponent,
+    ApplicantWorkflowsetupComponent,
+    ApplicantSystemprocessesComponent,
+   
 
 
     RefNumbertypesComponent,
@@ -434,6 +444,7 @@ import { SharedImportexportProceduresComponent } from './views/configurations/im
     ClinicaltrialConfigsetupComponent,
     SharedclinicalTrialconfigurationsComponent,
     CertificateConditionComponent,
+  
 
     TransactionCurrencyComponent,
     PermitStorageConditionsComponent,
@@ -682,6 +693,7 @@ import { SharedImportexportProceduresComponent } from './views/configurations/im
     AppWorkflowsubmissionactionsComponent,
     AppWorkflowstatusesactionsComponent,
     AppStatusesactionsComponent,
+    SharedDocumentManagementSysComponent,
     SyserrorLogsComponent,
     SharedPortalNavigationsComponent,
     PortalNavigationComponent,
@@ -697,6 +709,8 @@ import { SharedImportexportProceduresComponent } from './views/configurations/im
     PortalProcesstransitionComponent,
     PortalDocdefinationComponent,
     AppFormsComponent,
+
+   
    
     TransactionCurrencyComponent,
     PermitStorageConditionsComponent,
@@ -795,6 +809,7 @@ import { SharedImportexportProceduresComponent } from './views/configurations/im
     StorageConditionComponent,
     ProductconfigurationsSetupComponent,
     SharedproductConfigurationsComponent,
+    DmsRepositoryDefinitionComponent,
 
 
     AgeanalysisDaysspanComponent,
@@ -835,8 +850,10 @@ import { SharedImportexportProceduresComponent } from './views/configurations/im
     SampleApplicationtypesComponent,
     SamplingReasonComponent,
     SharedPmsconfigurationsComponent,
-
-
+    ApplicantWorkflowInterfacesComponent,
+    ApplicantWorkflowsComponent,
+    ApplicantWorkflowsetupComponent,
+    ApplicantSystemprocessesComponent,
 
 
     SharedCtrldrugsconfigurationComponent,
