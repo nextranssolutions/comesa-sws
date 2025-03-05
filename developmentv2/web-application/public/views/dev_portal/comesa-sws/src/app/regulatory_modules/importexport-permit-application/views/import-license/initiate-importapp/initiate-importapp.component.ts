@@ -15,7 +15,7 @@ export class InitiateImportappComponent extends SharedImpexpApplicationClass {
       return;
     }
   }
-  config: any;
+
   stepChanged($event: StepChangedArgs) {
     throw new Error('Method not implemented.');
   }

@@ -533,7 +533,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
 
   onLoadpermitTypeData() {
     var data = {
-      table_name: 'tra_transactionpermit_checklists',
+      table_name: 'tra_transactionpermit_types',
       // is_enabled: 1,
 
     };

@@ -19,14 +19,12 @@
       </div>
     </div>
 
-
     <div class="col-lg-4">
       <label>{{'permit_type' | translate}}</label>
       <dx-select-box [dataSource]="permitTypeData" valueExpr="id" displayExpr="name"
         placeholder="{{'permit_type' | translate}}" [searchEnabled]="true" formControlName="permit_type_id">
       </dx-select-box>
     </div>
-
 
     <div class="col-lg-4">
       <label>{{ 'expected_date_of_shipment' | translate }}</label>

@@ -18,6 +18,23 @@ import { ConfigurationsService } from 'src/app/core-services/configurations/conf
   selector: '[appSharedImpexpApplicationClass]' // Add a unique selector here
 })
 export class SharedImpexpApplicationClass {
+    //start test wizrd 
+    stepStates = {
+      normal: STEP_STATE.normal,
+      disabled: STEP_STATE.disabled,
+      error: STEP_STATE.error,
+      hidden: STEP_STATE.hidden
+  
+    };
+  
+    config: NgWizardConfig = {
+      selected: 0,
+      theme: THEME.arrows,
+      toolbarSettings: {
+        showNextButton: false,
+        showPreviousButton: false
+      }
+    };
   //ImportexportService
   //dms 
   @ViewChild(DxDataGridComponent)
