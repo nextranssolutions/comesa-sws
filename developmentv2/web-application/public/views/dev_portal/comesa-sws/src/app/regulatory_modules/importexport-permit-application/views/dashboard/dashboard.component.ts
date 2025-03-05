@@ -7,5 +7,11 @@ import { Component } from '@angular/core';
   styleUrl: './dashboard.component.css'
 })
 export class DashboardComponent {
+  funcpopWidth(percentage_width) {
+    return window.innerWidth * percentage_width / 100;
+  }
+  funcpopHeight(percentage_height) {
+    return window.innerHeight * percentage_height / 100;
+  }
 
 }

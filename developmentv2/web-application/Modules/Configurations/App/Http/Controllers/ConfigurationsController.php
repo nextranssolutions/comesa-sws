@@ -641,6 +641,8 @@ class ConfigurationsController extends Controller
                 switch ($regulatory_function_id) {
                     case 1: // Product registration
                         $app_data['application_general_details'] = getApplicationDataEntryFormsFields($req, 19);
+                        $app_data['permit_products_details'] = getApplicationDataEntryFormsFields($req, 21);
+                        
                         
                         break;
                     case 2: // Business operations

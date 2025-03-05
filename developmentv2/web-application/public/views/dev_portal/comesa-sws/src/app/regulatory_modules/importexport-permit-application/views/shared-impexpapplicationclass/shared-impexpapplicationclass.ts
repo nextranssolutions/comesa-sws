@@ -164,6 +164,7 @@ export class SharedImpexpApplicationClass {
   showProductAddOption: boolean = false;
   is_regulatedproducts: boolean = false;
   proforma_currency_id: number;
+  permit_details: any;
   isInitalQueryResponseFrmVisible: boolean = false;
   initqueryresponsefrm: FormGroup;
   applicationPreckingQueriesData: any;
@@ -173,6 +174,7 @@ export class SharedImpexpApplicationClass {
   has_invoicegeneration: boolean;
   app_routing: any;
   form_fielddata: any;
+  permits_fielddata: any;
   isprodnextdisable: boolean = true;
 
   filesToUpload: Array<File> = [];
@@ -186,12 +188,13 @@ export class SharedImpexpApplicationClass {
     this.trader_id = user.trader_id;
     this.mistrader_id = user.mistrader_id;
     this.application_details = localStorage.getItem('application_details');
+
     this.application_details = JSON.parse(this.application_details);
     this.form_fielddata = this.application_details.application_form;
+  
     this.applicationGeneraldetailsfrm = this.formBuilder.group({});
-    
-    // this.permitProductsFrm = this.formBuilder.group({});
-    
+
+
     for (let form_field of this.form_fielddata) {
       let field_name = form_field['field_name'];
       if (form_field['is_mandatory'] == 1) {
@@ -204,6 +207,7 @@ export class SharedImpexpApplicationClass {
 
       }
     }
+
 
     if (this.application_details) {
 
@@ -220,6 +224,7 @@ export class SharedImpexpApplicationClass {
     }
 
 
+  
     this.permitProductsFrm = new FormGroup({
       brand_name: new FormControl('', Validators.compose([Validators.required])),
       product_description: new FormControl('', Validators.compose([])),
@@ -328,8 +333,7 @@ export class SharedImpexpApplicationClass {
 
     if (this.application_details) {
       this.applicationGeneraldetailsfrm.patchValue(this.application_details);
-      this.permitProductsFrm.patchValue(this.application_details);
-
+    
     }
 
   }
