@@ -20,9 +20,11 @@ export class ApplicantWorkflowsComponent {
   resetcolumns: string;
   workflowTransitionVisible:boolean;
   show_advancesearch: boolean;
-  workflowItemsFrm: FormGroup
+  workflowItemsFrm: FormGroup;
+  workflowStageItemsFrm: FormGroup;
   onAddWorkFlowItemVisible: boolean;
   hasReadpermissions: boolean;
+  workflow_stage_id: number;
 
   is_enabled: boolean;
   enableStagePopupVisible: boolean;
@@ -36,8 +38,12 @@ export class ApplicantWorkflowsComponent {
   enableWorkflowTransitionPopupVisible: boolean;
   enabledisable_workflow_transition: string;
   enabledisable_workflowtansitiondescription: string;
-  
-  
+  enableWorkflowStageVisible: boolean;
+
+  workflowApplicationStatusData: any;
+  workflowStageProcessActionsFrm:  FormGroup;
+  workflowStageProcessActionsVisible: boolean;
+  workflowStagesProcessActionsData: any;
 
   deletePopupVisible = false;
   workflowDetailsVisible = false;
@@ -48,9 +54,11 @@ export class ApplicantWorkflowsComponent {
   workflow_id: number;
   workflowprocess_id: number;
   config_record: string;
+  statusActionsData: any;
 
   // tabPanelPopupVisible: boolean = false;
   selectedTabIndex = 0;
+  selectedTabsIndex =0;
   tabNames = ["Workflows", "WorkflowStages", "workflowTransitions"];
   workflowTabName = ["WorkflowStage", "WorkflowStageActions"];
   iconPosition: any = 'top';
@@ -67,6 +75,11 @@ export class ApplicantWorkflowsComponent {
   processTypeData: any;
   workflowStageActionsData: any;
   workflowProcessCategoryData: any;
+  workflowStageActionDetailsVisible = false;
+  workflowStageData: any;
+
+  enabledisable_workflowstage: string;
+  enabledisable_workflowstage_description: string;
 
   isManagerSubmissionData = [
     { value: true, text: 'Yes' },
@@ -78,14 +91,58 @@ export class ApplicantWorkflowsComponent {
     { value: false, text: 'No' },
   ];
 
+  is_status_tied = [
+    { value: true, text: 'Yes' },
+    { value: false, text: 'No' },
+  ];
+  is_inspection_submission= [
+    { value: true, text: 'Yes' },
+    { value: false, text: 'No' },
+  ];
+  is_checklist_tied= [
+    { value: true, text: 'Yes' },
+    { value: false, text: 'No' },
+  ];
+  is_declarationstatus_tied= [
+    { value: true, text: 'Yes' },
+    { value: false, text: 'No' },
+  ];
+  is_paymentrequest_submission= [
+    { value: true, text: 'Yes' },
+    { value: false, text: 'No' },
+  ];
+  is_staticappprocess_defination= [
+    { value: true, text: 'Yes' },
+    { value: false, text: 'No' },
+  ];
+  permitsubmission_status= [
+    { value: true, text: 'Yes' },
+    { value: false, text: 'No' },
+  ];
+  is_external_usersubmission= [
+    { value: true, text: 'Yes' },
+    { value: false, text: 'No' },
+  ];
+ 
+  checklist_category= [
+    { value: true, text: 'Yes' },
+    { value: false, text: 'No' },
+  ];
+  is_to_portal = [
+    { value: true, text: 'Yes' },
+    { value: false, text: 'No' },
+  ];
+  needs_directive = [
+    { value: true, text: 'Yes' },
+    { value: false, text: 'No' },
+  ];
 
 
 
 
 
 
-
-
+  workflowStageActionsItemsFrm: FormGroup;
   regulatoryFunctionsData: any;
   regulatory_function_id: number;
   regulatorySubFunctionsData: any;
@@ -105,6 +162,7 @@ export class ApplicantWorkflowsComponent {
   stylingMode: DxTabPanelTypes.TabsStyle = this.stylingModes[0];
   screenWidth: any;
   workflowTransitionFrm:FormGroup;
+  applicationStatusesData:any;
 
   actionsMenuItems = [
     {
@@ -130,7 +188,19 @@ export class ApplicantWorkflowsComponent {
         { text: "Enable/Disable", action: 'enable_record', icon: 'fa fa-check' },
       ]
     }
-  ];applicationStatusesData:any;
+  ];
+  workflowStageDetailsMenuItems = [
+    {
+      text: "Action",
+      icon: 'menu',
+      items: [
+        { text: "Edit workflow Stage details", action: 'edit_record', icon: 'fa fa-edit' },
+        { text: "Delete", action: 'delete_record', icon: 'fa fa-trash' },
+        { text: "Enable/Disable", action: 'enable_record', icon: 'fa fa-check' },
+      ]
+    }
+  ];
+  
   constructor(
     public utilityService: UtilityService,
     public toastr: ToastrService,
@@ -194,6 +264,44 @@ export class ApplicantWorkflowsComponent {
       workflow_interface_id : new FormControl('', Validators.compose([])),
       application_status_id : new FormControl('', Validators.compose([]))
     });
+
+    this.workflowStageActionsItemsFrm = new FormGroup({
+      id: new FormControl('', Validators.compose([])),
+      name: new FormControl('', Validators.compose([])),
+      description: new FormControl('', Validators.compose([])),
+      code: new FormControl('', Validators.compose([])),
+      order_no: new FormControl('', Validators.compose([])),
+      stage_id: new FormControl('', Validators.compose([])),
+      is_status_tied: new FormControl('', Validators.compose([])),
+      application_status_id: new FormControl('', Validators.compose([])),
+      is_checklist_tied: new FormControl('', Validators.compose([])),
+      is_paymentrequest_submission: new FormControl('', Validators.compose([])),
+      workflow_stage_id:new FormControl('', Validators.compose([])),
+    });
+
+    this.workflowStageProcessActionsFrm = new FormGroup({
+      id: new FormControl('', Validators.compose([])),
+      name: new FormControl('', Validators.compose([])),
+      description: new FormControl('', Validators.compose([])),
+      code: new FormControl('', Validators.compose([])),
+      order_no: new FormControl('', Validators.compose([])),
+      is_enabled: new FormControl('', Validators.compose([])),
+      workflow_stage_id:new FormControl('', Validators.compose([])),
+      statuses_action_id: new FormControl('', Validators.compose([])),
+      
+    });
+    this.workflowStageItemsFrm = new FormGroup({
+      id: new FormControl('', Validators.compose([])),
+      name: new FormControl('', Validators.compose([])),
+      description: new FormControl('', Validators.compose([])),
+      code: new FormControl('', Validators.compose([])),
+      order_no: new FormControl('', Validators.compose([])),
+      stage_status_id:new FormControl('', Validators.compose([])),
+      interface_id: new FormControl('', Validators.compose([])),
+      workflow_id: new FormControl('', Validators.compose([])),
+      process_category_id: new FormControl('', Validators.compose([])),
+      appworkflow_status_id: new FormControl('', Validators.compose([])),
+    });
   }
   ngOnInit() {
    
@@ -240,10 +348,22 @@ export class ApplicantWorkflowsComponent {
   }
 
   onAddWorkFlowStage() {
-    this.workflowStagesFrm.reset();
-    this.workflowStageDetailsVisible = true
-    this.workflowStagesFrm.get('table_name')?.setValue('ptl_workflowprocesses_stages');
-    this.workflowStagesFrm.get('workflowprocess_id')?.setValue(this.workflowprocess_id);
+
+    this.workflowStageItemsFrm.reset();
+    // this.workflowStagesVisible = true;
+    this.workflowStageDetailsVisible = true;
+    this.workflowStageItemsFrm.get('table_name')?.setValue('wf_workflow_stages');
+    this.workflowStageItemsFrm.get('workflow_id')?.setValue(this.workflow_id);
+    this.workflowStageActionsItemsFrm.get('workflow_stage_id')?.setValue(this.workflow_stage_id);
+    this.workflowStageProcessActionsFrm.get('workflow_stage_id')?.setValue(this.workflow_stage_id);
+    this.workflowStagesFrm.get('workflow_id')?.setValue(this.workflow_id);
+
+    // this.workflowStagesFrm.reset();
+    // this.workflowStageDetailsVisible = true
+    // this.workflowStagesFrm.get('table_name')?.setValue('ptl_workflowprocesses_stages');
+    // this.workflowStagesFrm.get('workflowprocess_id')?.setValue(this.workflowprocess_id);
+
+
   }
 
   onAdvanceProductRegistrySearch(e) {
@@ -557,6 +677,24 @@ export class ApplicantWorkflowsComponent {
         });
 
   }
+  onLoadApplicationStatusData() {
+    var data_submit = {
+      'table_name': 'par_application_statuses',
+      // process_id: process_id
+    }
+    this.workflowService.getWorkflowConfigs(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.workflowApplicationStatusData = this.data_record.data;
+          }
+        },
+        error => {
+  
+        });
+  
+  }
   onLoadProcessTypesData() {
     var data_submit = {
       'table_name': 'par_process_types',
@@ -682,6 +820,24 @@ export class ApplicantWorkflowsComponent {
           this.toastr.error('Error Occurred', 'Alert');
           this.spinnerHide();
         });
+  }
+  onLoadStageData() {
+    var data_submit = {
+      'table_name': 'wf_workflow_stages',
+      // process_id: process_id
+    }
+    this.workflowService.getWorkflowConfigs(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.workflowStageData = this.data_record.data;
+          }
+        },
+        error => {
+  
+        });
+  
   }
   onFuncSaveWorlflowData() {
 
@@ -866,6 +1022,32 @@ export class ApplicantWorkflowsComponent {
           this.spinnerHide();
         });
   }
+  iniateEnableDisableWorkflowStage() {
+ 
+    this.spinnerShow('Saving_details');
+    this.workflowStageItemsFrm.get('table_name')?.setValue('wf_workflow_stages');
+    this.workflowService.onEnableWorkflowDetails(this.workflowStageItemsFrm.value, 'wf_workflow_stages', this.parameter_name)
+      .subscribe(
+        response => {
+          this.spinner.hide();
+          this.response = response;
+          if (this.response.success) {
+            this.fetchWorkflowStagesDetails(this.workflow_id);
+            this.enableWorkflowStageVisible = false;
+            this.toastr.success(this.response.message, 'Response');
+            // this.deletePopupVisible = false;
+          }
+          else {
+            this.toastr.success(this.response.message, 'Response');
+          }
+          this.spinnerHide();
+        },
+        error => {
+          this.loading = false;
+          this.spinnerHide();
+        });
+  }
+  
 
   funcEnableDisableStageRecord(data) {
     this.workflowStagesFrm.patchValue(data.data);
@@ -978,7 +1160,230 @@ export class ApplicantWorkflowsComponent {
     this.enableWorkflowPopupVisible = true;
   }
 
+  fetchWorkflowStagesInfo(workflow_id) {
+    this.spinnerShow('Loading Workflow Stages Details');
+    var data_submit = {
+      'table_name': 'wf_workflow_stages',
+      workflow_id: workflow_id
+    }
+    this.workflowService.getWorkflowConfigs(data_submit)
+    .subscribe(
+      data => {
+        
+        this.data_record = data;
+        if (this.data_record.success) {
+          this.workflowStagesData = this.data_record.data;
+        }
+      });
+      this.spinnerHide();
+  }
+  onLoadStatusActionsData() {
+    var data_submit = {
+      'table_name': 'wf_statuses_actions',
+     
+    }
+    this.workflowService.getWorkflowConfigs(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.statusActionsData = this.data_record.data;
+          }
+        },
+        error => {
   
+        });
+  
+  }
+  onIsStatusTied(e){
+    // this.selectedValue =this.workflowStageActionsItemsFrm.get('is_status_tied')?.value;
+    // if(this.selectedValue == true){
+    
+    // }
+  }
+
+  onAddWorkFlowStageActions(){
+    this.workflowStageActionsItemsFrm.reset();
+    this.workflowStageActionDetailsVisible = true;
+  
+    this.workflowTransitionFrm.get('table_name')?.setValue('wf_workflow_actions');
+    this.workflowTransitionFrm.get('workflow_id')?.setValue(this.workflow_id);
+    this.workflowStageActionsItemsFrm.get('workflow_stage_id')?.setValue(this.workflow_stage_id);
+   }
+
+   onAddWorkFlowStageProcessActions(){
+    this.workflowStageProcessActionsFrm.reset();
+    this.workflowStageProcessActionsVisible = true;
+    this.workflowStagesProcessActionsData = [];
+    console.log(this.workflowStageActionsItemsFrm.get('workflow_stage_id')?.setValue(this.workflow_stage_id));
+    
+    //this.workflowStageProcessActionsFrm.get('table_name')?.setValue('wf_workflow_stages');
+   //this.workflowStageProcessActionsFrm.get('workflow_id')?.setValue(this.workflow_id);
+  
+    
+  }
+
+  funcEnableDisableWorkflowStage(data) {
+      
+    this.workflowStageItemsFrm.patchValue(data.data);
+  
+    this.config_record = data.data.name;
+    this.is_enabled = data.data.is_enabled;
+    // console.log(this.is_enabled)
+    if (this.is_enabled) {
+      this.enabledisable_workflowstage = "disable_workflowstage";
+      this.enabledisable_workflowstage_description = "are_you_sure_you_want_to_disableworkflowstage";
+  
+    }
+    else {
+      this.enabledisable_workflowstage = "enable_workflowstage";
+      this.enabledisable_workflowstage_description = "are_you_sure_you_want_to_enableworkflowstage";
+    }
+  
+    this.enableWorkflowStageVisible = true;
+  }
+
+  funcStageDetailsOnClick(e, data) {
+    var action_btn = e.itemData;
+    if (action_btn.action === 'edit_record') {
+      this.funcEditStageDetails(data);
+    } else if (action_btn.action === 'delete_record') {
+      this.funcDeleteWorkflowStageDetails(data);
+    } else if (action_btn.action === 'enable_record') {
+      this.funcEnableDisableWorkflowStage(data);
+    }
+  }
+
+  onFuncSaveWorlflowStageActionData() {
+    const formData = new FormData();
+    const invalid = [];
+    const controls = this.workflowStageActionsItemsFrm.controls;
+    for (const name in controls) {
+      if (controls[name].invalid) {
+        this.toastr.error('Fill In All Mandatory fields with (*), missing value on ' + name.replace('_id', ''), 'Alert');
+        return;
+      }
+    }
+    if (this.workflowStageActionsItemsFrm.invalid) {
+      return;
+    }
+  
+    this.workflowStageActionsItemsFrm.get('resetcolumns')?.setValue(this.resetcolumns);
+    this.spinnerShow('Saving ' + this.parameter_name);
+    this.action_url = 'onsaveWorkflowConfigData';
+  
+    this.spinner.show();
+  
+    this.workflowService.onSaveWorkflowDetailsDetails('wf_workflow_actions', this.workflowStageActionsItemsFrm.value, this.action_url)
+      .subscribe(
+        response => {
+          this.response = response;
+          //the details 
+          if (this.response.success) {
+  
+            this.fetchWorkflowStagesInfo(this.workflow_id);
+            this.workflowStageDetailsVisible = false;
+            this.toastr.success(this.response.message, 'Response');
+            this.spinnerHide();
+          } else {
+            this.toastr.error(this.response.message, 'Alert');
+            this.spinnerHide();
+          }
+          this.spinnerHide();
+        },
+        error => {
+          this.toastr.error('Error Occurred', 'Alert');
+          this.spinnerHide();
+        });
+  }
+  
+   
+
+  onFuncSaveWorkflowStageDetailsData() {
+    const formData = new FormData();
+    const invalid = [];
+    const controls = this.workflowStagesFrm.controls;
+    for (const name in controls) {
+      if (controls[name].invalid) {
+        this.toastr.error('Fill In All Mandatory fields with (*), missing value on ' + name.replace('_id', ''), 'Alert');
+        return;
+      }
+    }
+    if (this.workflowStagesFrm.invalid) {
+      return;
+    }
+  
+    this.workflowStagesFrm.get('resetcolumns')?.setValue(this.resetcolumns);
+    this.spinnerShow('Saving ' + this.parameter_name);
+    this.action_url = 'onsaveWorkflowConfigData';
+  
+    this.spinner.show();
+  
+    this.workflowService.onSaveWorkflowDetailsDetails('wf_workflow_stages', this.workflowStagesFrm.value, this.action_url)
+      .subscribe(
+        response => {
+          this.response = response;
+          //the details 
+          if (this.response.success) {
+  
+            this.fetchWorkflowStagesInfo(this.workflow_id);
+            this.workflowStagesVisible = false;
+            this.toastr.success(this.response.message, 'Response');
+            this.spinnerHide();
+          } else {
+            this.toastr.error(this.response.message, 'Alert');
+            this.spinnerHide();
+          }
+          this.spinnerHide();
+        },
+        error => {
+          this.toastr.error('Error Occurred', 'Alert');
+          this.spinnerHide();
+        });
+  }
+
+  onFuncSaveWorkflowStageProcessActionsData() {
+    const formData = new FormData();
+    const invalid = [];
+    const controls = this.workflowStageProcessActionsFrm.controls;
+    for (const name in controls) {
+      if (controls[name].invalid) {
+        this.toastr.error('Fill In All Mandatory fields with (*), missing value on ' + name.replace('_id', ''), 'Alert');
+        return;
+      }
+    }
+    if (this.workflowStageProcessActionsFrm.invalid) {
+      return;
+    }
+  
+    this.workflowStageProcessActionsFrm.get('resetcolumns')?.setValue(this.resetcolumns);
+    this.spinnerShow('Saving ' + this.parameter_name);
+    this.action_url = 'onsaveWorkflowConfigData';
+  
+    this.spinner.show();
+  
+    this.workflowService.onSaveWorkflowDetailsDetails('wb_workflowstageprocess_actions', this.workflowStageProcessActionsFrm.value, this.action_url)
+      .subscribe(
+        response => {
+          this.response = response;
+          //the details 
+          if (this.response.success) {
+  
+            this.fetchWorkflowStagesInfo(this.workflow_id);
+            this.workflowStageProcessActionsVisible = false;
+            this.toastr.success(this.response.message, 'Response');
+            this.spinnerHide();
+          } else {
+            this.toastr.error(this.response.message, 'Alert');
+            this.spinnerHide();
+          }
+          this.spinnerHide();
+        },
+        error => {
+          this.toastr.error('Error Occurred', 'Alert');
+          this.spinnerHide();
+        });
+  }
   
   
  
