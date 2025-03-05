@@ -1,4 +1,4 @@
-import { ViewChild, Directive } from '@angular/core';
+import { ViewChild, Directive, Input } from '@angular/core';
 
 import { Router } from '@angular/router';
 import { FormBuilder, FormGroup, FormControl, Validators } from '@angular/forms';
@@ -25,8 +25,8 @@ export class SharedImpexpApplicationClass {
   trader_id: number;
   mistrader_id: number;
   process_id: number;
-  applicantperformance_evaluation_id: number;
-
+  transactionpermit_type_id: number;
+  
   permit_id: any;
   dataGrid: DxDataGridComponent;
   productApplicationProcessingData: any;
@@ -172,10 +172,9 @@ export class SharedImpexpApplicationClass {
     this.application_details = JSON.parse(this.application_details);
     this.form_fielddata = this.application_details.application_form;
     this.applicationGeneraldetailsfrm = this.formBuilder.group({});
+    
     // this.permitProductsFrm = this.formBuilder.group({});
-
-
-
+    
     for (let form_field of this.form_fielddata) {
       let field_name = form_field['field_name'];
       if (form_field['is_mandatory'] == 1) {
@@ -187,7 +186,6 @@ export class SharedImpexpApplicationClass {
        
 
       }
-
     }
 
     if (this.application_details) {
@@ -201,7 +199,7 @@ export class SharedImpexpApplicationClass {
       this.tracking_no = this.application_details.tracking_no;
 
       this.applicationGeneraldetailsfrm.patchValue(this.application_details);
-      
+ 
     }
 
 

@@ -68,14 +68,14 @@
                 </dx-button>
             </div>
         </dxi-column>
-        <dxi-column caption="More Actions" [width]=150 name="command-editing" [allowFiltering]="false"
-            [allowSorting]="false" cellTemplate="cellTemplate">
-            <div *dxTemplate="let d of 'cellTemplate'">
-                <dx-menu [items]="d.data.contextMenu" displayExpr="text"
-                    (onItemClick)="applicationActionColClick($event,d)">
-                </dx-menu>
-            </div>
-        </dxi-column>
+        <!-- <dxi-column caption="{{'more_actions' | translate}}" [width]=150 name="command-editing" [allowFiltering]="false"
+        [allowSorting]="false" cellTemplate="cellTemplate">
+        <div *dxTemplate="let d of 'cellTemplate'">
+            <dx-menu [items]="d.data.contextMenu" displayExpr="text"
+                (onItemClick)="applicationActionColClick($event,d)">
+            </dx-menu>
+        </div>
+    </dxi-column> -->
 
         <dxi-column dataField="reference_no" caption="{{'application_reference' | translate}}"></dxi-column>
         <dxi-column [width]=90 [groupIndex]="0" dataField="section"
@@ -251,8 +251,6 @@
             <dxi-column [width]=90 dataField="added_on" caption="{{'added_on' | translate}}"></dxi-column>
             <dxi-column [width]=200 cssClass='WrappedColumnClass' dataField="rejection_remarks"
                 caption="{{'rejection_remarks' | translate}}"></dxi-column>
-
-
         </dx-data-grid>
     </div>
 </dx-popup>
@@ -264,7 +262,7 @@
     </div>
 </dx-popup>
 
-<dx-popup class="popup" [width]="funcpopWidth(45)" [height]=550 [showTitle]="true" title="Import License Application"
+<dx-popup class="popup" [width]="funcpopWidth(45)" [height]="funcpopHeight(45)" [showTitle]="true" title="Import License Application"
     [dragEnabled]="false" [hideOnOutsideClick]="false" [(visible)]="isPermitInitialisation">
     <div *dxTemplate="let data of 'content'">
         <dx-scroll-view>
@@ -280,7 +278,7 @@
                     <label>{{'permit_type' | translate}}</label>
                     <dx-select-box [dataSource]="permitTypesCategoryData" valueExpr="id" displayExpr="name"
                         placeholder="{{'select_permit_type_category' | translate}}" [searchEnabled]="true"
-                        formControlName="permit_typecategory_id">
+                        formControlName="permit_type_id">
                     </dx-select-box>
                 </div>
                 <div class="col-lg-12  pull-right row" style="text-align: center;">

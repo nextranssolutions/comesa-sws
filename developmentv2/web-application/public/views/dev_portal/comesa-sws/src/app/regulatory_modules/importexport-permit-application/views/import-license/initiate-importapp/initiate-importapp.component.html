@@ -78,7 +78,7 @@
 
                     <div>
                         <app-permitgeneraldetails [applicationGeneraldetailsfrm]="applicationGeneraldetailsfrm"
-                            [permitReceiverSenderFrm]="permitReceiverSenderFrm"></app-permitgeneraldetails>
+                            [permitReceiverSenderFrm]="permitReceiverSenderFrm" [applicantDetailsForm]="applicantDetailsForm"></app-permitgeneraldetails>
                     </div>
 
                     <!-- Add more content to see the scroll effect -->
@@ -159,8 +159,7 @@
             <div class="container_div">
                 <div class="scrollable-content">
                     <app-sharedevaluation-checklist
-                    [applicantperformance_evaluation_id]="applicantperformance_evaluation_id"
-    
+                    [transactionpermit_type_id]="transactionpermit_type_id"
                     [application_code]="application_code"></app-sharedevaluation-checklist>
                 </div>
             </div>

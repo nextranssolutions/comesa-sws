@@ -15,6 +15,7 @@ export class SharedImpExpdashboardClass {
   @ViewChild(DxDataGridComponent) dataGrid: DxDataGridComponent;
   is_popupguidelines: boolean;
   application_status_id: any;
+  ImportExpApplicationData: any;
   approved_applications: number = 0;
   pending_submission: number = 0;
   queried_applications: number = 0;
@@ -108,16 +109,14 @@ export class SharedImpExpdashboardClass {
       submission_comments: new FormControl('', Validators.compose([]))
     });
     this.table_name = 'wb_importexport_applications'
-  }
-
-  ngOnInit(): void {
     this.onLoadProductTypes();
     this.onLoadconfirmDataParam();
     this.onLoadproducttypeDefinationData();
     this.onLoadimportExportPermitTypesData();
     this.reloadPermitApplicationsApplications();
-    // this.onLoadImportApplciations();
   }
+
+ 
   scrollToTop(): void {
     window.scrollTo({
       top: 0,
