@@ -84,7 +84,8 @@ class ImportExportController extends Controller
             $applicant_id = $req->trader_id;
             $trader_id = $req->trader_id;
             $email_address = $req->email_address;
-
+            
+            $applicant_id = $req->applicant_id;
             $local_agent_id = $req->local_agent_id;
 
             $reference_no = $req->reference_no;
@@ -252,6 +253,7 @@ class ImportExportController extends Controller
                     $tra_app_data = $app_data;
                     $tra_app_data['application_code'] = $application_code;
                     $tra_app_data['oga_application_code'] = $oga_application_code;
+                    $tra_app_data['applicant_id'] = $applicant_id;
                     $response = insertRecord('tra_importexport_applications', $tra_app_data, $email_address);
 
 
