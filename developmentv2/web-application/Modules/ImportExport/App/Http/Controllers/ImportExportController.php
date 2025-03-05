@@ -758,6 +758,7 @@ class ImportExportController extends Controller
         return response()->json($res);
     }
 
+
     public function onSaveApplicantPermitProductsDetails(Request $req)
     {
         try {
@@ -777,9 +778,9 @@ class ImportExportController extends Controller
             // $permitprod_recommendation_id = $req->permitprod_recommendation_id;
            
             $regulatory_subfunction_id = $req->regulatory_subfunction_id;
-            $application_code = $req->application_code;
+           
             $batch_number = $req->batch_number;
-
+            $application_code = generateApplicationCode($regulatory_subfunction_id, 'tra_permit_products');
             $expiry_date = $req->expiry_date;
             $manufacturing_date = $req->manufacturing_date;
             $error_message = 'Error occurred, data not saved successfully';
@@ -795,6 +796,7 @@ class ImportExportController extends Controller
 
                 $data = array(
                     'unit_price' => $unit_price,
+
                     'section_id' => $req->section_id,
                     'productphysical_description' => $req->productphysical_description,
                     'packaging_unit_id' => $packaging_unit_id,
@@ -899,6 +901,9 @@ class ImportExportController extends Controller
 
 
 
+
+
+   
 
 
     public function saveManufacturerDetails(Request $req)
@@ -1491,7 +1496,7 @@ class ImportExportController extends Controller
                 ->leftJoin('par_countries as t14', 't1.final_destination_country_id', 't14.id')
                 ->leftJoin('par_invoice_types as t15', 't1.invoice_type_id', 't15.id')
                 ->leftJoin('par_currencies as t16', 't1.currency_oftransaction_id', 't16.id')
-                ->leftJoin('par_confirmations as t17', 't1.declaration_statuses', 't17.id')
+                ->leftJoin('par_confirmations as t17', 't1.declaration_statuses_id', 't17.id')
                 
                 
                 ->select('t1.*','t17.name as declaration','t16.name as currency_name','t15.name as invoice_type', 't14.name as final_destination_country','t5.name as port_of_entry', 't13.name as mode_of_transport','t12.name as currency_name', 't11.name as permit_type','t10.name as application_status','t8.name as action_name','t8.iconCls as iconCls','t8.action as action', 't2.name as permit_name', 't3.name as port_type', 't1.id', 't4.name as importer_exporter_name');
