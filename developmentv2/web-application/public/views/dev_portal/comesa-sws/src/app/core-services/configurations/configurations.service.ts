@@ -275,4 +275,20 @@ export class ConfigurationsService {
         return <any>data;
       }));
   } 
+
+  getSingleApplicantSectionUniformApplication(regulatory_subfunction_id) {
+    
+    var headers = new Headers({
+      "Accept": "application/json",
+      "Authorization": "Bearer " + this.authService.getAccessToken(),
+    });
+    this.config = {
+      params: { regulatory_subfunction_id: regulatory_subfunction_id},
+      headers: headers
+    };
+    return this.HttpClient.get(this.baseUrl + '/getUniformSectionApplicationProcess', this.config)
+      .pipe(map(data => {
+        return <any>data;
+      }));
+  } 
 }
