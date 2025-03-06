@@ -12,11 +12,11 @@ import { HttpClientModule, HttpClient, HTTP_INTERCEPTORS } from '@angular/common
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgxPermissionsModule } from 'ngx-permissions';
 
-import { AuthInterceptor } from './core-services/http.interceptor';
 import { TranslateModule, TranslateLoader } from '@ngx-translate/core';
 
 import { CompositeTranslateLoader } from './composite-translate-loader';
 import { AppRoutingModule } from './app-routing.module';
+import { AuthInterceptor } from './guards/authinterceptor';
 
 @NgModule({
   declarations: [
@@ -72,6 +72,7 @@ import { AppRoutingModule } from './app-routing.module';
     TranslateModule,
     BrowserAnimationsModule
   ],
+  
   providers: [
     {
       provide: HTTP_INTERCEPTORS,
@@ -79,6 +80,7 @@ import { AppRoutingModule } from './app-routing.module';
       multi: true
     }
   ],
+
   bootstrap: [AppComponent]
 })
 export class AppModule { }

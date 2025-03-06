@@ -11,7 +11,7 @@ import { catchError, switchMap } from 'rxjs/operators';
 import { AuthenticationService } from './authentication/authentication.service';
 
 @Injectable()
-export class AuthInterceptor implements HttpInterceptor {
+export class AuthInterceptor12 implements HttpInterceptor {
   constructor(private authService: AuthenticationService) {}
 
   intercept(
