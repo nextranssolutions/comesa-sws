@@ -516,8 +516,8 @@ export class SharedImpExpdashboardClass {
   funcActionsProcess(action_btn, data) {
 
     if (action_btn.action === 'edit') {
-       this.funcApplicationPreveditDetails(data);
-      //this.funcSingleApplicationPreveditDetails(data);
+      this.funcApplicationPreveditDetails(data);
+
     }
     else if (action_btn.action === 'preview') {
       this.funcProductPreviewDetails(data);
@@ -706,9 +706,6 @@ export class SharedImpExpdashboardClass {
             let merged_appdata = Object.assign({}, this.application_data, app_data);
           
             localStorage.setItem('application_details', JSON.stringify(merged_appdata));
-            localStorage.setItem('applicant_details', JSON.stringify(merged_appdata));
-            localStorage.setItem('permit_details', JSON.stringify(merged_appdata));
-
             this.app_route = ['./importexport-permit-application/' + this.router_link];
 
             this.router.navigate(this.app_route);

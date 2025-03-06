@@ -131,15 +131,17 @@ export class ImportExportService {
     var headers = new HttpHeaders({
       "Accept": "application/json",
       "Authorization": "Bearer " + this.authService.getAccessToken(),
-      "Content-Type": "application/json"
     });
 
-    return this.HttpClient.get(this.baseUrl + '/' + action_url, filter_params )
+    this.config = {
+      params: { filter_params },
+      headers: headers
+    };
+    return this.HttpClient.get(this.baseUrl + '/' + action_url, this.config)
       .pipe(map(data => {
         return <any>data;
       }));
-}
-
+  }
 
    onAddManufacturingSite(table_name: string, data: any, action_url: string) {
       // Add table_name directly into the data object

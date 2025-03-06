@@ -37,8 +37,6 @@ Route::middleware(['XssSanitizer','clear_cache_config','firewall.all'])->prefix(
     Route::post('onSavingApplicantEvaluationChecklistDetails', [ImportExportController::class,'onSavingApplicantEvaluationChecklistDetails']);
     
     Route::get('getImportExpApplicantPermitsLoading', [ImportExportController::class, 'getImportExpApplicantPermitsLoading']);
-    Route::get('getImportApplicantPermitsProductsApplication', [ImportExportController::class, 'getImportApplicantPermitsProductsApplication']);
-    
     
     Route::post('saveOgaImportExportApplication', [ImportExportController::class,'saveOgaImportExportApplication']);
     Route::post('onSavePermitProductsDetails', [ImportExportController::class,'onSavePermitProductsDetails']);
