@@ -424,7 +424,7 @@ form .ng-valid {
 }
 
 .dx-tab .dx-tab-text {
-  text-transform: capitalize !important;
+  text-transform: none !important;
 }
 
 /* .dx-button-text {

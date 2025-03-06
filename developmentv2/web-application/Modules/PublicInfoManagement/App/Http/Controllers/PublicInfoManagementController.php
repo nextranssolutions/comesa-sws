@@ -172,7 +172,7 @@ class PublicInfoManagementController extends Controller
 
                 ->select(
                     't1.*',
-                    
+                    't1.description as procedure_description',
                     't6.name as hscodesheading',
                     't6.hscode as headingcode',
                     't5.name as hscodechapters',
