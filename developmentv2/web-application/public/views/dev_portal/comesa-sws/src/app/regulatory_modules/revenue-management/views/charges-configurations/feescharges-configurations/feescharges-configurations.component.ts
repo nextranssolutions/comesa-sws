@@ -130,7 +130,7 @@ export class FeeschargesConfigurationsComponent {
       is_enabled: new FormControl('', Validators.compose([])),
     });
 
-    this.table_name = 'txn_feescharges_configurations';
+    this.table_name = 'tra_feescharges_configurations';
     this.parameter_name = "feescharges_configurations";
   }
 

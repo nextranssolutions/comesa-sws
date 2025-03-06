@@ -12,9 +12,9 @@ export class ImportexportpermitFeesComponent {
   constructor(
     // private http: HttpClient,
   ) {
-    this.table_name = 'txn_appmodules_feesconfigurations';
+    this.table_name = 'tra_appmodules_feesconfigurations';
     this.parameter_name = "importexportpermit-fees";
-    this.regulatory_function_id = 4;
+    this.regulatory_function_id = 1;
   }
   ngOnInit() {
     // other initializations

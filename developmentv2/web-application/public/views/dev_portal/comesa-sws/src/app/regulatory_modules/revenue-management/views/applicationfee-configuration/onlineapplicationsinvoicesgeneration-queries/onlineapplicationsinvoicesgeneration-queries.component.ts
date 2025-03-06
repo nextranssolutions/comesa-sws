@@ -11,10 +11,11 @@ export class OnlineapplicationsinvoicesgenerationQueriesComponent {
     constructor(
       // private http: HttpClient,
     ) {
-      this.table_name = 'wkf_applicationinvoicedata_queries';
+      this.table_name = 'wf_applicationinvoicedata_queries';
       this.parameter_name = "applicationinvoicesgeneration-queries";
     }
     ngOnInit() {
       // other initializations
     }
 }
+ 

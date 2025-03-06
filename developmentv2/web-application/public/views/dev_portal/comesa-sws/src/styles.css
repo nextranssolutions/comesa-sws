@@ -3,7 +3,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700&display=swap');
 @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@400;700&display=swap');
-
 html,
 body {
   font-family: 'Nunito Sans', sans-serif;
@@ -424,7 +423,7 @@ form .ng-valid {
 }
 
 .dx-tab .dx-tab-text {
-  text-transform: capitalize !important;
+  text-transform: none !important;
 }
 
 /* .dx-button-text {

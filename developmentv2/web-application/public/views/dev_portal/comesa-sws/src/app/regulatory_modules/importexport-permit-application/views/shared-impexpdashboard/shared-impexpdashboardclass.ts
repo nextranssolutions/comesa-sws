@@ -4,10 +4,12 @@ import { Router } from '@angular/router';
 import { DxDataGridComponent } from 'devextreme-angular';
 import { SpinnerVisibilityService } from 'ng-http-loader';
 import { ToastrService } from 'ngx-toastr';
+import { TranslateService } from '@ngx-translate/core';
 import { AppSettings } from 'src/app/app-settings';
 import { UtilityService } from 'src/app/core-services/utilities/utility.service';
 import { ImportExportService } from '../../services/import-export.service';
 import { ConfigurationsService } from 'src/app/core-services/configurations/configurations.service';
+import { PublicDashboardService } from 'src/app/core-services/public-dashboard/public-dashboard.service';
 
 @Directive()
 export class SharedImpExpdashboardClass {
@@ -15,6 +17,7 @@ export class SharedImpExpdashboardClass {
   @ViewChild(DxDataGridComponent) dataGrid: DxDataGridComponent;
   is_popupguidelines: boolean;
   application_status_id: any;
+  response: any;
   ImportExpApplicationData: any;
   approved_applications: number = 0;
   pending_submission: number = 0;
@@ -22,6 +25,7 @@ export class SharedImpExpdashboardClass {
   rejected_applications: number = 0;
   submitted_application: number = 0;
   productsapp_details: any;
+  navigation_type_id: any;
   loadingVisible: boolean;
   spinnerMessage: string;
   prodClassCategoryItem: any;
@@ -32,6 +36,7 @@ export class SharedImpExpdashboardClass {
   regulatory_function_id: number = 4;
   app_response: any;
   processData: any;
+  nav_data: any;
   title: string;
   router_link: string;
   base_url = AppSettings.base_url;
@@ -39,6 +44,7 @@ export class SharedImpExpdashboardClass {
   productApplicationProcessingData: any;
   isPreviewApplicationProcessing: boolean = false;
   printReportTitle: string;
+  navigation_items: any;
   isPrintReportVisible: boolean = false;
   printiframeUrl: string;
   isPreviewApplicationDetails: boolean = false;
@@ -83,10 +89,10 @@ export class SharedImpExpdashboardClass {
   importExportPermitTypesData: any;
   processingData: any;
 
-  constructor(public utilityService: UtilityService, public viewRef: ViewContainerRef, public spinner: SpinnerVisibilityService, public toastr: ToastrService, public router: Router, public configService: ConfigurationsService, public appService: ImportExportService) { // this.onLoadApplicationCounterDetails();
+  constructor(public utilityService: UtilityService, public publicService: PublicDashboardService, public translate: TranslateService, public viewRef: ViewContainerRef, public spinner: SpinnerVisibilityService, public toastr: ToastrService, public router: Router, public configService: ConfigurationsService, public appService: ImportExportService) { // this.onLoadApplicationCounterDetails();
 
 
-  
+
 
     this.applicationGeneraldetailsfrm = new FormGroup({
       regulatory_subfunction_id: new FormControl('', Validators.compose([])),
@@ -114,9 +120,11 @@ export class SharedImpExpdashboardClass {
     this.onLoadproducttypeDefinationData();
     this.onLoadimportExportPermitTypesData();
     this.reloadPermitApplicationsApplications();
+
+
   }
 
- 
+
   scrollToTop(): void {
     window.scrollTo({
       top: 0,
@@ -146,8 +154,59 @@ export class SharedImpExpdashboardClass {
   }
 
   onInitiatenewImportExpApplications() {
-    this. onApplicationSelection(1);
+    this.onApplicationSelection(1);
   }
+
+  onInitiatenewSingleProductPermitImportExpApplications() {
+    this.onApplicationSelectionForSingleProducts(1);
+  }
+
+
+  onApplicationSelectionForSingleProducts(regulatory_subfunction_id) {
+
+    if (regulatory_subfunction_id == 1) {
+      this.applicationGeneraldetailsfrm.get('regulatory_subfunction_id')?.setValue(regulatory_subfunction_id);
+
+    }
+    this.spinner.show();
+    this.app_typeItem = this.applicationGeneraldetailsfrm.controls['regulatory_subfunction_id'];
+    this.regulatory_subfunction_id = this.app_typeItem.value;
+
+    this.configService.getSectionUniformApplication(this.regulatory_subfunction_id)
+      .subscribe(
+        data => {
+          this.spinner.hide();
+          if (data.success) {
+            this.processData = data.data.process_infor;
+
+            this.router_link = this.processData.router_link;
+            this.productsapp_details = this.processData;
+            this.appService.setApplicationDetail(data.data);
+            this.appService.setPermitApplicationDetail(data.data);
+            this.appService.setApplicantDetail(data.data);
+
+            localStorage.setItem('application_details', JSON.stringify(data.data));
+            localStorage.setItem('permit_details', JSON.stringify(data.data));
+            localStorage.setItem('applicant_details', JSON.stringify(data.data));
+
+            
+            // this.appService.setProductApplicationDetail(data.data);
+            this.app_route = ['./importexport-permit-application/single-productapplication-permits'];
+
+            this.router.navigate(this.app_route);
+            this.scrollToTop();
+
+          }
+          else {
+            this.toastr.error(this.processData.message, 'Alert!');
+
+          }
+
+
+        });
+    return false;
+  }
+
 
 
   onApplicationSelection(regulatory_subfunction_id) {
@@ -170,9 +229,11 @@ export class SharedImpExpdashboardClass {
             this.router_link = this.processData.router_link;
             this.productsapp_details = this.processData;
             this.appService.setApplicationDetail(data.data);
+            this.appService.setPermitApplicationDetail(data.data);
+            this.appService.setApplicantDetail(data.data);
             localStorage.setItem('application_details', JSON.stringify(data.data));
             localStorage.setItem('permit_details', JSON.stringify(data.data));
-            
+            localStorage.setItem('applicant_details', JSON.stringify(data.data));
             // this.appService.setProductApplicationDetail(data.data);
             this.app_route = ['./importexport-permit-application/' + this.router_link];
 
@@ -197,12 +258,12 @@ export class SharedImpExpdashboardClass {
 
 
 
-  reloadPermitApplicationsApplications(appworkflow_status_id = 0, ) {
+  reloadPermitApplicationsApplications(appworkflow_status_id = 0,) {
     this.spinnerShow('Loading...........');
     var data_submit = {
       'table_name': this.table_name,
       'appworkflow_status_id': appworkflow_status_id,
-      
+
     };
 
     this.appService.onPermitApplicationLoading(data_submit, 'getImportExpApplicantPermitsLoading')
@@ -470,7 +531,7 @@ export class SharedImpExpdashboardClass {
       this.funcPrintApplicationDetails(data);
     }
     else if (action_btn.action == 'archive') {
-//this.funcArchivePermitApplication(data);
+      //this.funcArchivePermitApplication(data);
     } else if (action_btn.action == 'delete_application') {
       //this.funcDeletePermitApplication(data);
     }
@@ -517,7 +578,7 @@ export class SharedImpExpdashboardClass {
 
     } else if (action_btn.action == 'initiate_license_application' || action_btn.action == 'initiate_license_application') {
 
-   //   this.funcInitiateLicenseApplication(data);
+      //   this.funcInitiateLicenseApplication(data);
 
     }
     else if (action_btn.action == 'uploadsub_paymentdetails' || action_btn.action == 'uploadsub_paymentdetails') {
@@ -630,43 +691,43 @@ export class SharedImpExpdashboardClass {
           }
         });
   }
-  application_data:any;
+  application_data: any;
   funcApplicationPreveditDetails(app_data) {
-      this.regulatory_subfunction_id = app_data.regulatory_subfunction_id;
-      
-      this.spinner.show();
-      
-      this.configService.getSectionUniformApplication(this.regulatory_subfunction_id)
-        .subscribe(
-          data => {
-            this.spinner.hide();
-            if (data.success) {
-              this.processData = data.data.process_infor;
-              this.application_data = data.data;
-              
-              this.router_link = this.processData.router_link;
-              this.productsapp_details = this.processData;
-              let merged_appdata = Object.assign({}, this.application_data, app_data);
-              console.log(merged_appdata);
-              localStorage.setItem('application_details', JSON.stringify(merged_appdata));
-              // this.appService.setProductApplicationDetail(data.data);
-              this.app_route = ['./importexport-permit-application/' + this.router_link];
-  
-              this.router.navigate(this.app_route);
-              this.scrollToTop();
-  
-            }
-            else {
-              this.toastr.error(this.processData.message, 'Alert!');
-  
-            }
-  
-  
-          });
-      return false;
-    } 
-   
-  
+    this.regulatory_subfunction_id = app_data.regulatory_subfunction_id;
+
+    this.spinner.show();
+
+    this.configService.getSectionUniformApplication(this.regulatory_subfunction_id)
+      .subscribe(
+        data => {
+          this.spinner.hide();
+          if (data.success) {
+            this.processData = data.data.process_infor;
+            this.application_data = data.data;
+
+            this.router_link = this.processData.router_link;
+            this.productsapp_details = this.processData;
+            let merged_appdata = Object.assign({}, this.application_data, app_data);
+            console.log(merged_appdata);
+            localStorage.setItem('application_details', JSON.stringify(merged_appdata));
+            // this.appService.setProductApplicationDetail(data.data);
+            this.app_route = ['./importexport-permit-application/' + this.router_link];
+
+            this.router.navigate(this.app_route);
+            this.scrollToTop();
+
+          }
+          else {
+            this.toastr.error(this.processData.message, 'Alert!');
+
+          }
+
+
+        });
+    return false;
+  }
+
+
   funcArchivePermitApplication(data) {
     this.utilityService.funcApplicationArchiceCall(this.viewRef, data, 'txn_importexport_applications', this.reloadPermitApplicationsApplications);
 
@@ -786,6 +847,9 @@ export class SharedImpExpdashboardClass {
     this.utilityService.onCellPrepared(e);
 
   }
+
+
+
 
 
 

@@ -92,7 +92,7 @@ export class TopSectionComponent {
       this.passwordMode = this.passwordMode === 'text' ? 'password' : 'text';
     },
   };
-
+  languageData:any;
   constructor(
     public translate: TranslateService,
     public authService: AuthenticationService,
@@ -150,6 +150,7 @@ export class TopSectionComponent {
 
     this.fetchUserCountryOfOrigin();
     this.onLoadTraderAccountTypeData();
+    this.onLoadLanguageDataList();
   }
 
   onCountrySelection($event) {
@@ -530,5 +531,22 @@ export class TopSectionComponent {
     this.helpdeskUrl  = AppSettings.help_deskurl
     this.printReportTitle = 'Help Desk';
     this.isPrintReportVisible = true;
+  }
+  onLoadLanguageDataList() {
+    var data_submit = {
+      'table_name': 'par_system_languages',
+      is_enabled: true
+    }
+    this.configService.onLoadConfigurationData(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.languageData = this.data_record.data;
+          }
+        },
+        error => {
+
+        });
   }
 }
