@@ -84,7 +84,8 @@
               "aot": true,
               "extractLicenses": true,
               "vendorChunk": false,
-              "buildOptimizer": true
+              "buildOptimizer": true,
+              "extractCss": true
             },
             "development": {
               "buildOptimizer": false,
