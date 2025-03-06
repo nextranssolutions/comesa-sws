@@ -14,13 +14,30 @@ import { ImportExportService } from '../../services/import-export.service';
 import { AuthenticationService } from 'src/app/core-services/authentication/authentication.service';
 import { ConfigurationsService } from 'src/app/core-services/configurations/configurations.service';
 import { UserManagementService } from 'src/app/core-services/user-management/user-management.service';
-import { NgWizardService } from 'ng-wizard';
+import { NgWizardConfig, NgWizardService, STEP_STATE, THEME } from 'ng-wizard';
 
 @Directive({
   selector: '[appSharedImpexpApplicationClass]' // Add a unique selector here
 })
 export class SharedImpexpApplicationClass {
   
+  //start test wizrd 
+  stepStates = {
+    normal: STEP_STATE.normal,
+    disabled: STEP_STATE.disabled,
+    error: STEP_STATE.error,
+    hidden: STEP_STATE.hidden
+
+  };
+
+  config: NgWizardConfig = {
+    selected: 0,
+    theme: THEME.arrows,
+    toolbarSettings: {
+      showNextButton: false,
+      showPreviousButton: false
+    }
+  };
   //ImportexportService
   //dms 
   @ViewChild(DxDataGridComponent)
@@ -84,6 +101,7 @@ export class SharedImpexpApplicationClass {
   process_id: number;
   tracking_no: string;
   status_name: string;
+  permit_name: string;
   regulatory_function_id: number = 4;
 
   app_route: any;
@@ -198,6 +216,7 @@ export class SharedImpexpApplicationClass {
       this.tracking_no = this.application_details.tracking_no;
       this.permit_type_id = this.application_details.permit_type_id;
       this.status_name = this.application_details.status_name;
+      this.permit_name = this.application_details.permit_name;
       this.status_id = this.application_details.application_status_id;
       this.application_code = this.application_details.application_code;
       this.proforma_currency_id = this.application_details.proforma_currency_id;
@@ -264,17 +283,17 @@ export class SharedImpexpApplicationClass {
       submission_comments: new FormControl('', Validators.compose([]))
     });
 
-    this.applicantDetailsForm = new FormGroup({
-      applicant_name: new FormControl('', Validators.compose([Validators.required])),
-      country_id: new FormControl('', Validators.compose([Validators.required])),
-      region_id: new FormControl('', Validators.compose([])),
-      district_id: new FormControl('', Validators.compose([])),
-      email_address: new FormControl('', Validators.compose([Validators.required])),
-      postal_address: new FormControl('', Validators.compose([])),
-      telephone_no: new FormControl('', Validators.compose([])),
-      mobile_no: new FormControl('', Validators.compose([])),
-      physical_address: new FormControl('', Validators.compose([])),
-    });
+    // this.applicantDetailsForm = new FormGroup({
+    //   applicant_name: new FormControl('', Validators.compose([Validators.required])),
+    //   country_id: new FormControl('', Validators.compose([Validators.required])),
+    //   region_id: new FormControl('', Validators.compose([])),
+    //   district_id: new FormControl('', Validators.compose([])),
+    //   email_address: new FormControl('', Validators.compose([Validators.required])),
+    //   postal_address: new FormControl('', Validators.compose([])),
+    //   telephone_no: new FormControl('', Validators.compose([])),
+    //   mobile_no: new FormControl('', Validators.compose([])),
+    //   physical_address: new FormControl('', Validators.compose([])),
+    // });
 
     this.permitReceiverSenderFrm = new FormGroup({
       name: new FormControl('', Validators.compose([Validators.required])),
@@ -336,7 +355,7 @@ export class SharedImpexpApplicationClass {
       product_subcategory_id: new FormControl('', Validators.compose([])),
       productclassification_id: new FormControl('', Validators.compose([])),
       productdosage_id: new FormControl('', Validators.compose([])),
-      // consignment_quantity: new FormControl('', Validators.compose([Validators.required])),
+      product_description: new FormControl('', Validators.compose([Validators.required])),
       approvedvisa_product_id: new FormControl('', Validators.compose([])),
       approvedlicense_product_id: new FormControl('', Validators.compose([])),
       licensebalance_quantity: new FormControl('', Validators.compose([])),
@@ -412,6 +431,7 @@ export class SharedImpexpApplicationClass {
 
 
   }
+
   funcAutoLoadedParamters() {
 
     if (this.application_details) {
@@ -606,7 +626,7 @@ export class SharedImpexpApplicationClass {
     
     this.applicationGeneraldetailsfrm.value['regulatory_subfunction_id'] = this.regulatory_subfunction_id;
     this.spinner.show();
-    this.appService.onSavePermitApplication(this.applicationGeneraldetailsfrm.value, uploadData, 'saveImportExportApplication')
+    this.appService.onSavePermitApplication(this.applicationGeneraldetailsfrm.value, uploadData, 'saveOgaImportExportApplication')
       .subscribe(
         response => {
           this.product_resp = response;

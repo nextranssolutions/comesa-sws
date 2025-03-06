@@ -17,7 +17,7 @@ class UserManagementController extends Controller
     {
         try {
             $user_id = $req->input("id");
-            $loggedInUserId = $rec->input('loggedInUserId');
+            $loggedInUserId = $req->input('loggedInUserId');
 
             $user_resp = array('success'=>false, 'message'=>'No Record Saved');
 			$user_groups_ids =$req->user_groups_ids;
@@ -31,7 +31,7 @@ class UserManagementController extends Controller
                     $template_id = 5;
                     $subject = 'User Permissions Updates';
                     $vars = array(
-                        '{user_name}' => $full_names,
+                        '{user_name}' => $req->full_names,
                         '{email_address}' => $req->email_address
                     );
                     $res = sendMailNotification($req->email_address, $subject, '', '', '', '', '', $template_id, $vars);
@@ -44,7 +44,7 @@ class UserManagementController extends Controller
                 } else {
                     $res = array(
                         'success' => false,
-                        'resp' => $resp,
+                        // 'resp' => $resp,
                         'message' => 'Error Occurred in updating the user Account Details.',
 
                     );

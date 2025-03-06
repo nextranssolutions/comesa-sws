@@ -407,11 +407,11 @@ export class ApplicantDetailsComponent {
 
   patchApplicantDetailsFromLocalStorage() {
     const storedTraderData = localStorage.getItem('trader_data');
-    console.log(storedTraderData)
+    // console.log(storedTraderData)
 
     if (storedTraderData) {
       const traderData = JSON.parse(storedTraderData);
-      console.log(traderData);
+      // console.log(traderData);
 
       this.applicantDetailsForm.patchValue({
         id: traderData.id,

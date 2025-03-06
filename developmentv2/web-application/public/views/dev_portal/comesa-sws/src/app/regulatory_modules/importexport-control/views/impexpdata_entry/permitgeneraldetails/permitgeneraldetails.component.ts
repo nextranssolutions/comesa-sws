@@ -108,18 +108,20 @@ export class PermitgeneraldetailsComponent implements OnInit {
   spinnerMessage: string;
   registration_process_action: string;
   select_registration_section_process: string;
-  constructor(public utilityService: UtilityService, public premappService: PremisesLicensingService, public fb: FormBuilder,
-    public spinner: SpinnerVisibilityService, public configService: ConfigurationsService, public appService: ImportExportService,
-    public router: Router, public formBuilder: FormBuilder, public config: ConfigurationsService, public toastr: ToastrService,
-    public authService: AuthenticationService, public httpClient: HttpClient) {
+  constructor(
+    public utilityService: UtilityService, public premappService: PremisesLicensingService, 
+    public fb: FormBuilder, public spinner: SpinnerVisibilityService, 
+    public configService: ConfigurationsService, public appService: ImportExportService,
+    public router: Router, public formBuilder: FormBuilder, public config: ConfigurationsService, 
+    public toastr: ToastrService, public authService: AuthenticationService, public httpClient: HttpClient
+  ) {
   }
   ngOnInit() {
 
     this.maxDate = new Date();
 
     let user_details = this.authService.getUserDetails();
-
-    this.applicant_id = user_details.trader_id;
+    // this.applicant_id = user_details.trader_id;
     this.trader_id = user_details.trader_id;
 
 
@@ -193,7 +195,6 @@ export class PermitgeneraldetailsComponent implements OnInit {
             ;
           }
         });
-
   }
 
 
@@ -232,7 +233,6 @@ export class PermitgeneraldetailsComponent implements OnInit {
             ;
           }
         });
-
   }
 
   onconsigneeOptionsChange($event) {
@@ -272,7 +272,6 @@ export class PermitgeneraldetailsComponent implements OnInit {
 
       this.applicationGeneraldetailsfrm.get('eligible_importerscategory_id')?.setValidators([]);
       this.applicationGeneraldetailsfrm.get('eligible_importersdoctype_id')?.setValidators([]);
-
     }
     else {
 
@@ -534,15 +533,14 @@ export class PermitgeneraldetailsComponent implements OnInit {
 
   onLoadpermitTypeData() {
     var data = {
-      table_name: 'par_permit_typecategories',
-      is_enabled: 1,
+      table_name: 'tra_transactionpermit_types',
+      // is_enabled: 1,
 
     };
 
     this.config.onLoadConfigurationData(data)
       .subscribe(
         data => {
-          console.log(data.record);
           this.data_record = data;
 
           if (this.data_record.success) {

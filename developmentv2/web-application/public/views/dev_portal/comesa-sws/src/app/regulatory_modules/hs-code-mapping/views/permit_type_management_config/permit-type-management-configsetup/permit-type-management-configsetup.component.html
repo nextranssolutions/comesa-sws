@@ -27,7 +27,7 @@
             <dx-tab-panel class="fullpage-tab" id="Navigation Tab" [stylingMode]="stylingMode"
                 [tabsPosition]="tabsPosition" [swipeEnabled]="false" [showNavButtons]="true" [animationEnabled]="true">
 
-                <dxi-item title="{{ 'renewable_statuses' | translate }}" icon="fa fa-th-list">
+                <dxi-item title="{{ 'renewable_permits' | translate }}" icon="fa fa-th-list">
 
                     <app-renewable-statuses></app-renewable-statuses>
                 </dxi-item>
@@ -36,10 +36,7 @@
                     <app-permit-statuses></app-permit-statuses>
                 </dxi-item>
 
-                <dxi-item title="{{ 'permit_templates' | translate }}" icon="fa fa-th-list">
-                    <app-permit-templates></app-permit-templates>
-                </dxi-item>
-
+               
                 <dxi-item title="{{ 'hscode_seloption' | translate }}" icon="fa fa-th-list">
                     <app-hscode-seloption></app-hscode-seloption>
                 </dxi-item>
@@ -59,19 +56,7 @@
                 <dxi-item title="{{ 'permit_template_types' | translate }}" icon="fa fa-th-list">
                     <app-permit-template-types></app-permit-template-types>
                 </dxi-item>
-
-                <dxi-item title="{{ 'checklist_definations' | translate }}" icon="fa fa-th-list">
-                    <app-checklist-definations></app-checklist-definations>
-                </dxi-item>
-
-                <dxi-item title="{{ 'checklist_types' | translate }}" icon="fa fa-th-list">
-                    <app-checklist-types></app-checklist-types>
-                </dxi-item>
-
-                <dxi-item title="{{ 'workflow_stages' | translate }}" icon="fa fa-th-list">
-                    <app-workflow-stages></app-workflow-stages>
-                </dxi-item>
-
+                
             </dx-tab-panel>
         </div>
     </div>

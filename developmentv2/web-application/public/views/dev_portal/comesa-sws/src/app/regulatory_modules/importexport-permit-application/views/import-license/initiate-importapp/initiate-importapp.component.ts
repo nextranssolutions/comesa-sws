@@ -7,7 +7,7 @@ import { StepChangedArgs } from 'ng-wizard';
   templateUrl: './initiate-importapp.component.html',
   styleUrl: './initiate-importapp.component.css'
 })
-export class InitiateImportappComponent extends SharedImpexpApplicationClass{
+export class InitiateImportappComponent extends SharedImpexpApplicationClass {
   ngOnInit() {
     if (!this.application_details) {
       this.router.navigate(['./importexport-permit-application/draft-importlicense-dashboard']);
@@ -15,19 +15,12 @@ export class InitiateImportappComponent extends SharedImpexpApplicationClass{
       return;
     }
   }
-config: any;
-stepChanged($event: StepChangedArgs) {
-throw new Error('Method not implemented.');
-}
-isValidTypeBoolean: any;
 
-
-
-
-
-
-prodclass_category_id: any;
-query_ref_id: any;
-product_type_id: any;
-
+  stepChanged($event: StepChangedArgs) {
+    throw new Error('Method not implemented.');
+  }
+  isValidTypeBoolean: any;
+  prodclass_category_id: any;
+  query_ref_id: any;
+  product_type_id: any;
 }

@@ -49,3 +49,147 @@
         </dxi-column>
         <dxi-column dataField="name" caption="{{ 'name' | translate }}"></dxi-column>
         <dxi-column dataField="description" caption="{{ 'description' | translate }}"></dxi-column>
+        <dxi-column dataField="restrictions_accesslinks" caption="{{ 'restrictions_accesslinks' | translate }}"></dxi-column>
+
+        <dxi-column dataField="hscodechapters_defination" caption="{{ 'hscodechapters_defination' | translate }}"></dxi-column>
+        <dxi-column dataField="hscodesheading_defination" caption="{{ 'hscodesheading_defination' | translate }}"></dxi-column>
+        <dxi-column dataField="hscodessubheading_defination" caption="{{ 'hscodessubheading_defination' | translate }}"></dxi-column>
+        <dxi-column dataField="permit_operations" caption="{{ 'permit_operations' | translate }}"></dxi-column>
+        
+
+        <dxi-column dataField="code" caption="{{ 'code' | translate }}"></dxi-column>
+        <dxi-column dataField="is_enabled" caption="{{ 'is_enabled' | translate }}" [dataType]="'boolean'"
+        [width]="100">
+        <dxo-editing [allowUpdating]="true" [allowDeleting]="true" [allowAdding]="true"></dxo-editing>
+    </dxi-column>
+    <dxo-selection mode="multiple"></dxo-selection>
+    <dxo-group-panel [visible]="true"></dxo-group-panel>
+
+    <dxo-paging [pageSize]="500"></dxo-paging>
+
+    </dx-data-grid>
+
+    <dx-popup [visible]="RestrctionPopupVisible" [width]="funcpopWidth(65)" [height]="funcpopHeight(55)"
+    [showTitle]="true" [title]="'HS Codes'" (onHidden)="RestrctionPopupVisible = false">
+
+
+    <form (ngSubmit)="onUpdateRestrictions()" [formGroup]="createNewDataFrm" formControlName="description">
+
+        <div class="row">
+            <div class="col-lg-6">
+                <label>{{ 'name' | translate }}</label>
+                <dx-text-box formControlName="name" [showClearButton]="true">
+                </dx-text-box>
+            </div>
+
+            <div class="col-lg-6">
+                <label>{{ 'restrictions_accesslinks' | translate }}</label>
+                <dx-text-area formControlName="restrictions_accesslinks">
+                </dx-text-area>
+            </div>
+
+            <div class="col-lg-6">
+                <label>{{ 'chapters_defination' | translate }}</label>
+                <dx-select-box [searchEnabled]="true" formControlName="chapters_defination_id"
+                    [showClearButton]="true" [dataSource]="chapterDefinationData" valueExpr="id"
+                    displayExpr="name">
+                </dx-select-box>
+            </div>
+
+            <div class="col-lg-6">
+                <label>{{ 'heading_defination' | translate }}</label>
+                <dx-select-box [searchEnabled]="true" formControlName="heading_definations_id"
+                    [showClearButton]="true" [dataSource]="HeadingDefinationData" valueExpr="id" displayExpr="name">
+                </dx-select-box>
+            </div>
+
+            <div class="col-lg-6">
+                <label>{{ 'subheading_defination' | translate }}</label>
+                <dx-select-box [searchEnabled]="true" formControlName="subheading_definations_id"
+                    [showClearButton]="true" [dataSource]="subHeadingDefinationData" valueExpr="id"
+                    displayExpr="name">
+                </dx-select-box>
+            </div>
+
+            <div class="col-lg-6">
+                <label>{{ 'permit_operations' | translate }}</label>
+                <dx-select-box [searchEnabled]="true" formControlName="permit_operations_id"
+                    [showClearButton]="true" [dataSource]="permitOperationsData" valueExpr="id"
+                    displayExpr="name">
+                </dx-select-box>
+            </div>
+
+            <div class="col-lg-6">
+                <label>{{ 'description' | translate }}</label>
+                <dx-text-area formControlName="description">
+                </dx-text-area>
+            </div>
+
+            <div class="col-lg-6">
+                <label>{{ 'code' | translate }}</label>
+                <dx-text-area formControlName="code">
+                </dx-text-area>
+            </div>
+
+            <div class="col-lg-6">
+                <label>{{ "is_enabled" | translate }}</label>
+                <dx-select-box [searchEnabled]="true" formControlName="is_enabled"
+                    [dataSource]="regStatusOptions" valueExpr="value" displayExpr="text"></dx-select-box>
+            </div>
+        </div>
+    </form>
+
+
+    <div class="col-lg-12 row">
+        <dx-button text="{{ 'save'   + 'hs_code' | translate }}" type="default" icon="fa fa-save"
+            [elementAttr]="{ id: 'elementId', class: 'pull-left' }" (onClick)="onFuncSaveRecordData()">
+        </dx-button>
+    </div>
+   </dx-popup> 
+
+<dx-popup [visible]="deletePopupVisible" [width]="funcpopWidth(30)" [height]="funcpopHeight(25)"
+[showTitle]="true" title="{{ 'delete_confirmation_of '+parameter_name | translate }}"
+(onHidden)="deletePopupVisible = false">
+
+<div>
+    <p class="confirmation-text">
+        {{ 'are_you_sure_you_want_to_delete' | translate }}
+        "<strong>{{config_record}}</strong>"?
+    </p>
+    <div class="button-container">
+        <dx-button text="{{ 'yes' | translate }}" type="default"
+            (onClick)="onDeleteSystemAdministrationDetails()">
+        </dx-button>
+        <dx-button text="{{ 'no' | translate }}" (onClick)="deletePopupVisible = false">
+        </dx-button>
+    </div>
+</div>
+
+</dx-popup>
+
+<dx-popup [visible]="enablePopupVisible" [width]="funcpopWidth(30)" [height]="funcpopHeight(25)"
+[showTitle]="true" title="{{ enabledisable_permit_type | translate }}"
+(onHidden)="enablePopupVisible = false">
+
+<div>
+    <p class="confirmation-text">
+        {{ enabledisable_permit_typedescription | translate }}
+        "<strong>{{config_record}}</strong>"?
+    </p>
+    <div class="button-container">
+        <dx-button text="{{ 'yes' | translate }}" type="danger" (onClick)="iniateEnableDisableRecord()">
+        </dx-button>
+        <dx-button text="{{ 'no' | translate }}" (onClick)="enablePopupVisible = false">
+        </dx-button>
+    </div>
+</div>
+</dx-popup>
+
+
+<dx-load-panel #loadPanel shadingColor="rgba(0,0,0,0.4)" [position]="{ of: '#employee' }"
+    [(visible)]="loadingVisible" [showIndicator]="true" [showPane]="true" [shading]="true"
+    [message]="spinnerMessage" [hideOnOutsideClick]="false">
+</dx-load-panel>
+
+</div>
+</div>

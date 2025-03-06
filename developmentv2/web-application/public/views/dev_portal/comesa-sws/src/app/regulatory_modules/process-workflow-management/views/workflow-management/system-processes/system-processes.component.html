@@ -44,9 +44,16 @@
     <dxo-lookup [dataSource]="regulatorySubFunctionsData" displayExpr="name" valueExpr="id"></dxo-lookup>
     </dxi-column>
    
-    
-    <dxi-column dataField="organisation_id" caption="{{'organisation' | translate}}">
-        <dxo-lookup [dataSource]="organisationData" displayExpr="name" valueExpr="id"></dxo-lookup>
+    <dxi-column dataField="product_type_id"
+        caption="{{'product_type' | translate}}">
+        <dxo-lookup [dataSource]="productTypeData" displayExpr="name" valueExpr="id"></dxo-lookup>
+    </dxi-column>
+    <dxi-column dataField="prodclass_category_id"
+    caption="{{'product_category' | translate}}">
+    <dxo-lookup [dataSource]="productCategoryData" displayExpr="name" valueExpr="id"></dxo-lookup>
+    </dxi-column>
+    <dxi-column dataField="premise_type_id" caption="{{'premise_type' | translate}}">
+        <dxo-lookup [dataSource]="premiseTypeData" displayExpr="name" valueExpr="id"></dxo-lookup>
     </dxi-column>
     <dxi-column dataField="workflow_id" caption="{{'workflow' | translate}}">
         <dxo-lookup [dataSource]="workflowData" displayExpr="name" valueExpr="id"></dxo-lookup>
@@ -90,10 +97,21 @@
                             [showClearButton]="true" valueExpr="id" [searchEnabled]="true" displayExpr="name">
                         </dx-select-box>
                     </div>
-                   
-                    <div class="col-lg-6">
-                        <label for="unitName">{{ 'organisation' | translate }}</label>
-                        <dx-select-box [dataSource]="organisationData" formControlName="organisation_id"
+                    <div class="col-lg-6" >
+                        <label for="unitName">{{ 'product_type' | translate }}</label>
+                        <dx-select-box [dataSource]="productTypeData" formControlName="product_type_id"
+                            [showClearButton]="true" valueExpr="id" [searchEnabled]="true" displayExpr="name">
+                        </dx-select-box>
+                    </div>
+                    <div class="col-lg-6" >
+                        <label for="unitName">{{ 'product_category' | translate }}</label>
+                        <dx-select-box [dataSource]="productCategoryData" formControlName="prodclass_category_id"
+                            [showClearButton]="true" valueExpr="id" [searchEnabled]="true" displayExpr="name">
+                        </dx-select-box>
+                    </div>
+                    <div class="col-lg-6" >
+                        <label for="unitName">{{ 'premise_type' | translate }}</label>
+                        <dx-select-box [dataSource]="premiseTypeData" formControlName="premise_type_id"
                             [showClearButton]="true" valueExpr="id" [searchEnabled]="true" displayExpr="name">
                         </dx-select-box>
                     </div>

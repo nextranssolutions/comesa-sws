@@ -8,6 +8,7 @@ use Modules\SysAdministration\App\Http\Controllers\SysAdministrationController;
 Route::middleware(['XssSanitizer','clear_cache_config','firewall.all'])->prefix('sysadministration')->group(function () {
     Route::get('onLoadSystemAdministrationData', [SysAdministrationController::class, 'onLoadSystemAdministrationData']);
     Route::get('onLoadTransactionProductRegistryDetails', [SysAdministrationController::class, 'onLoadTransactionProductRegistryDetails']);
+    Route::get('onLoadTransactionRestrictionProhibitions', [SysAdministrationController::class, 'onLoadTransactionRestrictionProhibitions']);
     Route::get('onLoadTransactionPermitTypeData', [SysAdministrationController::class, 'onLoadTransactionPermitTypeData']);
     Route::get('getAppPermitSignatoriesData', [SysAdministrationController::class, 'getAppPermitSignatoriesData']);
     Route::get('getAppPermitSpecialConditions', [SysAdministrationController::class, 'getAppPermitSpecialConditions']);
@@ -22,6 +23,7 @@ Route::middleware(['XssSanitizer','clear_cache_config','firewall.all'])->prefix(
   
     Route::get('getAppUserGroupNavigationMenus', [SysAdministrationController::class, 'getAppUserGroupNavigationMenus']);
     Route::get('getAppHscodes', [SysAdministrationController::class, 'getAppHscodes']);
+    Route::get('onGetRegulatedProductCategory', [SysAdministrationController::class, 'onGetRegulatedProductCategory']);
     //Route::post('onSaveGroupNavPermissions',[SysAdministrationController::class,'onSaveGroupNavPermissions']);
     Route::post('onSavingUserNavigationPermissions', [SysAdministrationController::class, 'onSavingUserNavigationPermissions']);
     Route::post('onSaveSystemGuideline',[SysAdministrationController::class,'onSaveSystemGuideline']);

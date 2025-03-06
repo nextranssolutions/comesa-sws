@@ -10152,7 +10152,7 @@ button.bg-dark:focus {
 }
 
 .text-capitalize {
-  text-transform: capitalize !important;
+  text-transform: lowercase !important;
 }
 
 .font-weight-light {

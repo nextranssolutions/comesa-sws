@@ -48,7 +48,7 @@
 
 
     <ng-wizard [config]="config" (stepChanged)="stepChanged($event)">
-        
+
         <ng-wizard-step [title]="'step_one' | translate" [description]="'applicant_details' | translate"
             [canEnter]="isValidTypeBoolean">
             <div class="container_div">
@@ -78,7 +78,8 @@
 
                     <div>
                         <app-permitgeneraldetails [applicationGeneraldetailsfrm]="applicationGeneraldetailsfrm"
-                            [permitReceiverSenderFrm]="permitReceiverSenderFrm" [applicantDetailsForm]="applicantDetailsForm"></app-permitgeneraldetails>
+                            [permitReceiverSenderFrm]="permitReceiverSenderFrm"
+                            [applicantDetailsForm]="applicantDetailsForm"></app-permitgeneraldetails>
                     </div>
 
                     <!-- Add more content to see the scroll effect -->
@@ -90,12 +91,13 @@
                     icon="fa fa-angle-double-left" [elementAttr]="{ id: 'elementId', }" (onClick)="previousStep()">
                 </dx-button>
 
-                <dx-button text="{{'on_save_application' | translate}}" iconPosition="left" type="default" icon="fa fa-save"
-                (onClick)="onSaveImportExportApplication()"icon="fa fa-angle-double-right" [elementAttr]="{ id: 'elementId', }">
+                <dx-button text="{{'on_save_application' | translate}}" iconPosition="left" type="default"
+                    icon="fa fa-save" (onClick)="onSaveImportExportApplication()" icon="fa fa-angle-double-left"
+                    [elementAttr]="{ id: 'elementId', }">
                 </dx-button>
-              
+
                 <dx-button text="{{'permit_product_information' | translate}}" iconPosition="right" type="success"
-                    icon="fa fa-angle-double-right" [elementAttr]="{ id: 'elementId' }" (onClick)="onNextStep()">
+                    icon="fa fa-angle-double-right" [elementAttr]="{ id: 'elementId' }" (onClick)="nextTab()">
                 </dx-button>
             </div>
 
@@ -108,7 +110,9 @@
                 <div class="scrollable-content">
                     <!-- Your content goes here -->
                     <div>
-                        <app-permitproductdetails [productGeneraldetailsfrm]="productGeneraldetailsfrm" [permitProductsData]="permitProductsData" [permitProductsFrm]="permitProductsFrm"></app-permitproductdetails>
+                        <app-permitproductdetails [productGeneraldetailsfrm]="productGeneraldetailsfrm"
+                            [permitProductsData]="permitProductsData"
+                            [permitProductsFrm]="permitProductsFrm"></app-permitproductdetails>
                     </div>
 
                 </div>
@@ -137,9 +141,9 @@
                         [application_code]="application_code"></app-appresumable-documents> -->
 
                     <!-- Add more content to see the scroll effect -->
-                    
-                    <app-sharedapplicationdocumentuploads [application_code]="application_code" 
-                    [process_id]="process_id" ></app-sharedapplicationdocumentuploads>
+
+                    <app-sharedapplicationdocumentuploads [application_code]="application_code"
+                        [process_id]="process_id"></app-sharedapplicationdocumentuploads>
 
                 </div>
             </div>
@@ -158,9 +162,8 @@
             [canEnter]="isValidTypeBoolean">
             <div class="container_div">
                 <div class="scrollable-content">
-                    <app-sharedevaluation-checklist
-                    [transactionpermit_type_id]="transactionpermit_type_id"
-                    [application_code]="application_code"></app-sharedevaluation-checklist>
+                    <app-sharedevaluation-checklist [transactionpermit_type_id]="transactionpermit_type_id"
+                        [application_code]="application_code"></app-sharedevaluation-checklist>
                 </div>
             </div>
             <div class="div_footer button-container">
@@ -187,19 +190,19 @@
                 <dx-button text="{{'previous_step' | translate}}" iconPosition="left" type="danger"
                     icon="fa fa-angle-double-left" [elementAttr]="{ id: 'elementId', }" (onClick)="previousStep()">
                 </dx-button>
-                <dx-button text="{{'next_step' | translate}}" iconPosition="right" type="success"
-                    icon="fa fa-angle-double-right" [elementAttr]="{ id: 'elementId', }" (onClick)="nextTab()">
+                <dx-button text="{{'submit_application' | translate }}" type="default" icon="fa fa-save"
+                    (onClick)="onFuncSubmitApplication()">
                 </dx-button>
 
             </div>
         </ng-wizard-step>
-        <ng-wizard-step [title]="'final'| translate" [description]="'completion_&_submission'| translate"
+        <!-- <ng-wizard-step [title]="'final'| translate" [description]="'completion_&_submission'| translate"
             [canEnter]="isValidTypeBoolean">
             <div class="container_div">
                 <div class="scrollable-content">
-                    <!-- Your content goes here -->
+                  
                     <div>Step 1 content</div>
-                    <!-- Add more content to see the scroll effect -->
+                   
                 </div>
             </div>
             <div class="div_footer button-container">
@@ -211,7 +214,19 @@
                 </dx-button>
 
             </div>
-        </ng-wizard-step>
+        </ng-wizard-step> -->
     </ng-wizard>
 
 </div>
+
+
+<dx-popup [visible]="isShowAppProcessSubmission" [width]="funcpopWidth(40)" [height]="funcpopHeight(55)"
+    [showTitle]="true" title="{{ 'submission_process' | translate }}" (onHidden)="isShowAppProcessSubmission = false">
+    <dx-scroll-view>
+        <div class="row">
+
+            <app-sharedapp-processsubmission [appworkflow_status_id]="appworkflow_status_id"
+                [application_code]="application_code" [process_id]="process_id"></app-sharedapp-processsubmission>
+        </div>
+    </dx-scroll-view>
+</dx-popup>

@@ -617,6 +617,63 @@ class SysAdministrationController extends Controller
 
         return response()->json($res, 200);
     }
+
+    
+    public function onLoadTransactionRestrictionProhibitions(Request $req)
+    {
+        try {
+            $requestData = $req->all();
+            $table_name = 'tra_restrictions_prohibitions';
+            $permit_type_data = array();
+            unset($requestData['table_name']);
+
+            $sql = DB::table($table_name . ' as t1')
+
+                ->leftJoin('par_hscodechapters_defination as t2', 't1.chapters_defination_id', 't2.id')
+                ->leftJoin('par_hscodesheading_definations as t3', 't1.heading_defination_id', 't3.id')
+                ->leftJoin('par_hscodessubheading_defination as t4', 't1.subheading_defination_id', 't4.id')
+                ->leftJoin('par_operation_type as t5', 't1.permit_operations_id', 't5.id')
+                
+
+                ->select(
+                    't1.*',
+                    't2.name as chapters_defination',
+                    't3.name as heading_defination',
+                    't4.name as subheading_defination',
+                    't5.name as permit_operations',
+                    
+
+                );
+
+            $data = $sql->get();
+            foreach ($data as $rec) {
+                $permit_type_data[] = array(
+                    'id' => $rec->id,
+                    'name' => $rec->name,
+                    'description' => $rec->description,
+                    'is_enabled' => $rec->is_enabled,
+                    'code' => $rec->code,
+                    'restrictions_accesslinks' => $rec->restrictions_accesslinks,
+                    'chapters_defination_id' => $rec->chapters_defination_id,
+                    'heading_defination_id' => $rec->heading_defination_id,
+                    'subheading_defination_id' => $rec->subheading_defination_id,
+                    'permit_operations_id' => $rec->permit_operations_id,
+                    'chapters_defination' => $rec->chapters_defination,
+                    'heading_defination' => $rec->heading_defination,
+                    'subheading_defination' => $rec->subheading_defination,
+                    'permit_operations' => $rec->permit_operations,
+
+                );
+            }
+            $res = ['success' => true, 'data' => $permit_type_data];
+        } catch (\Exception $exception) {
+            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        } catch (\Throwable $throwable) {
+            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        }
+
+        return response()->json($res, 200);
+    }
     public function onLoadSystemAdministrationData(Request $req)
     {
         try {
@@ -986,66 +1043,151 @@ class SysAdministrationController extends Controller
     return response()->json($res, 200);
 }
 
+public function getAppHscodes(Request $req)
+{
+    try {
+        $requestData = $req->all();
+        $table_name = 'tra_transactionpermit_hs_codes';
+        $permit_certificate_templates_data = array();
+        unset($requestData['table_name']);
+      
 
-    public function getAppHscodes(Request $req)
-    {
-        try {
-            $requestData = $req->all();
-            $table_name = 'tra_transactionpermit_hs_codes';
-            $permit_certificate_templates_data = array();
-            unset($requestData['table_name']);
+        $sql = DB::table($table_name . ' as t1')
+            ->leftJoin('tra_transactionpermit_types as t2', 't1.transactionpermit_type_id', 't2.id')
+            ->leftJoin('par_hscode_seloption as t3', 't1.hscode_seloption_id', 't3.id')
+            ->leftJoin('par_quota_limitationstype as t4', 't1.quota_limitationstype_id', 't4.id')
+            ->leftJoin('par_mapping_status as t5', 't1.mapping_status_id', 't5.id')
+            ->leftJoin('par_hscodemapping_option as t6', 't1.hscodemapping_option_id', 't6.id')
+            ->leftJoin('tra_permit_special_conditions as t7', 't1.special_conditions_id', 't7.id')
+            ->select(
+                't1.*',
+                't3.name as hs_code_selection_option',
+                't4.name as quota_limitationstype',
+                't5.name as mapping_status',
+                't6.name as hscodemapping_option',
+                't7.name as special_conditions'
+            );
 
-            $sql = DB::table($table_name . ' as t1')
-
-                ->leftJoin('tra_transactionpermit_types as t2', 't1.transactionpermit_type_id', 't2.id')
-                ->leftJoin('par_hscode_seloption as t3', 't1.hscode_seloption_id', 't3.id')
-                ->leftJoin('par_quota_limitationstype as t4', 't1.quota_limitationstype_id', 't4.id')
-                ->leftJoin('par_mapping_status as t5', 't1.mapping_status_id', 't5.id')
-                ->leftJoin('par_hscodemapping_option as t6', 't1.hscodemapping_option_id', 't6.id')
-                   
-                ->select(
-                    't1.*',
-                    't3.name as hs_code_selection_option',
-                    't4.name as quota_limitationstype',
-                    't5.name as mapping_status',
-                    't6.name as hscodemapping_option'
-
-                );
-
-            $data = $sql->get();
-            foreach ($data as $rec) {
-                $permit_certificate_templates_data[] = array(
-                    'id' => $rec->id,
-                    'name' => $rec->name,
-                    'description' => $rec->description,
-                    'special_conditions' => $rec->special_conditions,
-                    'limitation_description' => $rec->limitation_description,
-                    'code' => $rec->code,
-                    'is_enabled' => $rec->is_enabled,
-                    'hs_code_start_int' => $rec->hs_code_start_int,
-                    'hs_code_end_int' => $rec->hs_code_end_int,
-                    'hs_code_specific_int' => $rec->hs_code_specific_int,
-                    'transactionpermit_type_id' => $rec->transactionpermit_type_id,
-                    'hscode_seloption_id' => $rec->hscode_seloption_id,
-                    'quota_limitationstype_id' => $rec->quota_limitationstype_id,
-                    'mapping_status_id'  => $rec->mapping_status_id,
-                    'hscodemapping_option_id' => $rec->hscodemapping_option_id,
-                    'hs_code_selection_option' => $rec->hs_code_selection_option,
-                    'quota_limitationstype' => $rec->quota_limitationstype,
-                    'mapping_status' => $rec->mapping_status,
-                    'hscodemapping_option' => $rec->hscodemapping_option,
-
-                );
-            }
-            $res = ['success' => true, 'data' => $permit_certificate_templates_data];
-        } catch (\Exception $exception) {
-            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
-        } catch (\Throwable $throwable) {
-            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        
+        if (isset($requestData['transactionpermit_type_id']) && !empty($requestData['transactionpermit_type_id'])) {
+            $sql->where('t1.transactionpermit_type_id', '=', $requestData['transactionpermit_type_id']);
         }
 
-        return response()->json($res, 200);
+           
+
+        $data = $sql->get();
+        foreach ($data as $rec) {
+            $permit_certificate_templates_data[] = array(
+                'id' => $rec->id,
+                'name' => $rec->name,
+                'description' => $rec->description,
+                'special_conditions_id' => $rec->special_conditions_id,
+                'limitation_description' => $rec->limitation_description,
+                'code' => $rec->code,
+                'is_enabled' => $rec->is_enabled,
+                'hs_code_start_int' => $rec->hs_code_start_int,
+                'hs_code_end_int' => $rec->hs_code_end_int,
+                'hs_code_specific_int' => $rec->hs_code_specific_int,
+                'transactionpermit_type_id' => $rec->transactionpermit_type_id,
+                'hscode_seloption_id' => $rec->hscode_seloption_id,
+                'quota_limitationstype_id' => $rec->quota_limitationstype_id,
+                'mapping_status_id'  => $rec->mapping_status_id,
+                'hscodemapping_option_id' => $rec->hscodemapping_option_id,
+                'hs_code_selection_option' => $rec->hs_code_selection_option,
+                'quota_limitationstype' => $rec->quota_limitationstype,
+                'mapping_status' => $rec->mapping_status,
+                'hscodemapping_option' => $rec->hscodemapping_option,
+                'special_conditions' => $rec->special_conditions,
+            );
+        }
+        $res = ['success' => true, 'data' => $permit_certificate_templates_data];
+    } catch (\Exception $exception) {
+        $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+    } catch (\Throwable $throwable) {
+        $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
     }
+
+    return response()->json($res, 200);
+}
+public function onGetRegulatedProductCategory(Request $req)
+{
+    try {
+        $table_name = 'tra_hscodesproducts_registry';
+        $take = 50; // Default take value
+        $skip = 0; // Default skip value
+        $searchValue = $req->searchValue ?? '';
+        $chapters_keywordsearch = $req->chapters_keywordsearch;
+
+        // Process search value
+        $search_value = '';
+        if (!empty($searchValue) && $searchValue !== 'undefined') {
+            $searchValueArray = explode(',', $searchValue);
+            $search_value = $searchValueArray[2] ?? '';
+        }
+
+        // Initialize query with necessary joins and select statements
+        $query = DB::table("{$table_name} as t1")
+            ->leftJoin('par_hscodechapters_defination as t3', 't1.chapters_defination_id', '=', 't3.id')
+            ->leftJoin('par_hscodesheading_definations as t4', 't1.heading_definations_id', '=', 't4.id')
+            ->leftJoin('par_hscodessubheading_defination as t5', 't1.subheading_definations_id', '=', 't5.id')
+            ->select(
+                't1.id',
+                't1.chapters_defination_id',
+                't1.heading_definations_id',
+                't1.subheading_definations_id',
+                't5.name as hscodessubheading',
+                't5.hscode as subheadingcode',
+                't3.name as hscodechapters',
+                't3.hscode as chapterscode',
+                't4.name as hscodesheading',
+                't4.hscode as headingcode'
+            );
+
+        // Apply keyword search filter before fetching data
+        if (!empty($chapters_keywordsearch)) {
+            $query->where(function ($q) use ($chapters_keywordsearch) {
+                $q->where('t1.chapters_defination_id', 'like', "%{$chapters_keywordsearch}%")
+                    ->orWhere('t1.heading_definations_id', 'like', "%{$chapters_keywordsearch}%")
+                    ->orWhere('t1.subheading_definations_id', 'like', "%{$chapters_keywordsearch}%");
+            });
+        }
+
+        // Fetch total count before pagination
+        $totalCount = $query->count();
+
+        // Apply pagination
+        $data = $query->orderByDesc('t1.id')->take($take)->skip($skip)->get();
+
+        // Transform data efficiently
+        $productregistry_data = $data->map(function ($rec) {
+            return [
+                'id' => $rec->id,
+                'chapters_defination_id' => $rec->chapters_defination_id,
+                'heading_definations_id' => $rec->heading_definations_id,
+                'subheading_definations_id' => $rec->subheading_definations_id,
+                'hscodesheading' => trim("{$rec->headingcode} {$rec->hscodesheading}"),
+                'hscodechapters' => trim("{$rec->chapterscode} {$rec->hscodechapters}"),
+                'hscodessubheading' => trim("{$rec->subheadingcode} {$rec->hscodessubheading}"),
+                'regulated_product_category' => $rec->hscodessubheading,
+                'headingcode' => $rec->headingcode,
+                'chapterscode' => $rec->chapterscode,
+                'subheadingcode' => $rec->subheadingcode,
+            ];
+        });
+
+        return response()->json([
+            'success' => true,
+            'data' => $productregistry_data,
+            'totalCount' => $totalCount
+        ]);
+    } catch (\Throwable $e) {
+        return response()->json([
+            'success' => false,
+            'message' => $e->getMessage()
+        ]);
+    }
+}
+
     public function getAppPermitSignatoriesData(Request $req)
     {
         try {
@@ -1068,6 +1210,11 @@ class SysAdministrationController extends Controller
                     't5.name as workflow_stage'
                    
                 );
+
+                if (isset($requestData['transactionpermit_type_id']) && !empty($requestData['transactionpermit_type_id'])) {
+                    $sql->where('t1.transactionpermit_type_id', '=', $requestData['transactionpermit_type_id']);
+                }
+
 
             $data = $sql->get();
             foreach ($data as $rec) {
@@ -1117,6 +1264,13 @@ class SysAdministrationController extends Controller
                     't1.*',
                     't3.name as quota_limitationstype',
                 );
+
+                if (isset($requestData['transactionpermit_type_id']) && !empty($requestData['transactionpermit_type_id'])) {
+                    $sql->where('t1.transactionpermit_type_id', '=', $requestData['transactionpermit_type_id']);
+                }
+
+
+
             $data = $sql->get();
             foreach ($data as $rec) {
                 $permit_report_generation_data[] = array(
@@ -1158,6 +1312,10 @@ class SysAdministrationController extends Controller
                     't4.name as document_requirement'
 
                 );
+            
+                if (isset($requestData['transactionpermit_type_id']) && !empty($requestData['transactionpermit_type_id'])) {
+                    $sql->where('t1.transactionpermit_type_id', '=', $requestData['transactionpermit_type_id']);
+                }
 
             $data = $sql->get();
             foreach ($data as $rec) {
@@ -1166,6 +1324,8 @@ class SysAdministrationController extends Controller
                     'is_mandatory' => $rec->is_mandatory,
                     'allow_multiple' => $rec->allow_multiple,
                     'has_validity_period' => $rec->has_validity_period,
+                    'validity_period' => $rec->validity_period,
+                    'validity_defination' => $rec->validity_defination,
                     'status' => $rec->status,
                     'transactionpermit_type_id' => $rec->transactionpermit_type_id,
                     'document_type_id' => $rec->document_type_id,
@@ -1209,6 +1369,11 @@ class SysAdministrationController extends Controller
 
 
                 );
+             
+
+                if (isset($requestData['transactionpermit_type_id']) && !empty($requestData['transactionpermit_type_id'])) {
+                    $sql->where('t1.transactionpermit_type_id', '=', $requestData['transactionpermit_type_id']);
+                }
 
             $data = $sql->get();
             foreach ($data as $rec) {

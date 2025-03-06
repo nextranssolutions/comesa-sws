@@ -172,7 +172,7 @@ fetchWorkflowItemsDetails() {
 
 onLoadregulatoryFunctionsData() {
   var data_submit = {
-    'table_name': 'cfg_regulatory_functions',
+    'table_name': 'par_regulatory_functions',
     // process_id: process_id
   }
   this.workflowService.getWorkflowConfigs(data_submit)
@@ -191,7 +191,7 @@ onLoadregulatoryFunctionsData() {
 
 onLoadregulatorySubFunctionsData(regulatory_function_id) {
   var data_submit = {
-    'table_name': 'cfg_regulatory_subfunctions',
+    'table_name': 'par_regulatory_subfunctions',
     regulatory_function_id: regulatory_function_id
   }
   this.workflowService.getWorkflowConfigs(data_submit)
@@ -212,7 +212,7 @@ onLoadregulatorySubFunctionsData(regulatory_function_id) {
 
 onLoadproductTypeData() {
   var data_submit = {
-    'table_name': 'cfg_regulated_productstypes',
+    'table_name': 'par_regulated_productstypes',
     // process_id: process_id
   }
   this.workflowService.getWorkflowConfigs(data_submit)
@@ -231,7 +231,7 @@ onLoadproductTypeData() {
 
 onLoadproductClassCategoryData() {
   var data_submit = {
-    'table_name': 'cfg_prodclass_categories',
+    'table_name': 'par_prodclass_categories',
     // process_id: process_id
   }
   this.workflowService.getWorkflowConfigs(data_submit)
@@ -249,7 +249,7 @@ onLoadproductClassCategoryData() {
 }
 onLoadPremiseTypeData() {
   var data_submit = {
-    'table_name': 'cfg_premises_types',
+    'table_name': 'par_premises_types',
     // process_id: process_id
   }
   this.workflowService.getWorkflowConfigs(data_submit)
