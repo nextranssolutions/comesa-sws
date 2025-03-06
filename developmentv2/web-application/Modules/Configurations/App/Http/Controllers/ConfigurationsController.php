@@ -639,7 +639,8 @@ class ConfigurationsController extends Controller
 
                 // Additional data entry forms based on regulatory function
                 switch ($regulatory_function_id) {
-                    case 1: // Product registration
+                    case 1: // Import Export Permit Application
+                        $app_data['applicant_details'] = getApplicationDataEntryFormsFields($req, 20);
                         $app_data['application_general_details'] = getApplicationDataEntryFormsFields($req, 19);
                         $app_data['permit_products_details'] = getApplicationDataEntryFormsFields($req, 21);
                         
