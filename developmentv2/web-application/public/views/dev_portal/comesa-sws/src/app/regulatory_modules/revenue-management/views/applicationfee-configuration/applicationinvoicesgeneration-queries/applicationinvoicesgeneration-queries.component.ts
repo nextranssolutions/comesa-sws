@@ -11,7 +11,7 @@ export class ApplicationinvoicesgenerationQueriesComponent {
     constructor(
       // private http: HttpClient,
     ) {
-      this.table_name = 'txn_applicationinvoicedata_queries';
+      this.table_name = 'tra_applicationinvoicedata_queries';
       this.parameter_name = "applicationinvoicesgeneration-queries";
     }
     ngOnInit() {
