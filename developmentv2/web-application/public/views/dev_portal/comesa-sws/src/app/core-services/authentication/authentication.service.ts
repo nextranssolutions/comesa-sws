@@ -3,7 +3,7 @@ import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { ToastrService } from 'ngx-toastr';
 import { SpinnerVisibilityService } from 'ng-http-loader';
-import { Observable, of } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { map } from 'rxjs/operators';
 import { tap, catchError } from 'rxjs/operators';
@@ -19,6 +19,10 @@ export class AuthenticationService {
   config: any;
   base_url: string;
   userGroupId: number;
+  private tokenKey = 'authToken';
+  private refreshTokenKey = 'refreshToken';
+  private tokenSubject = new BehaviorSubject<string | null>(null);
+
   constructor(
     private spinner: SpinnerVisibilityService,
     private router: Router,
@@ -58,7 +62,17 @@ export class AuthenticationService {
     return this.getAccessToken() !== null;
   }
 
-
+  refreshToken(): Observable<any> {
+    const refreshToken = localStorage.getItem(this.refreshTokenKey);
+    return this.http.post('/api/auth/refresh-token', { refreshToken }).pipe(
+      tap((response: any) => {
+        if (response.token) {
+          localStorage.setItem(this.tokenKey, response.token);
+          this.tokenSubject.next(response.token);
+        }
+      })
+    );
+  }
   funcUserLogOut() {
     // this.spinner.show();
     const headers = new HttpHeaders({ "Accept": "application/json" });
