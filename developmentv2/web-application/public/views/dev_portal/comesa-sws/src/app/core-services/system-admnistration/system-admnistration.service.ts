@@ -9,6 +9,10 @@ import { AuthenticationService } from '../authentication/authentication.service'
   providedIn: 'root'
 })
 export class ServiceAdmnistrationService {
+  onLoadTransactionPermitTemplatesDetails: any;
+  onLoadTransactionRestrictionProhibitions(data_submit: { table_name: string; }) {
+    throw new Error('Method not implemented.');
+  }
   base_url: string;
 
   private baseUrl;

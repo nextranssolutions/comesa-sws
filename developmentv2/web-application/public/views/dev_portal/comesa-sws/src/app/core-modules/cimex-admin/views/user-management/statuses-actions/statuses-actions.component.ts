@@ -10,14 +10,18 @@ import { ReportsService } from 'src/app/core-services/reports/reports.service';
 import { UtilityService } from 'src/app/core-services/utilities/utility.service';
 
 @Component({
-  selector: 'app-permit-templates',
-  templateUrl: './permit-templates.component.html',
-  styleUrl: './permit-templates.component.css'
+  selector: 'app-statuses-actions',
+  templateUrl: './statuses-actions.component.html',
+  styleUrl: './statuses-actions.component.css'
 })
 
-export class PermitTemplatesComponent {
-  table_name: string;
-     parameter_name: string;
+export class StatusesActionsComponent {
+  
+getIconClass(arg0: any): string|string[]|Set<string>|{ [klass: string]: any; }|null|undefined {
+throw new Error('Method not implemented.');
+}
+    table_name: string;
+    parameter_name: string;
     hasReadpermissions: boolean;
     createNewDataFrm: FormGroup;
     onAddNewConfiVisible: boolean;
@@ -66,8 +70,8 @@ export class PermitTemplatesComponent {
       public configService: ConfigurationsService,
     ) {
   
-      this.table_name = 'par_permit_templates';
-      this.parameter_name = 'permit_template';
+      this.table_name = 'wf_statuses_actions';
+      this.parameter_name = 'statuses_actions';
       this.createNewDataFrm = new FormGroup({
         id: new FormControl('', Validators.compose([])),
         name: new FormControl('', Validators.compose([Validators.required])),

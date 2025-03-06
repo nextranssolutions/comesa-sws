@@ -54,14 +54,12 @@
 
     <dxi-column dataField="description" caption="{{ 'description' | translate }}"></dxi-column>
 
-    <dxi-column dataField="reference_toreport_designer" caption="{{ 'reference_toreport_designer' | translate }}"></dxi-column>
+    <dxi-column dataField="order_no" caption="{{ 'order_no' | translate }}"></dxi-column>
 
-    <dxi-column 
-        dataField="organisation_id" caption="{{ 'Organisation' | translate }}">
-        <dxo-lookup [dataSource]="organisationIDData" displayExpr="name" valueExpr="id">
-        </dxo-lookup>
-    </dxi-column>
-    
+    <dxi-column dataField="code" caption="{{ 'code' | translate }}"></dxi-column>
+
+    <dxi-column dataField="action" caption="{{ 'action' | translate }}"></dxi-column>
+
     <dxi-column dataField="is_enabled" caption="{{ 'is_enabled' | translate }}" [dataType]="'boolean'" [width]="100">
         <dxo-editing [allowUpdating]="true" [allowDeleting]="true" [allowAdding]="true"></dxo-editing>
     </dxi-column>
@@ -93,20 +91,23 @@
                         <dx-text-box formControlName="description" [showClearButton]="true"></dx-text-box>
                     </div>
 
-
-                    <div class="col-lg-6">
-                        <label>{{ 'Organisation' | translate }}</label>
-                        <dx-select-box [dataSource]="organisationIDData" formControlName="organisation_id"
-                        valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
+                    <div  class="col-lg-6">
+                        <label>{{ 'order_no' | translate }}</label>
+                        <dx-text-box formControlName="order_no" [showClearButton]="true"></dx-text-box>
                     </div>
 
                     <div  class="col-lg-6">
-                        <label>{{ 'reference_toreport_designer' | translate }}</label>
-                        <dx-text-box formControlName="reference_toreport_designer" [showClearButton]="true"></dx-text-box>
+                        <label>{{ 'code' | translate }}</label>
+                        <dx-text-box formControlName="code" [showClearButton]="true"></dx-text-box>
                     </div>
-                </div>
 
-                <div class="row">
+
+                    <div  class="col-lg-6">
+                        <label>{{ 'action' | translate }}</label>
+                        <dx-text-box formControlName="action" [showClearButton]="true"></dx-text-box>
+                    </div>
+
+
                     <div class="col-lg-6">
                         <label>{{ "is_enabled" | translate }}</label>
                         <dx-select-box [searchEnabled]="true" formControlName="is_enabled"
@@ -114,6 +115,7 @@
                     </div>
                 </div>
 
+                
 
 
                
