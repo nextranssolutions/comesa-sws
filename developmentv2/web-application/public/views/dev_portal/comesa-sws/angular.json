@@ -36,6 +36,7 @@
             ],
             "styles": [
               "src/dist/css/bootstrap.min.css",
+              "node_modules/devextreme/dist/css/dx.material.teal.light.compact.css",
               "src/dist/font-awesome/4.5.0/css/font-awesome.min.css",
               "src/dist/css/ace.min.css",
               "node_modules/ngx-toastr/toastr.css",
