@@ -297,6 +297,7 @@ export class SharedImpexpApplicationClass {
       this.application_id = this.application_details.application_id;
       this.tracking_no = this.application_details.tracking_no;
 
+      this.application_code = this.application_details.application_code;
       this.applicationGeneraldetailsfrm.patchValue(this.application_details);
  
     }
