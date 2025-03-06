@@ -1116,7 +1116,8 @@ onFuncSaveWorkflowStageDetailsData() {
       response => {
         this.response = response;
         //the details 
-        if (this.response.success) {
+      
+       if (this.response.success) {
 
           this.fetchWorkflowStageActionsDetails(this.workflow_stage_id);
           this.workflowStagesVisible = false;

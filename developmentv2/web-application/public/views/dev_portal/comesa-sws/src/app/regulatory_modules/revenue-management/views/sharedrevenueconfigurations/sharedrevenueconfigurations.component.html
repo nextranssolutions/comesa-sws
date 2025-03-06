@@ -94,23 +94,23 @@
       </dxo-lookup>
     </dxi-column>
     <dxi-column dataField="name" caption="{{ 'name' | translate }}"></dxi-column>
-    <dxi-column *ngIf="table_name == 'txn_applicationinvoicedata_queries'" dataField="regulatory_function_id"
+    <dxi-column *ngIf="table_name == 'tra_applicationinvoicedata_queries'" dataField="regulatory_function_id"
       caption="{{ 'regulatory_function' | translate }}">
       <dxo-lookup [dataSource]="regulatoryFunctionData" displayExpr="name" valueExpr="id">
       </dxo-lookup>
     </dxi-column>
-    <dxi-column *ngIf="table_name == 'txn_applicationinvoicedata_queries'" dataField="regulatory_subfunction_id"
+    <dxi-column *ngIf="table_name == 'tra_applicationinvoicedata_queries'" dataField="regulatory_subfunction_id"
       caption="{{ 'regulatory_subfunction' | translate }}">
       <dxo-lookup [dataSource]="regulatorySubFunctionData" displayExpr="name" valueExpr="id">
       </dxo-lookup>
     </dxi-column>
 
-    <dxi-column *ngIf="table_name == 'txn_applicationinvoicedata_queries'" dataField="product_type_id"
+    <dxi-column *ngIf="table_name == 'tra_applicationinvoicedata_queries'" dataField="product_type_id"
       caption="{{ 'product_type' | translate }}">
       <dxo-lookup [dataSource]="productTypesData" displayExpr="name" valueExpr="id">
       </dxo-lookup>
     </dxi-column>
-    <dxi-column *ngIf="table_name == 'txn_applicationinvoicedata_queries'" dataField="data_query" caption="{{ 'data_query' | translate }}"></dxi-column>
+    <dxi-column *ngIf="table_name == 'tra_applicationinvoicedata_queries'" dataField="data_query" caption="{{ 'data_query' | translate }}"></dxi-column>
     
     <dxi-column *ngIf="table_name == 'wkf_applicationinvoicedata_queries'" dataField="regulatory_function_id"
     caption="{{ 'regulatory_function' | translate }}">
@@ -257,28 +257,28 @@ title="{{ 'add_new' | translate }} {{parameter_name | translate }}" [dragEnabled
           </dx-text-box>
         </div>
 
-        <div *ngIf="table_name == 'txn_applicationinvoicedata_queries'" class="col-lg-6">
+        <div *ngIf="table_name == 'tra_applicationinvoicedata_queries'" class="col-lg-6">
           <label>{{ 'regulatory_function' | translate }}</label>
           <dx-select-box formControlName="regulatory_function_id" [showClearButton]="true" [dataSource]="regulatoryFunctionData"
             valueExpr="value" displayExpr="text">
           </dx-select-box>
         </div>
 
-        <div *ngIf="table_name == 'txn_applicationinvoicedata_queries'" class="col-lg-6">
+        <div *ngIf="table_name == 'tra_applicationinvoicedata_queries'" class="col-lg-6">
           <label>{{ 'regulatory_subfunction' | translate }}</label>
           <dx-select-box formControlName="regulatory_subfunction_id" [showClearButton]="true" [dataSource]="regulatorySubFunctionData"
             valueExpr="value" displayExpr="text">
           </dx-select-box>
         </div>
 
-        <div *ngIf="table_name == 'txn_applicationinvoicedata_queries'" class="col-lg-6">
+        <div *ngIf="table_name == 'tra_applicationinvoicedata_queries'" class="col-lg-6">
           <label>{{ 'product_type' | translate }}</label>
           <dx-select-box formControlName="product_type_id" [showClearButton]="true" [dataSource]="productTypesData"
             valueExpr="value" displayExpr="text">
           </dx-select-box>
         </div>
 
-        <div *ngIf="table_name == 'txn_applicationinvoicedata_queries'" class="col-lg-12">
+        <div *ngIf="table_name == 'tra_applicationinvoicedata_queries'" class="col-lg-12">
           <label>{{ 'data_query' | translate }}</label>
           <dx-text-area formControlName="data_query">
           </dx-text-area>

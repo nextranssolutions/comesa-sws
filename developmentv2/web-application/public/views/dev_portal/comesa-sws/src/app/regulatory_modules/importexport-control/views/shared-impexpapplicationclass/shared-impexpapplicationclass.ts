@@ -283,17 +283,17 @@ export class SharedImpexpApplicationClass {
       submission_comments: new FormControl('', Validators.compose([]))
     });
 
-    this.applicantDetailsForm = new FormGroup({
-      applicant_name: new FormControl('', Validators.compose([Validators.required])),
-      country_id: new FormControl('', Validators.compose([Validators.required])),
-      region_id: new FormControl('', Validators.compose([])),
-      district_id: new FormControl('', Validators.compose([])),
-      email_address: new FormControl('', Validators.compose([Validators.required])),
-      postal_address: new FormControl('', Validators.compose([])),
-      telephone_no: new FormControl('', Validators.compose([])),
-      mobile_no: new FormControl('', Validators.compose([])),
-      physical_address: new FormControl('', Validators.compose([])),
-    });
+    // this.applicantDetailsForm = new FormGroup({
+    //   applicant_name: new FormControl('', Validators.compose([Validators.required])),
+    //   country_id: new FormControl('', Validators.compose([Validators.required])),
+    //   region_id: new FormControl('', Validators.compose([])),
+    //   district_id: new FormControl('', Validators.compose([])),
+    //   email_address: new FormControl('', Validators.compose([Validators.required])),
+    //   postal_address: new FormControl('', Validators.compose([])),
+    //   telephone_no: new FormControl('', Validators.compose([])),
+    //   mobile_no: new FormControl('', Validators.compose([])),
+    //   physical_address: new FormControl('', Validators.compose([])),
+    // });
 
     this.permitReceiverSenderFrm = new FormGroup({
       name: new FormControl('', Validators.compose([Validators.required])),

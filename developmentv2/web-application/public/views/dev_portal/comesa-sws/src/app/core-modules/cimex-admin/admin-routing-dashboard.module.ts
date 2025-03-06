@@ -242,6 +242,7 @@ import { ImportexportProceduresConfigsetupComponent } from './views/configuratio
 import { ProceduresCategoriesComponent } from './views/configurations/import-export-procedures/procedures-categories/procedures-categories.component';
 import { ProceduresSubcategoriesComponent } from './views/configurations/import-export-procedures/procedures-subcategories/procedures-subcategories.component';
 import { SharedImportexportProceduresComponent } from './views/configurations/import-export-procedures/shared-importexport-procedures/shared-importexport-procedures.component';
+import { StatusesActionsComponent } from './views/user-management/statuses-actions/statuses-actions.component';
 
 //./admin-ecres/app-dashboard
 const routes: Routes = [{
@@ -1183,7 +1184,10 @@ const routes: Routes = [{
     path: 'app-shared-importexport-procedures',
     component: SharedImportexportProceduresComponent
   },
-  
+  {
+    path: 'app-statuses-actions',
+    component: StatusesActionsComponent
+  },
   
   ]
 }]

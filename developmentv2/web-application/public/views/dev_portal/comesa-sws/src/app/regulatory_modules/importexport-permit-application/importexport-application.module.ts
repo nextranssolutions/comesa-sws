@@ -27,6 +27,8 @@ import { AwaitingPaymentRemittanceComponent } from './views/import-license/await
 import { RequestForadditionalInformationComponent } from './views/import-license/request-foradditional-information/request-foradditional-information.component';
 import { UnderProcessingComponent } from './views/import-license/under-processing/under-processing.component';
 import { RejectedPermitsComponent } from './views/import-license/rejected-permits/rejected-permits.component';
+import { SingleProductPermitComponent } from './views/import-license/single-product-permit/single-product-permit.component';
+import { SinglePermitproductdetailsComponent } from './views/impexpdata_entry/single-permitproductdetails/single-permitproductdetails.component';
 
 
 const ngWizardConfig: NgWizardConfig = {
@@ -37,8 +39,8 @@ const ngWizardConfig: NgWizardConfig = {
 @NgModule({
   declarations: [ImportexportNavigationComponent,
     ImportexportLayoutComponent, DraftImportlicensedashComponent,
-    PermitproductdetailsComponent, PermitgeneraldetailsComponent,ApprovedPermitsComponent,
-    AwaitingPaymentRemittanceComponent,RejectedPermitsComponent,RequestForadditionalInformationComponent,
+    PermitproductdetailsComponent, PermitgeneraldetailsComponent,ApprovedPermitsComponent,SingleProductPermitComponent,
+    AwaitingPaymentRemittanceComponent,RejectedPermitsComponent,RequestForadditionalInformationComponent,SinglePermitproductdetailsComponent,
     UnderProcessingComponent,
     ApplicantDetailsComponent,
     ImportexportHeaderComponent,InitiateImportappComponent, DashboardComponent],

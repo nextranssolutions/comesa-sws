@@ -1,6 +1,9 @@
 import { Component, HostListener, ViewContainerRef } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
+import CustomStore from 'devextreme/data/custom_store';
+import { HttpHeaders, HttpClient } from '@angular/common/http';
+import { AppSettings } from 'src/app/app-settings';
 import { DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
 import { DxTabPanelTypes } from 'devextreme-angular/ui/tab-panel';
 import { SpinnerVisibilityService } from 'ng-http-loader';
@@ -10,6 +13,7 @@ import { ReportsService } from 'src/app/core-services/reports/reports.service';
 import { ServiceAdmnistrationService } from 'src/app/core-services/system-admnistration/system-admnistration.service';
 import { UtilityService } from 'src/app/core-services/utilities/utility.service';
 import { WokflowManagementService } from 'src/app/core-services/workflow-management/wokflow-management.service';
+import { AuthenticationService } from 'src/app/core-services/authentication/authentication.service';
 
 @Component({
   selector: 'app-permittype-configurations',
@@ -42,9 +46,14 @@ export class PermittypeConfigurationsComponent {
   refNumberData: any;
   productTypeData: any;
   renewableStatusData: any;
+  productCategoryData: any;
   permitStatusData: any;
   hsCodeData: any;
   quotaLimitationData: any;
+  startHsCodeData: any;
+  endHsCodeData: any;
+  specificHsCodeData: any;
+  specialConditionsData: any;
   mappingStatusData: any;
   hscodeMappingOptionData: any;
   permitTemplateTypeData: any;
@@ -57,6 +66,7 @@ export class PermittypeConfigurationsComponent {
   permitTypeData: any;
   organizationData: any;
   processData: any;
+  configData: any;
   navigationTypesData: any;
   regulatoryFunctionData: any;
   createNewDataFrm: FormGroup;
@@ -78,6 +88,7 @@ export class PermittypeConfigurationsComponent {
   showTabPanel: boolean = false;
   tabPanelPopupVisible: boolean = false;
   hscodePopupVisible: boolean = false;
+  isHsCodePopupVisible: boolean = false;
   PermitSignatoriesPopupVisible: boolean = false;
   PermitSpecialConditionsPopupVisible: boolean = false;
   PermitRqdDocPopupVisible: boolean = false;
@@ -135,6 +146,7 @@ export class PermittypeConfigurationsComponent {
   dashboardTypeData: any;
   accountTypesData: any;
   instutitionTypesData: any;
+  ammendReadOnly: boolean;
   partnerStateOptions = [
     { value: true, text: 'True' },
     { value: false, text: 'False' },
@@ -153,7 +165,9 @@ export class PermittypeConfigurationsComponent {
     private admnistrationService: ServiceAdmnistrationService,
     private userGroupsService: AppmenuService,
     private workflowService: WokflowManagementService,
-    private reportingAnalytics: ReportsService
+    private reportingAnalytics: ReportsService,
+    public authService: AuthenticationService,
+    public httpClient: HttpClient
   ) {
 
     this.createNewDataFrm = new FormGroup({
@@ -190,7 +204,7 @@ export class PermittypeConfigurationsComponent {
       quota_limitationstype_id: new FormControl('', Validators.compose([])),
       mapping_status_id: new FormControl('', Validators.compose([])),
       hscodemapping_option_id: new FormControl('', Validators.compose([])),
-      special_conditions: new FormControl('', Validators.compose([])),
+      special_conditions_id: new FormControl('', Validators.compose([])),
       limitation_description:  new FormControl('', Validators.compose([])),
       code: new FormControl('', Validators.compose([])),
       transactionpermit_type_id: new FormControl('', Validators.compose([])),
@@ -231,6 +245,8 @@ export class PermittypeConfigurationsComponent {
       is_mandatory: new FormControl('', Validators.compose([])),
       allow_multiple: new FormControl('', Validators.compose([])),
       has_validity_period: new FormControl('', Validators.compose([])),
+      validity_period: new FormControl('', Validators.compose([])),
+      validity_defination: new FormControl('', Validators.compose([])),
       status: new FormControl('', Validators.compose([])),
       document_type: new FormControl('', Validators.compose([])),
       document_requirement: new FormControl('', Validators.compose([])),
@@ -263,6 +279,10 @@ export class PermittypeConfigurationsComponent {
     this.onLoadproductTypeData();
     this.onLoadHsCodeData();
     this.onLoadQuotaLimitationData();
+    this.onLoadStartHsCodeData();
+    this.onLoadEndHsCodeData();
+    this.onLoadSpecificHsCodeData();
+    this.onLoadSpecialConditionsData();
     this.onLoadMappingStatusData();
     this.onLoadRefNumberData();
     this.onLoadHscodeMappingOptionData();
@@ -305,6 +325,41 @@ export class PermittypeConfigurationsComponent {
     this.onLoadProcessData(organisation_id);
     this.onLoadWorkflowData(organisation_id)
   }
+
+   onsearchHsCodeDetails() {
+  
+      this.isHsCodePopupVisible = true;
+      var me = this;
+  
+  
+      this.productCategoryData.store = new CustomStore({
+        load: function (loadOptions: any) {
+          // console.log(loadOptions)
+          var params = '?';
+          params += 'skip=' + loadOptions.skip;
+          params += '&take=' + loadOptions.take;//searchValue
+          var headers = new HttpHeaders({
+            "Accept": "application/json",
+            "Authorization": "Bearer " + me.authService.getAccessToken(),
+          });
+  
+          me.configData = {
+            headers: headers,
+            params: { skip: loadOptions.skip, take: loadOptions.take, searchValue: loadOptions.filter }
+          };
+          return me.httpClient.get(AppSettings.base_url + '/api/sysadministration/onGetRegulatedProductCategory', me.configData)
+            .toPromise()
+            .then((data: any) => {
+              return {
+                data: data.data,
+                totalCount: data.totalCount
+              }
+            })
+            .catch(error => { throw 'Data Loading Error' });
+        }
+      });
+    }
+  
 
   onAccountTypeSelection($event) {
     if ($event.selectedItem) {
@@ -381,6 +436,23 @@ export class PermittypeConfigurationsComponent {
 
   }
 
+  funcSelectProductCategory(data) {
+    let data_resp = data.data;
+
+    // Prioritize values in order: hscodessubheading -> hscodesheading -> hscodechapters
+    let selectedProductName = data_resp.hscodessubheading ||
+      data_resp.hscodesheading ||
+      data_resp.hscodechapters || '';
+
+    // Patch the form with selected values
+    this.hsCodeDataFrm.patchValue({
+      product_name: selectedProductName,
+      regulated_product_category_id: data_resp.regulated_product_category_id
+    });
+
+    // Close the popup
+    this.isHsCodePopupVisible = false;
+  }
   onFuncSaveRecordData() {
 
     const formData = new FormData();
@@ -401,7 +473,6 @@ export class PermittypeConfigurationsComponent {
     this.action_url = 'onsaveSysAdminData';
     this.spinner.show();
 
-
     this.admnistrationService.onSaveSystemAdministrationDetails(this.table_name, this.createNewDataFrm.value, this.action_url)
       .subscribe(
         response => {
@@ -416,7 +487,7 @@ export class PermittypeConfigurationsComponent {
             this.createNewDataFrm.get('id')?.setValue(this.transactionpermit_type_id);
             this.fetchAppHsCodes(this.transactionpermit_type_id)
             this.selectedTabIndex = 1;
-            // this.toastr.success(this.response.message, 'Response');
+            this.toastr.success(this.response.message, 'Response');
             this.spinnerHide();
 
           } else {
@@ -453,7 +524,7 @@ export class PermittypeConfigurationsComponent {
     this.spinnerShow('Saving ' + this.parameter_name);
 
 
-    // this.spinner.show();
+    this.spinner.show();
     this.hsCodeDataFrm.get('transactionpermit_type_id')?.setValue(this.transactionpermit_type_id);
     this.admnistrationService.onSaveSystemAdministrationDetails('tra_transactionpermit_hs_codes', this.hsCodeDataFrm.value, 'onsaveSysAdminData')
       .subscribe(
@@ -499,7 +570,7 @@ export class PermittypeConfigurationsComponent {
     this.spinnerShow('Saving ' + this.parameter_name);
 
 
-    // this.spinner.show();
+    this.spinner.show();
     this.PermitSignatoriesFrm.get('transactionpermit_type_id')?.setValue(this.transactionpermit_type_id);
     this.admnistrationService.onSaveSystemAdministrationDetails('tra_transactionpermit_signatories', this.PermitSignatoriesFrm.value, 'onsaveSysAdminData')
       .subscribe(
@@ -544,7 +615,7 @@ export class PermittypeConfigurationsComponent {
     this.spinnerShow('Saving ' + this.parameter_name);
 
 
-    // this.spinner.show();
+    this.spinner.show();
     this.PermitSpecialConditionsFrm.get('transactionpermit_type_id')?.setValue(this.transactionpermit_type_id);
     this.admnistrationService.onSaveSystemAdministrationDetails('tra_permit_special_conditions', this.PermitSpecialConditionsFrm.value, 'onsaveSysAdminData')
       .subscribe(
@@ -587,7 +658,7 @@ export class PermittypeConfigurationsComponent {
     this.spinnerShow('Saving ' + this.parameter_name);
 
 
-    // this.spinner.show();
+    this.spinner.show();
     this.PermitRqdDocFrm.get('transactionpermit_type_id')?.setValue(this.transactionpermit_type_id);
     this.admnistrationService.onSaveSystemAdministrationDetails('tra_transactionpermit_requireddocuments', this.PermitRqdDocFrm.value, 'onsaveSysAdminData')
       .subscribe(
@@ -630,7 +701,7 @@ export class PermittypeConfigurationsComponent {
     this.spinnerShow('Saving ' + this.parameter_name);
 
 
-    // this.spinner.show();
+    this.spinner.show();
     this.PermitChecklistFrm.get('transactionpermit_type_id')?.setValue(this.transactionpermit_type_id);
     this.admnistrationService.onSaveSystemAdministrationDetails('tra_transactionpermit_checklists', this.PermitChecklistFrm.value, 'onsaveSysAdminData')
       .subscribe(
@@ -1062,6 +1133,77 @@ export class PermittypeConfigurationsComponent {
         });
   }
 
+  onLoadStartHsCodeData() {
+    var data_submit = {
+      'table_name': 'par_hscodesheading_definations'
+    }
+    this.workflowService.getWorkflowConfigs(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.startHsCodeData = this.data_record.data;
+
+          }
+        },
+        error => {
+
+        });
+  }
+  
+  onLoadEndHsCodeData() {
+    var data_submit = {
+      'table_name': 'par_hscodesheading_definations'
+    }
+    this.workflowService.getWorkflowConfigs(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.endHsCodeData = this.data_record.data;
+
+          }
+        },
+        error => {
+
+        });
+  }
+  
+  onLoadSpecificHsCodeData() {
+    var data_submit = {
+      'table_name': 'par_hscodessubheading_defination'
+    }
+    this.workflowService.getWorkflowConfigs(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.specificHsCodeData = this.data_record.data;
+
+          }
+        },
+        error => {
+
+        });
+  }
+  onLoadSpecialConditionsData() {
+    var data_submit = {
+      'table_name': 'tra_permit_special_conditions'
+    }
+    this.workflowService.getWorkflowConfigs(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.specialConditionsData = this.data_record.data;
+
+          }
+        },
+        error => {
+
+        });
+  }
+
   onLoadMappingStatusData() {
     var data_submit = {
       'table_name': 'par_mapping_status'
@@ -1368,6 +1510,32 @@ export class PermittypeConfigurationsComponent {
         });
 
   }
+
+showHsCodeSelectionOption: boolean = false;
+showSpecificHsCodeOption: boolean = false;
+showValidityPeriod: boolean = false;
+
+toggleHsCodeSelection(event: any): void {
+  if (event.value === 1) { 
+    // "Range" selected
+    this.showHsCodeSelectionOption = true;
+    this.showSpecificHsCodeOption = false;
+  } else if (event.value === 2) { 
+    // "Specific" selected
+    this.showHsCodeSelectionOption = false;
+    this.showSpecificHsCodeOption = true;
+  } else {
+    // Hide both
+    this.showHsCodeSelectionOption = false;
+    this.showSpecificHsCodeOption = false;
+  }
+}
+
+toggleValidityPeriod(event: any): void {
+  this.showValidityPeriod = event.value === true; // Show if "Yes" is selected
+}
+
+  
 
 
 

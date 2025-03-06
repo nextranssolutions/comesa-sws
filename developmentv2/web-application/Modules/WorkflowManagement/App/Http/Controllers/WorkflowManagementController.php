@@ -743,6 +743,14 @@ public function getRegulatoryFunctionGuidelines(Request $req)
                     'success' => true,
                     'message' => 'Saved Successfully'
                 );
+                $res['record_id'] = $resp['record_id'];
+                $res['record_id'] = $resp['record_id'];
+
+           
+            if ($table_name === 'wf_workflow_stages') {
+                
+                $res['workflow_stage_id'] = $resp['record_id'];
+            }
             } else {
                 $res = array(
                     'success' => false,

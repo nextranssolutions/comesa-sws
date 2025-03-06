@@ -30,7 +30,7 @@ parameter_name: string;
     if(this.screenWidth < 768){
       this.tabsPosition = 'top';
     }else{
-      this.tabsPosition = 'left';
+      this.tabsPosition = 'top';
     }
   }
 }

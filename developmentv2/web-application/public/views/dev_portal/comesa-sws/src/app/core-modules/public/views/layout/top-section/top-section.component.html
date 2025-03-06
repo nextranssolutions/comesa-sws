@@ -4,11 +4,12 @@
       <label class="form-label mb-0 me-2 language-option">{{
         "select_language" | translate
         }}</label>
-      <ng-container *ngFor="let language of translate.getLangs()">
-        <span class="language-option cursor-pointer" (click)="switchLang($event, language)"
-          [ngClass]="{ 'active-language': language === translate.currentLang }">
-          {{ language }} |
+      <ng-container *ngFor="let language of languageData">
+        <span class="language-option cursor-pointer" (click)="switchLang($event, language.name)"
+          [ngClass]="{ 'active-language': language.name === translate.currentLang }">
+          {{ language.name }}
         </span>
+        <span class="language-option cursor-pointer">|</span>
       </ng-container>
     </div>
 
