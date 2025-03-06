@@ -16,6 +16,7 @@ export class SharedImpExpdashboardClass {
 
   @ViewChild(DxDataGridComponent) dataGrid: DxDataGridComponent;
   is_popupguidelines: boolean;
+  applicationsubmission_type_id:number;
   application_status_id: any;
   response: any;
   ImportExpApplicationData: any;
@@ -121,6 +122,8 @@ export class SharedImpExpdashboardClass {
     this.onLoadimportExportPermitTypesData();
     this.reloadPermitApplicationsApplications();
 
+    //navigation items and get the sub_function_id 
+
 
   }
 
@@ -157,22 +160,14 @@ export class SharedImpExpdashboardClass {
     this.onApplicationSelection(1);
   }
 
-  onInitiatenewSingleProductPermitImportExpApplications() {
-    this.onApplicationSelectionForSingleProducts(1);
+  onInitiatenewSingleProductPermitImportExpApplications(applicationsubmission_type_id) {
+    this.onApplicationSelectionForSingleProducts(applicationsubmission_type_id);
   }
+  onApplicationSelectionForSingleProducts(applicationsubmission_type_id) {
 
-
-  onApplicationSelectionForSingleProducts(regulatory_subfunction_id) {
-
-    if (regulatory_subfunction_id == 1) {
-      this.applicationGeneraldetailsfrm.get('regulatory_subfunction_id')?.setValue(regulatory_subfunction_id);
-
-    }
     this.spinner.show();
-    this.app_typeItem = this.applicationGeneraldetailsfrm.controls['regulatory_subfunction_id'];
-    this.regulatory_subfunction_id = this.app_typeItem.value;
-
-    this.configService.getSectionUniformApplication(this.regulatory_subfunction_id)
+    
+    this.configService.getSectionUniformApplication(this.regulatory_subfunction_id,applicationsubmission_type_id)
       .subscribe(
         data => {
           this.spinner.hide();
@@ -184,7 +179,7 @@ export class SharedImpExpdashboardClass {
             this.appService.setApplicationDetail(data.data);
             this.appService.setPermitApplicationDetail(data.data);
             this.appService.setApplicantDetail(data.data);
-
+            
             localStorage.setItem('application_details', JSON.stringify(data.data));
             localStorage.setItem('permit_details', JSON.stringify(data.data));
             localStorage.setItem('applicant_details', JSON.stringify(data.data));
@@ -521,11 +516,8 @@ export class SharedImpExpdashboardClass {
   funcActionsProcess(action_btn, data) {
 
     if (action_btn.action === 'edit') {
-      // this.funcApplicationPreveditDetails(data);
-      this.funcSingleApplicationPreveditDetails(data);
-
-      
-
+       this.funcApplicationPreveditDetails(data);
+      //this.funcSingleApplicationPreveditDetails(data);
     }
     else if (action_btn.action === 'preview') {
       this.funcProductPreviewDetails(data);
@@ -697,10 +689,11 @@ export class SharedImpExpdashboardClass {
   application_data: any;
   funcApplicationPreveditDetails(app_data) {
     this.regulatory_subfunction_id = app_data.regulatory_subfunction_id;
+    this.applicationsubmission_type_id = app_data.applicationsubmission_type_id;
 
     this.spinner.show();
 
-    this.configService.getSectionUniformApplication(this.regulatory_subfunction_id)
+    this.configService.getApplicantUniformApplicationProces(this.regulatory_subfunction_id,this.applicationsubmission_type_id)
       .subscribe(
         data => {
           this.spinner.hide();
@@ -711,12 +704,11 @@ export class SharedImpExpdashboardClass {
             this.router_link = this.processData.router_link;
             this.productsapp_details = this.processData;
             let merged_appdata = Object.assign({}, this.application_data, app_data);
-            console.log(merged_appdata);
+          
             localStorage.setItem('application_details', JSON.stringify(merged_appdata));
             localStorage.setItem('applicant_details', JSON.stringify(merged_appdata));
             localStorage.setItem('permit_details', JSON.stringify(merged_appdata));
 
-            // this.appService.setProductApplicationDetail(data.data);
             this.app_route = ['./importexport-permit-application/' + this.router_link];
 
             this.router.navigate(this.app_route);
@@ -732,47 +724,7 @@ export class SharedImpExpdashboardClass {
         });
     return false;
   }
-
-
-  funcSingleApplicationPreveditDetails(app_data) {
-    this.regulatory_subfunction_id = app_data.regulatory_subfunction_id;
-
-    this.spinner.show();
-
-    this.configService.getSingleApplicantSectionUniformApplication(this.regulatory_subfunction_id)
-      .subscribe(
-        data => {
-          this.spinner.hide();
-          if (data.success) {
-            this.processData = data.data.process_infor;
-            this.application_data = data.data;
-
-            this.router_link = this.processData.router_link;
-            this.productsapp_details = this.processData;
-            let merged_appdata = Object.assign({}, this.application_data, app_data);
-            console.log(merged_appdata);
-            localStorage.setItem('application_details', JSON.stringify(merged_appdata));
-            localStorage.setItem('applicant_details', JSON.stringify(merged_appdata));
-            localStorage.setItem('permit_details', JSON.stringify(merged_appdata));
-
-            // this.appService.setProductApplicationDetail(data.data);
-            this.app_route = ['./importexport-permit-application/single-productapplication-permits'];
-
-            this.router.navigate(this.app_route);
-            this.scrollToTop();
-
-          }
-          else {
-            this.toastr.error(this.processData.message, 'Alert!');
-
-          }
-
-
-        });
-    return false;
-  }
-
-
+  
   funcArchivePermitApplication(data) {
     this.utilityService.funcApplicationArchiceCall(this.viewRef, data, 'txn_importexport_applications', this.reloadPermitApplicationsApplications);
 
