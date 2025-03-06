@@ -326,7 +326,7 @@ class ImportExportController extends Controller
             $local_agent_id = $req->local_agent_id;
 
             $reference_no = $req->reference_no;
-            $regulatory_subfunction_id = $req->regulatory_subfunction_id;
+            $regulatory_subfunction_id = 1; 
             $zone_id = $req->zone_id;
             $process_id = $req->process_id;
             $id = $req->id;
@@ -346,6 +346,7 @@ class ImportExportController extends Controller
                 'application_id' => $application_id,
                 'applicant_id' => $req->applicant_id,
                 'regulatory_function_id' => $regulatory_function_id,
+                'application_options_id' =>$req->application_options_id,
                 'product_type_id' => $req->product_type_id,
                 'zone_id' => $req->zone_id,
                 'reference_no' => $reference_no,
@@ -804,8 +805,6 @@ class ImportExportController extends Controller
                     'section_id' => $req->section_id,
                     'productphysical_description' => $req->productphysical_description,
                     'packaging_unit_id' => $packaging_unit_id,
-
-
                     'product_name' => $req->product_name,
                     'brand_name' => $req->brand_name,
                     'quantity' => $quantity,
