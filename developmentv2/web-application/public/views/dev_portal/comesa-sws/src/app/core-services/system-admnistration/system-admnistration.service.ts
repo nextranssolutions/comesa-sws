@@ -130,6 +130,18 @@ export class ServiceAdmnistrationService {
       }));
   }
  
+  onLoadTransactionRestrictionProhibitions(data) {
+    data.table_name = btoa(data.table_name);
+    this.system = {
+      params: data,
+      headers: { 'Accept': 'application/json' }
+    };
+
+    return this.HttpClient.get(this.baseUrl + '/onLoadTransactionRestrictionProhibitions', this.system)
+      .pipe(map(data => {
+        return <any>data;
+      }));
+  }
   onLoadSystemGuideline(data) {
     data.table_name = btoa(data.table_name);
     this.system = {

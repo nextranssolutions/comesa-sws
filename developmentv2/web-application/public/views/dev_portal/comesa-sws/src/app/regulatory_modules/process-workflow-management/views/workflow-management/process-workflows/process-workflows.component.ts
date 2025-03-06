@@ -1106,17 +1106,22 @@ onFuncSaveWorkflowStageDetailsData() {
       response => {
         this.response = response;
         //the details 
-        if (this.response.success) {
+      
+       if (this.response.success) {
 
-          this.fetchWorkflowStageActionsDetails(this.workflow_stage_id);
-          this.workflowStagesVisible = false;
-          this.toastr.success(this.response.message, 'Response');
-          this.spinnerHide();
-        } else {
-          this.toastr.error(this.response.message, 'Alert');
-          this.spinnerHide();
-        }
+        this.fetchWorkflowStagesDetails(this.workflow_id);
+        this.toastr.success(this.response.message, 'Response');
+
+        this.workflow_stage_id = this.response.record_id;
+        this.workflowStagesFrm.get('id')?.setValue(this.workflow_stage_id);
+        this.fetchWorkflowStageActionsDetails(this.workflow_stage_id)
+        this.selectedTabIndex = 1;
         this.spinnerHide();
+      } else {
+        this.toastr.error(this.response.message, 'Alert');
+        this.spinnerHide();
+      }
+      this.spinnerHide();
       },
       error => {
         this.toastr.error('Error Occurred', 'Alert');
