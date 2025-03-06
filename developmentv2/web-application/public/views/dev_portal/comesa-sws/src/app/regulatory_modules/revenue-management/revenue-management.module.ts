@@ -55,6 +55,7 @@ import { ApplicationfeeConfigurationComponent } from './views/applicationfee-con
 import { SharedapplicationfeeConfigurationComponent } from './views/applicationfee-configuration/sharedapplicationfee-configuration/sharedapplicationfee-configuration.component';
 import { SharedrevenueconfigurationsComponent } from './views/sharedrevenueconfigurations/sharedrevenueconfigurations.component';
 import { CimexAdminModule } from 'src/app/core-modules/cimex-admin/cimex-admin.module';
+import { SharedChargesconfigComponent } from './views/charges-configurations/shared-chargesconfig/shared-chargesconfig.component';
 
 
 @NgModule({
@@ -70,7 +71,7 @@ import { CimexAdminModule } from 'src/app/core-modules/cimex-admin/cimex-admin.m
     ClinicaltrialsFeesComponent, ApplicationinvoicesgenerationQueriesComponent,
     InvoiceCancellationComponent, PaymentcancellationProcessComponent,
     BatcharetentionInvoicesComponent, BatchapplicationInvoicesComponent,
-    BanksConfigurationsComponent,
+    BanksConfigurationsComponent,SharedChargesconfigComponent,
     BanksComponent,SharedrevenueconfigurationsComponent,
     OrganizationbankAccountsComponent,
     BankBranchesComponent,
