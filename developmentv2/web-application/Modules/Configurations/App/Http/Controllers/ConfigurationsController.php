@@ -615,6 +615,8 @@ class ConfigurationsController extends Controller
                 $regulatory_function_id = $submodule_data->regulatory_function_id;
             }
 
+       
+
             $data = DB::table('wf_workflows as t1')
                 ->join('wf_workflow_stages as t2', 't2.workflow_id', 't1.id')
                 ->join('wf_workflow_interfaces as t3', 't3.id', 't2.interface_id')

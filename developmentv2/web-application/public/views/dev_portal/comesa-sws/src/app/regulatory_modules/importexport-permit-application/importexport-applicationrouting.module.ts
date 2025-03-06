@@ -11,6 +11,7 @@ import { RequestForadditionalInformationComponent } from './views/import-license
 import { ApprovedPermitsComponent } from './views/import-license/approved-permits/approved-permits.component';
 import { AwaitingPaymentRemittanceComponent } from './views/import-license/awaiting-payment-remittance/awaiting-payment-remittance.component';
 import { RejectedPermitsComponent } from './views/import-license/rejected-permits/rejected-permits.component';
+import { SingleProductPermitComponent } from './views/import-license/single-product-permit/single-product-permit.component';
 
 const routes: Routes = [{
   path: '',
@@ -40,11 +41,11 @@ const routes: Routes = [{
   },{
     path: 'approved-permits',
     component: ApprovedPermitsComponent
+  },{
+    path: 'single-productapplication-permits',
+    component: SingleProductPermitComponent
   }
 
-  
-  
-  
 ]
 }]
 
