@@ -156,7 +156,7 @@ export class SharedImpExpdashboardClass {
     }
   }
 
-  onInitiatenewImportExpApplications() {
+  onInitiatenewImportExpApplications(regulatory_subfunction_id) {
     this.onApplicationSelection(1);
   }
 
