@@ -15,7 +15,9 @@ export class ImportExportService {
   email_address: string;
   config: any;
   application_details: any;
+  permit_details: any;
   baseUrl: any;
+  applicant_details: any;
   constructor(private authService: AuthenticationService,private HttpClient: HttpClient, private http: HttpClient, private myRoute: Router, private httpClient: HttpClient) {
     let user = this.authService.getUserDetails();
 
@@ -46,7 +48,7 @@ export class ImportExportService {
     });
     let user = this.authService.getUserDetails();
     let registrant_data = JSON.stringify(registrant_details);
-    console.log(permitData);
+   
     return this.http.post(AppSettings.base_url + '/api/import-export/'+action_url, permitData, { headers: headers })
       .pipe(map(data => {
         return data;
@@ -85,9 +87,22 @@ export class ImportExportService {
       }));
   } getApplicationDetail() {
     return this.application_details;
+    return this.permit_details;
+
   }
   setApplicationDetail(data: any[]) {
     this.application_details = data;
+  
+  }
+  
+  setPermitApplicationDetail(data: any[]) {
+
+    this.permit_details = data;
+  }
+
+  setApplicantDetail(data: any[]) {
+
+    this.applicant_details = data;
   }
 
   // onPermitApplicationLoading(action_url, filter_params, regulatory_function_id) {

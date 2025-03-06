@@ -486,7 +486,7 @@ class ConfigurationsController extends Controller
                 ->leftJoin('par_product_origins as t9', 't1.product_origin_id', 't9.id')
                 ->leftJoin('par_applicationfee_types as t10', 't1.application_feetype_id', 't10.id')
                 ->leftJoin('par_classifications as t11', 't1.classification_id', 't11.id')
-                ->leftJoin('txn_feescharges_configurations as t12', 't1.element_costs_id', 't12.id')
+                ->leftJoin('tra_feescharges_configurations as t12', 't1.element_costs_id', 't12.id')
                 ->leftJoin('par_currencies as t14', 't12.currency_id', 't14.id')
                 ->leftJoin('par_fee_types as t15', 't12.fee_type_id', 't15.id')
                 ->leftJoin('par_cost_categories as t16', 't12.cost_category_id', 't16.id')
@@ -539,7 +539,7 @@ class ConfigurationsController extends Controller
         $regulatory_function_id = $req->regulatory_function_id;
         try{
 			
-            $qry = DB::table('txn_feescharges_configurations as t1')
+            $qry = DB::table('tra_feescharges_configurations as t1')
                 // ->leftJoin('par_regulatory_functions as t2', 't1.regulatory_function_id', 't2.id')
 
                 // ->leftJoin('par_regulatory_subfunctions as t3', 't1.regulatory_subfunction_id', 't3.id')
@@ -614,6 +614,8 @@ class ConfigurationsController extends Controller
                 $submodule_data = getTableData('par_regulatory_subfunctions', array('id' => $regulatory_subfunction_id));
                 $regulatory_function_id = $submodule_data->regulatory_function_id;
             }
+
+       
 
             $data = DB::table('wf_workflows as t1')
                 ->join('wf_workflow_stages as t2', 't2.workflow_id', 't1.id')

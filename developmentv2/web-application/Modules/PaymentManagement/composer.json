@@ -1,5 +1,5 @@
 {
-    "name": "nwidart/revenuemanagement",
+    "name": "nwidart/paymentmanagement",
     "description": "",
     "authors": [
         {
@@ -17,15 +17,15 @@
     },
     "autoload": {
         "psr-4": {
-            "Modules\\RevenueManagement\\": "",
-            "Modules\\RevenueManagement\\App\\": "app/",
-            "Modules\\RevenueManagement\\Database\\Factories\\": "database/factories/",
-            "Modules\\RevenueManagement\\Database\\Seeders\\": "database/seeders/"
+            "Modules\\PaymentManagement\\": "",
+            "Modules\\PaymentManagement\\App\\": "app/",
+            "Modules\\PaymentManagement\\Database\\Factories\\": "database/factories/",
+            "Modules\\PaymentManagement\\Database\\Seeders\\": "database/seeders/"
         }
     },
     "autoload-dev": {
         "psr-4": {
-            "Modules\\RevenueManagement\\Tests\\": "tests/"
+            "Modules\\PaymentManagement\\Tests\\": "tests/"
         }
     }
 }

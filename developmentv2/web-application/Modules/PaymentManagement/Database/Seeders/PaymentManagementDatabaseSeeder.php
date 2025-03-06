@@ -1,10 +1,10 @@
 <?php
 
-namespace Modules\RevenueManagement\Database\Seeders;
+namespace Modules\PaymentManagement\Database\Seeders;
 
 use Illuminate\Database\Seeder;
 
-class RevenueManagementDatabaseSeeder extends Seeder
+class PaymentManagementDatabaseSeeder extends Seeder
 {
     /**
      * Run the database seeds.

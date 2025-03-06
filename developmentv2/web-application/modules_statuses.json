@@ -32,5 +32,6 @@
     "Reports": true,
     "TasksAllocationManagement": true,
     "OTP": true,
-    "ImportExport": true
+    "ImportExport": true,
+    "PaymentManagement": true
 }

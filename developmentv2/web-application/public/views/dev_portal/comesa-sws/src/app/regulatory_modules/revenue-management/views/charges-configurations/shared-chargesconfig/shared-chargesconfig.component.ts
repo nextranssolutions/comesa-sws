@@ -3,7 +3,6 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
 import { SpinnerVisibilityService } from 'ng-http-loader';
-
 import { ToastrService } from 'ngx-toastr';
 import { AuthenticationService } from 'src/app/core-services/authentication/authentication.service';
 import { ConfigurationsService } from 'src/app/core-services/configurations/configurations.service';
@@ -12,21 +11,22 @@ import { ReportsService } from 'src/app/core-services/reports/reports.service';
 import { UtilityService } from 'src/app/core-services/utilities/utility.service';
 
 @Component({
-  selector: 'app-feescharges-configurations',
-  templateUrl: './feescharges-configurations.component.html',
-  styleUrl: './feescharges-configurations.component.css'
+  selector: 'app-shared-chargesconfig',
+  templateUrl: './shared-chargesconfig.component.html',
+  styleUrl: './shared-chargesconfig.component.css'
 })
-export class FeeschargesConfigurationsComponent {
+export class SharedChargesconfigComponent {
 
+@Input() table_name: string;
+  @Input() parameter_name: string;
   @Input() resetcolumns: string;
-  @Input() regulatory_function_id!: number;
-  table_name: string;
-  parameter_name: string;
-  applicationFeeConfigData: any[] = [];
+  countriesinfoData: any[] = [];
   institutionData: any[] = [];
+  regionsData: any[] = [];
   institutionTypesData: any[] = [];
   institutionDepartmentData: any[] = [];
   regulatoryFunctionData: any;
+  regulatorySubFunctionData: any;
   docrequirementsData: any[] = [];
   createNewDataFrm: FormGroup;
   isnewproduct: boolean;
@@ -58,24 +58,11 @@ export class FeeschargesConfigurationsComponent {
         //  { text: "View", action: 'view_record', icon: 'fa fa-eye' },
         { text: "Edit", action: 'edit_record', icon: 'fa fa-edit' },
         { text: "Delete", action: 'delete_record', icon: 'fa fa-trash' },
-        // { text: "Enable/Disable", action: 'enable_record', icon: 'fa fa-check' },
+        { text: "Enable/Disable", action: 'enable_record', icon: 'fa fa-check' },
       ]
     }
   ];
-
-  confirmationData = [
-    { id: 'yes', name: 'Yes' },
-    { id: 'no', name: 'No' }
-  ];
   currencyData: any;
-
-  costCategoryData: any;
-  costSubCategoryData: any;
-  costElementData: any;
-  applicationFeeTypeData: any;
-  costTypeData: any;
-  // confirmationData: any;
-  glCodeData: any;
   bankData: any;
   productTypesData: any;
   categoriesData: any;
@@ -90,10 +77,7 @@ export class FeeschargesConfigurationsComponent {
     { value: true, text: 'Yes' },
     { value: false, text: 'No' },
   ];
-  decryptedPayload: any
-
-  isFormular: string | null = null; // Tracks the selected value of is_formular
-  showFormularRate: boolean = false; // Determines which form items to display
+  decryptedPayload:any
   constructor(
     private spinner: SpinnerVisibilityService,
     private router: Router,
@@ -102,54 +86,62 @@ export class FeeschargesConfigurationsComponent {
     public viewRef: ViewContainerRef,
     public configService: ConfigurationsService,
     public utilityService: UtilityService,
-    
     private reportingAnalytics: ReportsService,
     public encryptionService: EncryptionService
   ) {
 
     this.createNewDataFrm = new FormGroup({
       id: new FormControl('', Validators.compose([])),
-      element_id: new FormControl('', Validators.compose([])),
-      application_feetype_id: new FormControl('', Validators.compose([])),
-      cost_type_id: new FormControl('', Validators.compose([])),
-      is_fast_track: new FormControl('', Validators.compose([])),
-      costs: new FormControl('', Validators.compose([])),
+      name: new FormControl('', Validators.compose([Validators.required])),
+      title: new FormControl('', Validators.compose([])),
+      description: new FormControl('', Validators.compose([])),
+      code: new FormControl('', Validators.compose([])),
+      is_member_state: new FormControl('', Validators.compose([])),
+      iso_acyronym: new FormControl('', Validators.compose([])),
+      is_tracer_item: new FormControl(false, Validators.compose([])),
+      country_id: new FormControl(false, Validators.compose([])),
+      routerLink: new FormControl(false, Validators.compose([])),
+      institution_id: new FormControl(false, Validators.compose([])),
+      regulatory_function_id: new FormControl(false, Validators.compose([])),
+      institution_type_id: new FormControl(false, Validators.compose([])),
+      resetcolumns: new FormControl('', Validators.compose([])),
+      fee_type_id: new FormControl('', Validators.compose([])),
+      costcurrency_defination: new FormControl('', Validators.compose([])),
+      is_local_currency: new FormControl('', Validators.compose([])),
+      is_paying_currency: new FormControl('', Validators.compose([])),
       currency_id: new FormControl('', Validators.compose([])),
-      formula: new FormControl(false, Validators.compose([])),
-      optional: new FormControl(false, Validators.compose([])),
-      formula_rate: new FormControl(false, Validators.compose([])),
-      fee_type_id: new FormControl(false, Validators.compose([])),
-      sub_cat_id: new FormControl(false, Validators.compose([])),
-      cost_category_id: new FormControl(false, Validators.compose([])),
-      technique_id: new FormControl('', Validators.compose([])),
-      migration_code: new FormControl('', Validators.compose([])),
-      gl_code_id: new FormControl('', Validators.compose([])),
-      gl_code: new FormControl('', Validators.compose([])),
-      formular: new FormControl('', Validators.compose([])),
-      formular_rate: new FormControl('', Validators.compose([])),
+      exchange_rate: new FormControl('', Validators.compose([])),
+      product_type_id: new FormControl('', Validators.compose([])),
+      cost_category_id: new FormControl('', Validators.compose([])),
+      regulatory_subfunction_id: new FormControl('', Validators.compose([])),
+      data_query: new FormControl('', Validators.compose([])),
+      ip: new FormControl('', Validators.compose([])),
+      blocked: new FormControl('', Validators.compose([])),
       is_enabled: new FormControl('', Validators.compose([])),
     });
 
-    this.table_name = 'tra_feescharges_configurations';
-    this.parameter_name = "feescharges_configurations";
+
   }
 
   ngOnInit() {
     this.createNewDataFrm.get('resetcolumns')?.setValue(this.resetcolumns);
-    this.fetchApplicationFeeConfigDetails();
-    this.fetchApplicationFeeTypeData()
-    this.fetchCostElementData()
-    this.fetchCostSubCategoryData(this.cost_category_id)
-    this.fetchCostCategoryData()
-    this.fetchFeeTypesDetails()
-    this.fetchCurrencyDetails()
-    this.fetchGlCodeDetails()
-    // this.fetchConfirmationsDetails()
+    this.fetchConfigurationItemsDetails();
+    this.fetchConfigurationCountriesDetails();
+    this.fetchInstitutionTypesDetails();
+    this.fetchInstitutionData();
+    this.fetchRegionsData();
+    this.onLoadregulatoryFunctionData();
+    this.onLoadregulatorySubFunctionData();
+    this.fetchDocRequirementsDetails();
+    this.fetchFeeTypesDetails();
+    this.fetchSubCategoriesDetails();
+    this.fetchCategoriesDetails();
+    this.fetchBankDetails();
+    this.fetchCurrencyDetails();
+    this.fetchProductTypesDetails();
+    this.scrollToTop();
   }
-  cost_category_id(cost_category_id: any) {
-    throw new Error('Method not implemented.');
-  }
-
+ 
   spinnerShow(spinnerMessage) {
     this.loadingVisible = true;
     this.spinnerMessage = spinnerMessage;
@@ -157,17 +149,70 @@ export class FeeschargesConfigurationsComponent {
   spinnerHide() {
     this.loadingVisible = false;
   }
-
-  onCostCategoryDataChange($event) {
-    if ($event.selectedItem) {
-      let cost_category = $event.selectedItem;
-      this.fetchCostSubCategoryData(cost_category.id);
-    }
-
+  scrollToTop(): void {
+    window.scrollTo({
+      top: 0,
+      behavior: 'smooth' // Smooth scrolling for better UX
+    });
   }
 
-  toggleVisibility(event: any): void {
-    this.showFormularRate = event.value === 'yes';
+  fetchConfigurationCountriesDetails() {
+
+    var data_submit = {
+      'table_name': 'par_countries',
+      'is_member_state': 1,
+      'is_enabled': 1,
+    }
+    this.configService.onLoadConfigurationData(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            
+            this.Countries = this.data_record.data;
+          }
+
+        },
+        error => {
+
+        });
+  }
+
+  fetchInstitutionData() {
+    var data_submit = {
+      'table_name': 'par_institutions',
+      'is_enabled': 1,
+    }
+    this.configService.onLoadConfigurationData(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
+            this.institutionData = this.decryptedPayload;
+          }
+        }
+      )
+  }
+
+  fetchInstitutionTypesDetails() {
+
+    var data_submit = {
+      'table_name': 'par_institutions_types',
+      'is_enabled': true,
+    }
+    this.configService.onLoadConfigurationData(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            // this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
+            this.institutionTypesData = this.data_record.data;
+          }
+        },
+        error => {
+
+        });
   }
 
   fetchFeeTypesDetails() {
@@ -190,11 +235,10 @@ export class FeeschargesConfigurationsComponent {
         });
   }
 
-  fetchGlCodeDetails() {
+  fetchRegionsData() {
 
     var data_submit = {
-      'table_name': 'par_gl_accounts',
-      // 'is_enabled': true,
+      'table_name': 'par_regions',
     }
     this.configService.onLoadConfigurationData(data_submit)
       .subscribe(
@@ -202,35 +246,12 @@ export class FeeschargesConfigurationsComponent {
           this.data_record = data;
           if (this.data_record.success) {
             // this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
-            this.glCodeData = this.data_record.data;
+            this.regionsData = this.data_record.data;
           }
         },
         error => {
-
         });
   }
-
-
-  // fetchConfirmationsDetails() {
-
-  //   var data_submit = {
-  //     'table_name': 'par_confirmations',
-  //     'is_enabled': 1,
-  //   }
-  //   this.configService.onLoadConfigurationData(data_submit)
-  //     .subscribe(
-  //       data => {
-  //         this.data_record = data;
-  //         if (this.data_record.success) {
-  //           // this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
-  //           this.confirmationData = this.data_record.data;
-  //         }
-  //       },
-  //       error => {
-
-  //       });
-  // }
-
 
   fetchCurrencyDetails() {
 
@@ -252,8 +273,50 @@ export class FeeschargesConfigurationsComponent {
         });
   }
 
+  fetchBankDetails() {
 
-  fetchCostCategoryData() {
+    var data_submit = {
+      'table_name': 'par_banks',
+      // 'is_enabled': true,
+    }
+    this.configService.onLoadConfigurationData(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            // this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
+            this.bankData = this.data_record.data;
+          }
+        },
+        error => {
+
+        });
+  }
+
+
+  fetchSubCategoriesDetails() {
+
+    var data_submit = {
+      'table_name': 'par_cost_sub_categories',
+      // 'is_enabled': true,
+    }
+    this.configService.onLoadConfigurationData(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            // this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
+            this.subCategoriesData = this.data_record.data;
+          }
+
+        },
+        error => {
+
+        });
+
+  }
+
+  fetchCategoriesDetails() {
 
     var data_submit = {
       'table_name': 'par_cost_categories',
@@ -265,7 +328,7 @@ export class FeeschargesConfigurationsComponent {
           this.data_record = data;
           if (this.data_record.success) {
             // this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
-            this.costCategoryData = this.data_record.data;
+            this.categoriesData = this.data_record.data;
           }
         },
         error => {
@@ -273,88 +336,7 @@ export class FeeschargesConfigurationsComponent {
         });
   }
 
-  fetchCostSubCategoryData(cost_category_id) {
-
-    var data_submit = {
-      'table_name': 'par_cost_sub_categories',
-      cost_category_id: cost_category_id
-      // 'is_enabled': true,
-    }
-    this.configService.onLoadConfigurationData(data_submit)
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            // this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
-            this.costSubCategoryData = this.data_record.data;
-          }
-        },
-        error => {
-
-        });
-  }
-
-  fetchCostElementData() {
-
-    var data_submit = {
-      'table_name': 'par_cost_elements',
-      // 'is_enabled': true,
-    }
-    this.configService.onLoadConfigurationData(data_submit)
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            // this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
-            this.costElementData = this.data_record.data;
-          }
-        },
-        error => {
-
-        });
-  }
-
-  fetchApplicationFeeTypeData() {
-
-    var data_submit = {
-      'table_name': 'par_applicationfee_types',
-      // 'is_enabled': true,
-    }
-    this.configService.onLoadConfigurationData(data_submit)
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            // this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
-            this.applicationFeeTypeData = this.data_record.data;
-          }
-        },
-        error => {
-
-        });
-  }
-
-  fetchCostTypeData() {
-
-    var data_submit = {
-      'table_name': 'par_cost_types',
-      // 'is_enabled': true,
-    }
-    this.configService.onLoadConfigurationData(data_submit)
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            // this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
-            this.costTypeData = this.data_record.results;
-          }
-        },
-        error => {
-
-        });
-  }
-
-  onAdvanceProductRegistrySearch(e) {
+  onAdvanceProductRegistrySearch(e){
     e.toolbarOptions.items.unshift({
       location: 'after',
       widget: 'dxCheckBox',
@@ -367,33 +349,134 @@ export class FeeschargesConfigurationsComponent {
     });
   }
 
-  onActivatetheAdvanceSearch(e) {
+  onActivatetheAdvanceSearch(e){
 
-    this.show_advancesearch = e.value;
+    this.show_advancesearch =  e.value;
 
-  }
+}
 
-  fetchApplicationFeeConfigDetails() {
-    this.spinnerShow('Loading...........');
-    const data_submit = {
-      table_name: this.table_name,
-    };
+  onLoadregulatoryFunctionData() {
 
-    this.configService.getFeesChargesConfigurations(data_submit)
+    var data_submit = {
+      'table_name': 'par_regulatory_functions',
+      // 'is_enabled': true,
+    }
+    this.configService.onLoadConfigurationData(data_submit)
       .subscribe(
         data => {
           this.data_record = data;
           if (this.data_record.success) {
-            this.applicationFeeConfigData = this.data_record.results;
+            // this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
+            this.regulatoryFunctionData = this.data_record.data;
+          }
+
+        },
+        error => {
+
+        });
+  } 
+
+  fetchProductTypesDetails() {
+
+    var data_submit = {
+      'table_name': 'par_product_types',
+      // 'is_enabled': true,
+    }
+    this.configService.onLoadConfigurationData(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            // this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
+            this.productTypesData = this.data_record.data;
+          }
+
+        },
+        error => {
+
+        });
+  } 
+
+  
+  onLoadregulatorySubFunctionData() {
+
+    var data_submit = {
+      'table_name': 'par_regulatory_subfunctions',
+      // 'is_enabled': true,
+    }
+    this.configService.onLoadConfigurationData(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            // this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
+            this.regulatorySubFunctionData = this.data_record.data;
+          }
+        },
+        error => {
+
+        });
+  }
+
+  fetchInstitutionDepartments() {
+    var data_submit = {
+      'table_name': 'par_institutions_department',
+      'is_enabled': 1,
+    }
+    this.configService.onLoadConfigurationData(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
+            this.institutionDepartmentData = this.decryptedPayload;
+          }
+        },
+        error => {
+
+        }
+      )
+  }
+
+  fetchConfigurationItemsDetails() {
+    this.spinnerShow('Loading...........');
+    var data_submit = {
+      'table_name': this.table_name
+    }
+    this.configService.onLoadConfigurationData(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            // this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
+            this.countriesinfoData = this.data_record.data;
           }
           this.spinnerHide();
         },
         error => {
-          console.error('Error fetching data:', error);
           this.spinnerHide();
-        }
-      );
+        });
   }
+  fetchDocRequirementsDetails() {
+
+    var data_submit = {
+      'table_name': 'dms_document_requirements'
+    }
+    this.configService.onLoadConfigurationData(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
+            this.docrequirementsData = this.decryptedPayload;
+          }
+
+        },
+        error => {
+
+        });
+  }
+
 
 
   onAddNewProduct() {
@@ -426,7 +509,7 @@ export class FeeschargesConfigurationsComponent {
           this.response = response;
           //the details 
           if (this.response.success) {
-            this.fetchApplicationFeeConfigDetails();
+            this.fetchConfigurationItemsDetails();
             this.isnewproduct = false;
             this.toastr.success(this.response.message, 'Response');
 
@@ -452,7 +535,7 @@ export class FeeschargesConfigurationsComponent {
   }
 
   onPopupHidden() {
-    this.fetchApplicationFeeConfigDetails();
+    this.fetchConfigurationItemsDetails();
   }
 
   funcEditDetails(data) {
@@ -488,7 +571,7 @@ export class FeeschargesConfigurationsComponent {
           this.spinner.hide();
           this.response = response;
           if (this.response.success) {
-            this.fetchApplicationFeeConfigDetails();
+            this.fetchConfigurationItemsDetails();
             this.toastr.success(this.response.message, 'Response');
             this.deletePopupVisible = false;
           }
@@ -535,7 +618,7 @@ export class FeeschargesConfigurationsComponent {
           this.spinner.hide();
           this.response = response;
           if (this.response.success) {
-            this.fetchApplicationFeeConfigDetails();
+            this.fetchConfigurationItemsDetails();
             this.enablePopupVisible = false;
             this.toastr.success(this.response.message, 'Response');
             this.deletePopupVisible = false;
@@ -561,4 +644,5 @@ export class FeeschargesConfigurationsComponent {
     }
 
   }
+
 }
