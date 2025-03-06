@@ -28,7 +28,7 @@
     <!-- hold-transition skin-blue sidebar-mini Font Awesome -->
 </head>
 
-<body class="hold-transition sidebar-mini layout-fixed">
+<body class="dx-viewport dx-device-desktop dx-device-generic dx-theme-material dx-theme-material-typography dx-color-scheme-teal-light">
 
     <div class="loader_gif">
         <div class="loader">
