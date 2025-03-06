@@ -1,15 +1,15 @@
 <?php
 
-namespace Modules\RevenueManagement\App\Providers;
+namespace Modules\PaymentManagement\App\Providers;
 
 use Illuminate\Support\Facades\Blade;
 use Illuminate\Support\ServiceProvider;
 
-class RevenueManagementServiceProvider extends ServiceProvider
+class PaymentManagementServiceProvider extends ServiceProvider
 {
-    protected string $moduleName = 'RevenueManagement';
+    protected string $moduleName = 'PaymentManagement';
 
-    protected string $moduleNameLower = 'revenuemanagement';
+    protected string $moduleNameLower = 'paymentmanagement';
 
     /**
      * Boot the application events.

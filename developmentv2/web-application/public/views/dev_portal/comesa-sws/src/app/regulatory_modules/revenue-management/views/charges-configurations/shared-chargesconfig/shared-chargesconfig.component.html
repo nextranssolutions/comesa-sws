@@ -2,13 +2,13 @@
 
 
 <div class="row col-lg-12">
-  <dx-button text="{{ 'add' | translate }} {{ parameter_name | translate }}" type="default" icon="fa fa-save"
+  <dx-button text="{{ 'add_new' | translate }} {{ parameter_name | translate }}" type="default" icon="fa fa-save"
     [elementAttr]="{ id: 'elementId', class: 'pull-right' }" (onClick)="hasReadpermissions=false;onAddNewProduct()">
   </dx-button>
 
   <dx-data-grid (onCellPrepared)="onCellPrepared($event)" class="table row-border hover"
     (onExporting)="onExporting($event)" [wordWrapEnabled]="true" [dataSource]="countriesinfoData"
-    [remoteOperations]="true" [showBorders]="true" [allowColumnResizing]="true" [columnHidingEnabled]="false"
+    [remoteOperations]="true" [showBorders]="true" [allowColumnResizing]="true" [columnHidingEnabled]="true"
     keyExpr="id" (onToolbarPreparing)="onAdvanceProductRegistrySearch($event)">
 
     <dxo-export [enabled]="true" [fileName]="'records' | translate" [formats]="['pdf', 'xlsx']"
@@ -33,6 +33,12 @@
       <dxo-lookup [dataSource]="Countries" displayExpr="name" valueExpr="id">
       </dxo-lookup>
     </dxi-column>
+
+<dxi-column *ngIf="table_name == 'par_districts'" dataField="region_id"
+    caption="{{ 'regions' | translate }}">
+    <dxo-lookup [dataSource]="regionsData" displayExpr="name" valueExpr="id">
+    </dxo-lookup>
+  </dxi-column>
 
     <dxi-column *ngIf="table_name == 'par_bankbranches'" dataField="bank_id"
       caption="{{ 'bank' | translate }}">
@@ -141,10 +147,6 @@
     </dxi-column>
     <dxi-column dataField="iso_acyronym" caption="{{ 'iso_code' | translate }}"></dxi-column>
 
-    <dxi-column *ngIf="table_name == 'par_countries'" [width]="100" dataField="is_member_state"
-      caption="{{ 'is_member_state' | translate }}">
-
-    </dxi-column>
     <dxi-column *ngIf="table_name == 'par_disclaimer_statements'" [width]="100" dataField="disclaimer_statement"
       caption="{{ 'disclaimer_statement' | translate }}">
 
@@ -345,12 +347,6 @@ title="{{ 'add_new' | translate }} {{parameter_name | translate }}" [dragEnabled
           <dx-text-box formControlName="routerLink" [showClearButton]="true">
 
           </dx-text-box>
-        </div>
-        <div *ngIf="table_name == 'par_countries'" class="col-lg-6">
-          <label>{{ 'is_member_state' | translate }}</label>
-          <dx-select-box formControlName="is_member_state" [showClearButton]="true" [dataSource]="regStatusOptions"
-            valueExpr="value" displayExpr="text">
-          </dx-select-box>
         </div>
         <div *ngIf="table_name == 'par_disclaimer_statements'" class="col-lg-6">
           <label>{{ 'disclaimer_statement' | translate }}</label>

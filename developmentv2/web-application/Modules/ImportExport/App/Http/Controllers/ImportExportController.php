@@ -21,10 +21,10 @@ class ImportExportController extends Controller
             $take = $req->take;
             $skip = $req->skip;
             $searchValue = $req->searchValue;
-            $search_value =  '';
+            $search_value = '';
             if ($req->searchValue != 'undefined' && $req->searchValue != '') {
                 $searchValue = explode(',', $searchValue);
-                $search_value =  $searchValue[2];
+                $search_value = $searchValue[2];
             }
             $table_name = $req->table_name;
 
@@ -78,16 +78,13 @@ class ImportExportController extends Controller
         try {
             DB::beginTransaction();
             $application_id = $req->application_id;
-
+            $transactionpermit_type_id = $req->transactionpermit_type_id;
             $product_type_id = $req->product_type_id;
             $trader_initiator_id = $req->trader_id;
-            $applicant_id = $req->trader_id;
             $trader_id = $req->trader_id;
             $email_address = $req->email_address;
-            
             $applicant_id = $req->applicant_id;
             $local_agent_id = $req->local_agent_id;
-
             $reference_no = $req->reference_no;
             $application_reference_number = $req->application_reference_number;
             $regulatory_subfunction_id = $req->regulatory_subfunction_id;
@@ -95,14 +92,13 @@ class ImportExportController extends Controller
             $process_id = $req->process_id;
             $id = $req->id;
             $product_res = '';
-
             $regulatory_function_id = 1;
-
+            $regulatory_subfunction_id = 1;
             $app_data = array(
                 'trader_id' => $trader_id,
                 'local_agent_id' => $local_agent_id,
                 'application_code' => $req->application_code,
-                // 'oga_application_code' => $req->oga_application_code,
+                'oga_application_code' => $req->oga_application_code,
                 'regulatory_subfunction_id' => $req->regulatory_subfunction_id,
                 'application_id' => $application_id,
                 'regulatory_function_id' => $regulatory_function_id,
@@ -113,6 +109,7 @@ class ImportExportController extends Controller
                 'application_status_id' => 1,
                 'appworkflow_status_id' => 1,
                 'process_id' => $process_id,
+                'transactionpermit_type_id' => $transactionpermit_type_id,
                 'document_upload_id' => $req->document_upload_id,
                 'application_type_id' => $req->application_type_id,
                 'application_reference_number' => $req->application_reference_number,
@@ -204,7 +201,7 @@ class ImportExportController extends Controller
                 $zone_code = getSingleRecordColValue('par_zones', array('id' => $req->zone_id), 'zone_code');
                 $section_code = getSingleRecordColValue('par_regulated_productstypes', array('id' => $req->product_type_id), 'code');
                 $class_code = getSingleRecordColValue('par_classifications', array('id' => $req->classification_id), 'code');
-                $process_id = getSingleRecordColValue('wf_processes', array('id' => $id,), 'id');
+                $process_id = getSingleRecordColValue('wf_processes', array('id' => $id, ), 'id');
 
                 if ($class_code == '') {
                     $class_code = $section_code;
@@ -263,6 +260,8 @@ class ImportExportController extends Controller
                             'application_id' => $application_id,
                             'regulatory_function_id' => $regulatory_function_id,
                             'application_code' => $application_code,
+                            'applicant_id' => $applicant_id,
+                            'transactionpermit_type_id' => $transactionpermit_type_id,
                             'oga_application_code' => $oga_application_code, // Include in response
                             'success' => true,
                             'message' => 'Application Saved Successfully, with Tracking No:' . $tracking_no
@@ -333,7 +332,7 @@ class ImportExportController extends Controller
             // $regulatory_function_id = getSingleRecordColValue('par_regulatory_subfunctions', array('id' => $req->regulatory_subfunction_id), 'regulatory_function_id');
 
             $regulatory_function_id = 1;
-         
+
 
             $app_data = array(
                 'trader_id' => $trader_id,
@@ -436,12 +435,12 @@ class ImportExportController extends Controller
                 $product_res = $resp;
 
                 $ref_id = getSingleRecordColValue('tra_submodule_referenceformats', array('regulatory_function_id' => $regulatory_function_id), 'reference_format_id');
-       
+
                 $zone_code = getSingleRecordColValue('par_zones', array('id' => $req->zone_id), 'zone_code');
                 $section_code = getSingleRecordColValue('par_regulated_productstypes', array('id' => $req->product_type_id), 'code');
                 $class_code = getSingleRecordColValue('par_classifications', array('id' => $req->classification_id), 'code');
-                $process_id = getSingleRecordColValue('wf_processes', array('regulatory_function_id' => $regulatory_function_id,), 'id');
-               
+                $process_id = getSingleRecordColValue('wf_processes', array('regulatory_function_id' => $regulatory_function_id, ), 'id');
+
                 if ($class_code == '') {
                     $class_code = $section_code;
                 }
@@ -464,7 +463,7 @@ class ImportExportController extends Controller
                 }
                 $application_code = generateApplicationCode($regulatory_subfunction_id, 'wb_importexport_applications');
                 $tra_application_code = generateApplicationCode($regulatory_subfunction_id, 'tra_importexport_applications');
-                $process_id = getSingleRecordColValue('wf_processes', array('regulatory_function_id' => $regulatory_function_id,), 'id');
+                $process_id = getSingleRecordColValue('wf_processes', array('regulatory_function_id' => $regulatory_function_id, ), 'id');
 
                 $application_id = $resp['record_id'];
 
@@ -594,13 +593,13 @@ class ImportExportController extends Controller
                 $record_id = $resp['record_id'];
             }
             if ($resp['success']) {
-                $res =  array(
+                $res = array(
                     'success' => true,
                     'record_id' => $record_id,
                     'message' => 'Saved Successfully'
                 );
             } else {
-                $res =  array(
+                $res = array(
                     'success' => false,
                     'message' => $error_message
                 );
@@ -638,9 +637,9 @@ class ImportExportController extends Controller
             $record_id = $req->id;
             $device_type_id = $req->device_type_id;
             // $permitprod_recommendation_id = $req->permitprod_recommendation_id;
-           
+
             $regulatory_subfunction_id = $req->regulatory_subfunction_id;
-           
+
             $batch_number = $req->batch_number;
             $application_code = generateApplicationCode($regulatory_subfunction_id, 'tra_permit_products');
             $expiry_date = $req->expiry_date;
@@ -727,13 +726,13 @@ class ImportExportController extends Controller
                     $record_id = $resp['record_id'];
                 }
                 if ($resp['success']) {
-                    $res =  array(
+                    $res = array(
                         'success' => true,
                         'record_id' => $record_id,
                         'message' => 'Saved Successfully'
                     );
                 } else {
-                    $res =  array(
+                    $res = array(
                         'success' => false,
                         'message1' => $resp['message'],
                         'message' => $error_message
@@ -779,9 +778,9 @@ class ImportExportController extends Controller
             $record_id = $req->id;
             $device_type_id = $req->device_type_id;
             // $permitprod_recommendation_id = $req->permitprod_recommendation_id;
-           
+
             $regulatory_subfunction_id = $req->regulatory_subfunction_id;
-           
+
             $batch_number = $req->batch_number;
             $application_code = generateApplicationCode($regulatory_subfunction_id, 'tra_permit_products');
             $expiry_date = $req->expiry_date;
@@ -866,13 +865,13 @@ class ImportExportController extends Controller
                     $record_id = $resp['record_id'];
                 }
                 if ($resp['success']) {
-                    $res =  array(
+                    $res = array(
                         'success' => true,
                         'record_id' => $record_id,
                         'message' => 'Saved Successfully'
                     );
                 } else {
-                    $res =  array(
+                    $res = array(
                         'success' => false,
                         'message1' => $resp['message'],
                         'message' => $error_message
@@ -904,7 +903,7 @@ class ImportExportController extends Controller
 
 
 
-   
+
 
 
     public function saveManufacturerDetails(Request $req)
@@ -915,27 +914,27 @@ class ImportExportController extends Controller
             $physical_address = $req->physical_address;
             $manufacturer_name = $req->name;
             $record_id = $req->id;
-    
+
             $error_message = 'Error occurred, data not saved successfully';
             $table_name = 'tra_manufacturer_info';
-    
+
             $data = [
                 'name' => $manufacturer_name,
                 'physical_address' => $physical_address,
             ];
-    
+
             // Check if the record exists
             if (validateIsNumeric($record_id)) {
                 $where = ['id' => $record_id];
-    
+
                 if (recordExists($table_name, $where)) {
                     // Update record
                     $data['dola'] = Carbon::now();
                     $data['altered_by'] = $user_id;
-    
+
                     $previous_data = getPreviousRecords($table_name, $where);
                     $previous_data = $previous_data['results'];
-    
+
                     $resp = updateRecord($table_name, $previous_data, $where, $data, $user_id);
                     $manufacturer_id = $record_id; // Keep the same ID for updates
                 } else {
@@ -948,19 +947,19 @@ class ImportExportController extends Controller
                 // Insert new record
                 $data['created_by'] = $user_id;
                 $data['created_on'] = Carbon::now();
-    
+
                 $resp = insertRecord($table_name, $data, $user_id);
-    
+
                 if (!isset($resp['record_id'])) {
                     return response()->json([
                         'success' => false,
                         'message' => 'Failed to insert record'
                     ]);
                 }
-    
+
                 $manufacturer_id = $resp['record_id'];
             }
-    
+
             if (isset($resp['success']) && $resp['success']) {
                 return response()->json([
                     'success' => true,
@@ -1063,7 +1062,7 @@ class ImportExportController extends Controller
                         'application_code' => $application_code,
                         'checklist_defination_id' => $checklist_defination_id,
                         'checklist_type_id' => $checklist_type_id,
-                        
+
                     );
                     $data = array(
                         'application_code' => $application_code,
@@ -1167,8 +1166,10 @@ class ImportExportController extends Controller
             } else {
                 //insert
                 //check duplicate
-                $where = array('name' => $manufacturer_name,
-                    'physical_address' => $physical_address);
+                $where = array(
+                    'name' => $manufacturer_name,
+                    'physical_address' => $physical_address
+                );
                 if (!recordExists($table_name, $where)) {
                     $data['created_by'] = $user_id;
                     $data['created_on'] = Carbon::now();
@@ -1183,15 +1184,19 @@ class ImportExportController extends Controller
             }
             if ($resp['success']) {
 
-                $res = array('success' => true,
+                $res = array(
+                    'success' => true,
                     'manufacturer_id' => $manufacturer_id,
                     'manufacturer_name' => $manufacturer_name,
                     'physical_address' => $physical_address,
-                    'message' => 'Saved Successfully');
+                    'message' => 'Saved Successfully'
+                );
 
             } else {
-                $res = array('success' => false,
-                    'message' => $resp['message']);
+                $res = array(
+                    'success' => false,
+                    'message' => $resp['message']
+                );
 
             }
         } catch (\Exception $exception) {
@@ -1555,9 +1560,9 @@ class ImportExportController extends Controller
                 ->leftJoin('par_invoice_types as t15', 't1.invoice_type_id', 't15.id')
                 ->leftJoin('par_currencies as t16', 't1.currency_oftransaction_id', 't16.id')
                 ->leftJoin('par_confirmations as t17', 't1.declaration_statuses_id', 't17.id')
-                
-                ->select('t1.*','t17.name as declaration','t16.name as currency_name','t15.name as invoice_type', 't14.name as final_destination_country','t5.name as port_of_entry', 't13.name as mode_of_transport','t12.name as currency_name', 't11.name as permit_type','t10.name as application_status','t8.name as action_name','t8.iconCls as iconCls','t8.action as action', 't2.name as permit_name', 't3.name as port_type', 't1.id', 't4.name as importer_exporter_name');
-                
+
+                ->select('t1.*', 't17.name as declaration', 't16.name as currency_name', 't15.name as invoice_type', 't14.name as final_destination_country', 't5.name as port_of_entry', 't13.name as mode_of_transport', 't12.name as currency_name', 't11.name as permit_type', 't10.name as application_status', 't8.name as action_name', 't8.iconCls as iconCls', 't8.action as action', 't2.name as permit_name', 't3.name as port_type', 't1.id', 't4.name as importer_exporter_name');
+
             if ($workflow_status_id != '') {
                 $workflow_status = explode(',', $workflow_status_id);
                 $sql->whereIn('appworkflow_status_id', $workflow_status);
@@ -1571,7 +1576,7 @@ class ImportExportController extends Controller
 
             $actionColumnData = returnContextMenuActions($process_id);
             //check the usres 
-           
+
             $data = $sql->get();
 
             foreach ($data as $rec) {
@@ -1579,29 +1584,29 @@ class ImportExportController extends Controller
                     'id' => $rec->id,
                     'action_name' => $rec->action_name,
                     'iconCls' => $rec->iconCls,
-                    'application_status' =>$rec->application_status,
-                    'permit_type_id' =>$rec->permit_type_id,
-                    'permit_name' =>$rec->permit_name,
-                    'port_type' =>$rec->port_type,
-                    'port_type_id' =>$rec->port_type_id,
-                    'port_of_entry' =>$rec->port_of_entry,
-                    'port_of_entryexit_id' =>$rec->port_of_entryexit_id,
-                    'customs_office' =>$rec->customs_office,
-                    'invoice_type' =>$rec->invoice_type,
-                    'invoice_type_id' =>$rec->invoice_type_id,
-                    'final_destination_country_id' =>$rec->final_destination_country_id,
-                    'final_destination_country' =>$rec->final_destination_country,
-                    'invoice_number' =>$rec->invoice_number,
+                    'application_status' => $rec->application_status,
+                    'permit_type_id' => $rec->permit_type_id,
+                    'permit_name' => $rec->permit_name,
+                    'port_type' => $rec->port_type,
+                    'port_type_id' => $rec->port_type_id,
+                    'port_of_entry' => $rec->port_of_entry,
+                    'port_of_entryexit_id' => $rec->port_of_entryexit_id,
+                    'customs_office' => $rec->customs_office,
+                    'invoice_type' => $rec->invoice_type,
+                    'invoice_type_id' => $rec->invoice_type_id,
+                    'final_destination_country_id' => $rec->final_destination_country_id,
+                    'final_destination_country' => $rec->final_destination_country,
+                    'invoice_number' => $rec->invoice_number,
                     'invoice_date' => formatDaterpt($rec->invoice_date),
-                    'importer_exporter_name' =>$rec->importer_exporter_name,
+                    'importer_exporter_name' => $rec->importer_exporter_name,
                     'action' => $rec->action,
-                    'currency_name' =>$rec->currency_name,
-                    'declaration' =>$rec->declaration,
-                    'declaration_statuses_id' =>$rec->declaration_statuses_id,
-                    'currency_oftransaction_id' =>$rec->currency_oftransaction_id,
-                    'mode_of_transport_id' =>$rec->mode_of_transport_id,
-                    'mode_of_transport' =>$rec->mode_of_transport,
-                    'total_invoice_value' =>$rec->total_invoice_value,
+                    'currency_name' => $rec->currency_name,
+                    'declaration' => $rec->declaration,
+                    'declaration_statuses_id' => $rec->declaration_statuses_id,
+                    'currency_oftransaction_id' => $rec->currency_oftransaction_id,
+                    'mode_of_transport_id' => $rec->mode_of_transport_id,
+                    'mode_of_transport' => $rec->mode_of_transport,
+                    'total_invoice_value' => $rec->total_invoice_value,
                     'date_of_application' => formatDaterpt($rec->date_of_application),
                     'expected_date_of_shipment' => $rec->expected_date_of_shipment,
                     'tracking_no' => $rec->tracking_no,
@@ -1612,7 +1617,7 @@ class ImportExportController extends Controller
                     'regulatory_subfunction_id' => $rec->regulatory_subfunction_id,
                     'appworkflow_status_id' => $rec->appworkflow_status_id,
                     'created_by' => $rec->created_by,
-                   
+
                     'contextMenu' => returnActionColumn($rec->appworkflow_status_id, $actionColumnData)
                 );
             }
@@ -1668,10 +1673,9 @@ class ImportExportController extends Controller
                 ->leftJoin('par_invoice_types as t15', 't1.invoice_type_id', 't15.id')
                 ->leftJoin('par_currencies as t16', 't1.currency_oftransaction_id', 't16.id')
                 ->leftJoin('par_confirmations as t17', 't1.declaration_statuses_id', 't17.id')
-                
-                
-                ->select('t1.*','t17.name as declaration','t16.name as currency_name','t15.name as invoice_type', 't14.name as final_destination_country','t5.name as port_of_entry', 't13.name as mode_of_transport','t12.name as currency_name', 't11.name as permit_type','t10.name as application_status','t8.name as action_name','t8.iconCls as iconCls','t8.action as action', 't2.name as permit_name', 't3.name as port_type', 't1.id', 't4.name as importer_exporter_name');
-                
+
+                ->select('t1.*', 't17.name as declaration', 't16.name as currency_name', 't15.name as invoice_type', 't14.name as final_destination_country', 't5.name as port_of_entry', 't13.name as mode_of_transport', 't12.name as currency_name', 't11.name as permit_type', 't10.name as application_status', 't8.name as action_name', 't8.iconCls as iconCls', 't8.action as action', 't2.name as permit_name', 't3.name as port_type', 't1.id', 't4.name as importer_exporter_name');
+
             if ($workflow_status_id != '') {
                 $workflow_status = explode(',', $workflow_status_id);
                 $sql->whereIn('appworkflow_status_id', $workflow_status);
@@ -1685,7 +1689,7 @@ class ImportExportController extends Controller
 
             $actionColumnData = returnContextMenuActions($process_id);
             //check the usres 
-           
+
             $data = $sql->get();
 
             foreach ($data as $rec) {
@@ -1693,29 +1697,29 @@ class ImportExportController extends Controller
                     'id' => $rec->id,
                     'action_name' => $rec->action_name,
                     'iconCls' => $rec->iconCls,
-                    'application_status' =>$rec->application_status,
-                    'permit_type_id' =>$rec->permit_type_id,
-                    'permit_name' =>$rec->permit_name,
-                    'port_type' =>$rec->port_type,
-                    'port_type_id' =>$rec->port_type_id,
-                    'port_of_entry' =>$rec->port_of_entry,
-                    'port_of_entryexit_id' =>$rec->port_of_entryexit_id,
-                    'customs_office' =>$rec->customs_office,
-                    'invoice_type' =>$rec->invoice_type,
-                    'invoice_type_id' =>$rec->invoice_type_id,
-                    'final_destination_country_id' =>$rec->final_destination_country_id,
-                    'final_destination_country' =>$rec->final_destination_country,
-                    'invoice_number' =>$rec->invoice_number,
+                    'application_status' => $rec->application_status,
+                    'permit_type_id' => $rec->permit_type_id,
+                    'permit_name' => $rec->permit_name,
+                    'port_type' => $rec->port_type,
+                    'port_type_id' => $rec->port_type_id,
+                    'port_of_entry' => $rec->port_of_entry,
+                    'port_of_entryexit_id' => $rec->port_of_entryexit_id,
+                    'customs_office' => $rec->customs_office,
+                    'invoice_type' => $rec->invoice_type,
+                    'invoice_type_id' => $rec->invoice_type_id,
+                    'final_destination_country_id' => $rec->final_destination_country_id,
+                    'final_destination_country' => $rec->final_destination_country,
+                    'invoice_number' => $rec->invoice_number,
                     'invoice_date' => formatDaterpt($rec->invoice_date),
-                    'importer_exporter_name' =>$rec->importer_exporter_name,
+                    'importer_exporter_name' => $rec->importer_exporter_name,
                     'action' => $rec->action,
-                    'currency_name' =>$rec->currency_name,
-                    'declaration' =>$rec->declaration,
-                    'declaration_statuses_id' =>$rec->declaration_statuses_id,
-                    'currency_oftransaction_id' =>$rec->currency_oftransaction_id,
-                    'mode_of_transport_id' =>$rec->mode_of_transport_id,
-                    'mode_of_transport' =>$rec->mode_of_transport,
-                    'total_invoice_value' =>$rec->total_invoice_value,
+                    'currency_name' => $rec->currency_name,
+                    'declaration' => $rec->declaration,
+                    'declaration_statuses_id' => $rec->declaration_statuses_id,
+                    'currency_oftransaction_id' => $rec->currency_oftransaction_id,
+                    'mode_of_transport_id' => $rec->mode_of_transport_id,
+                    'mode_of_transport' => $rec->mode_of_transport,
+                    'total_invoice_value' => $rec->total_invoice_value,
                     'date_of_application' => formatDaterpt($rec->date_of_application),
                     'expected_date_of_shipment' => $rec->expected_date_of_shipment,
                     'tracking_no' => $rec->tracking_no,
@@ -1726,7 +1730,7 @@ class ImportExportController extends Controller
                     'regulatory_subfunction_id' => $rec->regulatory_subfunction_id,
                     'appworkflow_status_id' => $rec->appworkflow_status_id,
                     'created_by' => $rec->created_by,
-                   
+
                     'contextMenu' => returnActionColumn($rec->appworkflow_status_id, $actionColumnData)
                 );
             }

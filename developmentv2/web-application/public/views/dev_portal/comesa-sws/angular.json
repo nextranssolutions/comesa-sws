@@ -44,7 +44,8 @@
               "src/dist/ng-wizard/themes/ng_wizard.min.css",
               "src/dist/ng-wizard/themes/ng_wizard_theme_arrows.min.css",
               "src/dist/ng-wizard/themes/ng_wizard_theme_circles.min.css",
-              "src/dist/ng-wizard/themes/ng_wizard_theme_dots.min.css"
+              "src/dist/ng-wizard/themes/ng_wizard_theme_dots.min.css",
+              "src/assets/plugins/fontawesome-free/css/all.min.css"
             ],
             
             "scripts": [

@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-use Modules\RevenueManagement\App\Http\Controllers\RevenueManagementController;
+use Modules\PaymentManagement\App\Http\Controllers\PaymentManagementController;
 
 /*
 |--------------------------------------------------------------------------
@@ -15,5 +15,5 @@ use Modules\RevenueManagement\App\Http\Controllers\RevenueManagementController;
 */
 
 Route::group([], function () {
-    Route::resource('revenuemanagement', RevenueManagementController::class)->names('revenuemanagement');
+    Route::resource('paymentmanagement', PaymentManagementController::class)->names('paymentmanagement');
 });
