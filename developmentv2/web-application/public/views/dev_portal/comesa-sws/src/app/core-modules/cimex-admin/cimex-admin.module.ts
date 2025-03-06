@@ -296,6 +296,7 @@ import { ImportexportProceduresConfigsetupComponent } from './views/configuratio
 import { ProceduresCategoriesComponent } from './views/configurations/import-export-procedures/procedures-categories/procedures-categories.component';
 import { ProceduresSubcategoriesComponent } from './views/configurations/import-export-procedures/procedures-subcategories/procedures-subcategories.component';
 import { SharedImportexportProceduresComponent } from './views/configurations/import-export-procedures/shared-importexport-procedures/shared-importexport-procedures.component';
+import { StatusesActionsComponent } from './views/user-management/statuses-actions/statuses-actions.component';
 
 @NgModule({
   declarations: [AppdashboardComponent,
@@ -606,7 +607,9 @@ import { SharedImportexportProceduresComponent } from './views/configurations/im
     ImportexportProceduresConfigsetupComponent,
     ProceduresCategoriesComponent,
     ProceduresSubcategoriesComponent,
-    SharedImportexportProceduresComponent
+    SharedImportexportProceduresComponent,
+
+    StatusesActionsComponent,
 
 
   ],
@@ -899,7 +902,9 @@ import { SharedImportexportProceduresComponent } from './views/configurations/im
     ImportexportProceduresConfigsetupComponent,
     ProceduresCategoriesComponent,
     ProceduresSubcategoriesComponent,
-    SharedImportexportProceduresComponent
+    SharedImportexportProceduresComponent,
+
+    StatusesActionsComponent,
   ]
 })
 export class CimexAdminModule { }

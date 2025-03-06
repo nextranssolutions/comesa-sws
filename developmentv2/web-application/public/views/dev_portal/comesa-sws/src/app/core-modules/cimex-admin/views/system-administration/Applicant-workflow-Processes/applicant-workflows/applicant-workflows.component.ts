@@ -136,6 +136,10 @@ export class ApplicantWorkflowsComponent {
     { value: true, text: 'Yes' },
     { value: false, text: 'No' },
   ];
+  regStatusOptions = [
+    { value: true, text: 'Yes' },
+    { value: false, text: 'No' },
+  ];
 
 
 
@@ -262,7 +266,11 @@ export class ApplicantWorkflowsComponent {
       workflowprocess_id: new FormControl('', Validators.compose([])),
       stage_status_id: new FormControl('', Validators.compose([])),
       workflow_interface_id : new FormControl('', Validators.compose([])),
-      application_status_id : new FormControl('', Validators.compose([]))
+      stage_category_id : new FormControl('', Validators.compose([])),
+      process_category_id : new FormControl('', Validators.compose([])),
+      process_type_id : new FormControl('', Validators.compose([])),
+      is_enabled: new FormControl('', Validators.compose([])),
+      // application_status_id : new FormControl('', Validators.compose([]))
     });
 
     this.workflowStageActionsItemsFrm = new FormGroup({
@@ -1283,7 +1291,7 @@ export class ApplicantWorkflowsComponent {
   
     this.workflowStageActionsItemsFrm.get('resetcolumns')?.setValue(this.resetcolumns);
     this.spinnerShow('Saving ' + this.parameter_name);
-    this.action_url = 'onsaveWorkflowConfigData';
+    this.action_url = 'onsavePortalWorkflowConfigData';
   
     this.spinner.show();
     this.workflowStageActionsItemsFrm.get('workflowprocess_id')?.setValue(this.workflowprocess_id);
@@ -1328,11 +1336,11 @@ export class ApplicantWorkflowsComponent {
   
     this.workflowStagesFrm.get('resetcolumns')?.setValue(this.resetcolumns);
     this.spinnerShow('Saving ' + this.parameter_name);
-    this.action_url = 'onsaveWorkflowConfigData';
+    this.action_url = 'onsavePortalWorkflowConfigData';
   
     this.spinner.show();
     this.workflowStagesFrm.get('workflow_id')?.setValue(this.workflow_id);
-    this.workflowService.onSaveWorkflowDetailsDetails('wf_workflow_stages', this.workflowStagesFrm.value, this.action_url)
+    this.workflowService.onSaveWorkflowDetailsDetails('ptl_workflowprocesses_stages', this.workflowStagesFrm.value, this.action_url)
       .subscribe(
         response => {
           this.response = response;
@@ -1371,7 +1379,7 @@ export class ApplicantWorkflowsComponent {
   
     this.workflowStageProcessActionsFrm.get('resetcolumns')?.setValue(this.resetcolumns);
     this.spinnerShow('Saving ' + this.parameter_name);
-    this.action_url = 'onsaveWorkflowConfigData';
+    this.action_url = 'onsavePortalWorkflowConfigData';
   
     this.spinner.show();
     this.workflowStageProcessActionsFrm.get('workflowprocess_id')?.setValue(this.workflowprocess_id);
