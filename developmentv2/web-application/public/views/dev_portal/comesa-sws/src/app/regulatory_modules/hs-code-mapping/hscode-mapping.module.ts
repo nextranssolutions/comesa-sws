@@ -50,6 +50,7 @@ import { PermitTypeManagementConfigsetupComponent } from './views/permit_type_ma
 import { QuotaLimitationstypeComponent } from './views/permit_type_management_config/quota-limitationstype/quota-limitationstype.component';
 import { RenewableStatusesComponent } from './views/permit_type_management_config/renewable-statuses/renewable-statuses/renewable-statuses.component';
 import { SharedPermitTypeManagementConfigComponent } from './views/permit_type_management_config/shared-permit-type-management-config/shared-permit-type-management-config.component';
+import { PermitTemplatesComponent } from './views/permit-templates/permit-templates/permit-templates.component';
 
 const ngWizardConfig: NgWizardConfig = {
   theme: THEME.default
@@ -65,7 +66,7 @@ const ngWizardConfig: NgWizardConfig = {
     PermitTypeManagementConfigsetupComponent, PermitTemplateTypesComponent, QuotaLimitationstypeComponent, RenewableStatusesComponent, 
     SharedPermitTypeManagementConfigComponent,RestrictionsProhibitionsComponent,ImportexportProceduredetailsComponent,ProcedureCategoriesComponent,ProcedureSubcategoriesComponent,
     ServiceDeliveryTimelineComponent,HscodeRegistryproductsComponent,ServiceTypesComponent,ServicedeliveryConfigsetupComponent,SharedServiceDeliveryComponent,SharedTraderdbproceduresComponent,
-    TraderdbproceduresSetupComponent, 
+    TraderdbproceduresSetupComponent, PermitTemplatesComponent
 
   ],
   imports: [

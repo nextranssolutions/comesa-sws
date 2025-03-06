@@ -9,6 +9,8 @@ import { AuthenticationService } from '../authentication/authentication.service'
   providedIn: 'root'
 })
 export class ServiceAdmnistrationService {
+  onLoadTransactionPermitTemplatesDetails: any;
+ 
   base_url: string;
 
   private baseUrl;
