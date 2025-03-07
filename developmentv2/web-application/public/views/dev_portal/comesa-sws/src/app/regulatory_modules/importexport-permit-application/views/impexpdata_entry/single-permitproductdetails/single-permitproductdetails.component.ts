@@ -26,6 +26,7 @@ export class SinglePermitproductdetailsComponent {
     @Input() permitProductsFrm: FormGroup;
     @Input() applicationGeneraldetailsfrm: FormGroup;
     @Input() permitProductsData: any;
+    @Input() application_code: any;
     requireUnitPackData: boolean = false;
     isprodnextdisable: boolean;
     device_type_visible: boolean;
@@ -53,7 +54,6 @@ export class SinglePermitproductdetailsComponent {
     currencyData: any;
     classificationData: any;
     commonNamesData: any;
-    application_code: number;
     enabled_newproductadd: boolean;
     regulatory_subfunction_id: number;
     tracking_no: string;
@@ -537,7 +537,8 @@ export class SinglePermitproductdetailsComponent {
             this.data_record = data;
             // console.log(this.data_record);
             if (this.data_record.success) {
-              this.permitProductsData = this.data_record.data;
+              //this.permitProductsData = this.data_record.data[0];
+
             }
             this.spinnerHide();
           },

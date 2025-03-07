@@ -338,7 +338,7 @@
 <dx-popup [visible]="workflowStagesVisible" [width]="funcpopWidth(65)" [height]="funcpopHeight(50)" [showTitle]="true"
     title="{{'workflow_stages' | translate}}" (onHidden)="workflowStagesVisible = false">
   
-    <form (ngSubmit)="onUpdateWorkflowsSubmit()" [formGroup]="workflowStageItemsFrm" formControlName="description">
+    <form (ngSubmit)="onUpdateWorkflowsSubmit()" [formGroup]="workflowStagesFrm" formControlName="description">
 
         <div class="row">
             <div class="col-lg-4">

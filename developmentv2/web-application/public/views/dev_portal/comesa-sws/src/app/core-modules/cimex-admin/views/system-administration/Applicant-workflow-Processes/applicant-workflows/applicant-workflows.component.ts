@@ -136,6 +136,10 @@ export class ApplicantWorkflowsComponent {
     { value: true, text: 'Yes' },
     { value: false, text: 'No' },
   ];
+  regStatusOptions = [
+    { value: true, text: 'Yes' },
+    { value: false, text: 'No' },
+  ];
 
 
 
@@ -208,7 +212,7 @@ export class ApplicantWorkflowsComponent {
     public workflowService: WokflowManagementService,
     public reportingAnalytics: ReportsService,
   ) {
-    this.table_name = 'ptl_workflowprocesses';
+    this.table_name = 'wb_workflowprocesses';
     this.parameter_name = "applicant_workflows";
     this.checkScreenSize();
     this.workflowTransitionFrm = new FormGroup({
@@ -262,7 +266,11 @@ export class ApplicantWorkflowsComponent {
       workflowprocess_id: new FormControl('', Validators.compose([])),
       stage_status_id: new FormControl('', Validators.compose([])),
       workflow_interface_id : new FormControl('', Validators.compose([])),
-      application_status_id : new FormControl('', Validators.compose([]))
+      stage_category_id : new FormControl('', Validators.compose([])),
+      process_category_id : new FormControl('', Validators.compose([])),
+      process_type_id : new FormControl('', Validators.compose([])),
+      is_enabled: new FormControl('', Validators.compose([])),
+      // application_status_id : new FormControl('', Validators.compose([]))
     });
 
     this.workflowStageActionsItemsFrm = new FormGroup({
@@ -422,7 +430,7 @@ export class ApplicantWorkflowsComponent {
   fetchWorkflowStagesDetails(workflowprocess_id) {
     this.spinnerShow('Loading Workflow Stages Details');
     var data_submit = {
-      'table_name': 'ptl_workflowprocesses_stages',
+      'table_name': 'wb_workflowprocesses_stages',
       workflowprocess_id: workflowprocess_id
     }
     this.workflowService.getPortalWorkflowsConfigs(data_submit)
@@ -794,7 +802,7 @@ export class ApplicantWorkflowsComponent {
 
     this.spinner.show();
     this.workflowStagesFrm.get('workflowprocess_id')?.setValue(this.workflowprocess_id);
-    this.workflowService.onSavePortalWorkflowDetailsDetails('ptl_workflowprocesses_stages', this.workflowStagesFrm.value, this.action_url)
+    this.workflowService.onSavePortalWorkflowDetailsDetails('wb_workflowprocesses_stages', this.workflowStagesFrm.value, this.action_url)
       .subscribe(
         response => {
           this.response = response;
@@ -930,7 +938,7 @@ export class ApplicantWorkflowsComponent {
     this.workflowStagesFrm.patchValue(data.data);
     this.config_record = data.data.name;
     this.deleteWorkflowStagePopupVisible = true;
-    this.workflowStagesFrm.get('table_name')?.setValue('ptl_workflowprocesses_stages');
+    this.workflowStagesFrm.get('table_name')?.setValue('wb_workflowprocesses_stages');
     this.workflowStagesFrm.get('workflowprocess_id')?.setValue(this.workflowprocess_id);
     console.log(data);
   }
@@ -987,7 +995,7 @@ export class ApplicantWorkflowsComponent {
     this.workflowStageDetailsVisible = true
     this.workflowStagesFrm.patchValue(data.data);
 
-    this.workflowStagesFrm.get('table_name')?.setValue('ptl_workflowprocesses_stages');
+    this.workflowStagesFrm.get('table_name')?.setValue('wb_workflowprocesses_stages');
     this.workflowStagesFrm.get('workflowprocess_id')?.setValue(this.workflowprocess_id);
 
     this.fetchWorkflowStageActionsDetails(data.data.workflowprocess_id);
@@ -999,8 +1007,8 @@ export class ApplicantWorkflowsComponent {
   iniateEnableDisableStage() {
 
     this.spinnerShow('Saving_details');
-    this.workflowStagesFrm.get('table_name')?.setValue('ptl_workflowprocesses_stages');
-    this.workflowService.onEnablePortalWorkflowsDetails(this.workflowStagesFrm.value, 'ptl_workflowprocesses_stages', this.parameter_name)
+    this.workflowStagesFrm.get('table_name')?.setValue('wb_workflowprocesses_stages');
+    this.workflowService.onEnablePortalWorkflowsDetails(this.workflowStagesFrm.value, 'wb_workflowprocesses_stages', this.parameter_name)
       .subscribe(
         response => {
           this.spinner.hide();
@@ -1088,7 +1096,7 @@ export class ApplicantWorkflowsComponent {
   iniateEnableDisableWorkflowRecord() {
 
     this.spinnerShow('Saving_details');
-    this.workflowItemsFrm.get('table_name')?.setValue('ptl_workflowprocesses');
+    this.workflowItemsFrm.get('table_name')?.setValue('wb_workflowprocesses');
     this.workflowService.onEnablePortalWorkflowsDetails(this.workflowItemsFrm.value, this.table_name, this.parameter_name)
       .subscribe(
         response => {
@@ -1283,7 +1291,7 @@ export class ApplicantWorkflowsComponent {
   
     this.workflowStageActionsItemsFrm.get('resetcolumns')?.setValue(this.resetcolumns);
     this.spinnerShow('Saving ' + this.parameter_name);
-    this.action_url = 'onsaveWorkflowConfigData';
+    this.action_url = 'onsavePortalWorkflowConfigData';
   
     this.spinner.show();
     this.workflowStageActionsItemsFrm.get('workflowprocess_id')?.setValue(this.workflowprocess_id);
@@ -1328,11 +1336,11 @@ export class ApplicantWorkflowsComponent {
   
     this.workflowStagesFrm.get('resetcolumns')?.setValue(this.resetcolumns);
     this.spinnerShow('Saving ' + this.parameter_name);
-    this.action_url = 'onsaveWorkflowConfigData';
+    this.action_url = 'onsavePortalWorkflowConfigData';
   
     this.spinner.show();
     this.workflowStagesFrm.get('workflow_id')?.setValue(this.workflow_id);
-    this.workflowService.onSaveWorkflowDetailsDetails('wf_workflow_stages', this.workflowStagesFrm.value, this.action_url)
+    this.workflowService.onSaveWorkflowDetailsDetails('wb_workflowprocesses_stages', this.workflowStagesFrm.value, this.action_url)
       .subscribe(
         response => {
           this.response = response;
@@ -1371,7 +1379,7 @@ export class ApplicantWorkflowsComponent {
   
     this.workflowStageProcessActionsFrm.get('resetcolumns')?.setValue(this.resetcolumns);
     this.spinnerShow('Saving ' + this.parameter_name);
-    this.action_url = 'onsaveWorkflowConfigData';
+    this.action_url = 'onsavePortalWorkflowConfigData';
   
     this.spinner.show();
     this.workflowStageProcessActionsFrm.get('workflowprocess_id')?.setValue(this.workflowprocess_id);
@@ -1406,7 +1414,7 @@ export class ApplicantWorkflowsComponent {
   }
   onDeleteWorkflowDetails() {
     this.spinnerShow('deleting ' + this.parameter_name);
-    this.workflowItemsFrm.get('table_name')?.setValue('ptl_workflowprocesses');
+    this.workflowItemsFrm.get('table_name')?.setValue('wb_workflowprocesses');
     this.workflowService.onDeletePortalWorkflowsDetails(this.workflowItemsFrm.value, this.table_name, this.parameter_name)
       .subscribe(
         response => {
@@ -1457,7 +1465,7 @@ export class ApplicantWorkflowsComponent {
   onDeleteWorkflowStage(): void {
     this.onDeleteItem(
       this.workflowStagesFrm, 
-      'ptl_workflowprocesses_stages', 
+      'wb_workflowprocesses_stages', 
       'Workflow Stage', 
       this.workflowService.onDeletePortalWorkflowsDetails, 
       this.fetchWorkflowStageActionsDetails
@@ -1466,7 +1474,7 @@ export class ApplicantWorkflowsComponent {
   // onDeleteWorkflowStageDetails() {
   //   this.spinnerShow('deleting ' + this.parameter_name);
 
-  //   this.workflowService.onDeletePortalWorkflowsDetails('ptl_workflowprocesses_stages', this.workflowStagesFrm.value, this.parameter_name)
+  //   this.workflowService.onDeletePortalWorkflowsDetails('wb_workflowprocesses_stages', this.workflowStagesFrm.value, this.parameter_name)
   //     .subscribe(
   //       response => {
 
@@ -1481,8 +1489,8 @@ export class ApplicantWorkflowsComponent {
 
   onDeleteWorkflowStageDetails() {
     this.spinnerShow('deleting ' + this.parameter_name);
-    this.workflowStagesFrm.get('table_name')?.setValue('ptl_workflowprocesses_stages');  
-    this.workflowService.onDeletePortalWorkflowsDetails( this.workflowStagesFrm.value,'ptl_workflowprocesses_stages', this.parameter_name)
+    this.workflowStagesFrm.get('table_name')?.setValue('wb_workflowprocesses_stages');  
+    this.workflowService.onDeletePortalWorkflowsDetails( this.workflowStagesFrm.value,'wb_workflowprocesses_stages', this.parameter_name)
       .subscribe(
         response => {
 
