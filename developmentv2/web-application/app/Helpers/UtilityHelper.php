@@ -830,7 +830,7 @@ class UtilityHelper
         $regulatory_function_id = $req->regulatory_function_id;
         $regulated_productstype_id = $req->regulated_productstype_id;
         $appsubmissions_type_id = $req->appsubmissions_type_id;
-        $permit_type_id = $req->permit_type_id;
+        $transactionpermit_type_id = $req->transactionpermit_type_id;
         if (!validateIsNumeric($regulatory_function_id)) {
             $submodule_data = getTableData('par_regulatory_subfunctions', array('id' => $regulatory_subfunction_id));
             $regulatory_function_id = $submodule_data->regulatory_function_id;
@@ -858,6 +858,10 @@ class UtilityHelper
         // if (validateIsNumeric($appsubmissions_type_id)) {
         //     $data->where('t3.regulated_productstype_id', $appsubmissions_type_id);
         // }
+        // if (validateIsNumeric($appsubmissions_type_id)) {
+        //     $data->where('t3.transactionpermit_type_id', $appsubmissions_type_id);
+        // }
+        
         $form_defination = $data->get();
        
         

@@ -277,8 +277,7 @@ export class ApplicantdetailsComponent implements OnInit {
 
   funcSelectTraderDetails(data) {
     let record = data.data;
-    console.log('record', record);
-    this.applicantDetailsForm.get('id')?.setValue(record.applicant_id);
+    this.applicantDetailsForm.get('id')?.setValue(record.id);
     this.applicantDetailsForm.get('applicant_name')?.setValue(record.applicant_name);
     this.applicantDetailsForm.get('region_name')?.setValue(record.region_name);
     this.applicantDetailsForm.get('district_name')?.setValue(record.district_name);

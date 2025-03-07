@@ -169,7 +169,8 @@ export class SharedImpexpApplicationClass {
   is_regulatedproducts: boolean = false;
   proforma_currency_id: number;
   isInitalQueryResponseFrmVisible: boolean = false;
-  
+  permit_product_details: any;
+  applicant_details: any;
   applicationPreckingQueriesData: any;
   query_sectioncheck: string;
   onApplicationSubmissionFrm: FormGroup;
@@ -185,6 +186,12 @@ export class SharedImpexpApplicationClass {
   addPopupVisible: boolean;
   filesToUpload: Array<File> = [];
   producttype_defination_id: number;
+  form_fielddata: any;
+  permits_fielddata: any;
+  products_fielddata: any;
+  applicants_fielddata: any;
+  id: number;
+
   constructor(
     private configService: ConfigurationsService, 
     public userservice: UserManagementService, 
@@ -202,31 +209,106 @@ export class SharedImpexpApplicationClass {
     //form 
     let user = this.authService.getUserDetails();
 
-    this.applicant_id = user.applicant_id;
+    this.trader_id = user.trader_id;
+    this.mistrader_id = user.mistrader_id;
     this.application_details = localStorage.getItem('application_details');
-     console.log("ApplicationDetails:",this.application_details)
+    this.permit_product_details = localStorage.getItem('permit_details');
+    this.applicant_details = localStorage.getItem('applicant_details');
+
+
     this.application_details = JSON.parse(this.application_details);
+    this.permit_product_details = JSON.parse(this.permit_product_details);
+    this.applicant_details = JSON.parse(this.applicant_details);
+
+    // this.form_fielddata = this.application_details.application_form;
+    this.form_fielddata = this.application_details?.application_form || [];
+    console.log(this.form_fielddata);
+    this.products_fielddata = this.permit_product_details.application_form;
+    
+    this.applicants_fielddata = this.applicant_details.application_form;
+    
+    this.applicationGeneraldetailsfrm = this.formBuilder.group({});
+    this.permitProductsFrm = this.formBuilder.group({});
+    this.applicantDetailsForm = this.formBuilder.group({});
+
+    this.applicantDetailsForm = new FormGroup({
+      id: new FormControl('', Validators.compose([])),
+    });
+
+    this.applicationGeneraldetailsfrm = new FormGroup({
+      id: new FormControl('', Validators.compose([])),
+     
+    });
+
+    for (let form_field of this.form_fielddata) {
+      let field_name = form_field['field_name'];
+      if (form_field['is_mandatory'] == 1) {
+        this.applicationGeneraldetailsfrm.addControl(field_name, new FormControl('', Validators.compose([Validators.required])));
+       
+
+      } else {
+        this.applicationGeneraldetailsfrm.addControl(field_name, new FormControl('', Validators.compose([])));
+       
+
+      }
+    }
+
+    for (let form_field of this.products_fielddata) {
+      let field_name = form_field['field_name'];
+      if (form_field['is_mandatory'] == 1) {
+        this.permitProductsFrm.addControl(field_name, new FormControl('', Validators.compose([Validators.required])));
+       
+
+      } else {
+        this.permitProductsFrm.addControl(field_name, new FormControl('', Validators.compose([])));
+       
+
+      }
+    }
+
+    for (let form_field of this.applicants_fielddata) {
+      let field_name = form_field['field_name'];
+      if (form_field['is_mandatory'] == 1) {
+        this.applicantDetailsForm.addControl(field_name, new FormControl('', Validators.compose([Validators.required])));
+      } else {
+        this.applicantDetailsForm.addControl(field_name, new FormControl('', Validators.compose([])));
+      }
+    }
+
+    if (this.applicant_details) {
+      this.id = this.applicant_details.regulatory_subfunction_id;
+      this.regulatory_subfunction_id = this.applicant_details.regulatory_subfunction_id;
+      this.applicantDetailsForm.patchValue(this.applicant_details);
+    }
+
+    if (this.permit_product_details) {
+      this.regulatory_subfunction_id = this.permit_product_details.regulatory_subfunction_id;
+      this.permitProductsFrm.patchValue(this.permit_product_details);
+    }
 
     if (this.application_details) {
-
       this.regulatory_subfunction_id = this.application_details.regulatory_subfunction_id;
       this.process_title = this.application_details.process_title;
       this.regulated_productstype_id = this.application_details.regulated_productstype_id;
       this.application_id = this.application_details.application_id;
       this.tracking_no = this.application_details.tracking_no;
-      this.permit_type_id = this.application_details.permit_type_id;
       this.status_name = this.application_details.status_name;
       this.permit_name = this.application_details.permit_name;
       this.status_id = this.application_details.application_status_id;
       this.application_code = this.application_details.application_code;
       this.proforma_currency_id = this.application_details.proforma_currency_id;
+
+      this.applicationGeneraldetailsfrm.patchValue(this.application_details);
     }
+
+
+
     this.funcREturnApplicationDashboardROute();
+
     if (this.regulatory_subfunction_id == 49) {
       this.applicationGeneraldetailsfrm = this.formBuilder.group({});
       this.applicantDetailsForm = this.formBuilder.group({});
     }
-
     else {
 
       this.applicationGeneraldetailsfrm = this.formBuilder.group({});
@@ -243,39 +325,6 @@ export class SharedImpexpApplicationClass {
       mobile_no: new FormControl('', Validators.compose([])),
       physical_address: new FormControl('', Validators.compose([Validators.required])),
       tin_no: new FormControl('', Validators.compose([]))
-    });
-   
- 
-
-    this.userAccountFrm = new FormGroup({
-      id: new FormControl(Validators.compose([])),
-      last_login_time: new FormControl('', Validators.compose([])),
-      account_type_id: new FormControl('', Validators.compose([])),
-      country_id: new FormControl('', Validators.compose([])),
-      telephone_number: new FormControl('', Validators.compose([])),
-      contact_person: new FormControl('', Validators.compose([])),
-      contact_person_email: new FormControl('', Validators.compose([])),
-      contact_person_telephone: new FormControl('', Validators.compose([])),
-      physical_address: new FormControl('', Validators.compose([])),
-      website: new FormControl('', Validators.compose([])),
-      status_id: new FormControl('', Validators.compose([])),
-      fax: new FormControl('', Validators.compose([])),
-      // created_on: new FormControl('', Validators.compose([Validators.required])),
-
-      postal_address: new FormControl('', Validators.compose([])),
-      name: new FormControl('', Validators.compose([])),
-      email_address: new FormControl('', Validators.compose([])),
-      phone_number: new FormControl('', Validators.compose([])),
-      trader_category_id: new FormControl('', Validators.compose([])),
-      traderaccount_type_id: new FormControl('', Validators.compose([])),
-      tpin_no: new FormControl('', Validators.compose([])),
-      pacra_reg_no: new FormControl('', Validators.compose([])),
-      region_id: new FormControl('', Validators.compose([])),
-      district_id: new FormControl('', Validators.compose([])),
-      telephone_no: new FormControl('', Validators.compose([])),
-      code_no: new FormControl('', Validators.compose([])),
-      mobile_no: new FormControl('', Validators.compose([])),
-      identification_no: new FormControl('', Validators.compose([])),
     });
 
     this.onApplicationSubmissionFrm = new FormGroup({
@@ -295,72 +344,60 @@ export class SharedImpexpApplicationClass {
     //   physical_address: new FormControl('', Validators.compose([])),
     // });
 
-    this.permitReceiverSenderFrm = new FormGroup({
-      name: new FormControl('', Validators.compose([Validators.required])),
-      country_id: new FormControl('', Validators.compose([Validators.required])),
-      region_id: new FormControl('', Validators.compose([])),
-      district_id: new FormControl('', Validators.compose([])),
-      email_address: new FormControl('', Validators.compose([Validators.required])),
-      postal_address: new FormControl('', Validators.compose([])),
-      telephone_no: new FormControl('', Validators.compose([])),
-      mobile_no: new FormControl('', Validators.compose([])),
-      physical_address: new FormControl('', Validators.compose([Validators.required])),
-      tin_no: new FormControl('', Validators.compose([]))
-    });
 
-    this.permitProductsFrm = new FormGroup({
-      brand_name: new FormControl('', Validators.compose([Validators.required])),
-      product_name: new FormControl('', Validators.compose([])),
-      product_category_id: new FormControl('', Validators.compose([])),
-      regulated_product_category: new FormControl('', Validators.compose([])),
-      regulated_productcategory_id: new FormControl('', Validators.compose([])),
-      unit_of_measure: new FormControl('', Validators.compose([])),
-      unit_of_measure_id: new FormControl('', Validators.compose([])),
-      country_of_origin_id: new FormControl('', Validators.compose([])),
-      permit_product_purposes_id: new FormControl('', Validators.compose([])),
-      weight_unit_id: new FormControl('', Validators.compose([])),
-      product_value: new FormControl('', Validators.compose([])),
-      consignment_id: new FormControl('', Validators.compose([])),
-      product_batch_no: new FormControl('', Validators.compose([])),
-      batch_number: new FormControl('', Validators.compose([])),
-      product_strength: new FormControl('', Validators.compose([])),
-      product_manufacturing_date: new FormControl('', Validators.compose([])),
-      manufacturing_date: new FormControl('', Validators.compose([])),
-      product_expiry_date: new FormControl('', Validators.compose([])),
-      expiry_date: new FormControl('', Validators.compose([])),
-      storage_condition: new FormControl('', Validators.compose([])),
-      country_oforigin_id: new FormControl('', Validators.compose([])),
-      country_id: new FormControl('', Validators.compose([])),
-      region_id: new FormControl('', Validators.compose([])),
-      unit_price: new FormControl(this.quantity, Validators.compose([])),
-      currency_id: new FormControl('', Validators.compose([Validators.required])),
-      packaging_unit_id: new FormControl('', Validators.compose([])),
-      quantity: new FormControl(this.quantity, Validators.compose([])),
-      laboratory_no: new FormControl('', Validators.compose([])),
-      regulated_prodpermit_id: new FormControl('', Validators.compose([])),
-      prodcertificate_no: new FormControl('', Validators.compose([])),
-      product_id: new FormControl('', Validators.compose([])),
-      unitpack_unit_id: new FormControl('', Validators.compose([])),
-      unitpack_size: new FormControl('', Validators.compose([])),
-      visa_quantity: new FormControl('', Validators.compose([])),
-      total_weight: new FormControl('', Validators.compose([])),
-      weights_units_id: new FormControl('', Validators.compose([])),
-      id: new FormControl('', Validators.compose([])),
-      device_type_id: new FormControl('', Validators.compose([])),
-      is_regulated_product: new FormControl('', Validators.compose([])),
-      productphysical_description: new FormControl('', Validators.compose([])),
-      common_name_id: new FormControl('', Validators.compose([])),
-      manufacturer_id: new FormControl('', Validators.compose([])),
-      manufacturer_name: new FormControl('', Validators.compose([])),
-      product_subcategory_id: new FormControl('', Validators.compose([])),
-      productclassification_id: new FormControl('', Validators.compose([])),
-      productdosage_id: new FormControl('', Validators.compose([])),
-      product_description: new FormControl('', Validators.compose([Validators.required])),
-      approvedvisa_product_id: new FormControl('', Validators.compose([])),
-      approvedlicense_product_id: new FormControl('', Validators.compose([])),
-      licensebalance_quantity: new FormControl('', Validators.compose([])),
-      product_packaging: new FormControl('', Validators.compose([])),
-    });
+    // this.permitProductsFrm = new FormGroup({
+    //   brand_name: new FormControl('', Validators.compose([Validators.required])),
+    //   product_name: new FormControl('', Validators.compose([])),
+    //   product_category_id: new FormControl('', Validators.compose([])),
+    //   regulated_product_category: new FormControl('', Validators.compose([])),
+    //   regulated_productcategory_id: new FormControl('', Validators.compose([])),
+    //   unit_of_measure: new FormControl('', Validators.compose([])),
+    //   unit_of_measure_id: new FormControl('', Validators.compose([])),
+    //   country_of_origin_id: new FormControl('', Validators.compose([])),
+    //   permit_product_purposes_id: new FormControl('', Validators.compose([])),
+    //   weight_unit_id: new FormControl('', Validators.compose([])),
+    //   product_value: new FormControl('', Validators.compose([])),
+    //   consignment_id: new FormControl('', Validators.compose([])),
+    //   product_batch_no: new FormControl('', Validators.compose([])),
+    //   batch_number: new FormControl('', Validators.compose([])),
+    //   product_strength: new FormControl('', Validators.compose([])),
+    //   product_manufacturing_date: new FormControl('', Validators.compose([])),
+    //   manufacturing_date: new FormControl('', Validators.compose([])),
+    //   product_expiry_date: new FormControl('', Validators.compose([])),
+    //   expiry_date: new FormControl('', Validators.compose([])),
+    //   storage_condition: new FormControl('', Validators.compose([])),
+    //   country_oforigin_id: new FormControl('', Validators.compose([])),
+    //   country_id: new FormControl('', Validators.compose([])),
+    //   region_id: new FormControl('', Validators.compose([])),
+    //   unit_price: new FormControl(this.quantity, Validators.compose([])),
+    //   currency_id: new FormControl('', Validators.compose([Validators.required])),
+    //   packaging_unit_id: new FormControl('', Validators.compose([])),
+    //   quantity: new FormControl(this.quantity, Validators.compose([])),
+    //   laboratory_no: new FormControl('', Validators.compose([])),
+    //   regulated_prodpermit_id: new FormControl('', Validators.compose([])),
+    //   prodcertificate_no: new FormControl('', Validators.compose([])),
+    //   product_id: new FormControl('', Validators.compose([])),
+    //   unitpack_unit_id: new FormControl('', Validators.compose([])),
+    //   unitpack_size: new FormControl('', Validators.compose([])),
+    //   visa_quantity: new FormControl('', Validators.compose([])),
+    //   total_weight: new FormControl('', Validators.compose([])),
+    //   weights_units_id: new FormControl('', Validators.compose([])),
+    //   id: new FormControl('', Validators.compose([])),
+    //   device_type_id: new FormControl('', Validators.compose([])),
+    //   is_regulated_product: new FormControl('', Validators.compose([])),
+    //   productphysical_description: new FormControl('', Validators.compose([])),
+    //   common_name_id: new FormControl('', Validators.compose([])),
+    //   manufacturer_id: new FormControl('', Validators.compose([])),
+    //   manufacturer_name: new FormControl('', Validators.compose([])),
+    //   product_subcategory_id: new FormControl('', Validators.compose([])),
+    //   productclassification_id: new FormControl('', Validators.compose([])),
+    //   productdosage_id: new FormControl('', Validators.compose([])),
+    //   product_description: new FormControl('', Validators.compose([Validators.required])),
+    //   approvedvisa_product_id: new FormControl('', Validators.compose([])),
+    //   approvedlicense_product_id: new FormControl('', Validators.compose([])),
+    //   licensebalance_quantity: new FormControl('', Validators.compose([])),
+    //   product_packaging: new FormControl('', Validators.compose([])),
+    // });
 
     this.documentUploadfrm = this.fb.group({
       file: null,
@@ -379,57 +416,14 @@ export class SharedImpexpApplicationClass {
       product_category_id: new FormControl('', Validators.compose([Validators.required]))
     });
 
-    this.initqueryresponsefrm = new FormGroup({
-      queries_remarks: new FormControl('', Validators.compose([Validators.required])),
-      response_txt: new FormControl('', Validators.compose([Validators.required])),
-      id: new FormControl('', Validators.compose([])),
-      query_id: new FormControl('', Validators.compose([]))
-    });
-    if (this.regulatory_subfunction_id == 12 || this.regulatory_subfunction_id == 81) {
-
-      this.enabled_newproductadd = true;
-
-    } else if (this.regulatory_subfunction_id == 82 || this.regulatory_subfunction_id == 78) {
-
-      this.enabled_newproductadd = false;
-
-    } else {
-
-      this.enabled_newproductadd = false;
-
-    }
-
     if (this.status_id < 1) {
       this.status_name = "New"
-    }
-
-
-    if (this.regulated_productstype_id == 4) {
-      this.device_type_visible = true;
     }
 
     this.import_typecategory_visible = true;
 
 
     this.funcReloadQueriesDetails();
-    /*  if(this.regulatory_subfunction_id == 13 || this.regulatory_subfunction_id == 14 || this.regulatory_subfunction_id == 15){
-        this.applicationGeneraldetailsfrm.get('premises_name').setValidators([]);
-        this.applicationGeneraldetailsfrm.get('premise_id').setValidators([]);
-      }
-      else{
-         this.applicationGeneraldetailsfrm.get('premises_name').setValidators([Validators.required]);
-         this.applicationGeneraldetailsfrm.get('premise_id').setValidators([Validators.required]);
-      }
-      */
-
-    if (this.regulatory_subfunction_id == 78 || this.regulatory_subfunction_id == 82 || this.regulatory_subfunction_id == 81) {
-
-      this.applicationGeneraldetailsfrm.get('port_id')?.setValidators([Validators.required]);
-      this.applicationGeneraldetailsfrm.get('mode_oftransport_id')?.setValidators([Validators.required]);
-      this.has_invoicegeneration = true;
-    }
-
-
   }
 
   funcAutoLoadedParamters() {
@@ -488,7 +482,6 @@ export class SharedImpexpApplicationClass {
     }
     else {
       this.app_routing = ['./online-services/inspectionbookin-dashboard'];
-
     }
     return this.app_routing;
 

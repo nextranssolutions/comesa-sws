@@ -200,17 +200,12 @@ class ImportExportController extends Controller
                 // print_r('Hello: ' . $ref_id);
                 // exit;
 
-                $zone_code = getSingleRecordColValue('par_zones', array('id' => $req->zone_id), 'zone_code');
-                $section_code = getSingleRecordColValue('par_regulated_productstypes', array('id' => $req->product_type_id), 'code');
                 $class_code = getSingleRecordColValue('par_classifications', array('id' => $req->classification_id), 'code');
                 $process_id = getSingleRecordColValue('wf_processes', array('id' => $id, ), 'id');
 
-                if ($class_code == '') {
-                    $class_code = $section_code;
-                }
+             
                 $codes_array = array(
-                    'section_code' => $section_code,
-                    'zone_code' => $zone_code,
+                  
                     'class_code' => $class_code,
                     'process_id' => $process_id,
                 );
@@ -1577,7 +1572,7 @@ class ImportExportController extends Controller
                 $sql->where('appworkflow_status_id', $appworkflow_status_id);
             }
 
-            $actionColumnData = returnContextMenuActions($process_id);
+            $actionColumnData = returnContextMisMenuActions($process_id);
             //check the usres 
 
             $data = $sql->get();

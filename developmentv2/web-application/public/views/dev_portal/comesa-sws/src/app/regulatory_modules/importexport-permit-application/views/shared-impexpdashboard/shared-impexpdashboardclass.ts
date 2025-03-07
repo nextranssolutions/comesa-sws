@@ -188,7 +188,6 @@ export class SharedImpExpdashboardClass {
             localStorage.setItem('application_details', JSON.stringify(data.data));
             localStorage.setItem('permit_details', JSON.stringify(data.data));
             localStorage.setItem('applicant_details', JSON.stringify(data.data));
-
             
             // this.appService.setProductApplicationDetail(data.data);
             this.app_route = ['./importexport-permit-application/single-productapplication-permits'];
