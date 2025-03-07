@@ -1019,12 +1019,10 @@ class UserManagementController extends Controller
                     ->select([
                         'id',
                         'user_title_id',
-                        'user_group_id',
                         'identification_type_id',
                         'country_of_origin_id',
                         'organisation_id',
                         'organisation_department_id',
-                        'user_status',
                         'email_address',
                         'first_name',
                         'surname',
@@ -1036,9 +1034,7 @@ class UserManagementController extends Controller
                         'account_type_id',
                         'application_code',
                         'account_registration_no',
-                        'member_state_id',
                         'identification_number',
-                        'secretariat_department_id',
                         'process_id',
                         'appworkflow_status_id',
                         'created_on'
@@ -1050,12 +1046,11 @@ class UserManagementController extends Controller
                     $user_data = array(
                         'id' => $record->id,
                         'user_title_id' => $record->user_title_id,
-                        'user_group_id' => $record->user_group_id,
                         'identification_type_id' => $record->identification_type_id,
                         'country_of_origin_id' => $record->country_of_origin_id,
                         'organisation_id' => $record->organisation_id,
                         'organisation_department_id' => $record->organisation_department_id,
-                        'user_status' => $record->user_status,
+                        
                         'email_address' => aes_decrypt($record->email_address),
                         'first_name' => aes_decrypt($record->first_name),
                         'surname' => aes_decrypt($record->surname),
@@ -1067,10 +1062,9 @@ class UserManagementController extends Controller
                         'account_type_id' => $record->account_type_id,
                         'application_code' => $record->application_code,
                         'account_registration_no' => $record->account_registration_no,
-                        'member_state_id' => $record->member_state_id,
+                        
                         'identification_number' => $record->identification_number,
-                        'secretariat_department_id' => $record->secretariat_department_id,
-                        'process_id' => $record->process_id,
+                         'process_id' => $record->process_id,
                         'appworkflow_status_id' => $record->appworkflow_status_id,
                         'created_on' => $record->created_on,
                     );
