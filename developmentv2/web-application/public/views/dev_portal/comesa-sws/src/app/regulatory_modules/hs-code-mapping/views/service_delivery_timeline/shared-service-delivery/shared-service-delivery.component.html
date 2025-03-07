@@ -46,6 +46,12 @@ caption="{{ 'estimated_time_days' | translate }}">
 </dxo-lookup>
 </dxi-column>
 
+<dxi-column *ngIf="table_name == 'par_service_deliverytimelines'" dataField="process_id"
+  caption="{{ 'process' | translate }}">
+  <dxo-lookup [dataSource]="processData" displayExpr="name" valueExpr="id">
+  </dxo-lookup>
+</dxi-column>
+
   <dxi-column *ngIf="table_name == 'par_service_deliverytimelines'" dataField="special_conditions_id"
       caption="{{ 'special_conditions' | translate }}">
       <dxo-lookup [dataSource]="specialConditionsData" displayExpr="name" valueExpr="id">
@@ -89,6 +95,11 @@ caption="{{ 'estimated_time_days' | translate }}">
         <div *ngIf="table_name == 'par_service_deliverytimelines'" class="col-lg-6">
             <label>{{ 'service_type' | translate }}</label>
             <dx-select-box [dataSource]="serviceTypeData" formControlName="service_type_id" valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
+          </div>
+
+          <div *ngIf="table_name == 'par_service_deliverytimelines'" class="col-lg-6">
+            <label>{{ 'process' | translate }}</label>
+            <dx-select-box [dataSource]="processData" formControlName="service_type_id" valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
           </div>
 
           <div *ngIf="table_name == 'par_service_deliverytimelines'" class="col-lg-6">

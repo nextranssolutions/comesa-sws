@@ -72,12 +72,12 @@ export class SharedHscodeInstitutionsComponent {
 
       this.createNewDataFrm = new FormGroup({
         id: new FormControl('', Validators.compose([])),
-        name: new FormControl('', Validators.compose([Validators.required])),
-        description: new FormControl('', Validators.compose([Validators.required])),
-        email_address: new FormControl('', Validators.compose([Validators.required])),
-        physical_address: new FormControl('', Validators.compose([Validators.required])),
-        telephone_number: new FormControl('', Validators.compose([Validators.required])),
-        ministry_name: new FormControl('', Validators.compose([Validators.required])),
+        name: new FormControl('', Validators.compose([])),
+        description: new FormControl('', Validators.compose([])),
+        email_address: new FormControl('', Validators.compose([])),
+        physical_address: new FormControl('', Validators.compose([])),
+        telephone_number: new FormControl('', Validators.compose([])),
+        ministry_name: new FormControl('', Validators.compose([])),
         is_enabled: new FormControl('', Validators.compose([])),
         country_id: new FormControl('', Validators.compose([])),
         organisation_id: new FormControl('', Validators.compose([])),

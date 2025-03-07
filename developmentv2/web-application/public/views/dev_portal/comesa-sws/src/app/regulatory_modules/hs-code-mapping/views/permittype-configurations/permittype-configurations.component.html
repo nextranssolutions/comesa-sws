@@ -557,16 +557,14 @@
 
 
     <dx-popup class="popup" [width]="funcpopWidth(80)" [height]="600" [showTitle]="true"
-        title="{{'product_categories' | translate}}" [dragEnabled]="false" [hideOnOutsideClick]="false"
-        [(visible)]="isHsCodePopupVisible">
+        title="{{'start_hs_code' | translate}}" [dragEnabled]="false" [hideOnOutsideClick]="false"
+        [(visible)]="startHsCodePopupVisible">
 
         <div *dxTemplate="let data of 'content'">
             <dx-scroll-view>
-                <dx-button text="{{ 'add' | translate }} {{ 'product_details' | translate}}" type="default" icon="fa fa-plus"
-                [elementAttr]="{ class: '' }" (onClick)="onAddProductDetails()">
-                </dx-button>
+               
                 <dx-data-grid class="table row-border hover" [allowColumnResizing]="true" [wordWrapEnabled]="true"
-                [columnHidingEnabled]="true" [dataSource]="productCategoryData" [remoteOperations]="true"
+                [columnHidingEnabled]="true" [dataSource]="startHsCodeData" [remoteOperations]="true"
                 [showBorders]="true" itemsExpr="children" keyExpr="id" parentIdExpr="parent_id"
                 (onToolbarPreparing)="onAdvanceProductRegistrySearch($event)" [selectedRowKeys]="[1, 29, 42]">
                 
@@ -584,91 +582,104 @@
                         [allowFiltering]="false" [allowSorting]="false" cellTemplate="cellTemplate">
                         <div *dxTemplate="let data of 'cellTemplate'">
     
-                            <dx-button text="{{'select_product' | translate}}" (click)="funcSelectProductCategory(data)"
-                                type="success" icon="edit" [elementAttr]="{ class: 'btn btn-primary' }">
+                            <dx-button text="{{'select_start_hs_code' | translate}}" 
+                                type="success" icon="edit" [elementAttr]="{ class: 'btn btn-primary' }" (onClick)="onSelectStartHsCode(data.data)">
                             </dx-button>
                         </div>
                     </dxi-column>
-                    <dxi-column dataField="hscodechapters" caption="{{'product' | translate}}"></dxi-column>
-                    <dxi-column dataField="hscodesheading" caption="{{'product_category' | translate}}"></dxi-column>
-                    <dxi-column dataField="hscodessubheading" caption="{{'product_subcategory' | translate}}"></dxi-column>
+                    <dxi-column dataField="name" caption="{{'name' | translate}}"></dxi-column>
+                    <dxi-column dataField="chapters_defination_id" caption="{{'chapters_defination_id' | translate}}"></dxi-column>
+                    <dxi-column dataField="description" caption="{{'description' | translate}}"></dxi-column>
+                    <dxi-column dataField="start_hs_code" caption="{{'start_hs_code' | translate}}"></dxi-column>
                     <dxo-paging [pageSize]="50"></dxo-paging>
                 </dx-data-grid>
             </dx-scroll-view>
         </div>
     </dx-popup>
-    <dx-popup [(visible)]="isProductDetailsPopupVisible" [width]="funcpopWidth(85)" [height]="funcpopHeight(65)" [showTitle]="true"
-    title="{{'product_details' | translate}}"[dragEnabled]="false" [closeOnOutsideClick]="true" >
+    <dx-popup class="popup" [width]="funcpopWidth(80)" [height]="600" [showTitle]="true"
+    title="{{'end_hs_code' | translate}}" [dragEnabled]="false" [hideOnOutsideClick]="false"
+    [(visible)]="endHsCodePopupVisible">
+
     <div *dxTemplate="let data of 'content'">
         <dx-scroll-view>
-            <form (ngSubmit)="onFuncSaveProductDetails()" [formGroup]="ProductsDetailsFrm">
-                <div class="profile-card">
+            
+            <dx-data-grid class="table row-border hover" [allowColumnResizing]="true" [wordWrapEnabled]="true"
+            [columnHidingEnabled]="true" [dataSource]="endHsCodeData" [remoteOperations]="true"
+            [showBorders]="true" itemsExpr="children" keyExpr="id" parentIdExpr="parent_id"
+            (onToolbarPreparing)="onAdvanceProductRegistrySearch($event)" [selectedRowKeys]="[1, 29, 42]">
+            
+            <dxo-export [enabled]="true" fileName="Data" [allowExportSelectedData]="true"></dxo-export>
+            <dxo-search-panel [visible]="true"></dxo-search-panel>
+            <dxo-header-filter [visible]="true"></dxo-header-filter>
+            <dxo-filter-row [visible]="show_advancesearch"></dxo-filter-row>
+            
+            <dxo-paging [enabled]="true">
+                <dxo-pager [showInfo]="true" infoText="Page #{0}. Total: {1} ({2} items)" [showPageSizeSelector]="true"
+                    [allowedPageSizes]="[50, 100]">
+                </dxo-pager>
+            </dxo-paging>
+                <dxi-column [width]="150" caption="{{'action' | translate}}" name="command-editing"
+                    [allowFiltering]="false" [allowSorting]="false" cellTemplate="cellTemplate">
+                    <div *dxTemplate="let data of 'cellTemplate'">
 
-                    <fieldset class="profile-section">
-                        <div class="row">
-
-                            <div class="col-lg-6">
-                                <label>{{'name' | translate}}</label>
-                                <dx-text-box formControlName="name"  placeholder=""
-                                    [showClearButton]="true"></dx-text-box>
-                            </div>
-
-                            <div class="col-lg-6">
-                            <label>{{'chapters_defination' | translate}}</label>
-                            <dx-select-box [dataSource]="chapterDefinationData"
-                                formControlName="chapters_defination_id" valueExpr="id" displayExpr="name"
-                                 [searchEnabled]="true">
-                            </dx-select-box>
-                        </div>
-
-                        <div class="col-lg-6">
-                            <label>{{'heading_definations' | translate}}</label>
-                            <dx-select-box [dataSource]="headingDefinationData"
-                                formControlName="heading_definations_id" valueExpr="id" displayExpr="name"
-                                 [searchEnabled]="true">
-                            </dx-select-box>
-                        </div>
-
-                        <div class="col-lg-6">
-                            <label>{{'subheading_definations' | translate}}</label>
-                            <dx-select-box [dataSource]="subHeadingDefinationData"
-                                formControlName="subheading_definations_id" valueExpr="id" displayExpr="name"
-                                [searchEnabled]="true">
-                            </dx-select-box>
-                        </div>
-
-
-                        <div class="col-lg-6">
-                            <label>{{'description' | translate}}</label>
-                            <dx-text-box formControlName="description"  placeholder=""
-                                [showClearButton]="true"></dx-text-box>
-                        </div>
-
-                        <div class="col-lg-6">
-                            <label>{{ "is_enabled" | translate }}</label>
-                            <dx-select-box [searchEnabled]="true" formControlName="is_enabled"
-                                [dataSource]="regStatusOptions" valueExpr="value" displayExpr="text"></dx-select-box>
-                        </div>              
-
-                     </div><!-- /.row -->
-
-                    </fieldset>
-                </div>
-                <div class="button-container">
-                  
-                    <dx-button text="{{'save_product_details' | translate}}" type="default" icon="fa fa-plus"
-                        [elementAttr]="{ class: 'pull-left' }" (onClick)="onFuncSaveProductDetails()">
-                    </dx-button>
-                    <dx-button text="Cancel" type="danger" icon="fa fa-times" [elementAttr]="{ class: 'pull-left' }"
-                        (onClick)="isProductDetailsPopupVisible = false">
-                    </dx-button>
-                </div>
-            </form>
+                        <dx-button text="{{'select_end_hs_code' | translate}}" 
+                            type="success" icon="edit" [elementAttr]="{ class: 'btn btn-primary' }" (onClick)="onSelectEndHsCode(data.data)">
+                        </dx-button>
+                    </div>
+                </dxi-column>
+                <dxi-column dataField="name" caption="{{'name' | translate}}"></dxi-column>
+                <dxi-column dataField="chapters_defination_id" caption="{{'chapters_defination' | translate}}"></dxi-column>
+                <dxi-column dataField="description" caption="{{'description' | translate}}"></dxi-column>
+                <dxi-column dataField="end_hs_code" caption="{{'end_hs_code' | translate}}"></dxi-column>
+                <dxo-paging [pageSize]="50"></dxo-paging>
+            </dx-data-grid>
         </dx-scroll-view>
     </div>
+    </dx-popup>
+    <dx-popup class="popup" [width]="funcpopWidth(80)" [height]="600" [showTitle]="true"
+    title="{{'specific_hs_code' | translate}}" [dragEnabled]="false" [hideOnOutsideClick]="false"
+    [(visible)]="specificHsCodePopupVisible">
 
-</dx-popup>
+    <div *dxTemplate="let data of 'content'">
+        <dx-scroll-view>
+            
+            <dx-data-grid class="table row-border hover" [allowColumnResizing]="true" [wordWrapEnabled]="true"
+            [columnHidingEnabled]="true" [dataSource]="specificHsCodeData" [remoteOperations]="true"
+            [showBorders]="true" itemsExpr="children" keyExpr="id" parentIdExpr="parent_id"
+            (onToolbarPreparing)="onAdvanceProductRegistrySearch($event)" [selectedRowKeys]="[1, 29, 42]">
+            
+            <dxo-export [enabled]="true" fileName="Data" [allowExportSelectedData]="true"></dxo-export>
+            <dxo-search-panel [visible]="true"></dxo-search-panel>
+            <dxo-header-filter [visible]="true"></dxo-header-filter>
+            <dxo-filter-row [visible]="show_advancesearch"></dxo-filter-row>
+            
+            <dxo-paging [enabled]="true">
+                <dxo-pager [showInfo]="true" infoText="Page #{0}. Total: {1} ({2} items)" [showPageSizeSelector]="true"
+                    [allowedPageSizes]="[50, 100]">
+                </dxo-pager>
+            </dxo-paging>
+                <dxi-column [width]="150" caption="{{'action' | translate}}" name="command-editing"
+                    [allowFiltering]="false" [allowSorting]="false" cellTemplate="cellTemplate">
+                    <div *dxTemplate="let data of 'cellTemplate'">
 
+                        <dx-button text="{{'select_specifc_hs_code' | translate}}" 
+                            type="success" icon="edit" [elementAttr]="{ class: 'btn btn-primary' }" (onClick)="onSelectSpecificHsCode(data.data)">
+                        </dx-button>
+                    </div>
+                </dxi-column>
+                <dxi-column dataField="name" caption="{{'name' | translate}}"></dxi-column>
+                <dxi-column dataField="chapters_defination_id" caption="{{'chapters_defination' | translate}}"></dxi-column>
+                <dxi-column dataField="heading_definations_id" caption="{{'heading_definations' | translate}}"></dxi-column>
+                <dxi-column dataField="specific_hs_code" caption="{{'specific_hs_code' | translate}}"></dxi-column>
+                <dxi-column dataField="description" caption="{{'description' | translate}}"></dxi-column>
+
+                <dxo-paging [pageSize]="50"></dxo-paging>
+            </dx-data-grid>
+        </dx-scroll-view>
+    </div>
+    </dx-popup>
+
+  
     <dx-popup [visible]="hscodePopupVisible" [width]="funcpopWidth(65)" [height]="funcpopHeight(55)"
             [showTitle]="true" [title]="'HS Codes'" (onHidden)="hscodePopupVisible = false">
 
@@ -676,26 +687,11 @@
             <form (ngSubmit)="onUpdateHsCode()" [formGroup]="hsCodeDataFrm" formControlName="description">
 
                 <div class="row">
-                    <div class="input-group col-md-12">
-                        <div class="col-lg-10">
-                            <label>{{'product_name' | translate}}</label>
-                            <dx-text-box [readOnly]="true" formControlName="name"
-                                [placeholder]="'product_name' | translate"
-                                [showClearButton]="true">
-                            </dx-text-box>
-                            <input type="hidden" formControlName="name" />
-                        </div>
-                        <div class="col-lg-2 pt-5">
-                            <dx-button [elementAttr]="{ class: 'btn btn-primary pull-left' }"
-                                [disabled]="ammendReadOnly" style="margin-top:25px !important;"
-                                text="{{ 'search_details' | translate }}" type="default"
-                                (onClick)="onsearchHsCodeDetails()">
-                                <i class="fa fa-search"></i> {{ 'search' | translate }} {{
-                                'product_name' |
-                                translate }}
-                            </dx-button>
-                        </div>
-                    </div>                       
+                    <div class="col-lg-6">
+                        <label>{{ 'product_name' | translate }}</label>
+                        <dx-text-area formControlName="name" [placeholder]="'product_name' | translate">
+                        </dx-text-area>
+                </div>                   
                     
                      <div class="col-lg-6">
                         <label for="ti" class="control-label">{{ 'hs_code_selection_option' | translate
@@ -707,32 +703,58 @@
                         </dx-select-box>
                     </div>
                     <div *ngIf="showHsCodeSelectionOption" class="col-md-12">
-                        <div class="col-lg-6">
-                            <label class="control-label">{{ 'start_hs_code' | translate }}</label>
-                            <dx-select-box [dataSource]="startHsCodeData" valueExpr="id"
-                                displayExpr="start_hs_code" formControlName="hs_code_start_int"
-                                placeholder="{{ 'start_hs_code' | translate }}">
-                            </dx-select-box>
-                        </div>
+                        <div class="row">
+                            <div class="col-lg-10">
+                                    <label>{{ 'start_hs_code' | translate }}</label>
+                                    <dx-text-area formControlName="hs_code_start_int" [placeholder]="'start_hs_code' | translate" [value]="selectedHsCode">
+                                    </dx-text-area>
+                            </div>
 
-                        <div class="col-lg-6">
-                            <label class="control-label">{{ 'end_hs_code' | translate }}</label>
-                            <dx-select-box [dataSource]="endHsCodeData" valueExpr="id"
-                                displayExpr="end_hs_code" formControlName="hs_code_end_int"
-                                placeholder="{{ 'end_hs_code' | translate }}">
-                            </dx-select-box>
-                        </div>
-                   </div>
-
-                    <div *ngIf="showSpecificHsCodeOption" class="col-md-12">
-                        <div class="col-lg-6">
-                            <label class="control-label">{{ 'specific_hs_code' | translate }}</label>
-                            <dx-select-box  [dataSource]="specificHsCodeData" valueExpr="id"
-                                displayExpr="specific_hs_code" formControlName="hs_code_specific_int"
-                                placeholder="{{ 'specific_hs_code' | translate }}">
-                            </dx-select-box>
+                                                       
+                            <div class="col-lg-2 pt-5">
+                                <dx-button [elementAttr]="{ class: 'btn btn-primary' }"
+                                    [disabled]="ammendReadOnly" style="margin-top:25px !important;"
+                                    text="{{ 'search_start_hs_code' | translate }}" type="default"
+                                    (onClick)="onSearchStartHsCode()">
+                                </dx-button>
+                            </div>
+                     
+                            <div class="col-lg-10">
+                                <label>{{ 'end_hs_code' | translate }}</label>
+                                <dx-text-area formControlName="hs_code_end_int" [placeholder]="'end_hs_code' | translate" [value]="selectedHsCode">
+                                </dx-text-area>
+                           </div>
+                         
+                                                     
+                            <div class="col-lg-2 pt-5">
+                                <dx-button [elementAttr]="{ class: 'btn btn-primary' }"
+                                    [disabled]="ammendReadOnly" style="margin-top:25px !important;"
+                                    text="{{ 'search_end_hs_code' | translate }}" type="default"
+                                    (onClick)="onSearchEndHsCode()">
+                                </dx-button>
+                            </div>
                         </div>
                     </div>
+                    
+                    <div *ngIf="showSpecificHsCodeOption" class="col-md-12">
+                        <div class="row">
+
+                            <div class="col-lg-10">
+                                <label>{{ 'specific_hs_code' | translate }}</label>
+                                <dx-text-area formControlName="hs_code_specific_int" [placeholder]="'specific_hs_code' | translate" [value]="selectedHsCode">
+                                </dx-text-area>
+                           </div>                          
+                           
+                            <div class="col-lg-2 pt-5">
+                                <dx-button [elementAttr]="{ class: 'btn btn-primary' }"
+                                    [disabled]="ammendReadOnly" style="margin-top:25px !important;"
+                                    text="{{ 'search_specific_hs_code' | translate }}" type="default"
+                                    (onClick)="onSearchSpecificHsCode()">
+                                </dx-button>
+                            </div>
+                        </div>
+                    </div>
+                    
 
                     <div class="col-lg-6">
                         <label>{{ 'limitation_description' | translate }}</label>
@@ -987,12 +1009,6 @@
                         <dx-select-box [searchEnabled]="true" formControlName="has_validity_period"
                             [dataSource]="regStatusOptions" valueExpr="value" displayExpr="text"></dx-select-box>
                     </div> -->
-
-                    <div class="col-lg-6">
-                        <label>{{ "status" | translate }}</label>
-                        <dx-select-box [searchEnabled]="true" formControlName="status" [dataSource]="regStatusOptions"
-                            valueExpr="value" displayExpr="text"></dx-select-box>
-                    </div>
 
                     <div class="col-lg-6">
                         <label>{{ "is_enabled" | translate }}</label>

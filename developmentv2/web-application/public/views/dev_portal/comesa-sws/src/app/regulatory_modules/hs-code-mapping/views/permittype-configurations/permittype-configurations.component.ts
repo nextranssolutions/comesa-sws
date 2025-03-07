@@ -34,6 +34,10 @@ export class PermittypeConfigurationsComponent {
   transactionpermit_type_id: number;
   account_type_id: number;
   organisation_id: number;
+  selectedHsCode: string;
+  start_hs_code: string;
+  end_hs_code: string;
+  specific_hs_code: string;
   workflow_id: number;
   data: any[];
   editRowKey: any;
@@ -92,7 +96,9 @@ export class PermittypeConfigurationsComponent {
   showTabPanel: boolean = false;
   tabPanelPopupVisible: boolean = false;
   hscodePopupVisible: boolean = false;
-  isHsCodePopupVisible: boolean = false;
+  startHsCodePopupVisible: boolean = false;
+  endHsCodePopupVisible: boolean = false;
+  specificHsCodePopupVisible: boolean = false;
   isProductDetailsPopupVisible: boolean = false;
   PermitSignatoriesPopupVisible: boolean = false;
   PermitSpecialConditionsPopupVisible: boolean = false;
@@ -288,7 +294,8 @@ export class PermittypeConfigurationsComponent {
   }
   ngOnInit() {
     this.fetchPermitTypeDetails();
-    this.fetchProductDetails();
+    this.fetchStartHscode();
+    this.fetchEndHsCode();
     this.onLoadOperationTypeData();
     this.onLoadPermitTypeData();
     this.onLoadRenewableStatusData();
@@ -387,13 +394,13 @@ export class PermittypeConfigurationsComponent {
     this.onLoadWorkflowData(organisation_id)
   }
 
-   onsearchHsCodeDetails() {
+   onSearchStartHsCode() {
   
-      this.isHsCodePopupVisible = true;
+      this.startHsCodePopupVisible = true;
       var me = this;
   
   
-      this.productCategoryData.store = new CustomStore({
+      this.startHsCodeData.store = new CustomStore({
         load: function (loadOptions: any) {
           // console.log(loadOptions)
           var params = '?';
@@ -408,7 +415,7 @@ export class PermittypeConfigurationsComponent {
             headers: headers,
             params: { skip: loadOptions.skip, take: loadOptions.take, searchValue: loadOptions.filter }
           };
-          return me.httpClient.get(AppSettings.base_url + '/api/sysadministration/onGetRegulatedProductCategory', me.configData)
+          return me.httpClient.get(AppSettings.base_url + '/api/sysadministration/onGetStartHsCode', me.configData)
             .toPromise()
             .then((data: any) => {
               return {
@@ -420,7 +427,127 @@ export class PermittypeConfigurationsComponent {
         }
       });
     }
+    onSearchEndHsCode() {
   
+      this.endHsCodePopupVisible = true;
+      var me = this;
+  
+  
+      this.endHsCodeData.store = new CustomStore({
+        load: function (loadOptions: any) {
+          // console.log(loadOptions)
+          var params = '?';
+          params += 'skip=' + loadOptions.skip;
+          params += '&take=' + loadOptions.take;//searchValue
+          var headers = new HttpHeaders({
+            "Accept": "application/json",
+            "Authorization": "Bearer " + me.authService.getAccessToken(),
+          });
+  
+          me.configData = {
+            headers: headers,
+            params: { skip: loadOptions.skip, take: loadOptions.take, searchValue: loadOptions.filter }
+          };
+          return me.httpClient.get(AppSettings.base_url + '/api/sysadministration/onGetEndHsCode', me.configData)
+            .toPromise()
+            .then((data: any) => {
+              return {
+                data: data.data,
+                totalCount: data.totalCount
+              }
+            })
+            .catch(error => { throw 'Data Loading Error' });
+        }
+      });
+    }
+    onSearchSpecificHsCode() {
+  
+      this.specificHsCodePopupVisible = true;
+      var me = this;
+  
+  
+      this.specificHsCodeData.store = new CustomStore({
+        load: function (loadOptions: any) {
+          // console.log(loadOptions)
+          var params = '?';
+          params += 'skip=' + loadOptions.skip;
+          params += '&take=' + loadOptions.take;//searchValue
+          var headers = new HttpHeaders({
+            "Accept": "application/json",
+            "Authorization": "Bearer " + me.authService.getAccessToken(),
+          });
+  
+          me.configData = {
+            headers: headers,
+            params: { skip: loadOptions.skip, take: loadOptions.take, searchValue: loadOptions.filter }
+          };
+          return me.httpClient.get(AppSettings.base_url + '/api/sysadministration/onGetSpecificHscode', me.configData)
+            .toPromise()
+            .then((data: any) => {
+              return {
+                data: data.data,
+                totalCount: data.totalCount
+              }
+            })
+            .catch(error => { throw 'Data Loading Error' });
+        }
+      });
+    }
+    
+    onSelectStartHsCode(selectedHsCode: any) {
+      console.log("Selected HS Code Data: ", selectedHsCode); // Debugging step
+      
+      if (selectedHsCode && selectedHsCode.start_hs_code) {
+        this.selectedHsCode = selectedHsCode.start_hs_code;
+
+        
+        this.hsCodeDataFrm.patchValue({
+            hs_code_start_int: this.selectedHsCode
+        });
+
+          this.startHsCodePopupVisible = false;
+      } else {
+          console.error("Invalid HS Code selection.");
+      }
+  }
+
+
+  onSelectEndHsCode(selectedHsCode: any) {
+    console.log("Selected HS Code Data: ", selectedHsCode); 
+    
+    if (selectedHsCode && selectedHsCode.end_hs_code) {
+      this.selectedHsCode = selectedHsCode.end_hs_code;
+
+      
+      this.hsCodeDataFrm.patchValue({
+        hs_code_end_int: this.selectedHsCode
+      });
+
+        this.endHsCodePopupVisible = false;
+    } else {
+        console.error("Invalid HS Code selection.");
+    }
+}
+
+onSelectSpecificHsCode(selectedHsCode: any) {
+  console.log("Selected HS Code Data: ", selectedHsCode); 
+  
+  if (selectedHsCode && selectedHsCode.specific_hs_code) {
+    this.selectedHsCode = selectedHsCode.specific_hs_code;
+
+    
+    this.hsCodeDataFrm.patchValue({
+      hs_code_specific_int: this.selectedHsCode
+    });
+
+      this.specificHsCodePopupVisible = false;
+  } else {
+      console.error("Invalid HS Code selection.");
+  }
+}
+  
+  
+   
 
   onAccountTypeSelection($event) {
     if ($event.selectedItem) {
@@ -700,6 +827,8 @@ export class PermittypeConfigurationsComponent {
 
         });
   }
+
+ 
   
   onLoadEndHsCodeData() {
     var data_submit = {
@@ -1035,23 +1164,61 @@ export class PermittypeConfigurationsComponent {
     this.spinnerHide();
   }
 
-  fetchProductDetails() {
+  fetchStartHscode() {
     this.spinnerShow('Loading User Permissions Details');
 
     var data_submit = {
-      table_name: 'tra_hscodesproducts_registry',
+      table_name: 'par_hscodesheading_definations',
       
     }
-    this.admnistrationService.onLoadDataUrl(data_submit, 'onGetRegulatedProductCategory')
+    this.admnistrationService.onLoadDataUrl(data_submit, 'onGetStartHsCode')
       .subscribe(
         data => {
           this.data_record = data;
           if (this.data_record.success) {
-            this.productCategoryData = this.data_record.data;
+            this.startHsCodeData = this.data_record.data;
           }
         });
     this.spinnerHide();
   }
+
+  fetchEndHsCode() {
+    this.spinnerShow('Loading User Permissions Details');
+
+    var data_submit = {
+      table_name: 'par_hscodesheading_definations',
+      
+    }
+    this.admnistrationService.onLoadDataUrl(data_submit, 'onGetEndHsCode')
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.endHsCodeData = this.data_record.data;
+          }
+        });
+    this.spinnerHide();
+  }
+
+  fetchSpecificHsCodeData() {
+    this.spinnerShow('Loading User Permissions Details');
+
+    var data_submit = {
+      table_name: 'par_hscodessubheading_defination',
+      
+    }
+    this.admnistrationService.onLoadDataUrl(data_submit, 'onGetSpecificHsCode')
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.specificHsCodeData = this.data_record.data;
+          }
+        });
+    this.spinnerHide();
+  }
+  
+  
 
   fetchAppPermitSignatories(transactionpermit_type_id) {
     this.spinnerShow('Loading User Permissions Details');
@@ -1126,23 +1293,23 @@ export class PermittypeConfigurationsComponent {
     this.spinnerHide();
   }
 
-  funcSelectProductCategory(data) {
-    let data_resp = data.data;
+  // funcSelectProductCategory(data) {
+  //   let data_resp = data.data;
 
-    // Prioritize values in order: hscodessubheading -> hscodesheading -> hscodechapters
-    let selectedProductName = data_resp.hscodessubheading ||
-      data_resp.hscodesheading ||
-      data_resp.hscodechapters || '';
+  //   // Prioritize values in order: hscodessubheading -> hscodesheading -> hscodechapters
+  //   let selectedProductName = data_resp.hscodessubheading ||
+  //     data_resp.hscodesheading ||
+  //     data_resp.hscodechapters || '';
 
-    // Patch the form with selected values
-    this.hsCodeDataFrm.patchValue({
-      product_name: selectedProductName,
-      regulated_product_category_id: data_resp.regulated_product_category_id
-    });
+  //   // Patch the form with selected values
+  //   this.hsCodeDataFrm.patchValue({
+  //     product_name: selectedProductName,
+  //     regulated_product_category_id: data_resp.regulated_product_category_id
+  //   });
 
-    // Close the popup
-    this.isHsCodePopupVisible = false;
-  }
+  //   // Close the popup
+  //   this.isHsCodePopupVisible = false;
+  // }
   onFuncSaveRecordData() {
 
     const formData = new FormData();
@@ -1416,49 +1583,7 @@ export class PermittypeConfigurationsComponent {
         });
   }
 
-  onFuncSaveProductDetails() {
-    const formData = new FormData();
-    const invalid = [];
-    const controls = this.ProductsDetailsFrm.controls;
-    for (const name in controls) {
-      if (controls[name].invalid) {
-        this.toastr.error('Fill In All Mandatory fields with (*), missing value on ' + name.replace('_id', ''), 'Alert');
-        return;
-      }
-    }
-    if (this.ProductsDetailsFrm.invalid) {
-      return;
-    }
-
-    this.ProductsDetailsFrm.get('resetcolumns')?.setValue(this.resetcolumns);
-    this.spinnerShow('Saving ' + this.parameter_name);
-
-
-    this.spinner.show();
-    
-    this.admnistrationService.onSaveSystemAdministrationDetails('tra_hscodesproducts_registry', this.ProductsDetailsFrm.value, 'onsaveSysAdminData')
-      .subscribe(
-        response => {
-          this.response = response;
-          //the details 
-          if (this.response.success) {
-
-            this.fetchProductDetails();
-            this.isProductDetailsPopupVisible = false;
-            this.toastr.success(this.response.message, 'Response');
-            this.spinnerHide();
-          } else {
-            this.toastr.error(this.response.message, 'Alert');
-            this.spinnerHide();
-          }
-          this.spinnerHide();
-        },
-        error => {
-          this.toastr.error('Error Occurred', 'Alert');
-          this.spinnerHide();
-        });
-  }
-
+ 
   funcpopWidth(percentage_width) {
     return window.innerWidth * percentage_width / 100;
   }
@@ -1473,7 +1598,7 @@ export class PermittypeConfigurationsComponent {
     this.fetchPermitTypeDetails();
   }
 
-  
+
   
 funcEditDetails(data) {
     this.createNewDataFrm.patchValue(data.data);
