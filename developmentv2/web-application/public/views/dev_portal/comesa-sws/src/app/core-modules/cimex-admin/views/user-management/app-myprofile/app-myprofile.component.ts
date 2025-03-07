@@ -31,11 +31,15 @@ export class AppMyprofileComponent {
   secretariatDepartmentsData: any;
   InstitutionDepartments: any;
   instituionTypeData: any;
+ 
   userTitles: any;
   IdentificationTypeData: any;
   isContentScrolled = false;
   isDataChanged = false;
   isLoading = true;
+  organisationDepartmentData: any;
+  organisationData:any;
+  organisationTypeData:any;
 
   userGroupData: any;
   appRegulatoryFunctionData: any;
@@ -60,9 +64,9 @@ export class AppMyprofileComponent {
       account_type_id: new FormControl('', Validators.compose([Validators.required])),
       country_of_origin_id: new FormControl('', Validators.compose([])),
       partner_state_id: new FormControl('', Validators.compose([])),
-      institution_type_id: new FormControl('', Validators.compose([])),
-      institution_id: new FormControl('', Validators.compose([])),
-      institution_department_id: new FormControl('', Validators.compose([])),
+      organisation_type_id: new FormControl('', Validators.compose([])),
+      organisation_id: new FormControl('', Validators.compose([])),
+      organisation_department_id: new FormControl('', Validators.compose([])),
       registration_number: new FormControl('', Validators.compose([])),
       secretariat_department_id: new FormControl('', Validators.compose([])),
       user_group_id: new FormControl('', Validators.compose([])),
@@ -81,7 +85,7 @@ export class AppMyprofileComponent {
 
     this.onLoadAccountTypesData();
     this.fetchUserCountryOfOrigin();
-    this.onLoadinstituionTypeData();
+    // this.onLoadinstituionTypeData();
     this.onLoadpartnerStatesData();
     this.fetchUserTitles()
 
@@ -90,10 +94,13 @@ export class AppMyprofileComponent {
     this.spinnerHide();
 
     this.onGetSingleUserProfileDetails();
-    this.onGetUsergroupInformation()
-    this.onGetappRegulatoryFunctionPermissionData()
-    this.onGetappNavigationMenusPermisData()
-    this.onGetUsersworkflowPermissionData()
+    this.onGetUsergroupInformation();
+    this.onGetappRegulatoryFunctionPermissionData();
+    this.onGetappNavigationMenusPermisData();
+    this.onGetUsersworkflowPermissionData();
+    this.onLoadorganisationTypeData();
+    // this.onLoadorganisationData();
+    this.onLoadorganisationDepartmentData();
   }
 
 
@@ -342,16 +349,16 @@ export class AppMyprofileComponent {
 
   }
 
-  onInstitutionTypeChange(institution_type_id) {
+  onInstitutionTypeChange(organisation_type_id) {
     let partner_state_id = this.userAccountFrm.get('partner_state_id')?.value;
 
-    this.onLoadInstitutions(institution_type_id, partner_state_id);
+    this.onLoadInstitutions(organisation_type_id, partner_state_id);
   }
-  onLoadInstitutions(institution_type_id, partner_state_id) {
+  onLoadInstitutions(organisation_type_id, partner_state_id) {
     this.spinnerShow('Loading Institutions Details');
     var data_submit = {
-      'table_name': 'par_institutions',
-      'institution_type_id': institution_type_id,
+      'table_name': 'tra_organisation_information',
+      'organisation_type_id': organisation_type_id,
       'partner_state_id': partner_state_id
     }
     this.userManagementService.onLoadUserData(data_submit)
@@ -359,7 +366,7 @@ export class AppMyprofileComponent {
         data => {
           this.data_record = data;
           if (this.data_record.success) {
-            this.Institutions = this.data_record.data;
+            this.organisationData = this.data_record.data;
           }
           this.spinnerHide();
         },
@@ -420,6 +427,41 @@ export class AppMyprofileComponent {
           this.data_record = data;
           if (this.data_record.success) {
             this.instituionTypeData = this.data_record.data;
+          }
+        },
+        error => {
+
+        });
+  }
+  onLoadorganisationTypeData() {
+    var data_submit = {
+      'table_name': 'par_organisation_types'
+    }
+    this.userManagementService.onLoadUserData(data_submit)
+      .subscribe(
+        data => {
+
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.organisationTypeData = this.data_record.data;
+          }
+        },
+        error => {
+
+        });
+  }
+
+  onLoadorganisationDepartmentData() {
+    var data_submit = {
+      'table_name': 'par_organisation_departments'
+    }
+    this.userManagementService.onLoadUserData(data_submit)
+      .subscribe(
+        data => {
+
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.organisationDepartmentData = this.data_record.data;
           }
         },
         error => {

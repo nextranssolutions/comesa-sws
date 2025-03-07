@@ -1023,6 +1023,7 @@ class UserManagementController extends Controller
                         'country_of_origin_id',
                         'organisation_id',
                         'organisation_department_id',
+                        'organisation_type_id',
                         'email_address',
                         'first_name',
                         'surname',
@@ -1050,7 +1051,7 @@ class UserManagementController extends Controller
                         'country_of_origin_id' => $record->country_of_origin_id,
                         'organisation_id' => $record->organisation_id,
                         'organisation_department_id' => $record->organisation_department_id,
-                        
+                        'organisation_type_id' => $record->organisation_type_id,
                         'email_address' => aes_decrypt($record->email_address),
                         'first_name' => aes_decrypt($record->first_name),
                         'surname' => aes_decrypt($record->surname),
@@ -1081,6 +1082,8 @@ class UserManagementController extends Controller
 
         return response()->json($res, 200);
     }
+
+
     public function onGetUserInformation(Request $req)
     {
         try {

@@ -53,26 +53,26 @@
 
 
                   <div class="form-group col-lg-4">
-                    <label>{{'institutions_types' | translate}}</label>
-                    <dx-select-box [dataSource]="instituionTypeData" [readOnly]="is_readonly"
-                      formControlName="institution_type_id" [showClearButton]="true" valueExpr="id"
+                    <label>{{'competent_authority_types' | translate}}</label>
+                    <dx-select-box [dataSource]="organisationTypeData" [readOnly]="is_readonly"
+                      formControlName="organisation_type_id" [showClearButton]="true" valueExpr="id"
                       [searchEnabled]="true" displayExpr="name"
                       (onValueChanged)="onInstitutionTypeChange($event.value)">
                     </dx-select-box>
                   </div>
 
                   <div class="form-group col-lg-4">
-                    <label>{{'institutions' | translate}}</label>
-                    <dx-select-box [dataSource]="Institutions" [readOnly]="is_readonly" formControlName="institution_id"
+                    <label>{{'competent_authority' | translate}}</label>
+                    <dx-select-box [dataSource]="organisationData" [readOnly]="is_readonly" formControlName="organisation_id"
                       [showClearButton]="true" valueExpr="id" [searchEnabled]="true" displayExpr="name"
                       (onValueChanged)="onInstitutionChange($event.value)">
                     </dx-select-box>
                   </div>
 
                   <div class="form-group col-lg-4">
-                    <label>{{'institutions_department' | translate}}</label>
-                    <dx-select-box [dataSource]="InstitutionDepartments" [readOnly]="is_readonly"
-                      formControlName="institution_department_id" [showClearButton]="true" valueExpr="id"
+                    <label>{{'competent_authority_department' | translate}}</label>
+                    <dx-select-box [dataSource]="organisationDepartmentData" [readOnly]="is_readonly"
+                      formControlName="organisation_department_id" [showClearButton]="true" valueExpr="id"
                       [searchEnabled]="true" displayExpr="name">
                     </dx-select-box>
                   </div>
