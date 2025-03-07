@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 
 import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { DxTabPanelTypes } from 'devextreme-angular/ui/tab-panel';
 import { ToastrService } from 'ngx-toastr';
 import { AuthenticationService } from 'src/app/core-services/authentication/authentication.service';
 import { UserManagementService } from 'src/app/core-services/user-management/user-management.service';
@@ -17,7 +18,7 @@ export class AppMyprofileComponent {
   spinnerMessage: string;
   loadingVisible: boolean;
   is_readonly: boolean = true;
-  parameter_name: string; 
+  parameter_name: string;
   response: any;
   data_record: any;
   userAccountTypeData: any;
@@ -30,28 +31,42 @@ export class AppMyprofileComponent {
   secretariatDepartmentsData: any;
   InstitutionDepartments: any;
   instituionTypeData: any;
+ 
   userTitles: any;
   IdentificationTypeData: any;
   isContentScrolled = false;
   isDataChanged = false;
   isLoading = true;
+  organisationDepartmentData: any;
+  organisationData:any;
+  organisationTypeData:any;
 
+  userGroupData: any;
+  appRegulatoryFunctionData: any;
+  appNavigationMenusPermisData: any;
+  workflowPermissionData: any;
+
+  tabsPositions: DxTabPanelTypes.Position[] = [
+    'left', 'top', 'right', 'bottom',
+  ];
+  tabsPosition: DxTabPanelTypes.Position = this.tabsPositions[1];
+  stylingModes: DxTabPanelTypes.TabsStyle[] = ['primary', 'secondary'];
+  stylingMode: DxTabPanelTypes.TabsStyle = this.stylingModes[0];
   constructor(
     // private dataService: DataService, 
     public toastr: ToastrService,
     private userManagementService: UserManagementService,
+    public userservice: UserManagementService,
     private AuthService: AuthenticationService
-  ) { }
-
-  ngOnInit() {
+  ) {
     this.userAccountFrm = new FormGroup({
       user_title_id: new FormControl('', Validators.compose([Validators.required])),
       account_type_id: new FormControl('', Validators.compose([Validators.required])),
       country_of_origin_id: new FormControl('', Validators.compose([])),
       partner_state_id: new FormControl('', Validators.compose([])),
-      institution_type_id: new FormControl('', Validators.compose([])),
-      institution_id: new FormControl('', Validators.compose([])),
-      institution_department_id: new FormControl('', Validators.compose([])),
+      organisation_type_id: new FormControl('', Validators.compose([])),
+      organisation_id: new FormControl('', Validators.compose([])),
+      organisation_department_id: new FormControl('', Validators.compose([])),
       registration_number: new FormControl('', Validators.compose([])),
       secretariat_department_id: new FormControl('', Validators.compose([])),
       user_group_id: new FormControl('', Validators.compose([])),
@@ -64,30 +79,123 @@ export class AppMyprofileComponent {
       phone_number: new FormControl('', Validators.compose([Validators.required])),
     });
 
+  }
+
+  ngOnInit() {
+
     this.onLoadAccountTypesData();
     this.fetchUserCountryOfOrigin();
-    this.onGetSingleUserProfileDetails();
-    this.onLoadinstituionTypeData();
+    // this.onLoadinstituionTypeData();
     this.onLoadpartnerStatesData();
     this.fetchUserTitles()
 
     this.onLoadIdentificationTypeData();
     this.onLoadsecreraitetDepartemData();
     this.spinnerHide();
+
+    this.onGetSingleUserProfileDetails();
+    this.onGetUsergroupInformation();
+    this.onGetappRegulatoryFunctionPermissionData();
+    this.onGetappNavigationMenusPermisData();
+    this.onGetUsersworkflowPermissionData();
+    this.onLoadorganisationTypeData();
+    // this.onLoadorganisationData();
+    this.onLoadorganisationDepartmentData();
   }
 
-  onActionEditDetails() {
-    this.is_readonly = false;
+
+  onGetUsergroupInformation() {
+    var data_submit = {
+      'table_name': 'usr_users_groups'
+    }
+    this.spinnerShow('Loading');
+    this.userservice.onGetUserInformation(data_submit, 'onGetUsergroupInformation')
+      .subscribe(
+        data => {
+          this.data_record = data;
+
+          if (this.data_record.success) {
+            this.userGroupData = this.data_record.data;
+          }
+          this.spinnerHide()
+        },
+        error => {
+
+          this.spinnerHide()
+        });
   }
 
-  onGetSingleUserProfileDetails(){
-   
+  onGetappRegulatoryFunctionPermissionData() {
+    var data_submit = {
+      'table_name': 'usr_users_groups'
+    }
+    this.spinnerShow('Loading');
+    this.userservice.onGetUserInformation(data_submit, 'onGetappRegulatoryFunctionPermissionData')
+      .subscribe(
+        data => {
+          this.data_record = data;
+
+          if (this.data_record.success) {
+            this.appRegulatoryFunctionData = this.data_record.data;
+          }
+          this.spinnerHide()
+        },
+        error => {
+
+          this.spinnerHide()
+        });
+  }
+
+  onGetappNavigationMenusPermisData() {
+    var data_submit = {
+      'table_name': 'usr_users_groups'
+    }
+    this.spinnerShow('Loading');
+    this.userservice.onGetUserInformation(data_submit, 'onGetappNavigationMenusPermisData')
+      .subscribe(
+        data => {
+          this.data_record = data;
+
+          if (this.data_record.success) {
+            this.appNavigationMenusPermisData = this.data_record.data;
+          }
+          this.spinnerHide()
+        },
+        error => {
+
+          this.spinnerHide()
+        });
+  }
+
+  onGetUsersworkflowPermissionData() {
+    var data_submit = {
+      'table_name': 'usr_users_groups'
+    }
+    this.spinnerShow('Loading');
+    this.userservice.onGetUserInformation(data_submit, 'onGetUsersworkflowPermissionData')
+      .subscribe(
+        data => {
+          this.data_record = data;
+
+          if (this.data_record.success) {
+            this.workflowPermissionData = this.data_record.data;
+          }
+          this.spinnerHide()
+        },
+        error => {
+
+          this.spinnerHide()
+        });
+  }
+
+  onGetSingleUserProfileDetails() {
+
     var data_submit = {
       'table_name': 'usr_users_information'
     }
     this.spinnerShow('Loading user Profile Details');
 
-    this.userManagementService.onGetSingleUserProfileDetails(data_submit)
+    this.userservice.onGetSingleUserProfileDetails(data_submit)
       .subscribe(
         data => {
           this.data_record = data;
@@ -102,7 +210,12 @@ export class AppMyprofileComponent {
           this.spinnerHide()
         });
 
-}
+  }
+
+  onActionEditDetails() {
+    this.is_readonly = false;
+  }
+
 
   spinnerShow(spinnerMessage) {
     this.loadingVisible = true;
@@ -111,7 +224,7 @@ export class AppMyprofileComponent {
   spinnerHide() {
     this.loadingVisible = false;
   }
-  
+
 
   onLoadAccountTypesData() {
     var data_submit = {
@@ -236,16 +349,16 @@ export class AppMyprofileComponent {
 
   }
 
-  onInstitutionTypeChange(institution_type_id) {
+  onInstitutionTypeChange(organisation_type_id) {
     let partner_state_id = this.userAccountFrm.get('partner_state_id')?.value;
 
-    this.onLoadInstitutions(institution_type_id, partner_state_id);
+    this.onLoadInstitutions(organisation_type_id, partner_state_id);
   }
-  onLoadInstitutions(institution_type_id, partner_state_id) {
+  onLoadInstitutions(organisation_type_id, partner_state_id) {
     this.spinnerShow('Loading Institutions Details');
     var data_submit = {
-      'table_name': 'par_institutions',
-      'institution_type_id': institution_type_id,
+      'table_name': 'tra_organisation_information',
+      'organisation_type_id': organisation_type_id,
       'partner_state_id': partner_state_id
     }
     this.userManagementService.onLoadUserData(data_submit)
@@ -253,7 +366,7 @@ export class AppMyprofileComponent {
         data => {
           this.data_record = data;
           if (this.data_record.success) {
-            this.Institutions = this.data_record.data;
+            this.organisationData = this.data_record.data;
           }
           this.spinnerHide();
         },
@@ -320,6 +433,41 @@ export class AppMyprofileComponent {
 
         });
   }
+  onLoadorganisationTypeData() {
+    var data_submit = {
+      'table_name': 'par_organisation_types'
+    }
+    this.userManagementService.onLoadUserData(data_submit)
+      .subscribe(
+        data => {
+
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.organisationTypeData = this.data_record.data;
+          }
+        },
+        error => {
+
+        });
+  }
+
+  onLoadorganisationDepartmentData() {
+    var data_submit = {
+      'table_name': 'par_organisation_departments'
+    }
+    this.userManagementService.onLoadUserData(data_submit)
+      .subscribe(
+        data => {
+
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.organisationDepartmentData = this.data_record.data;
+          }
+        },
+        error => {
+
+        });
+  }
 
   onsaveActiveUserAccountsDetails() {
     const formData = new FormData();
@@ -355,7 +503,7 @@ export class AppMyprofileComponent {
         });
   }
 
-  scroll({reachedTop = false}) {
+  scroll({ reachedTop = false }) {
     this.isContentScrolled = !reachedTop;
   }
 

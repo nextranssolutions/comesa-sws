@@ -1,151 +1,251 @@
+<div class="main-content-inner">
+  <div class="breadcrumbs ace-save-state" id="breadcrumbs">
+    <ul class="breadcrumb">
+      <li>
+        <i class="ace-icon fa fa-home home-icon"></i>
+        <a href="#">{{'home' | translate}}</a>
+      </li>
+      <li class="active">{{'my_profile' | translate}}</li>
+    </ul>
 
-<div class="content-wrapper">
-  <div class="view-wrapper">
-    <!-- Toolbar -->
-    <dx-toolbar class="toolbar" [class.scrolled]="isContentScrolled">
-      <dxi-item location="before">
-        <div class="header-text">{{ "my_profile" | translate }}</div>
-      </dxi-item>
-      <dxi-item location="after" locateInMenu="never">
-        <!-- <dx-button
-          [disabled]="!isDataChanged"
-          text="Save"
-          icon="save"
-          type="default"
-          stylingMode="contained"
-          (onClick)="onsaveActiveUserAccountsDetails()"
-        >
-        </dx-button> -->
-      </dxi-item>
-    </dx-toolbar>
-  
-    <!-- Content -->
-    <dx-scroll-view class="view-wrapper-scroll" (onScroll)="scroll($event)">
-      <div class="container-fluid">
-        <form (ngSubmit)="onsaveActiveUserAccountsDetails()" [formGroup]="userAccountFrm">
-          <!-- Profile Card -->
-          <div class="profile-card">
-            
-            <fieldset class="profile-section">
-              <legend>{{ 'account_details' | translate }}</legend>
-  
-              <div class="form-group">
-                <label>{{'account_type' | translate}}</label>
-                <dx-select-box [dataSource]="userAccountTypeData" (onSelectionChanged)="onAccountTypeSelection($event)"
-                  [readOnly]="is_readonly" formControlName="account_type_id" valueExpr="id" [searchEnabled]="true"
-                  displayExpr="name">
-                </dx-select-box>
-              </div>
-  
-              <div class="form-group">
-                <label>{{'country_of_residence' | translate}}</label>
-                <dx-select-box [dataSource]="Countries" [readOnly]="is_readonly" formControlName="country_of_origin_id"
-                  [showClearButton]="true" valueExpr="id" [searchEnabled]="true" displayExpr="name">
-                </dx-select-box>
-              </div>
-  
-              <div class="form-group" *ngIf="has_memberstate_defination">
-                <label>{{'partner_states' | translate}}</label>
-                <dx-select-box [dataSource]="memberStatesData" [readOnly]="is_readonly" formControlName="partner_state_id"
-                  [showClearButton]="true" valueExpr="id" [searchEnabled]="true" displayExpr="name"
-                  (onValueChanged)="onMemberStateChange($event.value)">
-                </dx-select-box>
-              </div>
-  
-              <div class="form-group" *ngIf="is_secretariat">
-                <label>{{'secretariate_department' | translate}}</label>
-                <dx-select-box [dataSource]="secretariatDepartmentsData" [readOnly]="is_readonly"
-                  formControlName="secretariat_department_id" [showClearButton]="true" valueExpr="id" [searchEnabled]="true"
-                  displayExpr="name">
-                </dx-select-box>
-              </div>
-  
-              <div class="form-group" *ngIf="has_memberstate_defination">
-                <label>{{'institutions_types' | translate}}</label>
-                <dx-select-box [dataSource]="instituionTypeData" [readOnly]="is_readonly"
-                  formControlName="institution_type_id" [showClearButton]="true" valueExpr="id" [searchEnabled]="true"
-                  displayExpr="name" (onValueChanged)="onInstitutionTypeChange($event.value)">
-                </dx-select-box>
-              </div>
-  
-              <div class="form-group" *ngIf="has_memberstate_defination">
-                <label>{{'institutions' | translate}}</label>
-                <dx-select-box [dataSource]="Institutions" [readOnly]="is_readonly" formControlName="institution_id"
-                  [showClearButton]="true" valueExpr="id" [searchEnabled]="true" displayExpr="name"
-                  (onValueChanged)="onInstitutionChange($event.value)">
-                </dx-select-box>
-              </div>
-  
-              <div class="form-group" *ngIf="has_memberstate_defination">
-                <label>{{'institutions_department' | translate}}</label>
-                <dx-select-box [dataSource]="InstitutionDepartments" [readOnly]="is_readonly"
-                  formControlName="institution_department_id" [showClearButton]="true" valueExpr="id" [searchEnabled]="true"
-                  displayExpr="name">
-                </dx-select-box>
-              </div>
-            </fieldset>
-  
-            <fieldset class="profile-section">
-              <legend>{{ 'personal_information' | translate }}</legend>
-              <div class="col-md-2">
-                <img [src]="" alt="Avatar" class="avatar">
-              </div>
-              <div class="form-group row">
-                <div class="col-md-3">
-                  <label>{{'user_title' | translate}}</label>
-                  <dx-select-box [dataSource]="userTitles" [readOnly]="is_readonly" formControlName="user_title_id"
-                    [showClearButton]="true" valueExpr="id" [searchEnabled]="true" displayExpr="name">
-                  </dx-select-box>
+  </div>
+
+
+  <div class="page-content">
+    <div class="page-header">
+      <h1>
+        {{'my_profile' | translate}}
+        <small>
+          <i class="ace-icon fa fa-angle-double-right"></i>
+          overview &amp; stats
+        </small>
+      </h1>
+    </div>
+
+
+    <div class="container-fluid">
+      <dx-tab-panel id="supplierPanel" [swipeEnabled]="false" [showNavButtons]="true" [animationEnabled]="true"
+        [tabsPosition]="tabsPosition">
+        <dxi-item title="{{'my_profile' | translate}}" icon="group">
+          <form (ngSubmit)="onsaveActiveUserAccountsDetails()" [formGroup]="userAccountFrm">
+            <!-- Profile Card -->
+            <div class="profile-card">
+
+              <fieldset class="profile-section">
+                <legend>{{ 'account_details' | translate }}</legend>
+                <div class="row">
+                  <div class="form-group col-lg-4">
+                    <label>{{'account_type' | translate}}</label>
+                    <dx-select-box [dataSource]="userAccountTypeData"
+                      (onSelectionChanged)="onAccountTypeSelection($event)" [readOnly]="is_readonly"
+                      formControlName="account_type_id" valueExpr="id" [searchEnabled]="true" displayExpr="name">
+                    </dx-select-box>
+                  </div>
+
+                  <div class="form-group col-lg-4">
+                    <label>{{'country_of_residence' | translate}}</label>
+                    <dx-select-box [dataSource]="Countries" [readOnly]="is_readonly"
+                      formControlName="country_of_origin_id" [showClearButton]="true" valueExpr="id"
+                      [searchEnabled]="true" displayExpr="name">
+                    </dx-select-box>
+                  </div>
+
+
+
+                  <div class="form-group col-lg-4">
+                    <label>{{'competent_authority_types' | translate}}</label>
+                    <dx-select-box [dataSource]="organisationTypeData" [readOnly]="is_readonly"
+                      formControlName="organisation_type_id" [showClearButton]="true" valueExpr="id"
+                      [searchEnabled]="true" displayExpr="name"
+                      (onValueChanged)="onInstitutionTypeChange($event.value)">
+                    </dx-select-box>
+                  </div>
+
+                  <div class="form-group col-lg-4">
+                    <label>{{'competent_authority' | translate}}</label>
+                    <dx-select-box [dataSource]="organisationData" [readOnly]="is_readonly" formControlName="organisation_id"
+                      [showClearButton]="true" valueExpr="id" [searchEnabled]="true" displayExpr="name"
+                      (onValueChanged)="onInstitutionChange($event.value)">
+                    </dx-select-box>
+                  </div>
+
+                  <div class="form-group col-lg-4">
+                    <label>{{'competent_authority_department' | translate}}</label>
+                    <dx-select-box [dataSource]="organisationDepartmentData" [readOnly]="is_readonly"
+                      formControlName="organisation_department_id" [showClearButton]="true" valueExpr="id"
+                      [searchEnabled]="true" displayExpr="name">
+                    </dx-select-box>
+                  </div>
                 </div>
-                <div class="col-md-4">
-                  <label>{{'first_name' | translate}}</label>
-                  <dx-text-box formControlName="first_name" [readOnly]="is_readonly" placeholder=""
-                    [showClearButton]="true"></dx-text-box>
+              </fieldset>
+
+              <fieldset class="profile-section">
+                <legend>{{ 'personal_information' | translate }}</legend>
+
+                <div class="form-group row">
+                  <div class="col-lg-4">
+                    <label>{{'user_title' | translate}}</label>
+                    <dx-select-box [dataSource]="userTitles" [readOnly]="is_readonly" formControlName="user_title_id"
+                      [showClearButton]="true" valueExpr="id" [searchEnabled]="true" displayExpr="name">
+                    </dx-select-box>
+                  </div>
+                  <div class="col-lg-4">
+                    <label>{{'first_name' | translate}}</label>
+                    <dx-text-box formControlName="first_name" [readOnly]="is_readonly" placeholder=""
+                      [showClearButton]="true"></dx-text-box>
+                  </div>
+                  <div class="col-lg-4">
+                    <label>{{'other_names' | translate}}</label>
+                    <dx-text-box formControlName="other_names" [readOnly]="is_readonly" placeholder=""
+                      [showClearButton]="true"></dx-text-box>
+                  </div>
+                  <div class="form-group col-lg-4">
+                    <label>{{'email-address' | translate}}</label>
+                    <dx-text-box formControlName="email_address" [readOnly]="is_readonly"
+                      [showClearButton]="true"></dx-text-box>
+                  </div>
+
+                  <div class="form-group col-lg-4">
+                    <label>{{'phone_no' | translate}}</label>
+
+                    <dx-text-box formControlName="phone_number" [readOnly]="is_readonly" [showClearButton]="true">
+                    </dx-text-box>
+                  </div>
+
+                  <div class="form-group col-lg-4">
+                    <label>{{'identification_type' | translate}}</label>
+                    <dx-select-box [dataSource]="IdentificationTypeData" [readOnly]="is_readonly"
+                      formControlName="identification_type_id" [showClearButton]="true" valueExpr="id"
+                      [searchEnabled]="true" displayExpr="name">
+                    </dx-select-box>
+                  </div>
+
+                  <div class="form-group col-lg-4">
+                    <label>{{'identification_number' | translate}}</label>
+                    <dx-text-box formControlName="identification_number" [readOnly]="is_readonly" placeholder=""
+                      [showClearButton]="true"></dx-text-box>
+                  </div>
                 </div>
-                <div class="col-md-5">
-                  <label>{{'other_names' | translate}}</label>
-                  <dx-text-box formControlName="other_names" [readOnly]="is_readonly" placeholder=""
-                    [showClearButton]="true"></dx-text-box>
-                </div>
+              </fieldset>
+
+              <div class="button-container">
+                <dx-button text="Enable Edit" type="danger" icon="fa fa-edit" (onClick)="onActionEditDetails()">
+                </dx-button>
+                <dx-button text="Update User Account Details" [disabled]="is_readonly" type="success" icon="fa fa-plus"
+                  (onClick)="onsaveActiveUserAccountsDetails()">
+                </dx-button>
               </div>
-  
-              <div class="form-group">
-                <label>{{'email-address' | translate}}</label>
-                <dx-text-box formControlName="email_address" [readOnly]="is_readonly" [showClearButton]="true"></dx-text-box>
-              </div>
-  
-              <div class="form-group">
-                <label>{{'phone_no' | translate}}</label>
-                <ngx-intl-tel-input [cssClass]="'custom'" [enableAutoCountrySelect]="false" [enablePlaceholder]="true"
-                  [searchCountryFlag]="true" [disabled]="is_readonly" [selectFirstCountry]="false" [maxLength]="15"
-                  [phoneValidation]="false" name="phone_number" formControlName="phone_number"></ngx-intl-tel-input>
-              </div>
-  
-              <div class="form-group">
-                <label>{{'identification_type' | translate}}</label>
-                <dx-select-box [dataSource]="IdentificationTypeData" [readOnly]="is_readonly"
-                  formControlName="identification_type_id" [showClearButton]="true" valueExpr="id" [searchEnabled]="true"
-                  displayExpr="name">
-                </dx-select-box>
-              </div>
-  
-              <div class="form-group">
-                <label>{{'identification_number' | translate}}</label>
-                <dx-text-box formControlName="identification_number" [readOnly]="is_readonly" placeholder=""
-                  [showClearButton]="true"></dx-text-box>
-              </div>
-            </fieldset>
-  
-            <div class="button-container">
-              <dx-button text="Enable Edit" type="danger" icon="fa fa-edit" (onClick)="onActionEditDetails()">
-              </dx-button>
-              <dx-button text="Update User Account Details" [disabled]="is_readonly" type="success" icon="fa fa-plus"
-                (onClick)="onsaveActiveUserAccountsDetails()">
-              </dx-button>
             </div>
-          </div>
-        </form>
-      </div>
-    </dx-scroll-view>
+          </form>
+        </dxi-item>
+
+
+        <dxi-item title="{{'my_user_groups' | translate}}" icon="group">
+
+          <dx-data-grid [allowColumnReordering]="true" class="table row-border hover" [wordWrapEnabled]="true"
+            [dataSource]="userGroupData" [remoteOperations]="true" [showBorders]="true" [allowColumnResizing]="true"
+            [columnHidingEnabled]="false" keyExpr="id">
+
+            <dxo-export [enabled]="true" fileName="Data" [allowExportSelectedData]="true"></dxo-export>
+            <dxo-search-panel [visible]="true"></dxo-search-panel>
+            <dxo-paging [enabled]="true">
+              <dxo-pager [showInfo]="true" infoText="Page #{0}. Total: {1} ({2} items)" [showPageSizeSelector]="true"
+                [allowedPageSizes]="[50,100]"></dxo-pager>
+            </dxo-paging>
+
+            <dxi-column dataField="account_type" caption="{{ 'account_type' | translate }}">
+
+            </dxi-column>
+            <dxi-column dataField="user_groupname" caption="{{ 'user_groupname' | translate }}"></dxi-column>
+
+            <dxi-column dataField="code" caption="{{ 'code' | translate }}"></dxi-column>
+            <dxo-selection mode="single"></dxo-selection>
+            <dxo-group-panel [visible]="true"></dxo-group-panel>
+
+            <dxo-paging [pageSize]="500"></dxo-paging>
+
+          </dx-data-grid>
+
+        </dxi-item>
+
+        <dxi-item title="{{'regulatory_functions_permissions' | translate}}" icon="group">
+          <dx-tree-list id="regulatory_functions" class="table row-border hover" dataStructure="tree"
+            [wordWrapEnabled]="true" [dataSource]="appRegulatoryFunctionData" itemsExpr="children" keyExpr="id"
+            parentIdExpr="parent_id" [expandedRowKeys]="[1, 2]" [selectedRowKeys]="[1, 29, 42]">
+
+            <dxo-header-filter [visible]="true"></dxo-header-filter>
+            <dxo-selection mode="single"></dxo-selection>
+            <dxo-group-panel [visible]="true"></dxo-group-panel>
+
+
+            <dxi-column [allowEditing]="false" dataField="regulatory_function"
+              caption="{{ 'regulatory_function' | translate }}">
+
+            </dxi-column>
+
+
+            <dxi-column dataField="user_access_levels" caption="{{ 'access_level' | translate }}">
+
+            </dxi-column>
+            <dxo-selection mode="single"></dxo-selection>
+            <dxo-group-panel [visible]="true"></dxo-group-panel>
+          </dx-tree-list>
+
+        </dxi-item>
+        <dxi-item title="{{'system_permissions' | translate}}" icon="group">
+          <dx-tree-list id="navigations" class="table row-border hover" dataStructure="tree" [wordWrapEnabled]="true"
+            [dataSource]="appNavigationMenusPermisData" itemsExpr="children" keyExpr="id" parentIdExpr="parent_id"
+            [expandedRowKeys]="[1, 2]" [selectedRowKeys]="[1, 29, 42]">
+            <dxo-header-filter [visible]="true"></dxo-header-filter>
+            <dxo-selection mode="multiple"></dxo-selection>
+            <dxo-group-panel [visible]="true"></dxo-group-panel>
+
+            <dxi-column [allowEditing]="false" dataField="navigation_item"
+              caption="{{ 'navigation_item' | translate }}">
+
+            </dxi-column>
+            <dxi-column [allowEditing]="false" dataField="user_access_levels"
+              caption="{{ 'user_access_levels' | translate }}">
+
+            </dxi-column>
+
+            <dxo-selection mode="multiple"></dxo-selection>
+            <dxo-group-panel [visible]="true"></dxo-group-panel>
+          </dx-tree-list>
+
+        </dxi-item>
+        <dxi-item title="{{'process_permissions' | translate}}" icon="group">
+          <dx-data-grid [allowColumnReordering]="true" class="table row-border hover" [wordWrapEnabled]="true"
+            [dataSource]="workflowPermissionData" [remoteOperations]="true" [showBorders]="true"
+            [allowColumnResizing]="true" [columnHidingEnabled]="false" keyExpr="id">
+            <dxo-header-filter [visible]="true"></dxo-header-filter>
+            <dxo-search-panel [visible]="true"></dxo-search-panel>
+
+            <dxo-paging [enabled]="true">
+              <dxo-pager [showInfo]="true" infoText="Page #{0}. Total: {1} ({2} items)" [showPageSizeSelector]="true"
+                [allowedPageSizes]="[50,100]"></dxo-pager>
+            </dxo-paging>
+
+            <dxi-column [allowEditing]="false" [groupIndex]="0" dataField="workflow_name"
+              caption="{{ 'wofkflow_name' | translate }}">
+
+            </dxi-column>
+            <dxi-column [allowEditing]="false" dataField="workflow_stage" caption="{{ 'wofkflow_stage' | translate }}">
+            </dxi-column>
+            <dxi-column dataField="user_access_levels" caption="{{ 'access_level' | translate }}">
+
+            </dxi-column>
+
+            <dxo-selection mode="multiple"></dxo-selection>
+            <dxo-group-panel [visible]="true"></dxo-group-panel>
+
+            <dxo-paging [pageSize]="500"></dxo-paging>
+
+          </dx-data-grid>
+
+        </dxi-item>
+
+      </dx-tab-panel>
+    </div>
   </div>
 </div>

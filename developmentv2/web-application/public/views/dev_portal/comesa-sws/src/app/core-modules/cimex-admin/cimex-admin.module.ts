@@ -297,6 +297,7 @@ import { ProceduresCategoriesComponent } from './views/configurations/import-exp
 import { ProceduresSubcategoriesComponent } from './views/configurations/import-export-procedures/procedures-subcategories/procedures-subcategories.component';
 import { SharedImportexportProceduresComponent } from './views/configurations/import-export-procedures/shared-importexport-procedures/shared-importexport-procedures.component';
 import { StatusesActionsComponent } from './views/user-management/statuses-actions/statuses-actions.component';
+import { GeneralSystemFormsComponent } from './views/configurations/forms/general-system-forms/general-system-forms.component';
 
 @NgModule({
   declarations: [AppdashboardComponent,
@@ -445,7 +446,7 @@ import { StatusesActionsComponent } from './views/user-management/statuses-actio
     ClinicaltrialConfigsetupComponent,
     SharedclinicalTrialconfigurationsComponent,
     CertificateConditionComponent,
-  
+    GeneralSystemFormsComponent,
 
     TransactionCurrencyComponent,
     PermitStorageConditionsComponent,
@@ -712,7 +713,7 @@ import { StatusesActionsComponent } from './views/user-management/statuses-actio
     PortalProcesstransitionComponent,
     PortalDocdefinationComponent,
     AppFormsComponent,
-
+    GeneralSystemFormsComponent,
    
    
     TransactionCurrencyComponent,
