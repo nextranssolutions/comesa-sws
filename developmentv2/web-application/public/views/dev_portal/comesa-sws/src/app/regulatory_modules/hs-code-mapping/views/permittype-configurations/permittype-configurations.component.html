@@ -562,6 +562,9 @@
 
         <div *dxTemplate="let data of 'content'">
             <dx-scroll-view>
+                <dx-button text="{{ 'add' | translate }} {{ 'product_details' | translate}}" type="default" icon="fa fa-plus"
+                [elementAttr]="{ class: '' }" (onClick)="onAddProductDetails()">
+                </dx-button>
                 <dx-data-grid class="table row-border hover" [allowColumnResizing]="true" [wordWrapEnabled]="true"
                 [columnHidingEnabled]="true" [dataSource]="productCategoryData" [remoteOperations]="true"
                 [showBorders]="true" itemsExpr="children" keyExpr="id" parentIdExpr="parent_id"
@@ -594,6 +597,77 @@
             </dx-scroll-view>
         </div>
     </dx-popup>
+    <dx-popup [(visible)]="isProductDetailsPopupVisible" [width]="funcpopWidth(85)" [height]="funcpopHeight(65)" [showTitle]="true"
+    title="{{'product_details' | translate}}"[dragEnabled]="false" [closeOnOutsideClick]="true" >
+    <div *dxTemplate="let data of 'content'">
+        <dx-scroll-view>
+            <form (ngSubmit)="onFuncSaveProductDetails()" [formGroup]="ProductsDetailsFrm">
+                <div class="profile-card">
+
+                    <fieldset class="profile-section">
+                        <div class="row">
+
+                            <div class="col-lg-6">
+                                <label>{{'name' | translate}}</label>
+                                <dx-text-box formControlName="name"  placeholder=""
+                                    [showClearButton]="true"></dx-text-box>
+                            </div>
+
+                            <div class="col-lg-6">
+                            <label>{{'chapters_defination' | translate}}</label>
+                            <dx-select-box [dataSource]="chapterDefinationData"
+                                formControlName="chapters_defination_id" valueExpr="id" displayExpr="name"
+                                 [searchEnabled]="true">
+                            </dx-select-box>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <label>{{'heading_definations' | translate}}</label>
+                            <dx-select-box [dataSource]="headingDefinationData"
+                                formControlName="heading_definations_id" valueExpr="id" displayExpr="name"
+                                 [searchEnabled]="true">
+                            </dx-select-box>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <label>{{'subheading_definations' | translate}}</label>
+                            <dx-select-box [dataSource]="subHeadingDefinationData"
+                                formControlName="subheading_definations_id" valueExpr="id" displayExpr="name"
+                                [searchEnabled]="true">
+                            </dx-select-box>
+                        </div>
+
+
+                        <div class="col-lg-6">
+                            <label>{{'description' | translate}}</label>
+                            <dx-text-box formControlName="description"  placeholder=""
+                                [showClearButton]="true"></dx-text-box>
+                        </div>
+
+                        <div class="col-lg-6">
+                            <label>{{ "is_enabled" | translate }}</label>
+                            <dx-select-box [searchEnabled]="true" formControlName="is_enabled"
+                                [dataSource]="regStatusOptions" valueExpr="value" displayExpr="text"></dx-select-box>
+                        </div>              
+
+                     </div><!-- /.row -->
+
+                    </fieldset>
+                </div>
+                <div class="button-container">
+                  
+                    <dx-button text="{{'save_product_details' | translate}}" type="default" icon="fa fa-plus"
+                        [elementAttr]="{ class: 'pull-left' }" (onClick)="onFuncSaveProductDetails()">
+                    </dx-button>
+                    <dx-button text="Cancel" type="danger" icon="fa fa-times" [elementAttr]="{ class: 'pull-left' }"
+                        (onClick)="isProductDetailsPopupVisible = false">
+                    </dx-button>
+                </div>
+            </form>
+        </dx-scroll-view>
+    </div>
+
+</dx-popup>
 
     <dx-popup [visible]="hscodePopupVisible" [width]="funcpopWidth(65)" [height]="funcpopHeight(55)"
             [showTitle]="true" [title]="'HS Codes'" (onHidden)="hscodePopupVisible = false">

@@ -1,4 +1,4 @@
-import { Component, HostListener, ViewContainerRef } from '@angular/core';
+import { Component, HostListener, Input, ViewContainerRef } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import CustomStore from 'devextreme/data/custom_store';
@@ -21,6 +21,7 @@ import { AuthenticationService } from 'src/app/core-services/authentication/auth
   styleUrl: './permittype-configurations.component.css'
 })
 export class PermittypeConfigurationsComponent {
+  @Input() ProductsDetailsFrm: FormGroup;
  table_name: string = 'tra_transactionpermit_types';
   parameter_name: string = 'transaction_permit_types';
   resetcolumns = 'resetcolumns,routerLink';
@@ -45,6 +46,9 @@ export class PermittypeConfigurationsComponent {
   timelineTypeData: any;
   refNumberData: any;
   productTypeData: any;
+  subHeadingDefinationData: any;
+  headingDefinationData: any;
+  chapterDefinationData: any;
   renewableStatusData: any;
   productCategoryData: any;
   permitStatusData: any;
@@ -89,6 +93,7 @@ export class PermittypeConfigurationsComponent {
   tabPanelPopupVisible: boolean = false;
   hscodePopupVisible: boolean = false;
   isHsCodePopupVisible: boolean = false;
+  isProductDetailsPopupVisible: boolean = false;
   PermitSignatoriesPopupVisible: boolean = false;
   PermitSpecialConditionsPopupVisible: boolean = false;
   PermitRqdDocPopupVisible: boolean = false;
@@ -268,15 +273,29 @@ export class PermittypeConfigurationsComponent {
 
     });
 
+     this.ProductsDetailsFrm = new FormGroup({
+      id: new FormControl('', Validators.compose([])),
+      name: new FormControl('', Validators.compose([])),
+      description: new FormControl('', Validators.compose([])),
+      chapters_defination_id: new FormControl('', Validators.compose([])),
+      heading_definations_id: new FormControl('', Validators.compose([])),
+      subheading_definations_id: new FormControl('', Validators.compose([])),
+      is_enabled: new FormControl('', Validators.compose([])),
+  });
+
     // this.resetcolumns = 'resetcolumns,account_type_id,routerLink,has_partnerstate_defination';
 
   }
   ngOnInit() {
     this.fetchPermitTypeDetails();
+    this.fetchProductDetails();
     this.onLoadOperationTypeData();
     this.onLoadPermitTypeData();
     this.onLoadRenewableStatusData();
     this.onLoadproductTypeData();
+    this.onLoadSubHeadingDefinationData();
+    this.onLoadHeadingDefinationData();
+    this.onLoadChapterDefinationData();
     this.onLoadHsCodeData();
     this.onLoadQuotaLimitationData();
     this.onLoadStartHsCodeData();
@@ -318,6 +337,48 @@ export class PermittypeConfigurationsComponent {
     } else {
       this.tabsPosition = 'left';
     }
+  }
+  onAddNewRecord() {
+
+    this.createNewDataFrm.reset();
+    this.tabPanelPopupVisible = true;
+    this.AppNavigationMenus = [];
+  }
+
+  onAddProductDetails() {
+
+    this.ProductsDetailsFrm.reset();
+    this.isProductDetailsPopupVisible = true;
+    this.AppNavigationMenus = [];
+  }
+
+  onAddNewHscode() {
+    this.hsCodeDataFrm.reset();
+    this.hscodePopupVisible = true;
+    this.AppNavigationMenus = [];
+
+  }
+
+  onAddNewPermitSignatories() {
+    this.PermitSignatoriesFrm.reset();
+    this.PermitSignatoriesPopupVisible = true;
+    this.AppNavigationMenus = [];
+  }
+  onAddNewPermitSpecialConditions() {
+    this.PermitSpecialConditionsFrm.reset();
+    this.PermitSpecialConditionsPopupVisible = true;
+    this.AppNavigationMenus = [];
+  }
+  onAddNewAppPermitRequiredDocuments() {
+    this.PermitRqdDocFrm.reset();
+    this.PermitRqdDocPopupVisible = true;
+    this.AppNavigationMenus = [];
+  }
+
+  onAddNewAppPermitChecklists() {
+    this.PermitChecklistFrm.reset();
+    this.PermitChecklistPopupVisible = true;
+    this.AppNavigationMenus = [];
   }
 
   onOrganisationDefinationSelection($event) {
@@ -408,570 +469,6 @@ export class PermittypeConfigurationsComponent {
         });
 
   }
-
-  spinnerShow(spinnerMessage) {
-    this.loadingVisible = true;
-    this.spinnerMessage = spinnerMessage;
-  }
-  spinnerHide() {
-    this.loadingVisible = false;
-  }
-  fetchPermitTypeDetails() {
-
-    var data_submit = {
-      'table_name': this.table_name
-    }
-    this.admnistrationService.onLoadTransactionPermitTypeData(data_submit)
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            this.permitTypes = this.data_record.data;
-          }
-
-        },
-        error => {
-
-        });
-
-  }
-
-  funcSelectProductCategory(data) {
-    let data_resp = data.data;
-
-    // Prioritize values in order: hscodessubheading -> hscodesheading -> hscodechapters
-    let selectedProductName = data_resp.hscodessubheading ||
-      data_resp.hscodesheading ||
-      data_resp.hscodechapters || '';
-
-    // Patch the form with selected values
-    this.hsCodeDataFrm.patchValue({
-      product_name: selectedProductName,
-      regulated_product_category_id: data_resp.regulated_product_category_id
-    });
-
-    // Close the popup
-    this.isHsCodePopupVisible = false;
-  }
-  onFuncSaveRecordData() {
-
-    const formData = new FormData();
-    const invalid = [];
-    const controls = this.createNewDataFrm.controls;
-    for (const name in controls) {
-      if (controls[name].invalid) {
-        this.toastr.error('Fill In All Mandatory fields with (*), missing value on ' + name.replace('_id', ''), 'Alert');
-        return;
-      }
-    }
-    if (this.createNewDataFrm.invalid) {
-      return;
-    }
-    this.createNewDataFrm.get('resetcolumns')?.setValue(this.resetcolumns);
-    this.createNewDataFrm.get('table_name')?.setValue(this.table_name);
-    this.spinnerShow('Saving ' + this.parameter_name);
-    this.action_url = 'onsaveSysAdminData';
-    this.spinner.show();
-
-    this.admnistrationService.onSaveSystemAdministrationDetails(this.table_name, this.createNewDataFrm.value, this.action_url)
-      .subscribe(
-        response => {
-          this.response = response;
-
-          if (this.response.success) {
-
-            this.fetchPermitTypeDetails();
-            this.toastr.success(this.response.message, 'Response');
-            // this.isnewrecord = false;
-            this.transactionpermit_type_id = this.response.record_id;
-            this.createNewDataFrm.get('id')?.setValue(this.transactionpermit_type_id);
-            this.fetchAppHsCodes(this.transactionpermit_type_id)
-            this.selectedTabIndex = 1;
-            this.toastr.success(this.response.message, 'Response');
-            this.spinnerHide();
-
-          } else {
-            this.toastr.error(this.response.message, 'Alert');
-          }
-
-          this.spinnerHide();
-        },
-        error => {
-          this.toastr.error('Error Occurred', 'Alert');
-          // 
-          this.spinnerHide();
-        });
-  }
-
-
-  onFuncSaveHsCodeData() {
-
-
-    const formData = new FormData();
-    const invalid = [];
-    const controls = this.hsCodeDataFrm.controls;
-    for (const name in controls) {
-      if (controls[name].invalid) {
-        this.toastr.error('Fill In All Mandatory fields with (*), missing value on ' + name.replace('_id', ''), 'Alert');
-        return;
-      }
-    }
-    if (this.hsCodeDataFrm.invalid) {
-      return;
-    }
-
-    this.hsCodeDataFrm.get('resetcolumns')?.setValue(this.resetcolumns);
-    this.spinnerShow('Saving ' + this.parameter_name);
-
-
-    this.spinner.show();
-    this.hsCodeDataFrm.get('transactionpermit_type_id')?.setValue(this.transactionpermit_type_id);
-    this.admnistrationService.onSaveSystemAdministrationDetails('tra_transactionpermit_hs_codes', this.hsCodeDataFrm.value, 'onsaveSysAdminData')
-      .subscribe(
-        response => {
-          this.response = response;
-          //the details 
-          if (this.response.success) {
-
-            this.fetchAppHsCodes(this.transactionpermit_type_id);
-            this.hscodePopupVisible = false;
-            this.toastr.success(this.response.message, 'Response');
-            this.spinnerHide();
-          } else {
-            this.toastr.error(this.response.message, 'Alert');
-            this.spinnerHide();
-          }
-          this.spinnerHide();
-        },
-        error => {
-          this.toastr.error('Error Occurred', 'Alert');
-          this.spinnerHide();
-        });
-  }
-
-
-  onFuncSavePermitSignatories() {
-
-
-    const formData = new FormData();
-    const invalid = [];
-    const controls = this.PermitSignatoriesFrm.controls;
-    for (const name in controls) {
-      if (controls[name].invalid) {
-        this.toastr.error('Fill In All Mandatory fields with (*), missing value on ' + name.replace('_id', ''), 'Alert');
-        return;
-      }
-    }
-    if (this.PermitSignatoriesFrm.invalid) {
-      return;
-    }
-
-    this.PermitSignatoriesFrm.get('resetcolumns')?.setValue(this.resetcolumns);
-    this.spinnerShow('Saving ' + this.parameter_name);
-
-
-    this.spinner.show();
-    this.PermitSignatoriesFrm.get('transactionpermit_type_id')?.setValue(this.transactionpermit_type_id);
-    this.admnistrationService.onSaveSystemAdministrationDetails('tra_transactionpermit_signatories', this.PermitSignatoriesFrm.value, 'onsaveSysAdminData')
-      .subscribe(
-        response => {
-          this.response = response;
-          //the details 
-          if (this.response.success) {
-
-            this.fetchAppPermitSignatories(this.transactionpermit_type_id);
-            this.PermitSignatoriesPopupVisible = false;
-            this.toastr.success(this.response.message, 'Response');
-            this.spinnerHide();
-          } else {
-            this.toastr.error(this.response.message, 'Alert');
-            this.spinnerHide();
-          }
-          this.spinnerHide();
-        },
-        error => {
-          this.toastr.error('Error Occurred', 'Alert');
-          this.spinnerHide();
-        });
-  }
-
-  onFuncSavePermitSpecialConditions() {
-
-
-    const formData = new FormData();
-    const invalid = [];
-    const controls = this.PermitSpecialConditionsFrm.controls;
-    for (const name in controls) {
-      if (controls[name].invalid) {
-        this.toastr.error('Fill In All Mandatory fields with (*), missing value on ' + name.replace('_id', ''), 'Alert');
-        return;
-      }
-    }
-    if (this.PermitSpecialConditionsFrm.invalid) {
-      return;
-    }
-
-    this.PermitSpecialConditionsFrm.get('resetcolumns')?.setValue(this.resetcolumns);
-    this.spinnerShow('Saving ' + this.parameter_name);
-
-
-    this.spinner.show();
-    this.PermitSpecialConditionsFrm.get('transactionpermit_type_id')?.setValue(this.transactionpermit_type_id);
-    this.admnistrationService.onSaveSystemAdministrationDetails('tra_permit_special_conditions', this.PermitSpecialConditionsFrm.value, 'onsaveSysAdminData')
-      .subscribe(
-        response => {
-          this.response = response;
-          //the details 
-          if (this.response.success) {
-
-            this.fetchAppPermitSpecialConditions(this.transactionpermit_type_id);
-            this.PermitSpecialConditionsPopupVisible = false;
-            this.toastr.success(this.response.message, 'Response');
-            this.spinnerHide();
-          } else {
-            this.toastr.error(this.response.message, 'Alert');
-            this.spinnerHide();
-          }
-          this.spinnerHide();
-        },
-        error => {
-          this.toastr.error('Error Occurred', 'Alert');
-          this.spinnerHide();
-        });
-  }
-
-  onFuncSavePermitRequiredDocuments() {
-    const formData = new FormData();
-    const invalid = [];
-    const controls = this.PermitRqdDocFrm.controls;
-    for (const name in controls) {
-      if (controls[name].invalid) {
-        this.toastr.error('Fill In All Mandatory fields with (*), missing value on ' + name.replace('_id', ''), 'Alert');
-        return;
-      }
-    }
-    if (this.PermitRqdDocFrm.invalid) {
-      return;
-    }
-
-    this.PermitRqdDocFrm.get('resetcolumns')?.setValue(this.resetcolumns);
-    this.spinnerShow('Saving ' + this.parameter_name);
-
-
-    this.spinner.show();
-    this.PermitRqdDocFrm.get('transactionpermit_type_id')?.setValue(this.transactionpermit_type_id);
-    this.admnistrationService.onSaveSystemAdministrationDetails('tra_transactionpermit_requireddocuments', this.PermitRqdDocFrm.value, 'onsaveSysAdminData')
-      .subscribe(
-        response => {
-          this.response = response;
-          //the details 
-          if (this.response.success) {
-
-            this.fetchAppPermitRequiredDocuments(this.transactionpermit_type_id);
-            this.PermitRqdDocPopupVisible = false;
-            this.toastr.success(this.response.message, 'Response');
-            this.spinnerHide();
-          } else {
-            this.toastr.error(this.response.message, 'Alert');
-            this.spinnerHide();
-          }
-          this.spinnerHide();
-        },
-        error => {
-          this.toastr.error('Error Occurred', 'Alert');
-          this.spinnerHide();
-        });
-  }
-
-  onFuncSavePermitChecklist() {
-    const formData = new FormData();
-    const invalid = [];
-    const controls = this.PermitChecklistFrm.controls;
-    for (const name in controls) {
-      if (controls[name].invalid) {
-        this.toastr.error('Fill In All Mandatory fields with (*), missing value on ' + name.replace('_id', ''), 'Alert');
-        return;
-      }
-    }
-    if (this.PermitChecklistFrm.invalid) {
-      return;
-    }
-
-    this.PermitChecklistFrm.get('resetcolumns')?.setValue(this.resetcolumns);
-    this.spinnerShow('Saving ' + this.parameter_name);
-
-
-    this.spinner.show();
-    this.PermitChecklistFrm.get('transactionpermit_type_id')?.setValue(this.transactionpermit_type_id);
-    this.admnistrationService.onSaveSystemAdministrationDetails('tra_transactionpermit_checklists', this.PermitChecklistFrm.value, 'onsaveSysAdminData')
-      .subscribe(
-        response => {
-          this.response = response;
-          //the details 
-          if (this.response.success) {
-
-            this.fetchAppPermitChecklist(this.transactionpermit_type_id);
-            this.PermitChecklistPopupVisible = false;
-            this.toastr.success(this.response.message, 'Response');
-            this.spinnerHide();
-          } else {
-            this.toastr.error(this.response.message, 'Alert');
-            this.spinnerHide();
-          }
-          this.spinnerHide();
-        },
-        error => {
-          this.toastr.error('Error Occurred', 'Alert');
-          this.spinnerHide();
-        });
-  }
-
-
-  funcpopWidth(percentage_width) {
-    return window.innerWidth * percentage_width / 100;
-  }
-  funcpopHeight(percentage_height) {
-    return window.innerHeight * percentage_height / 100;
-  }
-  finishFunction() {
-
-  }
-
-  onPopupHidden() {
-    this.fetchPermitTypeDetails();
-  }
-
-  funcEditDetails(data) {
-    this.createNewDataFrm.patchValue(data.data);
-
-    this.transactionpermit_type_id = data.data.id;
-    //  this.account_type_id = data.data.account_type_id
-    this.fetchAppNavigationMenus(data.data.id, this.account_type_id);
-    this.fetchAppHsCodes(data.data.id);
-    //  this.fetchWorkflowPermissionData(data.data.id) 
-  }
-  funcEditPermissionDetails(data) {
-    this.createNewDataFrm.patchValue(data.data);
-
-    this.transactionpermit_type_id = data.data.id;
-    this.fetchAppNavigationMenus(data.data.id, this.account_type_id)
-    //  this.fetchWorkflowPermissionData(data.data.id) 
-    this.fetchAppHsCodes(data.data.id)
-  }
-  onAddNewRecord() {
-
-    this.createNewDataFrm.reset();
-    this.tabPanelPopupVisible = true;
-    this.AppNavigationMenus = [];
-
-  }
-  onAddNewHscode() {
-    this.hsCodeDataFrm.reset();
-    this.hscodePopupVisible = true;
-    this.AppNavigationMenus = [];
-
-  }
-
-  onAddNewPermitSignatories() {
-    this.PermitSignatoriesFrm.reset();
-    this.PermitSignatoriesPopupVisible = true;
-    this.AppNavigationMenus = [];
-  }
-  onAddNewPermitSpecialConditions() {
-    this.PermitSpecialConditionsFrm.reset();
-    this.PermitSpecialConditionsPopupVisible = true;
-    this.AppNavigationMenus = [];
-  }
-  onAddNewAppPermitRequiredDocuments() {
-    this.PermitRqdDocFrm.reset();
-    this.PermitRqdDocPopupVisible = true;
-    this.AppNavigationMenus = [];
-  }
-
-  onAddNewAppPermitChecklists() {
-    this.PermitChecklistFrm.reset();
-    this.PermitChecklistPopupVisible = true;
-    this.AppNavigationMenus = [];
-  }
-  fetchAppNavigationMenus(user_group_id, account_type_id) {
-    this.spinnerShow('Loading User Permissions Details');
-    this.admnistrationService.getAppUserGroupNavigationMenus(user_group_id, account_type_id)
-      .subscribe(
-        (data) => {
-
-          this.AppNavigationMenus = data;
-          this.spinnerHide();
-          this.tabPanelPopupVisible = true;
-        },
-        (error) => {
-          console.error('Error fetching Navigation menu:', error);
-          this.spinnerHide();
-        }
-      );
-
-  }
-
-  fetchAppHsCodes(transactionpermit_type_id) {
-    this.spinnerShow('Loading User Permissions Details');
-
-    var data_submit = {
-      table_name: 'tra_transactionpermit_hs_codes',
-      transactionpermit_type_id: transactionpermit_type_id
-    }
-    this.admnistrationService.onLoadDataUrl(data_submit, 'getAppHscodes')
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            this.AppHsCodes = this.data_record.data;
-          }
-        });
-    this.spinnerHide();
-  }
-
-  fetchAppPermitSignatories(transactionpermit_type_id) {
-    this.spinnerShow('Loading User Permissions Details');
-
-    var data_submit = {
-      table_name: 'tra_transactionpermit_signatories',
-      transactionpermit_type_id: transactionpermit_type_id
-    }
-    this.admnistrationService.onLoadDataUrl(data_submit, 'getAppPermitSignatoriesData')
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            this.AppPermitCertificateTemplate = this.data_record.data;
-          }
-        });
-    this.spinnerHide();
-  }
-
-  fetchAppPermitSpecialConditions(transactionpermit_type_id) {
-    this.spinnerShow('Loading User Permissions Details');
-
-    var data_submit = {
-      table_name: 'tra_permit_special_conditions',
-      transactionpermit_type_id: transactionpermit_type_id
-    }
-    this.admnistrationService.onLoadDataUrl(data_submit, 'getAppPermitSpecialConditions')
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            this.AppPermitReportGeneration = this.data_record.data;
-          }
-        });
-    this.spinnerHide();
-  }
-
-  fetchAppPermitRequiredDocuments(transactionpermit_type_id) {
-    this.spinnerShow('Loading User Permissions Details');
-
-    var data_submit = {
-      table_name: 'tra_transactionpermit_requireddocuments',
-      transactionpermit_type_id: transactionpermit_type_id
-    }
-    this.admnistrationService.onLoadDataUrl(data_submit, 'getAppPermitRequiredDocuments')
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            this.AppPermitRequiredDocuments = this.data_record.data;
-          }
-        });
-    this.spinnerHide();
-  }
-
-
-  fetchAppPermitChecklist(transactionpermit_type_id) {
-    this.spinnerShow('Loading User Permissions Details');
-
-    var data_submit = {
-      table_name: 'tra_transactionpermit_checklists',
-      transactionpermit_type_id: transactionpermit_type_id
-    }
-    this.admnistrationService.onLoadDataUrl(data_submit, 'getAppPermitChecklist')
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            this.AppPermitChecklist = this.data_record.data;
-          }
-        });
-    this.spinnerHide();
-  }
-
-  funcDeleteDetails(data) {
-    this.createNewDataFrm.patchValue(data.data);
-    this.config_record = data.data.name;
-    this.deletePopupVisible = true;
-  }
-
-  funcEnableDisableRecord(data) {
-   
-   
-    this.createNewDataFrm.patchValue(data.data);
-
-    this.config_record = data.data.name;
-    this.is_enabled = data.data.is_enabled;
-    if (this.is_enabled) {
-      this.enabledisable_permit_type = "disable_configuration_item";
-      this.enabledisable_permit_typedescription = "are_you_sure_you_want_to_disableconfigurationitem";
-
-    }
-    else {
-      this.enabledisable_permit_type = "enable_configuration_item";
-      this.enabledisable_permit_typedescription = "are_you_sure_you_want_to_enableconfigurationitem";
-    }
-
-    this.enablePopupVisible = true;
-  }
-
-  funcActionColClick(e, data) {
-    var action_btn = e.itemData;
-    if (action_btn.action === 'edit_record') {
-      this.funcEditDetails(data);
-    } else if (action_btn.action === 'delete_record') {
-      this.funcDeleteDetails(data);
-    } else if (action_btn.action === 'enable_record') {
-      this.funcEnableDisableRecord(data);
-    } else if (action_btn.action === 'block_record') {
-      this.funcDeleteDetails(data);
-    }
-  }
-
-  iniateEnableDisableRecord() {
-
-    this.spinnerShow('Saving_details');
-    this.admnistrationService.onEnablePermitTypeDetails(this.createNewDataFrm.value, this.table_name, this.parameter_name)
-      .subscribe(
-        response => {
-          this.spinner.hide();
-          this.response = response;
-          if (this.response.success) {
-            this.fetchPermitTypeDetails();
-            this.enablePopupVisible = false;
-            this.toastr.success(this.response.message, 'Response');
-            this.deletePopupVisible = false;
-          }
-          else {
-            this.toastr.success(this.response.message, 'Response');
-          }
-          this.spinnerHide();
-        },
-        error => {
-          this.loading = false;
-          this.spinnerHide();
-        });
-  }
-
-
-  onCellPrepared(e) {
-    this.utilityService.onCellCountriesPrepared(e);
-  }
-
-
   onLoadOperationTypeData() {
     var data_submit = {
       'table_name': 'par_operation_type'
@@ -1007,6 +504,59 @@ export class PermittypeConfigurationsComponent {
         });
   }
 
+  onLoadSubHeadingDefinationData() {
+    var data_submit = {
+      'table_name': 'par_hscodessubheading_defination'
+    }
+    this.workflowService.getWorkflowConfigs(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.subHeadingDefinationData = this.data_record.data;
+
+          }
+        },
+        error => {
+
+        });
+  }
+  
+  onLoadHeadingDefinationData() {
+    var data_submit = {
+      'table_name': 'par_hscodesheading_definations'
+    }
+    this.workflowService.getWorkflowConfigs(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.headingDefinationData = this.data_record.data;
+
+          }
+        },
+        error => {
+
+        });
+  }
+ 
+  onLoadChapterDefinationData() {
+    var data_submit = {
+      'table_name': 'par_hscodechapters_defination'
+    }
+    this.workflowService.getWorkflowConfigs(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.chapterDefinationData = this.data_record.data;
+
+          }
+        },
+        error => {
+
+        });
+  }
   onLoadPermitStatusData() {
     var data_submit = {
       'table_name': 'par_permit_statuses'
@@ -1422,6 +972,597 @@ export class PermittypeConfigurationsComponent {
 
         });
   }
+
+  spinnerShow(spinnerMessage) {
+    this.loadingVisible = true;
+    this.spinnerMessage = spinnerMessage;
+  }
+  spinnerHide() {
+    this.loadingVisible = false;
+  }
+  fetchPermitTypeDetails() {
+
+    var data_submit = {
+      'table_name': this.table_name
+    }
+    this.admnistrationService.onLoadTransactionPermitTypeData(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.permitTypes = this.data_record.data;
+          }
+
+        },
+        error => {
+
+        });
+
+  }
+  fetchAppNavigationMenus(user_group_id, account_type_id) {
+    this.spinnerShow('Loading User Permissions Details');
+    this.admnistrationService.getAppUserGroupNavigationMenus(user_group_id, account_type_id)
+      .subscribe(
+        (data) => {
+
+          this.AppNavigationMenus = data;
+          this.spinnerHide();
+          this.tabPanelPopupVisible = true;
+        },
+        (error) => {
+          console.error('Error fetching Navigation menu:', error);
+          this.spinnerHide();
+        }
+      );
+
+  }
+
+  fetchAppHsCodes(transactionpermit_type_id) {
+    this.spinnerShow('Loading User Permissions Details');
+
+    var data_submit = {
+      table_name: 'tra_transactionpermit_hs_codes',
+      transactionpermit_type_id: transactionpermit_type_id
+    }
+    this.admnistrationService.onLoadDataUrl(data_submit, 'getAppHscodes')
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.AppHsCodes = this.data_record.data;
+          }
+        });
+    this.spinnerHide();
+  }
+
+  fetchProductDetails() {
+    this.spinnerShow('Loading User Permissions Details');
+
+    var data_submit = {
+      table_name: 'tra_hscodesproducts_registry',
+      
+    }
+    this.admnistrationService.onLoadDataUrl(data_submit, 'onGetRegulatedProductCategory')
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.productCategoryData = this.data_record.data;
+          }
+        });
+    this.spinnerHide();
+  }
+
+  fetchAppPermitSignatories(transactionpermit_type_id) {
+    this.spinnerShow('Loading User Permissions Details');
+
+    var data_submit = {
+      table_name: 'tra_transactionpermit_signatories',
+      transactionpermit_type_id: transactionpermit_type_id
+    }
+    this.admnistrationService.onLoadDataUrl(data_submit, 'getAppPermitSignatoriesData')
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.AppPermitCertificateTemplate = this.data_record.data;
+          }
+        });
+    this.spinnerHide();
+  }
+
+  fetchAppPermitSpecialConditions(transactionpermit_type_id) {
+    this.spinnerShow('Loading User Permissions Details');
+
+    var data_submit = {
+      table_name: 'tra_permit_special_conditions',
+      transactionpermit_type_id: transactionpermit_type_id
+    }
+    this.admnistrationService.onLoadDataUrl(data_submit, 'getAppPermitSpecialConditions')
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.AppPermitReportGeneration = this.data_record.data;
+          }
+        });
+    this.spinnerHide();
+  }
+
+  fetchAppPermitRequiredDocuments(transactionpermit_type_id) {
+    this.spinnerShow('Loading User Permissions Details');
+
+    var data_submit = {
+      table_name: 'tra_transactionpermit_requireddocuments',
+      transactionpermit_type_id: transactionpermit_type_id
+    }
+    this.admnistrationService.onLoadDataUrl(data_submit, 'getAppPermitRequiredDocuments')
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.AppPermitRequiredDocuments = this.data_record.data;
+          }
+        });
+    this.spinnerHide();
+  }
+
+
+  fetchAppPermitChecklist(transactionpermit_type_id) {
+    this.spinnerShow('Loading User Permissions Details');
+
+    var data_submit = {
+      table_name: 'tra_transactionpermit_checklists',
+      transactionpermit_type_id: transactionpermit_type_id
+    }
+    this.admnistrationService.onLoadDataUrl(data_submit, 'getAppPermitChecklist')
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.AppPermitChecklist = this.data_record.data;
+          }
+        });
+    this.spinnerHide();
+  }
+
+  funcSelectProductCategory(data) {
+    let data_resp = data.data;
+
+    // Prioritize values in order: hscodessubheading -> hscodesheading -> hscodechapters
+    let selectedProductName = data_resp.hscodessubheading ||
+      data_resp.hscodesheading ||
+      data_resp.hscodechapters || '';
+
+    // Patch the form with selected values
+    this.hsCodeDataFrm.patchValue({
+      product_name: selectedProductName,
+      regulated_product_category_id: data_resp.regulated_product_category_id
+    });
+
+    // Close the popup
+    this.isHsCodePopupVisible = false;
+  }
+  onFuncSaveRecordData() {
+
+    const formData = new FormData();
+    const invalid = [];
+    const controls = this.createNewDataFrm.controls;
+    for (const name in controls) {
+      if (controls[name].invalid) {
+        this.toastr.error('Fill In All Mandatory fields with (*), missing value on ' + name.replace('_id', ''), 'Alert');
+        return;
+      }
+    }
+    if (this.createNewDataFrm.invalid) {
+      return;
+    }
+    this.createNewDataFrm.get('resetcolumns')?.setValue(this.resetcolumns);
+    this.createNewDataFrm.get('table_name')?.setValue(this.table_name);
+    this.spinnerShow('Saving ' + this.parameter_name);
+    this.action_url = 'onsaveSysAdminData';
+    this.spinner.show();
+
+    this.admnistrationService.onSaveSystemAdministrationDetails(this.table_name, this.createNewDataFrm.value, this.action_url)
+      .subscribe(
+        response => {
+          this.response = response;
+
+          if (this.response.success) {
+
+            this.fetchPermitTypeDetails();
+            this.toastr.success(this.response.message, 'Response');
+            // this.isnewrecord = false;
+            this.transactionpermit_type_id = this.response.record_id;
+            this.createNewDataFrm.get('id')?.setValue(this.transactionpermit_type_id);
+            this.fetchAppHsCodes(this.transactionpermit_type_id)
+            this.selectedTabIndex = 1;
+            this.toastr.success(this.response.message, 'Response');
+            this.spinnerHide();
+
+          } else {
+            this.toastr.error(this.response.message, 'Alert');
+          }
+
+          this.spinnerHide();
+        },
+        error => {
+          this.toastr.error('Error Occurred', 'Alert');
+          // 
+          this.spinnerHide();
+        });
+  }
+
+
+  onFuncSaveHsCodeData() {
+
+
+    const formData = new FormData();
+    const invalid = [];
+    const controls = this.hsCodeDataFrm.controls;
+    for (const name in controls) {
+      if (controls[name].invalid) {
+        this.toastr.error('Fill In All Mandatory fields with (*), missing value on ' + name.replace('_id', ''), 'Alert');
+        return;
+      }
+    }
+    if (this.hsCodeDataFrm.invalid) {
+      return;
+    }
+
+    this.hsCodeDataFrm.get('resetcolumns')?.setValue(this.resetcolumns);
+    this.spinnerShow('Saving ' + this.parameter_name);
+
+
+    this.spinner.show();
+    this.hsCodeDataFrm.get('transactionpermit_type_id')?.setValue(this.transactionpermit_type_id);
+    this.admnistrationService.onSaveSystemAdministrationDetails('tra_transactionpermit_hs_codes', this.hsCodeDataFrm.value, 'onsaveSysAdminData')
+      .subscribe(
+        response => {
+          this.response = response;
+          //the details 
+          if (this.response.success) {
+
+            this.fetchAppHsCodes(this.transactionpermit_type_id);
+            this.hscodePopupVisible = false;
+            this.toastr.success(this.response.message, 'Response');
+            this.spinnerHide();
+          } else {
+            this.toastr.error(this.response.message, 'Alert');
+            this.spinnerHide();
+          }
+          this.spinnerHide();
+        },
+        error => {
+          this.toastr.error('Error Occurred', 'Alert');
+          this.spinnerHide();
+        });
+  }
+
+
+  onFuncSavePermitSignatories() {
+
+
+    const formData = new FormData();
+    const invalid = [];
+    const controls = this.PermitSignatoriesFrm.controls;
+    for (const name in controls) {
+      if (controls[name].invalid) {
+        this.toastr.error('Fill In All Mandatory fields with (*), missing value on ' + name.replace('_id', ''), 'Alert');
+        return;
+      }
+    }
+    if (this.PermitSignatoriesFrm.invalid) {
+      return;
+    }
+
+    this.PermitSignatoriesFrm.get('resetcolumns')?.setValue(this.resetcolumns);
+    this.spinnerShow('Saving ' + this.parameter_name);
+
+
+    this.spinner.show();
+    this.PermitSignatoriesFrm.get('transactionpermit_type_id')?.setValue(this.transactionpermit_type_id);
+    this.admnistrationService.onSaveSystemAdministrationDetails('tra_transactionpermit_signatories', this.PermitSignatoriesFrm.value, 'onsaveSysAdminData')
+      .subscribe(
+        response => {
+          this.response = response;
+          //the details 
+          if (this.response.success) {
+
+            this.fetchAppPermitSignatories(this.transactionpermit_type_id);
+            this.PermitSignatoriesPopupVisible = false;
+            this.toastr.success(this.response.message, 'Response');
+            this.spinnerHide();
+          } else {
+            this.toastr.error(this.response.message, 'Alert');
+            this.spinnerHide();
+          }
+          this.spinnerHide();
+        },
+        error => {
+          this.toastr.error('Error Occurred', 'Alert');
+          this.spinnerHide();
+        });
+  }
+
+  onFuncSavePermitSpecialConditions() {
+
+
+    const formData = new FormData();
+    const invalid = [];
+    const controls = this.PermitSpecialConditionsFrm.controls;
+    for (const name in controls) {
+      if (controls[name].invalid) {
+        this.toastr.error('Fill In All Mandatory fields with (*), missing value on ' + name.replace('_id', ''), 'Alert');
+        return;
+      }
+    }
+    if (this.PermitSpecialConditionsFrm.invalid) {
+      return;
+    }
+
+    this.PermitSpecialConditionsFrm.get('resetcolumns')?.setValue(this.resetcolumns);
+    this.spinnerShow('Saving ' + this.parameter_name);
+
+
+    this.spinner.show();
+    this.PermitSpecialConditionsFrm.get('transactionpermit_type_id')?.setValue(this.transactionpermit_type_id);
+    this.admnistrationService.onSaveSystemAdministrationDetails('tra_permit_special_conditions', this.PermitSpecialConditionsFrm.value, 'onsaveSysAdminData')
+      .subscribe(
+        response => {
+          this.response = response;
+          //the details 
+          if (this.response.success) {
+
+            this.fetchAppPermitSpecialConditions(this.transactionpermit_type_id);
+            this.PermitSpecialConditionsPopupVisible = false;
+            this.toastr.success(this.response.message, 'Response');
+            this.spinnerHide();
+          } else {
+            this.toastr.error(this.response.message, 'Alert');
+            this.spinnerHide();
+          }
+          this.spinnerHide();
+        },
+        error => {
+          this.toastr.error('Error Occurred', 'Alert');
+          this.spinnerHide();
+        });
+  }
+
+  onFuncSavePermitRequiredDocuments() {
+    const formData = new FormData();
+    const invalid = [];
+    const controls = this.PermitRqdDocFrm.controls;
+    for (const name in controls) {
+      if (controls[name].invalid) {
+        this.toastr.error('Fill In All Mandatory fields with (*), missing value on ' + name.replace('_id', ''), 'Alert');
+        return;
+      }
+    }
+    if (this.PermitRqdDocFrm.invalid) {
+      return;
+    }
+
+    this.PermitRqdDocFrm.get('resetcolumns')?.setValue(this.resetcolumns);
+    this.spinnerShow('Saving ' + this.parameter_name);
+
+
+    this.spinner.show();
+    this.PermitRqdDocFrm.get('transactionpermit_type_id')?.setValue(this.transactionpermit_type_id);
+    this.admnistrationService.onSaveSystemAdministrationDetails('tra_transactionpermit_requireddocuments', this.PermitRqdDocFrm.value, 'onsaveSysAdminData')
+      .subscribe(
+        response => {
+          this.response = response;
+          //the details 
+          if (this.response.success) {
+
+            this.fetchAppPermitRequiredDocuments(this.transactionpermit_type_id);
+            this.PermitRqdDocPopupVisible = false;
+            this.toastr.success(this.response.message, 'Response');
+            this.spinnerHide();
+          } else {
+            this.toastr.error(this.response.message, 'Alert');
+            this.spinnerHide();
+          }
+          this.spinnerHide();
+        },
+        error => {
+          this.toastr.error('Error Occurred', 'Alert');
+          this.spinnerHide();
+        });
+  }
+
+  onFuncSavePermitChecklist() {
+    const formData = new FormData();
+    const invalid = [];
+    const controls = this.PermitChecklistFrm.controls;
+    for (const name in controls) {
+      if (controls[name].invalid) {
+        this.toastr.error('Fill In All Mandatory fields with (*), missing value on ' + name.replace('_id', ''), 'Alert');
+        return;
+      }
+    }
+    if (this.PermitChecklistFrm.invalid) {
+      return;
+    }
+
+    this.PermitChecklistFrm.get('resetcolumns')?.setValue(this.resetcolumns);
+    this.spinnerShow('Saving ' + this.parameter_name);
+
+
+    this.spinner.show();
+    this.PermitChecklistFrm.get('transactionpermit_type_id')?.setValue(this.transactionpermit_type_id);
+    this.admnistrationService.onSaveSystemAdministrationDetails('tra_transactionpermit_checklists', this.PermitChecklistFrm.value, 'onsaveSysAdminData')
+      .subscribe(
+        response => {
+          this.response = response;
+          //the details 
+          if (this.response.success) {
+
+            this.fetchAppPermitChecklist(this.transactionpermit_type_id);
+            this.PermitChecklistPopupVisible = false;
+            this.toastr.success(this.response.message, 'Response');
+            this.spinnerHide();
+          } else {
+            this.toastr.error(this.response.message, 'Alert');
+            this.spinnerHide();
+          }
+          this.spinnerHide();
+        },
+        error => {
+          this.toastr.error('Error Occurred', 'Alert');
+          this.spinnerHide();
+        });
+  }
+
+  onFuncSaveProductDetails() {
+    const formData = new FormData();
+    const invalid = [];
+    const controls = this.ProductsDetailsFrm.controls;
+    for (const name in controls) {
+      if (controls[name].invalid) {
+        this.toastr.error('Fill In All Mandatory fields with (*), missing value on ' + name.replace('_id', ''), 'Alert');
+        return;
+      }
+    }
+    if (this.ProductsDetailsFrm.invalid) {
+      return;
+    }
+
+    this.ProductsDetailsFrm.get('resetcolumns')?.setValue(this.resetcolumns);
+    this.spinnerShow('Saving ' + this.parameter_name);
+
+
+    this.spinner.show();
+    
+    this.admnistrationService.onSaveSystemAdministrationDetails('tra_hscodesproducts_registry', this.ProductsDetailsFrm.value, 'onsaveSysAdminData')
+      .subscribe(
+        response => {
+          this.response = response;
+          //the details 
+          if (this.response.success) {
+
+            this.fetchProductDetails();
+            this.isProductDetailsPopupVisible = false;
+            this.toastr.success(this.response.message, 'Response');
+            this.spinnerHide();
+          } else {
+            this.toastr.error(this.response.message, 'Alert');
+            this.spinnerHide();
+          }
+          this.spinnerHide();
+        },
+        error => {
+          this.toastr.error('Error Occurred', 'Alert');
+          this.spinnerHide();
+        });
+  }
+
+  funcpopWidth(percentage_width) {
+    return window.innerWidth * percentage_width / 100;
+  }
+  funcpopHeight(percentage_height) {
+    return window.innerHeight * percentage_height / 100;
+  }
+  finishFunction() {
+
+  }
+
+  onPopupHidden() {
+    this.fetchPermitTypeDetails();
+  }
+
+  
+  
+funcEditDetails(data) {
+    this.createNewDataFrm.patchValue(data.data);
+
+    this.transactionpermit_type_id = data.data.id;
+    //  this.account_type_id = data.data.account_type_id
+    this.fetchAppNavigationMenus(data.data.id, this.account_type_id);
+    this.fetchAppHsCodes(data.data.id);
+    //  this.fetchWorkflowPermissionData(data.data.id) 
+  }
+  funcEditPermissionDetails(data) {
+    this.createNewDataFrm.patchValue(data.data);
+
+    this.transactionpermit_type_id = data.data.id;
+    this.fetchAppNavigationMenus(data.data.id, this.account_type_id)
+    //  this.fetchWorkflowPermissionData(data.data.id) 
+    this.fetchAppHsCodes(data.data.id)
+  }
+  funcDeleteDetails(data) {
+    this.createNewDataFrm.patchValue(data.data);
+    this.config_record = data.data.name;
+    this.deletePopupVisible = true;
+  }
+
+  funcEnableDisableRecord(data) {
+   
+   
+    this.createNewDataFrm.patchValue(data.data);
+
+    this.config_record = data.data.name;
+    this.is_enabled = data.data.is_enabled;
+    if (this.is_enabled) {
+      this.enabledisable_permit_type = "disable_configuration_item";
+      this.enabledisable_permit_typedescription = "are_you_sure_you_want_to_disableconfigurationitem";
+
+    }
+    else {
+      this.enabledisable_permit_type = "enable_configuration_item";
+      this.enabledisable_permit_typedescription = "are_you_sure_you_want_to_enableconfigurationitem";
+    }
+
+    this.enablePopupVisible = true;
+  }
+
+  funcActionColClick(e, data) {
+    var action_btn = e.itemData;
+    if (action_btn.action === 'edit_record') {
+      this.funcEditDetails(data);
+    } else if (action_btn.action === 'delete_record') {
+      this.funcDeleteDetails(data);
+    } else if (action_btn.action === 'enable_record') {
+      this.funcEnableDisableRecord(data);
+    } else if (action_btn.action === 'block_record') {
+      this.funcDeleteDetails(data);
+    }
+  }
+
+  iniateEnableDisableRecord() {
+
+    this.spinnerShow('Saving_details');
+    this.admnistrationService.onEnablePermitTypeDetails(this.createNewDataFrm.value, this.table_name, this.parameter_name)
+      .subscribe(
+        response => {
+          this.spinner.hide();
+          this.response = response;
+          if (this.response.success) {
+            this.fetchPermitTypeDetails();
+            this.enablePopupVisible = false;
+            this.toastr.success(this.response.message, 'Response');
+            this.deletePopupVisible = false;
+          }
+          else {
+            this.toastr.success(this.response.message, 'Response');
+          }
+          this.spinnerHide();
+        },
+        error => {
+          this.loading = false;
+          this.spinnerHide();
+        });
+  }
+
+
+  onCellPrepared(e) {
+    this.utilityService.onCellCountriesPrepared(e);
+  }
+
+
+ 
   onUpdatePermitType() {
 
     this.showWizard = true;
