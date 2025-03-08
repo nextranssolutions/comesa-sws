@@ -1374,6 +1374,57 @@ export class PermitproductdetailsComponent implements OnInit {
       });
   }
 
+
+  onsearchProductCategory() {
+    this.isProductCategoryPopupVisible = true;
+    const me = this;
+
+    this.productCategoryData.store = new CustomStore({
+      load: async function (loadOptions: any) {
+      // console.log(loadOptions);
+
+        // Extract pagination parameters safely
+        const skip = loadOptions.skip ?? 0;
+        const take = loadOptions.take ?? 50;
+
+        // Extract search filter properly
+        let searchValue = '';
+        if (Array.isArray(loadOptions.filter) && loadOptions.filter.length > 0) {
+          searchValue = loadOptions.filter[2] || ''; // Adjust index based on actual filter structure
+        }
+
+        // Set up request headers
+        const headers = new HttpHeaders({
+          "Accept": "application/json",
+          "Authorization": "Bearer " + me.authService.getAccessToken(),
+        });
+
+        // API request configuration
+        const configData = {
+          headers,
+          params: { skip, take, searchValue },
+        };
+
+        try {
+          const response: any = await lastValueFrom(
+            me.httpClient.get(AppSettings.base_url + '/api/import-export/onGetRegulatedProductCategory', configData)
+          );
+
+          return {
+            data: response.data || [],
+            totalCount: response.totalCount || 0
+          };
+        } catch (error) {
+          console.error('Data Loading Error', error);
+          throw 'Data Loading Error';
+        }
+      }
+    });
+  }
+
+
+
+
   funcSearchManufacturingSite() {
     this.isManufacturerSitePopupVisible = true;
     const me = this;
@@ -1421,40 +1472,9 @@ export class PermitproductdetailsComponent implements OnInit {
     });
   }
 
-  onsearchProductCategory() {
 
-    this.isProductCategoryPopupVisible = true;
-    var me = this;
-
-
-    this.productCategoryData.store = new CustomStore({
-      load: function (loadOptions: any) {
-        // console.log(loadOptions)
-        var params = '?';
-        params += 'skip=' + loadOptions.skip;
-        params += '&take=' + loadOptions.take;//searchValue
-        var headers = new HttpHeaders({
-          "Accept": "application/json",
-          "Authorization": "Bearer " + me.authService.getAccessToken(),
-        });
-
-        me.configData = {
-          headers: headers,
-          params: { skip: loadOptions.skip, take: loadOptions.take, searchValue: loadOptions.filter }
-        };
-        return me.httpClient.get(AppSettings.base_url + '/api/import-export/onGetRegulatedProductCategory', me.configData)
-          .toPromise()
-          .then((data: any) => {
-            return {
-              data: data.data,
-              totalCount: data.totalCount
-            }
-          })
-          .catch(error => { throw 'Data Loading Error' });
-      }
-    });
-  }
-
+ 
+ 
   funcAddManufacturerSite() {
     this.isnewmanufacturerModalShow = true;
     this.manufacturerFrm.reset();
