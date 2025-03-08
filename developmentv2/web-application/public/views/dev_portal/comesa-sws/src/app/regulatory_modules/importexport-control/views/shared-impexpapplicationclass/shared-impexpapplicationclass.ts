@@ -211,18 +211,13 @@ export class SharedImpexpApplicationClass {
 
     this.trader_id = user.trader_id;
     this.mistrader_id = user.mistrader_id;
-
-    
     this.application_details = localStorage.getItem('application_details');
-    console.log(this.application_details)
 
     this.application_details = JSON.parse(this.application_details);
-    this.permit_product_details = JSON.parse(this.permit_product_details);
-    this.applicant_details = JSON.parse(this.applicant_details);
 
     this.form_fielddata = this.application_details.application_form;
-    this.products_fielddata = this.application_details.permit_products_details;
-    this.applicants_fielddata = this.application_details.applicant_details;
+    this.products_fielddata = this.application_details.application_form;
+    this.applicants_fielddata = this.application_details.application_form;
   
     this.applicationGeneraldetailsfrm = this.formBuilder.group({});
     this.permitProductsFrm = this.formBuilder.group({});
@@ -278,7 +273,6 @@ export class SharedImpexpApplicationClass {
     if (this.application_details) {
       this.regulatory_subfunction_id = this.application_details.regulatory_subfunction_id;
       this.process_title = this.application_details.process_title;
-      this.regulated_productstype_id = this.application_details.regulated_productstype_id;
       this.application_id = this.application_details.application_id;
       this.tracking_no = this.application_details.tracking_no;
       this.status_name = this.application_details.status_name;
@@ -287,8 +281,7 @@ export class SharedImpexpApplicationClass {
       this.application_code = this.application_details.application_code;
       this.proforma_currency_id = this.application_details.proforma_currency_id;
       this.transactionpermit_type_id = this.application_details.transactionpermit_type_id;
-      this.application_code = this.application_details.application_code;
-
+      
       this.applicationGeneraldetailsfrm.patchValue(this.application_details);
     }
 
