@@ -319,7 +319,7 @@ class ImportExportController extends Controller
             $applicant_id = $req->trader_id;
             $trader_id = $req->trader_id;
             $email_address = $req->email_address;
-
+            $applicationsubmission_type_id = $req->applicationsubmission_type_id;
             $local_agent_id = $req->local_agent_id;
 
             $reference_no = $req->reference_no;
@@ -339,7 +339,6 @@ class ImportExportController extends Controller
                 'trader_id' => $trader_id,
                 'local_agent_id' => $local_agent_id,
                 'application_code' => $req->application_code,
-                'applicant_application_code' => $req->applicant_application_code,
                 'regulatory_subfunction_id' => $req->regulatory_subfunction_id,
                 'application_id' => $application_id,
                 'applicant_id' => $req->applicant_id,
@@ -354,6 +353,7 @@ class ImportExportController extends Controller
                 'wb_workflowprocesses' => $workflowprocess_id,
                 'document_upload_id' => $req->document_upload_id,
                 'application_type_id' => $req->application_type_id,
+                'applicationsubmission_type_id' =>$req->applicationsubmission_type_id,
                 'application_reference_number' => $req->application_reference_number,
                 'applicant_type_id' => $req->applicant_type_id,
                 'permit_type_id' => $req->permit_type_id,
@@ -463,7 +463,8 @@ class ImportExportController extends Controller
                     return \response()->json(array('success' => false, 'tracking_no' => $tracking_no, 'message' => $tracking_no));
                 }
                 $application_code = generateApplicationCode($regulatory_subfunction_id, 'wb_importexport_applications');
-                $tra_application_code = generateApplicationCode($regulatory_subfunction_id, 'tra_importexport_applications');
+                $tra_application_code = $application_code;
+             
                 $workflowprocess_id = getSingleRecordColValue('wb_workflowprocesses', array('regulatory_function_id' => $regulatory_function_id, ), 'id');
 
                 $application_id = $resp['record_id'];
@@ -473,12 +474,12 @@ class ImportExportController extends Controller
                 $app_data['tracking_no'] = $tracking_no;
                 $app_data['reference_no'] = $tracking_no;
                 $app_data['workflowprocess_id'] = $workflowprocess_id;
-
+                $app_data['applicationsubmission_type_id'] = $applicationsubmission_type_id;
                 $app_data['regulatory_function_id'] = $regulatory_function_id;
 
                 $app_data['date_added'] = Carbon::now();
                 $app_data['application_code'] = $application_code;
-                $app_data['application_code'] = $tra_application_code;
+               
 
 
 
@@ -496,6 +497,7 @@ class ImportExportController extends Controller
                         'tracking_no' => $tracking_no,
                         'application_id' => $application_id,
                         'regulatory_function_id' => $regulatory_function_id,
+                        'applicationsubmission_type_id' => $applicationsubmission_type_id,
                         'application_code' => $application_code,
                         'workflowprocess_id' => $workflowprocess_id,
                         'success' => true,
@@ -503,15 +505,14 @@ class ImportExportController extends Controller
                     );
 
                     $response = insertRecord('tra_importexport_applications', $app_data, $email_address);
-
+                    
                     if ($response['success']) {
                         $res = array(
                             'tracking_no' => $tracking_no,
                             'application_id' => $application_id,
                             'regulatory_function_id' => $regulatory_function_id,
-
-                            'application_code' => $application_code,
-                            // 'process_id' => $process_id,
+                            'applicationsubmission_type_id' =>$applicationsubmission_type_id,
+                            'application_code' => $tra_application_code,
                             'success' => true,
                             'message' => 'Application Saved Successfully, with Tracking No:' . $tracking_no
                         );
