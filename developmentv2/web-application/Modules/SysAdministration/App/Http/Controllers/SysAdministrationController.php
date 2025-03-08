@@ -1109,10 +1109,10 @@ public function getAppHscodes(Request $req)
 
     return response()->json($res, 200);
 }
-public function onGetRegulatedProductCategory(Request $req)
+public function onGetStartHsCode(Request $req)
 {
     try {
-        $table_name = 'tra_hscodesproducts_registry';
+        $table_name = 'par_hscodesheading_definations';
         $take = 50; // Default take value
         $skip = 0; // Default skip value
         $searchValue = $req->searchValue ?? '';
@@ -1128,27 +1128,21 @@ public function onGetRegulatedProductCategory(Request $req)
         // Initialize query with necessary joins and select statements
         $query = DB::table("{$table_name} as t1")
             ->leftJoin('par_hscodechapters_defination as t3', 't1.chapters_defination_id', '=', 't3.id')
-            ->leftJoin('par_hscodesheading_definations as t4', 't1.heading_definations_id', '=', 't4.id')
-            ->leftJoin('par_hscodessubheading_defination as t5', 't1.subheading_definations_id', '=', 't5.id')
+            
+            
             ->select(
                 't1.id',
                 't1.chapters_defination_id',
-                't1.heading_definations_id',
-                't1.subheading_definations_id',
-                't5.name as hscodessubheading',
-                't5.hscode as subheadingcode',
                 't3.name as hscodechapters',
-                't3.hscode as chapterscode',
-                't4.name as hscodesheading',
-                't4.hscode as headingcode'
+                
             );
 
         // Apply keyword search filter before fetching data
         if (!empty($chapters_keywordsearch)) {
             $query->where(function ($q) use ($chapters_keywordsearch) {
                 $q->where('t1.chapters_defination_id', 'like', "%{$chapters_keywordsearch}%")
-                    ->orWhere('t1.heading_definations_id', 'like', "%{$chapters_keywordsearch}%")
-                    ->orWhere('t1.subheading_definations_id', 'like', "%{$chapters_keywordsearch}%");
+                    ->orWhere('t1.heading_definations_id', 'like', "%{$chapters_keywordsearch}%");
+                   
             });
         }
 
@@ -1162,16 +1156,152 @@ public function onGetRegulatedProductCategory(Request $req)
         $productregistry_data = $data->map(function ($rec) {
             return [
                 'id' => $rec->id,
-                'chapters_defination_id' => $rec->chapters_defination_id,
-                'heading_definations_id' => $rec->heading_definations_id,
-                'subheading_definations_id' => $rec->subheading_definations_id,
-                'hscodesheading' => trim("{$rec->headingcode} {$rec->hscodesheading}"),
+                'start_hs_code' => $rec->start_hs_code,
+                'chapters_defination_id' => $rec->chapters_defination_id,               
                 'hscodechapters' => trim("{$rec->chapterscode} {$rec->hscodechapters}"),
-                'hscodessubheading' => trim("{$rec->subheadingcode} {$rec->hscodessubheading}"),
-                'regulated_product_category' => $rec->hscodessubheading,
-                'headingcode' => $rec->headingcode,
-                'chapterscode' => $rec->chapterscode,
-                'subheadingcode' => $rec->subheadingcode,
+               
+                
+                
+            ];
+        });
+
+        return response()->json([
+            'success' => true,
+            'data' => $productregistry_data,
+            'totalCount' => $totalCount
+        ]);
+    } catch (\Throwable $e) {
+        return response()->json([
+            'success' => false,
+            'message' => $e->getMessage()
+        ]);
+    }
+}
+
+public function onGetEndHsCode(Request $req)
+{
+    try {
+        $table_name = 'par_hscodesheading_definations';
+        $take = 50; // Default take value
+        $skip = 0; // Default skip value
+        $searchValue = $req->searchValue ?? '';
+        $chapters_keywordsearch = $req->chapters_keywordsearch;
+
+        // Process search value
+        $search_value = '';
+        if (!empty($searchValue) && $searchValue !== 'undefined') {
+            $searchValueArray = explode(',', $searchValue);
+            $search_value = $searchValueArray[2] ?? '';
+        }
+
+        // Initialize query with necessary joins and select statements
+        $query = DB::table("{$table_name} as t1")
+            ->leftJoin('par_hscodechapters_defination as t3', 't1.chapters_defination_id', '=', 't3.id')
+            
+            
+            ->select(
+                't1.id',
+                't1.chapters_defination_id',
+                't3.name as hscodechapters',
+                
+            );
+
+        // Apply keyword search filter before fetching data
+        if (!empty($chapters_keywordsearch)) {
+            $query->where(function ($q) use ($chapters_keywordsearch) {
+                $q->where('t1.chapters_defination_id', 'like', "%{$chapters_keywordsearch}%")
+                    ->orWhere('t1.heading_definations_id', 'like', "%{$chapters_keywordsearch}%");
+                   
+            });
+        }
+
+        // Fetch total count before pagination
+        $totalCount = $query->count();
+
+        // Apply pagination
+        $data = $query->orderByDesc('t1.id')->take($take)->skip($skip)->get();
+
+        // Transform data efficiently
+        $productregistry_data = $data->map(function ($rec) {
+            return [
+                'id' => $rec->id,
+                'end_hs_code' => $rec->start_hs_code,
+                'chapters_defination_id' => $rec->chapters_defination_id,               
+                'hscodechapters' => trim("{$rec->chapterscode} {$rec->hscodechapters}"),
+               
+                
+                
+            ];
+        });
+
+        return response()->json([
+            'success' => true,
+            'data' => $productregistry_data,
+            'totalCount' => $totalCount
+        ]);
+    } catch (\Throwable $e) {
+        return response()->json([
+            'success' => false,
+            'message' => $e->getMessage()
+        ]);
+    }
+}
+
+
+
+public function onGetSpecificHsCode(Request $req)
+{
+    try {
+        $table_name = 'par_hscodessubheading_defination';
+        $take = 50; // Default take value
+        $skip = 0; // Default skip value
+        $searchValue = $req->searchValue ?? '';
+        $chapters_keywordsearch = $req->chapters_keywordsearch;
+
+        // Process search value
+        $search_value = '';
+        if (!empty($searchValue) && $searchValue !== 'undefined') {
+            $searchValueArray = explode(',', $searchValue);
+            $search_value = $searchValueArray[2] ?? '';
+        }
+
+        // Initialize query with necessary joins and select statements
+        $query = DB::table("{$table_name} as t1")
+            ->leftJoin('par_hscodechapters_defination as t3', 't1.chapters_defination_id', '=', 't3.id')
+            
+            
+            ->select(
+                't1.id',
+                't1.chapters_defination_id',
+                't3.name as hscodechapters',
+                
+            );
+
+        // Apply keyword search filter before fetching data
+        if (!empty($chapters_keywordsearch)) {
+            $query->where(function ($q) use ($chapters_keywordsearch) {
+                $q->where('t1.chapters_defination_id', 'like', "%{$chapters_keywordsearch}%")
+                    ->orWhere('t1.heading_definations_id', 'like', "%{$chapters_keywordsearch}%");
+                   
+            });
+        }
+
+        // Fetch total count before pagination
+        $totalCount = $query->count();
+
+        // Apply pagination
+        $data = $query->orderByDesc('t1.id')->take($take)->skip($skip)->get();
+
+        // Transform data efficiently
+        $productregistry_data = $data->map(function ($rec) {
+            return [
+                'id' => $rec->id,
+                'end_hs_code' => $rec->start_hs_code,
+                'chapters_defination_id' => $rec->chapters_defination_id,               
+                'hscodechapters' => trim("{$rec->chapterscode} {$rec->hscodechapters}"),
+               
+                
+                
             ];
         });
 

@@ -282,10 +282,10 @@ export class ConfigurationsService {
       "Authorization": "Bearer " + this.authService.getAccessToken(),
     });
     this.config = {
-      params: { regulatory_subfunction_id: regulatory_subfunction_id, applicationsubmission_type_id:applicationsubmission_type_id},
+      params: { regulatory_subfunction_id:regulatory_subfunction_id, applicationsubmission_type_id:applicationsubmission_type_id},
       headers: headers
     };
-    return this.HttpClient.get(this.baseUrl + '/getUniformSectionApplicationProcess', this.config)
+    return this.HttpClient.get(this.baseUrl + '/getApplicantUniformApplicationProces', this.config)
       .pipe(map(data => {
         return <any>data;
       }));

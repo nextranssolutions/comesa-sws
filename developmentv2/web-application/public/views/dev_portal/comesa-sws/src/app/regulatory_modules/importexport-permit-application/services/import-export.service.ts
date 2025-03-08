@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { catchError, map } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
 import { AuthenticationService } from 'src/app/core-services/authentication/authentication.service';
@@ -18,7 +18,7 @@ export class ImportExportService {
   permit_details: any;
   baseUrl: any;
   applicant_details: any;
-  constructor(private authService: AuthenticationService,private HttpClient: HttpClient, private http: HttpClient, private myRoute: Router, private httpClient: HttpClient) {
+  constructor(private authService: AuthenticationService, private HttpClient: HttpClient, private http: HttpClient, private myRoute: Router, private httpClient: HttpClient) {
     let user = this.authService.getUserDetails();
 
     this.baseUrl = AppSettings.base_url + '/api/import-export';
@@ -41,15 +41,15 @@ export class ImportExportService {
   //     }));
   // }
 
-  onSavePermitApplication(permitData,registrant_details,action_url) {
+  onSavePermitApplication(permitData, registrant_details, action_url) {
     var headers = new HttpHeaders({
       "Accept": "application/json",
       "Authorization": "Bearer " + this.authService.getAccessToken(),
     });
     let user = this.authService.getUserDetails();
     let registrant_data = JSON.stringify(registrant_details);
-   
-    return this.http.post(AppSettings.base_url + '/api/import-export/'+action_url, permitData, { headers: headers })
+
+    return this.http.post(AppSettings.base_url + '/api/import-export/' + action_url, permitData, { headers: headers })
       .pipe(map(data => {
         return data;
       }));
@@ -92,9 +92,9 @@ export class ImportExportService {
   }
   setApplicationDetail(data: any[]) {
     this.application_details = data;
-  
+
   }
-  
+
   setPermitApplicationDetail(data: any[]) {
 
     this.permit_details = data;
@@ -127,45 +127,48 @@ export class ImportExportService {
   //   }));
   // }
 
-  onPermitApplicationLoading(filter_params, action_url) {
-    var headers = new HttpHeaders({
-      "Accept": "application/json",
-      "Authorization": "Bearer " + this.authService.getAccessToken(),
-      "Content-Type": "application/json"
+    onPermitApplicationLoading(filter_params, action_url) {
+      var headers = new HttpHeaders({
+        "Accept": "application/json",
+        "Authorization": "Bearer " + this.authService.getAccessToken(),
+        "Content-Type": "application/json"
+      });
+
+      return this.HttpClient.get(this.baseUrl + '/' + action_url, filter_params )
+        .pipe(map(data => {
+          return <any>data;
+        }));
+  }
+
+
+  
+
+
+  onAddManufacturingSite(table_name: string, data: any, action_url: string) {
+    // Add table_name directly into the data object
+    let requestData = {
+      ...data,  // Spread operator to include all form values
+      table_name: table_name,
+      trader_id: this.trader_id,
+      traderemail_address: this.email_address
+    };
+
+    // Set headers properly
+    let headers = new HttpHeaders({
+      'Accept': 'application/json',
+      'Authorization': `Bearer ${this.authService.getAccessToken()}`
     });
 
-    return this.HttpClient.get(this.baseUrl + '/' + action_url, filter_params )
-      .pipe(map(data => {
-        return <any>data;
-      }));
-}
-
-
-   onAddManufacturingSite(table_name: string, data: any, action_url: string) {
-      // Add table_name directly into the data object
-      let requestData = {
-          ...data,  // Spread operator to include all form values
-          table_name: table_name,
-          trader_id: this.trader_id,
-          traderemail_address: this.email_address
-      };
-  
-      // Set headers properly
-      let headers = new HttpHeaders({
-          'Accept': 'application/json',
-          'Authorization': `Bearer ${this.authService.getAccessToken()}`
-      });
-  
-      return this.httpClient.post(`${this.baseUrl}/${action_url}`, requestData, { headers })
-        .pipe(
-          map(response => response),
-          catchError(error => {
-            console.error("API Error: ", error);
-            return throwError(() => new Error('An error occurred while saving manufacturer details.'));
-          })
-        );
+    return this.httpClient.post(`${this.baseUrl}/${action_url}`, requestData, { headers })
+      .pipe(
+        map(response => response),
+        catchError(error => {
+          console.error("API Error: ", error);
+          return throwError(() => new Error('An error occurred while saving manufacturer details.'));
+        })
+      );
   }
-  
+
 
   onPermitApplicationArchive(application_id, tracking_no) {
 

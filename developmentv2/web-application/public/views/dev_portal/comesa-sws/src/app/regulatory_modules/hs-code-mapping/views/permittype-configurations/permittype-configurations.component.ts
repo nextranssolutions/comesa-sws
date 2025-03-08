@@ -1,4 +1,4 @@
-import { Component, HostListener, ViewContainerRef } from '@angular/core';
+import { Component, HostListener, Input, ViewContainerRef } from '@angular/core';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import CustomStore from 'devextreme/data/custom_store';
@@ -21,6 +21,7 @@ import { AuthenticationService } from 'src/app/core-services/authentication/auth
   styleUrl: './permittype-configurations.component.css'
 })
 export class PermittypeConfigurationsComponent {
+  @Input() ProductsDetailsFrm: FormGroup;
  table_name: string = 'tra_transactionpermit_types';
   parameter_name: string = 'transaction_permit_types';
   resetcolumns = 'resetcolumns,routerLink';
@@ -33,6 +34,10 @@ export class PermittypeConfigurationsComponent {
   transactionpermit_type_id: number;
   account_type_id: number;
   organisation_id: number;
+  selectedHsCode: string;
+  start_hs_code: string;
+  end_hs_code: string;
+  specific_hs_code: string;
   workflow_id: number;
   data: any[];
   editRowKey: any;
@@ -45,6 +50,9 @@ export class PermittypeConfigurationsComponent {
   timelineTypeData: any;
   refNumberData: any;
   productTypeData: any;
+  subHeadingDefinationData: any;
+  headingDefinationData: any;
+  chapterDefinationData: any;
   renewableStatusData: any;
   productCategoryData: any;
   permitStatusData: any;
@@ -88,7 +96,10 @@ export class PermittypeConfigurationsComponent {
   showTabPanel: boolean = false;
   tabPanelPopupVisible: boolean = false;
   hscodePopupVisible: boolean = false;
-  isHsCodePopupVisible: boolean = false;
+  startHsCodePopupVisible: boolean = false;
+  endHsCodePopupVisible: boolean = false;
+  specificHsCodePopupVisible: boolean = false;
+  isProductDetailsPopupVisible: boolean = false;
   PermitSignatoriesPopupVisible: boolean = false;
   PermitSpecialConditionsPopupVisible: boolean = false;
   PermitRqdDocPopupVisible: boolean = false;
@@ -268,15 +279,30 @@ export class PermittypeConfigurationsComponent {
 
     });
 
+     this.ProductsDetailsFrm = new FormGroup({
+      id: new FormControl('', Validators.compose([])),
+      name: new FormControl('', Validators.compose([])),
+      description: new FormControl('', Validators.compose([])),
+      chapters_defination_id: new FormControl('', Validators.compose([])),
+      heading_definations_id: new FormControl('', Validators.compose([])),
+      subheading_definations_id: new FormControl('', Validators.compose([])),
+      is_enabled: new FormControl('', Validators.compose([])),
+  });
+
     // this.resetcolumns = 'resetcolumns,account_type_id,routerLink,has_partnerstate_defination';
 
   }
   ngOnInit() {
     this.fetchPermitTypeDetails();
+    this.fetchStartHscode();
+    this.fetchEndHsCode();
     this.onLoadOperationTypeData();
     this.onLoadPermitTypeData();
     this.onLoadRenewableStatusData();
     this.onLoadproductTypeData();
+    this.onLoadSubHeadingDefinationData();
+    this.onLoadHeadingDefinationData();
+    this.onLoadChapterDefinationData();
     this.onLoadHsCodeData();
     this.onLoadQuotaLimitationData();
     this.onLoadStartHsCodeData();
@@ -319,6 +345,48 @@ export class PermittypeConfigurationsComponent {
       this.tabsPosition = 'left';
     }
   }
+  onAddNewRecord() {
+
+    this.createNewDataFrm.reset();
+    this.tabPanelPopupVisible = true;
+    this.AppNavigationMenus = [];
+  }
+
+  onAddProductDetails() {
+
+    this.ProductsDetailsFrm.reset();
+    this.isProductDetailsPopupVisible = true;
+    this.AppNavigationMenus = [];
+  }
+
+  onAddNewHscode() {
+    this.hsCodeDataFrm.reset();
+    this.hscodePopupVisible = true;
+    this.AppNavigationMenus = [];
+
+  }
+
+  onAddNewPermitSignatories() {
+    this.PermitSignatoriesFrm.reset();
+    this.PermitSignatoriesPopupVisible = true;
+    this.AppNavigationMenus = [];
+  }
+  onAddNewPermitSpecialConditions() {
+    this.PermitSpecialConditionsFrm.reset();
+    this.PermitSpecialConditionsPopupVisible = true;
+    this.AppNavigationMenus = [];
+  }
+  onAddNewAppPermitRequiredDocuments() {
+    this.PermitRqdDocFrm.reset();
+    this.PermitRqdDocPopupVisible = true;
+    this.AppNavigationMenus = [];
+  }
+
+  onAddNewAppPermitChecklists() {
+    this.PermitChecklistFrm.reset();
+    this.PermitChecklistPopupVisible = true;
+    this.AppNavigationMenus = [];
+  }
 
   onOrganisationDefinationSelection($event) {
     let organisation_id = $event.selectedItem.id;
@@ -326,13 +394,13 @@ export class PermittypeConfigurationsComponent {
     this.onLoadWorkflowData(organisation_id)
   }
 
-   onsearchHsCodeDetails() {
+   onSearchStartHsCode() {
   
-      this.isHsCodePopupVisible = true;
+      this.startHsCodePopupVisible = true;
       var me = this;
   
   
-      this.productCategoryData.store = new CustomStore({
+      this.startHsCodeData.store = new CustomStore({
         load: function (loadOptions: any) {
           // console.log(loadOptions)
           var params = '?';
@@ -347,7 +415,7 @@ export class PermittypeConfigurationsComponent {
             headers: headers,
             params: { skip: loadOptions.skip, take: loadOptions.take, searchValue: loadOptions.filter }
           };
-          return me.httpClient.get(AppSettings.base_url + '/api/sysadministration/onGetRegulatedProductCategory', me.configData)
+          return me.httpClient.get(AppSettings.base_url + '/api/sysadministration/onGetStartHsCode', me.configData)
             .toPromise()
             .then((data: any) => {
               return {
@@ -359,7 +427,127 @@ export class PermittypeConfigurationsComponent {
         }
       });
     }
+    onSearchEndHsCode() {
   
+      this.endHsCodePopupVisible = true;
+      var me = this;
+  
+  
+      this.endHsCodeData.store = new CustomStore({
+        load: function (loadOptions: any) {
+          // console.log(loadOptions)
+          var params = '?';
+          params += 'skip=' + loadOptions.skip;
+          params += '&take=' + loadOptions.take;//searchValue
+          var headers = new HttpHeaders({
+            "Accept": "application/json",
+            "Authorization": "Bearer " + me.authService.getAccessToken(),
+          });
+  
+          me.configData = {
+            headers: headers,
+            params: { skip: loadOptions.skip, take: loadOptions.take, searchValue: loadOptions.filter }
+          };
+          return me.httpClient.get(AppSettings.base_url + '/api/sysadministration/onGetEndHsCode', me.configData)
+            .toPromise()
+            .then((data: any) => {
+              return {
+                data: data.data,
+                totalCount: data.totalCount
+              }
+            })
+            .catch(error => { throw 'Data Loading Error' });
+        }
+      });
+    }
+    onSearchSpecificHsCode() {
+  
+      this.specificHsCodePopupVisible = true;
+      var me = this;
+  
+  
+      this.specificHsCodeData.store = new CustomStore({
+        load: function (loadOptions: any) {
+          // console.log(loadOptions)
+          var params = '?';
+          params += 'skip=' + loadOptions.skip;
+          params += '&take=' + loadOptions.take;//searchValue
+          var headers = new HttpHeaders({
+            "Accept": "application/json",
+            "Authorization": "Bearer " + me.authService.getAccessToken(),
+          });
+  
+          me.configData = {
+            headers: headers,
+            params: { skip: loadOptions.skip, take: loadOptions.take, searchValue: loadOptions.filter }
+          };
+          return me.httpClient.get(AppSettings.base_url + '/api/sysadministration/onGetSpecificHscode', me.configData)
+            .toPromise()
+            .then((data: any) => {
+              return {
+                data: data.data,
+                totalCount: data.totalCount
+              }
+            })
+            .catch(error => { throw 'Data Loading Error' });
+        }
+      });
+    }
+    
+    onSelectStartHsCode(selectedHsCode: any) {
+      console.log("Selected HS Code Data: ", selectedHsCode); // Debugging step
+      
+      if (selectedHsCode && selectedHsCode.start_hs_code) {
+        this.selectedHsCode = selectedHsCode.start_hs_code;
+
+        
+        this.hsCodeDataFrm.patchValue({
+            hs_code_start_int: this.selectedHsCode
+        });
+
+          this.startHsCodePopupVisible = false;
+      } else {
+          console.error("Invalid HS Code selection.");
+      }
+  }
+
+
+  onSelectEndHsCode(selectedHsCode: any) {
+    console.log("Selected HS Code Data: ", selectedHsCode); 
+    
+    if (selectedHsCode && selectedHsCode.end_hs_code) {
+      this.selectedHsCode = selectedHsCode.end_hs_code;
+
+      
+      this.hsCodeDataFrm.patchValue({
+        hs_code_end_int: this.selectedHsCode
+      });
+
+        this.endHsCodePopupVisible = false;
+    } else {
+        console.error("Invalid HS Code selection.");
+    }
+}
+
+onSelectSpecificHsCode(selectedHsCode: any) {
+  console.log("Selected HS Code Data: ", selectedHsCode); 
+  
+  if (selectedHsCode && selectedHsCode.specific_hs_code) {
+    this.selectedHsCode = selectedHsCode.specific_hs_code;
+
+    
+    this.hsCodeDataFrm.patchValue({
+      hs_code_specific_int: this.selectedHsCode
+    });
+
+      this.specificHsCodePopupVisible = false;
+  } else {
+      console.error("Invalid HS Code selection.");
+  }
+}
+  
+  
+   
 
   onAccountTypeSelection($event) {
     if ($event.selectedItem) {
@@ -408,6 +596,511 @@ export class PermittypeConfigurationsComponent {
         });
 
   }
+  onLoadOperationTypeData() {
+    var data_submit = {
+      'table_name': 'par_operation_type'
+    }
+    this.workflowService.getWorkflowConfigs(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.operationTypeData = this.data_record.data;
+
+          }
+        },
+        error => {
+
+        });
+  }
+  onLoadproductTypeData() {
+    var data_submit = {
+      'table_name': 'par_product_categories'
+    }
+    this.workflowService.getWorkflowConfigs(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.productTypeData = this.data_record.data;
+
+          }
+        },
+        error => {
+
+        });
+  }
+
+  onLoadSubHeadingDefinationData() {
+    var data_submit = {
+      'table_name': 'par_hscodessubheading_defination'
+    }
+    this.workflowService.getWorkflowConfigs(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.subHeadingDefinationData = this.data_record.data;
+
+          }
+        },
+        error => {
+
+        });
+  }
+  
+  onLoadHeadingDefinationData() {
+    var data_submit = {
+      'table_name': 'par_hscodesheading_definations'
+    }
+    this.workflowService.getWorkflowConfigs(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.headingDefinationData = this.data_record.data;
+
+          }
+        },
+        error => {
+
+        });
+  }
+ 
+  onLoadChapterDefinationData() {
+    var data_submit = {
+      'table_name': 'par_hscodechapters_defination'
+    }
+    this.workflowService.getWorkflowConfigs(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.chapterDefinationData = this.data_record.data;
+
+          }
+        },
+        error => {
+
+        });
+  }
+  onLoadPermitStatusData() {
+    var data_submit = {
+      'table_name': 'par_permit_statuses'
+    }
+    this.workflowService.getWorkflowConfigs(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.permitStatusData = this.data_record.data;
+
+          }
+        },
+        error => {
+
+        });
+  }
+
+  onLoadRenewableStatusData() {
+    var data_submit = {
+      'table_name': 'par_renewable_statuses'
+    }
+    this.workflowService.getWorkflowConfigs(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.renewableStatusData = this.data_record.data;
+
+          }
+        },
+        error => {
+
+        });
+  }
+  
+  onLoadServiceTypeData() {
+    var data_submit = {
+      'table_name': 'par_service_type'
+    }
+    this.workflowService.getWorkflowConfigs(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.serviceTypeData = this.data_record.data;
+
+          }
+        },
+        error => {
+
+        });
+        console.log(this.data_record);
+  } 
+
+  onLoadTimelineTypeData() {
+    var data_submit = {
+      'table_name': 'par_timeline_type'
+    }
+    this.workflowService.getWorkflowConfigs(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.timelineTypeData = this.data_record.data;
+
+          }
+        },
+        error => {
+
+        });
+  } 
+  onLoadRefNumberData() {
+    var data_submit = {
+      'table_name': 'par_refnumbers_formats'
+    }
+    this.workflowService.getWorkflowConfigs(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.refNumberData = this.data_record.data;
+
+          }
+        },
+        error => {
+
+        });
+  } 
+
+  onLoadHsCodeData() {
+    var data_submit = {
+      'table_name': 'par_hscode_seloption'
+    }
+    this.workflowService.getWorkflowConfigs(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.hsCodeData = this.data_record.data;
+
+          }
+        },
+        error => {
+
+        });
+  }
+
+  onLoadQuotaLimitationData() {
+    var data_submit = {
+      'table_name': 'par_quota_limitationstype'
+    }
+    this.workflowService.getWorkflowConfigs(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.quotaLimitationData = this.data_record.data;
+
+          }
+        },
+        error => {
+
+        });
+  }
+
+  onLoadStartHsCodeData() {
+    var data_submit = {
+      'table_name': 'par_hscodesheading_definations'
+    }
+    this.workflowService.getWorkflowConfigs(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.startHsCodeData = this.data_record.data;
+
+          }
+        },
+        error => {
+
+        });
+  }
+
+ 
+  
+  onLoadEndHsCodeData() {
+    var data_submit = {
+      'table_name': 'par_hscodesheading_definations'
+    }
+    this.workflowService.getWorkflowConfigs(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.endHsCodeData = this.data_record.data;
+
+          }
+        },
+        error => {
+
+        });
+  }
+  
+  onLoadSpecificHsCodeData() {
+    var data_submit = {
+      'table_name': 'par_hscodessubheading_defination'
+    }
+    this.workflowService.getWorkflowConfigs(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.specificHsCodeData = this.data_record.data;
+
+          }
+        },
+        error => {
+
+        });
+  }
+  onLoadSpecialConditionsData() {
+    var data_submit = {
+      'table_name': 'tra_permit_special_conditions'
+    }
+    this.workflowService.getWorkflowConfigs(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.specialConditionsData = this.data_record.data;
+
+          }
+        },
+        error => {
+
+        });
+  }
+
+  onLoadMappingStatusData() {
+    var data_submit = {
+      'table_name': 'par_mapping_status'
+    }
+    this.workflowService.getWorkflowConfigs(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.mappingStatusData = this.data_record.data;
+
+          }
+        },
+        error => {
+
+        });
+  }
+
+  onLoadHscodeMappingOptionData() {
+    var data_submit = {
+      'table_name': 'par_hscodemapping_option'
+    }
+    this.workflowService.getWorkflowConfigs(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.hscodeMappingOptionData = this.data_record.data;
+
+          }
+        },
+        error => {
+
+        });
+  }
+
+  onLoadPermitTemplateTypeData() {
+    var data_submit = {
+      'table_name': 'par_permittemplate_types'
+    }
+    this.workflowService.getWorkflowConfigs(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.permitTemplateTypeData = this.data_record.data;
+
+          }
+        },
+        error => {
+
+        });
+  }
+
+  onLoadPermitTemplateData() {
+    var data_submit = {
+      'table_name': 'par_permit_templates'
+    }
+    this.workflowService.getWorkflowConfigs(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.permitTemplateData = this.data_record.data;
+
+          }
+        },
+        error => {
+
+        });
+  }
+
+  onLoadDocumentRequirementTypeData() {
+    var data_submit = {
+      'table_name': 'dms_document_requirements'
+    }
+    this.workflowService.getWorkflowConfigs(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.documentRequirementTypeData = this.data_record.data;
+
+          }
+        },
+        error => {
+
+        });
+  }
+
+  onLoadChecklistTypeData() {
+    var data_submit = {
+      'table_name': 'chk_checklist_types'
+    }
+    this.workflowService.getWorkflowConfigs(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.checklistTypeData = this.data_record.data;
+
+          }
+        },
+        error => {
+
+        });
+  }
+
+  onLoadChecklistDefData() {
+    var data_submit = {
+      'table_name': 'chk_checklist_definations'
+    }
+    this.workflowService.getWorkflowConfigs(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.checklistDefData = this.data_record.data;
+
+          }
+        },
+        error => {
+
+        });
+  }
+  onLoadDocumentTypeData() {
+    var data_submit = {
+      'table_name': 'par_document_types'
+    }
+    this.workflowService.getWorkflowConfigs(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.documentTypeData = this.data_record.data;
+
+          }
+        },
+        error => {
+
+        });
+  }
+
+  onLoadWfStageData() {
+    var data_submit = {
+      'table_name': 'wf_workflow_stages'
+    }
+    this.workflowService.getWorkflowConfigs(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.wfStageData = this.data_record.data;
+
+          }
+        },
+        error => {
+
+        });
+  }
+
+
+  onLoadPermitTypeData() {
+    var data_submit = {
+      'table_name': 'tra_transactionpermit_types'
+    }
+    this.workflowService.getWorkflowConfigs(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.permitTypeData = this.data_record.data;
+
+          }
+        },
+        error => {
+
+        });
+  }
+
+  // 
+  onLoadOrganizationData() {
+    var data_submit = {
+      'table_name': 'tra_organisation_information'
+    }
+    this.workflowService.getWorkflowConfigs(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.organizationData = this.data_record.data;
+
+          }
+        },
+        error => {
+
+        });
+  }
+
+  onLoadProcessData(organisation_id) {
+    var data_submit = {
+      'table_name': 'wf_processes',
+      organisation_id: organisation_id,
+
+    }
+    this.workflowService.getWorkflowConfigs(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.processData = this.data_record.data;
+
+          }
+        },
+        error => {
+
+        });
+  }
 
   spinnerShow(spinnerMessage) {
     this.loadingVisible = true;
@@ -435,24 +1128,188 @@ export class PermittypeConfigurationsComponent {
         });
 
   }
+  fetchAppNavigationMenus(user_group_id, account_type_id) {
+    this.spinnerShow('Loading User Permissions Details');
+    this.admnistrationService.getAppUserGroupNavigationMenus(user_group_id, account_type_id)
+      .subscribe(
+        (data) => {
 
-  funcSelectProductCategory(data) {
-    let data_resp = data.data;
+          this.AppNavigationMenus = data;
+          this.spinnerHide();
+          this.tabPanelPopupVisible = true;
+        },
+        (error) => {
+          console.error('Error fetching Navigation menu:', error);
+          this.spinnerHide();
+        }
+      );
 
-    // Prioritize values in order: hscodessubheading -> hscodesheading -> hscodechapters
-    let selectedProductName = data_resp.hscodessubheading ||
-      data_resp.hscodesheading ||
-      data_resp.hscodechapters || '';
-
-    // Patch the form with selected values
-    this.hsCodeDataFrm.patchValue({
-      product_name: selectedProductName,
-      regulated_product_category_id: data_resp.regulated_product_category_id
-    });
-
-    // Close the popup
-    this.isHsCodePopupVisible = false;
   }
+
+  fetchAppHsCodes(transactionpermit_type_id) {
+    this.spinnerShow('Loading User Permissions Details');
+
+    var data_submit = {
+      table_name: 'tra_transactionpermit_hs_codes',
+      transactionpermit_type_id: transactionpermit_type_id
+    }
+    this.admnistrationService.onLoadDataUrl(data_submit, 'getAppHscodes')
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.AppHsCodes = this.data_record.data;
+          }
+        });
+    this.spinnerHide();
+  }
+
+  fetchStartHscode() {
+    this.spinnerShow('Loading User Permissions Details');
+
+    var data_submit = {
+      table_name: 'par_hscodesheading_definations',
+      
+    }
+    this.admnistrationService.onLoadDataUrl(data_submit, 'onGetStartHsCode')
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.startHsCodeData = this.data_record.data;
+          }
+        });
+    this.spinnerHide();
+  }
+
+  fetchEndHsCode() {
+    this.spinnerShow('Loading User Permissions Details');
+
+    var data_submit = {
+      table_name: 'par_hscodesheading_definations',
+      
+    }
+    this.admnistrationService.onLoadDataUrl(data_submit, 'onGetEndHsCode')
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.endHsCodeData = this.data_record.data;
+          }
+        });
+    this.spinnerHide();
+  }
+
+  fetchSpecificHsCodeData() {
+    this.spinnerShow('Loading User Permissions Details');
+
+    var data_submit = {
+      table_name: 'par_hscodessubheading_defination',
+      
+    }
+    this.admnistrationService.onLoadDataUrl(data_submit, 'onGetSpecificHsCode')
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.specificHsCodeData = this.data_record.data;
+          }
+        });
+    this.spinnerHide();
+  }
+  
+  
+
+  fetchAppPermitSignatories(transactionpermit_type_id) {
+    this.spinnerShow('Loading User Permissions Details');
+
+    var data_submit = {
+      table_name: 'tra_transactionpermit_signatories',
+      transactionpermit_type_id: transactionpermit_type_id
+    }
+    this.admnistrationService.onLoadDataUrl(data_submit, 'getAppPermitSignatoriesData')
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.AppPermitCertificateTemplate = this.data_record.data;
+          }
+        });
+    this.spinnerHide();
+  }
+
+  fetchAppPermitSpecialConditions(transactionpermit_type_id) {
+    this.spinnerShow('Loading User Permissions Details');
+
+    var data_submit = {
+      table_name: 'tra_permit_special_conditions',
+      transactionpermit_type_id: transactionpermit_type_id
+    }
+    this.admnistrationService.onLoadDataUrl(data_submit, 'getAppPermitSpecialConditions')
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.AppPermitReportGeneration = this.data_record.data;
+          }
+        });
+    this.spinnerHide();
+  }
+
+  fetchAppPermitRequiredDocuments(transactionpermit_type_id) {
+    this.spinnerShow('Loading User Permissions Details');
+
+    var data_submit = {
+      table_name: 'tra_transactionpermit_requireddocuments',
+      transactionpermit_type_id: transactionpermit_type_id
+    }
+    this.admnistrationService.onLoadDataUrl(data_submit, 'getAppPermitRequiredDocuments')
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.AppPermitRequiredDocuments = this.data_record.data;
+          }
+        });
+    this.spinnerHide();
+  }
+
+
+  fetchAppPermitChecklist(transactionpermit_type_id) {
+    this.spinnerShow('Loading User Permissions Details');
+
+    var data_submit = {
+      table_name: 'tra_transactionpermit_checklists',
+      transactionpermit_type_id: transactionpermit_type_id
+    }
+    this.admnistrationService.onLoadDataUrl(data_submit, 'getAppPermitChecklist')
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.AppPermitChecklist = this.data_record.data;
+          }
+        });
+    this.spinnerHide();
+  }
+
+  // funcSelectProductCategory(data) {
+  //   let data_resp = data.data;
+
+  //   // Prioritize values in order: hscodessubheading -> hscodesheading -> hscodechapters
+  //   let selectedProductName = data_resp.hscodessubheading ||
+  //     data_resp.hscodesheading ||
+  //     data_resp.hscodechapters || '';
+
+  //   // Patch the form with selected values
+  //   this.hsCodeDataFrm.patchValue({
+  //     product_name: selectedProductName,
+  //     regulated_product_category_id: data_resp.regulated_product_category_id
+  //   });
+
+  //   // Close the popup
+  //   this.isHsCodePopupVisible = false;
+  // }
   onFuncSaveRecordData() {
 
     const formData = new FormData();
@@ -726,7 +1583,7 @@ export class PermittypeConfigurationsComponent {
         });
   }
 
-
+ 
   funcpopWidth(percentage_width) {
     return window.innerWidth * percentage_width / 100;
   }
@@ -741,7 +1598,9 @@ export class PermittypeConfigurationsComponent {
     this.fetchPermitTypeDetails();
   }
 
-  funcEditDetails(data) {
+
+  
+funcEditDetails(data) {
     this.createNewDataFrm.patchValue(data.data);
 
     this.transactionpermit_type_id = data.data.id;
@@ -758,150 +1617,6 @@ export class PermittypeConfigurationsComponent {
     //  this.fetchWorkflowPermissionData(data.data.id) 
     this.fetchAppHsCodes(data.data.id)
   }
-  onAddNewRecord() {
-
-    this.createNewDataFrm.reset();
-    this.tabPanelPopupVisible = true;
-    this.AppNavigationMenus = [];
-
-  }
-  onAddNewHscode() {
-    this.hsCodeDataFrm.reset();
-    this.hscodePopupVisible = true;
-    this.AppNavigationMenus = [];
-
-  }
-
-  onAddNewPermitSignatories() {
-    this.PermitSignatoriesFrm.reset();
-    this.PermitSignatoriesPopupVisible = true;
-    this.AppNavigationMenus = [];
-  }
-  onAddNewPermitSpecialConditions() {
-    this.PermitSpecialConditionsFrm.reset();
-    this.PermitSpecialConditionsPopupVisible = true;
-    this.AppNavigationMenus = [];
-  }
-  onAddNewAppPermitRequiredDocuments() {
-    this.PermitRqdDocFrm.reset();
-    this.PermitRqdDocPopupVisible = true;
-    this.AppNavigationMenus = [];
-  }
-
-  onAddNewAppPermitChecklists() {
-    this.PermitChecklistFrm.reset();
-    this.PermitChecklistPopupVisible = true;
-    this.AppNavigationMenus = [];
-  }
-  fetchAppNavigationMenus(user_group_id, account_type_id) {
-    this.spinnerShow('Loading User Permissions Details');
-    this.admnistrationService.getAppUserGroupNavigationMenus(user_group_id, account_type_id)
-      .subscribe(
-        (data) => {
-
-          this.AppNavigationMenus = data;
-          this.spinnerHide();
-          this.tabPanelPopupVisible = true;
-        },
-        (error) => {
-          console.error('Error fetching Navigation menu:', error);
-          this.spinnerHide();
-        }
-      );
-
-  }
-
-  fetchAppHsCodes(transactionpermit_type_id) {
-    this.spinnerShow('Loading User Permissions Details');
-
-    var data_submit = {
-      table_name: 'tra_transactionpermit_hs_codes',
-      transactionpermit_type_id: transactionpermit_type_id
-    }
-    this.admnistrationService.onLoadDataUrl(data_submit, 'getAppHscodes')
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            this.AppHsCodes = this.data_record.data;
-          }
-        });
-    this.spinnerHide();
-  }
-
-  fetchAppPermitSignatories(transactionpermit_type_id) {
-    this.spinnerShow('Loading User Permissions Details');
-
-    var data_submit = {
-      table_name: 'tra_transactionpermit_signatories',
-      transactionpermit_type_id: transactionpermit_type_id
-    }
-    this.admnistrationService.onLoadDataUrl(data_submit, 'getAppPermitSignatoriesData')
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            this.AppPermitCertificateTemplate = this.data_record.data;
-          }
-        });
-    this.spinnerHide();
-  }
-
-  fetchAppPermitSpecialConditions(transactionpermit_type_id) {
-    this.spinnerShow('Loading User Permissions Details');
-
-    var data_submit = {
-      table_name: 'tra_permit_special_conditions',
-      transactionpermit_type_id: transactionpermit_type_id
-    }
-    this.admnistrationService.onLoadDataUrl(data_submit, 'getAppPermitSpecialConditions')
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            this.AppPermitReportGeneration = this.data_record.data;
-          }
-        });
-    this.spinnerHide();
-  }
-
-  fetchAppPermitRequiredDocuments(transactionpermit_type_id) {
-    this.spinnerShow('Loading User Permissions Details');
-
-    var data_submit = {
-      table_name: 'tra_transactionpermit_requireddocuments',
-      transactionpermit_type_id: transactionpermit_type_id
-    }
-    this.admnistrationService.onLoadDataUrl(data_submit, 'getAppPermitRequiredDocuments')
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            this.AppPermitRequiredDocuments = this.data_record.data;
-          }
-        });
-    this.spinnerHide();
-  }
-
-
-  fetchAppPermitChecklist(transactionpermit_type_id) {
-    this.spinnerShow('Loading User Permissions Details');
-
-    var data_submit = {
-      table_name: 'tra_transactionpermit_checklists',
-      transactionpermit_type_id: transactionpermit_type_id
-    }
-    this.admnistrationService.onLoadDataUrl(data_submit, 'getAppPermitChecklist')
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            this.AppPermitChecklist = this.data_record.data;
-          }
-        });
-    this.spinnerHide();
-  }
-
   funcDeleteDetails(data) {
     this.createNewDataFrm.patchValue(data.data);
     this.config_record = data.data.name;
@@ -972,456 +1687,7 @@ export class PermittypeConfigurationsComponent {
   }
 
 
-  onLoadOperationTypeData() {
-    var data_submit = {
-      'table_name': 'par_operation_type'
-    }
-    this.workflowService.getWorkflowConfigs(data_submit)
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            this.operationTypeData = this.data_record.data;
-
-          }
-        },
-        error => {
-
-        });
-  }
-  onLoadproductTypeData() {
-    var data_submit = {
-      'table_name': 'par_product_categories'
-    }
-    this.workflowService.getWorkflowConfigs(data_submit)
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            this.productTypeData = this.data_record.data;
-
-          }
-        },
-        error => {
-
-        });
-  }
-
-  onLoadPermitStatusData() {
-    var data_submit = {
-      'table_name': 'par_permit_statuses'
-    }
-    this.workflowService.getWorkflowConfigs(data_submit)
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            this.permitStatusData = this.data_record.data;
-
-          }
-        },
-        error => {
-
-        });
-  }
-
-  onLoadRenewableStatusData() {
-    var data_submit = {
-      'table_name': 'par_renewable_statuses'
-    }
-    this.workflowService.getWorkflowConfigs(data_submit)
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            this.renewableStatusData = this.data_record.data;
-
-          }
-        },
-        error => {
-
-        });
-  }
-  
-  onLoadServiceTypeData() {
-    var data_submit = {
-      'table_name': 'par_service_type'
-    }
-    this.workflowService.getWorkflowConfigs(data_submit)
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            this.serviceTypeData = this.data_record.data;
-
-          }
-        },
-        error => {
-
-        });
-        console.log(this.data_record);
-  } 
-
-  onLoadTimelineTypeData() {
-    var data_submit = {
-      'table_name': 'par_timeline_type'
-    }
-    this.workflowService.getWorkflowConfigs(data_submit)
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            this.timelineTypeData = this.data_record.data;
-
-          }
-        },
-        error => {
-
-        });
-  } 
-  onLoadRefNumberData() {
-    var data_submit = {
-      'table_name': 'par_refnumbers_formats'
-    }
-    this.workflowService.getWorkflowConfigs(data_submit)
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            this.refNumberData = this.data_record.data;
-
-          }
-        },
-        error => {
-
-        });
-  } 
-
-  onLoadHsCodeData() {
-    var data_submit = {
-      'table_name': 'par_hscode_seloption'
-    }
-    this.workflowService.getWorkflowConfigs(data_submit)
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            this.hsCodeData = this.data_record.data;
-
-          }
-        },
-        error => {
-
-        });
-  }
-
-  onLoadQuotaLimitationData() {
-    var data_submit = {
-      'table_name': 'par_quota_limitationstype'
-    }
-    this.workflowService.getWorkflowConfigs(data_submit)
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            this.quotaLimitationData = this.data_record.data;
-
-          }
-        },
-        error => {
-
-        });
-  }
-
-  onLoadStartHsCodeData() {
-    var data_submit = {
-      'table_name': 'par_hscodesheading_definations'
-    }
-    this.workflowService.getWorkflowConfigs(data_submit)
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            this.startHsCodeData = this.data_record.data;
-
-          }
-        },
-        error => {
-
-        });
-  }
-  
-  onLoadEndHsCodeData() {
-    var data_submit = {
-      'table_name': 'par_hscodesheading_definations'
-    }
-    this.workflowService.getWorkflowConfigs(data_submit)
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            this.endHsCodeData = this.data_record.data;
-
-          }
-        },
-        error => {
-
-        });
-  }
-  
-  onLoadSpecificHsCodeData() {
-    var data_submit = {
-      'table_name': 'par_hscodessubheading_defination'
-    }
-    this.workflowService.getWorkflowConfigs(data_submit)
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            this.specificHsCodeData = this.data_record.data;
-
-          }
-        },
-        error => {
-
-        });
-  }
-  onLoadSpecialConditionsData() {
-    var data_submit = {
-      'table_name': 'tra_permit_special_conditions'
-    }
-    this.workflowService.getWorkflowConfigs(data_submit)
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            this.specialConditionsData = this.data_record.data;
-
-          }
-        },
-        error => {
-
-        });
-  }
-
-  onLoadMappingStatusData() {
-    var data_submit = {
-      'table_name': 'par_mapping_status'
-    }
-    this.workflowService.getWorkflowConfigs(data_submit)
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            this.mappingStatusData = this.data_record.data;
-
-          }
-        },
-        error => {
-
-        });
-  }
-
-  onLoadHscodeMappingOptionData() {
-    var data_submit = {
-      'table_name': 'par_hscodemapping_option'
-    }
-    this.workflowService.getWorkflowConfigs(data_submit)
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            this.hscodeMappingOptionData = this.data_record.data;
-
-          }
-        },
-        error => {
-
-        });
-  }
-
-  onLoadPermitTemplateTypeData() {
-    var data_submit = {
-      'table_name': 'par_permittemplate_types'
-    }
-    this.workflowService.getWorkflowConfigs(data_submit)
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            this.permitTemplateTypeData = this.data_record.data;
-
-          }
-        },
-        error => {
-
-        });
-  }
-
-  onLoadPermitTemplateData() {
-    var data_submit = {
-      'table_name': 'par_permit_templates'
-    }
-    this.workflowService.getWorkflowConfigs(data_submit)
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            this.permitTemplateData = this.data_record.data;
-
-          }
-        },
-        error => {
-
-        });
-  }
-
-  onLoadDocumentRequirementTypeData() {
-    var data_submit = {
-      'table_name': 'dms_document_requirements'
-    }
-    this.workflowService.getWorkflowConfigs(data_submit)
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            this.documentRequirementTypeData = this.data_record.data;
-
-          }
-        },
-        error => {
-
-        });
-  }
-
-  onLoadChecklistTypeData() {
-    var data_submit = {
-      'table_name': 'chk_checklist_types'
-    }
-    this.workflowService.getWorkflowConfigs(data_submit)
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            this.checklistTypeData = this.data_record.data;
-
-          }
-        },
-        error => {
-
-        });
-  }
-
-  onLoadChecklistDefData() {
-    var data_submit = {
-      'table_name': 'chk_checklist_definations'
-    }
-    this.workflowService.getWorkflowConfigs(data_submit)
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            this.checklistDefData = this.data_record.data;
-
-          }
-        },
-        error => {
-
-        });
-  }
-  onLoadDocumentTypeData() {
-    var data_submit = {
-      'table_name': 'par_document_types'
-    }
-    this.workflowService.getWorkflowConfigs(data_submit)
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            this.documentTypeData = this.data_record.data;
-
-          }
-        },
-        error => {
-
-        });
-  }
-
-  onLoadWfStageData() {
-    var data_submit = {
-      'table_name': 'wf_workflow_stages'
-    }
-    this.workflowService.getWorkflowConfigs(data_submit)
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            this.wfStageData = this.data_record.data;
-
-          }
-        },
-        error => {
-
-        });
-  }
-
-
-  onLoadPermitTypeData() {
-    var data_submit = {
-      'table_name': 'tra_transactionpermit_types'
-    }
-    this.workflowService.getWorkflowConfigs(data_submit)
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            this.permitTypeData = this.data_record.data;
-
-          }
-        },
-        error => {
-
-        });
-  }
-
-  // 
-  onLoadOrganizationData() {
-    var data_submit = {
-      'table_name': 'tra_organisation_information'
-    }
-    this.workflowService.getWorkflowConfigs(data_submit)
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            this.organizationData = this.data_record.data;
-
-          }
-        },
-        error => {
-
-        });
-  }
-
-  onLoadProcessData(organisation_id) {
-    var data_submit = {
-      'table_name': 'wf_processes',
-      organisation_id: organisation_id,
-
-    }
-    this.workflowService.getWorkflowConfigs(data_submit)
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            this.processData = this.data_record.data;
-
-          }
-        },
-        error => {
-
-        });
-  }
+ 
   onUpdatePermitType() {
 
     this.showWizard = true;

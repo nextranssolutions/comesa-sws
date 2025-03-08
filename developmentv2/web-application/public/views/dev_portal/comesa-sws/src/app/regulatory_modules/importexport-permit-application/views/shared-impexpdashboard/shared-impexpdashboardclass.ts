@@ -62,7 +62,7 @@ export class SharedImpExpdashboardClass {
   productTypeData: any;
   data_record: any;
   guidelines_title: string;
-  regulatory_subfunction_id: string;
+  regulatory_subfunction_id: any;
   permit_type_id: 1;
   application_title: string;
   sectionItem: any;
@@ -157,17 +157,17 @@ export class SharedImpExpdashboardClass {
   }
 
   onInitiatenewImportExpApplications(applicationsubmission_type_id) {
-    this.onApplicationSelection(1);
+    this.onApplicationSelection(1,applicationsubmission_type_id);
   }
 
   onInitiatenewSingleProductPermitImportExpApplications(applicationsubmission_type_id) {
-    this.onApplicationSelectionForSingleProducts(applicationsubmission_type_id);
+    this.onApplicationSelectionForSingleProducts(1,applicationsubmission_type_id);
   }
-  onApplicationSelectionForSingleProducts(applicationsubmission_type_id) {
-
+  onApplicationSelectionForSingleProducts(regulatory_subfunction_id,applicationsubmission_type_id) {
+    
     this.spinner.show();
     
-    this.configService.getSectionUniformApplication(this.regulatory_subfunction_id,applicationsubmission_type_id)
+    this.configService.getSectionUniformApplication(regulatory_subfunction_id,applicationsubmission_type_id)
       .subscribe(
         data => {
           this.spinner.hide();
@@ -177,15 +177,12 @@ export class SharedImpExpdashboardClass {
             this.router_link = this.processData.router_link;
             this.productsapp_details = this.processData;
             this.appService.setApplicationDetail(data.data);
-            this.appService.setPermitApplicationDetail(data.data);
-            this.appService.setApplicantDetail(data.data);
+            
             
             localStorage.setItem('application_details', JSON.stringify(data.data));
-            localStorage.setItem('permit_details', JSON.stringify(data.data));
-            localStorage.setItem('applicant_details', JSON.stringify(data.data));
             
-            // this.appService.setProductApplicationDetail(data.data);
-            this.app_route = ['./importexport-permit-application/single-productapplication-permits'];
+            
+            this.app_route = ['./importexport-permit-application/' + this.router_link];
 
             this.router.navigate(this.app_route);
             this.scrollToTop();
@@ -203,17 +200,12 @@ export class SharedImpExpdashboardClass {
 
 
 
-  onApplicationSelection(regulatory_subfunction_id) {
+  onApplicationSelection(regulatory_subfunction_id,applicationsubmission_type_id) {
 
-    if (regulatory_subfunction_id == 1) {
-      this.applicationGeneraldetailsfrm.get('regulatory_subfunction_id')?.setValue(regulatory_subfunction_id);
-
-    }
     this.spinner.show();
-    this.app_typeItem = this.applicationGeneraldetailsfrm.controls['regulatory_subfunction_id'];
-    this.regulatory_subfunction_id = this.app_typeItem.value;
+    
 
-    this.configService.getSectionUniformApplication(this.regulatory_subfunction_id)
+    this.configService.getSectionUniformApplication(regulatory_subfunction_id,applicationsubmission_type_id)
       .subscribe(
         data => {
           this.spinner.hide();
@@ -223,12 +215,10 @@ export class SharedImpExpdashboardClass {
             this.router_link = this.processData.router_link;
             this.productsapp_details = this.processData;
             this.appService.setApplicationDetail(data.data);
-            this.appService.setPermitApplicationDetail(data.data);
-            this.appService.setApplicantDetail(data.data);
+           
             localStorage.setItem('application_details', JSON.stringify(data.data));
-            localStorage.setItem('permit_details', JSON.stringify(data.data));
-            localStorage.setItem('applicant_details', JSON.stringify(data.data));
-            // this.appService.setProductApplicationDetail(data.data);
+            
+          
             this.app_route = ['./importexport-permit-application/' + this.router_link];
 
             this.router.navigate(this.app_route);

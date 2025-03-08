@@ -195,19 +195,12 @@ export class SharedImpexpApplicationClass {
     this.trader_id = user.trader_id;
     this.mistrader_id = user.mistrader_id;
     this.application_details = localStorage.getItem('application_details');
-    this.permit_product_details = localStorage.getItem('permit_details');
-    this.applicant_details = localStorage.getItem('applicant_details');
-
-    
+   
     this.application_details = JSON.parse(this.application_details);
-    this.permit_product_details = JSON.parse(this.permit_product_details);
-    this.applicant_details = JSON.parse(this.applicant_details);
-
-    
-    // console.log(this.permit_product_details);
+   
     this.form_fielddata = this.application_details.application_form;
-    this.products_fielddata = this.permit_product_details.application_form;
-    this.applicants_fielddata = this.applicant_details.application_form;
+    this.products_fielddata = this.application_details.application_form;
+    this.applicants_fielddata = this.application_details.application_form;
 
     console.log(this.applicants_fielddata);
      
