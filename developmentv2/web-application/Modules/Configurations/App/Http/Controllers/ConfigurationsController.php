@@ -505,7 +505,7 @@ class ConfigurationsController extends Controller
                 ->select('t12.*', 't2.name as regulatory_function', 't20.name as business_type', 't3.name as regulatory_subfunction', 't4.name as product_type','t12.costs as costs',
 				't5.name as assessment_proceduretype', 't6.name as prodclass_category','t24.name as investigationprod_classification', 't18.name as cost_element', 't7.name as product_subcategory', 't9.name as product_origin', 't10.name as applicationfeetype', 't1.*', 
                 't11.name as classification_name','t15.name as fee_type','t16.name as cost_category','t17.name as cost_sub_category', DB::raw("CONCAT(t12.costs,' (',t14.name,')') as element_cost"),'t20.name as premise_type', 't21.name as gmp_type',
-                't22.name as importexport_permittype','t23.name as advertisement_type',);
+                't22.name as importexport_permittype','t23.name as advertisement_type');
 				
                 // ->select('t12.*','t28.name as device_type','t29.name as permit_category', 't2.name as module','t25.name as product_category','t27.name as clincialtrialfields_type', 't26.name as clincialtrialfunding_source', 't20.name as business_type', 't3.name as sub_module', 't4.name as section_name','t4.name as section','t12.cost as costs',
 				// 't5.name as assessment_proceduretype', 't6.name as prodclass_category','t24.name as investigationprod_classification', 't18.name as cost_element', 't7.name as product_subcategory', 't9.name as product_origin', 't10.name as applicationfeetype', 't1.*', 't11.name as classification_name','t15.name as fee_type','t16.name as cost_category','t17.name as cost_sub_category', DB::raw("CONCAT(t12.cost,' (',t14.name,')') as element_cost"),'t20.name as premise_type', 't21.name as gmp_type','t23.name as advertisement_type', 't22.name as importexport_permittype');
@@ -567,7 +567,7 @@ class ConfigurationsController extends Controller
                 // ->leftJoin('par_device_types as t28', 't1.device_type_id', 't28.id')
                 // ->leftJoin('par_permitsproduct_categories as t29', 't1.permit_productscategory_id', 't29.id')
                 ->select('t1.*','t15.name as fee_type','t16.name as cost_category','t17.name as cost_sub_category','t18.name as cost_element',
-                 't10.name as applicationfeetype','t14.name as currency','t20.name as cost_type',);
+                 't10.name as applicationfeetype','t14.name as currency','t20.name as cost_type');
 				
                 // ->select('t12.*','t28.name as device_type','t29.name as permit_category', 't2.name as module','t25.name as product_category','t27.name as clincialtrialfields_type', 't26.name as clincialtrialfunding_source', 't20.name as business_type', 't3.name as sub_module', 't4.name as section_name','t4.name as section','t12.cost as costs',
 				// 't5.name as assessment_proceduretype', 't6.name as prodclass_category','t24.name as investigationprod_classification', 't18.name as cost_element', 't7.name as product_subcategory', 't9.name as product_origin', 't10.name as applicationfeetype', 't1.*', 't11.name as classification_name','t15.name as fee_type','t16.name as cost_category','t17.name as cost_sub_category', DB::raw("CONCAT(t12.cost,' (',t14.name,')') as element_cost"),'t20.name as premise_type', 't21.name as gmp_type','t23.name as advertisement_type', 't22.name as importexport_permittype');
@@ -593,33 +593,34 @@ class ConfigurationsController extends Controller
             }
         return response()->json($res);
     } 
-
-
-
+    
     public function getUniformSectionApplicationProcess(Request $req)
     {
         try {
             $app_data = array();
             $regulatory_subfunction_id = $req->regulatory_subfunction_id;
             $regulatory_function_id = $req->regulatory_function_id;
-            $appsubmissions_type_id = $req->appsubmissions_type_id;
             $transactionpermit_type_id = $req->transactionpermit_type_id;
+            $applicationsubmission_type_id = $req->applicationsubmission_type_id;
 
             // Qualify ambiguous columns with table aliases
             $filter = array('t1.regulatory_subfunction_id' => $regulatory_subfunction_id);
-            if (validateIsNumeric($appsubmissions_type_id)) {
-                $filter['t1.appsubmissions_type_id'] = $appsubmissions_type_id;
+            if (validateIsNumeric($applicationsubmission_type_id)) {
+               // $filter['t2.applicationsubmission_type_id'] = $applicationsubmission_type_id;
             }
             if (!validateIsNumeric($regulatory_function_id)) {
                 $submodule_data = getTableData('par_regulatory_subfunctions', array('id' => $regulatory_subfunction_id));
                 $regulatory_function_id = $submodule_data->regulatory_function_id;
             }
-
-       
-
+            if (validateIsNumeric($transactionpermit_type_id)) {
+               $filter['t4.id'] = $transactionpermit_type_id;
+            }
+            
             $data = DB::table('wf_workflows as t1')
                 ->join('wf_workflow_stages as t2', 't2.workflow_id', 't1.id')
-                ->join('wf_workflow_interfaces as t3', 't3.id', 't2.interface_id')
+                ->leftJoin('wf_workflow_interfaces as t3', 't3.id', 't2.interface_id')
+
+                ->join('tra_transactionpermit_types as t4', 't1.id', 't4.workflow_id')
                 ->select(
                     't1.*',
                     't2.id as workflowprocess_stage_id',
@@ -636,16 +637,11 @@ class ConfigurationsController extends Controller
                 $form_fields = getApplicationGeneralFormsFields($req);
 
                 $app_data['application_form'] = $form_fields;
-               
-               
-
-                // Additional data entry forms based on regulatory function
                 switch ($regulatory_function_id) {
                     case 1: // Import Export Permit Application
-                        // $app_data['applicant_details'] = getApplicationDataEntryFormsFields($req, 20);
-                        // $app_data['application_general_details'] = getApplicationDataEntryFormsFields($req, 19);
-                        // $app_data['permit_products_details'] = getApplicationDataEntryFormsFields($req, 21);
-                        
+                        $app_data['applicant_details'] = getApplicationDataEntryFormsFields($req, 20);
+                        //$app_data['application_general_details'] = getApplicationDataEntryFormsFields($req, 19);
+                        $app_data['permit_products_details'] = getApplicationDataEntryFormsFields($req, 21);
                         
                         break;
                     case 2: // Business operations
@@ -676,4 +672,73 @@ class ConfigurationsController extends Controller
         return response()->json($res);
     }
 
+    public function getApplicantUniformApplicationProces(Request $req)
+    {
+        try {
+            $app_data = array();
+            $regulatory_subfunction_id = $req->regulatory_subfunction_id;
+            $regulatory_function_id = $req->regulatory_function_id;
+            $applicationsubmission_type_id = $req->applicationsubmission_type_id;
+            
+            $filter = array('t1.regulatory_subfunction_id' => $regulatory_subfunction_id);
+            if (validateIsNumeric($applicationsubmission_type_id)) {
+                $filter['t2.applicationsubmission_type_id'] = $applicationsubmission_type_id;
+            }
+            if (!validateIsNumeric($regulatory_function_id)) {
+                $submodule_data = getTableData('par_regulatory_subfunctions', array('id' => $regulatory_subfunction_id));
+                $regulatory_function_id = $submodule_data->regulatory_function_id;
+            }
+            
+            $data = DB::table('wb_workflowprocesses as t1')
+                ->join('wb_workflowprocesses_stages as t2', 't2.workflow_id', 't1.id')
+                ->join('wf_workflow_interfaces as t3', 't3.id', 't2.interface_id')
+                ->select(
+                    't1.*',
+                    't2.id as workflowprocess_stage_id',
+                    't2.name as workflowprocess_stage',
+                    't3.routerlink as router_link'
+                )
+                ->where($filter)
+                ->where('t2.stage_status_id', 1) // Qualified column
+                ->first();
+            // Process application data
+            if ($data) {
+                $app_data['process_infor'] = $data;
+                $app_data['applicationsubmission_type_id'] = $applicationsubmission_type_id;
+                $form_fields = getApplicationGeneralFormsFields($req);
+                $app_data['application_form'] = $form_fields;
+                
+                // Additional data entry forms based on regulatory function
+                switch ($regulatory_function_id) {
+                    case 1: // Import Export Permit Application
+                        $app_data['applicant_details'] = getApplicationDataEntryFormsFields($req, 20);
+                        $app_data['application_general_details'] = getApplicationDataEntryFormsFields($req, 19);
+                        $app_data['permit_products_details'] = getApplicationDataEntryFormsFields($req, 21);
+                        //any other from
+
+                        break;
+                    case 2: // Business operations
+                        break;
+                    case 3:
+                        // Additional cases can be handled here
+                        break;
+                    case 4:
+                        // Additional cases can be handled here
+                        break;
+                    default:
+                        // Handle other cases
+                        break;
+                }
+                $res = array('success' => true, 'data' => $app_data);
+            } else {
+                $res = array('success' => false, 'message' => 'The specified Module Not Mapped');
+            }
+        } catch (\Exception $exception) {
+            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        } catch (\Throwable $throwable) {
+            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        }
+
+        return response()->json($res);
+    }
 }

@@ -386,9 +386,10 @@ onAddWorkFlowStageProcessActions(){
 }
 
 onAddWorkFlowStage(){
-  // this.workflowStageDetailsVisible = true;
-  this.workflowStagesVisible = true;
+ 
   this.workflowStagesFrm.reset();
+  this.workflowStagesVisible = true;
+  // this.workflowStagesData = [];
   this.workflowStagesFrm.get('table_name')?.setValue('wf_workflow_stages');
   this.workflowStagesFrm.get('workflow_id')?.setValue(this.workflow_id);
   
@@ -1045,24 +1046,24 @@ onFuncSaveWorkflowStageData() {
 
   const formData = new FormData();
   const invalid = [];
-  const controls = this.workflowStageItemsFrm.controls;
+  const controls = this.workflowStagesFrm.controls;
   for (const name in controls) {
     if (controls[name].invalid) {
       this.toastr.error('Fill In All Mandatory fields with (*), missing value on ' + name.replace('_id', ''), 'Alert');
       return;
     }
   }
-  if (this.workflowStageItemsFrm.invalid) {
+  if (this.workflowStagesFrm.invalid) {
     return;
   }
 
-  this.workflowStageItemsFrm.get('resetcolumns')?.setValue(this.resetcolumns);
+  this.workflowStagesFrm.get('resetcolumns')?.setValue(this.resetcolumns);
   this.spinnerShow('Saving ' + this.parameter_name);
   this.action_url = 'onsaveWorkflowConfigData';
 
   this.spinner.show();
-  this.workflowStageItemsFrm.get('workflow_id')?.setValue(this.workflow_id);
-  this.workflowService.onSaveWorkflowDetailsDetails('wf_workflow_stages', this.workflowStageItemsFrm.value, this.action_url)
+  this.workflowStagesFrm.get('workflow_id')?.setValue(this.workflow_id);
+  this.workflowService.onSaveWorkflowDetailsDetails('wf_workflow_stages', this.workflowStagesFrm.value, this.action_url)
     .subscribe(
       response => {
         this.response = response;
@@ -1073,7 +1074,7 @@ onFuncSaveWorkflowStageData() {
           this.workflowStagesVisible = false;
 
           this.workflow_stage_id = this.response.record_id;
-          this.workflowStageItemsFrm.get('id')?.setValue(this.workflow_id);
+          this.workflowStagesFrm.get('id')?.setValue(this.workflow_id);
           this.fetchWorkflowStageActionsDetails(this.workflow_id);
           this.fetchWorkflowStageProcessActions(this.workflow_id);
           this.toastr.success(this.response.message, 'Response');
@@ -1115,7 +1116,8 @@ onFuncSaveWorkflowStageDetailsData() {
       response => {
         this.response = response;
         //the details 
-        if (this.response.success) {
+      
+       if (this.response.success) {
 
           this.fetchWorkflowStageActionsDetails(this.workflow_stage_id);
           this.workflowStagesVisible = false;

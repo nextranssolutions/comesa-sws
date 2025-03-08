@@ -235,16 +235,19 @@
                     [elementAttr]="{ class: '' }" (onClick)="onAddNewHscode()">
                 </dx-button>
 
-                <dx-tree-list id="hs_codes" (onCellPrepared)="onRolesCellPrepared($event)"
+                <dx-data-grid id="hs_codes" (onCellPrepared)="onRolesCellPrepared($event)"
                     class="table row-border hover" dataStructure="tree" [wordWrapEnabled]="true"
-                    [dataSource]="AppHsCodes" itemsExpr="children" keyExpr="id" parentIdExpr="parent_id"
-                    [expandedRowKeys]="[1, 2]" [selectedRowKeys]="[1, 29, 42]">
-                    <dxo-editing mode="batch" [allowUpdating]="true" [allowAdding]="false" [allowDeleting]="false"
-                        [selectTextOnEditStart]="selectTextOnEditStart">
-                    </dxo-editing>
-                    <dxo-header-filter [visible]="true"></dxo-header-filter>
-                    <dxo-selection mode="multiple"></dxo-selection>
-                    <dxo-group-panel [visible]="true"></dxo-group-panel>
+                    [dataSource]="AppHsCodes" [remoteOperations]="true"
+                    [showBorders]="true" itemsExpr="children" keyExpr="id" parentIdExpr="parent_id"
+                    (onToolbarPreparing)="onAdvanceProductRegistrySearch($event)" [selectedRowKeys]="[1, 29, 42]">
+                    <dxo-export [enabled]="true" fileName="Data" [allowExportSelectedData]="true"></dxo-export>
+              <dxo-search-panel [visible]="true"></dxo-search-panel>
+              <dxo-header-filter [visible]="true"></dxo-header-filter>
+              <dxo-filter-row [visible]="show_advancesearch"></dxo-filter-row>
+             <dxo-paging [enabled]="true">
+                <dxo-pager [showInfo]="true" infoText="Page #{0}. Total: {1} ({2} items)" [showPageSizeSelector]="true"
+                    [allowedPageSizes]="[50,100]"></dxo-pager>
+            </dxo-paging>
                     <dxi-column width="150" caption="{{ 'action' | translate }}" name="command-editing"
                         [allowFiltering]="false" [allowSorting]="false" cellTemplate="cellTemplateAction">
                         <div *dxTemplate="let data of 'cellTemplateAction'">
@@ -255,7 +258,6 @@
                     </dxi-column>
 
                     <dxi-column [allowEditing]="false" dataField="name" caption="{{ 'name' | translate }}"></dxi-column>
-                    <dxi-column [allowEditing]="false" dataField="description" caption="{{ 'description' | translate }}"></dxi-column>
                     <dxi-column [allowEditing]="false" dataField="hs_code_selection_option" caption="{{ 'hs_code_selection_option' | translate }}"></dxi-column>
                     <dxi-column [allowEditing]="false" dataField="hs_code_start_int" caption="{{ 'start_hs_code' | translate }}"></dxi-column>
                     <dxi-column [allowEditing]="false" dataField="hs_code_end_int" caption="{{ 'end_hs_code' | translate }}"></dxi-column>
@@ -265,6 +267,7 @@
                     <dxi-column [allowEditing]="false" dataField="hscodemapping_option_id" caption="{{ 'hscodemapping_option_id' | translate }}"></dxi-column>
                     <dxi-column [allowEditing]="false" dataField="special_conditions" caption="{{ 'special_conditions' | translate }}"></dxi-column>
                     <dxi-column [allowEditing]="false" dataField="limitation_description"caption="{{ 'limitation_description' | translate }}"></dxi-column>
+                    <dxi-column [allowEditing]="false" dataField="description" caption="{{ 'description' | translate }}"></dxi-column>
                     <dxi-column [allowEditing]="false" dataField="code" caption="{{ 'code' | translate }}"></dxi-column>
                     <dxi-column dataField="is_enabled" caption="{{ 'is_enabled' | translate }}" [dataType]="'boolean'"
                         [width]="100">
@@ -273,7 +276,7 @@
 
                     <dxo-selection mode="multiple"></dxo-selection>
                     <dxo-group-panel [visible]="true"></dxo-group-panel>
-                </dx-tree-list>
+                </dx-data-grid>
 
                 <div class="col-lg-3">
                     <dx-button text="{{ 'previous_permit_types' | translate }}" type="default" icon="fa fa-arrow-right"
@@ -293,16 +296,18 @@
                     icon="fa fa-plus" [elementAttr]="{ class: '' }" (onClick)="onAddNewAppPermitRequiredDocuments()">
                 </dx-button>
 
-                <dx-tree-list id="permit_required_documents" (onCellPrepared)="onRolesCellPrepared($event)"
-                    class="table row-border hover" dataStructure="tree" [wordWrapEnabled]="true"
+                <dx-data-grid id="permit_required_documents" (onCellPrepared)="onRolesCellPrepared($event)"
+                    class="table row-border hover" dataStructure="tree" [wordWrapEnabled]="true"[remoteOperations]="true"
                     [dataSource]="AppPermitRequiredDocuments" itemsExpr="children" keyExpr="id" parentIdExpr="parent_id"
-                    [expandedRowKeys]="[1, 2]" [selectedRowKeys]="[1, 29, 42]">
-                    <dxo-editing mode="batch" [allowUpdating]="true" [allowAdding]="false" [allowDeleting]="false"
-                        [selectTextOnEditStart]="selectTextOnEditStart">
-                    </dxo-editing>
-                    <dxo-header-filter [visible]="true"></dxo-header-filter>
-                    <dxo-selection mode="multiple"></dxo-selection>
-                    <dxo-group-panel [visible]="true"></dxo-group-panel>
+                     (onToolbarPreparing)="onAdvanceProductRegistrySearch($event)" [selectedRowKeys]="[1, 29, 42]">
+                    <dxo-export [enabled]="true" fileName="Data" [allowExportSelectedData]="true"></dxo-export>
+                 <dxo-search-panel [visible]="true"></dxo-search-panel>
+                <dxo-header-filter [visible]="true"></dxo-header-filter>
+                <dxo-filter-row [visible]="show_advancesearch"></dxo-filter-row>
+               <dxo-paging [enabled]="true">
+                <dxo-pager [showInfo]="true" infoText="Page #{0}. Total: {1} ({2} items)" [showPageSizeSelector]="true"
+                    [allowedPageSizes]="[50,100]"></dxo-pager>
+            </dxo-paging>
                     <dxi-column width="150" caption="{{ 'action' | translate }}" name="command-editing"
                         [allowFiltering]="false" [allowSorting]="false" cellTemplate="cellTemplateAction">
                         <div *dxTemplate="let data of 'cellTemplateAction'">
@@ -330,7 +335,7 @@
                     </dxi-column>
                     <dxo-selection mode="multiple"></dxo-selection>
                     <dxo-group-panel [visible]="true"></dxo-group-panel>
-                </dx-tree-list>
+                </dx-data-grid>
 
                 <div class="col-lg-3">
                     <dx-button text="{{ 'previous_hs_codes' | translate }}" type="default" icon="fa fa-arrow-right"
@@ -351,10 +356,23 @@
                     icon="fa fa-plus" [elementAttr]="{ class: '' }" (onClick)="onAddNewAppPermitChecklists()">
                 </dx-button>
 
-                <dx-tree-list id="permit_checklists" (onCellPrepared)="onRolesCellPrepared($event)"
+                <dx-data-grid id="permit_checklists" (onCellPrepared)="onRolesCellPrepared($event)"
                     class="table row-border hover" dataStructure="tree" [wordWrapEnabled]="true"
-                    [dataSource]="AppPermitChecklist" itemsExpr="children" keyExpr="id" parentIdExpr="parent_id"
-                    [expandedRowKeys]="[1, 2]" [selectedRowKeys]="[1, 29, 42]">
+                    [dataSource]="AppPermitChecklist" [remoteOperations]="true"
+                    [showBorders]="true" itemsExpr="children" keyExpr="id" parentIdExpr="parent_id"
+                    (onToolbarPreparing)="onAdvanceProductRegistrySearch($event)" 
+                     [selectedRowKeys]="[1, 29, 42]">
+                    <dxo-export [enabled]="true" [fileName]="'records' | translate" [formats]="['pdf', 'xlsx']"
+                    [allowExportSelectedData]="true">
+                    </dxo-export>
+                     <dxo-search-panel [visible]="true"></dxo-search-panel>
+
+
+                    <dxo-filter-row [visible]="show_advancesearch"></dxo-filter-row>
+                    <dxo-paging [enabled]="true">
+                    <dxo-pager [showInfo]="true" infoText="Page #{0}. Total: {1} ({2} items)"
+                        [showPageSizeSelector]="true" [allowedPageSizes]="[50,100]"></dxo-pager>
+                    </dxo-paging>
                     <dxo-editing mode="batch" [allowUpdating]="true" [allowAdding]="false" [allowDeleting]="false"
                         [selectTextOnEditStart]="selectTextOnEditStart">
                     </dxo-editing>
@@ -386,7 +404,7 @@
                     </dxi-column>
                     <dxo-selection mode="multiple"></dxo-selection>
                     <dxo-group-panel [visible]="true"></dxo-group-panel>
-                </dx-tree-list>
+                </dx-data-grid>
 
 
                 <div class="row mt-3">
@@ -409,10 +427,21 @@
                     icon="fa fa-plus" [elementAttr]="{ class: '' }" (onClick)="onAddNewPermitSignatories()">
                 </dx-button>
 
-                <dx-tree-list id="permit_signatories" (onCellPrepared)="onRolesCellPrepared($event)"
+                <dx-data-grid id="permit_signatories" (onCellPrepared)="onRolesCellPrepared($event)"
                     class="table row-border hover" dataStructure="tree" [wordWrapEnabled]="true"
                     [dataSource]="AppPermitCertificateTemplate" itemsExpr="children" keyExpr="id"
-                    parentIdExpr="parent_id" [expandedRowKeys]="[1, 2]" [selectedRowKeys]="[1, 29, 42]">
+                    parentIdExpr="parent_id"  (onToolbarPreparing)="onAdvanceProductRegistrySearch($event)"  [selectedRowKeys]="[1, 29, 42]">
+                    <dxo-export [enabled]="true" [fileName]="'records' | translate" [formats]="['pdf', 'xlsx']"
+                    [allowExportSelectedData]="true">
+                   </dxo-export>
+                   <dxo-search-panel [visible]="true"></dxo-search-panel>
+
+
+                   <dxo-filter-row [visible]="show_advancesearch"></dxo-filter-row>
+                    <dxo-paging [enabled]="true">
+                    <dxo-pager [showInfo]="true" infoText="Page #{0}. Total: {1} ({2} items)"
+                        [showPageSizeSelector]="true" [allowedPageSizes]="[50,100]"></dxo-pager>
+                   </dxo-paging>
                     <dxo-editing mode="batch" [allowUpdating]="true" [allowAdding]="false" [allowDeleting]="false"
                         [selectTextOnEditStart]="selectTextOnEditStart">
                     </dxo-editing>
@@ -427,14 +456,15 @@
 
                         </div>
                     </dxi-column>
-                    <dxi-column [allowEditing]="false" dataField="permit_signatory"
-                        caption="{{ 'permit_signatory' | translate }}"></dxi-column>
+                    
                     <dxi-column [allowEditing]="false" dataField="permit_template_type"
                         caption="{{ 'permit_template_type' | translate }}"></dxi-column>
                     <dxi-column [allowEditing]="false" dataField="permit_template"
                         caption="{{ 'permit_template' | translate }}"></dxi-column>
                     <dxi-column [allowEditing]="false" dataField="workflow_stage"
                         caption="{{ 'workflow_stage' | translate }}"></dxi-column>
+                    <dxi-column [allowEditing]="false" dataField="permit_signatory"
+                        caption="{{ 'permit_signatory' | translate }}"></dxi-column>
                     <dxi-column [allowEditing]="false" dataField="is_approval_document"
                         caption="{{ 'is_approval_document' | translate }}"></dxi-column>
 
@@ -445,7 +475,7 @@
 
                     <dxo-selection mode="multiple"></dxo-selection>
                     <dxo-group-panel [visible]="true"></dxo-group-panel>
-                </dx-tree-list>
+                </dx-data-grid>
 
                 <div class="col-lg-3">
                     <dx-button text="{{ 'previous_permit_checklists' | translate }}" type="default"
@@ -466,10 +496,21 @@
                     icon="fa fa-plus" [elementAttr]="{ class: '' }" (onClick)="onAddNewPermitSpecialConditions()">
                 </dx-button>
 
-                <dx-tree-list id="permit_special_conditions" (onCellPrepared)="onRolesCellPrepared($event)"
+                <dx-data-grid id="permit_special_conditions" (onCellPrepared)="onRolesCellPrepared($event)"
                     class="table row-border hover" dataStructure="tree" [wordWrapEnabled]="true"
                     [dataSource]="AppPermitReportGeneration" itemsExpr="children" keyExpr="id" parentIdExpr="parent_id"
-                    [expandedRowKeys]="[1, 2]" [selectedRowKeys]="[1, 29, 42]">
+                    (onToolbarPreparing)="onAdvanceProductRegistrySearch($event)"  [selectedRowKeys]="[1, 29, 42]">
+                    <dxo-export [enabled]="true" [fileName]="'records' | translate" [formats]="['pdf', 'xlsx']"
+                    [allowExportSelectedData]="true">
+                </dxo-export>
+                  <dxo-search-panel [visible]="true"></dxo-search-panel>
+
+
+                 <dxo-filter-row [visible]="show_advancesearch"></dxo-filter-row>
+                <dxo-paging [enabled]="true">
+                    <dxo-pager [showInfo]="true" infoText="Page #{0}. Total: {1} ({2} items)"
+                        [showPageSizeSelector]="true" [allowedPageSizes]="[50,100]"></dxo-pager>
+                </dxo-paging>
                     <dxo-editing mode="batch" [allowUpdating]="true" [allowAdding]="false" [allowDeleting]="false"
                         [selectTextOnEditStart]="selectTextOnEditStart">
                     </dxo-editing>
@@ -501,7 +542,7 @@
 
                     <dxo-selection mode="multiple"></dxo-selection>
                     <dxo-group-panel [visible]="true"></dxo-group-panel>
-                </dx-tree-list>
+                </dx-data-grid>
 
                 <div class="col-lg-3">
                     <dx-button text="{{ 'previous_permit_signatories' | translate }}" type="default"
@@ -513,54 +554,110 @@
 
         </dx-tab-panel>
 
-        <dx-popup [visible]="hscodePopupVisible" [width]="funcpopWidth(65)" [height]="funcpopHeight(55)"
+
+
+    <dx-popup class="popup" [width]="funcpopWidth(80)" [height]="600" [showTitle]="true"
+        title="{{'product_categories' | translate}}" [dragEnabled]="false" [hideOnOutsideClick]="false"
+        [(visible)]="isHsCodePopupVisible">
+
+        <div *dxTemplate="let data of 'content'">
+            <dx-scroll-view>
+                <dx-data-grid class="table row-border hover" [allowColumnResizing]="true" [wordWrapEnabled]="true"
+                [columnHidingEnabled]="true" [dataSource]="productCategoryData" [remoteOperations]="true"
+                [showBorders]="true" itemsExpr="children" keyExpr="id" parentIdExpr="parent_id"
+                (onToolbarPreparing)="onAdvanceProductRegistrySearch($event)" [selectedRowKeys]="[1, 29, 42]">
+                
+                <dxo-export [enabled]="true" fileName="Data" [allowExportSelectedData]="true"></dxo-export>
+                <dxo-search-panel [visible]="true"></dxo-search-panel>
+                <dxo-header-filter [visible]="true"></dxo-header-filter>
+                <dxo-filter-row [visible]="show_advancesearch"></dxo-filter-row>
+                
+                <dxo-paging [enabled]="true">
+                    <dxo-pager [showInfo]="true" infoText="Page #{0}. Total: {1} ({2} items)" [showPageSizeSelector]="true"
+                        [allowedPageSizes]="[50, 100]">
+                    </dxo-pager>
+                </dxo-paging>
+                    <dxi-column [width]="150" caption="{{'action' | translate}}" name="command-editing"
+                        [allowFiltering]="false" [allowSorting]="false" cellTemplate="cellTemplate">
+                        <div *dxTemplate="let data of 'cellTemplate'">
+    
+                            <dx-button text="{{'select_product' | translate}}" (click)="funcSelectProductCategory(data)"
+                                type="success" icon="edit" [elementAttr]="{ class: 'btn btn-primary' }">
+                            </dx-button>
+                        </div>
+                    </dxi-column>
+                    <dxi-column dataField="hscodechapters" caption="{{'product' | translate}}"></dxi-column>
+                    <dxi-column dataField="hscodesheading" caption="{{'product_category' | translate}}"></dxi-column>
+                    <dxi-column dataField="hscodessubheading" caption="{{'product_subcategory' | translate}}"></dxi-column>
+                    <dxo-paging [pageSize]="50"></dxo-paging>
+                </dx-data-grid>
+            </dx-scroll-view>
+        </div>
+    </dx-popup>
+
+    <dx-popup [visible]="hscodePopupVisible" [width]="funcpopWidth(65)" [height]="funcpopHeight(55)"
             [showTitle]="true" [title]="'HS Codes'" (onHidden)="hscodePopupVisible = false">
 
 
             <form (ngSubmit)="onUpdateHsCode()" [formGroup]="hsCodeDataFrm" formControlName="description">
 
                 <div class="row">
-                    <div class="col-lg-6">
-                        <label>{{ 'name' | translate }}</label>
-                        <dx-text-box formControlName="name" [showClearButton]="true">
-                        </dx-text-box>
-                    </div>
-
-                    <div class="col-lg-6">
-                        <label>{{ 'description' | translate }}</label>
-                        <dx-text-area formControlName="description">
-                        </dx-text-area>
-                    </div>
-
-                    <div class="col-lg-6">
-                        <label>{{ 'hs_code_selection_option' | translate }}</label>
-                        <dx-select-box [searchEnabled]="true" formControlName="hscode_seloption_id"
-                            [showClearButton]="true" [dataSource]="hsCodeData" valueExpr="id" displayExpr="name">
+                    <div class="input-group col-md-12">
+                        <div class="col-lg-10">
+                            <label>{{'product_name' | translate}}</label>
+                            <dx-text-box [readOnly]="true" formControlName="name"
+                                [placeholder]="'product_name' | translate"
+                                [showClearButton]="true">
+                            </dx-text-box>
+                            <input type="hidden" formControlName="name" />
+                        </div>
+                        <div class="col-lg-2 pt-5">
+                            <dx-button [elementAttr]="{ class: 'btn btn-primary pull-left' }"
+                                [disabled]="ammendReadOnly" style="margin-top:25px !important;"
+                                text="{{ 'search_details' | translate }}" type="default"
+                                (onClick)="onsearchHsCodeDetails()">
+                                <i class="fa fa-search"></i> {{ 'search' | translate }} {{
+                                'product_name' |
+                                translate }}
+                            </dx-button>
+                        </div>
+                    </div>                       
+                    
+                     <div class="col-lg-6">
+                        <label for="ti" class="control-label">{{ 'hs_code_selection_option' | translate
+                            }}</label>
+                        <dx-select-box [dataSource]="hsCodeData" valueExpr="id" displayExpr="selection_type"
+                            [searchEnabled]="true" formControlName="hscode_seloption_id"
+                            placeholder="{{ 'hs_code_selection_option' | translate }}"
+                            (onValueChanged)="toggleHsCodeSelection($event)">
                         </dx-select-box>
                     </div>
+                    <div *ngIf="showHsCodeSelectionOption" class="col-md-12">
+                        <div class="col-lg-6">
+                            <label class="control-label">{{ 'start_hs_code' | translate }}</label>
+                            <dx-select-box [dataSource]="startHsCodeData" valueExpr="id"
+                                displayExpr="start_hs_code" formControlName="hs_code_start_int"
+                                placeholder="{{ 'start_hs_code' | translate }}">
+                            </dx-select-box>
+                        </div>
 
-                    <div class="col-lg-6">
-                        <label>{{ 'start_hs_code' | translate }}</label>
-                        <dx-text-area formControlName="hs_code_start_int">
-                        </dx-text-area>
-                    </div>
+                        <div class="col-lg-6">
+                            <label class="control-label">{{ 'end_hs_code' | translate }}</label>
+                            <dx-select-box [dataSource]="endHsCodeData" valueExpr="id"
+                                displayExpr="end_hs_code" formControlName="hs_code_end_int"
+                                placeholder="{{ 'end_hs_code' | translate }}">
+                            </dx-select-box>
+                        </div>
+                   </div>
 
-                    <div class="col-lg-6">
-                        <label>{{ 'end_hs_code' | translate }}</label>
-                        <dx-text-area formControlName="hs_code_end_int">
-                        </dx-text-area>
-                    </div>
-
-                    <div class="col-lg-6">
-                        <label>{{ 'specific_hs_code' | translate }}</label>
-                        <dx-text-area formControlName="hs_code_specific_int">
-                        </dx-text-area>
-                    </div>
-
-                    <div class="col-lg-6">
-                        <label>{{ 'special_conditions' | translate }}</label>
-                        <dx-text-area formControlName="special_conditions">
-                        </dx-text-area>
+                    <div *ngIf="showSpecificHsCodeOption" class="col-md-12">
+                        <div class="col-lg-6">
+                            <label class="control-label">{{ 'specific_hs_code' | translate }}</label>
+                            <dx-select-box  [dataSource]="specificHsCodeData" valueExpr="id"
+                                displayExpr="specific_hs_code" formControlName="hs_code_specific_int"
+                                placeholder="{{ 'specific_hs_code' | translate }}">
+                            </dx-select-box>
+                        </div>
                     </div>
 
                     <div class="col-lg-6">
@@ -568,6 +665,15 @@
                         <dx-text-area formControlName="limitation_description">
                         </dx-text-area>
                     </div>
+
+                    <div class="col-lg-6">
+                        <label>{{ 'special_conditions' | translate }}</label>
+                        <dx-select-box [searchEnabled]="true" formControlName="special_conditions_id"
+                            [showClearButton]="true" [dataSource]="specialConditionsData" valueExpr="id"
+                            displayExpr="special_conditions">
+                        </dx-select-box>
+                    </div>
+
                     <div class="col-lg-6">
                         <label>{{ 'quota_limitationstype' | translate }}</label>
                         <dx-select-box [searchEnabled]="true" formControlName="quota_limitationstype_id"
@@ -589,6 +695,12 @@
                             [showClearButton]="true" [dataSource]="hscodeMappingOptionData" valueExpr="id"
                             displayExpr="name">
                         </dx-select-box>
+                    </div>
+
+                    <div class="col-lg-12">
+                        <label>{{ 'description' | translate }}</label>
+                        <dx-text-area formControlName="description">
+                        </dx-text-area>
                     </div>
 
                     <div class="col-lg-6">
@@ -621,13 +733,7 @@
             <form (ngSubmit)="onUpdateHsCode()" [formGroup]="PermitSignatoriesFrm" formControlName="description">
 
                 <div class="row">
-                    <div class="col-lg-6">
-                        <label>{{ 'permit_signatory' | translate }}</label>
-                        <dx-text-box formControlName="permit_signatory" [showClearButton]="true">
-                        </dx-text-box>
-                    </div>
-
-                    <div class="col-lg-6">
+                   <div class="col-lg-6">
                         <label>{{ 'permit_template_type' | translate }}</label>
                         <dx-select-box [searchEnabled]="true" formControlName="permit_template_type_id"
                             [showClearButton]="true" [dataSource]="permitTemplateTypeData" valueExpr="id"
@@ -648,6 +754,12 @@
                         <dx-select-box [searchEnabled]="true" formControlName="workflow_stage_id"
                             [showClearButton]="true" [dataSource]="wfStageData" valueExpr="id" displayExpr="name">
                         </dx-select-box>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <label>{{ 'permit_signatory' | translate }}</label>
+                        <dx-text-box formControlName="permit_signatory" [showClearButton]="true">
+                        </dx-text-box>
                     </div>
 
                     <div class="col-lg-6">
@@ -709,13 +821,7 @@
                         </dx-text-box>
                     </div>
 
-                    <div class="col-lg-6">
-                        <label>{{ 'limitation_description' | translate }}</label>
-                        <dx-text-box formControlName="limitation_description" [showClearButton]="true">
-                        </dx-text-box>
-                    </div>
-
-                    <div class="col-lg-6">
+                   <div class="col-lg-6">
                         <label>{{ 'quota_limitations_type' | translate }}</label>
                         <dx-select-box [searchEnabled]="true" formControlName="quota_limitationstype_id"
                             [showClearButton]="true" [dataSource]="quotaLimitationData" valueExpr="id"
@@ -777,10 +883,36 @@
                     </div>
 
                     <div class="col-lg-6">
+                        <label class="control-label">{{ 'has_validity_period' | translate }}</label>
+                        <dx-select-box [dataSource]="regStatusOptions" 
+                                       valueExpr="value" 
+                                       displayExpr="text"
+                                       [searchEnabled]="true" 
+                                       formControlName="has_validity_period"
+                                       placeholder="{{ 'has_validity_period' | translate }}"
+                                       (onValueChanged)="toggleValidityPeriod($event)">
+                        </dx-select-box>
+                    </div>
+                    
+                    <div *ngIf="showValidityPeriod" class="col-md-12">
+                        <div class="col-lg-6">
+                            <label class="control-label">{{ 'validity_period' | translate }}</label>
+                            <dx-text-box formControlName="validity_period" [showClearButton]="true">
+                            </dx-text-box>
+                        </div>
+                    
+                        <div class="col-lg-6">
+                            <label class="control-label">{{ 'validity_defination' | translate }}</label>
+                            <dx-text-box formControlName="validity_defination" [showClearButton]="true">
+                            </dx-text-box>
+                        </div>
+                    </div>
+                                
+                    <!-- <div class="col-lg-6">
                         <label>{{ "has_validity_period" | translate }}</label>
                         <dx-select-box [searchEnabled]="true" formControlName="has_validity_period"
                             [dataSource]="regStatusOptions" valueExpr="value" displayExpr="text"></dx-select-box>
-                    </div>
+                    </div> -->
 
                     <div class="col-lg-6">
                         <label>{{ "status" | translate }}</label>

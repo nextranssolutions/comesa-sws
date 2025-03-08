@@ -1250,14 +1250,16 @@ class ImportExportController extends Controller
                     't1.email_address',
                     't1.website as website'
                 )
-                ->when(
+               
+                ->orderByDesc('t1.id')
+                ->get();
+                    /*
+ ->when(
                     $search_value,
                     fn($query) =>
                     $query->where('t1.name', 'LIKE', "%{$search_value}%")
                 )
-                ->orderByDesc('t1.id')
-                ->get();
-
+                    */
             $totalCount = $data->count();
 
 
@@ -1287,7 +1289,7 @@ class ImportExportController extends Controller
                 $search_value = $searchValue[2] ?? '';
             }
 
-            $is_local_agent = $req->is_local_agent;
+            $application_code = $req->application_code;
             $data = collect();
             $totalCount = 0;
 
@@ -1304,17 +1306,10 @@ class ImportExportController extends Controller
                     't4.name as unit_of_measure',
                     't5.name as storage_conditions'
                 )
-                ->when(
-                    $search_value,
-                    fn($query) =>
-                    $query->where('t1.name', 'LIKE', "%{$search_value}%")
-                )
+                ->where('t1.application_code',$application_code)
                 ->orderByDesc('t1.id')
                 ->get();
-
             $totalCount = $data->count();
-
-
             return response()->json([
                 'success' => true,
                 'data' => $data,
@@ -1327,28 +1322,17 @@ class ImportExportController extends Controller
             ]);
         }
     }
-
-
-
     public function getApplicantPermitProductsDetails(Request $req)
     {
         try {
             $search_value = '';
             $take = 50; // Default take
             $skip = 0; // Default skip
-            $searchValue = $req->searchValue ?? '';
-
-            if (!empty($searchValue) && $searchValue !== 'undefined') {
-                $searchValue = explode(',', $searchValue);
-                $search_value = $searchValue[2] ?? '';
-            }
-
-            $is_local_agent = $req->is_local_agent;
+            
+            $application_code = $req->application_code;
             $data = collect();
             $totalCount = 0;
-
             $data = DB::table('wb_permit_products as t1')
-                // ->leftJoin('par_regulatedproduct_categories as t2', 't1.regulated_productcategory_id', '=', 't2.id')
                 ->leftJoin('tra_manufacturer_info as t3', 't1.manufacturer_id', '=', 't3.id')
                 ->leftJoin('par_unit_of_measure as t4', 't1.unit_of_measure_id', '=', 't4.id')
                 ->leftJoin('par_currencies as t5', 't1.currency_id', '=', 't5.id')
@@ -1360,11 +1344,7 @@ class ImportExportController extends Controller
                     't4.name as unit_of_measure',
                     't5.name as storage_conditions'
                 )
-                ->when(
-                    $search_value,
-                    fn($query) =>
-                    $query->where('t1.name', 'LIKE', "%{$search_value}%")
-                )
+                ->where('t1.application_code',$application_code)
                 ->orderByDesc('t1.id')
                 ->get();
 
@@ -1583,6 +1563,7 @@ class ImportExportController extends Controller
                     'action_name' => $rec->action_name,
                     'iconCls' => $rec->iconCls,
                     'application_status' => $rec->application_status,
+                    'applicationsubmission_type_id' => $rec->applicationsubmission_type_id,
                     'permit_type_id' => $rec->permit_type_id,
                     'permit_name' => $rec->permit_name,
                     'port_type' => $rec->port_type,
@@ -1728,12 +1709,52 @@ class ImportExportController extends Controller
                     'regulatory_subfunction_id' => $rec->regulatory_subfunction_id,
                     'appworkflow_status_id' => $rec->appworkflow_status_id,
                     'created_by' => $rec->created_by,
-
+                    'permit_data' => $this->getImportApplicantPermitsProductsApplication($req),
                     'contextMenu' => returnActionColumn($rec->appworkflow_status_id, $actionColumnData)
                 );
             }
 
             $res = array('success' => true, 'data' => $application_data);
+        } catch (\Exception $exception) {
+            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        } catch (\Throwable $throwable) {
+            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        }
+        return response()->json($res, 200);
+    }
+
+
+    function getImportApplicantPermitsProductsApplication(Request $req)
+    {
+        try {
+        
+            $requestData = $req->all();
+            $table_name = 'wb_permit_products';
+            unset($requestData['table_name']);
+
+
+            $sql = DB::table($table_name . ' as t1')
+                ->leftJoin('par_si_units as t2', 't2.id', 't1.unit_of_measure_id')
+                
+                ->select('t1.*', 't2.name as unit_of_measure');
+
+          
+
+            $data = $sql->get();
+
+            foreach ($data as $rec) {
+                $permitproduct_data[] = array(
+                    'id' => $rec->id,
+                
+                    'brand_name' =>$rec->brand_name,
+                    'quantity' =>$rec->quantity,
+                    'product_value' =>$rec->product_value,
+                    // 'invoice_date' => formatDaterpt($rec->invoice_date),
+                    
+                );
+            }
+
+            $res = array('success' => true, 'data' => $permitproduct_data);
         } catch (\Exception $exception) {
             $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
         } catch (\Throwable $throwable) {

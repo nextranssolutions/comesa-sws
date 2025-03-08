@@ -53,7 +53,7 @@ export class SharedImpExpdashboardClass {
   data_record: any;
   guidelines_title: string;
   regulatory_subfunction_id: number;
-  transactionpermit_type_id: number;
+  transactionpermit_type_id: any;
   application_title: string;
   sectionItem: any;
   app_typeItem: any;
@@ -210,7 +210,7 @@ export class SharedImpExpdashboardClass {
       return;
     }
   
-    this.spinner.show();
+    this.spinnerShow('loading...');
   
     // Fetch transactionpermit_type_id value
     let transactionpermit_type_id = this.applicationSelectionfrm.get('transactionpermit_type_id')?.value;
@@ -221,29 +221,26 @@ export class SharedImpExpdashboardClass {
     this.transactionpermit_type_id = transactionpermit_type_id;
     
     localStorage.setItem('transactionpermit_type_id', JSON.stringify(this.transactionpermit_type_id));
-  
-    this.configService.getSectionUniformApplicationProces(this.regulatory_subfunction_id, this.transactionpermit_type_id)
+      this.configService.getSectionUniformApplicationProces(this.regulatory_subfunction_id,this.transactionpermit_type_id)
       .subscribe(
         data => {
           if (data.success) {
+            
             this.processData = data.data.process_infor;
+           
 
-            this.processingData = data.data.application_form;
-            this.title = this.processingData.field_name;
             this.router_link = this.processData.router_link;
             this.productsapp_details = this.processData;
+            this.processingData = data.data.application_form;
+            // this.title = this.processingData.field_name;
+            
+            
 
             this.appService.setApplicationDetail(data.data);
-            this.appService.setPermitApplicationDetail(data.data);
-            this.appService.setApplicantDetail(data.data);
-            // Ensure permit_type_id is part of application_details
-            const applicationDetails = { ...data.data, permit_type_id: this.transactionpermit_type_id };
             
-            localStorage.setItem('applicant_details', JSON.stringify(data.data.applicant_details));
-            localStorage.setItem('application_details', JSON.stringify(data.data.application_details));
-            localStorage.setItem('permit_details', JSON.stringify(data.data.permit_details));
-            
-
+          
+            localStorage.setItem('application_details', JSON.stringify(data.data));
+          
             this.app_route = ['./importexport-control/' + this.router_link];
             this.router.navigate(this.app_route);
             this.scrollToTop();
@@ -251,11 +248,11 @@ export class SharedImpExpdashboardClass {
             this.toastr.error(this.processData.message, 'Alert!');
           }
   
-          this.spinner.hide();
+          this.spinnerHide();
         },
         error => {
           this.toastr.error('An error occurred while processing', 'Error');
-          this.spinner.hide();
+          this.spinnerHide();
         }
       );
   
