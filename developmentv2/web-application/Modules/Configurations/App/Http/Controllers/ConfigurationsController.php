@@ -627,7 +627,7 @@ class ConfigurationsController extends Controller
             // Process application data
             if ($data) {
                 $app_data['process_infor'] = $data;
-                $app_data['permit_type_id'] = $permit_type_id;
+                $app_data['applicationsubmission_type_id'] = $applicationsubmission_type_id;
                 $form_fields = getApplicationGeneralFormsFields($req);
 
                 $app_data['application_form'] = $form_fields;
@@ -682,14 +682,15 @@ class ConfigurationsController extends Controller
             if (validateIsNumeric($applicationsubmission_type_id)) {
                 $filter['t2.applicationsubmission_type_id'] = $applicationsubmission_type_id;
             }
+           
             if (!validateIsNumeric($regulatory_function_id)) {
                 $submodule_data = getTableData('par_regulatory_subfunctions', array('id' => $regulatory_subfunction_id));
                 $regulatory_function_id = $submodule_data->regulatory_function_id;
             }
             
             $data = DB::table('wb_workflowprocesses as t1')
-                ->join('wb_workflowprocesses_stages as t2', 't2.workflow_id', 't1.id')
-                ->join('wf_workflow_interfaces as t3', 't3.id', 't2.interface_id')
+                ->join('wb_workflowprocesses_stages as t2', 't2.workflowprocess_id', 't1.id')
+                ->join('wf_workflow_interfaces as t3', 't3.id', 't2.workflow_interface_id')
                 ->select(
                     't1.*',
                     't2.id as workflowprocess_stage_id',

@@ -27,8 +27,8 @@ if ( !function_exists( 'getAssignedProcessStages' ) ) {
     }
 }
 if ( !function_exists( 'returnContextMenuActions' ) ) {
-    function returnContextMenuActions( $process_id ) {
-        return UtilityHelper::returnContextMenuActions( $process_id );
+    function returnContextMenuActions( $workflowprocess_id ) {
+        return UtilityHelper::returnContextMenuActions( $workflowprocess_id );
     }
 }
 
@@ -657,5 +657,11 @@ if ( !function_exists( 'getApplicationDataEntryFormsFields' ) ) {
 if ( !function_exists( 'generateApplicationRefNumber' ) ) {
     function generateApplicationRefNumber( $ref_id, $codes_array, $year, $process_id, $user_id ) {
         return ReferencingHelper::generateApplicationRefNumber( $ref_id, $codes_array, $year, $process_id, $user_id );
+    }
+}
+
+if ( !function_exists( 'generateSingleApplicationRefNumber' ) ) {
+    function generateSingleApplicationRefNumber( $ref_id, $codes_array, $year, $workflowprocess_id, $user_id ) {
+        return ReferencingHelper::generateSingleApplicationRefNumber( $ref_id, $codes_array, $year, $workflowprocess_id, $user_id );
     }
 }

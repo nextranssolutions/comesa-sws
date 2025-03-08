@@ -41,7 +41,7 @@ export class PermitproductdetailsComponent implements OnInit {
   dataGrid: DxDataGridComponent; printiframeUrl: any;
   isPermitproductsPopupVisible: boolean;
   isApprovedVisaproductsPopupVisible: boolean;
-  registeredProductsData: any;
+  registeredProductsData: any = {};
   approvedVisaProducts: any = {};
   isPermitproductsAddPopupVisible: boolean;
   confirmDataParam: any;
@@ -1219,7 +1219,7 @@ export class PermitproductdetailsComponent implements OnInit {
     this.permitProductsFrm.reset();
 
     this.isPermitproductsPopupVisible = true;
-    this.OnReloadPermitProducts();
+    // this.OnReloadPermitProducts();
   }
   funUploadPermitProducts() {
 
@@ -1252,36 +1252,53 @@ export class PermitproductdetailsComponent implements OnInit {
   }
 
   OnReloadPermitProducts() {
-
     let me = this;
+
+    if (!this.registeredProductsData) {
+        this.registeredProductsData = {};  // Initialize it if it's undefined
+    }
+
     this.registeredProductsData.store = new CustomStore({
       load: function (loadOptions: any) {
-        var params = '?';
-        params += 'skip=' + loadOptions.skip;
-        params += '&take=' + loadOptions.take;//searchValue
-        var headers = new HttpHeaders({
+        let params = '?';
+        params += 'skip=' + (loadOptions.skip || 0);
+        params += '&take=' + (loadOptions.take || 10);  // Default values
+        
+        let headers = new HttpHeaders({
           "Accept": "application/json",
           "Authorization": "Bearer " + me.authService.getAccessToken(),
         });
-        
+
         me.configData = {
           headers: headers,
-          params: { skip: loadOptions.skip, take: loadOptions.take, searchValue: loadOptions.filter, table_name: 'registered_products', 'regulatory_function_id': me.regulatory_function_id, 'regulatory_subfunction_id': me.regulatory_subfunction_id, regulated_productstype_id: me.regulated_productstype_id, trader_id: me.trader_id, mistrader_id: me.mistrader_id }
+          params: {
+            skip: loadOptions.skip, 
+            take: loadOptions.take, 
+            searchValue: loadOptions.filter,
+            table_name: 'registered_products',
+            regulatory_function_id: me.regulatory_function_id,
+            regulatory_subfunction_id: me.regulatory_subfunction_id,
+            regulated_productstype_id: me.regulated_productstype_id,
+            trader_id: me.trader_id,
+            mistrader_id: me.mistrader_id
+          }
         };
+
         return me.httpClient.get(AppSettings.base_url + 'api/import-export/getRegisteredNonRegisteredProducts', me.configData)
           .toPromise()
           .then((data: any) => {
             return {
               data: data.data,
               totalCount: data.totalCount
-            }
+            };
           })
           .catch(error => {
-            throw 'Data Loading Error'
+            throw 'Data Loading Error';
           });
       }
     });
-  }
+}
+
 
   onAddNewProductinformation() {
 
