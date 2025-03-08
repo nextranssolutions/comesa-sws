@@ -248,7 +248,7 @@
 </dx-popup>
 
 <dx-popup class="popup" [width]="funcpopWidth(80)" [height]="600" [showTitle]="true"
-    title="{{'product_categories' | translate}}" [dragEnabled]="false" [hideOnOutsideClick]="false"
+    title="{{'product_categories' | translate}}" [dragEnabled]="false" [closeOnOutsideClick]="true" [hideOnOutsideClick]="false"
     [(visible)]="isProductCategoryPopupVisible">
     <div *dxTemplate="let data of 'content'">
         <dx-scroll-view>

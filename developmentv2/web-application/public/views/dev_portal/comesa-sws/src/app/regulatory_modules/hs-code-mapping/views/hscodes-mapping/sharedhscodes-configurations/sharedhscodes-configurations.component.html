@@ -31,19 +31,19 @@
 
     <dxi-column *ngIf="table_name == 'par_hscodesheading_definations' || table_name == 'par_hscodessubheading_defination' || table_name == 'tra_hscodesproducts_registry'"
         dataField="chapters_defination_id" caption="{{ 'hscode_chapter_defination' | translate }}">
-        <dxo-lookup [dataSource]="chapterDefinationData" displayExpr="name" valueExpr="id">
+        <dxo-lookup [dataSource]="chapterDefinationData" displayExpr="hscode" valueExpr="id">
         </dxo-lookup>
     </dxi-column>
 
     <dxi-column *ngIf="table_name == 'par_hscodessubheading_defination' || table_name == 'tra_hscodesproducts_registry'"
         dataField="heading_definations_id" caption="{{ 'hscode_heading_defination' | translate }}">
-        <dxo-lookup [dataSource]="headingDefinationData" displayExpr="name" valueExpr="id">
+        <dxo-lookup [dataSource]="headingDefinationData" displayExpr="start_hs_code" valueExpr="id">
         </dxo-lookup>
     </dxi-column>
 
     <dxi-column *ngIf="table_name == 'tra_hscodesproducts_registry' || table_name == 'par_hscodestariff_details'" dataField="subheading_definations_id"
         caption="{{ 'hscode_subheading_defination' | translate }}">
-        <dxo-lookup [dataSource]="subHeadingDefinationData" displayExpr="name" valueExpr="id">
+        <dxo-lookup [dataSource]="subHeadingDefinationData" displayExpr="specific_hs_code" valueExpr="id">
         </dxo-lookup>
     </dxi-column>
 
@@ -111,21 +111,21 @@
                         class="col-lg-6">
                         <label>{{ 'hscode_chapter_defination' | translate }}</label>
                         <dx-select-box [dataSource]="chapterDefinationData" formControlName="chapters_defination_id"
-                            valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
+                            valueExpr="id" [searchEnabled]="true" displayExpr="hscode"></dx-select-box>
                     </div>
 
                     <div *ngIf="table_name == 'par_hscodessubheading_defination' || table_name == 'tra_hscodesproducts_registry'"
                         class="col-lg-6">
                         <label>{{ 'hscode_heading_defination' | translate }}</label>
                         <dx-select-box [dataSource]="headingDefinationData" formControlName="heading_definations_id"
-                            valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
+                            valueExpr="id" [searchEnabled]="true" displayExpr="start_hs_code"></dx-select-box>
                     </div>
 
                     <div *ngIf="table_name == 'tra_hscodesproducts_registry' || table_name == 'par_hscodestariff_details'" class="col-lg-6">
                         <label>{{ 'hscode_subheading_defination' | translate }}</label>
                         <dx-select-box [dataSource]="subHeadingDefinationData"
                             formControlName="subheading_definations_id" valueExpr="id" [searchEnabled]="true"
-                            displayExpr="name"></dx-select-box>
+                            displayExpr="specific_hs_code"></dx-select-box>
                     </div>
 
                     <div  class="col-lg-6">

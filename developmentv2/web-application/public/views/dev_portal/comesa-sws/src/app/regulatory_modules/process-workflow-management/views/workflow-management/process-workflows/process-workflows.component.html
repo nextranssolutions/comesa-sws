@@ -126,6 +126,7 @@
             </form>
 
             <div class="col-lg-12">
+                
                 <dx-button text="{{ 'save'+ parameter_name | translate }}" type="default" icon="fa fa-save"
                     [elementAttr]="{ id: 'elementId', class: 'pull-right' }" (onClick)="onFuncSaveWorlflowData()">
                 </dx-button>
@@ -188,7 +189,7 @@
             </dx-data-grid>
 
             <div class="col-lg-12 row">
-            <!-- <div class="div_contentfooter"> -->
+            <div class="div_contentfooter">
                 <div class="col-lg-3">
                     <dx-button text="{{ 'previous_workflows' | translate }}" type="default" icon="fa fa-arrow-left"
                         (onClick)="onNextNavigationItems('Workflows')">
@@ -199,6 +200,7 @@
                         icon="fa fa-arrow-right" (onClick)="onNextNavigationItems('workflowTransitions')">
                     </dx-button>
                 </div>
+            </div>
             </div>
 
 
@@ -264,12 +266,13 @@
 
 
             <div class="col-lg-12 row">
+                <div class="div_contentfooter">
                 <div class="col-lg-3">
                     <dx-button text="{{ 'prev_workflow_stage'| translate }}" type="default" icon="fa fa-arrow-left"
                         (onClick)="onNextNavigationItems('WorkflowStages')">
                     </dx-button>
                 </div>
-
+            </div>
             </div>
 
 
@@ -419,9 +422,11 @@
         </div>
 
         <div class="col-lg-12">
+            <div class="div_contentfooter">
             <dx-button text="{{ 'save'+ 'workflow_stage' | translate }}" type="default" icon="fa fa-save"
                 [elementAttr]="{ id: 'elementId', class: 'pull-right' }" (onClick)="onFuncSaveWorkflowStageData()">
             </dx-button>
+            </div>
 
         </div>
     </form>
@@ -720,13 +725,14 @@
             </dx-data-grid>
 
             <div class="col-lg-12 row">
+                <div class="div_contentfooter">
                 <div class="col-lg-3">
-                    <dx-button text="{{ 'previous_workflows_stage_actions' | translate }}" type="default" icon="fa fa-arrow-right"
+                    <dx-button text="{{ 'previous_workflow_submission_stage_actions' | translate }}" type="default" icon="fa fa-arrow-right"
                         (onClick)="onNextNavigationItems('Workflows')">
                     </dx-button>
                 </div>
             </div>
-
+            </div>
         </dxi-item>
     </dx-tab-panel>
 
