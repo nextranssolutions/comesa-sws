@@ -1694,8 +1694,8 @@ class ImportExportController extends Controller
                 ->leftJoin('par_invoice_types as t15', 't1.invoice_type_id', 't15.id')
                 ->leftJoin('par_currencies as t16', 't1.currency_oftransaction_id', 't16.id')
                 ->leftJoin('par_confirmations as t17', 't1.declaration_statuses_id', 't17.id')
-
-                ->select('t1.*','t17.name as declaration', 't16.name as currency_name', 't15.name as invoice_type', 't14.name as final_destination_country', 't5.name as port_of_entry', 't13.name as mode_of_transport', 't12.name as currency_name', 't11.name as permit_type', 't10.name as application_status', 't8.name as action_name', 't8.iconCls as iconCls', 't8.action as action', 't2.name as permit_name', 't3.name as port_type', 't1.id', 't4.name as importer_exporter_name');
+                ->leftJoin('tra_trader_account as t18', 't1.applicant_id', 't18.id')
+                ->select('t1.*','t17.name as declaration','t18.name as applicant_name', 't16.name as currency_name', 't15.name as invoice_type', 't14.name as final_destination_country', 't5.name as port_of_entry', 't13.name as mode_of_transport', 't12.name as currency_name', 't11.name as permit_type', 't10.name as application_status', 't8.name as action_name', 't8.iconCls as iconCls', 't8.action as action', 't2.name as permit_name', 't3.name as port_type', 't1.id', 't4.name as importer_exporter_name');
 
             if ($workflow_status_id != '') {
                 $workflow_status = explode(',', $workflow_status_id);
@@ -1721,7 +1721,7 @@ class ImportExportController extends Controller
                     'application_status' => $rec->application_status,
                     'permit_type_id' => $rec->permit_type_id,
                     'permit_name' => $rec->permit_name,
-                    
+                    'applicant_name' => $rec->applicant_name,
                     'port_type' => $rec->port_type,
                     'port_type_id' => $rec->port_type_id,
                     'port_of_entry' => $rec->port_of_entry,

@@ -100,7 +100,8 @@
             [elementAttr]="{ class: '' }" (onClick)="onAddTraderAccountsClick()">
         </dx-button>
         <dx-data-grid class="table row-border hover" [height]="450" [wordWrapEnabled]="true" [remoteOperations]='true'
-            [dataSource]="traderAccountsDetailsData" keyExpr="id">
+            [dataSource]="traderAccountsDetailsData" keyExpr="id" (onToolbarPreparing)="onAdvanceDataGridSearch($event)">
+            <dxo-filter-row [visible]="show_advancesearch"></dxo-filter-row>
             <dxo-filter-row [visible]="false"></dxo-filter-row>
             <dxo-search-panel [visible]="true">
             </dxo-search-panel>

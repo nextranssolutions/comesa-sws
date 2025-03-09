@@ -76,6 +76,7 @@ export class SinglePermitproductdetailsComponent {
     isnewproductAddWinVisible: boolean;
     loading: boolean;
     enabled_productadd: boolean;
+    show_advancesearch: boolean;
     isPermitVisaLicProductsAddPopupVisible: boolean;
     region: any;
     districts: any;
@@ -1648,4 +1649,25 @@ export class SinglePermitproductdetailsComponent {
     toggleDetailsVisibility(event: any): void {
       this.showConsignmentDetails = event.value === 1; // Show only if the selected value is 1 (Yes)
     }
+
+
+    onAdvanceDataGridSearch(e) {
+      e.toolbarOptions.items.unshift({
+        location: 'after',
+        widget: 'dxCheckBox',
+        options: {
+          icon: 'select',
+          text: 'Show Advanced Search',
+          value: this.show_advancesearch,
+          onValueChanged: this.onActivatetheAdvanceSearch.bind(this)
+        }
+      });
+    }
+  
+    onActivatetheAdvanceSearch(e) {
+  
+      this.show_advancesearch = e.value;
+  
+    }
+  
 }

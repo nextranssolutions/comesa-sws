@@ -175,7 +175,8 @@
     <div *dxTemplate="let data of 'content'">
         <dx-scroll-view>
             <dx-data-grid class="table row-border hover" [allowColumnResizing]="true" [wordWrapEnabled]="true"
-                [columnHidingEnabled]="true" [dataSource]="productCategoryData" [remoteOperations]='true' keyExpr="id">
+                [columnHidingEnabled]="true" [dataSource]="productCategoryData" [remoteOperations]='true' keyExpr="id" (onToolbarPreparing)="onAdvanceDataGridSearch($event)">
+                <dxo-filter-row [visible]="show_advancesearch"></dxo-filter-row>
                 <dxo-filter-row [visible]="false"></dxo-filter-row>
                 <dxo-search-panel [visible]="true">
                 </dxo-search-panel>
@@ -311,7 +312,8 @@
         <dx-scroll-view>
             <dx-data-grid class="table row-border hover" [allowColumnResizing]="true" [wordWrapEnabled]="true"
                 [columnHidingEnabled]="true" (onToolbarPreparing)="onManufacturerPreparing($event)"
-                [dataSource]="manufacturersData" [remoteOperations]='true' keyExpr="id">
+                [dataSource]="manufacturersData" [remoteOperations]='true' keyExpr="id" (onToolbarPreparing)="onAdvanceDataGridSearch($event)">
+                <dxo-filter-row [visible]="show_advancesearch"></dxo-filter-row>
                 <dxo-filter-row [visible]="false"></dxo-filter-row>
                 <dxo-search-panel [visible]="true">
                 </dxo-search-panel>

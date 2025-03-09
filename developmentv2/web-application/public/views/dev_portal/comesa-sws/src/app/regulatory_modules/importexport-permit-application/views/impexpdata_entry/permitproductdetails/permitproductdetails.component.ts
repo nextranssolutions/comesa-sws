@@ -58,7 +58,7 @@ export class PermitproductdetailsComponent implements OnInit {
   currencyData: any;
   classificationData: any;
   commonNamesData: any;
-
+  show_advancesearch: boolean;
   enabled_newproductadd: boolean;
   regulatory_subfunction_id: number;
   tracking_no: string;
@@ -1696,6 +1696,26 @@ export class PermitproductdetailsComponent implements OnInit {
   toggleDetailsVisibility(event: any): void {
     this.showConsignmentDetails = event.value === 1; // Show only if the selected value is 1 (Yes)
   }
+
+  onAdvanceDataGridSearch(e) {
+    e.toolbarOptions.items.unshift({
+      location: 'after',
+      widget: 'dxCheckBox',
+      options: {
+        icon: 'select',
+        text: 'Show Advanced Search',
+        value: this.show_advancesearch,
+        onValueChanged: this.onActivatetheAdvanceSearch.bind(this)
+      }
+    });
+  }
+
+  onActivatetheAdvanceSearch(e) {
+
+    this.show_advancesearch = e.value;
+
+  }
+
 
 
 }

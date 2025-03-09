@@ -2,7 +2,8 @@
     <div class="col-lg-12">
         <dx-data-grid [dataSource]="permitProductsData" [wordWrapEnabled]="true"
             (onToolbarPreparing)="onPermitProductGridToolbar($event)" [allowColumnResizing]="true"
-            [columnHidingEnabled]="false" [showBorders]="true">
+            [columnHidingEnabled]="false" [showBorders]="true" (onToolbarPreparing)="onAdvanceDataGridSearch($event)">
+            <dxo-filter-row [visible]="show_advancesearch"></dxo-filter-row>
             <dxo-filter-row [visible]="false"></dxo-filter-row>
             <dxo-search-panel [visible]="true">
             </dxo-search-panel>

@@ -19,7 +19,7 @@ export class ApplicantDetailsComponent {
   @Input() applicantDetailsForm: FormGroup;
   @Input() userAccountFrm: FormGroup;
   applicationGeneraldetailsfrm: FormGroup;
-
+  show_advancesearch: boolean;
   countriesData: any;
   subcribe: any;
   traderAccountsDetailsData: any = {};
@@ -424,6 +424,25 @@ export class ApplicantDetailsComponent {
         physical_address: traderData.physical_address,
       });
     }
+  }
+
+  onAdvanceDataGridSearch(e) {
+    e.toolbarOptions.items.unshift({
+      location: 'after',
+      widget: 'dxCheckBox',
+      options: {
+        icon: 'select',
+        text: 'Show Advanced Search',
+        value: this.show_advancesearch,
+        onValueChanged: this.onActivatetheAdvanceSearch.bind(this)
+      }
+    });
+  }
+
+  onActivatetheAdvanceSearch(e) {
+
+    this.show_advancesearch = e.value;
+
   }
 
 }

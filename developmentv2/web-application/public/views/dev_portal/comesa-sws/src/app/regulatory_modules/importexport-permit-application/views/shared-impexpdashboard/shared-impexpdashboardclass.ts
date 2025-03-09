@@ -16,10 +16,11 @@ export class SharedImpExpdashboardClass {
 
   @ViewChild(DxDataGridComponent) dataGrid: DxDataGridComponent;
   is_popupguidelines: boolean;
-  applicationsubmission_type_id:number;
+  applicationsubmission_type_id: number;
   application_status_id: any;
   response: any;
   ImportExpApplicationData: any;
+  show_advancesearch: boolean;
   productsapp_details: any;
   navigation_type_id: any;
   loadingVisible: boolean;
@@ -150,18 +151,18 @@ export class SharedImpExpdashboardClass {
   }
 
   onInitiatenewImportExpApplications(applicationsubmission_type_id) {
-    this.onApplicationSelection(1,applicationsubmission_type_id);
+    this.onApplicationSelection(1, applicationsubmission_type_id);
   }
 
   onInitiatenewSingleProductPermitImportExpApplications(applicationsubmission_type_id) {
-    this.onApplicationSelection(1,applicationsubmission_type_id);
+    this.onApplicationSelection(1, applicationsubmission_type_id);
   }
-  onApplicationSelection(regulatory_subfunction_id,applicationsubmission_type_id) {
+  onApplicationSelection(regulatory_subfunction_id, applicationsubmission_type_id) {
 
     this.spinner.show();
-    
 
-    this.configService.getSectionUniformApplication(regulatory_subfunction_id,applicationsubmission_type_id)
+
+    this.configService.getSectionUniformApplication(regulatory_subfunction_id, applicationsubmission_type_id)
       .subscribe(
         data => {
           this.spinner.hide();
@@ -171,10 +172,10 @@ export class SharedImpExpdashboardClass {
             this.router_link = this.processData.router_link;
             this.productsapp_details = this.processData;
             this.appService.setApplicationDetail(data.data);
-           
+
             localStorage.setItem('application_details', JSON.stringify(data.data));
-            
-          
+
+
             this.app_route = ['./importexport-permit-application/' + this.router_link];
 
             this.router.navigate(this.app_route);
@@ -217,7 +218,7 @@ export class SharedImpExpdashboardClass {
           this.spinnerHide();
         },
         error => {
-          
+
           this.spinnerHide();
         }
       );
@@ -252,7 +253,7 @@ export class SharedImpExpdashboardClass {
         });
 
   }
- 
+
 
   onLoadconfirmDataParam() {
     var data = {
@@ -621,7 +622,7 @@ export class SharedImpExpdashboardClass {
 
     this.spinner.show();
 
-    this.configService.getSectionUniformApplication(this.regulatory_subfunction_id,this.applicationsubmission_type_id)
+    this.configService.getSectionUniformApplication(this.regulatory_subfunction_id, this.applicationsubmission_type_id)
       .subscribe(
         data => {
           this.spinner.hide();
@@ -632,7 +633,7 @@ export class SharedImpExpdashboardClass {
             this.router_link = this.processData.router_link;
             this.productsapp_details = this.processData;
             let merged_appdata = Object.assign({}, this.application_data, app_data);
-        
+
             localStorage.setItem('applicant_details', JSON.stringify(merged_appdata));
             this.app_route = ['./importexport-permit-application/' + this.router_link];
 
@@ -772,7 +773,24 @@ export class SharedImpExpdashboardClass {
   }
 
 
+  onAdvanceDataGridSearch(e) {
+    e.toolbarOptions.items.unshift({
+      location: 'after',
+      widget: 'dxCheckBox',
+      options: {
+        icon: 'select',
+        text: 'Show Advanced Search',
+        value: this.show_advancesearch,
+        onValueChanged: this.onActivatetheAdvanceSearch.bind(this)
+      }
+    });
+  }
 
+  onActivatetheAdvanceSearch(e) {
+
+    this.show_advancesearch = e.value;
+
+  }
 
 
 
