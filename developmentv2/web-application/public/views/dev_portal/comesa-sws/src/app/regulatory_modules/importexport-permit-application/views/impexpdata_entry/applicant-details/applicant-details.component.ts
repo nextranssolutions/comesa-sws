@@ -393,13 +393,13 @@ export class ApplicantDetailsComponent {
       this.showHiddenFields = true;
       this.showSearchButton = true;
       this.applicantDetailsSet = true; // Make applicant_name read-only
-      // this.applicantDetailsForm.reset();
+   
     } else if (selectedId === 2) {
       this.showHiddenFields = true;
       this.showSearchButton = false;
       this.applicantDetailsSet = false; // Make applicant_name editable
       this.patchApplicantDetailsFromLocalStorage(); // Patch details from localStorage
-      // this.applicantDetailsForm.reset();
+     
     }
   }
 
@@ -407,11 +407,11 @@ export class ApplicantDetailsComponent {
 
   patchApplicantDetailsFromLocalStorage() {
     const storedTraderData = localStorage.getItem('trader_data');
-    // console.log(storedTraderData)
+
 
     if (storedTraderData) {
       const traderData = JSON.parse(storedTraderData);
-      // console.log(traderData);
+   
 
       this.applicantDetailsForm.patchValue({
         id: traderData.id,
@@ -422,15 +422,7 @@ export class ApplicantDetailsComponent {
         district_id: traderData.district_id,
         telephone_no: traderData.telephone_no,
         physical_address: traderData.physical_address,
-        application_options_id: traderData.application_options_id
       });
-
-      this.applicationGeneraldetailsfrm.patchValue({
-        applicant_id: traderData.id,
-        application_options_id: traderData.application_options_id
-        
-      });
-      
     }
   }
 

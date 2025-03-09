@@ -29,6 +29,8 @@ export class PermitproductdetailsComponent implements OnInit {
   @Input() permitProductsFrm: FormGroup;
   @Input() applicationGeneraldetailsfrm: FormGroup;
   @Input() permitProductsData: any;
+  @Input() application_code: any;
+
   requireUnitPackData: boolean = false;
   isprodnextdisable: boolean;
   device_type_visible: boolean;
@@ -56,7 +58,7 @@ export class PermitproductdetailsComponent implements OnInit {
   currencyData: any;
   classificationData: any;
   commonNamesData: any;
-  application_code: number;
+
   enabled_newproductadd: boolean;
   regulatory_subfunction_id: number;
   tracking_no: string;
@@ -235,7 +237,7 @@ export class PermitproductdetailsComponent implements OnInit {
     this.onLoadcommonNameData();
     this.onLoaddosageForms();
 
-    this.onLoadPermitProductsData();
+    this.onLoadPermitProductsData(this.application_code);
     this.onLoadUnitOfMeasureData();
     this.onLoadproductPurposeData();
     this.onLoadCountryData();
@@ -529,22 +531,26 @@ export class PermitproductdetailsComponent implements OnInit {
 */
   }
 
-
-
-  onLoadPermitProductsData(filter_params = { application_status_id: this.application_status_id }) {
-    this.spinnerShow('Loading Information...........');
-    this.appService.getPermitsOtherDetails(filter_params, 'getApplicantPermitProductsDetails')
+  onLoadPermitProductsData(application_code) {
+    this.spinner.show();
+    this.appService.getPermitsOtherDetails({ 'application_code': application_code }, 'getApplicantPermitProductsDetails')
       .subscribe(
         data => {
+          if (data.success) {
+            this.permitProductsData = data.data;
+            if (this.permitProductsData.length > 0) {
+              this.isprodnextdisable = false;
+            }
 
-          this.data_record = data;
-          // console.log(this.data_record);
-          if (this.data_record.success) {
-            this.permitProductsData = this.data_record.data;
           }
-          this.spinnerHide();
+          else {
+            this.toastr.success(data.message, 'Alert');
+          }
+          this.spinner.hide();
         },
-      );
+        error => {
+          return false
+        });
   }
 
   spinnerShow(spinnerMessage) {
@@ -810,6 +816,8 @@ export class PermitproductdetailsComponent implements OnInit {
     return input;
   }
 
+
+
   onsavePermitProductdetails() {
     //validate the visa Quoantity
     if (this.regulatory_subfunction_id == 82) {
@@ -849,7 +857,7 @@ export class PermitproductdetailsComponent implements OnInit {
             this.isPermitproductsAddPopupVisible = false;
             this.isPermitproductsPopupVisible = false;
             this.isPermitVisaLicProductsAddPopupVisible = false;
-            this.onLoadPermitProductsData();
+            this.onLoadPermitProductsData(this.application_code);
             this.permit_product_id = this.app_resp.record_id;
             this.isPermitVisaLicProductsAddPopupVisible = false;
             this.premitProductIdEvent.emit(this.permit_product_id);
@@ -866,6 +874,7 @@ export class PermitproductdetailsComponent implements OnInit {
         });
   }
 
+ 
   onupdatePermitProductdetails() {
     if (this.permitProductsFrm.invalid) {
       return;
@@ -880,7 +889,7 @@ export class PermitproductdetailsComponent implements OnInit {
 
           if (this.app_resp.success) {
 
-            this.onLoadPermitProductsData();
+            this.onLoadPermitProductsData(this.application_code);
             this.toastr.success(this.app_resp.message, 'Response');
             this.isPermitproductsAddPopupVisible = false;
 
@@ -1663,7 +1672,7 @@ export class PermitproductdetailsComponent implements OnInit {
 
           if (this.response_data.success) {
 
-            this.onLoadPermitProductsData();
+            this.onLoadPermitProductsData(this.application_code);
 
             this.isApprovedVisaProductsUploadVisable = false;
             this.isApprovedVisaproductsPopupVisible = false;

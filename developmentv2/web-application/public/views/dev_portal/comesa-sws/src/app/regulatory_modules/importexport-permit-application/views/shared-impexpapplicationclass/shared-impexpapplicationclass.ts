@@ -186,6 +186,7 @@ export class SharedImpexpApplicationClass {
   applicants_fielddata: any;
   filesToUpload: Array<File> = [];
   producttype_defination_id: number;
+  applicationsubmission_type_id:number;
   constructor(public ngWizardService: NgWizardService, private configService: ConfigurationsService, public utilityService: UtilityService, public fb: FormBuilder,
     public spinner: SpinnerVisibilityService, public appService: ImportExportService, public router: Router,
     public formBuilder: FormBuilder, public toastr: ToastrService, public authService: AuthenticationService, public httpClient: HttpClient) {
@@ -199,23 +200,18 @@ export class SharedImpexpApplicationClass {
     this.application_details = JSON.parse(this.application_details);
    
     this.form_fielddata = this.application_details.application_form;
-    this.products_fielddata = this.application_details.application_form;
-    this.applicants_fielddata = this.application_details.application_form;
+    this.products_fielddata = this.application_details.permit_products_details;
+    this.applicants_fielddata = this.application_details.applicant_details;
 
-    console.log(this.applicants_fielddata);
+    this.applicationsubmission_type_id = this.application_details.applicationsubmission_type_id;
+
+    console.log(this.applicationsubmission_type_id);
      
     this.applicationGeneraldetailsfrm = this.formBuilder.group({});
     this.permitProductsFrm = this.formBuilder.group({});
     this.applicantDetailsForm = this.formBuilder.group({});
 
-    this.applicantDetailsForm = new FormGroup({
-      id: new FormControl('', Validators.compose([])),
-    });
-
-    this.applicationGeneraldetailsfrm = new FormGroup({
-      id: new FormControl('', Validators.compose([])),
-     
-    });
+   
 
     for (let form_field of this.form_fielddata) {
       let field_name = form_field['field_name'];
@@ -521,17 +517,13 @@ export class SharedImpexpApplicationClass {
     const uploadData = this.prepareSavePermitDoc();
 
     this.spinner.show();
-    // let registrant_details = this.applicationApplicantdetailsfrm.value;//applicant values
     
     let applicant_id = this.applicantDetailsForm.get('id')?.value;
     console.log(applicant_id);
-    let application_options_id = this.applicantDetailsForm.get('application_options_id')?.value;
-    let process_id = 2;
-    this.applicationGeneraldetailsfrm.value['process_id'] = process_id;
 
     this.applicationGeneraldetailsfrm.value['applicant_id'] = applicant_id;
 
-    this.applicationGeneraldetailsfrm.value['application_options_id'] = application_options_id;
+    this.applicationGeneraldetailsfrm.value['applicationsubmission_type_id'] = this.applicationsubmission_type_id;
     
     this.applicationGeneraldetailsfrm.value['regulatory_subfunction_id'] = this.regulatory_subfunction_id;
     this.spinner.show();

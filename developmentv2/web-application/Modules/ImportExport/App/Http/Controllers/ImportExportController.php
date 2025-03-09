@@ -322,10 +322,9 @@ class ImportExportController extends Controller
 
             $reference_no = $req->reference_no;
             $regulatory_subfunction_id = 1; 
-            $zone_id = $req->zone_id;
-            // $process_id = $req->process_id;
+           
             $workflowprocess_id = $req->workflowprocess_id;
-            $id = $req->id;
+          
             $product_res = '';
 
             // $regulatory_function_id = getSingleRecordColValue('par_regulatory_subfunctions', array('id' => $req->regulatory_subfunction_id), 'regulatory_function_id');
@@ -503,7 +502,7 @@ class ImportExportController extends Controller
                     );
 
                     $response = insertRecord('txn_importexport_applications', $app_data, $email_address);
-                    
+
                     if ($response['success']) {
                         $res = array(
                             'tracking_no' => $tracking_no,
@@ -768,17 +767,14 @@ class ImportExportController extends Controller
 
             $packaging_unit_id = $req->packaging_unit_id;
             $quantity = $req->quantity;
-            $laboratory_no = $req->laboratory_no;
-            $regulated_prodpermit_id = $req->regulated_prodpermit_id;
+           
             $product_id = $req->product_id;
             $record_id = $req->id;
             $device_type_id = $req->device_type_id;
-            // $permitprod_recommendation_id = $req->permitprod_recommendation_id;
-
             $regulatory_subfunction_id = $req->regulatory_subfunction_id;
 
             $batch_number = $req->batch_number;
-            $application_code = generateApplicationCode($regulatory_subfunction_id, 'tra_permit_products');
+            $application_code = $req->application_code;
             $expiry_date = $req->expiry_date;
             $manufacturing_date = $req->manufacturing_date;
             $error_message = 'Error occurred, data not saved successfully';
@@ -794,7 +790,7 @@ class ImportExportController extends Controller
 
                 $data = array(
                     'unit_price' => $unit_price,
-
+                    'application_code' => $application_code,
                     'section_id' => $req->section_id,
                     'productphysical_description' => $req->productphysical_description,
                     'packaging_unit_id' => $packaging_unit_id,
@@ -828,7 +824,6 @@ class ImportExportController extends Controller
                     'prodclass_category_id' => $req->prodclass_category_id,
                     'unitpack_size' => $req->unitpack_size,
                     'unitpack_unit_id' => $req->unitpack_unit_id,
-                    'application_code' => $req->application_code,
                     'dosage_form_id' => $req->dosage_form_id
                 );
 
@@ -894,12 +889,6 @@ class ImportExportController extends Controller
 
         return response()->json($res);
     }
-
-
-
-
-
-
 
 
     public function saveManufacturerDetails(Request $req)
@@ -1416,6 +1405,59 @@ class ImportExportController extends Controller
     }
 
 
+    public function onLoadCustomsOfficeData(Request $req)
+    {
+        try {
+            $search_value = null;
+            $take = $req->input('take', 50); // Allow dynamic take value, default is 50
+            $skip = $req->input('skip', 0);  // Allow dynamic skip value, default is 0
+            $searchValue = $req->input('searchValue', '');
+
+            if (!empty($searchValue) && $searchValue !== 'undefined') {
+                $searchParts = explode(',', $searchValue);
+                $search_value = $searchParts[2] ?? null;
+            }
+
+            $query = DB::table('tra_customoffice_info as t1')
+                ->join('par_countries as t2', 't1.country_id', '=', 't2.id')
+                ->leftJoin('par_regions as t3', 't1.region_id', '=', 't3.id')
+                ->leftJoin('par_districts as t4', 't1.district_id', '=', 't4.id')
+                ->select(
+                    't1.id',
+                    't1.*',
+                    't1.name as customs_office',
+                    't1.physical_address',
+                    't1.email_address',
+                    't1.contact_person',
+                    't2.name as country_name',
+                    't3.name as region_name',
+                    't4.name as district',
+                    DB::raw("CONCAT(t1.name, ' (', t2.name, ')') as manufacturer_namecountry")
+                )
+                ->when($search_value, function ($query) use ($search_value) {
+                    $query->where('t1.name', 'LIKE', "%{$search_value}%");
+                });
+
+            // Get total count before applying pagination
+            $totalCount = $query->count();
+
+            // Apply pagination (skip & take)
+            $data = $query->skip($skip)->take($take)->orderByDesc('t1.id')->get();
+
+            return response()->json([
+                'success' => true,
+                'data' => $data,
+                'totalCount' => $totalCount
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+
+
     public function onGetRegulatedProductCategory(Request $req)
     {
         try {
@@ -1679,6 +1721,7 @@ class ImportExportController extends Controller
                     'application_status' => $rec->application_status,
                     'permit_type_id' => $rec->permit_type_id,
                     'permit_name' => $rec->permit_name,
+                    
                     'port_type' => $rec->port_type,
                     'port_type_id' => $rec->port_type_id,
                     'port_of_entry' => $rec->port_of_entry,
@@ -1702,59 +1745,18 @@ class ImportExportController extends Controller
                     'date_of_application' => formatDaterpt($rec->date_of_application),
                     'expected_date_of_shipment' => $rec->expected_date_of_shipment,
                     'tracking_no' => $rec->tracking_no,
+                    'application_status_id' =>$rec->application_status_id,
                     'created_on' => $rec->created_on,
                     'workflowprocess_id' => $rec->workflowprocess_id,
                     'application_code' => $rec->application_code,
                     'reference_no' => $rec->reference_no,
                     'regulatory_subfunction_id' => $rec->regulatory_subfunction_id,
-                    'appworkflow_status_id' => $rec->appworkflow_status_id,
                     'created_by' => $rec->created_by,
-                    'permit_data' => $this->getImportApplicantPermitsProductsApplication($req),
-                    'contextMenu' => returnActionColumn($rec->appworkflow_status_id, $actionColumnData)
+                    // 'contextMenu' => returnActionColumn($rec->appworkflow_status_id, $actionColumnData)
                 );
             }
 
             $res = array('success' => true, 'data' => $application_data);
-        } catch (\Exception $exception) {
-            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
-        } catch (\Throwable $throwable) {
-            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
-        }
-        return response()->json($res, 200);
-    }
-
-
-    function getImportApplicantPermitsProductsApplication(Request $req)
-    {
-        try {
-        
-            $requestData = $req->all();
-            $table_name = 'wb_permit_products';
-            unset($requestData['table_name']);
-
-
-            $sql = DB::table($table_name . ' as t1')
-                ->leftJoin('par_si_units as t2', 't2.id', 't1.unit_of_measure_id')
-                
-                ->select('t1.*', 't2.name as unit_of_measure');
-
-          
-
-            $data = $sql->get();
-
-            foreach ($data as $rec) {
-                $permitproduct_data[] = array(
-                    'id' => $rec->id,
-                
-                    'brand_name' =>$rec->brand_name,
-                    'quantity' =>$rec->quantity,
-                    'product_value' =>$rec->product_value,
-                    // 'invoice_date' => formatDaterpt($rec->invoice_date),
-                    
-                );
-            }
-
-            $res = array('success' => true, 'data' => $permitproduct_data);
         } catch (\Exception $exception) {
             $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
         } catch (\Throwable $throwable) {

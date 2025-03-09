@@ -610,7 +610,7 @@ class UtilityHelper
     {
         $data = array();
 
-        $filterBy = $appworkflow_status_id; // or Finance etc.
+        $filterBy = $appworkflow_status_id; 
 
         $dataPrint = array_filter($actionColumnData, function ($var) use ($filterBy) {
             return ($var['appworkflow_status_id'] == $filterBy);
