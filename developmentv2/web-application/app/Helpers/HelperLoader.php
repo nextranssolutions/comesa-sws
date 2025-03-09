@@ -61,8 +61,8 @@ if ( !function_exists( 'returnContxtMenuActions' ) ) {
     }
 }
 if ( !function_exists( 'returnActionColumn' ) ) {
-    function returnActionColumn( $status_id, $actionColumnData ) {
-        return UtilityHelper::returnActionColumn( $status_id, $actionColumnData );
+    function returnActionColumn( $workflow_stage_id, $actionColumnData ) {
+        return UtilityHelper::returnActionColumn( $workflow_stage_id, $actionColumnData );
     }
 }
 if ( !function_exists( 'aes_decrypt' ) ) {

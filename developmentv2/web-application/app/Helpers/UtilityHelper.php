@@ -582,7 +582,6 @@ class UtilityHelper
         $records = DB::table('wb_workflowstageprocess_actions as t1')
             ->select('t2.*', 't2.name as text', 't2.iconCls as icon')
             ->join('wf_statuses_actions as t2', 't1.statuses_action_id', '=', 't2.id')
-            ->where('t1.workflowprocess_id', $workflowprocess_id)
             ->get();
         return convertStdClassObjToArray($records);
     }
@@ -606,14 +605,14 @@ class UtilityHelper
             ->get();
         return convertStdClassObjToArray($records);
     }
-    public static function returnActionColumn($appworkflow_status_id, $actionColumnData)
+    public static function returnActionColumn($workflow_stage_id, $actionColumnData)
     {
         $data = array();
 
-        $filterBy = $appworkflow_status_id; 
+        $filterBy = $workflow_stage_id; 
 
         $dataPrint = array_filter($actionColumnData, function ($var) use ($filterBy) {
-            return ($var['appworkflow_status_id'] == $filterBy);
+            return ($var['workflow_stage_id'] == $filterBy);
         });
 
         foreach ($dataPrint as $rec) {
@@ -621,7 +620,7 @@ class UtilityHelper
                 'text' => $rec['text'],
                 'icon' => $rec['icon'],
                 'action' => $rec['action'],
-                'appworkflow_status_id' => $rec['appworkflow_status_id']
+                'workflow_stage_id' => $rec['workflow_stage_id']
             );
         }
 

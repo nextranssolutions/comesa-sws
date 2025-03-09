@@ -1,8 +1,7 @@
 <form role="form" enctype="multipart/form-data" role="form" [formGroup]="applicationGeneraldetailsfrm">
   <div class="row  wizard-content">
 
-
-    <div class="input-group">
+    <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4 input-group">
       <div class="col-lg-10">
         <label>{{'importer_exporter_details' | translate}}</label>
         <dx-text-box [readOnly]="true" formControlName="importer_exporter_name"
@@ -10,7 +9,8 @@
         </dx-text-box>
         <input type="hidden" formControlName="importer_exporter_id" />
       </div>
-      <div class="col-lg-2 pt-5">
+
+      <div class="col-lg-2">
         <dx-button [elementAttr]="{ class: 'btn btn-primary pull-left' }" [disabled]="ammendReadOnly"
           style="margin-top:25px !important;" text="{{ 'search_details' | translate }}" type="default"
           (onClick)="onsearchSenderreceiver()">
@@ -19,8 +19,7 @@
       </div>
     </div>
 
-
-    <div class="col-lg-4">
+    <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
       <label>{{'permit_type' | translate}}</label>
       <dx-select-box [dataSource]="permitTypeData" valueExpr="id" displayExpr="name"
         placeholder="{{'permit_type' | translate}}" [searchEnabled]="true" formControlName="permit_type_id">
@@ -28,14 +27,14 @@
     </div>
 
 
-    <div class="col-lg-4">
+    <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
       <label>{{ 'expected_date_of_shipment' | translate }}</label>
       <dx-date-box dateSerializationFormat="yyyy-MM-dd" [min]="today" formControlName="expected_date_of_shipment"
         [placeholder]="'expected_date_of_shipment' | translate" [showClearButton]="true">
       </dx-date-box>
     </div>
 
-    <div class="col-lg-4">
+    <div class="col-xs-12 col-md-4 col-xs-12 col-md-4 col-lg-4 col-xl-4 col-xl-4">
       <label>{{'mode_of_transport' | translate}}</label>
       <dx-select-box [dataSource]="transportModeData" valueExpr="id" displayExpr="name"
         placeholder="{{'mode_of_transport' | translate}}" [searchEnabled]="true" formControlName="mode_of_transport_id">
@@ -44,26 +43,26 @@
 
 
 
-    <div class="col-lg-4">
+    <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
       <label>{{ 'port_type' | translate}}</label>
       <dx-select-box [dataSource]="portTypeData" valueExpr="id" displayExpr="name"
         placeholder="{{'port_type' | translate}}" [searchEnabled]="true" formControlName="port_type_id">
       </dx-select-box>
     </div>
 
-    <div class="col-lg-4">
+    <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
       <label>{{ 'port_of_entryexit' | translate}}</label>
       <dx-select-box [dataSource]="portOfEntryExitData" valueExpr="id" displayExpr="name"
         placeholder="{{'port_of_entryexit' | translate}}" [searchEnabled]="true" formControlName="port_of_entryexit_id">
       </dx-select-box>
     </div>
 
-    
+
     <div class="input-group col-md-4">
       <div class="col-lg-10">
         <label>{{'customs_office' | translate}}</label>
-        <dx-text-box [readOnly]="true" formControlName="customs_office"
-          [placeholder]="'customs_office' | translate" [showClearButton]="true">
+        <dx-text-box [readOnly]="true" formControlName="customs_office" [placeholder]="'customs_office' | translate"
+          [showClearButton]="true">
         </dx-text-box>
         <input type="hidden" formControlName="customs_office_id" />
       </div>
@@ -78,7 +77,7 @@
 
     </div>
 
-    <div class="col-lg-4" *ngIf="is_licensepermit">
+    <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4" *ngIf="is_licensepermit">
       <label>{{'mode_of_transport' | translate}}</label>
       <dx-select-box [dataSource]="modeOfTransportData" valueExpr="id" displayExpr="name"
         [placeholder]="'select_mode_of_transport' | translate" [searchEnabled]="true"
@@ -86,7 +85,7 @@
       </dx-select-box>
     </div>
 
-    <div class="col-lg-4">
+    <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
       <label>{{ 'final_destination_country' | translate}}</label>
       <dx-select-box [dataSource]="countryData" valueExpr="id" displayExpr="name"
         placeholder="{{ 'final_destination_country' | translate}}" [readOnly]="ammendReadOnly" [searchEnabled]="true"
@@ -94,7 +93,7 @@
       </dx-select-box>
     </div>
 
-    <div class="col-lg-4">
+    <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
       <label>{{ 'invoice_type' | translate}}</label>
       <dx-select-box [dataSource]="invoiceTypeData" valueExpr="id" displayExpr="name"
         placeholder="{{ 'invoice_type' | translate}}" [readOnly]="ammendReadOnly" [searchEnabled]="true"
@@ -102,7 +101,7 @@
       </dx-select-box>
     </div>
 
-    <div class="col-lg-4">
+    <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
       <label>{{'invoice_number'| translate}}</label>
       <dx-text-box formControlName="invoice_number" placeholder="{{'invoice_number' | translate}}"
         [showClearButton]="true">
@@ -110,14 +109,14 @@
 
     </div>
 
-    <div class="col-lg-4">
+    <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
       <label>{{ 'invoice_date' | translate }}</label>
       <dx-date-box dateSerializationFormat="yyyy-MM-dd" [min]="today" formControlName="invoice_date"
         [placeholder]="'invoice_date' | translate" [showClearButton]="true">
       </dx-date-box>
     </div>
 
-    <div class="col-lg-4">
+    <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
       <label>{{'total_invoice_value'| translate}}</label>
       <dx-text-box formControlName="total_invoice_value" placeholder="{{'total_invoice_value' | translate}}"
         [showClearButton]="true">
@@ -125,7 +124,7 @@
 
     </div>
 
-    <div class="col-lg-4">
+    <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
       <label>{{ 'currency_of_transaction' | translate}}</label>
       <dx-select-box [dataSource]="currencyData" valueExpr="id" displayExpr="name"
         placeholder="{{ 'currency_of_transaction' | translate}}" [readOnly]="ammendReadOnly" [searchEnabled]="true"
@@ -134,7 +133,7 @@
     </div>
 
 
-    <div class="col-lg-4" *ngIf="is_licensepermit">
+    <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4" *ngIf="is_licensepermit">
       <label>{{'invoice_paying_currency' | translate}}</label>
       <dx-select-box [dataSource]="currencyData" [readOnly]="ammendReadOnly" valueExpr="id" displayExpr="name"
         [placeholder]="'select_paying_currency' | translate" [searchEnabled]="true"
@@ -153,7 +152,7 @@
     </div>
 
 
-    <div class="col-lg-4 form-group" style="margin:1px;">
+    <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4 form-group" style="margin:1px;">
 
     </div>
     <div class="col-lg-12">
@@ -361,112 +360,105 @@
 
 
 <dx-popup class="popup" [width]="funcpopWidth(65)" [height]=620 [showTitle]="true" title="Add Manufacturer"
-    [dragEnabled]="false" [hideOnOutsideClick]="false" [(visible)]="isnewcustomoffice">
+  [dragEnabled]="false" [hideOnOutsideClick]="false" [(visible)]="isnewcustomoffice">
 
-    <div *dxTemplate="let data of 'content'" class="row">
-        <dx-scroll-view>
-            <div class="col-lg-12">
-                <form enctype="multipart/form-data" role="form" [formGroup]="customOfficeFrm"
-                    (ngSubmit)="onAddCustomDetails()">
+  <div *dxTemplate="let data of 'content'" class="row">
+    <dx-scroll-view>
+      <div class="col-lg-12">
+        <form enctype="multipart/form-data" role="form" [formGroup]="customOfficeFrm" (ngSubmit)="onAddCustomDetails()">
 
-                    <div class="row">
+          <div class="row">
 
-                        <div class="col-xs-12 col-md-6 col-lg-6 col-xl-6">
+            <div class="col-xs-12 col-md-6 col-lg-6 col-xl-6">
 
-                            <label class="control-label">{{'name' | translate}}</label>
-                            <dx-text-box formControlName="name">
-                            </dx-text-box>
+              <label class="control-label">{{'name' | translate}}</label>
+              <dx-text-box formControlName="name">
+              </dx-text-box>
 
-                        </div>
-                        <div class="col-xs-12 col-md-6 col-lg-6 col-xl-6">
-                            <label class="control-label">{{'country' | translate}}</label>
-
-                            <dx-select-box [dataSource]="countries" valueExpr="id" displayExpr="name"
-                                placeholder="{{'select_country_placeholder' | translate}}"
-                                (onSelectionChanged)="onCoutryCboSelect($event)" [searchEnabled]="true"
-                                formControlName="country_id">
-                            </dx-select-box>
-                        </div>
-                        <div class="col-xs-12 col-md-6 col-lg-6 col-xl-6">
-                            <label for="ti" class="control-label">{{'region/city(optional)' | translate}}</label>
-
-                            <dx-select-box [dataSource]="regions" valueExpr="id" displayExpr="name"
-                                [searchEnabled]="true" formControlName="region_id">
-                            </dx-select-box>
-
-                        </div>
-                        <div class="col-xs-12 col-md-6 col-lg-6 col-xl-6">
-                            <label for="ti" class="control-label">{{'email_address' | translate}}</label>
-                            <dx-text-box formControlName="email_address" placeholder="{{'email_address' | translate}}">
-                            </dx-text-box>
-                        </div>
-                        <div class="col-xs-12 col-md-6 col-lg-6 col-xl-6">
-                            <label for="ti" class="control-label">{{'postal_address' | translate}}</label>
-                            <dx-text-box formControlName="postal_address" placeholder="{{'postal_address' | translate}}">
-                            </dx-text-box>
-                        </div>
-                        <div class="col-lg-12">
-                            <label class="control-label">{{'physical_address' | translate}}</label>
-
-                            <dx-text-area [height]="60" formControlName="physical_address"
-                                placeholder="{{'physical_address' | translate}}">
-                            </dx-text-area>
-                        </div>
-                        <div class="col-lg-12 btn-margin-5">
-                            <br />
-                            <button type="submit" (submit)="onAddCustomDetails()"
-                                [disabled]="!customOfficeFrm.valid" class="btn btn-primary"><i class="fa fa-user"></i>
-                                {{'save_manufacturer'}}</button>
-                        </div>
-                    </div>
-                </form>
             </div>
-        </dx-scroll-view>
-    </div>
+            <div class="col-xs-12 col-md-6 col-lg-6 col-xl-6">
+              <label class="control-label">{{'country' | translate}}</label>
+
+              <dx-select-box [dataSource]="countries" valueExpr="id" displayExpr="name"
+                placeholder="{{'select_country_placeholder' | translate}}"
+                (onSelectionChanged)="onCoutryCboSelect($event)" [searchEnabled]="true" formControlName="country_id">
+              </dx-select-box>
+            </div>
+            <div class="col-xs-12 col-md-6 col-lg-6 col-xl-6">
+              <label for="ti" class="control-label">{{'region/city(optional)' | translate}}</label>
+
+              <dx-select-box [dataSource]="regions" valueExpr="id" displayExpr="name" [searchEnabled]="true"
+                formControlName="region_id">
+              </dx-select-box>
+
+            </div>
+            <div class="col-xs-12 col-md-6 col-lg-6 col-xl-6">
+              <label for="ti" class="control-label">{{'email_address' | translate}}</label>
+              <dx-text-box formControlName="email_address" placeholder="{{'email_address' | translate}}">
+              </dx-text-box>
+            </div>
+            <div class="col-xs-12 col-md-6 col-lg-6 col-xl-6">
+              <label for="ti" class="control-label">{{'postal_address' | translate}}</label>
+              <dx-text-box formControlName="postal_address" placeholder="{{'postal_address' | translate}}">
+              </dx-text-box>
+            </div>
+            <div class="col-lg-12">
+              <label class="control-label">{{'physical_address' | translate}}</label>
+
+              <dx-text-area [height]="60" formControlName="physical_address"
+                placeholder="{{'physical_address' | translate}}">
+              </dx-text-area>
+            </div>
+            <div class="col-lg-12 btn-margin-5">
+              <br />
+              <button type="submit" (submit)="onAddCustomDetails()" [disabled]="!customOfficeFrm.valid"
+                class="btn btn-primary"><i class="fa fa-user"></i>
+                {{'save_manufacturer'}}</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </dx-scroll-view>
+  </div>
 </dx-popup>
 
 <dx-popup class="popup" [width]="funcpopWidth(80)" [height]="600" [showTitle]="true"
-    title="{{'custom_office' | translate}}" [dragEnabled]="false" [hideOnOutsideClick]="false"
-    [(visible)]="isCustomOfficePopupVisible">
-    <div *dxTemplate="let data of 'content'">
-        <dx-scroll-view>
-            <dx-data-grid class="table row-border hover" [allowColumnResizing]="true" [wordWrapEnabled]="true"
-                [columnHidingEnabled]="true" (onToolbarPreparing)="onCustomPreparing($event)"
-                [dataSource]="customOfficeData" [remoteOperations]='true' keyExpr="id">
-                <dxo-filter-row [visible]="false"></dxo-filter-row>
-                <dxo-search-panel [visible]="true">
-                </dxo-search-panel>
-                <dxo-paging [enabled]="true">
-                </dxo-paging>
-                <dxo-pager [showInfo]="true" infoText="Page #{0}. Total: {1} ({2} items)">
-                </dxo-pager>
-                <dxo-export [enabled]="true" fileName="manufacturingFile" [allowExportSelectedData]="true"></dxo-export>
-                <dxo-selection mode="single"></dxo-selection>
-                <dxo-group-panel [visible]="true"></dxo-group-panel>
-                <dxi-column [width]="150" caption="{{'action' | translate}}" name="command-editing"
-                    [allowFiltering]="false" [allowSorting]="false" cellTemplate="cellTemplate">
-                    <div *dxTemplate="let data of 'cellTemplate'">
+  title="{{'custom_office' | translate}}" [dragEnabled]="false" [hideOnOutsideClick]="false"
+  [(visible)]="isCustomOfficePopupVisible">
+  <div *dxTemplate="let data of 'content'">
+    <dx-scroll-view>
+      <dx-data-grid class="table row-border hover" [allowColumnResizing]="true" [wordWrapEnabled]="true"
+        [columnHidingEnabled]="true" (onToolbarPreparing)="onCustomPreparing($event)" [dataSource]="customOfficeData"
+        [remoteOperations]='true' keyExpr="id">
+        <dxo-filter-row [visible]="false"></dxo-filter-row>
+        <dxo-search-panel [visible]="true">
+        </dxo-search-panel>
+        <dxo-paging [enabled]="true">
+        </dxo-paging>
+        <dxo-pager [showInfo]="true" infoText="Page #{0}. Total: {1} ({2} items)">
+        </dxo-pager>
+        <dxo-export [enabled]="true" fileName="manufacturingFile" [allowExportSelectedData]="true"></dxo-export>
+        <dxo-selection mode="single"></dxo-selection>
+        <dxo-group-panel [visible]="true"></dxo-group-panel>
+        <dxi-column [width]="150" caption="{{'action' | translate}}" name="command-editing" [allowFiltering]="false"
+          [allowSorting]="false" cellTemplate="cellTemplate">
+          <div *dxTemplate="let data of 'cellTemplate'">
 
-                        <dx-button text="{{'select_manufacturer' | translate}}" (click)="funcSelectCustomOffice(data)"
-                            type="success" icon="edit" [elementAttr]="{ class: 'btn btn-primary' }">
-                        </dx-button>
-                    </div>
-                </dxi-column>
-                <dxi-column dataField="manufacturer_name" caption="{{'manufacturer_name' | translate}}"></dxi-column>
-                <dxi-column dataField="country_name" caption="{{'country' | translate}}"></dxi-column>
-                <dxi-column dataField="region_name" caption="{{'region' | translate}}"></dxi-column>
-                <dxi-column dataField="district" caption="{{'district' | translate}}"></dxi-column>
-                <dxi-column dataField="physical_address" caption="{{'physical_address' | translate}}"></dxi-column>
-                <dxi-column dataField="postal_address" caption="{{'postal_address' | translate}}"></dxi-column>
-                <dxi-column dataField="email_address" caption="{{'email_address' | translate}}"></dxi-column>
+            <dx-button text="{{'select_manufacturer' | translate}}" (click)="funcSelectCustomOffice(data)"
+              type="success" icon="edit" [elementAttr]="{ class: 'btn btn-primary' }">
+            </dx-button>
+          </div>
+        </dxi-column>
+        <dxi-column dataField="manufacturer_name" caption="{{'manufacturer_name' | translate}}"></dxi-column>
+        <dxi-column dataField="country_name" caption="{{'country' | translate}}"></dxi-column>
+        <dxi-column dataField="region_name" caption="{{'region' | translate}}"></dxi-column>
+        <dxi-column dataField="district" caption="{{'district' | translate}}"></dxi-column>
+        <dxi-column dataField="physical_address" caption="{{'physical_address' | translate}}"></dxi-column>
+        <dxi-column dataField="postal_address" caption="{{'postal_address' | translate}}"></dxi-column>
+        <dxi-column dataField="email_address" caption="{{'email_address' | translate}}"></dxi-column>
 
-                <dxo-paging [pageSize]="50"></dxo-paging>
-            </dx-data-grid>
-        </dx-scroll-view>
-    </div>
+        <dxo-paging [pageSize]="50"></dxo-paging>
+      </dx-data-grid>
+    </dx-scroll-view>
+  </div>
 </dx-popup>
-
-
-
-
-
