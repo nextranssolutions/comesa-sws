@@ -41,7 +41,6 @@ nav_data: any;
   ) { 
     this.regulatory_data = localStorage.getItem('regulatory_function');
     this.regulatory_data = JSON.parse(this.regulatory_data);
-    // console.log(this.regulatory_data);
     this.regulatory_function_id = this.regulatory_data.id;
     this.getUserNavigationItems(this.regulatory_function_id);
 
@@ -121,7 +120,6 @@ nav_data: any;
       .subscribe(
         data => {
           this.response = data;
-          // console.log(this.response);
           if (this.response.success) {
             //   this.decryptedPayload=this.encryptionService.OnDecryptData(this.response.navigation_items);
             this.loggedInUserNavigationItems = this.response.navigation_items;

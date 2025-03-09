@@ -49,6 +49,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
   currencyData: any;
   consigneeOptionsData: any;
   consignee_options_check: any;
+  show_advancesearch: boolean;
   zoneData: any;
   regulatory_function_id: any;
   permit_category_id: any;
@@ -664,6 +665,25 @@ export class PermitgeneraldetailsComponent implements OnInit {
           .catch(error => { throw 'Data Loading Error' });
       }
     });
+
+  }
+
+  onAdvanceDataGridSearch(e) {
+    e.toolbarOptions.items.unshift({
+      location: 'after',
+      widget: 'dxCheckBox',
+      options: {
+        icon: 'select',
+        text: 'Show Advanced Search',
+        value: this.show_advancesearch,
+        onValueChanged: this.onActivatetheAdvanceSearch.bind(this)
+      }
+    });
+  }
+
+  onActivatetheAdvanceSearch(e) {
+
+    this.show_advancesearch = e.value;
 
   }
 

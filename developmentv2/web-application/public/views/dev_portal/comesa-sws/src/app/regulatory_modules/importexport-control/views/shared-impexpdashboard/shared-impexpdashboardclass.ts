@@ -78,7 +78,7 @@ export class SharedImpExpdashboardClass {
   process_title: string;
   tracking_no: string;
   application_id: number;
-  application_code: number;
+  oga_application_code: number;
   permit_type_id: number;
   application_type_id: any;
   table_name: string;
@@ -112,7 +112,7 @@ export class SharedImpExpdashboardClass {
       paying_currency_id: new FormControl('', Validators.compose([])),
       submission_comments: new FormControl('', Validators.compose([]))
     });
-    this.table_name = 'tra_importexport_applications';
+    this.table_name = 'txn_importexport_applications';
 
     this.onLoadProductTypes();
     this.onLoadconfirmDataParam();
@@ -129,6 +129,11 @@ export class SharedImpExpdashboardClass {
       behavior: 'smooth' // Smooth scrolling for better UX
     });
   }
+
+  onInitiatenewImportExpApplications(){
+    this.onClickSubModuleAppSelection(1, 'New Import Application')
+    this.isPermitInitialisation = true; 
+}
 
   onClickSubModuleAppSelection(regulatory_subfunction_id, subfunction_name) {
 
@@ -230,7 +235,6 @@ export class SharedImpExpdashboardClass {
         data => {
 
           this.data_record = data;
-          // console.log(this.data_record);
           if (this.data_record.success) {
             this.dtImportExpApplicationData = this.data_record.data;
           }
@@ -476,11 +480,11 @@ export class SharedImpExpdashboardClass {
   funcProductPreviewDetails(data) {
     this.isPreviewApplicationDetails = true;
     this.frmPreviewAppDetails.patchValue(data);
-    this.onLoadPermitProductsData(data.application_code);
+    this.onLoadPermitProductsData(data.oga_application_code);
   }
-  onLoadPermitProductsData(application_code) {
+  onLoadPermitProductsData(oga_application_code) {
     this.spinner.show();
-    this.appService.getPermitsOtherDetails({ 'application_code': application_code }, 'getPermitProductsDetails')
+    this.appService.getPermitsOtherDetails({ 'oga_application_code': oga_application_code }, 'getPermitProductsDetails')
       .subscribe(
         data => {
           if (data.success) {
@@ -604,9 +608,9 @@ export class SharedImpExpdashboardClass {
             this.router_link = this.processData.router_link;
             this.productsapp_details = this.processData;
             let merged_appdata = Object.assign({}, this.application_data, app_data);
-            console.log(merged_appdata);
+
             localStorage.setItem('application_details', JSON.stringify(merged_appdata));
-            // this.appService.setProductApplicationDetail(data.data);
+           
             this.app_route = ['./importexport-control/' + this.router_link];
 
             this.router.navigate(this.app_route);
@@ -626,7 +630,7 @@ export class SharedImpExpdashboardClass {
   funcApplicationRejection(app_data) {
 
     //this.spinner.show();
-    this.utilityService.getApplicationPreRejectionDetails(app_data.application_code, 'txn_importexport_applications', 'application_status_id')
+    this.utilityService.getApplicationPreRejectionDetails(app_data.oga_application_code, 'txn_importexport_applications', 'application_status_id')
       .subscribe(
         data => {
           this.applicationRejectionData = data.data;
@@ -638,12 +642,12 @@ export class SharedImpExpdashboardClass {
   funcPrintApplicationDetails(app_data) {
     //print details
 
-    let report_url = this.mis_url + 'reports/generateProductsApplicationRpt?application_code=' + app_data.application_code;
+    let report_url = this.mis_url + 'reports/generateProductsApplicationRpt?oga_application_code=' + app_data.oga_application_code;
     this.funcGenerateRrp(report_url, "Report");
 
   }
   funcgenenerateImportExportPermit(app_data) {
-    let report_url = this.mis_url + 'reports/genenerateImportExportPermit?application_code=' + app_data.application_code + "&regulatory_function_id=" + app_data.regulatory_function_id + "&regulatory_subfunction_id=" + app_data.regulatory_subfunction_id + "&table_name=tra_importexport_applications";
+    let report_url = this.mis_url + 'reports/genenerateImportExportPermit?oga_application_code=' + app_data.oga_application_code + "&regulatory_function_id=" + app_data.regulatory_function_id + "&regulatory_subfunction_id=" + app_data.regulatory_subfunction_id + "&table_name=txn_importexport_applications";
     this.funcGenerateRrp(report_url, "Report")
 
   }
@@ -659,14 +663,14 @@ export class SharedImpExpdashboardClass {
   }
   funcPrintApplicationInvoice(app_data) {
 
-    let report_url = this.mis_url + 'reports/generateApplicationInvoice?application_code=' + app_data.application_code + "&regulatory_function_id=" + app_data.regulatory_function_id + "&regulatory_subfunction_id=" + app_data.regulatory_subfunction_id + "&table_name=tra_importexport_applications";
+    let report_url = this.mis_url + 'reports/generateApplicationInvoice?oga_application_code=' + app_data.oga_application_code + "&regulatory_function_id=" + app_data.regulatory_function_id + "&regulatory_subfunction_id=" + app_data.regulatory_subfunction_id + "&table_name=txn_importexport_applications";
     this.funcGenerateRrp(report_url, "Report")
 
   }
   funcPrintLetterofRejection(app_data) {
     //print details
 
-    let report_url = this.mis_url + 'reports/generateImportExportRejectionLetter?application_code=' + app_data.application_code;
+    let report_url = this.mis_url + 'reports/generateImportExportRejectionLetter?oga_application_code=' + app_data.oga_application_code;
     this.funcGenerateRrp(report_url, "Application Details");
 
   }
@@ -680,7 +684,7 @@ export class SharedImpExpdashboardClass {
   }
   onLoadApplicationProcessingData(data) {
 
-    this.utilityService.onLoadApplicationProcessingData(data.application_code)
+    this.utilityService.onLoadApplicationProcessingData(data.oga_application_code)
       .subscribe(
         resp_data => {
           if (resp_data.success) {
@@ -762,12 +766,6 @@ export class SharedImpExpdashboardClass {
   
   onCellPrepared(e) {
     this.utilityService.onCellPrepared(e);
-
   }
-   onInitiatenewImportExpApplications(){
-        this.isPermitInitialisation = true; 
-
-   }
-
 
 }

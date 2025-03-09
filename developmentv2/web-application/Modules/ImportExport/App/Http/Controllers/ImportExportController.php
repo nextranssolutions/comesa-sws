@@ -248,9 +248,10 @@ class ImportExportController extends Controller
                     $tra_app_data['application_code'] = $application_code;
                     $tra_app_data['oga_application_code'] = $oga_application_code;
                     $tra_app_data['applicant_id'] = $applicant_id;
-                    $tra_app_data['permit_typecategory_id'] = $permit_typecategory_id;
-                    $response = insertRecord('tra_importexport_applications', $tra_app_data, $email_address);
 
+                    $tra_app_data['permit_typecategory_id'] = $permit_typecategory_id;
+                 
+                    $response = insertRecord('txn_importexport_applications', $tra_app_data, $email_address);
 
                     if ($response['success']) {
                         $res = array(
@@ -267,7 +268,7 @@ class ImportExportController extends Controller
                     } else {
                         $res = array(
                             'success' => false,
-                            'message' => 'Error Occurred while saving to txn_importexport_applications. Contact the system administrator.'
+                            'message' => 'Error Occurred while saving to applications. Contact the system administrator.'
                         );
                     }
                 } else {
@@ -318,6 +319,7 @@ class ImportExportController extends Controller
             $trader_id = $req->trader_id;
             $email_address = $req->email_address;
             $applicationsubmission_type_id = $req->applicationsubmission_type_id;
+            $applicationapplicant_option_id = $req->applicationapplicant_option_id;
             $local_agent_id = $req->local_agent_id;
 
             $reference_no = $req->reference_no;
@@ -351,6 +353,7 @@ class ImportExportController extends Controller
                 'document_upload_id' => $req->document_upload_id,
                 'application_type_id' => $req->application_type_id,
                 'applicationsubmission_type_id' =>$req->applicationsubmission_type_id,
+                'applicationapplicant_option_id' =>$req->applicationapplicant_option_id,
                 'application_reference_number' => $req->application_reference_number,
                 'applicant_type_id' => $req->applicant_type_id,
                 'permit_typecategory_id' => $req->permit_typecategory_id,
@@ -472,7 +475,7 @@ class ImportExportController extends Controller
                 $app_data['workflowprocess_id'] = $workflowprocess_id;
                 $app_data['applicationsubmission_type_id'] = $applicationsubmission_type_id;
                 $app_data['regulatory_function_id'] = $regulatory_function_id;
-
+                $app_data['applicationapplicant_option_id'] = $applicationapplicant_option_id;
                 $app_data['date_added'] = Carbon::now();
                 $app_data['application_code'] = $application_code;
                
@@ -494,6 +497,7 @@ class ImportExportController extends Controller
                         'application_id' => $application_id,
                         'regulatory_function_id' => $regulatory_function_id,
                         'applicationsubmission_type_id' => $applicationsubmission_type_id,
+                        'applicationapplicant_option_id' => $applicationapplicant_option_id,
                         'application_code' => $application_code,
                         'workflowprocess_id' => $workflowprocess_id,
                         'success' => true,
@@ -501,13 +505,14 @@ class ImportExportController extends Controller
                     );
 
                     $response = insertRecord('txn_importexport_applications', $app_data, $email_address);
-              
+
                     if ($response['success']) {
                         $res = array(
                             'tracking_no' => $tracking_no,
                             'application_id' => $application_id,
                             'regulatory_function_id' => $regulatory_function_id,
                             'applicationsubmission_type_id' =>$applicationsubmission_type_id,
+                            'applicationapplicant_option_id' =>$applicationapplicant_option_id,
                             'application_code' => $tra_application_code,
                             'success' => true,
                             'message' => 'Application Saved Successfully, with Tracking No:' . $tracking_no
@@ -622,15 +627,12 @@ class ImportExportController extends Controller
         try {
             $resp = "";
             $user_id = $this->user_id;
-
             $unit_price = $req->unit_price;
             $currency_id = $req->currency_id;
-
             $packaging_unit_id = $req->packaging_unit_id;
             $quantity = $req->quantity;
-            $laboratory_no = $req->laboratory_no;
-            $regulated_prodpermit_id = $req->regulated_prodpermit_id;
             $product_id = $req->product_id;
+            $oga_application_code = $req->oga_application_code;
             $record_id = $req->id;
             $device_type_id = $req->device_type_id;
             // $permitprod_recommendation_id = $req->permitprod_recommendation_id;
@@ -638,19 +640,18 @@ class ImportExportController extends Controller
             $regulatory_subfunction_id = $req->regulatory_subfunction_id;
 
             $batch_number = $req->batch_number;
-            $application_code = generateApplicationCode($regulatory_subfunction_id, 'tra_permit_products');
             $expiry_date = $req->expiry_date;
             $manufacturing_date = $req->manufacturing_date;
             $error_message = 'Error occurred, data not saved successfully';
             //check uniform currency 
             $record = DB::table('tra_permit_products')
-                ->where(array('application_code' => $application_code))
+                ->where(array('oga_application_code' => $oga_application_code))
                 ->whereNotIn('currency_id', [$currency_id])
                 ->get();
 
+                // print_r($record);
             if (!count($record) > 0) {
                 $table_name = 'tra_permit_products';
-
 
                 $data = array(
                     'unit_price' => $unit_price,
@@ -658,7 +659,6 @@ class ImportExportController extends Controller
                     'section_id' => $req->section_id,
                     'productphysical_description' => $req->productphysical_description,
                     'packaging_unit_id' => $packaging_unit_id,
-
 
                     'product_name' => $req->product_name,
                     'brand_name' => $req->brand_name,
@@ -690,7 +690,7 @@ class ImportExportController extends Controller
                     'prodclass_category_id' => $req->prodclass_category_id,
                     'unitpack_size' => $req->unitpack_size,
                     'unitpack_unit_id' => $req->unitpack_unit_id,
-                    'application_code' => $req->application_code,
+                    'oga_application_code' => $req->oga_application_code,
                     'dosage_form_id' => $req->dosage_form_id
                 );
 
@@ -721,11 +721,13 @@ class ImportExportController extends Controller
                     $resp = insertRecord($table_name, $data, $user_id);
 
                     $record_id = $resp['record_id'];
+
                 }
                 if ($resp['success']) {
                     $res = array(
                         'success' => true,
                         'record_id' => $record_id,
+                        'oga_application_code' => $oga_application_code,
                         'message' => 'Saved Successfully'
                     );
                 } else {
@@ -1230,6 +1232,7 @@ class ImportExportController extends Controller
                     't1.country_id as country_id',
                     't1.region_id as region_id',
                     't1.district_id as district_id',
+                    't2.name as country_name',
                     't4.name as district_name',
                     't3.name as region_name',
                     't1.physical_address',
@@ -1278,7 +1281,7 @@ class ImportExportController extends Controller
                 $search_value = $searchValue[2] ?? '';
             }
 
-            $application_code = $req->application_code;
+            $oga_application_code = $req->oga_application_code;
             $data = collect();
             $totalCount = 0;
 
@@ -1295,7 +1298,7 @@ class ImportExportController extends Controller
                     't4.name as unit_of_measure',
                     't5.name as storage_conditions'
                 )
-                ->where('t1.application_code',$application_code)
+                ->where('t1.oga_application_code',$oga_application_code)
                 ->orderByDesc('t1.id')
                 ->get();
             $totalCount = $data->count();
@@ -1583,8 +1586,9 @@ class ImportExportController extends Controller
                 ->leftJoin('par_invoice_types as t15', 't1.invoice_type_id', 't15.id')
                 ->leftJoin('par_currencies as t16', 't1.currency_oftransaction_id', 't16.id')
                 ->leftJoin('par_confirmations as t17', 't1.declaration_statuses_id', 't17.id')
+                ->leftJoin('tra_customoffice_info as t18', 't1.customs_office_id', 't18.id')
 
-                ->select('t1.*', 't17.name as declaration', 't16.name as currency_name', 't15.name as invoice_type', 't14.name as final_destination_country', 't5.name as port_of_entry', 't13.name as mode_of_transport', 't12.name as currency_name', 't11.name as permit_type', 't10.name as application_status', 't8.name as action_name', 't8.iconCls as iconCls', 't8.action as action', 't2.name as permit_name', 't3.name as port_type', 't1.id', 't4.name as importer_exporter_name');
+                ->select('t1.*', 't18.name as customs_office', 't17.name as declaration', 't16.name as currency_name', 't15.name as invoice_type', 't14.name as final_destination_country', 't5.name as port_of_entry', 't13.name as mode_of_transport', 't12.name as currency_name', 't11.name as permit_type', 't10.name as application_status', 't8.name as action_name', 't8.iconCls as iconCls', 't8.action as action', 't2.name as permit_name', 't3.name as port_type', 't1.id', 't4.name as importer_exporter_name');
 
             if ($workflow_status_id != '') {
                 $workflow_status = explode(',', $workflow_status_id);
@@ -1690,7 +1694,7 @@ class ImportExportController extends Controller
                 ->leftJoin('wf_statuses_actions as t8', 't7.statuses_action_id', 't8.id')
                 ->leftJoin('wf_workflow_statuses as t9', 't1.appworkflow_status_id', 't9.id')
                 ->leftJoin('par_application_statuses as t10', 't1.application_status_id', 't10.id')
-                ->leftJoin('par_permit_typecategories as t11', 't1.permit_typecategory_id', 't11.id')
+               
                 ->leftJoin('par_currencies as t12', 't1.currency_oftransaction_id', 't12.id')
                 ->leftJoin('par_mode_oftransport as t13', 't1.mode_of_transport_id', 't13.id')
                 ->leftJoin('par_countries as t14', 't1.final_destination_country_id', 't14.id')
@@ -1698,9 +1702,10 @@ class ImportExportController extends Controller
                 ->leftJoin('par_currencies as t16', 't1.currency_oftransaction_id', 't16.id')
                 ->leftJoin('par_confirmations as t17', 't1.declaration_statuses_id', 't17.id')
                 ->leftJoin('tra_trader_account as t18', 't1.applicant_id', 't18.id')
-               
+     
                 ->select('t18.*','t6.current_stage_id as workflow_stage_id','t15.name as invoice_type', 't18.name as applicant_name', 't1.id as application_id', 't1.*','t17.name as declaration', 't16.name as currency_name', 't15.name as invoice_type', 't14.name as final_destination_country', 't5.name as port_of_entry', 't13.name as mode_of_transport', 't12.name as currency_name', 't2.name as permit_typecategory', 't10.name as application_status', 't8.name as action_name', 't8.iconCls as iconCls', 't8.action as action', 't2.name as permit_name', 't3.name as port_type', 't1.id', 't4.name as importer_exporter_name');
 
+               
             if ($workflow_status_id != '') {
                 $workflow_status = explode(',', $workflow_status_id);
                 $sql->whereIn('appworkflow_status_id', $workflow_status);
@@ -1725,7 +1730,8 @@ class ImportExportController extends Controller
                     'application_status' => $rec->application_status,
                     'permit_typecategory_id' => $rec->permit_typecategory_id,
                     'permit_name' => $rec->permit_name,
-                    
+                    'applicationapplicant_option' =>$rec->applicationapplicant_option,
+                    'applicant_name' => $rec->applicant_name,
                     'port_type' => $rec->port_type,
                     'port_type_id' => $rec->port_type_id,
                     'port_of_entry' => $rec->port_of_entry,

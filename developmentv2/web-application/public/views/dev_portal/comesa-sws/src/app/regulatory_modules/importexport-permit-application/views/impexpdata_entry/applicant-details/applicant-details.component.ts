@@ -19,7 +19,10 @@ export class ApplicantDetailsComponent {
   @Input() applicantDetailsForm: FormGroup;
   @Input() userAccountFrm: FormGroup;
   applicationGeneraldetailsfrm: FormGroup;
+
   applicationapplicant_options_id:number;
+
+  show_advancesearch: boolean;
   countriesData: any;
   subcribe: any;
   traderAccountsDetailsData: any = {};
@@ -46,6 +49,7 @@ export class ApplicantDetailsComponent {
   country_id: number;
   auth_response: any;
   region_id: number;
+  applicationapplicant_option_id: number;
   selectedApplicationOption: any = null;
   showSearchButton: boolean = false;
   showHiddenFields: boolean = false;
@@ -414,6 +418,25 @@ export class ApplicantDetailsComponent {
         physical_address: traderData.physical_address,
       });
     }
+  }
+
+  onAdvanceDataGridSearch(e) {
+    e.toolbarOptions.items.unshift({
+      location: 'after',
+      widget: 'dxCheckBox',
+      options: {
+        icon: 'select',
+        text: 'Show Advanced Search',
+        value: this.show_advancesearch,
+        onValueChanged: this.onActivatetheAdvanceSearch.bind(this)
+      }
+    });
+  }
+
+  onActivatetheAdvanceSearch(e) {
+
+    this.show_advancesearch = e.value;
+
   }
 
 }
