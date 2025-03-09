@@ -25,7 +25,7 @@
                 <div class="col-xs-12 col-md-4 col-lg-4 col-xl-43">
                     <label class="control-label">{{'country' | translate}}</label>
                     <dx-select-box [readOnly]="is_readonly" [dataSource]="countriesData" valueExpr="id" displayExpr="name"
-                        placeholder="Select Country" (onSelectionChanged)="onCoutryCboSelect($event)"
+                        placeholder="{{'select_country' | translate}}" (onSelectionChanged)="onCoutryCboSelect($event)"
                         [searchEnabled]="true" formControlName="country_id">
                     </dx-select-box>
                 </div>
@@ -41,7 +41,7 @@
                 <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
                     <label for="ti" class="control-label">{{'district(optional)' | translate}}</label>
 
-                    <dx-select-box [readOnly]="is_readonly" [dataSource]="districtsData" valueExpr="id" placeholder="Select District"
+                    <dx-select-box [readOnly]="is_readonly" [dataSource]="districtsData" valueExpr="id" placeholder="{{'select_district' | translate}}"
                         displayExpr="name" [searchEnabled]="true" formControlName="district_id">
                     </dx-select-box>
                 </div>
@@ -120,7 +120,7 @@
     title="{{'trader_account' | translate}}">
     <div *dxTemplate="let data of 'content'">
         <dx-scroll-view>
-            <form (ngSubmit)="onsaveTraderAccountsDetails()" [formGroup]="userAccountFrm">
+            <form (ngSubmit)="onsaveTraderAccountsDetails()" [formGroup]="userApplicantAccountFrm">
                 <div class="profile-card">
 
                     <fieldset class="profile-section">

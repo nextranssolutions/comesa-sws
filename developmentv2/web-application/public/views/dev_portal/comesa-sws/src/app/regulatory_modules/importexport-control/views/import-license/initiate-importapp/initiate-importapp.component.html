@@ -33,12 +33,7 @@
                         style="font-weight: bold;margin: 5px; font-style:italics;font-size: 15px;font-style: italics;color: green;">Application
                         {{'status' | translate}}:<i> {{status_name}}</i> </label>
                 </small>
-                <small>
-                    <i class="ace-icon fa fa-angle-double-right"></i>
-                    <label
-                        style="font-weight: bold;margin: 5px; font-style:italics;font-size: 15px;font-style: italics;color: green;">
-                        {{'permit_name' | translate}}:<i> {{permit_name}}</i> </label>
-                </small>
+              
             </h1>
         </div>
 
@@ -74,12 +69,10 @@
             <div class="container_div">
                 <div class="scrollable-content">
                     <!-- Your content goes here -->
-
                     <div>
                         <app-permitgeneraldetails [applicationGeneraldetailsfrm]="applicationGeneraldetailsfrm"
                             [permitReceiverSenderFrm]="permitReceiverSenderFrm"></app-permitgeneraldetails>
                     </div>
-
                     <!-- Add more content to see the scroll effect -->
                 </div>
             </div>

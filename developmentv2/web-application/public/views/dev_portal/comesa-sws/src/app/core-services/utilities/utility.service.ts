@@ -278,6 +278,17 @@ onsaveApplicationCodeDetails(application_code, app_data, action_url) {
       return data;
     }));
 }
+onsaveOgaApplicationCodeDetails(oga_application_code, app_data, action_url) {
+  var headers = new HttpHeaders({
+    "Accept": "application/json",
+    "Authorization": "Bearer " + this.authService.getAccessToken(),
+  });
+  let user = this.authService.getUserDetails();
+  return this.http.post(AppSettings.base_url + 'utilities/' + action_url, app_data, { params: { 'trader_id': this.trader_id, 'trader_email': this.email_address, oga_application_code: oga_application_code }, headers: headers })
+    .pipe(map(data => {
+      return data;
+    }));
+}
 getApplicationPreRejectionDetails(application_code, table_name, status_column) {
   var headers = new Headers({
     "Accept": "application/json",

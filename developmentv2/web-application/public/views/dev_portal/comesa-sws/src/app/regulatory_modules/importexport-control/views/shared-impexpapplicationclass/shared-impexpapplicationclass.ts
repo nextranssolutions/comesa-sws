@@ -233,7 +233,7 @@ export class SharedImpexpApplicationClass {
   }
   funcgetPreckingQueriesData() {
 
-    this.utilityService.getApplicationPreQueriesDetails(this.oga_application_code, 'tra_importexport_applications', 'application_status_id', 'utilities/getApplicationQueriesData')
+    this.utilityService.getApplicationPreQueriesDetails(this.oga_application_code, 'txn_importexport_applications', 'application_status_id', 'utilities/getApplicationQueriesData')
       .subscribe(
         data => {
           this.data_record = data;
@@ -256,6 +256,7 @@ export class SharedImpexpApplicationClass {
           return false
         });
   }
+
   onApplicationDashboard() {
     // this.app_route = this.funcREturnApplicationDashboardROute();
     this.router.navigate(this.app_route);
@@ -275,6 +276,7 @@ export class SharedImpexpApplicationClass {
       this.consignee_options_check = false;
     }
   }
+
   funcValidatePermitDetails(validation_title, nextStep) {
 
     const invalid = [];
@@ -289,7 +291,6 @@ export class SharedImpexpApplicationClass {
       //this.wizard.model.navigationMode.goToStep(nextStep);
       return;
     }
-
   }
 
   nextStep() {
@@ -298,10 +299,9 @@ export class SharedImpexpApplicationClass {
 
   nextStep1() {
     if (!this.applicantDetailsForm.get('applicant_id')?.value) {
-      this.toastr.error('Applicant ID is required before proceeding.', 'Error');
+      this.toastr.error('Please search and select applicant before proceeding to the next step.', 'Error');
       return;
     }
-
     // Proceed to the next step after ensuring applicant_id is set
     this.ngWizardService.next();
   }
@@ -311,6 +311,56 @@ export class SharedImpexpApplicationClass {
     this.ngWizardService.previous();
   }
 
+  // onSaveImportExportApplication() {
+
+  //   const invalid = [];
+  //   const controls = this.applicationGeneraldetailsfrm.controls;
+  //   for (const name in controls) {
+  //     if (controls[name].invalid) {
+  //       this.toastr.error('Fill In All Mandatory fields with (*), missing value on ' + name.replace('_id', ''), 'Alert');
+  //       return;
+  //     }
+  //   }
+  //   if (this.applicationGeneraldetailsfrm.invalid) {
+  //     return;
+  //   }
+
+  //   this.spinner.show();
+  //   // let registrant_details = this.applicationApplicantdetailsfrm.value;//applicant values
+  //   let applicant_id = this.applicantDetailsForm.get('id')?.value;
+  //   // let application_options_id = this.applicantDetailsForm.get('application_options_id')?.value;
+
+  //   this.applicationGeneraldetailsfrm.value['applicant_id'] = applicant_id;
+  //   // this.applicationGeneraldetailsfrm.value['application_options_id'] = application_options_id;
+
+  //   this.applicationGeneraldetailsfrm.value['regulatory_subfunction_id'] = this.regulatory_subfunction_id;
+  //   this.spinner.show();
+  //   this.appService.onSavePermitApplication(this.applicationGeneraldetailsfrm.value, 'uploaData', 'saveOgaImportExportApplication')
+  //     .subscribe(
+  //       response => {
+  //         this.product_resp = response;
+  //         if (this.product_resp.success) {
+  //           this.tracking_no = this.product_resp.tracking_no;
+  //           this.trasactionpermit_type_id = this.product_resp.trasactionpermit_type_id;
+
+  //           this.oga_application_code = this.product_resp.oga_application_code;
+
+  //           this.applicationGeneraldetailsfrm.patchValue({ trasactionpermit_type_id: this.trasactionpermit_type_id })
+  //           this.toastr.success(this.product_resp.message, 'Response');
+  //           this.isSaved = true;
+
+  //         } else {
+  //           this.toastr.error(this.product_resp.message, 'Alert');
+  //           this.isSaved = false;
+  //         }
+  //         this.spinner.hide();
+  //       },
+  //       error => {
+  //         this.loading = false;
+  //         this.isSaved = false;
+  //         this.spinner.hide();
+  //       });
+  // }
   onSaveImportExportApplication() {
 
     const invalid = [];
@@ -324,43 +374,41 @@ export class SharedImpexpApplicationClass {
     if (this.applicationGeneraldetailsfrm.invalid) {
       return;
     }
+    // const uploadData = this.prepareSavePermitDoc();
 
     this.spinner.show();
     // let registrant_details = this.applicationApplicantdetailsfrm.value;//applicant values
     let applicant_id = this.applicantDetailsForm.get('id')?.value;
-    let application_options_id = this.applicantDetailsForm.get('application_options_id')?.value;
+  this.applicationGeneraldetailsfrm.value['applicant_id'] = applicant_id;
+  
+  this.applicationGeneraldetailsfrm.value['regulatory_subfunction_id'] = this.regulatory_subfunction_id;
+  this.spinner.show();
+  this.appService.onSavePermitApplication(this.applicationGeneraldetailsfrm.value, 'uploadData', 'saveOgaImportExportApplication')
+    .subscribe(
+      response => {
+        this.product_resp = response;
+        if (this.product_resp.success) {
+          this.tracking_no = this.product_resp.tracking_no;
+          this.trasactionpermit_type_id = this.product_resp.trasactionpermit_type_id;
 
-    this.applicationGeneraldetailsfrm.value['applicant_id'] = applicant_id;
-    this.applicationGeneraldetailsfrm.value['application_options_id'] = application_options_id;
+          this.oga_application_code = this.product_resp.oga_application_code;
 
-    this.applicationGeneraldetailsfrm.value['regulatory_subfunction_id'] = this.regulatory_subfunction_id;
-    this.spinner.show();
-    this.appService.onSavePermitApplication(this.applicationGeneraldetailsfrm.value, 'uploaData', 'saveOgaImportExportApplication')
-      .subscribe(
-        response => {
-          this.product_resp = response;
-          if (this.product_resp.success) {
-            this.tracking_no = this.product_resp.tracking_no;
-            this.trasactionpermit_type_id = this.product_resp.trasactionpermit_type_id;
+          this.applicationGeneraldetailsfrm.patchValue({ trasactionpermit_type_id: this.trasactionpermit_type_id })
+          this.toastr.success(this.product_resp.message, 'Response');
+          this.isSaved = true; 
 
-            this.oga_application_code = this.product_resp.oga_application_code;
-
-            this.applicationGeneraldetailsfrm.patchValue({ trasactionpermit_type_id: this.trasactionpermit_type_id })
-            this.toastr.success(this.product_resp.message, 'Response');
-            this.isSaved = true;
-
-          } else {
-            this.toastr.error(this.product_resp.message, 'Alert');
-            this.isSaved = false;
-          }
-          this.spinner.hide();
-        },
-        error => {
-          this.loading = false;
+        } else {
+          this.toastr.error(this.product_resp.message, 'Alert');
           this.isSaved = false;
-          this.spinner.hide();
-        });
-  }
+        }
+        this.spinner.hide();
+      },
+      error => {
+        this.loading = false;
+        this.isSaved = false;
+        this.spinner.hide();
+      });
+}
 
   // Function to handle the next step
   onNextStep() {
@@ -506,7 +554,7 @@ export class SharedImpexpApplicationClass {
     }
 
     //also get the premises ID onsaveApplicationCodeDetails(oga_application_code, app_data, action_url)
-    this.utilityService.onsaveApplicationCodeDetails(this.oga_application_code, this.queryresponsefrm.value, 'onSavePrecheckingqueryresponse')
+    this.utilityService.onsaveOgaApplicationCodeDetails(this.oga_application_code, this.queryresponsefrm.value, 'onSavePrecheckingqueryresponse')
       .subscribe(
         response => {
           this.app_resp = response;

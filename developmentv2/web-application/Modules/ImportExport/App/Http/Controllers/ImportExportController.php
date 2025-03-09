@@ -219,7 +219,7 @@ class ImportExportController extends Controller
                     return \response()->json(array('success' => false, 'tracking_no' => $tracking_no, 'message' => $tracking_no));
                 }
                 $application_code = generateApplicationCode($regulatory_subfunction_id, 'wb_importexport_applications');
-                $oga_application_code = generateApplicationCode($regulatory_subfunction_id, 'tra_importexport_applications'); // Unique code
+                $oga_application_code = generateApplicationCode($regulatory_subfunction_id, 'txn_importexport_applications'); // Unique code
 
                 $application_id = $resp['record_id'];
 
@@ -249,7 +249,7 @@ class ImportExportController extends Controller
                     $tra_app_data['oga_application_code'] = $oga_application_code;
                     $tra_app_data['applicant_id'] = $applicant_id;
                     $tra_app_data['permit_type_id'] = $permit_type_id;
-                    $response = insertRecord('tra_importexport_applications', $tra_app_data, $email_address);
+                    $response = insertRecord('txn_importexport_applications', $tra_app_data, $email_address);
 
 
                     if ($response['success']) {
@@ -267,7 +267,7 @@ class ImportExportController extends Controller
                     } else {
                         $res = array(
                             'success' => false,
-                            'message' => 'Error Occurred while saving to tra_importexport_applications. Contact the system administrator.'
+                            'message' => 'Error Occurred while saving to applications. Contact the system administrator.'
                         );
                     }
                 } else {
@@ -502,7 +502,7 @@ class ImportExportController extends Controller
                         'message' => 'Application Saved Successfully, with Tracking No:' . $tracking_no
                     );
 
-                    $response = insertRecord('tra_importexport_applications', $app_data, $email_address);
+                    $response = insertRecord('txn_importexport_applications', $app_data, $email_address);
                     
                     if ($response['success']) {
                         $res = array(
@@ -624,15 +624,12 @@ class ImportExportController extends Controller
         try {
             $resp = "";
             $user_id = $this->user_id;
-
             $unit_price = $req->unit_price;
             $currency_id = $req->currency_id;
-
             $packaging_unit_id = $req->packaging_unit_id;
             $quantity = $req->quantity;
-            $laboratory_no = $req->laboratory_no;
-            $regulated_prodpermit_id = $req->regulated_prodpermit_id;
             $product_id = $req->product_id;
+            $oga_application_code = $req->oga_application_code;
             $record_id = $req->id;
             $device_type_id = $req->device_type_id;
             // $permitprod_recommendation_id = $req->permitprod_recommendation_id;
@@ -640,19 +637,18 @@ class ImportExportController extends Controller
             $regulatory_subfunction_id = $req->regulatory_subfunction_id;
 
             $batch_number = $req->batch_number;
-            $application_code = generateApplicationCode($regulatory_subfunction_id, 'tra_permit_products');
             $expiry_date = $req->expiry_date;
             $manufacturing_date = $req->manufacturing_date;
             $error_message = 'Error occurred, data not saved successfully';
             //check uniform currency 
             $record = DB::table('tra_permit_products')
-                ->where(array('application_code' => $application_code))
+                ->where(array('oga_application_code' => $oga_application_code))
                 ->whereNotIn('currency_id', [$currency_id])
                 ->get();
 
+                // print_r($record);
             if (!count($record) > 0) {
                 $table_name = 'tra_permit_products';
-
 
                 $data = array(
                     'unit_price' => $unit_price,
@@ -660,7 +656,6 @@ class ImportExportController extends Controller
                     'section_id' => $req->section_id,
                     'productphysical_description' => $req->productphysical_description,
                     'packaging_unit_id' => $packaging_unit_id,
-
 
                     'product_name' => $req->product_name,
                     'brand_name' => $req->brand_name,
@@ -692,7 +687,7 @@ class ImportExportController extends Controller
                     'prodclass_category_id' => $req->prodclass_category_id,
                     'unitpack_size' => $req->unitpack_size,
                     'unitpack_unit_id' => $req->unitpack_unit_id,
-                    'application_code' => $req->application_code,
+                    'oga_application_code' => $req->oga_application_code,
                     'dosage_form_id' => $req->dosage_form_id
                 );
 
@@ -723,11 +718,13 @@ class ImportExportController extends Controller
                     $resp = insertRecord($table_name, $data, $user_id);
 
                     $record_id = $resp['record_id'];
+
                 }
                 if ($resp['success']) {
                     $res = array(
                         'success' => true,
                         'record_id' => $record_id,
+                        'oga_application_code' => $oga_application_code,
                         'message' => 'Saved Successfully'
                     );
                 } else {
@@ -1291,7 +1288,7 @@ class ImportExportController extends Controller
                 $search_value = $searchValue[2] ?? '';
             }
 
-            $application_code = $req->application_code;
+            $oga_application_code = $req->oga_application_code;
             $data = collect();
             $totalCount = 0;
 
@@ -1308,7 +1305,7 @@ class ImportExportController extends Controller
                     't4.name as unit_of_measure',
                     't5.name as storage_conditions'
                 )
-                ->where('t1.application_code',$application_code)
+                ->where('t1.oga_application_code',$oga_application_code)
                 ->orderByDesc('t1.id')
                 ->get();
             $totalCount = $data->count();
@@ -1507,7 +1504,7 @@ class ImportExportController extends Controller
 
             $requestData = $req->all();
             $filter = $req->filter;
-            $table_name = 'tra_importexport_applications';
+            $table_name = 'txn_importexport_applications';
             $appworkflow_status_id = $req->appworkflow_status_id;
             $application_status_id = $req->application_status_id;
             $workflow_status_id = $req->workflow_status_id;

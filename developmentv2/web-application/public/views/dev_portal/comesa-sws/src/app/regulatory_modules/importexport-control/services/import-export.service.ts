@@ -56,12 +56,12 @@ export class ImportExportService {
       }));
   }
 
-  onsavePermitProductdetails(application_code, permitData, tracking_no, action_url) {
+  onsavePermitProductdetails(oga_application_code, permitData, tracking_no, action_url) {
 
 
 
     let data_header = {
-      params: { application_code: application_code, tracking_no: tracking_no, 'trader_id': this.trader_id, 'trader_email': this.email_address },
+      params: { oga_application_code: oga_application_code, tracking_no: tracking_no },
 
       headers: { 'Accept': 'application/json', "Authorization": "Bearer " + this.authService.getAccessToken() }
     };
