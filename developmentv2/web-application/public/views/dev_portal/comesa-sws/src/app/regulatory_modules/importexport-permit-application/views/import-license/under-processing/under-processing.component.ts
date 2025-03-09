@@ -9,11 +9,8 @@ import { SharedImpExpdashboardClass } from '../../shared-impexpdashboard/shared-
 })
 export class UnderProcessingComponent extends SharedImpExpdashboardClass {
   ngOnInit(): void {
-    this.onLoadProductTypes();
     this.onLoadconfirmDataParam();
-    this.onLoadproducttypeDefinationData();
-    this.onLoadimportExportPermitTypesData();
     this.reloadPermitApplicationsApplications();
-    // this.onLoadImportApplciations();
+    
   }
 }

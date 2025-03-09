@@ -16,6 +16,8 @@ import { ReportsService } from 'src/app/core-services/reports/reports.service';
 export class SharedapplicationdocumentuploadsComponent implements OnChanges {
 
   @Input() application_code: number;
+  @Input() oga_application_code: number;
+  
   @Input() process_id: number;
   @Input() document_type_id: number;
   @Input() appworkflow_status_id: number;

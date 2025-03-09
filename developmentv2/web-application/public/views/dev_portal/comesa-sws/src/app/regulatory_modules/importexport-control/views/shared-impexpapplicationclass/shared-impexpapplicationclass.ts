@@ -20,7 +20,7 @@ import { NgWizardConfig, NgWizardService, STEP_STATE, THEME } from 'ng-wizard';
   selector: '[appSharedImpexpApplicationClass]' // Add a unique selector here
 })
 export class SharedImpexpApplicationClass {
-  
+
   //start test wizrd 
   stepStates = {
     normal: STEP_STATE.normal,
@@ -29,6 +29,7 @@ export class SharedImpexpApplicationClass {
     hidden: STEP_STATE.hidden
 
   };
+  userApplicantAccountFrm: FormGroup;
 
   config: NgWizardConfig = {
     selected: 0,
@@ -40,10 +41,10 @@ export class SharedImpexpApplicationClass {
   };
   //ImportexportService
   //dms 
-  permitProductsData:any;
+  permitProductsData: any;
   @ViewChild(DxDataGridComponent)
   applicant_id: number;
-  isShowAppProcessSubmission:boolean;
+  isShowAppProcessSubmission: boolean;
   dataGrid: DxDataGridComponent;
   productApplicationProcessingData: any;
   isPreviewApplicationProcessing: boolean = false;
@@ -54,10 +55,10 @@ export class SharedImpexpApplicationClass {
   applicationGeneraldetailsfrm: FormGroup;
   permitReceiverSenderFrm: FormGroup;
   applicantDetailsForm: FormGroup;
-  
+
   permitProductsFrm: FormGroup;
   regulatedProductsPermitData: any;
-  
+
 
   application_details: any;
   status_id: number;
@@ -78,7 +79,7 @@ export class SharedImpexpApplicationClass {
   applicationTypeData: any;
   applicationCategoryData: any;
   applicationTypeCategoryData: any;
-  
+
   termscheckbox: boolean = false;
   app_resp: any;
   consignee_options_id: number;
@@ -86,20 +87,20 @@ export class SharedImpexpApplicationClass {
 
   loading: boolean = true;
   terms_conditions: any;
-  
+
   trasactionpermit_type_id: number;
-  
+
   loadingVisible: boolean;
   spinnerMessage: string;
-  
+
   traderAccountData: any;
-  
+
   applicationPreckingQueriesData: any;
   query_sectioncheck: string;
 
   onApplicationSubmissionFrm: FormGroup;
   queryresponsefrm: FormGroup;
-  
+
   app_routing: any;
   isSaved: boolean = false; // Track save state
   isprodnextdisable: boolean = true;
@@ -114,19 +115,19 @@ export class SharedImpexpApplicationClass {
   applicants_fielddata: any;
 
   id: number;
-  applicant_details:any;
+  applicant_details: any;
 
   constructor(
-    private configService: ConfigurationsService, 
-    public userservice: UserManagementService, 
-    public utilityService: UtilityService, 
+    private configService: ConfigurationsService,
+    public userservice: UserManagementService,
+    public utilityService: UtilityService,
     public fb: FormBuilder,
-    public spinner: SpinnerVisibilityService, 
-    public appService: ImportExportService, 
+    public spinner: SpinnerVisibilityService,
+    public appService: ImportExportService,
     public router: Router,
-    public formBuilder: FormBuilder, 
-    public toastr: ToastrService, 
-    public authService: AuthenticationService, 
+    public formBuilder: FormBuilder,
+    public toastr: ToastrService,
+    public authService: AuthenticationService,
     public httpClient: HttpClient,
     private ngWizardService: NgWizardService
   ) {
@@ -142,7 +143,7 @@ export class SharedImpexpApplicationClass {
     this.products_fielddata = this.application_details.permit_products_details;
     this.applicants_fielddata = this.application_details.applicant_details;
     this.applicant_details = this.application_details.applicant_details;
-    
+
     this.applicationGeneraldetailsfrm = this.formBuilder.group({});
     this.permitProductsFrm = this.formBuilder.group({});
     this.applicantDetailsForm = this.formBuilder.group({});
@@ -156,7 +157,7 @@ export class SharedImpexpApplicationClass {
         me.applicationGeneraldetailsfrm.addControl(field_name, new FormControl('', Validators.compose([])));
       }
     }
-  
+
     for (let prodform_field of this.products_fielddata) {
       let field_name = prodform_field['field_name'];
       if (prodform_field['is_mandatory'] == 1) {
@@ -168,7 +169,7 @@ export class SharedImpexpApplicationClass {
 
     for (let applicaform_field of this.applicants_fielddata) {
       let field_name = applicaform_field['field_name'];
-      
+
       if (applicaform_field['is_mandatory'] == 1) {
         me.applicantDetailsForm.addControl(field_name, new FormControl('', Validators.compose([Validators.required])));
       } else {
@@ -176,7 +177,7 @@ export class SharedImpexpApplicationClass {
       }
     }
     if (this.applicant_details) {
-      
+
       this.applicantDetailsForm.patchValue(this.applicant_details);
     }
 
@@ -190,11 +191,9 @@ export class SharedImpexpApplicationClass {
       this.status_id = this.application_details.application_status_id;
       this.oga_application_code = this.application_details.oga_application_code;
       this.transactionpermit_type_id = this.application_details.transactionpermit_type_id;
-      
       this.applicationGeneraldetailsfrm.patchValue(this.application_details);
     }
 
-    
     this.permitReceiverSenderFrm = new FormGroup({
       name: new FormControl('', Validators.compose([Validators.required])),
       country_id: new FormControl('', Validators.compose([Validators.required])),
@@ -258,11 +257,11 @@ export class SharedImpexpApplicationClass {
         });
   }
   onApplicationDashboard() {
-   // this.app_route = this.funcREturnApplicationDashboardROute();
+    // this.app_route = this.funcREturnApplicationDashboardROute();
     this.router.navigate(this.app_route);
     this.scrollToTop();
   }
-  
+
   onSectionsCboSelect($event) {
     //this.onBusinessTypesLoad($event.value)
   }
@@ -292,20 +291,20 @@ export class SharedImpexpApplicationClass {
     }
 
   }
-  
+
   nextStep() {
     this.ngWizardService.next();
   }
 
   nextStep1() {
     if (!this.applicantDetailsForm.get('applicant_id')?.value) {
-        this.toastr.error('Applicant ID is required before proceeding.', 'Error');
-        return;
+      this.toastr.error('Applicant ID is required before proceeding.', 'Error');
+      return;
     }
 
     // Proceed to the next step after ensuring applicant_id is set
-    this.ngWizardService.next(); 
-}
+    this.ngWizardService.next();
+  }
 
 
   previousStep() {
@@ -325,7 +324,7 @@ export class SharedImpexpApplicationClass {
     if (this.applicationGeneraldetailsfrm.invalid) {
       return;
     }
-    
+
     this.spinner.show();
     // let registrant_details = this.applicationApplicantdetailsfrm.value;//applicant values
     let applicant_id = this.applicantDetailsForm.get('id')?.value;
@@ -333,7 +332,7 @@ export class SharedImpexpApplicationClass {
 
     this.applicationGeneraldetailsfrm.value['applicant_id'] = applicant_id;
     this.applicationGeneraldetailsfrm.value['application_options_id'] = application_options_id;
-    
+
     this.applicationGeneraldetailsfrm.value['regulatory_subfunction_id'] = this.regulatory_subfunction_id;
     this.spinner.show();
     this.appService.onSavePermitApplication(this.applicationGeneraldetailsfrm.value, 'uploaData', 'saveOgaImportExportApplication')
@@ -348,7 +347,7 @@ export class SharedImpexpApplicationClass {
 
             this.applicationGeneraldetailsfrm.patchValue({ trasactionpermit_type_id: this.trasactionpermit_type_id })
             this.toastr.success(this.product_resp.message, 'Response');
-            this.isSaved = true; 
+            this.isSaved = true;
 
           } else {
             this.toastr.error(this.product_resp.message, 'Alert');
@@ -364,14 +363,14 @@ export class SharedImpexpApplicationClass {
   }
 
   // Function to handle the next step
-onNextStep() {
-  if (!this.isSaved) {
-    this.toastr.error('Kindly save before proceeding to the next step.', 'Validation Error');
-    return;
+  onNextStep() {
+    if (!this.isSaved) {
+      this.toastr.error('Kindly save before proceeding to the next step.', 'Validation Error');
+      return;
+    }
+    this.ngWizardService.next(); // Move to the next step only if saved
   }
-  this.ngWizardService.next(); // Move to the next step only if saved
-}
-  
+
 
   onPermitsApplicationPrint() {
 
@@ -395,7 +394,7 @@ onNextStep() {
       this.toastr.error('Fill in all the submission details to proceed!!', 'Alert');
       return;
     }
-   // this.app_route = this.app_route = this.funcREturnApplicationDashboardROute();
+    // this.app_route = this.app_route = this.funcREturnApplicationDashboardROute();
 
     //this.utilityService.onPermitsApplicationSubmit(this.viewRef, this.oga_application_code, this.tracking_no, 'txn_importexport_applications', this.app_route, this.onApplicationSubmissionFrm.value);
 
@@ -492,7 +491,7 @@ onNextStep() {
   funcValidateStepDetails(validation_title, data, nextStep) {
 
     if (data.length != 0 && data.length) {
-     
+
       this.ngWizardService.next();
     }
     else {
@@ -566,9 +565,9 @@ onNextStep() {
         response => {
           if (!response.success) {
             this.toastr.error('Add the Invoice Product details to proceed', 'Alert');
-            
+
             return;
-          }else{
+          } else {
             this.ngWizardService.next();
           }
           this.spinner.hide();
@@ -579,7 +578,7 @@ onNextStep() {
         });
   }
   onFuncSubmitApplication() {
-    this.isShowAppProcessSubmission= true;
+    this.isShowAppProcessSubmission = true;
   }
 
 }

@@ -18,31 +18,33 @@ import { ConfigurationsService } from 'src/app/core-services/configurations/conf
   selector: '[appSharedImpexpApplicationClass]' // Add a unique selector here
 })
 export class SharedImpexpApplicationClass {
-  //start test wizrd 
-  stepStates = {
-    normal: STEP_STATE.normal,
-    disabled: STEP_STATE.disabled,
-    error: STEP_STATE.error,
-    hidden: STEP_STATE.hidden
-
-  };
-
-  config: NgWizardConfig = {
-    selected: 0,
-    theme: THEME.arrows,
-    toolbarSettings: {
-      showNextButton: false,
-      showPreviousButton: false
-    }
-  };
+    //start test wizrd 
+    stepStates = {
+      normal: STEP_STATE.normal,
+      disabled: STEP_STATE.disabled,
+      error: STEP_STATE.error,
+      hidden: STEP_STATE.hidden
+  
+    };
+  
+    config: NgWizardConfig = {
+      selected: 0,
+      theme: THEME.arrows,
+      toolbarSettings: {
+        showNextButton: false,
+        showPreviousButton: false
+      }
+    };
   //ImportexportService
   //dms 
   @ViewChild(DxDataGridComponent)
+  appuploaded_document_id: number;
   applicant_id: number;
+  misapplicant_id: number;
   process_id: number;
   transactionpermit_type_id: number;
   appworkflow_status_id: number;
-
+  
   permit_id: any;
   dataGrid: DxDataGridComponent;
   productApplicationProcessingData: any;
@@ -52,11 +54,14 @@ export class SharedImpexpApplicationClass {
 
   product_resp: any; confirmDataParam: any;
   applicationGeneraldetailsfrm: FormGroup;
-
+  documentUploadfrm: FormGroup;
   permitProductsFrm: FormGroup;
   regulatedProductsPermitData: any;
 
+  sectionsData: any;
   zoneData: any;
+  permit_product_id: number;
+  isUploadedInvoiceProductsWin: boolean;
   documentMenuItems = [
     {
       text: "Document(s) Action",
@@ -79,6 +84,9 @@ export class SharedImpexpApplicationClass {
     }
   ];
 
+  appDocumentsUploadData: any = {};
+  appDocumentsUploadRequirement: any = {};
+  appDocumentsVersionsUploadData: any = {};
   application_type_id: any;
 
   application_details: any;
@@ -86,6 +94,7 @@ export class SharedImpexpApplicationClass {
   regulatory_subfunction_id: number;
   id: number;
   process_title: string;
+  regulated_productstype_id: number;
   application_id: number;
   application_code: number;
   tracking_no: string;
@@ -96,6 +105,11 @@ export class SharedImpexpApplicationClass {
   applicationTypeData: any;
   applicationCategoryData: any;
   applicationTypeCategoryData: any;
+  permitReasonData: any;
+  portOfEntryExitData: any;
+  payingCurrencyData: any;
+  consigneeOptionsData: any;
+  modeOfTransportData: any;
 
   termscheckbox: boolean = false;
   app_resp: any;
@@ -103,6 +117,8 @@ export class SharedImpexpApplicationClass {
   consignee_options_check: boolean = true;
   userAccountFrm: FormGroup;
   applicantDetailsForm: FormGroup;
+  isPermitproductsPopupVisible: boolean = false;
+  isDocumentUploadPopupVisible: boolean = false;
 
   loading: boolean = true;
   terms_conditions: any;
@@ -111,14 +127,56 @@ export class SharedImpexpApplicationClass {
   regions: any;
   districts: any;
 
+  senderReceiverData: any = {};
+  ispremisesSearchWinVisible: boolean = false;
+  issenderreceiverSearchWinVisible: boolean = false;
+  issenderreceiverAddWinVisible: boolean = false;
+  registered_premisesData: any = {};
+  permitReceiverSenderFrm: FormGroup;
+  productGeneraldetailsfrm: FormGroup;
+
+  consignee_sendertitle: string;
+  checkifsenderreceiver: boolean;
+
+  document_previewurl: any;
+  isDocumentPreviewDownloadwin: boolean = false;
+  isDocumentVersionPreviewDownloadwin: boolean = false;
+  documentsVersionsUploadData: any;
+  documentsUploadData: any;
+  documentsUploadRequirementData: any;
+
+  permitProductsData: any;
+  permitUploadedProductsData: any;
+  registeredProductsData: any = {};
+  commonNamesData: any;
+  productCategoryData: any;
+  devicesTypeData: any;
+  device_type_visible: boolean = false;
+  import_typecategory_visible: boolean = false;
+  isPermitproductsAddPopupVisible: boolean = false;
+  currencyData: any;
+  weightsUnitData: any;
+  packagingUnitsData: any;
+  siUnitsData: any;
+  classificationData: any;
+  quantity: number = 100;
+  unit_price: number;
+  isShowAppProcessSubmission:boolean;
+  isPermitVisaLicProductsAddPopupVisible:boolean;
+  isnewproductAddWinVisible: boolean = false;
+  enabled_newproductadd: boolean = false;
+  showProductAddOption: boolean = false;
+  is_regulatedproducts: boolean = false;
+  proforma_currency_id: number;
   permit_details: any;
-  queryresponsefrm: FormGroup;
+  isInitalQueryResponseFrmVisible: boolean = false;
+  initqueryresponsefrm: FormGroup;
   applicationPreckingQueriesData: any;
   query_sectioncheck: string;
   onApplicationSubmissionFrm: FormGroup;
-
+  permitProductsCategoryData: any;
+  has_invoicegeneration: boolean;
   app_routing: any;
-
   form_fielddata: any;
   permits_fielddata: any;
   isprodnextdisable: boolean = true;
@@ -126,7 +184,8 @@ export class SharedImpexpApplicationClass {
   products_fielddata: any;
   applicant_details: any;
   applicants_fielddata: any;
-  permitReceiverSenderFrm: FormGroup;
+  filesToUpload: Array<File> = [];
+  producttype_defination_id: number;
   constructor(public ngWizardService: NgWizardService, private configService: ConfigurationsService, public utilityService: UtilityService, public fb: FormBuilder,
     public spinner: SpinnerVisibilityService, public appService: ImportExportService, public router: Router,
     public formBuilder: FormBuilder, public toastr: ToastrService, public authService: AuthenticationService, public httpClient: HttpClient) {
@@ -134,14 +193,17 @@ export class SharedImpexpApplicationClass {
     let user = this.authService.getUserDetails();
 
     this.applicant_id = user.applicant_id;
+    this.misapplicant_id = user.misapplicant_id;
     this.application_details = localStorage.getItem('application_details');
-
+   
     this.application_details = JSON.parse(this.application_details);
-
+   
     this.form_fielddata = this.application_details.application_form;
     this.products_fielddata = this.application_details.application_form;
     this.applicants_fielddata = this.application_details.application_form;
 
+    console.log(this.applicants_fielddata);
+     
     this.applicationGeneraldetailsfrm = this.formBuilder.group({});
     this.permitProductsFrm = this.formBuilder.group({});
     this.applicantDetailsForm = this.formBuilder.group({});
@@ -152,18 +214,18 @@ export class SharedImpexpApplicationClass {
 
     this.applicationGeneraldetailsfrm = new FormGroup({
       id: new FormControl('', Validators.compose([])),
-
+     
     });
 
     for (let form_field of this.form_fielddata) {
       let field_name = form_field['field_name'];
       if (form_field['is_mandatory'] == 1) {
         this.applicationGeneraldetailsfrm.addControl(field_name, new FormControl('', Validators.compose([Validators.required])));
-
+       
 
       } else {
         this.applicationGeneraldetailsfrm.addControl(field_name, new FormControl('', Validators.compose([])));
-
+       
 
       }
     }
@@ -172,11 +234,11 @@ export class SharedImpexpApplicationClass {
       let field_name = form_field['field_name'];
       if (form_field['is_mandatory'] == 1) {
         this.permitProductsFrm.addControl(field_name, new FormControl('', Validators.compose([Validators.required])));
-
+       
 
       } else {
         this.permitProductsFrm.addControl(field_name, new FormControl('', Validators.compose([])));
-
+       
 
       }
     }
@@ -186,35 +248,35 @@ export class SharedImpexpApplicationClass {
       let field_name = form_field['field_name'];
       if (form_field['is_mandatory'] == 1) {
         this.applicantDetailsForm.addControl(field_name, new FormControl('', Validators.compose([Validators.required])));
-
+       
 
       } else {
         this.applicantDetailsForm.addControl(field_name, new FormControl('', Validators.compose([])));
-
+       
 
       }
     }
-
+    
 
 
     if (this.applicant_details) {
       this.id = this.applicant_details.regulatory_subfunction_id;
 
       this.regulatory_subfunction_id = this.applicant_details.regulatory_subfunction_id;
-
-
+      
+      
 
       this.applicantDetailsForm.patchValue(this.applicant_details);
-
+ 
     }
 
     if (this.permit_product_details) {
 
       this.regulatory_subfunction_id = this.permit_product_details.regulatory_subfunction_id;
-
+      
 
       this.permitProductsFrm.patchValue(this.permit_product_details);
-
+ 
     }
 
 
@@ -223,13 +285,14 @@ export class SharedImpexpApplicationClass {
       this.regulatory_subfunction_id = this.application_details.regulatory_subfunction_id;
       this.process_title = this.application_details.process_title;
       this.application_type_id = this.application_details.application_type_id;
+      this.application_type_id = this.application_details.application_type_id;
 
       this.application_id = this.application_details.application_id;
       this.tracking_no = this.application_details.tracking_no;
 
       this.application_code = this.application_details.application_code;
       this.applicationGeneraldetailsfrm.patchValue(this.application_details);
-
+ 
     }
 
 
@@ -252,12 +315,25 @@ export class SharedImpexpApplicationClass {
     });
 
 
+    
+    this.documentUploadfrm = this.fb.group({
+      file: null,
+      document_requirement_id: [null, Validators.required],
+      node_ref: null,
+      id: null,
+      description: [null]
+    });
+
+
+    this.import_typecategory_visible = true;
+
+
   }
   funcAutoLoadedParamters() {
 
     if (this.application_details) {
       this.applicationGeneraldetailsfrm.patchValue(this.application_details);
-
+    
     }
 
   }
@@ -300,7 +376,21 @@ export class SharedImpexpApplicationClass {
     this.scrollToTop();
   }
   funcREturnApplicationDashboardROute() {
+    if (this.regulatory_subfunction_id == 12) {
+      this.app_routing = ['./online-services/importvisa-dashboard'];
 
+    }
+    else if (this.regulatory_subfunction_id == 78 || this.regulatory_subfunction_id == 82) {
+      this.app_routing = ['./online-services/importlicense-dashboard'];
+
+    } else if (this.regulatory_subfunction_id == 81) {
+      this.app_routing = ['./online-services/exportlicense-dashboard'];
+
+    }
+    else {
+      this.app_routing = ['./online-services/inspectionbookin-dashboard'];
+
+    }
     return this.app_routing;
 
   }
@@ -308,10 +398,21 @@ export class SharedImpexpApplicationClass {
     //this.onBusinessTypesLoad($event.value)
   }
 
+  onconsigneeOptionsChange($event) {
+    this.consignee_options_id = $event.selectedItem.id;
+    if (this.consignee_options_id == 1) {
+      this.consignee_options_check = true;
+    }
+    else {
+      this.consignee_options_check = false;
+    }
+  }
+
   funcpopHeight(percentage_height) {
     return window.innerHeight * percentage_height / 100;
   }
   funcValidatePermitDetails(validation_title, nextStep) {
+
 
     const invalid = [];
     const controls = this.applicationGeneraldetailsfrm.controls;
@@ -327,6 +428,82 @@ export class SharedImpexpApplicationClass {
     }
 
   }
+  private prepareSavePermitDoc(): any {
+    //let input = new FormData();
+    let input = this.applicationGeneraldetailsfrm.value;
+    const files: Array<File> = this.filesToUpload;
+    // input.append('file', this.uploadpaymentdetailsfrm.get('file').value);
+    for (let i = 0; i < files.length; i++) {
+      input.append("file", files[i], files[i]['name']);
+    }
+    return input;
+  }
+
+
+  onsavePermitProductdetails() {
+    //validate the visa Quoantity
+    if (this.regulatory_subfunction_id == 82) {
+      let visa_quantity = this.permitProductsFrm.get('visa_quantity')?.value;
+      let quantity = this.permitProductsFrm.get('quantity')?.value;
+      let product_id = this.permitProductsFrm.get('id')?.value;
+      if (product_id < 0) {
+        if (quantity > visa_quantity) {
+          this.toastr.error("The product's quantities should be equal or less that the Visa Application Product Details. Visa Product Quantity is " + visa_quantity, 'Alert');
+          return;
+        }
+      }
+    }
+    const invalid = [];
+    const controls = this.permitProductsFrm.controls;
+
+    for (const name in controls) {
+      if (controls[name].invalid) {
+        this.toastr.error('Fill In All Mandatory fields with (*), missing value on ' + name.replace('_id', ''), 'Alert');
+        return;
+      }
+    }
+
+    if (this.permitProductsFrm.invalid) {
+      return;
+    }
+
+    let applicant_id = this.applicantDetailsForm.get('id')?.value;
+    let permit_generalinformation_id = this.applicationGeneraldetailsfrm.get('id')?.value;
+
+    
+    this.permitProductsFrm.value['applicant_id'] = applicant_id;
+    this.applicationGeneraldetailsfrm.value['permit_generalinformation_id'] = permit_generalinformation_id;
+
+    this.spinner.show();
+    this.appService.onsavePermitProductdetails(this.application_code, this.permitProductsFrm.value, this.tracking_no, 'onSaveApplicantPermitProductsDetails')
+      .subscribe(
+        response => {
+          this.app_resp = response;
+          //the details 
+          this.spinner.hide();
+
+          if (this.app_resp.success) {
+            // this.permitProductsFrm.reset();
+            this.isPermitproductsAddPopupVisible = false;
+            this.isPermitproductsPopupVisible = false;
+            this.isPermitVisaLicProductsAddPopupVisible = false;
+            this.permit_product_id = this.app_resp.record_id;
+            this.isPermitVisaLicProductsAddPopupVisible = false;
+            this.toastr.success(this.app_resp.message, 'Response');
+          } else {
+            this.toastr.error(this.app_resp.message, 'Alert');
+          }
+        },
+        error => {
+          this.loading = false;
+          this.spinner.hide();
+
+        });
+  }
+
+
+
+
 
   onSaveImportExportApplication() {
 
@@ -341,10 +518,11 @@ export class SharedImpexpApplicationClass {
     if (this.applicationGeneraldetailsfrm.invalid) {
       return;
     }
+    const uploadData = this.prepareSavePermitDoc();
 
     this.spinner.show();
     // let registrant_details = this.applicationApplicantdetailsfrm.value;//applicant values
-
+    
     let applicant_id = this.applicantDetailsForm.get('id')?.value;
     console.log(applicant_id);
     let application_options_id = this.applicantDetailsForm.get('application_options_id')?.value;
@@ -354,10 +532,10 @@ export class SharedImpexpApplicationClass {
     this.applicationGeneraldetailsfrm.value['applicant_id'] = applicant_id;
 
     this.applicationGeneraldetailsfrm.value['application_options_id'] = application_options_id;
-
+    
     this.applicationGeneraldetailsfrm.value['regulatory_subfunction_id'] = this.regulatory_subfunction_id;
     this.spinner.show();
-    this.appService.onSavePermitApplication(this.applicationGeneraldetailsfrm.value, '', 'saveImportExportApplication')
+    this.appService.onSavePermitApplication(this.applicationGeneraldetailsfrm.value, uploadData, 'saveImportExportApplication')
       .subscribe(
         response => {
           this.product_resp = response;
@@ -369,7 +547,7 @@ export class SharedImpexpApplicationClass {
 
             this.applicationGeneraldetailsfrm.patchValue({ permit_id: this.permit_id })
             this.toastr.success(this.product_resp.message, 'Response');
-            this.isSaved = true;
+            this.isSaved = true; 
 
           } else {
             this.toastr.error(this.product_resp.message, 'Alert');
@@ -407,6 +585,17 @@ export class SharedImpexpApplicationClass {
 
   }
 
+  onFuncSubmitApplication() {
+    this.isShowAppProcessSubmission= true;
+  }
+  onApplicationDocumentToolbar(e) {
+    this.functDataGridToolbar(e, this.funAddApplicationUploadDetails, 'Upload Document');
+
+  }
+  funAddApplicationUploadDetails() {
+    this.isDocumentUploadPopupVisible = true;
+
+  }
   functDataGridToolbar(e, funcBtn, btn_title) {
     e.toolbarOptions.items.unshift({
       location: 'before',
@@ -510,13 +699,17 @@ export class SharedImpexpApplicationClass {
     }
 
   }
+  funAddNewPermitProducts() {
+    this.isnewproductAddWinVisible = true;
+  }
+
   onSaveinitqueryresponse() {
-    if (this.queryresponsefrm.invalid) {
+    if (this.initqueryresponsefrm.invalid) {
       return;
     }
 
     //also get the premises ID onsaveApplicationCodeDetails(application_code, app_data, action_url)
-    this.utilityService.onsaveApplicationCodeDetails(this.application_code, this.queryresponsefrm.value, 'onSavePrecheckingqueryresponse')
+    this.utilityService.onsaveApplicationCodeDetails(this.application_code, this.initqueryresponsefrm.value, 'onSavePrecheckingqueryresponse')
       .subscribe(
         response => {
           this.app_resp = response;
@@ -531,6 +724,14 @@ export class SharedImpexpApplicationClass {
         error => {
           this.toastr.error('Error occurred!!', 'Alert');
         });
+  } funcInitQueryResponse(data) {
+
+    // this.premisesPersonnelDetailsfrm.patchValue({personnel_id:data.data.personnel_id,id:data.data.id,start_date:data.data.start_date,end_date:data.data.end_date, personnel_name:data.data.personnel_name})
+    this.initqueryresponsefrm.patchValue(data.data);
+    this.query_sectioncheck = data.data.application_section;
+
+    this.isInitalQueryResponseFrmVisible = true;
+
   }
   funcpopWidth(percentage_width) {
     return window.innerWidth * percentage_width / 100;

@@ -17,7 +17,8 @@ import { UserManagementService } from 'src/app/core-services/user-management/use
 })
 export class ApplicantdetailsComponent implements OnInit {
   @Input() applicantDetailsForm: FormGroup;
-  @Input() userAccountFrm: FormGroup;
+  @Input() userApplicantAccountFrm: FormGroup;
+
   countriesData: any;
   traderAccountsDetailsData: any = {};
   regionsData: any;
@@ -81,7 +82,7 @@ export class ApplicantdetailsComponent implements OnInit {
   onAddTraderAccountsClick() {
     this.is_readonly = false;
     this.addTraderPopupVisible = true;
-    this.userAccountFrm.reset();
+    this.userApplicantAccountFrm.reset();
   }
 
   fetchAccountStatusData() {
@@ -272,18 +273,18 @@ export class ApplicantdetailsComponent implements OnInit {
   onsaveTraderAccountsDetails() {
     const formData = new FormData();
     const invalid = [];
-    const controls = this.userAccountFrm.controls;
+    const controls = this.userApplicantAccountFrm.controls;
     for (const name in controls) {
       if (controls[name].invalid) {
         this.toastr.error('Fill In All Mandatory fields with (*), missing value on ' + name.replace('_id', ''), 'Alert');
         return;
       }
     }
-    if (this.userAccountFrm.invalid) {
+    if (this.userApplicantAccountFrm.invalid) {
       return;
     }
     this.spinner.show();
-    this.userservice.onsaveUserData(this.table_name, this.userAccountFrm.value, 'onsaveTraderData')
+    this.userservice.onsaveUserData(this.table_name, this.userApplicantAccountFrm.value, 'onsaveTraderData')
       .subscribe(
         response => {
           this.response = response;

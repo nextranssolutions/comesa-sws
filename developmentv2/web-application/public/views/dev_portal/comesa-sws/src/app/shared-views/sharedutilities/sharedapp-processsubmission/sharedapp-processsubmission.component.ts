@@ -13,6 +13,8 @@ import { WokflowManagementService } from 'src/app/core-services/workflow-managem
 })
 export class SharedappProcesssubmissionComponent {
   @Input() application_code: number;
+  @Input() oga_application_code: number;
+  
   @Input() process_id: number;
   @Input() app_reference_no: any;
   @Input() appworkflow_status_id: number;
