@@ -124,15 +124,16 @@
 
                 </div>
             </form>
-
-            <div class="col-lg-12">
+            <div class="div_contentfooter">
+            <!-- <div class="col-lg-12"> -->
                 <dx-button text="{{ 'save'+ parameter_name | translate }}" type="default" icon="fa fa-save"
                     [elementAttr]="{ id: 'elementId', class: 'pull-right' }" (onClick)="onFuncSaveWorlflowData()">
                 </dx-button>
                 <dx-button text="{{ 'next_workflow_stages' | translate }}" type="default" icon="fa fa-arrow-right"
                     (onClick)="onNextNavigationItems('WorkflowStages')">
                 </dx-button>
-            </div>
+            <!-- </div> -->
+        </div>
 
         </dxi-item>
         <dxi-item title="{{'workflow_stages' |translate}}" icon="map">

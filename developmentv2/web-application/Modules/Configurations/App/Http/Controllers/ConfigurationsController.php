@@ -122,7 +122,7 @@ class ConfigurationsController extends Controller
             if (!empty($requestData)) {
                 $sql->where($requestData);
             }
-            if ($table_name == 'par_applicationforms_fields' || $table_name == 'par_dataentry_formfields') {
+            if ($table_name == 'par_applicationforms_fields' || $table_name == 'par_dataentry_formfields' || $table_name =='par_systemgeneral_forms_fields') {
                 $sql->orderBy('t1.order_no', 'asc');
             } else {
                 $sql->orderBy('t1.name', 'asc');
@@ -601,6 +601,7 @@ class ConfigurationsController extends Controller
             $regulatory_subfunction_id = $req->regulatory_subfunction_id;
             $regulatory_function_id = $req->regulatory_function_id;
             $applicationsubmission_type_id = $req->applicationsubmission_type_id;
+            $permit_type_id = $req->permit_type_id;
             
             // Qualify ambiguous columns with table aliases
             $filter = array('t1.regulatory_subfunction_id' => $regulatory_subfunction_id);

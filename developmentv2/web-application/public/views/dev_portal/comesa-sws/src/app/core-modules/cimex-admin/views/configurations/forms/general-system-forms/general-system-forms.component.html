@@ -99,6 +99,149 @@ title="{{ 'add_new' | translate }} {{parameter_name | translate }}" [dragEnabled
 </div>
 </dx-popup>
 
+<dx-popup [visible]="isConfigureApplicationFormFields" [width]="funcpopWidth(80)" [height]="funcpopHeight(70)"
+    [showTitle]="true" title="{{ 'configure_system_form_fields' | translate }}"
+    (onHidden)="isConfigureApplicationFormFields = false">
+    <div *dxTemplate="let data of 'content'">
+        <dx-scroll-view>
+            <dx-button text="{{ 'add_new_field' | translate }} {{ parameter_name | translate}}" type="default"
+                icon="fa fa-plus" [elementAttr]="{ class: '' }"
+                (onClick)="hasReadpermissions=false;OnAddapplicationFormFields()">
+            </dx-button>
+            <dx-data-grid (onCellPrepared)="onCellPrepared($event)" class="col-lg-12 table row-border hover"
+                (onExporting)="onExporting($event)" [wordWrapEnabled]="true" [remoteOperations]="true"
+                [showBorders]="true" [allowColumnResizing]="true" [dataSource]="applicationFormFieldsData"
+                [columnHidingEnabled]="false" keyExpr="id"
+                (onToolbarPreparing)="onAdvanceProductRegistrySearch($event)">
+
+                <dxo-export [enabled]="true" [fileName]="'records' | translate" [formats]="['pdf', 'xlsx']"
+                    [allowExportSelectedData]="true">
+                </dxo-export>
+                <dxo-search-panel [visible]="true"></dxo-search-panel>
+
+                <dxo-filter-row [visible]="show_advancesearch"></dxo-filter-row>
+                <dxo-paging [enabled]="true">
+                    <dxo-pager [showInfo]="true" infoText="Page #{0}. Total: {1} ({2} items)"
+                        [showPageSizeSelector]="true" [allowedPageSizes]="[50,100]"></dxo-pager>
+                </dxo-paging>
+
+                <dxi-column [width]="100" caption="{{ 'action' | translate }}" name="command-editing"
+                    [allowFiltering]="false" [allowSorting]="false" cellTemplate="cellTemplate">
+                    <div *dxTemplate="let data of 'cellTemplate'">
+                        <dx-menu (onItemClick)="funcActionFormFieldColClick($event,data)"
+                            [items]="actionsFormFieldMenuItems"></dx-menu>
+                    </div>
+                </dxi-column>
+
+                <dxi-column dataField="formfield_configuration_id"
+                    caption="{{ 'formfield_configuration' | translate }}">
+                    <dxo-lookup [dataSource]="formfieldConfigurationData" displayExpr="label" valueExpr="id">
+                    </dxo-lookup>
+                </dxi-column>
+                <dxi-column dataField="is_mandatory" caption="{{ 'is_mandatory' | translate }}">
+                    <dxo-lookup [dataSource]="enable_disableOptions" displayExpr="text" valueExpr="data_value">
+                    </dxo-lookup>
+                </dxi-column>
+                <dxi-column dataField="is_readonly" caption="{{ 'is_readonly' | translate }}">
+                    <dxo-lookup [dataSource]="enable_disableOptions" displayExpr="text" valueExpr="data_value">
+                    </dxo-lookup>
+                </dxi-column>
+                <dxi-column dataField="is_hidden" caption="{{ 'is_hidden' | translate }}">
+                    <dxo-lookup [dataSource]="enable_disableOptions" displayExpr="text" valueExpr="data_value">
+                    </dxo-lookup>
+                </dxi-column>
+
+                <dxi-column dataField="order_no" caption="{{'order_no' | translate }}"></dxi-column>
+                <dxi-column dataField="default_value" caption="{{'default_value' | translate }}"></dxi-column>
+                <dxi-column dataField="description" caption="{{'description' | translate }}"></dxi-column>
+
+                <dxi-column dataField="is_enabled" caption="{{'enable/disable' | translate }}"></dxi-column>
+                <dxo-selection mode="multiple"></dxo-selection>
+                <dxo-group-panel [visible]="true"></dxo-group-panel>
+                <dxo-paging [pageSize]="500"></dxo-paging>
+            </dx-data-grid>
+        </dx-scroll-view>
+    </div>
+</dx-popup>
+
+<dx-popup class="popup" [width]="funcpopWidth(65)" [height]="funcpopHeight(75)" [showTitle]="true"
+    title="{{ 'system_formfields' | translate }}" [dragEnabled]="false" [hideOnOutsideClick]="false"
+    [(visible)]="onaddApplicationFormFieldsWin">
+    <div *dxTemplate="let data of 'content'">
+        <dx-scroll-view>
+            <form role="form" (ngSubmit)="onFuncSaveApplicationFormFieldData()" [formGroup]="systemFormFieldsFrm">
+                <div class="row">
+
+                    <div class="col-lg-6">
+                        <label>{{'formfield_configuration' | translate}}</label>
+
+                        <dx-select-box [dataSource]="formfieldConfigurationData" valueExpr="id" displayExpr="name"
+                            [searchEnabled]="true" placeholder=" {{'formfield_configuration' | translate}}"
+                            formControlName="formfield_configuration_id">
+                            <div *dxTemplate="let name of 'item'">
+                                <p>{{name.name}} {{name.field}} </p>
+                            </div>
+                        </dx-select-box>
+                    </div>
+                    <div class="col-lg-6">
+                        <label>{{ 'is_mandatory' | translate }}</label>
+                        <dx-select-box [searchEnabled]="true" formControlName="is_mandatory"
+                            [dataSource]="enable_disableOptions" valueExpr="data_value" displayExpr="text">
+                        </dx-select-box>
+                    </div>
+                    <div class="col-lg-6">
+                        <label>{{ 'is_hidden' | translate }}</label>
+                        <dx-select-box [searchEnabled]="true" formControlName="is_hidden"
+                            [dataSource]="enable_disableOptions" valueExpr="data_value" displayExpr="text">
+                        </dx-select-box>
+                    </div>
+                    <div class="col-lg-6">
+                        <label>{{ 'is_readonly' | translate }}</label>
+                        <dx-select-box [searchEnabled]="true" formControlName="is_readonly"
+                            [dataSource]="enable_disableOptions" valueExpr="data_value" displayExpr="text">
+                        </dx-select-box>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <label for="order_no">{{ 'order_no' | translate }}</label>
+                        <dx-text-box formControlName="order_no">
+                        </dx-text-box>
+                    </div>
+                    <div class="col-lg-6">
+                        <label for="default_value">{{ 'default_value' | translate }}</label>
+                        <dx-text-box formControlName="default_value">
+                        </dx-text-box>
+                    </div>
+
+                    <div class="col-lg-12">
+                        <label>{{ 'description' | translate }}</label>
+                        <dx-text-area formControlName="description">
+                        </dx-text-area>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <label>{{ 'enable/disable' | translate }}</label>
+                        <dx-select-box [searchEnabled]="true" formControlName="is_enabled"
+                            [dataSource]="enable_disableOptions" valueExpr="data_value" displayExpr="text">
+                        </dx-select-box>
+                    </div>
+
+                </div>
+            </form>
+
+            <div class="col-lg-8 pull-right">
+
+            </div><br>
+            <div class="col-lg-4 pull-right">
+                <dx-button text="{{ 'save_formfields' | translate }}" type="default" icon="fa fa-save"
+                    [elementAttr]="{ id: 'elementId', class: 'pull-right' }"
+                    (onClick)="onFuncSaveApplicationFormFieldData()">
+                </dx-button>
+            </div>
+        </dx-scroll-view>
+    </div>
+</dx-popup>
+
 
 <dx-popup [visible]="deletePopupVisible" [width]="funcpopWidth(30)" [height]="funcpopHeight(25)" [showTitle]="true"
 title="{{ 'delete_confirmation_of'+parameter_name | translate }}" (onHidden)="deletePopupVisible = false">
