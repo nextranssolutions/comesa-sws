@@ -6,6 +6,7 @@ import { DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
 import { SpinnerVisibilityService } from 'ng-http-loader';
 import { ToastrService } from 'ngx-toastr';
 import { ConfigurationsService } from 'src/app/core-services/configurations/configurations.service';
+import { EncryptionService } from 'src/app/core-services/encryption/encryption.service';
 import { ReportsService } from 'src/app/core-services/reports/reports.service';
 import { UtilityService } from 'src/app/core-services/utilities/utility.service';
 
@@ -31,6 +32,17 @@ export class GeneralSystemFormsComponent {
      deletePopupVisible = false;
      is_enabled: boolean;
      formTypeData: any;
+
+     isConfigureApplicationFormFields: boolean;
+     applicationFormFieldsData: any;
+     formfieldConfigurationData: any;
+     onaddApplicationFormFieldsWin: boolean;
+     systemFormFieldsFrm: FormGroup;
+     systemforms_configuration_id: number;
+     decryptedPayload: any;
+    //  regulatory_function_id: number;
+
+
     
      enablePopupVisible: boolean;
      data_record: any;
@@ -43,6 +55,10 @@ export class GeneralSystemFormsComponent {
        { value: true, text: 'Yes' },
        { value: false, text: 'No' },
      ];
+     enable_disableOptions = [
+      { value: true, text: 'Yes', data_value: 1 },
+      { value: false, text: 'No', data_value: 0 },
+    ];
    
      loading = false;
    
@@ -51,13 +67,22 @@ export class GeneralSystemFormsComponent {
          text: "Action",
          icon: 'menu',
          items: [
-           //  { text: "View", action: 'view_record', icon: 'fa fa-eye' },
+           { text: "Configure Fields", action: 'configure_fields', icon: 'fa fa-plus' },
            { text: "Edit", action: 'edit_record', icon: 'fa fa-edit' },
            { text: "Delete", action: 'delete_record', icon: 'fa fa-trash' },
            { text: "enable/disable", action: 'enable_record', icon: 'fa fa-check' }
          ]
        }
      ];
+     actionsFormFieldMenuItems = [
+      {
+        text: "Action",
+        icon: 'menu',
+        items: [
+          { text: "Edit", action: 'edit_record', icon: 'fa fa-edit' }
+        ]
+      }
+    ];
    
    
      constructor(
@@ -69,6 +94,7 @@ export class GeneralSystemFormsComponent {
        public utilityService: UtilityService,
        public reportingAnalytics: ReportsService,
        public configService: ConfigurationsService,
+       public encryptionService: EncryptionService
      ) {
    
       
@@ -84,6 +110,18 @@ export class GeneralSystemFormsComponent {
            code: new FormControl('', Validators.compose([])),
            
          });
+         this.systemFormFieldsFrm = new FormGroup({
+          id: new FormControl('', Validators.compose([])),
+          formfield_configuration_id: new FormControl('', Validators.compose([Validators.required])),
+          systemforms_configuration_id: new FormControl('', Validators.compose([Validators.required])),
+          is_mandatory: new FormControl('', Validators.compose([Validators.required])),
+          is_hidden: new FormControl('', Validators.compose([Validators.required])),
+          is_readonly: new FormControl('', Validators.compose([Validators.required])),
+          order_no: new FormControl('', Validators.compose([Validators.required])),
+          description: new FormControl('', Validators.compose([])),
+          default_value: new FormControl('', Validators.compose([])),
+          is_enabled: new FormControl('', Validators.compose([Validators.required])),
+        });
        
      
    
@@ -96,6 +134,7 @@ export class GeneralSystemFormsComponent {
       this.fetchRegSubFunctionDetailsData();
        this.fetchProductTypesData();
       this.fetchFormTypeData();
+      // this.onloadformfieldConfigurationData();
      
        }
    
@@ -174,6 +213,8 @@ export class GeneralSystemFormsComponent {
              this.spinnerHide();
            });
      }
+
+     
    
      
   
@@ -279,6 +320,27 @@ export class GeneralSystemFormsComponent {
            });
    
      }
+     onloadformfieldConfigurationData() {
+
+      var data_submit = {
+        'table_name': 'par_formfield_configuration',
+        // 'regulatory_function_id': regulatory_function_id,
+      }
+      this.configService.onLoadConfigurationData(data_submit)
+        .subscribe(
+          data => {
+            this.data_record = data;
+            if (this.data_record.success) {
+              // this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
+              this.formfieldConfigurationData = this.data_record.data;
+            }
+  
+          },
+          error => {
+  
+          });
+  
+    }
       
      funcpopWidth(percentage_width) {
        return window.innerWidth * percentage_width / 100;
@@ -328,8 +390,98 @@ export class GeneralSystemFormsComponent {
          this.funcEnableDisableRecord(data);
        } else if (action_btn.action === 'block_record') {
          this.funcDeleteDetails(data);
-       }
+       } else if (action_btn.action === 'configure_fields') {
+        this.funcConfigureFields(data.data);
+      }
      }
+     funcActionFormFieldColClick(e, data) {
+      var action_btn = e.itemData;
+      if (action_btn.action === 'edit_record') {
+        this.funcFormFieldEditDetails(data);
+      }
+      else if (action_btn.action === 'enable_record') {
+        this.funcEnableDisableRecord(data);
+      }
+  
+    }
+    funcFormFieldEditDetails(data) {
+      this.systemFormFieldsFrm.patchValue(data.data);
+      this.onaddApplicationFormFieldsWin = true;
+    }
+
+     funcConfigureFields(data) {
+      this.isConfigureApplicationFormFields = true;
+      this.systemforms_configuration_id = data.id;
+      // this.regulatory_function_id = data.regulatory_function_id;
+  
+      this.onloadformfieldConfigurationData();
+      this.onGetApplicationFormFields();
+  
+    }
+
+    OnAddapplicationFormFields() {
+      this.systemFormFieldsFrm.reset();
+      this.onaddApplicationFormFieldsWin = true;
+      this.systemFormFieldsFrm.get('systemforms_configuration_id')?.setValue(this.systemforms_configuration_id)
+  
+    }
+    onGetApplicationFormFields() {
+      this.spinnerShow('Loading...........');
+      var data_submit = {
+        'table_name': 'par_systemgeneral_forms_fields',
+        systemforms_configuration_id: this.systemforms_configuration_id
+      }
+      this.configService.onLoadConfigurationData(data_submit)
+        .subscribe(
+          data => {
+            this.data_record = data;
+            if (this.data_record.success) {
+              this.decryptedPayload = this.encryptionService.OnDecryptData(this.data_record.data);
+              this.applicationFormFieldsData = this.data_record.data;
+            }
+            this.spinnerHide();
+          },
+          error => {
+            this.spinnerHide();
+          });
+    }
+    onFuncSaveApplicationFormFieldData() {
+      const formData = new FormData();
+      const invalid = [];
+      const controls = this.systemFormFieldsFrm.controls;
+      for (const name in controls) {
+        if (controls[name].invalid) {
+          this.toastr.error('Fill In All Mandatory fields with (*), missing value on ' + name.replace('_id', ''), 'Alert');
+          return;
+        }
+      }
+      if (this.systemFormFieldsFrm.invalid) {
+        return;
+      }
+  
+      this.spinnerShow('saving applicationform fields');
+      this.configService.onSaveConfigurationDetailsDetails('par_systemgeneral_forms_fields', this.systemFormFieldsFrm.value, 'onsaveConfigData')
+        .subscribe(
+          response => {
+            this.response = response;
+            //the details 
+            if (this.response.success) {
+              this.onGetApplicationFormFields();
+  
+              this.onaddApplicationFormFieldsWin = false;
+              this.toastr.success(this.response.message, 'Response');
+  
+            } else {
+              this.toastr.error(this.response.message, 'Alert');
+            }
+            this.spinnerHide();
+          },
+          error => {
+            this.toastr.error('Error Occurred', 'Alert');
+            this.spinnerHide();
+          });
+    }
+
    
      iniateEnableDisableRecord() {
    
