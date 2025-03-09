@@ -565,7 +565,7 @@ export class SharedImpExpdashboardClass {
 
   }
   funcgenenerateImportExportPermit(app_data) {
-    let report_url = this.mis_url + 'reports/genenerateImportExportPermit?application_code=' + app_data.application_code + "&regulatory_function_id=" + app_data.regulatory_function_id + "&regulatory_subfunction_id=" + app_data.regulatory_subfunction_id + "&table_name=tra_importexport_applications";
+    let report_url = this.mis_url + 'reports/genenerateImportExportPermit?application_code=' + app_data.application_code + "&regulatory_function_id=" + app_data.regulatory_function_id + "&regulatory_subfunction_id=" + app_data.regulatory_subfunction_id + "&table_name=txn_importexport_applications";
     this.funcGenerateRrp(report_url, "Report")
 
   }
@@ -581,7 +581,7 @@ export class SharedImpExpdashboardClass {
   }
   funcPrintApplicationInvoice(app_data) {
 
-    let report_url = this.mis_url + 'reports/generateApplicationInvoice?application_code=' + app_data.application_code + "&regulatory_function_id=" + app_data.regulatory_function_id + "&regulatory_subfunction_id=" + app_data.regulatory_subfunction_id + "&table_name=tra_importexport_applications";
+    let report_url = this.mis_url + 'reports/generateApplicationInvoice?application_code=' + app_data.application_code + "&regulatory_function_id=" + app_data.regulatory_function_id + "&regulatory_subfunction_id=" + app_data.regulatory_subfunction_id + "&table_name=txn_importexport_applications";
     this.funcGenerateRrp(report_url, "Report")
 
   }

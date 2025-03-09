@@ -1336,7 +1336,7 @@ class UserManagementController extends Controller
                 return response()->json(['success' => false, 'message' => 'Invalid or missing user ID'], 400);
             }
 
-            $record = DB::table('tra_importexport_applications as t1')
+            $record = DB::table('txn_importexport_applications as t1')
                 ->leftJoin('tra_consignee_data as t2', 't2.id', '=', 't1.consignee_id')
                 ->leftJoin('wf_workflow_stages as t3', 't3.id', '=', 't1.workflow_stage_id')
                 ->leftJoin('usr_users_information as t4', 't4.id', '=', 't1.applicant_id')

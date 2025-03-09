@@ -267,7 +267,7 @@ export class TraderAccountManagementComponent {
     this.spinnerShow('Loading...........');
 
     var data_submit = {
-      'table_name': 'tra_importexport_applications',
+      'table_name': 'txn_importexport_applications',
       // user_id: localStorage.getItem('user_id'),
       // 'appworkflow_status_id': appworkflow_status_id,
     }
