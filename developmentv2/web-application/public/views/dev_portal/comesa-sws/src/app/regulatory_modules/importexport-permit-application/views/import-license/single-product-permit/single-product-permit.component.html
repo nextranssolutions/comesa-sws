@@ -131,15 +131,7 @@
             [canEnter]="isValidTypeBoolean">
             <div class="container_div">
                 <div class="scrollable-content">
-                    <!-- Your content goes here -->
-                    <!-- <app-appresumable-documents [prodclass_category_id]="prodclass_category_id"
-                        [query_ref_id]="query_ref_id" [product_type_id]="product_type_id"
-                        [regulatory_function_id]="regulatory_function_id" [status_id]="status_id"
-                        [regulatory_subfunction_id]="regulatory_subfunction_id"
-                        [application_code]="application_code"></app-appresumable-documents> -->
-
-                    <!-- Add more content to see the scroll effect -->
-
+                   
                     <app-sharedapplicationdocumentuploads [application_code]="application_code"
                         [process_id]="process_id"></app-sharedapplicationdocumentuploads>
 
@@ -194,25 +186,7 @@
 
             </div>
         </ng-wizard-step>
-        <!-- <ng-wizard-step [title]="'final'| translate" [description]="'completion_&_submission'| translate"
-            [canEnter]="isValidTypeBoolean">
-            <div class="container_div">
-                <div class="scrollable-content">
-                  
-                    <div>Step 1 content</div>
-                   
-                </div>
-            </div>
-            <div class="div_footer button-container">
-                <dx-button text="{{'previous_step' | translate}}" iconPosition="left" type="danger"
-                    icon="fa fa-angle-double-left" [elementAttr]="{ id: 'elementId', }" (onClick)="previousStep()">
-                </dx-button>
-                <dx-button text="{{'submission' | translate}}" iconPosition="right" type="success"
-                    icon="fa fa-angle-double-right" [elementAttr]="{ id: 'elementId', }" (onClick)="nextTab()">
-                </dx-button>
-
-            </div>
-        </ng-wizard-step> -->
+       
     </ng-wizard>
 
 </div>

@@ -172,8 +172,9 @@
     <dx-scroll-view>
       <dx-data-grid [dataSource]="registered_premisesData" [wordWrapEnabled]="true" [columnHidingEnabled]="false"
         [height]="500" (onToolbarPreparing)="onPremisesPerGridToolbar($event)"
-        (onCellPrepared)="onCellRegisteredPremisesPrepared($event)" [remoteOperations]='true' [showBorders]="true">
+        (onCellPrepared)="onCellRegisteredPremisesPrepared($event)" [remoteOperations]='true' [showBorders]="true" (onToolbarPreparing)="onAdvanceDataGridSearch($event)">
         <dxo-filter-row [visible]="false"></dxo-filter-row>
+        <dxo-filter-row [visible]="show_advancesearch"></dxo-filter-row>
         <dxo-search-panel [visible]="true">
         </dxo-search-panel>
         <dxi-column [width]="150" caption="{{'action' | translate}}" name="command-editing" [allowFiltering]="false"
