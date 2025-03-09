@@ -9,7 +9,7 @@
             <dxo-paging [enabled]="true">
             </dxo-paging>
             <dxo-selection mode="single"></dxo-selection>
-            <dxi-column [width]="150" caption="{{'action(edit/delete)' | translate}}" name="command-editing"
+            <dxi-column [width]="90" caption="{{'action(edit/delete)' | translate}}" name="command-editing"
                 [allowFiltering]="false" [allowSorting]="false" cellTemplate="cellTemplate">
                 <div *dxTemplate="let data of 'cellTemplate'">
 
@@ -18,7 +18,7 @@
                     </dx-menu>
                 </div>
             </dxi-column>
-            <dxi-column [width]="200" caption="{{'action' | translate}}" name="command-editing" [allowFiltering]="false"
+            <dxi-column [width]="120" caption="{{'action' | translate}}" name="command-editing" [allowFiltering]="false"
                 [allowSorting]="false" cellTemplate="cellTemplate2">
                 <div *dxTemplate="let data of 'cellTemplate2'">
                     <dx-button text="{{'Uploads(Certificates)' | translate}}"
@@ -41,7 +41,7 @@
                 caption="{{ 'manufacturer_country' | translate }}"></dxi-column>
             <dxi-column dataField="unit_of_measure" caption="{{ 'unit_of_measure' | translate }}"></dxi-column>
             <dxi-column dataField="product_value" caption="{{ 'product_value' | translate }}"></dxi-column>
-           
+
             <dxo-pager [showInfo]="true" infoText="Page #{0}. Total: {1} ({2} items)">
             </dxo-pager>
             <dxo-export [enabled]="true" fileName="permitProducts" [allowExportSelectedData]="true"></dxo-export>
@@ -67,12 +67,11 @@
                             <div class="row">
 
 
-                                <div class="input-group col-md-12">
+                                <div class="input-group col-md-4">
                                     <div class="col-lg-10">
-                                        <label>{{'regulated_product_category' | translate}}</label>
+                                        <label>{{'hs_product_details' | translate}}</label>
                                         <dx-text-box [readOnly]="true" formControlName="regulated_product_category"
-                                            [placeholder]="'regulated_product_category' | translate"
-                                            [showClearButton]="true">
+                                            [placeholder]="'hs_product_details' | translate" [showClearButton]="true">
                                         </dx-text-box>
                                         <input type="hidden" formControlName="regulated_productcategory_id" />
                                     </div>
@@ -82,13 +81,12 @@
                                             text="{{ 'search' | translate }}" type="default"
                                             (onClick)="onsearchProductCategory()">
                                             <i class="fa fa-search"></i> {{ 'search' | translate }} {{
-                                            'product_category' |
+                                            'product_hs_code' |
                                             translate }}
                                         </dx-button>
                                     </div>
 
                                 </div>
-
 
                                 <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
                                     <label class="control-label">{{'brand_name'| translate}}</label>
@@ -110,57 +108,59 @@
                                     </dx-select-box>
                                 </div>
 
-                                <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4 ">
-                                    <label for="ti" class="control-label">{{'country'| translate}}</label>
+                                <div class="input-group col-md-4">
+                                    <div class="col-xs-12 col-md-6 col-lg-6 col-xl-6 ">
+                                        <label for="ti" class="control-label">{{'unit_of_measure'| translate}}</label>
+                                        <dx-select-box [dataSource]="unitOfMeasureData" valueExpr="id"
+                                            displayExpr="name" [searchEnabled]="true"
+                                            formControlName="unit_of_measure_id">
+                                        </dx-select-box>
+                                    </div>
 
-                                    <dx-select-box [dataSource]="countries" valueExpr="id" displayExpr="name"
-                                        [searchEnabled]="true" formControlName="country_of_origin_id">
-                                    </dx-select-box>
+                                    <div class="col-xs-12 col-md-6 col-lg-6 col-xl-6 ">
+                                        <label for="ti" class="control-label">{{'quantity'| translate}}</label>
+                                        <dx-text-box formControlName="quantity"
+                                            placeholder="{{'quantity' | translate}}">
+                                        </dx-text-box>
 
-                                </div>
-                                <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4 ">
-                                    <label for="ti" class="control-label">{{'unit_of_measure'| translate}}</label>
-                                    <dx-select-box [dataSource]="unitOfMeasureData" valueExpr="id" displayExpr="name"
-                                        [searchEnabled]="true" formControlName="unit_of_measure_id">
-                                    </dx-select-box>
-                                </div>
-
-                                <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4 ">
-                                    <label for="ti" class="control-label">{{'quantity'| translate}}</label>
-                                    <dx-text-box formControlName="quantity" placeholder="{{'quantity' | translate}}">
-                                    </dx-text-box>
+                                    </div>
 
                                 </div>
 
-                                <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
-                                    <label for="ti" class="control-label">{{'product_value'| translate}}</label>
+                                <div class="input-group col-md-4">
+                                    <div class="col-xs-12 col-md-6 col-lg-6 col-xl-6 ">
+                                        <label for="ti" class="control-label">{{'product_value'| translate}}</label>
 
-                                    <dx-text-box formControlName="product_value"
-                                        placeholder="{{'product_value' | translate}}">
-                                    </dx-text-box>
+                                        <dx-text-box formControlName="product_value"
+                                            placeholder="{{'product_value' | translate}}">
+                                        </dx-text-box>
+                                    </div>
+
+                                    <div class="col-xs-12 col-md-6 col-lg-6 col-xl-6 ">
+                                        <label for="ti" class="control-label">{{'currency'| translate}}</label>
+                                        <dx-select-box [dataSource]="currencyData" valueExpr="id" displayExpr="name"
+                                            [searchEnabled]="true" formControlName="currency_id">
+                                        </dx-select-box>
+                                    </div>
+                                </div>
+                                <div class="input-group col-md-4">
+                                    <div class="col-xs-12 col-md-6 col-lg-6 col-xl-6 ">
+                                        <label for="ti" class="control-label">{{'total_weight'| translate}}</label>
+
+                                        <dx-text-box formControlName="total_weight"
+                                            placeholder="{{'total_weight' | translate}}">
+                                        </dx-text-box>
+                                    </div>
+
+                                    <div class="col-xs-12 col-md-6 col-lg-6 col-xl-6 ">
+                                        <label class="control-label">{{ 'weight_unit' | translate }}</label>
+                                        <dx-select-box [dataSource]="weightUnitData" valueExpr="id" displayExpr="name"
+                                            formControlName="weight_unit_id" placeholder="{{ 'select' | translate }}">
+                                        </dx-select-box>
+                                    </div>
                                 </div>
 
-                                <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
-                                    <label for="ti" class="control-label">{{'currency'| translate}}</label>
-                                    <dx-select-box [dataSource]="currencyData" valueExpr="id" displayExpr="name"
-                                        [searchEnabled]="true" formControlName="currency_id">
-                                    </dx-select-box>
-                                </div>
 
-                                <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
-                                    <label for="ti" class="control-label">{{'total_weight'| translate}}</label>
-
-                                    <dx-text-box formControlName="total_weight"
-                                        placeholder="{{'total_weight' | translate}}">
-                                    </dx-text-box>
-                                </div>
-
-                                <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
-                                    <label class="control-label">{{ 'weight_unit' | translate }}</label>
-                                    <dx-select-box [dataSource]="weightUnitData" valueExpr="id" displayExpr="name"
-                                        formControlName="weight_unit_id" placeholder="{{ 'select' | translate }}">
-                                    </dx-select-box>
-                                </div>
                                 <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
                                     <label for="ti" class="control-label">{{'product_packaging'| translate}}</label>
 
@@ -212,7 +212,7 @@
                                     </div>
                                 </div>
 
-                                <div class="input-group col-md-12">
+                                <div class="input-group col-md-4">
                                     <div class="col-lg-10">
                                         <label>{{'manufacturer_name' | translate}}</label>
                                         <dx-text-box [readOnly]="true" formControlName="manufacturer_name"
@@ -237,7 +237,7 @@
                                     <br />
                                     <button type="submit" (submit)="onsavePermitProductdetails()"
                                         class="btn btn-primary"><i class="fa fa-user"></i> {{ 'save' | translate }}
-                                        {{'permit_product_category' | translate}}</button>
+                                        {{'permit_product' | translate}}</button>
                                 </div>
                             </div>
                         </form>

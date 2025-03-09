@@ -2035,7 +2035,6 @@ progress {
   display: flex;
   flex-wrap: wrap;
   align-items: stretch;
-  width: 100%
 }
 
 .input-group>.form-control,

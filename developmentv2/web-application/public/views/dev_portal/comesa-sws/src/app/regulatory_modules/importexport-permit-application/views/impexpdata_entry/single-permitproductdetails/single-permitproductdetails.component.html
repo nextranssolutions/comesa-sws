@@ -1,170 +1,159 @@
-<form role="form" enctype="multipart/form-data" role="form" [formGroup]="permitProductsFrm">
-    <div class="row  wizard-content">
-        <div class="row">
-            <div class="input-group col-md-12">
-                <div class="col-lg-10">
-                    <label>{{'regulated_product_category' | translate}}</label>
-                    <dx-text-box [readOnly]="true" formControlName="regulated_product_category"
-                        [placeholder]="'regulated_product_category' | translate"
-                        [showClearButton]="true">
-                    </dx-text-box>
-                    <input type="hidden" formControlName="regulated_productcategory_id" />
-                </div>
-                <div class="col-lg-2 pt-5">
-                    <dx-button [elementAttr]="{ class: 'btn btn-primary pull-left' }"
-                        [disabled]="ammendReadOnly" style="margin-top:25px !important;"
-                        text="{{ 'search_details' | translate }}" type="default"
-                        (onClick)="onsearchProductCategory()">
-                        <i class="fa fa-search"></i> {{ 'search' | translate }} {{
-                        'product_category' |
-                        translate }}
-                    </dx-button>
-                </div>
-            </div>
-
-            <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
-                <label class="control-label">{{'brand_name'| translate}}</label>
-                <dx-text-box formControlName="brand_name">
+<form enctype="multipart/form-data" role="form" [formGroup]="permitProductsFrm">
+    <div class="row">
+        <div class="input-group col-md-4">
+            <div class="col-lg-10">
+                <label>{{'hs_product_details' | translate}}</label>
+                <dx-text-box [readOnly]="true" formControlName="regulated_product_category"
+                    [placeholder]="'hs_product_details' | translate" [showClearButton]="true">
                 </dx-text-box>
+                <input type="hidden" formControlName="regulated_productcategory_id" />
             </div>
-
-            <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
-                <label class="control-label">{{'product_description'| translate}}</label>
-                <dx-text-box formControlName="product_description">
-                </dx-text-box>
+            <div class="col-lg-2 pt-5">
+                <dx-button [elementAttr]="{ class: 'btn btn-primary pull-left' }" [disabled]="ammendReadOnly"
+                    style="margin-top:25px !important;" text="{{ 'search' | translate }}" type="default"
+                    (onClick)="onsearchProductCategory()">
+                    <i class="fa fa-search"></i> {{ 'search' | translate }} {{
+                    'product_hs_code' |
+                    translate }}
+                </dx-button>
             </div>
+        </div>
 
-            <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
-                <label class="control-label">{{ 'permit_product_purposes' | translate }}</label>
-                <dx-select-box [dataSource]="productPurposeData" valueExpr="id" displayExpr="name"
-                    formControlName="permit_product_purposes_id"
-                    placeholder="{{ 'select' | translate }}">
-                </dx-select-box>
-            </div>
+        <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
+            <label class="control-label">{{'brand_name'| translate}}</label>
+            <dx-text-box formControlName="brand_name">
+            </dx-text-box>
+        </div>
 
-            <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4 ">
-                <label for="ti" class="control-label">{{'country'| translate}}</label>
+        <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
+            <label class="control-label">{{'product_description'| translate}}</label>
+            <dx-text-box formControlName="product_description">
+            </dx-text-box>
+        </div>
 
-                <dx-select-box [dataSource]="countries" valueExpr="id" displayExpr="name"
-                    [searchEnabled]="true" formControlName="country_of_origin_id">
-                </dx-select-box>
+        <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
+            <label class="control-label">{{ 'permit_product_purposes' | translate }}</label>
+            <dx-select-box [dataSource]="productPurposeData" valueExpr="id" displayExpr="name"
+                formControlName="permit_product_purposes_id" placeholder="{{ 'select' | translate }}">
+            </dx-select-box>
+        </div>
 
-            </div>
-            <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4 ">
+        <div class="input-group col-md-4">
+            <div class="col-xs-12 col-md-6 col-lg-6 col-xl-6 ">
                 <label for="ti" class="control-label">{{'unit_of_measure'| translate}}</label>
-                <dx-select-box [dataSource]="unitOfMeasureData" valueExpr="id" displayExpr="name"
-                    [searchEnabled]="true" formControlName="unit_of_measure_id">
+                <dx-select-box [dataSource]="unitOfMeasureData" valueExpr="id" displayExpr="name" [searchEnabled]="true"
+                    formControlName="unit_of_measure_id">
                 </dx-select-box>
             </div>
 
-            <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4 ">
+            <div class="col-xs-12 col-md-6 col-lg-6 col-xl-6 ">
                 <label for="ti" class="control-label">{{'quantity'| translate}}</label>
                 <dx-text-box formControlName="quantity" placeholder="{{'quantity' | translate}}">
                 </dx-text-box>
 
             </div>
 
-            <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
+        </div>
+
+        <div class="input-group col-md-4">
+            <div class="col-xs-12 col-md-6 col-lg-6 col-xl-6 ">
                 <label for="ti" class="control-label">{{'product_value'| translate}}</label>
 
-                <dx-text-box formControlName="product_value"
-                    placeholder="{{'product_value' | translate}}">
+                <dx-text-box formControlName="product_value" placeholder="{{'product_value' | translate}}">
                 </dx-text-box>
             </div>
 
-            <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
+            <div class="col-xs-12 col-md-6 col-lg-6 col-xl-6 ">
                 <label for="ti" class="control-label">{{'currency'| translate}}</label>
-                <dx-select-box [dataSource]="currencyData" valueExpr="id" displayExpr="name"
-                    [searchEnabled]="true" formControlName="currency_id">
+                <dx-select-box [dataSource]="currencyData" valueExpr="id" displayExpr="name" [searchEnabled]="true"
+                    formControlName="currency_id">
                 </dx-select-box>
             </div>
-
-            <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
+        </div>
+        <div class="input-group col-md-4">
+            <div class="col-xs-12 col-md-6 col-lg-6 col-xl-6 ">
                 <label for="ti" class="control-label">{{'total_weight'| translate}}</label>
 
-                <dx-text-box formControlName="total_weight"
-                    placeholder="{{'total_weight' | translate}}">
+                <dx-text-box formControlName="total_weight" placeholder="{{'total_weight' | translate}}">
                 </dx-text-box>
             </div>
 
-            <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
+            <div class="col-xs-12 col-md-6 col-lg-6 col-xl-6 ">
                 <label class="control-label">{{ 'weight_unit' | translate }}</label>
                 <dx-select-box [dataSource]="weightUnitData" valueExpr="id" displayExpr="name"
                     formControlName="weight_unit_id" placeholder="{{ 'select' | translate }}">
                 </dx-select-box>
             </div>
-            <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
-                <label for="ti" class="control-label">{{'product_packaging'| translate}}</label>
+        </div>
 
-                <dx-text-box formControlName="product_packaging"
-                    placeholder="{{'product_packaging' | translate}}">
+
+        <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
+            <label for="ti" class="control-label">{{'product_packaging'| translate}}</label>
+
+            <dx-text-box formControlName="product_packaging" placeholder="{{'product_packaging' | translate}}">
+            </dx-text-box>
+        </div>
+
+        <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
+            <label class="control-label">{{ 'country_of_origin' | translate }}</label>
+            <dx-select-box [dataSource]="countryData" valueExpr="id" displayExpr="name"
+                formControlName="country_of_origin_id" placeholder="{{ 'select' | translate }}">
+            </dx-select-box>
+        </div>
+
+        <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
+            <label for="ti" class="control-label">{{ 'consignment_details_provided' | translate
+                }}</label>
+            <dx-select-box [dataSource]="confirmDataParam" valueExpr="id" displayExpr="name" [searchEnabled]="true"
+                formControlName="consignment_id" placeholder="{{ 'select' | translate }}"
+                (onValueChanged)="toggleDetailsVisibility($event)">
+            </dx-select-box>
+        </div>
+
+        <div *ngIf="showConsignmentDetails" class="col-md-12">
+            <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
+                <label class="control-label">{{ 'batch_number' | translate }}</label>
+                <dx-text-box formControlName="batch_number"
+                    placeholder="{{ 'enter_batch_number' | translate }}"></dx-text-box>
+            </div>
+
+            <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
+                <label class="control-label">{{ 'manufacturing_date' | translate }}</label>
+                <dx-date-box formControlName="manufacturing_date" type="date"></dx-date-box>
+            </div>
+
+            <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
+                <label class="control-label">{{ 'expiry_date' | translate }}</label>
+                <dx-date-box formControlName="expiry_date" type="date"></dx-date-box>
+            </div>
+
+            <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
+                <label class="control-label">{{ 'storage_conditions' | translate }}</label>
+                <dx-select-box [dataSource]="storageConditionsData" valueExpr="id" displayExpr="name"
+                    formControlName="storage_condition_id" placeholder="{{ 'select' | translate }}">
+                </dx-select-box>
+            </div>
+        </div>
+
+        <div class="input-group col-md-4">
+            <div class="col-lg-10">
+                <label>{{'manufacturer_name' | translate}}</label>
+                <dx-text-box [readOnly]="true" formControlName="manufacturer_name"
+                    [placeholder]="'manufacturer_name' | translate" [showClearButton]="true">
                 </dx-text-box>
+                <input type="hidden" formControlName="manufacturer_id" />
             </div>
-
-            <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
-                <label class="control-label">{{ 'country_of_origin' | translate }}</label>
-                <dx-select-box [dataSource]="countryData" valueExpr="id" displayExpr="name"
-                    formControlName="country_of_origin_id" placeholder="{{ 'select' | translate }}">
-                </dx-select-box>
-            </div>
-
-            <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
-                <label for="ti" class="control-label">{{ 'consignment_details_provided' | translate
-                    }}</label>
-                <dx-select-box [dataSource]="confirmDataParam" valueExpr="id" displayExpr="name"
-                    [searchEnabled]="true" formControlName="consignment_id"
-                    placeholder="{{ 'select' | translate }}"
-                    (onValueChanged)="toggleDetailsVisibility($event)">
-                </dx-select-box>
-            </div>
-
-            <div *ngIf="showConsignmentDetails" class="col-md-12">
-                <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
-                    <label class="control-label">{{ 'batch_number' | translate }}</label>
-                    <dx-text-box formControlName="batch_number"
-                        placeholder="{{ 'enter_batch_number' | translate }}"></dx-text-box>
-                </div>
-
-                <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
-                    <label class="control-label">{{ 'manufacturing_date' | translate }}</label>
-                    <dx-date-box formControlName="manufacturing_date" type="date"></dx-date-box>
-                </div>
-
-                <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
-                    <label class="control-label">{{ 'expiry_date' | translate }}</label>
-                    <dx-date-box formControlName="expiry_date" type="date"></dx-date-box>
-                </div>
-
-                <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
-                    <label class="control-label">{{ 'storage_conditions' | translate }}</label>
-                    <dx-select-box [dataSource]="storageConditionsData" valueExpr="id"
-                        displayExpr="name" formControlName="storage_condition_id"
-                        placeholder="{{ 'select' | translate }}">
-                    </dx-select-box>
-                </div>
-            </div>
-
-            <div class="input-group col-md-12">
-                <div class="col-lg-10">
-                    <label>{{'manufacturer_name' | translate}}</label>
-                    <dx-text-box [readOnly]="true" formControlName="manufacturer_name"
-                        [placeholder]="'manufacturer_name' | translate" [showClearButton]="true">
-                    </dx-text-box>
-                    <input type="hidden" formControlName="manufacturer_id" />
-                </div>
-                <div class="col-lg-2 pt-5">
-                    <dx-button [elementAttr]="{ class: 'btn btn-primary pull-left' }"
-                        [disabled]="ammendReadOnly" style="margin-top:25px !important;"
-                        text="{{ 'search_details' | translate }}" type="default"
-                        (onClick)="funcSearchManufacturingSite()">
-                        <i class="fa fa-search"></i> {{ 'search' | translate }} {{ 'manufacturer' |
-                        translate }}
-                    </dx-button>
-                </div>
-
+            <div class="col-lg-2 pt-5">
+                <dx-button [elementAttr]="{ class: 'btn btn-primary pull-left' }" [disabled]="ammendReadOnly"
+                    style="margin-top:25px !important;" text="{{ 'search_details' | translate }}" type="default"
+                    (onClick)="funcSearchManufacturingSite()">
+                    <i class="fa fa-search"></i> {{ 'search' | translate }} {{ 'manufacturer' |
+                    translate }}
+                </dx-button>
             </div>
 
         </div>
+
     </div>
 </form>
 
@@ -280,7 +269,8 @@
                         </div>
                         <div class="col-xs-12 col-md-6 col-lg-6 col-xl-6">
                             <label for="ti" class="control-label">{{'postal_address' | translate}}</label>
-                            <dx-text-box formControlName="postal_address" placeholder="{{'postal_address' | translate}}">
+                            <dx-text-box formControlName="postal_address"
+                                placeholder="{{'postal_address' | translate}}">
                             </dx-text-box>
                         </div>
                         <div class="col-lg-12">
@@ -345,8 +335,9 @@
     </div>
 </dx-popup>
 
-<dx-popup class="popup" [width]="funcpopWidth(80)" [height]="450" [showTitle]="true" title="{{'document_preview' | translate}}"
-    [dragEnabled]="false" [hideOnOutsideClick]="true" [(visible)]="isDocumentPreviewDownloadwin">
+<dx-popup class="popup" [width]="funcpopWidth(80)" [height]="450" [showTitle]="true"
+    title="{{'document_preview' | translate}}" [dragEnabled]="false" [hideOnOutsideClick]="true"
+    [(visible)]="isDocumentPreviewDownloadwin">
     <div *dxTemplate="let data of 'content'" class="row">
 
         <dx-scroll-view>
