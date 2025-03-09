@@ -1722,6 +1722,7 @@ class ImportExportController extends Controller
                     'application_status' => $rec->application_status,
                     'permit_type_id' => $rec->permit_type_id,
                     'permit_name' => $rec->permit_name,
+                    
                     'port_type' => $rec->port_type,
                     'port_type_id' => $rec->port_type_id,
                     'port_of_entry' => $rec->port_of_entry,
@@ -1752,52 +1753,11 @@ class ImportExportController extends Controller
                     'reference_no' => $rec->reference_no,
                     'regulatory_subfunction_id' => $rec->regulatory_subfunction_id,
                     'created_by' => $rec->created_by,
-                    'permit_data' => $this->getImportApplicantPermitsProductsApplication($req),
                     // 'contextMenu' => returnActionColumn($rec->appworkflow_status_id, $actionColumnData)
                 );
             }
 
             $res = array('success' => true, 'data' => $application_data);
-        } catch (\Exception $exception) {
-            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
-        } catch (\Throwable $throwable) {
-            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
-        }
-        return response()->json($res, 200);
-    }
-
-
-    function getImportApplicantPermitsProductsApplication(Request $req)
-    {
-        try {
-        
-            $requestData = $req->all();
-            $table_name = 'wb_permit_products';
-            unset($requestData['table_name']);
-
-
-            $sql = DB::table($table_name . ' as t1')
-                ->leftJoin('par_si_units as t2', 't2.id', 't1.unit_of_measure_id')
-                
-                ->select('t1.*', 't2.name as unit_of_measure');
-
-          
-
-            $data = $sql->get();
-
-            foreach ($data as $rec) {
-                $permitproduct_data[] = array(
-                    'id' => $rec->id,
-                
-                    'brand_name' =>$rec->brand_name,
-                    'quantity' =>$rec->quantity,
-                    'product_value' =>$rec->product_value,
-                    // 'invoice_date' => formatDaterpt($rec->invoice_date),
-                    
-                );
-            }
-
-            $res = array('success' => true, 'data' => $permitproduct_data);
         } catch (\Exception $exception) {
             $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
         } catch (\Throwable $throwable) {
