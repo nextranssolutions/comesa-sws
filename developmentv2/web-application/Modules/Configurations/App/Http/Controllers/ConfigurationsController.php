@@ -122,7 +122,7 @@ class ConfigurationsController extends Controller
             if (!empty($requestData)) {
                 $sql->where($requestData);
             }
-            if ($table_name == 'par_applicationforms_fields' || $table_name == 'par_dataentry_formfields') {
+            if ($table_name == 'par_applicationforms_fields' || $table_name == 'par_dataentry_formfields' || $table_name =='par_systemgeneral_forms_fields') {
                 $sql->orderBy('t1.order_no', 'asc');
             } else {
                 $sql->orderBy('t1.name', 'asc');

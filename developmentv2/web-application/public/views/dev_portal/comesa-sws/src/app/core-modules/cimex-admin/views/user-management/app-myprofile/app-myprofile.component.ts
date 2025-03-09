@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { DxTabPanelTypes } from 'devextreme-angular/ui/tab-panel';
@@ -14,7 +14,7 @@ import { UserManagementService } from 'src/app/core-services/user-management/use
 })
 
 export class AppMyprofileComponent {
-  userAccountFrm: FormGroup;
+  @Input() userAccountFrm: FormGroup;
   spinnerMessage: string;
   loadingVisible: boolean;
   is_readonly: boolean = true;
@@ -59,25 +59,7 @@ export class AppMyprofileComponent {
     public userservice: UserManagementService,
     private AuthService: AuthenticationService
   ) {
-    this.userAccountFrm = new FormGroup({
-      user_title_id: new FormControl('', Validators.compose([Validators.required])),
-      account_type_id: new FormControl('', Validators.compose([Validators.required])),
-      country_of_origin_id: new FormControl('', Validators.compose([])),
-      partner_state_id: new FormControl('', Validators.compose([])),
-      organisation_type_id: new FormControl('', Validators.compose([])),
-      organisation_id: new FormControl('', Validators.compose([])),
-      organisation_department_id: new FormControl('', Validators.compose([])),
-      registration_number: new FormControl('', Validators.compose([])),
-      secretariat_department_id: new FormControl('', Validators.compose([])),
-      user_group_id: new FormControl('', Validators.compose([])),
-      id: new FormControl('', Validators.compose([])),
-      identification_type_id: new FormControl('', Validators.compose([Validators.required])),
-      identification_number: new FormControl('', Validators.compose([Validators.required])),
-      first_name: new FormControl('', Validators.compose([Validators.required])),
-      other_names: new FormControl('', Validators.compose([Validators.required])),
-      email_address: new FormControl('', Validators.compose([Validators.required])),
-      phone_number: new FormControl('', Validators.compose([Validators.required])),
-    });
+  
 
   }
 
