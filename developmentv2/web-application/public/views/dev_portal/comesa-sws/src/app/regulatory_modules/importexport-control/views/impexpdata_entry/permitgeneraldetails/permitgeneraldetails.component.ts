@@ -352,7 +352,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
     this.config.onLoadConfigurationData(data)
       .subscribe(
         data => {
-          console.log(data.record);
+          
           this.data_record = data;
 
           if (this.data_record.success) {
@@ -371,7 +371,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
     this.config.onLoadConfigurationData(data)
       .subscribe(
         data => {
-          console.log(data.record);
+          
           this.data_record = data;
 
           if (this.data_record.success) {
@@ -392,7 +392,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
     this.config.onLoadConfigurationData(data)
       .subscribe(
         data => {
-          console.log(data.record);
+          
           this.data_record = data;
 
           if (this.data_record.success) {
@@ -413,7 +413,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
     this.config.onLoadConfigurationData(data)
       .subscribe(
         data => {
-          console.log(data.record);
+          
           this.data_record = data;
 
           if (this.data_record.success) {
@@ -434,7 +434,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
     this.config.onLoadConfigurationData(data)
       .subscribe(
         data => {
-          console.log(data.record);
+          
           this.data_record = data;
 
           if (this.data_record.success) {
@@ -456,7 +456,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
     this.config.onLoadConfigurationData(data)
       .subscribe(
         data => {
-          console.log(data.record);
+          
           this.data_record = data;
 
           if (this.data_record.success) {
@@ -517,7 +517,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
     this.config.onLoadConfigurationData(data)
       .subscribe(
         data => {
-          console.log(data.record);
+          
           this.data_record = data;
 
           if (this.data_record.success) {

@@ -239,6 +239,50 @@ class ReferencingHelper
         $ref_number = str_replace("COMESA",$trac_refcode,$ref_number);
         return $ref_number;
     }
+
+
+    static function generateSingleApplicationRefNumber($ref_id, $codes_array, $year, $workflowprocess_id,$user_id)
+    {
+        $where = array(
+            'year' => $year,
+            'workflowprocess_id' => $workflowprocess_id,
+            // 'zone_id' => $zone_id
+        );
+        $serial_num_tracker = new SerialTracker();
+        $serial_track = $serial_num_tracker->where($where)->first();
+        if ($serial_track == '' || is_null($serial_track)) {
+            $current_serial_id = 1;
+            $serial_num_tracker->year = $year;
+            $serial_num_tracker->workflowprocess_id = $workflowprocess_id;
+            // $serial_num_tracker->zone_id = $zone_id;
+            $serial_num_tracker->created_by = $user_id;
+            $serial_num_tracker->last_serial_no = $current_serial_id;
+            $serial_num_tracker->save();
+        } else {
+            $last_serial_id = $serial_track->last_serial_no;
+            $current_serial_id = $last_serial_id + 1;
+            $update_data = array(
+                'last_serial_no' => $current_serial_id,
+                'altered_by' => $user_id
+            );
+            $serial_num_tracker->where($where)->update($update_data);
+        }
+        $serial_no = str_pad($current_serial_id, 4, 0, STR_PAD_LEFT);
+        $reg_year = substr($year, -2);
+        $codes_array['serial_no'] = $serial_no;
+        $codes_array['reg_year'] = $reg_year;
+       
+
+        // 
+       
+        
+        $ref_number = self::generateRefNumber($codes_array, $ref_id);
+        $trac_refcode =  env('TRACKREF_CODE', 'COMESA');
+        $ref_number = str_replace("COMESA",$trac_refcode,$ref_number);
+        return $ref_number;
+    }
+
+    
     
     static function generateRefNumber($codes_array, $ref_id)
     {

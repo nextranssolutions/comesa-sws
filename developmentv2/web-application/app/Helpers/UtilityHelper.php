@@ -576,13 +576,13 @@ class UtilityHelper
         return $tel_value;
 
     }
-    public static function returnContextMenuActions($process_id)
+    public static function returnContextMenuActions($workflowprocess_id)
     {
         //return records
         $records = DB::table('wb_workflowstageprocess_actions as t1')
-            ->select('t2.*', 't1.workflow_status_id as appworkflow_status_id', 't2.name as text', 't2.iconCls as icon')
+            ->select('t2.*', 't2.name as text', 't2.iconCls as icon')
             ->join('wf_statuses_actions as t2', 't1.statuses_action_id', '=', 't2.id')
-            ->where('t1.process_id', $process_id)
+            ->where('t1.workflowprocess_id', $workflowprocess_id)
             ->get();
         return convertStdClassObjToArray($records);
     }
@@ -830,7 +830,7 @@ class UtilityHelper
         $regulatory_function_id = $req->regulatory_function_id;
         $regulated_productstype_id = $req->regulated_productstype_id;
         $appsubmissions_type_id = $req->appsubmissions_type_id;
-        $permit_type_id = $req->permit_type_id;
+        $transactionpermit_type_id = $req->transactionpermit_type_id;
         if (!validateIsNumeric($regulatory_function_id)) {
             $submodule_data = getTableData('par_regulatory_subfunctions', array('id' => $regulatory_subfunction_id));
             $regulatory_function_id = $submodule_data->regulatory_function_id;
@@ -858,6 +858,10 @@ class UtilityHelper
         // if (validateIsNumeric($appsubmissions_type_id)) {
         //     $data->where('t3.regulated_productstype_id', $appsubmissions_type_id);
         // }
+        // if (validateIsNumeric($appsubmissions_type_id)) {
+        //     $data->where('t3.transactionpermit_type_id', $appsubmissions_type_id);
+        // }
+        
         $form_defination = $data->get();
        
         

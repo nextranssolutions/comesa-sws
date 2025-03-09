@@ -190,7 +190,7 @@ export class PermitTemplatesComponent {
     fetchOrganisationIDData() {
   
       var data_submit = {
-        'table_name': 'par_organisation_types'
+        'table_name': 'tra_organisation_information'
       }
       this.configService.onLoadConfigurationData(data_submit)
         .subscribe(

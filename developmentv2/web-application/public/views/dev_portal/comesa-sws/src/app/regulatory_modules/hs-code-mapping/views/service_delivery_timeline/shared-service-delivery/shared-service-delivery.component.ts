@@ -25,6 +25,7 @@ export class SharedServiceDeliveryComponent {
   organisationData: any;
   timelineTypeData: any;
   estimatedDaysData: any;
+  processData: any;
   serviceTypeData: any;
   specialConditionsData: any;
   show_advancesearch: boolean;
@@ -98,6 +99,7 @@ export class SharedServiceDeliveryComponent {
     this.fetchServiceTypeData();
     this.fetchSpecialConditionsData();
     this.fetchTimelineTypeData();
+    this.fetchProcessData()
 
   }
 
@@ -244,6 +246,24 @@ export class SharedServiceDeliveryComponent {
 
   }
 
+  fetchProcessData() {
+
+    var data_submit = {
+      'table_name': 'wf_processes'
+    }
+    this.configService.onLoadConfigurationData(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.processData = this.data_record.data
+          }
+        },
+        error => {
+
+        });
+
+  }
   fetchEstimatedDaysData(timeline_type_id) {
 
     var data_submit = {

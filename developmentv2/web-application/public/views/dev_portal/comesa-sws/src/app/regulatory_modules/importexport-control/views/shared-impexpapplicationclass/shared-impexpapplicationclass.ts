@@ -40,64 +40,34 @@ export class SharedImpexpApplicationClass {
   };
   //ImportexportService
   //dms 
+  permitProductsData:any;
   @ViewChild(DxDataGridComponent)
-  appuploaded_document_id: number;
-  applicantperformance_evaluation_id: number;
-  trader_id: number;
-  mistrader_id: number;
-  permit_type_id: any;
+  applicant_id: number;
   isShowAppProcessSubmission:boolean;
   dataGrid: DxDataGridComponent;
   productApplicationProcessingData: any;
   isPreviewApplicationProcessing: boolean = false;
-  deviceTypeData: any;
   data_record: any;
-  applicant_id: number;
   appworkflow_status_id: number;
   product_resp: any; confirmDataParam: any;
+
   applicationGeneraldetailsfrm: FormGroup;
   permitReceiverSenderFrm: FormGroup;
   applicantDetailsForm: FormGroup;
-  documentUploadfrm: FormGroup;
+  
   permitProductsFrm: FormGroup;
   regulatedProductsPermitData: any;
-  sectionsData: any;
-  zoneData: any;
-  permit_product_id: number;
-  isUploadedInvoiceProductsWin: boolean;
-  documentMenuItems = [
-    {
-      text: "Document(s) Action",
-      icon: 'menu',
-      items: [
-        { text: "Preview/Download Document", action: 'download', icon: 'fa fa-download', },
-        { text: "Update Document", action: 'update', icon: 'fa fa-upload', },
-        { text: "Delete Document", action: 'delete', icon: 'fa fa-trash-o' },
-        { text: "Preview Previous Versions", action: 'version', icon: 'fa fa-upload', },
-      ]
-    }
-  ];
-  documentVersionMenuItems = [
-    {
-      text: "Document(s) Action",
-      icon: 'menu',
-      items: [
-        { text: "Preview/Download Document", action: 'versiondownload', icon: 'fa fa-download' }
-      ]
-    }
-  ];
+  
 
-  appDocumentsUploadData: any = {};
-  appDocumentsUploadRequirement: any = {};
-  appDocumentsVersionsUploadData: any = {};
   application_details: any;
   status_id: number;
   regulatory_subfunction_id: number;
   process_title: string;;
   regulated_productstype_id: number;
   application_id: number;
-  application_code: number;
+  oga_application_code: number;
   transactionpermit_type_id: number;
+
   process_id: number;
   tracking_no: string;
   status_name: string;
@@ -108,76 +78,28 @@ export class SharedImpexpApplicationClass {
   applicationTypeData: any;
   applicationCategoryData: any;
   applicationTypeCategoryData: any;
-  permitReasonData: any;
-  portOfEntryExitData: any;
-  payingCurrencyData: any;
-  consigneeOptionsData: any;
-  modeOfTransportData: any;
-
+  
   termscheckbox: boolean = false;
   app_resp: any;
   consignee_options_id: number;
   consignee_options_check: boolean = true;
 
-  isPermitproductsPopupVisible: boolean = false;
-  isDocumentUploadPopupVisible: boolean = false;
-
   loading: boolean = true;
   terms_conditions: any;
-
-  countries: any;
-  regions: any;
-  districts: any;
-
-  senderReceiverData: any = {};
-  ispremisesSearchWinVisible: boolean = false;
-  issenderreceiverSearchWinVisible: boolean = false;
-  issenderreceiverAddWinVisible: boolean = false;
-  registered_premisesData: any = {};
-
-  consignee_sendertitle: string;
-  checkifsenderreceiver: boolean;
-
-  document_previewurl: any;
-  isDocumentPreviewDownloadwin: boolean = false;
-  isDocumentVersionPreviewDownloadwin: boolean = false;
-  documentsVersionsUploadData: any;
-  documentsUploadData: any;
-  documentsUploadRequirementData: any;
+  
+  trasactionpermit_type_id: number;
+  
   loadingVisible: boolean;
   spinnerMessage: string;
-  permitProductsData: any;
-  permitUploadedProductsData: any;
-  registeredProductsData: any = {};
-  commonNamesData: any;
-  productCategoryData: any;
-  devicesTypeData: any;
-  device_type_visible: boolean = false;
-  import_typecategory_visible: boolean = false;
-  isPermitproductsAddPopupVisible: boolean = false;
-  currencyData: any;
-  weightsUnitData: any;
-  packagingUnitsData: any;
-  siUnitsData: any;
-  classificationData: any;
-  quantity: number = 100;
-  unit_price: number;
+  
   traderAccountData: any;
-  isnewproductAddWinVisible: boolean = false;
-  enabled_newproductadd: boolean = false;
-  showProductAddOption: boolean = false;
-  is_regulatedproducts: boolean = false;
-  proforma_currency_id: number;
-  isInitalQueryResponseFrmVisible: boolean = false;
   
   applicationPreckingQueriesData: any;
   query_sectioncheck: string;
+
   onApplicationSubmissionFrm: FormGroup;
-  productGeneraldetailsfrm: FormGroup;
-  initqueryresponsefrm: FormGroup;
-  userAccountFrm: FormGroup;
-  permitProductsCategoryData: any;
-  has_invoicegeneration: boolean;
+  queryresponsefrm: FormGroup;
+  
   app_routing: any;
   isSaved: boolean = false; // Track save state
   isprodnextdisable: boolean = true;
@@ -185,6 +107,15 @@ export class SharedImpexpApplicationClass {
   addPopupVisible: boolean;
   filesToUpload: Array<File> = [];
   producttype_defination_id: number;
+
+  form_fielddata: any;
+  permits_fielddata: any;
+  products_fielddata: any;
+  applicants_fielddata: any;
+
+  id: number;
+  applicant_details:any;
+
   constructor(
     private configService: ConfigurationsService, 
     public userservice: UserManagementService, 
@@ -201,37 +132,69 @@ export class SharedImpexpApplicationClass {
   ) {
     //form 
     let user = this.authService.getUserDetails();
-
+    let me = this;
     this.applicant_id = user.applicant_id;
     this.application_details = localStorage.getItem('application_details');
-     console.log("ApplicationDetails:",this.application_details)
+
     this.application_details = JSON.parse(this.application_details);
 
-    if (this.application_details) {
+    this.form_fielddata = this.application_details.application_form;
+    this.products_fielddata = this.application_details.permit_products_details;
+    this.applicants_fielddata = this.application_details.applicant_details;
+    this.applicant_details = this.application_details.applicant_details;
+    
+    this.applicationGeneraldetailsfrm = this.formBuilder.group({});
+    this.permitProductsFrm = this.formBuilder.group({});
+    this.applicantDetailsForm = this.formBuilder.group({});
 
+    for (let appfield_name of this.form_fielddata) {
+      let field_name = appfield_name['field_name'];
+      if (appfield_name['is_mandatory'] == 1) {
+        me.applicationGeneraldetailsfrm.addControl(field_name, new FormControl('', Validators.compose([Validators.required])));
+
+      } else {
+        me.applicationGeneraldetailsfrm.addControl(field_name, new FormControl('', Validators.compose([])));
+      }
+    }
+  
+    for (let prodform_field of this.products_fielddata) {
+      let field_name = prodform_field['field_name'];
+      if (prodform_field['is_mandatory'] == 1) {
+        me.permitProductsFrm.addControl(field_name, new FormControl('', Validators.compose([Validators.required])));
+      } else {
+        me.permitProductsFrm.addControl(field_name, new FormControl('', Validators.compose([])));
+      }
+    }
+
+    for (let applicaform_field of this.applicants_fielddata) {
+      let field_name = applicaform_field['field_name'];
+      
+      if (applicaform_field['is_mandatory'] == 1) {
+        me.applicantDetailsForm.addControl(field_name, new FormControl('', Validators.compose([Validators.required])));
+      } else {
+        me.applicantDetailsForm.addControl(field_name, new FormControl('', Validators.compose([])));
+      }
+    }
+    if (this.applicant_details) {
+      
+      this.applicantDetailsForm.patchValue(this.applicant_details);
+    }
+
+    if (this.application_details) {
       this.regulatory_subfunction_id = this.application_details.regulatory_subfunction_id;
       this.process_title = this.application_details.process_title;
-      this.regulated_productstype_id = this.application_details.regulated_productstype_id;
       this.application_id = this.application_details.application_id;
       this.tracking_no = this.application_details.tracking_no;
-      this.permit_type_id = this.application_details.permit_type_id;
       this.status_name = this.application_details.status_name;
       this.permit_name = this.application_details.permit_name;
       this.status_id = this.application_details.application_status_id;
-      this.application_code = this.application_details.application_code;
-      this.proforma_currency_id = this.application_details.proforma_currency_id;
-    }
-    this.funcREturnApplicationDashboardROute();
-    if (this.regulatory_subfunction_id == 49) {
-      this.applicationGeneraldetailsfrm = this.formBuilder.group({});
-      this.applicantDetailsForm = this.formBuilder.group({});
+      this.oga_application_code = this.application_details.oga_application_code;
+      this.transactionpermit_type_id = this.application_details.transactionpermit_type_id;
+      
+      this.applicationGeneraldetailsfrm.patchValue(this.application_details);
     }
 
-    else {
-
-      this.applicationGeneraldetailsfrm = this.formBuilder.group({});
-      this.applicantDetailsForm = this.formBuilder.group({});
-    }
+    
     this.permitReceiverSenderFrm = new FormGroup({
       name: new FormControl('', Validators.compose([Validators.required])),
       country_id: new FormControl('', Validators.compose([Validators.required])),
@@ -243,198 +206,22 @@ export class SharedImpexpApplicationClass {
       mobile_no: new FormControl('', Validators.compose([])),
       physical_address: new FormControl('', Validators.compose([Validators.required])),
       tin_no: new FormControl('', Validators.compose([]))
-    });
-   
- 
-
-    this.userAccountFrm = new FormGroup({
-      id: new FormControl(Validators.compose([])),
-      last_login_time: new FormControl('', Validators.compose([])),
-      account_type_id: new FormControl('', Validators.compose([])),
-      country_id: new FormControl('', Validators.compose([])),
-      telephone_number: new FormControl('', Validators.compose([])),
-      contact_person: new FormControl('', Validators.compose([])),
-      contact_person_email: new FormControl('', Validators.compose([])),
-      contact_person_telephone: new FormControl('', Validators.compose([])),
-      physical_address: new FormControl('', Validators.compose([])),
-      website: new FormControl('', Validators.compose([])),
-      status_id: new FormControl('', Validators.compose([])),
-      fax: new FormControl('', Validators.compose([])),
-      // created_on: new FormControl('', Validators.compose([Validators.required])),
-
-      postal_address: new FormControl('', Validators.compose([])),
-      name: new FormControl('', Validators.compose([])),
-      email_address: new FormControl('', Validators.compose([])),
-      phone_number: new FormControl('', Validators.compose([])),
-      trader_category_id: new FormControl('', Validators.compose([])),
-      traderaccount_type_id: new FormControl('', Validators.compose([])),
-      tpin_no: new FormControl('', Validators.compose([])),
-      pacra_reg_no: new FormControl('', Validators.compose([])),
-      region_id: new FormControl('', Validators.compose([])),
-      district_id: new FormControl('', Validators.compose([])),
-      telephone_no: new FormControl('', Validators.compose([])),
-      code_no: new FormControl('', Validators.compose([])),
-      mobile_no: new FormControl('', Validators.compose([])),
-      identification_no: new FormControl('', Validators.compose([])),
     });
 
     this.onApplicationSubmissionFrm = new FormGroup({
       paying_currency_id: new FormControl('', Validators.compose([])),
       submission_comments: new FormControl('', Validators.compose([]))
     });
-
-    // this.applicantDetailsForm = new FormGroup({
-    //   applicant_name: new FormControl('', Validators.compose([Validators.required])),
-    //   country_id: new FormControl('', Validators.compose([Validators.required])),
-    //   region_id: new FormControl('', Validators.compose([])),
-    //   district_id: new FormControl('', Validators.compose([])),
-    //   email_address: new FormControl('', Validators.compose([Validators.required])),
-    //   postal_address: new FormControl('', Validators.compose([])),
-    //   telephone_no: new FormControl('', Validators.compose([])),
-    //   mobile_no: new FormControl('', Validators.compose([])),
-    //   physical_address: new FormControl('', Validators.compose([])),
-    // });
-
-    this.permitReceiverSenderFrm = new FormGroup({
-      name: new FormControl('', Validators.compose([Validators.required])),
-      country_id: new FormControl('', Validators.compose([Validators.required])),
-      region_id: new FormControl('', Validators.compose([])),
-      district_id: new FormControl('', Validators.compose([])),
-      email_address: new FormControl('', Validators.compose([Validators.required])),
-      postal_address: new FormControl('', Validators.compose([])),
-      telephone_no: new FormControl('', Validators.compose([])),
-      mobile_no: new FormControl('', Validators.compose([])),
-      physical_address: new FormControl('', Validators.compose([Validators.required])),
-      tin_no: new FormControl('', Validators.compose([]))
-    });
-
-    this.permitProductsFrm = new FormGroup({
-      brand_name: new FormControl('', Validators.compose([Validators.required])),
-      product_name: new FormControl('', Validators.compose([])),
-      product_category_id: new FormControl('', Validators.compose([])),
-      regulated_product_category: new FormControl('', Validators.compose([])),
-      regulated_productcategory_id: new FormControl('', Validators.compose([])),
-      unit_of_measure: new FormControl('', Validators.compose([])),
-      unit_of_measure_id: new FormControl('', Validators.compose([])),
-      country_of_origin_id: new FormControl('', Validators.compose([])),
-      permit_product_purposes_id: new FormControl('', Validators.compose([])),
-      weight_unit_id: new FormControl('', Validators.compose([])),
-      product_value: new FormControl('', Validators.compose([])),
-      consignment_id: new FormControl('', Validators.compose([])),
-      product_batch_no: new FormControl('', Validators.compose([])),
-      batch_number: new FormControl('', Validators.compose([])),
-      product_strength: new FormControl('', Validators.compose([])),
-      product_manufacturing_date: new FormControl('', Validators.compose([])),
-      manufacturing_date: new FormControl('', Validators.compose([])),
-      product_expiry_date: new FormControl('', Validators.compose([])),
-      expiry_date: new FormControl('', Validators.compose([])),
-      storage_condition: new FormControl('', Validators.compose([])),
-      country_oforigin_id: new FormControl('', Validators.compose([])),
-      country_id: new FormControl('', Validators.compose([])),
-      region_id: new FormControl('', Validators.compose([])),
-      unit_price: new FormControl(this.quantity, Validators.compose([])),
-      currency_id: new FormControl('', Validators.compose([Validators.required])),
-      packaging_unit_id: new FormControl('', Validators.compose([])),
-      quantity: new FormControl(this.quantity, Validators.compose([])),
-      laboratory_no: new FormControl('', Validators.compose([])),
-      regulated_prodpermit_id: new FormControl('', Validators.compose([])),
-      prodcertificate_no: new FormControl('', Validators.compose([])),
-      product_id: new FormControl('', Validators.compose([])),
-      unitpack_unit_id: new FormControl('', Validators.compose([])),
-      unitpack_size: new FormControl('', Validators.compose([])),
-      visa_quantity: new FormControl('', Validators.compose([])),
-      total_weight: new FormControl('', Validators.compose([])),
-      weights_units_id: new FormControl('', Validators.compose([])),
-      id: new FormControl('', Validators.compose([])),
-      device_type_id: new FormControl('', Validators.compose([])),
-      is_regulated_product: new FormControl('', Validators.compose([])),
-      productphysical_description: new FormControl('', Validators.compose([])),
-      common_name_id: new FormControl('', Validators.compose([])),
-      manufacturer_id: new FormControl('', Validators.compose([])),
-      manufacturer_name: new FormControl('', Validators.compose([])),
-      product_subcategory_id: new FormControl('', Validators.compose([])),
-      productclassification_id: new FormControl('', Validators.compose([])),
-      productdosage_id: new FormControl('', Validators.compose([])),
-      product_description: new FormControl('', Validators.compose([Validators.required])),
-      approvedvisa_product_id: new FormControl('', Validators.compose([])),
-      approvedlicense_product_id: new FormControl('', Validators.compose([])),
-      licensebalance_quantity: new FormControl('', Validators.compose([])),
-      product_packaging: new FormControl('', Validators.compose([])),
-    });
-
-    this.documentUploadfrm = this.fb.group({
-      file: null,
-      document_requirement_id: [null, Validators.required],
-      node_ref: null,
-      id: null,
-      description: [null]
-    });
-    
-    this.productGeneraldetailsfrm = new FormGroup({
-      regulated_productstype_id: new FormControl('', Validators.compose([])),
-      common_name_id: new FormControl('', Validators.compose([])),
-      classification_id: new FormControl('', Validators.compose([Validators.required])),
-      brand_name: new FormControl('', Validators.compose([Validators.required])),
-      physical_description: new FormControl('', Validators.compose([Validators.required])),
-      product_category_id: new FormControl('', Validators.compose([Validators.required]))
-    });
-
-    this.initqueryresponsefrm = new FormGroup({
-      queries_remarks: new FormControl('', Validators.compose([Validators.required])),
-      response_txt: new FormControl('', Validators.compose([Validators.required])),
-      id: new FormControl('', Validators.compose([])),
-      query_id: new FormControl('', Validators.compose([]))
-    });
-    if (this.regulatory_subfunction_id == 12 || this.regulatory_subfunction_id == 81) {
-
-      this.enabled_newproductadd = true;
-
-    } else if (this.regulatory_subfunction_id == 82 || this.regulatory_subfunction_id == 78) {
-
-      this.enabled_newproductadd = false;
-
-    } else {
-
-      this.enabled_newproductadd = false;
-
-    }
-
     if (this.status_id < 1) {
       this.status_name = "New"
     }
-
-
-    if (this.regulated_productstype_id == 4) {
-      this.device_type_visible = true;
-    }
-
-    this.import_typecategory_visible = true;
-
-
-    this.funcReloadQueriesDetails();
-    /*  if(this.regulatory_subfunction_id == 13 || this.regulatory_subfunction_id == 14 || this.regulatory_subfunction_id == 15){
-        this.applicationGeneraldetailsfrm.get('premises_name').setValidators([]);
-        this.applicationGeneraldetailsfrm.get('premise_id').setValidators([]);
-      }
-      else{
-         this.applicationGeneraldetailsfrm.get('premises_name').setValidators([Validators.required]);
-         this.applicationGeneraldetailsfrm.get('premise_id').setValidators([Validators.required]);
-      }
-      */
-
-    if (this.regulatory_subfunction_id == 78 || this.regulatory_subfunction_id == 82 || this.regulatory_subfunction_id == 81) {
-
-      this.applicationGeneraldetailsfrm.get('port_id')?.setValidators([Validators.required]);
-      this.applicationGeneraldetailsfrm.get('mode_oftransport_id')?.setValidators([Validators.required]);
-      this.has_invoicegeneration = true;
-    }
-
-
   }
 
   funcAutoLoadedParamters() {
 
     if (this.application_details) {
+      this.applicationGeneraldetailsfrm.patchValue(this.application_details);
+      this.applicantDetailsForm.patchValue(this.application_details);
       this.applicationGeneraldetailsfrm.patchValue(this.application_details);
     }
 
@@ -447,7 +234,7 @@ export class SharedImpexpApplicationClass {
   }
   funcgetPreckingQueriesData() {
 
-    this.utilityService.getApplicationPreQueriesDetails(this.application_code, 'tra_importexport_applications', 'application_status_id', 'utilities/getApplicationQueriesData')
+    this.utilityService.getApplicationPreQueriesDetails(this.oga_application_code, 'tra_importexport_applications', 'application_status_id', 'utilities/getApplicationQueriesData')
       .subscribe(
         data => {
           this.data_record = data;
@@ -471,56 +258,13 @@ export class SharedImpexpApplicationClass {
         });
   }
   onApplicationDashboard() {
-    this.app_route = this.funcREturnApplicationDashboardROute();
+   // this.app_route = this.funcREturnApplicationDashboardROute();
     this.router.navigate(this.app_route);
     this.scrollToTop();
   }
-  funcREturnApplicationDashboardROute() {
-    if (this.regulatory_subfunction_id == 12) {
-      this.app_routing = ['/importexport-control/'];
-    }
-    else if (this.regulatory_subfunction_id == 78 || this.regulatory_subfunction_id == 82) {
-      this.app_routing = ['./online-services/importlicense-dashboard'];
-
-    } else if (this.regulatory_subfunction_id == 81) {
-      this.app_routing = ['./online-services/exportlicense-dashboard'];
-
-    }
-    else {
-      this.app_routing = ['./online-services/inspectionbookin-dashboard'];
-
-    }
-    return this.app_routing;
-
-  }
+  
   onSectionsCboSelect($event) {
     //this.onBusinessTypesLoad($event.value)
-  }
-
-  onLoadPermitProductsData(application_code) {
-    this.spinner.show();
-    this.appService.getPermitsOtherDetails({ 'application_code': application_code }, 'getPermitProductsDetails')
-      .subscribe(
-        data => {
-          if (data.success) {
-
-            this.permitProductsData = data.data;
-            // if (this.permitProductsData.length > 0) {
-            //   this.isprodnextdisable = false;
-            // }
-            // else {
-            //   this.isprodnextdisable = true;
-            // }
-
-          }
-          else {
-            this.toastr.success(data.message, 'Alert');
-          }
-          this.spinner.hide();
-        },
-        error => {
-          return false
-        });
   }
 
   onconsigneeOptionsChange($event) {
@@ -533,7 +277,6 @@ export class SharedImpexpApplicationClass {
     }
   }
   funcValidatePermitDetails(validation_title, nextStep) {
-
 
     const invalid = [];
     const controls = this.applicationGeneraldetailsfrm.controls;
@@ -549,39 +292,7 @@ export class SharedImpexpApplicationClass {
     }
 
   }
-  private prepareSavePermitDoc(): any {
-    //let input = new FormData();
-    let input = this.applicationGeneraldetailsfrm.value;
-    const files: Array<File> = this.filesToUpload;
-    // input.append('file', this.uploadpaymentdetailsfrm.get('file').value);
-    for (let i = 0; i < files.length; i++) {
-      input.append("file", files[i], files[i]['name']);
-    }
-    return input;
-  }
   
-  fetchTraderDetails(appworkflow_status_id = 0, is_eacsecretariat = false) {
-    this.spinnerShow('Loading...........');
-
-    var data_submit = {
-      'table_name': 'tra_trader_account',
-      // 'appworkflow_status_id': appworkflow_status_id,
-
-    }
-    this.userservice.onGetUserInformation(data_submit, 'onGetTraderInformation')
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            this.traderAccountData = this.data_record.data;
-          }
-          this.spinnerHide();
-        },
-        error => {
-
-        });
-
-  }
   nextStep() {
     this.ngWizardService.next();
   }
@@ -614,8 +325,7 @@ export class SharedImpexpApplicationClass {
     if (this.applicationGeneraldetailsfrm.invalid) {
       return;
     }
-    const uploadData = this.prepareSavePermitDoc();
-
+    
     this.spinner.show();
     // let registrant_details = this.applicationApplicantdetailsfrm.value;//applicant values
     let applicant_id = this.applicantDetailsForm.get('id')?.value;
@@ -626,17 +336,17 @@ export class SharedImpexpApplicationClass {
     
     this.applicationGeneraldetailsfrm.value['regulatory_subfunction_id'] = this.regulatory_subfunction_id;
     this.spinner.show();
-    this.appService.onSavePermitApplication(this.applicationGeneraldetailsfrm.value, uploadData, 'saveOgaImportExportApplication')
+    this.appService.onSavePermitApplication(this.applicationGeneraldetailsfrm.value, 'uploaData', 'saveOgaImportExportApplication')
       .subscribe(
         response => {
           this.product_resp = response;
           if (this.product_resp.success) {
             this.tracking_no = this.product_resp.tracking_no;
-            this.permit_type_id = this.product_resp.permit_type_id;
+            this.trasactionpermit_type_id = this.product_resp.trasactionpermit_type_id;
 
-            this.application_code = this.product_resp.application_code;
+            this.oga_application_code = this.product_resp.oga_application_code;
 
-            this.applicationGeneraldetailsfrm.patchValue({ permit_type_id: this.permit_type_id })
+            this.applicationGeneraldetailsfrm.patchValue({ trasactionpermit_type_id: this.trasactionpermit_type_id })
             this.toastr.success(this.product_resp.message, 'Response');
             this.isSaved = true; 
 
@@ -685,18 +395,9 @@ onNextStep() {
       this.toastr.error('Fill in all the submission details to proceed!!', 'Alert');
       return;
     }
-    this.app_route = this.app_route = this.funcREturnApplicationDashboardROute();
+   // this.app_route = this.app_route = this.funcREturnApplicationDashboardROute();
 
-    // this.utilityService.onPermitsApplicationSubmit(this.viewRef, this.application_code, this.tracking_no, 'txn_importexport_applications', this.app_route, this.onApplicationSubmissionFrm.value);
-
-  }
-
-  onApplicationDocumentToolbar(e) {
-    this.functDataGridToolbar(e, this.funAddApplicationUploadDetails, 'Upload Document');
-
-  }
-  funAddApplicationUploadDetails() {
-    this.isDocumentUploadPopupVisible = true;
+    //this.utilityService.onPermitsApplicationSubmit(this.viewRef, this.oga_application_code, this.tracking_no, 'txn_importexport_applications', this.app_route, this.onApplicationSubmissionFrm.value);
 
   }
   functDataGridToolbar(e, funcBtn, btn_title) {
@@ -730,17 +431,14 @@ onNextStep() {
 
   }
 
-
-
-
   funcValidatePermitProductDetails(validation_title, nextStep) {
 
     this.spinner.show();
-    this.appService.onfuncValidatePermitDetails(this.application_code, validation_title, 'wb_permits_products')
+    this.appService.onfuncValidatePermitDetails(this.oga_application_code, validation_title, 'tra_permits_products')
       .subscribe(
         response => {
           if (response.success) {
-            // this.wizard.model.navigationMode.goToStep(nextStep);
+            this.ngWizardService.next();
           } else {
             this.toastr.error(response.message, 'Alert');
           }
@@ -756,11 +454,11 @@ onNextStep() {
   funcValidateApplicationQueryresponse(nextStep) {
 
     this.spinner.show();
-    this.utilityService.funcValidateApplicationQueryresponse(this.application_code, 'txn_importexport_applications')
+    this.utilityService.funcValidateApplicationQueryresponse(this.oga_application_code, 'txn_importexport_applications')
       .subscribe(
         response => {
           if (response.success) {
-            // this.wizard.model.navigationMode.goToStep(nextStep);
+            this.ngWizardService.next();
           } else {
             this.toastr.error(response.message, 'Alert');
           }
@@ -773,14 +471,13 @@ onNextStep() {
   }
 
   funcValidatePermitDocumentsDetails(nextStep) {
-    this.utilityService.validateApplicationDocumentsQuerySubmission(this.application_code, this.status_id, 'txn_importexport_applications')
+    this.utilityService.validateApplicationDocumentsQuerySubmission(this.oga_application_code, this.status_id, 'txn_importexport_applications')
       .subscribe(
         response => {
           this.spinner.hide();
           let response_data = response;
           if (response_data.success) {
-            // this.wizard.model.navigationMode.goToStep(nextStep);
-
+            this.ngWizardService.next();
           }
           else {
 
@@ -795,24 +492,22 @@ onNextStep() {
   funcValidateStepDetails(validation_title, data, nextStep) {
 
     if (data.length != 0 && data.length) {
-      //   this.wizard.model.navigationMode.goToStep(nextStep);
+     
+      this.ngWizardService.next();
     }
     else {
       this.toastr.error(validation_title, 'Alert');
     }
 
   }
-  funAddNewPermitProducts() {
-    this.isnewproductAddWinVisible = true;
-  }
 
   onSaveinitqueryresponse() {
-    if (this.initqueryresponsefrm.invalid) {
+    if (this.queryresponsefrm.invalid) {
       return;
     }
 
-    //also get the premises ID onsaveApplicationCodeDetails(application_code, app_data, action_url)
-    this.utilityService.onsaveApplicationCodeDetails(this.application_code, this.initqueryresponsefrm.value, 'onSavePrecheckingqueryresponse')
+    //also get the premises ID onsaveApplicationCodeDetails(oga_application_code, app_data, action_url)
+    this.utilityService.onsaveApplicationCodeDetails(this.oga_application_code, this.queryresponsefrm.value, 'onSavePrecheckingqueryresponse')
       .subscribe(
         response => {
           this.app_resp = response;
@@ -830,10 +525,10 @@ onNextStep() {
   } funcInitQueryResponse(data) {
 
     // this.premisesPersonnelDetailsfrm.patchValue({personnel_id:data.data.personnel_id,id:data.data.id,start_date:data.data.start_date,end_date:data.data.end_date, personnel_name:data.data.personnel_name})
-    this.initqueryresponsefrm.patchValue(data.data);
+    this.queryresponsefrm.patchValue(data.data);
     this.query_sectioncheck = data.data.application_section;
 
-    this.isInitalQueryResponseFrmVisible = true;
+    ///this.isInitalQueryResponseFrmVisible = true;
 
   }
   funcpopWidth(percentage_width) {
@@ -866,15 +561,15 @@ onNextStep() {
   funcValidateNavPermitProductDetails(nextStep, direction) {
 
     this.spinner.show();
-    this.appService.onfuncValidatePermitDetails(this.application_code, 'Invoice Product details', 'wb_permits_products')
+    this.appService.onfuncValidatePermitDetails(this.oga_application_code, 'Invoice Product details', 'tra_permits_products')
       .subscribe(
         response => {
           if (!response.success) {
             this.toastr.error('Add the Invoice Product details to proceed', 'Alert');
-            // this.wizard.model.navigationMode.goToStep(nextStep);
-
-
+            
             return;
+          }else{
+            this.ngWizardService.next();
           }
           this.spinner.hide();
         },

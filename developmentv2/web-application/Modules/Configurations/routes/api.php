@@ -24,6 +24,7 @@ Route::middleware(['XssSanitizer','clear_cache_config','firewall.all'])->prefix(
 	Route::get('getAppRegulatoryFunctionFeeConfig', [ConfigurationsController::class, 'getAppRegulatoryFunctionFeeConfig']);
     Route::get('getFeesChargesConfigurations', [ConfigurationsController::class, 'getFeesChargesConfigurations']);
     Route::get('getUniformSectionApplicationProcess', [ConfigurationsController::class, 'getUniformSectionApplicationProcess']);
+    Route::get('getApplicantUniformApplicationProces', [ConfigurationsController::class, 'getApplicantUniformApplicationProces']);
 
     //fetInforamtion get.....
     //save information save....

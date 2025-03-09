@@ -61,13 +61,13 @@ export class ApplicantdetailsComponent implements OnInit {
     }
 
     this.table_name = 'tra_trader_account';
+    
   }
 
   ngOnInit() {
     this.onLoadRegions(this.country_id);
     this.onLoadDistrictsData(this.region_id);
     this.onLoadAccountTypesData();
-    this.onGetSingleUserProfileDetails()
     this.fetchTraderCategoryData()
     this.onLoadTraderAccountTypesData();
     this.fetchAccountStatusData();
@@ -153,28 +153,7 @@ export class ApplicantdetailsComponent implements OnInit {
 
         });
   }
-
-  onGetSingleUserProfileDetails() {
-
-    var data_submit = {
-      'table_name': 'tra_trader_account'
-    }
-
-    this.userservice.onGetSingleUserProfileDetails(data_submit)
-      .subscribe(
-        data => {
-
-          this.data_record = data;
-
-          if (this.data_record.success) {
-            this.userAccountFrm.patchValue(this.data_record.data)
-          }
-        },
-        error => {
-
-        });
-  }
-
+  
   onLoadCountriesData() {
 
     var data_submit = {
@@ -276,17 +255,7 @@ export class ApplicantdetailsComponent implements OnInit {
 
   funcSelectTraderDetails(data) {
     let record = data.data;
-    console.log('record', record);
-
-    this.applicantDetailsForm.get('applicant_name')?.setValue(record.applicant_name);
-    this.applicantDetailsForm.get('region_name')?.setValue(record.region_name);
-    this.applicantDetailsForm.get('district_name')?.setValue(record.district_name);
-    this.applicantDetailsForm.get('email_address')?.setValue(record.email_address);
-    this.applicantDetailsForm.get('country_id')?.setValue(record.country_id);
-    this.applicantDetailsForm.get('region_id')?.setValue(record.region_id);
-    this.applicantDetailsForm.get('district_id')?.setValue(record.district_id);
-    this.applicantDetailsForm.get('telephone_no')?.setValue(record.telephone_no);
-    this.applicantDetailsForm.get('physical_address')?.setValue(record.physical_address);
+    this.applicantDetailsForm.get('id')?.patchValue(record)
 
     this.isRegistrantDetailsWinshow = false;
   }

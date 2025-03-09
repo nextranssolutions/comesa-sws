@@ -23,7 +23,10 @@ Route::middleware(['XssSanitizer','clear_cache_config','firewall.all'])->prefix(
   
     Route::get('getAppUserGroupNavigationMenus', [SysAdministrationController::class, 'getAppUserGroupNavigationMenus']);
     Route::get('getAppHscodes', [SysAdministrationController::class, 'getAppHscodes']);
-    Route::get('onGetRegulatedProductCategory', [SysAdministrationController::class, 'onGetRegulatedProductCategory']);
+    Route::get('onGetStartHsCode', [SysAdministrationController::class, 'onGetStartHsCode']);
+    Route::get('onGetEndHsCode', [SysAdministrationController::class, 'onGetEndHsCode']);
+    Route::get('onGetSpecificHsCode', [SysAdministrationController::class, 'onGetSpecificHsCode']);
+    
     //Route::post('onSaveGroupNavPermissions',[SysAdministrationController::class,'onSaveGroupNavPermissions']);
     Route::post('onSavingUserNavigationPermissions', [SysAdministrationController::class, 'onSavingUserNavigationPermissions']);
     Route::post('onSaveSystemGuideline',[SysAdministrationController::class,'onSaveSystemGuideline']);
