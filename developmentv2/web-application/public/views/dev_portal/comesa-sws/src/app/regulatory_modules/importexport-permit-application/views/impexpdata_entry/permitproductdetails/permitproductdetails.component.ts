@@ -531,7 +531,7 @@ export class PermitproductdetailsComponent implements OnInit {
 
 
 
-  onLoadPermitProductsData(filter_params = { application_status_id: this.application_status_id }) {
+  onLoadPermitProductsData(filter_params = { application_code: this.application_code }) {
     this.spinnerShow('Loading Information...........');
     this.appService.getPermitsOtherDetails(filter_params, 'getApplicantPermitProductsDetails')
       .subscribe(

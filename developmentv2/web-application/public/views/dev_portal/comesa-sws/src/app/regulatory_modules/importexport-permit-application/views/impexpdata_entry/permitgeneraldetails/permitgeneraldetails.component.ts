@@ -17,6 +17,7 @@ import { ImportExportService } from '../../../services/import-export.service';
 import { AuthenticationService } from 'src/app/core-services/authentication/authentication.service';
 
 import { PremisesLicensingService } from 'src/app/regulatory_modules/premises-licensing/services/premises-licensing.service';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-permitgeneraldetails',
@@ -27,7 +28,9 @@ export class PermitgeneraldetailsComponent implements OnInit {
   @Input() applicationGeneraldetailsfrm: FormGroup;
   @Input() applicantDetailsForm: FormGroup;
   configData: any;
+  product_resp: any;
   regulatedProdTypeData: any;
+  customOfficeFrm: FormGroup;
   regulatedSubfunctionData: any;
   producttypeDefinationData: any;
   data_record: any;
@@ -53,7 +56,9 @@ export class PermitgeneraldetailsComponent implements OnInit {
   ispremisesSearchWinVisible: any;
   transportModeData: any;
   countryData: any;
+  customOfficeData: any;
   invoiceTypeData: any;
+  isCustomOfficePopupVisible: boolean;
   registered_premisesData: any = {};
   issenderreceiverSearchWinVisible: any;
   consignee_sendertitle: any;
@@ -62,6 +67,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
   countries: any;
   regions: any;
   districts: any;
+  isproductManufacturerModalShow: boolean;
   product_type_id: number;
   deviceTypeData: any;
   permitProductsCategoryData: any;
@@ -160,6 +166,18 @@ export class PermitgeneraldetailsComponent implements OnInit {
     else {
       this.ammendReadOnly = false;
     }
+    this.customOfficeFrm = new FormGroup({
+          id: new FormControl('', Validators.compose([])),
+          name: new FormControl('', Validators.compose([Validators.required])),
+          country_id: new FormControl('', Validators.compose([Validators.required])),
+          region_id: new FormControl('', Validators.compose([])),
+          district_id: new FormControl('', Validators.compose([])),
+          email_address: new FormControl('', Validators.compose([])),
+          postal_address: new FormControl('', Validators.compose([])),
+          telephone_no: new FormControl('', Validators.compose([])),
+          mobile_no: new FormControl('', Validators.compose([])),
+          physical_address: new FormControl('', Validators.compose([]))
+        });
   }
   onApplicationCategorySelection($event) {
     let permit_category_id = $event.selectedItem.id;
@@ -940,5 +958,113 @@ export class PermitgeneraldetailsComponent implements OnInit {
 
       }
     }
+  }
+
+  isnewcustomoffice: boolean;
+
+  onCustomPreparing(e) {
+    this.functDataGridToolbar(e, this.funcAddCustomOfficeSite, 'Customs Office');
+  } 
+
+  funcAddCustomOfficeSite() {
+    this.isnewcustomoffice = true;
+    this.customOfficeFrm.reset();
+  }
+
+   funcSearchCustomOffice() {
+      this.isCustomOfficePopupVisible = true;
+      const me = this;
+  
+      this.customOfficeData.store = new CustomStore({
+        load: async function (loadOptions: any) {
+        // console.log(loadOptions);
+  
+          // Extract pagination parameters safely
+          const skip = loadOptions.skip ?? 0;
+          const take = loadOptions.take ?? 50;
+  
+          // Extract search filter properly
+          let searchValue = '';
+          if (Array.isArray(loadOptions.filter) && loadOptions.filter.length > 0) {
+            searchValue = loadOptions.filter[2] || ''; // Adjust index based on actual filter structure
+          }
+  
+          // Set up request headers
+          const headers = new HttpHeaders({
+            "Accept": "application/json",
+            "Authorization": "Bearer " + me.authService.getAccessToken(),
+          });
+  
+          // API request configuration
+          const configData = {
+            headers,
+            params: { skip, take, searchValue },
+          };
+  
+          try {
+            const response: any = await lastValueFrom(
+              me.httpClient.get(AppSettings.base_url + '/api/import-export/onLoadCustomsOfficeData', configData)
+            );
+  
+            return {
+              data: response.data || [],
+              totalCount: response.totalCount || 0
+            };
+          } catch (error) {
+            console.error('Data Loading Error', error);
+            throw 'Data Loading Error';
+          }
+        }
+      });
+    }
+
+
+    onAddCustomDetails() {
+      this.spinner.show();
+      let custom_office = this.customOfficeFrm.get('name')?.value;
+  
+      this.appService.onAddManufacturingSite('tra_manufacturer_info', this.customOfficeFrm.value, 'saveManufacturerDetails')
+        .subscribe({
+          next: (response) => {
+            this.product_resp = response;
+            
+            if (this.product_resp.success) {
+              this.isnewcustomoffice = false;
+              this.isproductManufacturerModalShow = false;
+  
+              let custom_office_id = this.product_resp.record_id; // Ensure API sends this value
+  
+              if (custom_office_id) {
+                this.customOfficeFrm.patchValue({ 
+                  custom_office: custom_office, 
+                  custom_office_id: custom_office_id 
+                });
+  
+                this.isCustomOfficePopupVisible = false;
+                this.toastr.success(this.product_resp.message, 'Success');
+              } else {
+                this.toastr.warning('Custom saved, but ID not returned.', 'Warning');
+              }
+            } else {
+              this.toastr.error(this.product_resp.message, 'Alert');
+            }
+          },
+          error: (error) => {
+            console.error('Error Occurred:', error);
+            this.toastr.error('An error occurred while saving details.', 'Error');
+          },
+          complete: () => {
+            this.spinner.hide();
+          }
+        });
+  }
+
+
+  funcSelectCustomOffice(data) {
+    let data_resp = data.data;
+    this.customOfficeFrm.patchValue({ custom_office: data_resp.custom_office, custom_office_id: data_resp.custom_office_id, country_oforigin_id: data_resp.country_id });
+
+    this.isCustomOfficePopupVisible = false;
+
   }
 }

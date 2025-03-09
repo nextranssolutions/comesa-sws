@@ -222,7 +222,7 @@ class ImportExportController extends Controller
                     return \response()->json(array('success' => false, 'tracking_no' => $tracking_no, 'message' => $tracking_no));
                 }
                 $application_code = generateApplicationCode($regulatory_subfunction_id, 'wb_importexport_applications');
-                $oga_application_code = generateApplicationCode($regulatory_subfunction_id, 'tra_importexport_applications'); // Unique code
+                $oga_application_code = generateApplicationCode($regulatory_subfunction_id, 'txn_importexport_applications'); // Unique code
 
                 $application_id = $resp['record_id'];
 
@@ -251,7 +251,7 @@ class ImportExportController extends Controller
                     $tra_app_data['application_code'] = $application_code;
                     $tra_app_data['oga_application_code'] = $oga_application_code;
                     $tra_app_data['applicant_id'] = $applicant_id;
-                    $response = insertRecord('tra_importexport_applications', $tra_app_data, $email_address);
+                    $response = insertRecord('txn_importexport_applications', $tra_app_data, $email_address);
 
 
                     if ($response['success']) {
@@ -269,7 +269,7 @@ class ImportExportController extends Controller
                     } else {
                         $res = array(
                             'success' => false,
-                            'message' => 'Error Occurred while saving to tra_importexport_applications. Contact the system administrator.'
+                            'message' => 'Error Occurred while saving to txn_importexport_applications. Contact the system administrator.'
                         );
                     }
                 } else {
@@ -324,10 +324,9 @@ class ImportExportController extends Controller
 
             $reference_no = $req->reference_no;
             $regulatory_subfunction_id = 1; 
-            $zone_id = $req->zone_id;
-            // $process_id = $req->process_id;
+           
             $workflowprocess_id = $req->workflowprocess_id;
-            $id = $req->id;
+          
             $product_res = '';
 
             // $regulatory_function_id = getSingleRecordColValue('par_regulatory_subfunctions', array('id' => $req->regulatory_subfunction_id), 'regulatory_function_id');
@@ -504,8 +503,8 @@ class ImportExportController extends Controller
                         'message' => 'Application Saved Successfully, with Tracking No:' . $tracking_no
                     );
 
-                    $response = insertRecord('tra_importexport_applications', $app_data, $email_address);
-                    
+                    $response = insertRecord('txn_importexport_applications', $app_data, $email_address);
+              
                     if ($response['success']) {
                         $res = array(
                             'tracking_no' => $tracking_no,
@@ -773,13 +772,10 @@ class ImportExportController extends Controller
 
             $packaging_unit_id = $req->packaging_unit_id;
             $quantity = $req->quantity;
-            $laboratory_no = $req->laboratory_no;
-            $regulated_prodpermit_id = $req->regulated_prodpermit_id;
+           
             $product_id = $req->product_id;
             $record_id = $req->id;
             $device_type_id = $req->device_type_id;
-            // $permitprod_recommendation_id = $req->permitprod_recommendation_id;
-
             $regulatory_subfunction_id = $req->regulatory_subfunction_id;
 
             $batch_number = $req->batch_number;
@@ -1420,6 +1416,59 @@ class ImportExportController extends Controller
     }
 
 
+    public function onLoadCustomsOfficeData(Request $req)
+    {
+        try {
+            $search_value = null;
+            $take = $req->input('take', 50); // Allow dynamic take value, default is 50
+            $skip = $req->input('skip', 0);  // Allow dynamic skip value, default is 0
+            $searchValue = $req->input('searchValue', '');
+
+            if (!empty($searchValue) && $searchValue !== 'undefined') {
+                $searchParts = explode(',', $searchValue);
+                $search_value = $searchParts[2] ?? null;
+            }
+
+            $query = DB::table('tra_customoffice_info as t1')
+                ->join('par_countries as t2', 't1.country_id', '=', 't2.id')
+                ->leftJoin('par_regions as t3', 't1.region_id', '=', 't3.id')
+                ->leftJoin('par_districts as t4', 't1.district_id', '=', 't4.id')
+                ->select(
+                    't1.id',
+                    't1.*',
+                    't1.name as customs_office',
+                    't1.physical_address',
+                    't1.email_address',
+                    't1.contact_person',
+                    't2.name as country_name',
+                    't3.name as region_name',
+                    't4.name as district',
+                    DB::raw("CONCAT(t1.name, ' (', t2.name, ')') as manufacturer_namecountry")
+                )
+                ->when($search_value, function ($query) use ($search_value) {
+                    $query->where('t1.name', 'LIKE', "%{$search_value}%");
+                });
+
+            // Get total count before applying pagination
+            $totalCount = $query->count();
+
+            // Apply pagination (skip & take)
+            $data = $query->skip($skip)->take($take)->orderByDesc('t1.id')->get();
+
+            return response()->json([
+                'success' => true,
+                'data' => $data,
+                'totalCount' => $totalCount
+            ]);
+        } catch (\Throwable $e) {
+            return response()->json([
+                'success' => false,
+                'message' => $e->getMessage()
+            ]);
+        }
+    }
+
+
     public function onGetRegulatedProductCategory(Request $req)
     {
         try {
@@ -1508,7 +1557,7 @@ class ImportExportController extends Controller
 
             $requestData = $req->all();
             $filter = $req->filter;
-            $table_name = 'tra_importexport_applications';
+            $table_name = 'txn_importexport_applications';
             $appworkflow_status_id = $req->appworkflow_status_id;
             $application_status_id = $req->application_status_id;
             $workflow_status_id = $req->workflow_status_id;
@@ -1705,15 +1754,15 @@ class ImportExportController extends Controller
                     'date_of_application' => formatDaterpt($rec->date_of_application),
                     'expected_date_of_shipment' => $rec->expected_date_of_shipment,
                     'tracking_no' => $rec->tracking_no,
+                    'application_status_id' =>$rec->application_status_id,
                     'created_on' => $rec->created_on,
                     'workflowprocess_id' => $rec->workflowprocess_id,
                     'application_code' => $rec->application_code,
                     'reference_no' => $rec->reference_no,
                     'regulatory_subfunction_id' => $rec->regulatory_subfunction_id,
-                    'appworkflow_status_id' => $rec->appworkflow_status_id,
                     'created_by' => $rec->created_by,
                     'permit_data' => $this->getImportApplicantPermitsProductsApplication($req),
-                    'contextMenu' => returnActionColumn($rec->appworkflow_status_id, $actionColumnData)
+                    // 'contextMenu' => returnActionColumn($rec->appworkflow_status_id, $actionColumnData)
                 );
             }
 

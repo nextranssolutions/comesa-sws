@@ -261,7 +261,7 @@ export class SharedImpExpdashboardClass {
           this.spinnerHide();
         },
         error => {
-          console.error('Error fetching applications information data:', error); // Log the error
+          
           this.spinnerHide();
         }
       );
@@ -682,7 +682,7 @@ export class SharedImpExpdashboardClass {
 
     this.spinner.show();
 
-    this.configService.getApplicantUniformApplicationProces(this.regulatory_subfunction_id,this.applicationsubmission_type_id)
+    this.configService.getSectionUniformApplication(this.regulatory_subfunction_id,this.applicationsubmission_type_id)
       .subscribe(
         data => {
           this.spinner.hide();
@@ -693,52 +693,9 @@ export class SharedImpExpdashboardClass {
             this.router_link = this.processData.router_link;
             this.productsapp_details = this.processData;
             let merged_appdata = Object.assign({}, this.application_data, app_data);
-          
-            localStorage.setItem('application_details', JSON.stringify(merged_appdata));
+        
             localStorage.setItem('applicant_details', JSON.stringify(merged_appdata));
-            localStorage.setItem('permit_details', JSON.stringify(merged_appdata));
-
-            // this.appService.setProductApplicationDetail(data.data);
             this.app_route = ['./importexport-permit-application/' + this.router_link];
-
-            this.router.navigate(this.app_route);
-            this.scrollToTop();
-
-          }
-          else {
-            this.toastr.error(this.processData.message, 'Alert!');
-
-          }
-
-
-        });
-    return false;
-  }
-
-
-  funcSingleApplicationPreveditDetails(app_data) {
-    this.regulatory_subfunction_id = app_data.regulatory_subfunction_id;
-
-    this.spinner.show();
-
-    this.configService.getSingleApplicantSectionUniformApplication(this.regulatory_subfunction_id)
-      .subscribe(
-        data => {
-          this.spinner.hide();
-          if (data.success) {
-            this.processData = data.data.process_infor;
-            this.application_data = data.data;
-
-            this.router_link = this.processData.router_link;
-            this.productsapp_details = this.processData;
-            let merged_appdata = Object.assign({}, this.application_data, app_data);
-            console.log(merged_appdata);
-            localStorage.setItem('application_details', JSON.stringify(merged_appdata));
-            localStorage.setItem('applicant_details', JSON.stringify(merged_appdata));
-            localStorage.setItem('permit_details', JSON.stringify(merged_appdata));
-
-            // this.appService.setProductApplicationDetail(data.data);
-            this.app_route = ['./importexport-permit-application/single-productapplication-permits'];
 
             this.router.navigate(this.app_route);
             this.scrollToTop();

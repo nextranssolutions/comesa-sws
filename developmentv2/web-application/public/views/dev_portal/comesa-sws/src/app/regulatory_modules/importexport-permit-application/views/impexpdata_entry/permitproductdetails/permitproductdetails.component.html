@@ -67,32 +67,14 @@
                             (ngSubmit)="onsavePermitProductdetails()">
 
                             <div class="row">
-                                
-                                <div class="input-group">
-                                    <div class="col-lg-10">
-                                      <label>{{'regulated_product_category' | translate}}</label>
-                                      <dx-text-box [readOnly]="true" formControlName="regulated_product_category"
-                                        [placeholder]="'regulated_product_category' | translate" [showClearButton]="true">
-                                      </dx-text-box>
-                                      <input type="hidden" formControlName="regulated_productcategory_id" />
-                                    </div>
-                                    <div class="col-lg-2 pt-5">
-                                      <dx-button [elementAttr]="{ class: 'btn btn-primary pull-left' }" [disabled]="ammendReadOnly"
-                                        style="margin-top:25px !important;" text="{{ 'search_details' | translate }}" type="default"
-                                        (onClick)="onsearchProductCategory()">
-                                        <i class="fa fa-search"></i> {{ 'search' | translate }} {{
-                                            'product_category' |
-                                            translate }}
-                                      </dx-button>
-                                    </div>
-                                </div>
 
 
                                 <div class="input-group col-md-12">
                                     <div class="col-lg-10">
                                         <label>{{'regulated_product_category' | translate}}</label>
                                         <dx-text-box [readOnly]="true" formControlName="regulated_product_category"
-                                            [placeholder]="'regulated_product_category' | translate" [showClearButton]="true">
+                                            [placeholder]="'regulated_product_category' | translate"
+                                            [showClearButton]="true">
                                         </dx-text-box>
                                         <input type="hidden" formControlName="regulated_productcategory_id" />
                                     </div>
@@ -100,15 +82,16 @@
                                         <dx-button [elementAttr]="{ class: 'btn btn-primary pull-left' }"
                                             [disabled]="ammendReadOnly" style="margin-top:25px !important;"
                                             text="{{ 'search' | translate }}" type="default"
-                                            (onClick)="funcSearchManufacturingSite()">
-                                            <i class="fa fa-search"></i> {{ 'search' | translate }} {{ 'product_category' |
+                                            (onClick)="onsearchProductCategory()">
+                                            <i class="fa fa-search"></i> {{ 'search' | translate }} {{
+                                            'product_category' |
                                             translate }}
                                         </dx-button>
                                     </div>
 
                                 </div>
-                              
-                                
+
+
                                 <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
                                     <label class="control-label">{{'brand_name'| translate}}</label>
                                     <dx-text-box formControlName="brand_name">
