@@ -53,8 +53,7 @@
             [canEnter]="isValidTypeBoolean">
             <div class="container_div">
                 <div class="scrollable-content">
-                    <app-applicantdetails [applicantDetailsForm]="applicantDetailsForm"
-                        [userAccountFrm]="userAccountFrm"></app-applicantdetails>
+                    <app-applicantdetails [userApplicantAccountFrm] ="userApplicantAccountFrm" [applicantDetailsForm]="applicantDetailsForm"></app-applicantdetails>
                 </div>
             </div>
 
@@ -64,8 +63,7 @@
                     [elementAttr]="{  class: 'pull-left' }" (onClick)="onApplicationDashboard()">
                 </dx-button>
                 <dx-button text="{{'permit_general_information' | translate}}" iconPosition="right" type="success"
-                    icon="fa fa-angle-double-right" [elementAttr]="{ id: 'elementId' }"
-                    (onClick)="nextStep()">
+                    icon="fa fa-angle-double-right" [elementAttr]="{ id: 'elementId' }" (onClick)="nextStep()">
                 </dx-button>
             </div>
         </ng-wizard-step>
@@ -78,9 +76,8 @@
                     <!-- Your content goes here -->
 
                     <div>
-                        <app-permitgeneraldetails
-                            [applicationGeneraldetailsfrm]="applicationGeneraldetailsfrm" [permitReceiverSenderFrm]="permitReceiverSenderFrm"
-                            ></app-permitgeneraldetails>
+                        <app-permitgeneraldetails [applicationGeneraldetailsfrm]="applicationGeneraldetailsfrm"
+                            [permitReceiverSenderFrm]="permitReceiverSenderFrm"></app-permitgeneraldetails>
                     </div>
 
                     <!-- Add more content to see the scroll effect -->
@@ -93,14 +90,15 @@
                 <dx-button text="{{'applicant_details' | translate}}" type="success" icon="fa fa-angle-double-left"
                     [elementAttr]="{  class: 'pull-left'}" (onClick)="previousStep()">
                 </dx-button>
-              
-                <dx-button text="{{'save_application' | translate}}" iconPosition="left" type="default" icon="fa fa-save"
-                (onClick)="onSaveImportExportApplication()"icon="fa fa-angle-double-right" [elementAttr]="{ id: 'elementId', }">
+
+                <dx-button text="{{'save_application' | translate}}" iconPosition="left" type="default"
+                    icon="fa fa-save" (onClick)="onSaveImportExportApplication()" icon="fa fa-angle-double-right"
+                    [elementAttr]="{ id: 'elementId', }">
                 </dx-button>
 
                 <dx-button text="{{'permit_product_details' | translate}}" iconPosition="right" type="success"
-                icon="fa fa-angle-double-right" [elementAttr]="{ id: 'elementId', }" (onClick)="onNextStep()">
-            </dx-button>
+                    icon="fa fa-angle-double-right" [elementAttr]="{ id: 'elementId', }" (onClick)="onNextStep()">
+                </dx-button>
 
             </div>
 
@@ -114,7 +112,8 @@
                 <div class="scrollable-content">
                     <!-- Your content goes here -->
                     <div>
-                        <app-permitproductdetails [productGeneraldetailsfrm]="productGeneraldetailsfrm" [permitProductsData]="permitProductsData" [permitProductsFrm]="permitProductsFrm"></app-permitproductdetails>
+                        <app-permitproductdetails [oga_application_code]="oga_application_code"
+                            [permitProductsFrm]="permitProductsFrm"></app-permitproductdetails>
                     </div>
 
                 </div>
@@ -135,17 +134,9 @@
             [canEnter]="isValidTypeBoolean">
             <div class="container_div">
                 <div class="scrollable-content">
-                    <!-- Your content goes here -->
-                    <!-- <sharedapplicationdocumentuploads [prodclass_category_id]="prodclass_category_id"
-                        [query_ref_id]="query_ref_id" [product_type_id]="product_type_id"
-                        [regulatory_function_id]="regulatory_function_id" [status_id]="status_id"
-                        [regulatory_subfunction_id]="regulatory_subfunction_id"
-                        [application_code]="application_code"></sharedapplicationdocumentuploads> -->
 
-                        <app-sharedapplicationdocumentuploads [application_code]="application_code" 
-                        [process_id]="process_id" ></app-sharedapplicationdocumentuploads>
-
-                    <!-- Add more content to see the scroll effect -->
+                    <app-sharedapplicationdocumentuploads [oga_application_code]="oga_application_code"
+                        [process_id]="process_id"></app-sharedapplicationdocumentuploads>
                 </div>
             </div>
             <div class="div_footer button-container">
@@ -160,25 +151,23 @@
         </ng-wizard-step>
 
         <ng-wizard-step [title]="'step_five' | translate" [description]="'screening_checklist' | translate"
-        [canEnter]="isValidTypeBoolean">
-        <div class="container_div">
-            <div class="scrollable-content">
-                <app-sharedevaluation-checklist
-                [transactionpermit_type_id]="transactionpermit_type_id"
-
-                [application_code]="application_code"></app-sharedevaluation-checklist>
+            [canEnter]="isValidTypeBoolean">
+            <div class="container_div">
+                <div class="scrollable-content">
+                    <app-sharedevaluation-checklist [transactionpermit_type_id]="transactionpermit_type_id"
+                        [oga_application_code]="oga_application_code"></app-sharedevaluation-checklist>
+                </div>
             </div>
-        </div>
-        <div class="div_footer button-container">
-            <dx-button text="{{'document_requirement_submission' | translate}}" iconPosition="left" type="danger"
-                icon="fa fa-angle-double-left" [elementAttr]="{ id: 'elementId', }" (onClick)="previousStep()">
-            </dx-button>
-            <dx-button text="{{'billing_&_payment' | translate}}" iconPosition="right" type="success"
-                icon="fa fa-angle-double-right" [elementAttr]="{ id: 'elementId', }" (onClick)="nextStep()">
-            </dx-button>
+            <div class="div_footer button-container">
+                <dx-button text="{{'document_requirement_submission' | translate}}" iconPosition="left" type="danger"
+                    icon="fa fa-angle-double-left" [elementAttr]="{ id: 'elementId', }" (onClick)="previousStep()">
+                </dx-button>
+                <dx-button text="{{'billing_&_payment' | translate}}" iconPosition="right" type="success"
+                    icon="fa fa-angle-double-right" [elementAttr]="{ id: 'elementId', }" (onClick)="nextStep()">
+                </dx-button>
 
-        </div>
-    </ng-wizard-step>
+            </div>
+        </ng-wizard-step>
 
         <ng-wizard-step [title]="'step_six'| translate" [description]="'billing_&_payment'| translate"
             [canEnter]="isValidTypeBoolean">
@@ -193,10 +182,10 @@
                 <dx-button text="{{'screening_checklist' | translate}}" iconPosition="left" type="success"
                     icon="fa fa-angle-double-left" [elementAttr]="{ id: 'elementId', }" (onClick)="previousStep()">
                 </dx-button>
-              
-                <dx-button text="{{'submit_application' | translate }}" type="default"
-                icon="fa fa-save" (onClick)="onFuncSubmitApplication()">
-            </dx-button>
+
+                <dx-button text="{{'submit_application' | translate }}" type="default" icon="fa fa-save"
+                    (onClick)="onFuncSubmitApplication()">
+                </dx-button>
 
             </div>
         </ng-wizard-step>
@@ -227,7 +216,8 @@
         <div class="row">
 
             <app-sharedapp-processsubmission [appworkflow_status_id]="appworkflow_status_id"
-                [application_code]="application_code" [process_id]="process_id"></app-sharedapp-processsubmission>
+                [oga_application_code]="oga_application_code"
+                [process_id]="process_id"></app-sharedapp-processsubmission>
         </div>
     </dx-scroll-view>
 </dx-popup>

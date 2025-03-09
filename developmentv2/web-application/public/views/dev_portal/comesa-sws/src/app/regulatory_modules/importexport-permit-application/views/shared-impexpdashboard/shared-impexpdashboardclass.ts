@@ -111,6 +111,8 @@ export class SharedImpExpdashboardClass {
     this.table_name = 'wb_importexport_applications'
 
     this.onLoadconfirmDataParam();
+    this.onLoadproducttypeDefinationData();
+    this.onLoadimportExportPermitTypesData();
     this.reloadPermitApplicationsApplications();
 
     //navigation items and get the sub_function_id 
@@ -193,6 +195,9 @@ export class SharedImpExpdashboardClass {
     return window.innerWidth * percentage_width / 100;
   }
 
+
+
+
   reloadPermitApplicationsApplications(appworkflow_status_id = 0,) {
     this.spinnerShow('Loading...........');
     var data_submit = {
@@ -218,6 +223,8 @@ export class SharedImpExpdashboardClass {
       );
   }
 
+
+
   spinnerShow(spinnerMessage) {
     this.loadingVisible = true;
     this.spinnerMessage = spinnerMessage;
@@ -226,6 +233,25 @@ export class SharedImpExpdashboardClass {
     this.loadingVisible = false;
   }
 
+
+  onLoadimportExportPermitTypesData() {
+    var data = {
+      table_name: 'par_importexport_permittypes',
+      is_enabled: 1
+    };
+
+    this.configService.onLoadConfigurationData(data)
+      .subscribe(
+        data => {
+          this.data_record = data;
+
+          if (this.data_record.success) {
+            this.importExportPermitTypesData = this.data_record.data;
+            ;
+          }
+        });
+
+  }
  
 
   onLoadconfirmDataParam() {
@@ -245,11 +271,123 @@ export class SharedImpExpdashboardClass {
 
   }
 
+  onLoadProductAppType(regulatory_subfunction_id) {
+
+    var data = {
+      table_name: 'par_regulatory_subfunctions',
+      regulatory_function_id: 4,
+      regulatory_subfunction_id: regulatory_subfunction_id
+    };
+    this.configService.onLoadConfigurationData(data)
+      .subscribe(
+        data => {
+          this.data_record = data;
+
+          if (this.data_record.success) {
+            this.productappTypeData = this.data_record.data;
+            ;
+          }
+        });
+  }
+  onLoadproducttypeDefinationData() {
+    var data = {
+      table_name: 'par_producttype_definations',
+    };
+    this.configService.onLoadConfigurationData(data)
+      .subscribe(
+        data => {
+          this.data_record = data;
+
+          if (this.data_record.success) {
+            this.producttypeDefinationData = this.data_record.data;
+            ;
+          }
+        });
+
+  }
+  funcRequestforPermitAlteration() {
+    this.app_route = ['./importexport-permit-application/importexport-approvedappsel'];
+    this.router.navigate(this.app_route);
+    this.scrollToTop();
+  }
+
+  funcRequestforExportLicenseApplication() {
+    this.app_route = ['./importexport-permit-application/export-licensesappselection'];
+    this.router.navigate(this.app_route);
+    this.scrollToTop();
+  } funcRequestforPermitInspections() {
+    this.app_route = ['./importexport-permit-application/importexport-approvedappinspection'];
+    this.router.navigate(this.app_route);
+    this.scrollToTop();
+  }
 
   onClickSubModulehelpGuidelines() {
     this.is_popupguidelines = true;
   }
-  
+  /*
+ onImportappsToolbarPreparing(e) {
+   e.toolbarOptions.items.unshift({
+     location: 'before',
+     widget: 'dxButton',
+     options: {
+       text: 'Help & Guidelines',
+       type: 'normal', stylingMode: 'outlined',
+       icon: 'fa fa-question-circle',
+       width:150,
+       onClick: this.onClickSubModulehelpGuidelines.bind(this)
+
+     }
+   },{
+     location: 'before',
+     widget: 'dxButton',
+     options: {
+       text: 'Initiate Import Visa Application',
+       tooltip: 'Initialisation of Import/Export Visa Application on Importation of Non-Registered Products.',
+       type: 'default',
+       icon: 'fa fa-plus',
+       onClick: this.funcApplicationSelectcion.bind(this)
+     }
+   }, {
+     location: 'before',
+     widget: 'dxButton',
+     options: {
+       text: 'Import License Application',
+       tooltip: 'Initialisation of Import/Export License Application on the Approved Visa Application, Import Permit on Registered/Authorised Products.',
+       type: 'default',
+       icon: 'fa fa-pencil-square-o',
+       onClick: this.funcRequestforLicenseApplication.bind(this)
+     }
+   },{
+     location: 'before',
+     widget: 'dxButton',
+     options: {
+       text: 'Export License Application',
+       tooltip: 'Initialisation of Export License Application.',
+       type: 'default',
+       icon: 'fa fa-pencil-square-o',
+       onClick: this.funcRequestforExportLicenseApplication.bind(this)
+     }
+   },{
+     location: 'before',
+     widget: 'dxButton',
+     options: {
+       text: 'Inspection Booking & Request',
+       type: 'default',
+       icon: 'fa fa-pencil-square-o',
+       onClick: this.funcRequestforPermitInspections.bind(this)
+     }
+   },{
+       location: 'after',
+       widget: 'dxButton',
+       options: {
+         icon: 'refresh',
+         onClick: this.refreshDataGrid.bind(this)
+       }
+     });
+ }
+ */
+
+
   groupChanged(e) {
     this.dataGrid.instance.clearGrouping();
     this.dataGrid.instance.columnOption(e.value, 'groupIndex', 0);
@@ -535,7 +673,9 @@ export class SharedImpExpdashboardClass {
             let merged_appdata = Object.assign({}, this.application_data, app_data);
             console.log(merged_appdata);
             localStorage.setItem('application_details', JSON.stringify(merged_appdata));
-            
+            localStorage.setItem('applicant_details', JSON.stringify(merged_appdata));
+            localStorage.setItem('permit_details', JSON.stringify(merged_appdata));
+
             // this.appService.setProductApplicationDetail(data.data);
             this.app_route = ['./importexport-permit-application/single-productapplication-permits'];
 
@@ -575,9 +715,108 @@ export class SharedImpExpdashboardClass {
 
 
   }
- 
+  funcInitiateInspectionBooking(app_data) {
+    /*
+        this.modalServ.openDialog(this.viewRef, {
+          title: 'Do you want to Initiate Booking Inspection Application?',
+          childComponent: '',
+          settings: {
+            closeButtonClass: 'fa fa-close'
+          },
+          actionButtons: [{
+            text: 'Yes',
+            buttonClass: 'btn btn-danger',
+            onAction: () => new Promise((resolve: any, reject: any) => {
+              this.spinner.show();
+              this.utilityService.getApplicationProcessInformation(app_data.application_code, 'importexportapp/funcInitiateInspectionBooking')
+                .subscribe(
+                  data => {
+                    this.title = app_data.application_type;
+                    if (data.success) {
+    
+                      app_data.application_status_id = 1;
+                      app_data.process_title = this.title;
+                      this.appService.setApplicationDetail(data.app_data);
+                      this.app_route = ['./importexport-permit-application/inspection-booking'];
+                      this.router.navigate(this.app_route);
+                      this.scrollToTop();
+                    }
+                    else {
+                      this.toastr.error(data.message, 'Alert!');
+                    }
+                    this.spinner.hide();
+                  });
+              resolve();
+            })
+          }, {
+            text: 'no',
+            buttonClass: 'btn btn-default',
+            onAction: () => new Promise((resolve: any) => {
+              resolve();
+            })
+          }
+          ]
+        });
+    
+    */
+
+  }
+  funcInitiateLicenseApplication(app_data) {
+    /*
+    
+        this.modalServ.openDialog(this.viewRef, {
+          title: 'Do you want to Initiate Request for Import License Application?',
+          childComponent: '',
+          settings: {
+            closeButtonClass: 'fa fa-close'
+          },
+          actionButtons: [{
+            text: 'Yes',
+            buttonClass: 'btn btn-danger',
+            onAction: () => new Promise((resolve: any, reject: any) => {
+              this.spinner.show();
+              this.utilityService.getApplicationProcessInformation(app_data.application_code, 'importexportapp/funcInitiateLicenseApplication')
+                .subscribe(
+                  data => {
+                    this.title = app_data.application_type;
+                    if (data.success) {
+                      app_data.application_status_id = 1;
+                      app_data.process_title = this.title;
+                      this.appService.setApplicationDetail(data.app_data);
+                      this.app_route = ['./importexport-permit-application/importexport-application'];
+                      this.router.navigate(this.app_route);
+                      this.scrollToTop();
+                    }
+                    else {
+                      this.toastr.error(data.message, 'Alert!');
+    
+    
+                    }
+    
+                    this.spinner.hide();
+                  });
+              resolve();
+            })
+          }, {
+            text: 'no',
+            buttonClass: 'btn btn-default',
+            onAction: () => new Promise((resolve: any) => {
+              resolve();
+            })
+          }
+          ]
+        });
+    */
+
+  }
   onCellPrepared(e) {
     this.utilityService.onCellPrepared(e);
 
   }
+
+
+
+
+
+
 }
