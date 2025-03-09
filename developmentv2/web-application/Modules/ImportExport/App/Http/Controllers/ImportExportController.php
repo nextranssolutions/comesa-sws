@@ -80,6 +80,7 @@ class ImportExportController extends Controller
             $application_id = $req->application_id;
             $transactionpermit_type_id = $req->transactionpermit_type_id;
             $product_type_id = $req->product_type_id;
+            $permit_type_id = $req->permit_type_id;
             $trader_initiator_id = $req->trader_id;
             $trader_id = $req->trader_id;
             $email_address = $req->email_address;
@@ -185,6 +186,7 @@ class ImportExportController extends Controller
                 $product_infor = array(
                     'application_id' => $application_id,
                     'product_type_id' => $product_type_id,
+                    'permit_type_id' => $permit_type_id,
                     'trader_initiator_id' => $trader_initiator_id,
                     'applicant_id' => $applicant_id,
                     'application_reference_number' => $application_reference_number,
@@ -198,17 +200,12 @@ class ImportExportController extends Controller
                 // print_r('Hello: ' . $ref_id);
                 // exit;
 
-                $zone_code = getSingleRecordColValue('par_zones', array('id' => $req->zone_id), 'zone_code');
-                $section_code = getSingleRecordColValue('par_regulated_productstypes', array('id' => $req->product_type_id), 'code');
                 $class_code = getSingleRecordColValue('par_classifications', array('id' => $req->classification_id), 'code');
                 $process_id = getSingleRecordColValue('wf_processes', array('id' => $id, ), 'id');
 
-                if ($class_code == '') {
-                    $class_code = $section_code;
-                }
+             
                 $codes_array = array(
-                    'section_code' => $section_code,
-                    'zone_code' => $zone_code,
+                  
                     'class_code' => $class_code,
                     'process_id' => $process_id,
                 );
@@ -251,7 +248,8 @@ class ImportExportController extends Controller
                     $tra_app_data['application_code'] = $application_code;
                     $tra_app_data['oga_application_code'] = $oga_application_code;
                     $tra_app_data['applicant_id'] = $applicant_id;
-                    $response = insertRecord('txn_importexport_applications', $tra_app_data, $email_address);
+                    $tra_app_data['permit_type_id'] = $permit_type_id;
+                    $response = insertRecord('tra_importexport_applications', $tra_app_data, $email_address);
 
 
                     if ($response['success']) {
@@ -1604,7 +1602,7 @@ class ImportExportController extends Controller
                 $sql->where('appworkflow_status_id', $appworkflow_status_id);
             }
 
-            $actionColumnData = returnContextMenuActions($process_id);
+            $actionColumnData = returnContextMisMenuActions($process_id);
             //check the usres 
 
             $data = $sql->get();

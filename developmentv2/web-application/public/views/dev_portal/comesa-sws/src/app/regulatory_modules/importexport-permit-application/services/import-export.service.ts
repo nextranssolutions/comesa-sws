@@ -127,21 +127,21 @@ export class ImportExportService {
   //   }));
   // }
 
-    onPermitApplicationLoading(filter_params, action_url) {
-      var headers = new HttpHeaders({
-        "Accept": "application/json",
-        "Authorization": "Bearer " + this.authService.getAccessToken(),
-        "Content-Type": "application/json"
-      });
+  onPermitApplicationLoading(filter_params, action_url) {
+    var headers = new HttpHeaders({
+      "Accept": "application/json",
+      "Authorization": "Bearer " + this.authService.getAccessToken(),
+      "Content-Type": "application/json"
+    });
 
-      return this.HttpClient.get(this.baseUrl + '/' + action_url, filter_params )
-        .pipe(map(data => {
-          return <any>data;
-        }));
+    return this.HttpClient.get(this.baseUrl + '/' + action_url, filter_params)
+      .pipe(map(data => {
+        return <any>data;
+      }));
   }
 
 
-  
+
 
 
   onAddManufacturingSite(table_name: string, data: any, action_url: string) {
@@ -219,42 +219,30 @@ export class ImportExportService {
         return <any>data;
       }));
   }
-  // getPermitsOtherDetails(data, path) {
-
-  //   var headers = new HttpHeaders({
-  //     "Accept": "application/json",
-  //     "Authorization": "Bearer " + this.authService.getAccessToken(),
-  //   });
-  //   //trader_id:  
-  //   data.trader_id = this.trader_id;
-  //   data.mistrader_id = this.mistrader_id;
-
-  //   this.config = {
-  //     params: data,
-  //     headers: headers
-  //   };
-  //   return this.httpClient.get(AppSettings.base_url + '' + path, this.config)
-  //     .pipe(map(data => {
-  //       return <any>data;
-  //     }));
-  // }
 
 
-  getPermitsOtherDetails(filter_params, action_url) {
+  getPermitsOtherDetails(data, path) {
+
     var headers = new HttpHeaders({
       "Accept": "application/json",
       "Authorization": "Bearer " + this.authService.getAccessToken(),
     });
+    //trader_id:  
+    data.trader_id = this.trader_id;
+    data.mistrader_id = this.mistrader_id;
 
     this.config = {
-      params: { filter_params },
+      params: data,
       headers: headers
     };
-    return this.HttpClient.get(this.baseUrl + '/' + action_url, this.config)
+    return this.httpClient.get(this.baseUrl + '/' + path, this.config)
       .pipe(map(data => {
         return <any>data;
       }));
   }
+
+
+
   onAddPermitReceiverSender(table_name, data, action_url) {//tra_permitsenderreceiver_data
 
     let data_header = {

@@ -28,6 +28,8 @@ export class PermitproductdetailsComponent implements OnInit {
   @Input() productGeneraldetailsfrm: FormGroup;
   @Input() permitProductsFrm: FormGroup;
   @Input() permitProductsData: any;
+  @Input() oga_application_code: any;
+
   requireUnitPackData: boolean = false;
   isprodnextdisable: boolean;
   device_type_visible: boolean;
@@ -55,7 +57,7 @@ export class PermitproductdetailsComponent implements OnInit {
   currencyData: any;
   classificationData: any;
   commonNamesData: any;
-  application_code: number;
+
   enabled_newproductadd: boolean;
   regulatory_subfunction_id: number;
   tracking_no: string;
@@ -231,7 +233,7 @@ export class PermitproductdetailsComponent implements OnInit {
       this.ammendReadOnly = false;
     }
 
-    this.onLoadPermitProductsData(this.application_code);
+    this.onLoadPermitProductsData(this.oga_application_code);
     this.onLoadUnitOfMeasureData();
     this.onLoadWeightUnitData();
     this.onLoadCountryData();
@@ -472,7 +474,7 @@ export class PermitproductdetailsComponent implements OnInit {
         buttonClass: 'btn btn-danger',
         onAction: () => new Promise((resolve: any, reject: any) => {
           this.spinner.show();
-          this.appService.onDeletePermitProductsDetails(record_id, 'wb_permits_products', this.application_code, 'Permit products Details')
+          this.appService.onDeletePermitProductsDetails(record_id, 'wb_permits_products', this.oga_application_code, 'Permit products Details')
             .subscribe(
               response => {
 
@@ -480,7 +482,7 @@ export class PermitproductdetailsComponent implements OnInit {
                 let response_data = response.json();
                 if (response_data.success) {
 
-                  this.onLoadPermitProductsData(this.application_code);
+                  this.onLoadPermitProductsData(this.oga_application_code);
                   this.toastr.success(response_data.message, 'Response');
                 }
                 else {
@@ -506,13 +508,12 @@ export class PermitproductdetailsComponent implements OnInit {
     });
 */
   }
-  onLoadPermitProductsData(application_code) {
+  onLoadPermitProductsData(oga_application_code) {
     this.spinner.show();
-    this.appService.getPermitsOtherDetails({ 'application_code': application_code }, 'getPermitProductsDetails')
+    this.appService.getPermitsOtherDetails({ 'oga_application_code': oga_application_code }, 'getPermitProductsDetails')
       .subscribe(
         data => {
           if (data.success) {
-
             this.permitProductsData = data.data;
             if (this.permitProductsData.length > 0) {
               this.isprodnextdisable = false;
@@ -788,7 +789,7 @@ export class PermitproductdetailsComponent implements OnInit {
       return;
     }
     this.spinner.show();
-    this.appService.onsavePermitProductdetails(this.application_code, this.permitProductsFrm.value, this.tracking_no, 'onSavePermitProductsDetails')
+    this.appService.onsavePermitProductdetails(this.oga_application_code, this.permitProductsFrm.value, this.tracking_no, 'onSavePermitProductsDetails')
       .subscribe(
         response => {
           this.app_resp = response;
@@ -800,7 +801,7 @@ export class PermitproductdetailsComponent implements OnInit {
             this.isPermitproductsAddPopupVisible = false;
             this.isPermitproductsPopupVisible = false;
             this.isPermitVisaLicProductsAddPopupVisible = false;
-            this.onLoadPermitProductsData(this.application_code);
+            this.onLoadPermitProductsData(this.oga_application_code);
             this.permit_product_id = this.app_resp.record_id;
             this.isPermitVisaLicProductsAddPopupVisible = false;
             this.premitProductIdEvent.emit(this.permit_product_id);
@@ -822,7 +823,7 @@ export class PermitproductdetailsComponent implements OnInit {
       return;
     }
     this.spinner.show();
-    this.appService.onsavePermitProductdetails(this.application_code, this.permitProductsFrm.value, this.tracking_no, 'savePermitProductdetails')
+    this.appService.onsavePermitProductdetails(this.oga_application_code, this.permitProductsFrm.value, this.tracking_no, 'savePermitProductdetails')
       .subscribe(
         response => {
           this.app_resp = response;
@@ -831,7 +832,7 @@ export class PermitproductdetailsComponent implements OnInit {
 
           if (this.app_resp.success) {
 
-            this.onLoadPermitProductsData(this.application_code);
+            this.onLoadPermitProductsData(this.oga_application_code);
             this.toastr.success(this.app_resp.message, 'Response');
             this.isPermitproductsAddPopupVisible = false;
 
@@ -901,13 +902,13 @@ export class PermitproductdetailsComponent implements OnInit {
   }
   funcDownloadOptionProducts() {
 
-    let report_url = this.mis_url + 'reports/onDownloadImportInvoiceProductstemplate?application_code=' + this.application_code + '&regulatory_subfunction_id=' + this.regulatory_subfunction_id + '&regulated_productstype_id=' + this.regulated_productstype_id;
+    let report_url = this.mis_url + 'reports/onDownloadImportInvoiceProductstemplate?oga_application_code=' + this.oga_application_code + '&regulatory_subfunction_id=' + this.regulatory_subfunction_id + '&regulated_productstype_id=' + this.regulated_productstype_id;
     this.funcGenerateRrp(report_url, "Download Invoice Template");
 
   }
   funcDownloadApprovVisaProductsProducts() {
 
-    let report_url = this.mis_url + 'reports/funcDownloadApprovVisaProductsProducts?application_code=' + this.application_code + '&regulatory_subfunction_id=' + this.regulatory_subfunction_id + '&regulated_productstype_id=' + this.regulated_productstype_id;
+    let report_url = this.mis_url + 'reports/funcDownloadApprovVisaProductsProducts?oga_application_code=' + this.oga_application_code + '&regulatory_subfunction_id=' + this.regulatory_subfunction_id + '&regulated_productstype_id=' + this.regulated_productstype_id;
     this.funcGenerateRrp(report_url, "Download Invoice Template");
 
   }
@@ -937,17 +938,17 @@ export class PermitproductdetailsComponent implements OnInit {
         buttonClass: 'btn btn-danger',
         onAction: () => new Promise((resolve: any, reject: any) => {
           this.spinner.show();
-          this.appService.onSynchronisedUploadedProducts('wb_uploadpermits_products', this.application_code, 'Permit products Details')
+          this.appService.onSynchronisedUploadedProducts('wb_uploadpermits_products', this.oga_application_code, 'Permit products Details')
             .subscribe(
               response => {
 
                 this.spinner.hide();
                 let response_data = response.json();
                 if (response_data.success) {
-                  this.onLoadpermitUploadedProductsData(this.application_code);
+                  this.onLoadpermitUploadedProductsData(this.oga_application_code);
                   this.isUploadedInvoiceProductsWin = false;
 
-                  this.onLoadPermitProductsData(this.application_code);
+                  this.onLoadPermitProductsData(this.oga_application_code);
                   this.toastr.success(response_data.message, 'Response');
                 }
                 else {
@@ -995,14 +996,14 @@ export class PermitproductdetailsComponent implements OnInit {
             buttonClass: 'btn btn-danger',
             onAction: () => new Promise((resolve: any, reject: any) => {
               this.spinner.show();
-              this.appService.onDeletePermitUploadedProductsDetails('wb_uploadpermits_products', this.application_code, 'Permit products Details')
+              this.appService.onDeletePermitUploadedProductsDetails('wb_uploadpermits_products', this.oga_application_code, 'Permit products Details')
                 .subscribe(
                   response => {
     
                     this.spinner.hide();
                     let response_data = response.json();
                     if (response_data.success) {
-                      this.onLoadpermitUploadedProductsData(this.application_code);
+                      this.onLoadpermitUploadedProductsData(this.oga_application_code);
                       this.toastr.success(response_data.message, 'Response');
                     }
                     else {
@@ -1092,12 +1093,12 @@ export class PermitproductdetailsComponent implements OnInit {
 
   }
   onpermitUploadedProductsData() {
-    this.onLoadpermitUploadedProductsData(this.application_code);
+    this.onLoadpermitUploadedProductsData(this.oga_application_code);
   }
 
-  onLoadpermitUploadedProductsData(application_code) {
+  onLoadpermitUploadedProductsData(oga_application_code) {
     this.spinner.show();
-    this.appService.getPermitsOtherDetails({ 'application_code': application_code }, 'getPermitUploadedProductsDetails')
+    this.appService.getPermitsOtherDetails({ 'oga_application_code': oga_application_code }, 'getPermitUploadedProductsDetails')
       .subscribe(
         data => {
           if (data.success) {
@@ -1181,7 +1182,7 @@ export class PermitproductdetailsComponent implements OnInit {
 
   funAddApprovedVisaPermitProducts() {
     this.spinner.show();
-    this.appService.getPermitsOtherDetails({ 'application_code': this.application_code }, 'getApprrovedVisaProducts')
+    this.appService.getPermitsOtherDetails({ 'oga_application_code': this.oga_application_code }, 'getApprrovedVisaProducts')
       .subscribe(
         data => {
           if (data.success) {
@@ -1535,7 +1536,7 @@ export class PermitproductdetailsComponent implements OnInit {
     }
     const uploadData = this.prepareUploadSave();
     this.spinner.show();
-    this.dmsService.uploadApplicationDMSDocument(uploadData, this.regulatory_function_id, this.regulatory_subfunction_id, '', this.application_code, '', 'onunInvoiceProductsUpload')
+    this.dmsService.uploadApplicationDMSDocument(uploadData, this.regulatory_function_id, this.regulatory_subfunction_id, '', this.oga_application_code, '', 'onunInvoiceProductsUpload')
       //.pipe(first())
       .subscribe(
         response => {
@@ -1544,7 +1545,7 @@ export class PermitproductdetailsComponent implements OnInit {
 
           if (this.response_data.success) {
 
-            this.onLoadpermitUploadedProductsData(this.application_code);
+            this.onLoadpermitUploadedProductsData(this.oga_application_code);
             this.isInvoiceProductsUploadVisable = false;
 
             this.toastr.success(this.response_data.message, 'Response');
@@ -1567,7 +1568,7 @@ export class PermitproductdetailsComponent implements OnInit {
 
     const uploadData = this.prepareUploadSave();
     this.spinner.show();
-    this.dmsService.uploadApplicationDMSDocument(uploadData, this.regulatory_function_id, this.regulatory_subfunction_id, '', this.application_code, '', 'onApprovedVisaProductsUpload')
+    this.dmsService.uploadApplicationDMSDocument(uploadData, this.regulatory_function_id, this.regulatory_subfunction_id, '', this.oga_application_code, '', 'onApprovedVisaProductsUpload')
       //.pipe(first())
       .subscribe(
         response => {
@@ -1576,7 +1577,7 @@ export class PermitproductdetailsComponent implements OnInit {
 
           if (this.response_data.success) {
 
-            this.onLoadPermitProductsData(this.application_code);
+            this.onLoadPermitProductsData(this.oga_application_code);
 
             this.isApprovedVisaProductsUploadVisable = false;
             this.isApprovedVisaproductsPopupVisible = false;

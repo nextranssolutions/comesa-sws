@@ -15,7 +15,10 @@ export class ImportExportService {
   email_address: string;
   config: any;
   application_details: any;
+  applicant_details: any;
+  permit_details: any;
   baseUrl: any;
+
   constructor(private authService: AuthenticationService,private http: HttpClient, private myRoute: Router, private httpClient: HttpClient) {
     let user = this.authService.getUserDetails();
 
@@ -83,12 +86,22 @@ export class ImportExportService {
       .pipe(map(data => {
         return <any>data;
       }));
-  } getApplicationDetail() {
+  } 
+  getApplicationDetail() {
     return this.application_details;
   }
   setApplicationDetail(data: any[]) {
     this.application_details = data;
   }
+
+  setPermitApplicationDetail(data: any[]) {
+    this.permit_details = data;
+  }
+
+  setApplicantDetail(data: any[]) {
+    this.applicant_details = data;
+  }
+
 
   onPermitApplicationLoading(filter_params, action_url) {
     var headers = new HttpHeaders({

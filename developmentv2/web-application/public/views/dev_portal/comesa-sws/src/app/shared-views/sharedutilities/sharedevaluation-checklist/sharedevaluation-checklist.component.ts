@@ -17,6 +17,8 @@ export class SharedevaluationChecklistComponent {
   response: any;
   evaluation_changes: any;
   @Input() application_code: number;
+  @Input() oga_application_code: number;
+  
   @Input() transactionpermit_type_id: number;
   @Input() expertEvaluationFrm: FormGroup;
   issupervisors_marks: boolean;

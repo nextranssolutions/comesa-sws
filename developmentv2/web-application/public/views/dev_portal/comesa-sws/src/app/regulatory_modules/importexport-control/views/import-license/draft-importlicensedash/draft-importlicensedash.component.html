@@ -7,7 +7,8 @@
             <ul class="nav nav-list">
                 <li class="link-bggreen">
                     <a (click)="onInitiatenewImportExpApplications()" href="javascript:void(0)"><span class=""> <i
-                                class="menu-icon fa fa-plus"></i> &nbsp; {{'initiate_importexport_application' |translate}}</span>
+                                class="menu-icon fa fa-plus"></i> &nbsp; {{'initiate_importexport_application'
+                            |translate}}</span>
                     </a> <b class="arrow"></b>
                 </li>
                 <li class="link-bgorange">
@@ -79,17 +80,17 @@
         <dxi-column dataField="reference_no" caption="{{'application_reference' | translate}}"></dxi-column>
         <dxi-column [width]=90 [groupIndex]="0" dataField="permit_name"
             caption="{{'permit_type' | translate}}"></dxi-column>
-            <dxi-column [width]=100 dataField="date_of_application"
+        <dxi-column [width]=100 dataField="date_of_application"
             caption="{{'date_of_application' | translate}}"></dxi-column>
 
-            <dxi-column [width]=100 dataField="invoice_number" caption="{{'invoice_number' | translate}}"></dxi-column>
-            <dxi-column dataField="invoice_date" caption="{{'invoice_date' | translate}}"></dxi-column>
-            <dxi-column dataField="total_invoice_value" caption="{{'total_invoice_value' | translate}}"></dxi-column>
-            <dxi-column dataField="currency_name" caption="{{'currency_of_transaction' | translate}}"></dxi-column>
-            
-            
-            <dxi-column dataField="importer_exporter_name" caption="{{'importer_exporter_name' | translate}}"></dxi-column>
-    
+        <dxi-column [width]=100 dataField="invoice_number" caption="{{'invoice_number' | translate}}"></dxi-column>
+        <dxi-column dataField="invoice_date" caption="{{'invoice_date' | translate}}"></dxi-column>
+        <dxi-column dataField="total_invoice_value" caption="{{'total_invoice_value' | translate}}"></dxi-column>
+        <dxi-column dataField="currency_name" caption="{{'currency_of_transaction' | translate}}"></dxi-column>
+
+
+        <dxi-column dataField="importer_exporter_name" caption="{{'importer_exporter_name' | translate}}"></dxi-column>
+
         <dxi-column [width]=100 [allowFiltering]="false" dataField="date_added"
             caption="{{'date_added' | translate}}"></dxi-column>
         <!-- <dxi-column [groupIndex]="1" dataField="status_name" caption="{{'status_name' | translate}}"></dxi-column> -->
@@ -100,7 +101,7 @@
 </div>
 
 <dx-load-panel #loadPanel shadingColor="rgba(0,0,0,0.4)" [position]="{ of: '#employee' }" [(visible)]="loadingVisible"
-[showIndicator]="true" [showPane]="true" [shading]="true" [message]="spinnerMessage" [hideOnOutsideClick]="false">
+    [showIndicator]="true" [showPane]="true" [shading]="true" [message]="spinnerMessage" [hideOnOutsideClick]="false">
 </dx-load-panel>
 
 
@@ -264,15 +265,15 @@
     </div>
 </dx-popup>
 
-<dx-popup class="popup" [width]="funcpopWidth(45)" [height]="funcpopHeight(45)" [showTitle]="true" title="Import License Application"
-    [dragEnabled]="false" [hideOnOutsideClick]="false" [(visible)]="isPermitInitialisation">
+<dx-popup class="popup" [width]="funcpopWidth(45)" [height]="funcpopHeight(45)" [showTitle]="true"
+    title="Import License Application" [dragEnabled]="false" [hideOnOutsideClick]="false"
+    [(visible)]="isPermitInitialisation">
     <div *dxTemplate="let data of 'content'">
         <dx-scroll-view>
             <form enctype="multipart/form-data" style="margin:0.5px" class="row div-whiteback " role="form"
                 [formGroup]="applicationSelectionfrm" (ngSubmit)="onApplicationSelection()">
-                <div class="col-lg-12" style="margin-bottom: 30px;">
+                <div class="col-lg-12">
                     <h6>{{'permit_type_selection_description' | translate}}</h6>
-    
                 </div>
                 <div class="col-lg-12">
 

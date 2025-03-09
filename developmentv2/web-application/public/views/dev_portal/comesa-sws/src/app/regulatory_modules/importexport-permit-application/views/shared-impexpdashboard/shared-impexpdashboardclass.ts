@@ -20,17 +20,10 @@ export class SharedImpExpdashboardClass {
   application_status_id: any;
   response: any;
   ImportExpApplicationData: any;
-  approved_applications: number = 0;
-  pending_submission: number = 0;
-  queried_applications: number = 0;
-  rejected_applications: number = 0;
-  submitted_application: number = 0;
   productsapp_details: any;
   navigation_type_id: any;
   loadingVisible: boolean;
   spinnerMessage: string;
-  prodClassCategoryItem: any;
-  release_underseal: number = 0;
   dtImportExpApplicationData: any = [];
   expanded: boolean = false;
   app_route: any;
@@ -116,7 +109,7 @@ export class SharedImpExpdashboardClass {
       submission_comments: new FormControl('', Validators.compose([]))
     });
     this.table_name = 'wb_importexport_applications'
-    this.onLoadProductTypes();
+
     this.onLoadconfirmDataParam();
     this.onLoadproducttypeDefinationData();
     this.onLoadimportExportPermitTypesData();
@@ -161,45 +154,8 @@ export class SharedImpExpdashboardClass {
   }
 
   onInitiatenewSingleProductPermitImportExpApplications(applicationsubmission_type_id) {
-    this.onApplicationSelectionForSingleProducts(1,applicationsubmission_type_id);
+    this.onApplicationSelection(1,applicationsubmission_type_id);
   }
-  onApplicationSelectionForSingleProducts(regulatory_subfunction_id,applicationsubmission_type_id) {
-    
-    this.spinner.show();
-    
-    this.configService.getSectionUniformApplication(regulatory_subfunction_id,applicationsubmission_type_id)
-      .subscribe(
-        data => {
-          this.spinner.hide();
-          if (data.success) {
-            this.processData = data.data.process_infor;
-
-            this.router_link = this.processData.router_link;
-            this.productsapp_details = this.processData;
-            this.appService.setApplicationDetail(data.data);
-            
-            
-            localStorage.setItem('application_details', JSON.stringify(data.data));
-            
-            
-            this.app_route = ['./importexport-permit-application/' + this.router_link];
-
-            this.router.navigate(this.app_route);
-            this.scrollToTop();
-
-          }
-          else {
-            this.toastr.error(this.processData.message, 'Alert!');
-
-          }
-
-
-        });
-    return false;
-  }
-
-
-
   onApplicationSelection(regulatory_subfunction_id,applicationsubmission_type_id) {
 
     this.spinner.show();
@@ -296,24 +252,7 @@ export class SharedImpExpdashboardClass {
         });
 
   }
-  onLoadProductTypes() {
-    var data = {
-      table_name: 'par_regulated_productstypes',
-      is_enabled: 1
-    };
-
-    this.configService.onLoadConfigurationData(data)
-      .subscribe(
-        data => {
-          this.data_record = data;
-
-          if (this.data_record.success) {
-            this.productTypeData = this.data_record.data;
-            ;
-          }
-        });
-  }
-
+ 
 
   onLoadconfirmDataParam() {
     var data = {

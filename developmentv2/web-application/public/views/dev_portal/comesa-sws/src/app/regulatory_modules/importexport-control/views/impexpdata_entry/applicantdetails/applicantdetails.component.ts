@@ -17,7 +17,8 @@ import { UserManagementService } from 'src/app/core-services/user-management/use
 })
 export class ApplicantdetailsComponent implements OnInit {
   @Input() applicantDetailsForm: FormGroup;
-  @Input() userAccountFrm: FormGroup;
+  @Input() userApplicantAccountFrm: FormGroup;
+
   countriesData: any;
   traderAccountsDetailsData: any = {};
   regionsData: any;
@@ -61,13 +62,13 @@ export class ApplicantdetailsComponent implements OnInit {
     }
 
     this.table_name = 'tra_trader_account';
+    
   }
 
   ngOnInit() {
     this.onLoadRegions(this.country_id);
     this.onLoadDistrictsData(this.region_id);
     this.onLoadAccountTypesData();
-    this.onGetSingleUserProfileDetails()
     this.fetchTraderCategoryData()
     this.onLoadTraderAccountTypesData();
     this.fetchAccountStatusData();
@@ -81,7 +82,7 @@ export class ApplicantdetailsComponent implements OnInit {
   onAddTraderAccountsClick() {
     this.is_readonly = false;
     this.addTraderPopupVisible = true;
-    this.userAccountFrm.reset();
+    this.userApplicantAccountFrm.reset();
   }
 
   fetchAccountStatusData() {
@@ -153,28 +154,7 @@ export class ApplicantdetailsComponent implements OnInit {
 
         });
   }
-
-  onGetSingleUserProfileDetails() {
-
-    var data_submit = {
-      'table_name': 'tra_trader_account'
-    }
-
-    this.userservice.onGetSingleUserProfileDetails(data_submit)
-      .subscribe(
-        data => {
-
-          this.data_record = data;
-
-          if (this.data_record.success) {
-            this.userAccountFrm.patchValue(this.data_record.data)
-          }
-        },
-        error => {
-
-        });
-  }
-
+  
   onLoadCountriesData() {
 
     var data_submit = {
@@ -276,17 +256,7 @@ export class ApplicantdetailsComponent implements OnInit {
 
   funcSelectTraderDetails(data) {
     let record = data.data;
-    console.log('record', record);
-
-    this.applicantDetailsForm.get('applicant_name')?.setValue(record.applicant_name);
-    this.applicantDetailsForm.get('region_name')?.setValue(record.region_name);
-    this.applicantDetailsForm.get('district_name')?.setValue(record.district_name);
-    this.applicantDetailsForm.get('email_address')?.setValue(record.email_address);
-    this.applicantDetailsForm.get('country_id')?.setValue(record.country_id);
-    this.applicantDetailsForm.get('region_id')?.setValue(record.region_id);
-    this.applicantDetailsForm.get('district_id')?.setValue(record.district_id);
-    this.applicantDetailsForm.get('telephone_no')?.setValue(record.telephone_no);
-    this.applicantDetailsForm.get('physical_address')?.setValue(record.physical_address);
+    this.applicantDetailsForm.get('id')?.patchValue(record)
 
     this.isRegistrantDetailsWinshow = false;
   }
@@ -303,18 +273,18 @@ export class ApplicantdetailsComponent implements OnInit {
   onsaveTraderAccountsDetails() {
     const formData = new FormData();
     const invalid = [];
-    const controls = this.userAccountFrm.controls;
+    const controls = this.userApplicantAccountFrm.controls;
     for (const name in controls) {
       if (controls[name].invalid) {
         this.toastr.error('Fill In All Mandatory fields with (*), missing value on ' + name.replace('_id', ''), 'Alert');
         return;
       }
     }
-    if (this.userAccountFrm.invalid) {
+    if (this.userApplicantAccountFrm.invalid) {
       return;
     }
     this.spinner.show();
-    this.userservice.onsaveUserData(this.table_name, this.userAccountFrm.value, 'onsaveTraderData')
+    this.userservice.onsaveUserData(this.table_name, this.userApplicantAccountFrm.value, 'onsaveTraderData')
       .subscribe(
         response => {
           this.response = response;

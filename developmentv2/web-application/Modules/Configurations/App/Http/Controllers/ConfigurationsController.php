@@ -122,7 +122,7 @@ class ConfigurationsController extends Controller
             if (!empty($requestData)) {
                 $sql->where($requestData);
             }
-            if ($table_name == 'par_applicationforms_fields' || $table_name == 'par_dataentry_formfields') {
+            if ($table_name == 'par_applicationforms_fields' || $table_name == 'par_dataentry_formfields' || $table_name =='par_systemgeneral_forms_fields') {
                 $sql->orderBy('t1.order_no', 'asc');
             } else {
                 $sql->orderBy('t1.name', 'asc');
@@ -600,21 +600,27 @@ class ConfigurationsController extends Controller
             $app_data = array();
             $regulatory_subfunction_id = $req->regulatory_subfunction_id;
             $regulatory_function_id = $req->regulatory_function_id;
+            $transactionpermit_type_id = $req->transactionpermit_type_id;
             $applicationsubmission_type_id = $req->applicationsubmission_type_id;
-            
+
             // Qualify ambiguous columns with table aliases
             $filter = array('t1.regulatory_subfunction_id' => $regulatory_subfunction_id);
             if (validateIsNumeric($applicationsubmission_type_id)) {
-                $filter['t2.applicationsubmission_type_id'] = $applicationsubmission_type_id;
+               // $filter['t2.applicationsubmission_type_id'] = $applicationsubmission_type_id;
             }
             if (!validateIsNumeric($regulatory_function_id)) {
                 $submodule_data = getTableData('par_regulatory_subfunctions', array('id' => $regulatory_subfunction_id));
                 $regulatory_function_id = $submodule_data->regulatory_function_id;
             }
-
+            if (validateIsNumeric($transactionpermit_type_id)) {
+               $filter['t4.id'] = $transactionpermit_type_id;
+            }
+            
             $data = DB::table('wf_workflows as t1')
                 ->join('wf_workflow_stages as t2', 't2.workflow_id', 't1.id')
-                ->join('wf_workflow_interfaces as t3', 't3.id', 't2.interface_id')
+                ->leftJoin('wf_workflow_interfaces as t3', 't3.id', 't2.interface_id')
+
+                ->join('tra_transactionpermit_types as t4', 't1.id', 't4.workflow_id')
                 ->select(
                     't1.*',
                     't2.id as workflowprocess_stage_id',
@@ -627,18 +633,15 @@ class ConfigurationsController extends Controller
             // Process application data
             if ($data) {
                 $app_data['process_infor'] = $data;
+                $app_data['transactionpermit_type_id'] = $transactionpermit_type_id;
                 $app_data['applicationsubmission_type_id'] = $applicationsubmission_type_id;
                 $form_fields = getApplicationGeneralFormsFields($req);
 
                 $app_data['application_form'] = $form_fields;
-               
-               
-
-                // Additional data entry forms based on regulatory function
                 switch ($regulatory_function_id) {
                     case 1: // Import Export Permit Application
                         $app_data['applicant_details'] = getApplicationDataEntryFormsFields($req, 20);
-                        $app_data['application_general_details'] = getApplicationDataEntryFormsFields($req, 19);
+                        //$app_data['application_general_details'] = getApplicationDataEntryFormsFields($req, 19);
                         $app_data['permit_products_details'] = getApplicationDataEntryFormsFields($req, 21);
                         
                         break;

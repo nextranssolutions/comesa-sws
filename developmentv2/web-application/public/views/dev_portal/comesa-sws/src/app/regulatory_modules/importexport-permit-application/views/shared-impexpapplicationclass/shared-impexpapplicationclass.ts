@@ -39,8 +39,8 @@ export class SharedImpexpApplicationClass {
   //dms 
   @ViewChild(DxDataGridComponent)
   appuploaded_document_id: number;
-  trader_id: number;
-  mistrader_id: number;
+  applicant_id: number;
+  misapplicant_id: number;
   process_id: number;
   transactionpermit_type_id: number;
   appworkflow_status_id: number;
@@ -193,8 +193,8 @@ export class SharedImpexpApplicationClass {
     //form 
     let user = this.authService.getUserDetails();
 
-    this.trader_id = user.trader_id;
-    this.mistrader_id = user.mistrader_id;
+    this.applicant_id = user.applicant_id;
+    this.misapplicant_id = user.misapplicant_id;
     this.application_details = localStorage.getItem('application_details');
    
     this.application_details = JSON.parse(this.application_details);
