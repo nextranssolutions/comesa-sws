@@ -208,7 +208,7 @@ export class SharedImpexpApplicationClass {
   ) {
     //form 
     let user = this.authService.getUserDetails();
-
+    let me = this;
     this.trader_id = user.trader_id;
     this.mistrader_id = user.mistrader_id;
     this.application_details = localStorage.getItem('application_details');
@@ -216,8 +216,8 @@ export class SharedImpexpApplicationClass {
     this.application_details = JSON.parse(this.application_details);
 
     this.form_fielddata = this.application_details.application_form;
-    this.products_fielddata = this.application_details.application_form;
-    this.applicants_fielddata = this.application_details.application_form;
+    this.products_fielddata = this.application_details.permit_products_details;
+    this.applicants_fielddata = this.application_details.applicant_details;
   
     this.applicationGeneraldetailsfrm = this.formBuilder.group({});
     this.permitProductsFrm = this.formBuilder.group({});
@@ -229,36 +229,40 @@ export class SharedImpexpApplicationClass {
 
     this.applicationGeneraldetailsfrm = new FormGroup({
       id: new FormControl('', Validators.compose([])),
+     
     });
-
-    for (let form_field of this.form_fielddata) {
-      let field_name = form_field['field_name'];
-      if (form_field['is_mandatory'] == 1) {
-        this.applicationGeneraldetailsfrm.addControl(field_name, new FormControl('', Validators.compose([Validators.required])));
+    this.permitProductsFrm = new FormGroup({
+      id: new FormControl('', Validators.compose([])),
+     
+    });
+    for (let appfield_name of this.form_fielddata) {
+      let field_name = appfield_name['field_name'];
+      if (appfield_name['is_mandatory'] == 1) {
+        me.applicationGeneraldetailsfrm.addControl(field_name, new FormControl('', Validators.compose([Validators.required])));
 
       } else {
-        this.applicationGeneraldetailsfrm.addControl(field_name, new FormControl('', Validators.compose([])));
+        me.applicationGeneraldetailsfrm.addControl(field_name, new FormControl('', Validators.compose([])));
+      }
+    }
+  
+    for (let prodform_field of this.products_fielddata) {
+      let field_name = prodform_field['field_name'];
+      if (prodform_field['is_mandatory'] == 1) {
+        me.permitProductsFrm.addControl(field_name, new FormControl('', Validators.compose([Validators.required])));
+      } else {
+        me.permitProductsFrm.addControl(field_name, new FormControl('', Validators.compose([])));
       }
     }
 
-    for (let form_field of this.products_fielddata) {
-      let field_name = form_field['field_name'];
-      if (form_field['is_mandatory'] == 1) {
-        this.permitProductsFrm.addControl(field_name, new FormControl('', Validators.compose([Validators.required])));
+    for (let applicaform_field of this.applicants_fielddata) {
+      let field_name = applicaform_field['field_name'];
+      
+      if (applicaform_field['is_mandatory'] == 1) {
+        me.applicantDetailsForm.addControl(field_name, new FormControl('', Validators.compose([Validators.required])));
       } else {
-        this.permitProductsFrm.addControl(field_name, new FormControl('', Validators.compose([])));
+        me.applicantDetailsForm.addControl(field_name, new FormControl('', Validators.compose([])));
       }
     }
-
-    for (let form_field of this.applicants_fielddata) {
-      let field_name = form_field['field_name'];
-      if (form_field['is_mandatory'] == 1) {
-        this.applicantDetailsForm.addControl(field_name, new FormControl('', Validators.compose([Validators.required])));
-      } else {
-        this.applicantDetailsForm.addControl(field_name, new FormControl('', Validators.compose([])));
-      }
-    }
-
     if (this.applicant_details) {
       this.id = this.applicant_details.regulatory_subfunction_id;
       this.regulatory_subfunction_id = this.applicant_details.regulatory_subfunction_id;
@@ -285,19 +289,7 @@ export class SharedImpexpApplicationClass {
       this.applicationGeneraldetailsfrm.patchValue(this.application_details);
     }
 
-
-
-    this.funcREturnApplicationDashboardROute();
-
-    if (this.regulatory_subfunction_id == 49) {
-      this.applicationGeneraldetailsfrm = this.formBuilder.group({});
-      this.applicantDetailsForm = this.formBuilder.group({});
-    }
-    else {
-
-      this.applicationGeneraldetailsfrm = this.formBuilder.group({});
-      this.applicantDetailsForm = this.formBuilder.group({});
-    }
+    
     this.permitReceiverSenderFrm = new FormGroup({
       name: new FormControl('', Validators.compose([Validators.required])),
       country_id: new FormControl('', Validators.compose([Validators.required])),
@@ -341,7 +333,7 @@ export class SharedImpexpApplicationClass {
     this.import_typecategory_visible = true;
 
 
-    this.funcReloadQueriesDetails();
+   // this.funcReloadQueriesDetails();
     
   }
 
@@ -349,8 +341,8 @@ export class SharedImpexpApplicationClass {
 
     if (this.application_details) {
       this.applicationGeneraldetailsfrm.patchValue(this.application_details);
-      // this.applicantDetailsForm.patchValue(this.application_details);
-      // this.applicationGeneraldetailsfrm.patchValue(this.application_details);
+      this.applicantDetailsForm.patchValue(this.application_details);
+      this.applicationGeneraldetailsfrm.patchValue(this.application_details);
     }
 
   }

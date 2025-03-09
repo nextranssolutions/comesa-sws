@@ -91,6 +91,7 @@ export class SharedImpExpdashboardClass {
   permit_type_id: number;
   application_type_id: any;
   table_name: string;
+
   constructor(public utilityService: UtilityService, public viewRef: ViewContainerRef, 
     public spinner: SpinnerVisibilityService, 
     public toastr: ToastrService, 
@@ -99,7 +100,6 @@ export class SharedImpExpdashboardClass {
     public formBuilder: FormBuilder,
     public appService: ImportExportService)
     { // this.onLoadApplicationCounterDetails();
-
 
     this.applicationSelectionfrm = new FormGroup({
       // regulated_productstype_id: new FormControl(this.productTypeData, Validators.compose([Validators.required])),
@@ -126,14 +126,11 @@ export class SharedImpExpdashboardClass {
 
     this.onLoadProductTypes();
     this.onLoadconfirmDataParam();
-    // this.onLoadproducttypeDefinationData();
+    this.onLoadproducttypeDefinationData();
     this.reloadPermitApplicationsApplications();
     this.onLoadPermitTypesData();
     this.onLoadWorkflowStatusData();
   }
-
-  
-
 
   scrollToTop(): void {
     window.scrollTo({
@@ -231,14 +228,9 @@ export class SharedImpExpdashboardClass {
 
             this.router_link = this.processData.router_link;
             this.productsapp_details = this.processData;
-            this.processingData = data.data.application_form;
-            // this.title = this.processingData.field_name;
-            
-            
 
             this.appService.setApplicationDetail(data.data);
-            
-          
+  
             localStorage.setItem('application_details', JSON.stringify(data.data));
           
             this.app_route = ['./importexport-control/' + this.router_link];

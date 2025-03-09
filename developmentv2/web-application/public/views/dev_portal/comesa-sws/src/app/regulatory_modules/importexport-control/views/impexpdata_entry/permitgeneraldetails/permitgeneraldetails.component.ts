@@ -26,7 +26,6 @@ import { PremisesLicensingService } from 'src/app/regulatory_modules/premises-li
 export class PermitgeneraldetailsComponent implements OnInit {
   @Input() applicationGeneraldetailsfrm: FormGroup;
   @Input() permitReceiverSenderFrm: FormGroup;
-  @Input() applicantDetailsForm: FormGroup;
   today: Date = new Date();
   configData: any;
   regulatedProdTypeData: any;
