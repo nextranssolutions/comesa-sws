@@ -519,7 +519,7 @@ export class SharedImpexpApplicationClass {
     
     let applicant_id = this.applicantDetailsForm.get('id')?.value;
     let applicationapplicant_option_id = this.applicantDetailsForm.get('applicationapplicant_option_id')?.value;
-    console.log(applicationapplicant_option_id);
+
     this.applicationGeneraldetailsfrm.value['applicant_id'] = applicant_id;
     this.applicationGeneraldetailsfrm.value['applicationapplicant_option_id'] = applicationapplicant_option_id;
 
