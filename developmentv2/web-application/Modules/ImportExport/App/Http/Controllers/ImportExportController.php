@@ -318,6 +318,7 @@ class ImportExportController extends Controller
             $trader_id = $req->trader_id;
             $email_address = $req->email_address;
             $applicationsubmission_type_id = $req->applicationsubmission_type_id;
+            $applicationapplicant_option_id = $req->applicationapplicant_option_id;
             $local_agent_id = $req->local_agent_id;
 
             $reference_no = $req->reference_no;
@@ -351,6 +352,7 @@ class ImportExportController extends Controller
                 'document_upload_id' => $req->document_upload_id,
                 'application_type_id' => $req->application_type_id,
                 'applicationsubmission_type_id' =>$req->applicationsubmission_type_id,
+                'applicationapplicant_option_id' =>$req->applicationapplicant_option_id,
                 'application_reference_number' => $req->application_reference_number,
                 'applicant_type_id' => $req->applicant_type_id,
                 'permit_type_id' => $req->permit_type_id,
@@ -473,7 +475,7 @@ class ImportExportController extends Controller
                 $app_data['workflowprocess_id'] = $workflowprocess_id;
                 $app_data['applicationsubmission_type_id'] = $applicationsubmission_type_id;
                 $app_data['regulatory_function_id'] = $regulatory_function_id;
-
+                $app_data['applicationapplicant_option_id'] = $applicationapplicant_option_id;
                 $app_data['date_added'] = Carbon::now();
                 $app_data['application_code'] = $application_code;
                
@@ -495,6 +497,7 @@ class ImportExportController extends Controller
                         'application_id' => $application_id,
                         'regulatory_function_id' => $regulatory_function_id,
                         'applicationsubmission_type_id' => $applicationsubmission_type_id,
+                        'applicationapplicant_option_id' => $applicationapplicant_option_id,
                         'application_code' => $application_code,
                         'workflowprocess_id' => $workflowprocess_id,
                         'success' => true,
@@ -509,6 +512,7 @@ class ImportExportController extends Controller
                             'application_id' => $application_id,
                             'regulatory_function_id' => $regulatory_function_id,
                             'applicationsubmission_type_id' =>$applicationsubmission_type_id,
+                            'applicationapplicant_option_id' =>$applicationapplicant_option_id,
                             'application_code' => $tra_application_code,
                             'success' => true,
                             'message' => 'Application Saved Successfully, with Tracking No:' . $tracking_no
@@ -1673,7 +1677,7 @@ class ImportExportController extends Controller
 
 
             $sql = DB::table($table_name . ' as t1')
-                ->leftJoin('par_permit_typecategories as t2', 't2.id', 't1.permit_type_id')
+                ->leftJoin('par_permit_typecategories as t2', 't2.id', 't1.permit_typecategory_id')
                 ->leftJoin('par_port_type as t3', 't3.id', 't1.port_type_id')
                 ->leftJoin('tra_permitsenderreceiver_data as t4', 't4.id', 't1.importer_exporter_id')
                 ->leftJoin('par_entryexit_port as t5', 't1.port_of_entryexit_id', 't5.id')
@@ -1688,7 +1692,6 @@ class ImportExportController extends Controller
                 ->leftJoin('wf_statuses_actions as t8', 't7.statuses_action_id', 't8.id')
                 ->leftJoin('wf_workflow_statuses as t9', 't1.appworkflow_status_id', 't9.id')
                 ->leftJoin('par_application_statuses as t10', 't1.application_status_id', 't10.id')
-                ->leftJoin('par_permit_typecategories as t11', 't1.permit_type_id', 't11.id')
                 ->leftJoin('par_currencies as t12', 't1.currency_oftransaction_id', 't12.id')
                 ->leftJoin('par_mode_oftransport as t13', 't1.mode_of_transport_id', 't13.id')
                 ->leftJoin('par_countries as t14', 't1.final_destination_country_id', 't14.id')
@@ -1696,7 +1699,8 @@ class ImportExportController extends Controller
                 ->leftJoin('par_currencies as t16', 't1.currency_oftransaction_id', 't16.id')
                 ->leftJoin('par_confirmations as t17', 't1.declaration_statuses_id', 't17.id')
                 ->leftJoin('tra_trader_account as t18', 't1.applicant_id', 't18.id')
-                ->select('t1.*','t17.name as declaration','t18.name as applicant_name', 't16.name as currency_name', 't15.name as invoice_type', 't14.name as final_destination_country', 't5.name as port_of_entry', 't13.name as mode_of_transport', 't12.name as currency_name', 't11.name as permit_type', 't10.name as application_status', 't8.name as action_name', 't8.iconCls as iconCls', 't8.action as action', 't2.name as permit_name', 't3.name as port_type', 't1.id', 't4.name as importer_exporter_name');
+                ->leftJoin('par_application_options as t19', 't1.applicationapplicant_option_id', 't19.id')
+                ->select('t1.*','t17.name as declaration','t19.name as applicationapplicant_option','t18.name as applicant_name', 't16.name as currency_name', 't15.name as invoice_type', 't14.name as final_destination_country', 't5.name as port_of_entry', 't13.name as mode_of_transport', 't12.name as currency_name', 't11.name as permit_type', 't10.name as application_status', 't8.name as action_name', 't8.iconCls as iconCls', 't8.action as action', 't2.name as permit_name', 't3.name as port_type', 't1.id', 't4.name as importer_exporter_name');
 
             if ($workflow_status_id != '') {
                 $workflow_status = explode(',', $workflow_status_id);
@@ -1722,6 +1726,7 @@ class ImportExportController extends Controller
                     'application_status' => $rec->application_status,
                     'permit_type_id' => $rec->permit_type_id,
                     'permit_name' => $rec->permit_name,
+                    'applicationapplicant_option' =>$rec->applicationapplicant_option,
                     'applicant_name' => $rec->applicant_name,
                     'port_type' => $rec->port_type,
                     'port_type_id' => $rec->port_type_id,

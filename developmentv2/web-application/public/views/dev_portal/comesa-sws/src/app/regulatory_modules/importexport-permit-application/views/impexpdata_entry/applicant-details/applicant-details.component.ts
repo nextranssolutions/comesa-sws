@@ -46,6 +46,7 @@ export class ApplicantDetailsComponent {
   country_id: number;
   auth_response: any;
   region_id: number;
+  applicationapplicant_option_id: number;
   selectedApplicationOption: any = null;
   showSearchButton: boolean = false;
   showHiddenFields: boolean = false;

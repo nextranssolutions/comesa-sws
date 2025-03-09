@@ -5,7 +5,7 @@
                 <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
                     <label for="ti" class="control-label">{{ 'application_options' | translate }}</label>
                     <dx-select-box [dataSource]="applicationsOptionsData" valueExpr="id" displayExpr="name"
-                        [searchEnabled]="true" formControlName="application_options_id"
+                        [searchEnabled]="true" formControlName="applicationapplicant_option_id"
                         (onValueChanged)="onApplicationOptionChange($event)">
                     </dx-select-box>
                 </div>
@@ -17,7 +17,7 @@
           
                     <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
                         <label>{{ 'applicant_name' | translate }}</label>
-                        <dx-text-box [readOnly]="application_options_id === 1 || applicantDetailsSet"
+                        <dx-text-box [readOnly]="applicationapplicant_option_id === 1 || applicantDetailsSet"
                         [readOnly]="true" formControlName="applicant_name" [placeholder]="'applicant_name' | translate"
                             [showClearButton]="true">
                         </dx-text-box>

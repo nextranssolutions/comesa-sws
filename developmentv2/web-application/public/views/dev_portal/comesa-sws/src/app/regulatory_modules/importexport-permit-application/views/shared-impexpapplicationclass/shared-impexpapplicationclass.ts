@@ -187,6 +187,7 @@ export class SharedImpexpApplicationClass {
   filesToUpload: Array<File> = [];
   producttype_defination_id: number;
   applicationsubmission_type_id:number;
+  applicationapplicant_option_id: number;
   constructor(public ngWizardService: NgWizardService, private configService: ConfigurationsService, public utilityService: UtilityService, public fb: FormBuilder,
     public spinner: SpinnerVisibilityService, public appService: ImportExportService, public router: Router,
     public formBuilder: FormBuilder, public toastr: ToastrService, public authService: AuthenticationService, public httpClient: HttpClient) {
@@ -204,9 +205,7 @@ export class SharedImpexpApplicationClass {
     this.applicants_fielddata = this.application_details.applicant_details;
 
     this.applicationsubmission_type_id = this.application_details.applicationsubmission_type_id;
-
-    console.log(this.applicationsubmission_type_id);
-     
+    
     this.applicationGeneraldetailsfrm = this.formBuilder.group({});
     this.permitProductsFrm = this.formBuilder.group({});
     this.applicantDetailsForm = this.formBuilder.group({});
@@ -519,12 +518,13 @@ export class SharedImpexpApplicationClass {
     this.spinner.show();
     
     let applicant_id = this.applicantDetailsForm.get('id')?.value;
-    console.log(applicant_id);
-
+    let applicationapplicant_option_id = this.applicantDetailsForm.get('applicationapplicant_option_id')?.value;
+    console.log(applicationapplicant_option_id);
     this.applicationGeneraldetailsfrm.value['applicant_id'] = applicant_id;
+    this.applicationGeneraldetailsfrm.value['applicationapplicant_option_id'] = applicationapplicant_option_id;
 
     this.applicationGeneraldetailsfrm.value['applicationsubmission_type_id'] = this.applicationsubmission_type_id;
-    
+   
     this.applicationGeneraldetailsfrm.value['regulatory_subfunction_id'] = this.regulatory_subfunction_id;
     this.spinner.show();
     this.appService.onSavePermitApplication(this.applicationGeneraldetailsfrm.value, uploadData, 'saveImportExportApplication')
