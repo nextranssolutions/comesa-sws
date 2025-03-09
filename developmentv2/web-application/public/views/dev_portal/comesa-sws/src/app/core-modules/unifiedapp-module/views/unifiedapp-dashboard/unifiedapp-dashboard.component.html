@@ -14,13 +14,14 @@
           </div>
         </div>
         <div class="widget-pnltoolbar col-lg-12">
-          <a href="javascript:void(0)" (click)="regulatoryFunctionGuidelines(rec)" class="btn btn-primary">
-            <i class="ace-icon fa fa-file"></i> {{ "guidelines" }}
-          </a>
-          <a href="javascript:void(0)" (click)="onProceedToApplication(rec)" class="btn btn-success proceed-link">
-            <i class="ace-icon fa fa-external-link"></i>
-            {{ "proceed" | translate}}
-          </a>
+
+          <dx-button text="{{ 'guidelines' | translate }}" type="normal" icon="fa fa-file"
+            [elementAttr]="{ id: 'elementId', class: 'col-lg-4' }" (onClick)="regulatoryFunctionGuidelines(rec)">
+          </dx-button>
+          <dx-button text="{{ 'proceed' | translate }}" type="success" icon="fa fa-file"
+            [elementAttr]="{ id: 'elementId', class: 'col-lg-3' }" (onClick)="onProceedToApplication(rec)">
+          </dx-button>
+
         </div>
       </div>
     </div>
@@ -144,9 +145,9 @@
   [showIndicator]="true" [showPane]="true" [shading]="true" [message]="spinnerMessage" [hideOnOutsideClick]="false">
 </dx-load-panel>
 
-<dx-popup class="popup" [(visible)]="refFunctionGuidelines" [width]="funcpopWidth(75)" [height]="funcpopHeight(55)"
+<dx-popup class="popup" [(visible)]="mycurrentAssignmentWin" [width]="funcpopWidth(75)" [height]="funcpopHeight(55)"
   [showTitle]="true"  title="{{ 'regulatory_function_guidelines' | translate }}" [dragEnabled]="false"
-  [hideOnOutsideClick]="true" (onHidden)="refFunctionGuidelines = false">
+  [hideOnOutsideClick]="true" (onHidden)="mycurrentAssignmentWin = false">
   <dx-scroll-view>
     <dx-data-grid class="w-200  table row-border hover dxtabpanel" [wordWrapEnabled]="true"
       (onExporting)="onExporting($event)" [dataSource]="pendingtasksTasksdetailsData" [remoteOperations]='true'
