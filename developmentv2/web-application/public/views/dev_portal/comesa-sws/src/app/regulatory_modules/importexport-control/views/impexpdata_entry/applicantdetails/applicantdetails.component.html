@@ -17,14 +17,14 @@
                 </div>
                 <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
                     <label>{{ 'email_address' | translate }}</label>
-                    <dx-text-box formControlName="email_address" [placeholder]="'email_address' | translate"
+                    <dx-text-box [readOnly]="is_readonly" formControlName="email_address" [placeholder]="'email_address' | translate"
                         [showClearButton]="true">
                     </dx-text-box>
                 </div>
 
                 <div class="col-xs-12 col-md-4 col-lg-4 col-xl-43">
                     <label class="control-label">{{'country' | translate}}</label>
-                    <dx-select-box [dataSource]="countriesData" valueExpr="id" displayExpr="name"
+                    <dx-select-box [readOnly]="is_readonly" [dataSource]="countriesData" valueExpr="id" displayExpr="name"
                         placeholder="Select Country" (onSelectionChanged)="onCoutryCboSelect($event)"
                         [searchEnabled]="true" formControlName="country_id">
                     </dx-select-box>
@@ -32,7 +32,7 @@
                 <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
                     <label for="ti" class="control-label">{{'province/region/city' | translate}}</label>
 
-                    <dx-select-box [dataSource]="regionsData" valueExpr="id" displayExpr="name"
+                    <dx-select-box [readOnly]="is_readonly" [dataSource]="regionsData" valueExpr="id" displayExpr="name"
                         (onSelectionChanged)="onRegionsCboSelect($event)" [searchEnabled]="true"
                         formControlName="region_id">
                     </dx-select-box>
@@ -41,26 +41,26 @@
                 <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
                     <label for="ti" class="control-label">{{'district(optional)' | translate}}</label>
 
-                    <dx-select-box [dataSource]="districtsData" valueExpr="id" placeholder="Select District"
+                    <dx-select-box [readOnly]="is_readonly" [dataSource]="districtsData" valueExpr="id" placeholder="Select District"
                         displayExpr="name" [searchEnabled]="true" formControlName="district_id">
                     </dx-select-box>
                 </div>
                 <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
                     <label for="ti" class="control-label">{{'telephone_no' | translate}}</label>
 
-                    <dx-text-box formControlName="telephone_no" placeholder="{{'telephone_no' | translate}}">
+                    <dx-text-box [readOnly]="is_readonly" formControlName="telephone_no" placeholder="{{'telephone_no' | translate}}">
                     </dx-text-box>
                 </div>
                 <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
                     <label for="ti" class="control-label">{{'mobile_no' | translate}}</label>
 
-                    <dx-text-box formControlName="mobile_no" placeholder="{{'mobile_no' | translate}}">
+                    <dx-text-box [readOnly]="is_readonly" formControlName="mobile_no" placeholder="{{'mobile_no' | translate}}">
                     </dx-text-box>
                 </div>
                 <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
                     <label for="ti" class="control-label">{{'physical_address' | translate}}</label>
 
-                    <dx-text-box formControlName="physical_address" placeholder="{{'physical_address' | translate}}">
+                    <dx-text-box [readOnly]="is_readonly" formControlName="physical_address" placeholder="{{'physical_address' | translate}}">
                     </dx-text-box>
                 </div>
             </div>

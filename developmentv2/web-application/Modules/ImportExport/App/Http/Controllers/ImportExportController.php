@@ -1242,6 +1242,7 @@ class ImportExportController extends Controller
                     't1.country_id as country_id',
                     't1.region_id as region_id',
                     't1.district_id as district_id',
+                    't2.name as country_name',
                     't4.name as district_name',
                     't3.name as region_name',
                     't1.physical_address',

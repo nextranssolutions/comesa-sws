@@ -153,7 +153,7 @@ export class ApplicantdetailsComponent implements OnInit {
 
         });
   }
-  
+
   onLoadCountriesData() {
 
     var data_submit = {
@@ -253,12 +253,29 @@ export class ApplicantdetailsComponent implements OnInit {
 
   }
 
+  // funcSelectTraderDetails(data) {
+  //   let record = data.data;
+  //   console.log(record);
+  //   this.applicantDetailsForm.get('id')?.patchValue(record)
+
+  //   this.isRegistrantDetailsWinshow = false;
+  // }
   funcSelectTraderDetails(data) {
     let record = data.data;
-    this.applicantDetailsForm.get('id')?.patchValue(record)
+
+    this.applicantDetailsForm.patchValue({
+        applicant_name: record.applicant_name || '',
+        email_address: record.email_address || '',
+        country_id: record.country_id || null,
+        region_id: record.region_id || null,
+        district_id: record.district_id || null,
+        telephone_no: record.telephone_no || '',
+        mobile_no: record.mobile_no || '',
+        physical_address: record.physical_address || '',
+    });
 
     this.isRegistrantDetailsWinshow = false;
-  }
+}
 
 
   funcpopWidth(percentage_width) {
