@@ -30,7 +30,7 @@ export class PermitproductdetailsComponent implements OnInit {
   @Input() applicationGeneraldetailsfrm: FormGroup;
   @Input() permitProductsData: any;
   @Input() application_code: any;
-  
+
   requireUnitPackData: boolean = false;
   isprodnextdisable: boolean;
   device_type_visible: boolean;
@@ -816,6 +816,8 @@ export class PermitproductdetailsComponent implements OnInit {
     return input;
   }
 
+
+
   onsavePermitProductdetails() {
     //validate the visa Quoantity
     if (this.regulatory_subfunction_id == 82) {
@@ -871,6 +873,8 @@ export class PermitproductdetailsComponent implements OnInit {
 
         });
   }
+
+ 
   onupdatePermitProductdetails() {
     if (this.permitProductsFrm.invalid) {
       return;

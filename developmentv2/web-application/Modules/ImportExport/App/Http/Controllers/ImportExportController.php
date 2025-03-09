@@ -777,7 +777,7 @@ class ImportExportController extends Controller
             $regulatory_subfunction_id = $req->regulatory_subfunction_id;
 
             $batch_number = $req->batch_number;
-            $application_code = generateApplicationCode($regulatory_subfunction_id, 'tra_permit_products');
+            $application_code = $req->application_code;
             $expiry_date = $req->expiry_date;
             $manufacturing_date = $req->manufacturing_date;
             $error_message = 'Error occurred, data not saved successfully';
@@ -793,7 +793,7 @@ class ImportExportController extends Controller
 
                 $data = array(
                     'unit_price' => $unit_price,
-
+                    'application_code' => $application_code,
                     'section_id' => $req->section_id,
                     'productphysical_description' => $req->productphysical_description,
                     'packaging_unit_id' => $packaging_unit_id,
@@ -827,7 +827,6 @@ class ImportExportController extends Controller
                     'prodclass_category_id' => $req->prodclass_category_id,
                     'unitpack_size' => $req->unitpack_size,
                     'unitpack_unit_id' => $req->unitpack_unit_id,
-                    'application_code' => $req->application_code,
                     'dosage_form_id' => $req->dosage_form_id
                 );
 
@@ -893,12 +892,6 @@ class ImportExportController extends Controller
 
         return response()->json($res);
     }
-
-
-
-
-
-
 
 
     public function saveManufacturerDetails(Request $req)
