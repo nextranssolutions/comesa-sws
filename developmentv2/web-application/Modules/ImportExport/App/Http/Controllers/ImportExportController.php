@@ -1760,13 +1760,9 @@ class ImportExportController extends Controller
                     'workflowprocess_id' => $rec->workflowprocess_id,
                     'application_code' => $rec->application_code,
                     'reference_no' => $rec->reference_no,
-                    'applicationapplicant_option_id' => $rec->applicationapplicant_option_id,
-                    
+                    'applicationapplicant_option_id' => $rec->applicationapplicant_option_id, 
                     'applicant_id' => $rec->applicant_id,
                     'country_id' => $rec->country_id,
-                    'applicant_name' => $rec->applicant_name,
-
-
                     'region_id' => $rec->region_id,
                     'district_id'=>$rec->district_id,
 
