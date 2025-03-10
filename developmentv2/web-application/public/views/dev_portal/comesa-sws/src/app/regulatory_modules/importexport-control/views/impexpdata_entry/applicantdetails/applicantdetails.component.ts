@@ -66,8 +66,6 @@ export class ApplicantdetailsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.onLoadRegions(this.country_id);
-    this.onLoadDistrictsData(this.region_id);
     this.onLoadAccountTypesData();
     this.fetchTraderCategoryData()
     this.onLoadTraderAccountTypesData();

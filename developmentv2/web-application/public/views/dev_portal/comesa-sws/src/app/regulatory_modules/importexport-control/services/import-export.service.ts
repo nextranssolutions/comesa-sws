@@ -28,10 +28,10 @@ export class ImportExportService {
     this.email_address = user.email_address;
 
   }
-  // onSavePermitApplication(application_id, permitData, tracking_no, action_url, uploadData = '') {
+  // onSavePermitApplication(oga_application_code, permitData, tracking_no, action_url) {
 
   //   let data_header = {
-  //     // params: { application_id: application_id, tracking_no: tracking_no, 'trader_id': this.trader_id, 'trader_email': this.email_address },
+  //     params: { oga_application_code: oga_application_code, tracking_no: tracking_no, 'trader_id': this.trader_id, 'trader_email': this.email_address },
 
   //     headers: { 'Accept': 'application/json', "Authorization": "Bearer " + this.authService.getAccessToken() }
   //   };

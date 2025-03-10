@@ -26,6 +26,7 @@ import { PremisesLicensingService } from 'src/app/regulatory_modules/premises-li
 export class PermitgeneraldetailsComponent implements OnInit {
   @Input() applicationGeneraldetailsfrm: FormGroup;
   @Input() permitReceiverSenderFrm: FormGroup;
+  @Input() transactionpermit_type_id: number;
   today: Date = new Date();
   configData: any;
   regulatedProdTypeData: any;
@@ -137,7 +138,6 @@ export class PermitgeneraldetailsComponent implements OnInit {
     this.onLoadcountryData();
     this.onLoadinvoiceTypeData();
     this.onLoadcurrencyData();
-    this.onLoadpermitProductsCategoryData(this.permit_category_id);
     this.onLoadproducttypeDefinationData();
     // this.onsavePermitReceiverSender();
     this.onLoadRegulatedSubfunctionData();
@@ -170,10 +170,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
       this.ammendReadOnly = false;
     }
   }
-  onApplicationCategorySelection($event) {
-    let permit_category_id = $event.selectedItem.id;
-    this.onLoadpermitProductsCategoryData(permit_category_id);
-  }
+
   onProductTypesDefinationSelection($event) {
     let producttype_defination_id = $event.selectedItem.id;
     this.onLoadapplicationCategoryData(producttype_defination_id);
@@ -193,26 +190,6 @@ export class PermitgeneraldetailsComponent implements OnInit {
           if (this.data_record.success) {
             this.applicationCategoryData = this.data_record.data;
             ;
-          }
-        });
-  }
-
-
-  onLoadpermitProductsCategoryData(permit_category_id) {
-    var data = {
-      table_name: 'par_product_categories',
-      permit_category_id: permit_category_id
-    };
-
-    this.config.onLoadConfigurationData(data)
-      .subscribe(
-        data => {
-
-          this.data_record = data;
-
-          if (this.data_record.success) {
-            this.permitProductsCategoryData = this.data_record.data;
-
           }
         });
   }
