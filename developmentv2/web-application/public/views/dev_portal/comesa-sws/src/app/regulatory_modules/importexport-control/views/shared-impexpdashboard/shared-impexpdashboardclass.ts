@@ -45,7 +45,7 @@ export class SharedImpExpdashboardClass {
   data_record: any;
   guidelines_title: string;
   regulatory_subfunction_id: number;
-  transactionpermit_type_id: any;
+  transactionpermit_type_id: number;
   application_title: string;
   sectionItem: any;
   app_typeItem: any;
@@ -167,36 +167,35 @@ export class SharedImpExpdashboardClass {
 
   }
 
-  onApplicationSelection() {
+onApplicationSelection() {
     if (this.applicationSelectionfrm.invalid) {
       this.toastr.error('Fill in all the Mandatory Fields', 'Alert!');
       return;
     }
 
     this.spinnerShow('loading...');
+    this.sectionItem = this.applicationSelectionfrm.controls['transactionpermit_type_id'];
 
-    // Fetch transactionpermit_type_id value
-    let transactionpermit_type_id = this.applicationSelectionfrm.get('transactionpermit_type_id')?.value;
+    // let transactionpermit_type_id = this.applicationSelectionfrm.get('transactionpermit_type_id')?.value;
     let regulatory_subfunction_id = this.applicationSelectionfrm.get('regulatory_subfunction_id')?.value;
 
-
     this.regulatory_subfunction_id = regulatory_subfunction_id;
-    this.transactionpermit_type_id = transactionpermit_type_id;
+    this.transactionpermit_type_id = this.sectionItem.value;
 
-    localStorage.setItem('transactionpermit_type_id', JSON.stringify(this.transactionpermit_type_id));
+
+    // localStorage.setItem('transactionpermit_type_id', JSON.stringify(this.transactionpermit_type_id));
+    
     this.configService.getSectionUniformApplicationProces(this.regulatory_subfunction_id, this.transactionpermit_type_id)
       .subscribe(
         data => {
+          
           if (data.success) {
-
             this.processData = data.data.process_infor;
-
 
             this.router_link = this.processData.router_link;
             this.productsapp_details = this.processData;
 
             this.appService.setApplicationDetail(data.data);
-
             localStorage.setItem('application_details', JSON.stringify(data.data));
 
             this.app_route = ['./importexport-control/' + this.router_link];
@@ -205,7 +204,6 @@ export class SharedImpExpdashboardClass {
           } else {
             this.toastr.error(this.processData.message, 'Alert!');
           }
-
           this.spinnerHide();
         },
         error => {
@@ -215,7 +213,8 @@ export class SharedImpExpdashboardClass {
       );
 
     return false;
-  }
+}
+
 
 
 

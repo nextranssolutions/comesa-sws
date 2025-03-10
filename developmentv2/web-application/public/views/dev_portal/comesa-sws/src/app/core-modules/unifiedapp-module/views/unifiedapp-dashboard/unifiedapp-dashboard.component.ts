@@ -28,6 +28,8 @@ export class UnifiedappDashboardComponent {
   spinnerMessage: string;
   show_advancesearch: boolean;
   refFunctionGuidelines: boolean;
+  mycurrentAssignmentWin:boolean;
+  
   constructor(
     public config: ConfigurationsService,
     private router: Router,

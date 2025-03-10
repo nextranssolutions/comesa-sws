@@ -68,14 +68,14 @@
                 </dx-button>
             </div>
         </dxi-column>
-        <!-- <dxi-column caption="{{'more_actions' | translate}}" [width]=150 name="command-editing" [allowFiltering]="false"
+        <dxi-column caption="{{'more_actions' | translate}}" [width]=150 name="command-editing" [allowFiltering]="false"
         [allowSorting]="false" cellTemplate="cellTemplate">
         <div *dxTemplate="let d of 'cellTemplate'">
             <dx-menu [items]="d.data.contextMenu" displayExpr="text"
                 (onItemClick)="applicationActionColClick($event,d)">
             </dx-menu>
         </div>
-    </dxi-column> -->
+    </dxi-column>
 
         <dxi-column dataField="reference_no" caption="{{'application_reference' | translate}}"></dxi-column>
         <dxi-column [width]=90 [groupIndex]="0" dataField="permit_name"
@@ -87,12 +87,8 @@
         <dxi-column dataField="invoice_date" caption="{{'invoice_date' | translate}}"></dxi-column>
         <dxi-column dataField="total_invoice_value" caption="{{'total_invoice_value' | translate}}"></dxi-column>
         <dxi-column dataField="currency_name" caption="{{'currency_of_transaction' | translate}}"></dxi-column>
-
-
         <dxi-column dataField="importer_exporter_name" caption="{{'importer_exporter_name' | translate}}"></dxi-column>
-
-        <dxi-column [width]=100 [allowFiltering]="false" dataField="date_added"
-            caption="{{'date_added' | translate}}"></dxi-column>
+        <dxi-column [width]=100 [allowFiltering]="false" dataField="date_added" caption="{{'date_added' | translate}}"></dxi-column>
         <!-- <dxi-column [groupIndex]="1" dataField="status_name" caption="{{'status_name' | translate}}"></dxi-column> -->
         <dxi-column dataField="status_name" caption="{{'application_status' | translate}}"></dxi-column>
         <dxo-grouping #expand [autoExpandAll]="true"></dxo-grouping>
@@ -276,7 +272,6 @@
                     <h6>{{'permit_type_selection_description' | translate}}</h6>
                 </div>
                 <div class="col-lg-12">
-
                     <label>{{'permit_type' | translate}}</label>
                     <dx-select-box [dataSource]="permitTypesData" valueExpr="id" displayExpr="name"
                         placeholder="{{'select_permit_type' | translate}}" [searchEnabled]="true"

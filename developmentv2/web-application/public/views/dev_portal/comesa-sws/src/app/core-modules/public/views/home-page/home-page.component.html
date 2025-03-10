@@ -1,19 +1,15 @@
 <div class="container-fluid">
-  <div class="search-box div-home">
-    <div class="row">
-      <div class="subtitle col-12 col-md-8">
-        <dx-gallery [dataSource]="slides_information" [showIndicator]="false" [showNavButtons]="false" [loop]="true"
-          [height]="'auto'" [width]="'100%'" [slideshowDelay]="5000" [animationDuration]="1">
-          <div *dxTemplate="let slide of 'item'">
-            <div class="slide-content text-center">
-              <h2 class="mb-3">{{ slide.search_section_title | translate }}</h2>
-            </div>
+  <div class="row gx-0 d-lg-flex search-box div-home">
+    <div class="subtitle col-12 col-md-8">
+      <dx-gallery [dataSource]="slides_information" [showIndicator]="false" [showNavButtons]="false" [loop]="true"
+        [height]="'auto'" [width]="'100%'" [slideshowDelay]="5000" [animationDuration]="1">
+        <div *dxTemplate="let slide of 'item'">
+          <div class="slide-content text-center">
+            <h2 class="mb-3">{{ slide.search_section_title | translate }}</h2>
           </div>
-        </dx-gallery>
-      </div>
+        </div>
+      </dx-gallery>
     </div>
-
-
     <div class="col-lg-12">
       <form [formGroup]="searchForm" class="search-box">
         <div class="dx-fieldset flex-wrap gap-3 justify-content-center">
@@ -23,7 +19,7 @@
           </div>
           <div class="dx-field w-md-auto">
             <dx-select-box formControlName="searchByCriteria" [dataSource]="criteriaData" displayExpr="name"
-            [searchEnabled]="true"valueExpr="id" placeholder="{{ 'select_search_criteria' | translate }}"
+              [searchEnabled]="true" valueExpr="id" placeholder="{{ 'select_search_criteria' | translate }}"
               (onValueChanged)="onSearchCriteriaChange($event)" class="form-select-lg">
             </dx-select-box>
           </div>
@@ -31,14 +27,16 @@
           <!-- Transaction Type Dropdown -->
           <div class="dx-field w-md-auto">
             <dx-select-box formControlName="transactionType" [dataSource]="operationTypeData" displayExpr="name"
-            [searchEnabled]="true"valueExpr="name" placeholder="{{ 'select_operation_type' | translate }}" class="form-select-lg">
+              [searchEnabled]="true" valueExpr="name" placeholder="{{ 'select_operation_type' | translate }}"
+              class="form-select-lg">
             </dx-select-box>
           </div>
 
           <!-- Dynamic Type Dropdown -->
           <div class="dx-field w-md-auto">
             <dx-select-box formControlName="productType" [dataSource]="dynamicDataSource" displayExpr="name"
-            [searchEnabled]="true"valueExpr="name" placeholder="{{ productPlaceholder | translate }}" class="form-select-lg">
+              [searchEnabled]="true" valueExpr="name" placeholder="{{ productPlaceholder | translate }}"
+              class="form-select-lg">
             </dx-select-box>
           </div>
 

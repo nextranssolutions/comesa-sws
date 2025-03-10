@@ -17,6 +17,7 @@ import { ImportExportService } from '../../../services/import-export.service';
 import { AuthenticationService } from 'src/app/core-services/authentication/authentication.service';
 
 import { PremisesLicensingService } from 'src/app/regulatory_modules/premises-licensing/services/premises-licensing.service';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-permitgeneraldetails',
@@ -109,11 +110,15 @@ export class PermitgeneraldetailsComponent implements OnInit {
   spinnerMessage: string;
   registration_process_action: string;
   select_registration_section_process: string;
+  isCustomOfficePopupVisible: boolean;
+  customOfficeData: any;
+  isnewcustomoffice: boolean;
+  customOfficeFrm: FormGroup;
   constructor(
-    public utilityService: UtilityService, public premappService: PremisesLicensingService, 
-    public fb: FormBuilder, public spinner: SpinnerVisibilityService, 
+    public utilityService: UtilityService, public premappService: PremisesLicensingService,
+    public fb: FormBuilder, public spinner: SpinnerVisibilityService,
     public configService: ConfigurationsService, public appService: ImportExportService,
-    public router: Router, public formBuilder: FormBuilder, public config: ConfigurationsService, 
+    public router: Router, public formBuilder: FormBuilder, public config: ConfigurationsService,
     public toastr: ToastrService, public authService: AuthenticationService, public httpClient: HttpClient
   ) {
   }
@@ -329,7 +334,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
     this.config.onLoadConfigurationData(data)
       .subscribe(
         data => {
-          
+
           this.data_record = data;
 
           if (this.data_record.success) {
@@ -348,7 +353,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
     this.config.onLoadConfigurationData(data)
       .subscribe(
         data => {
-          
+
           this.data_record = data;
 
           if (this.data_record.success) {
@@ -369,7 +374,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
     this.config.onLoadConfigurationData(data)
       .subscribe(
         data => {
-          
+
           this.data_record = data;
 
           if (this.data_record.success) {
@@ -378,7 +383,25 @@ export class PermitgeneraldetailsComponent implements OnInit {
           }
         });
   }
-  // 
+
+
+
+  funcSelectCustomOffice(data) {
+    let data_resp = data.data;
+    this.customOfficeFrm.patchValue({ custom_office: data_resp.custom_office, custom_office_id: data_resp.custom_office_id, country_oforigin_id: data_resp.country_id });
+
+    this.isCustomOfficePopupVisible = false;
+
+  }
+
+  onCustomPreparing(e) {
+    this.functDataGridToolbar(e, this.funcAddCustomOfficeSite, 'Customs Office');
+  }
+
+  funcAddCustomOfficeSite() {
+    this.isnewcustomoffice = true;
+    this.customOfficeFrm.reset();
+  }
 
   onLoadmodeOfTransportData() {
     var data = {
@@ -390,7 +413,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
     this.config.onLoadConfigurationData(data)
       .subscribe(
         data => {
-          
+
           this.data_record = data;
 
           if (this.data_record.success) {
@@ -411,7 +434,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
     this.config.onLoadConfigurationData(data)
       .subscribe(
         data => {
-          
+
           this.data_record = data;
 
           if (this.data_record.success) {
@@ -433,7 +456,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
     this.config.onLoadConfigurationData(data)
       .subscribe(
         data => {
-          
+
           this.data_record = data;
 
           if (this.data_record.success) {
@@ -494,7 +517,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
     this.config.onLoadConfigurationData(data)
       .subscribe(
         data => {
-          
+
           this.data_record = data;
 
           if (this.data_record.success) {
@@ -599,7 +622,6 @@ export class PermitgeneraldetailsComponent implements OnInit {
     let me = this;
     this.senderReceiverData.store = new CustomStore({
       load: function (loadOptions: any) {
-        console.log(loadOptions)
         var params = '?';
         params += 'skip=' + loadOptions.skip;
         params += '&take=' + loadOptions.take;//searchValue
@@ -626,6 +648,92 @@ export class PermitgeneraldetailsComponent implements OnInit {
 
   }
 
+  onsearchCustomOfficeInfo() {
+    this.consignee_sendertitle = this.consignor_title;
+    // this.checkifsenderreceiver = true;
+
+    this.isCustomOfficePopupVisible = true;
+
+    let me = this;
+    this.customOfficeData.store = new CustomStore({
+      load: function (loadOptions: any) {
+        console.log(loadOptions)
+        var params = '?';
+        params += 'skip=' + loadOptions.skip;
+        params += '&take=' + loadOptions.take;//searchValue
+        var headers = new HttpHeaders({
+          "Accept": "application/json",
+          "Authorization": "Bearer " + me.authService.getAccessToken(),
+        });
+
+        me.configData = {
+          headers: headers,
+          params: { skip: loadOptions.skip, take: loadOptions.take, searchValue: loadOptions.filter, table_name: 'tra_customoffice_info' }
+        };
+        return me.httpClient.get(AppSettings.base_url + '/' + 'api/import-export/onLoadCustomsOfficeData', me.configData)
+          .toPromise()
+          .then((data: any) => {
+            return {
+              data: data.data,
+              totalCount: data.totalCount
+            }
+          })
+          .catch(error => { throw 'Data Loading Error' });
+      }
+    });
+
+  }
+
+  funcSearchCustomOffice() {
+    this.isCustomOfficePopupVisible = true;
+    const me = this;
+
+    this.customOfficeData.store = new CustomStore({
+      load: async function (loadOptions: any) {
+        // console.log(loadOptions);
+
+        // Extract pagination parameters safely
+        const skip = loadOptions.skip ?? 0;
+        const take = loadOptions.take ?? 50;
+
+        // Extract search filter properly
+        let searchValue = '';
+        if (Array.isArray(loadOptions.filter) && loadOptions.filter.length > 0) {
+          searchValue = loadOptions.filter[2] || ''; // Adjust index based on actual filter structure
+        }
+
+        // Set up request headers
+        const headers = new HttpHeaders({
+          "Accept": "application/json",
+          "Authorization": "Bearer " + me.authService.getAccessToken(),
+        });
+
+        // API request configuration
+        // const configData = {
+        //   headers,
+        //   params: { skip, take, searchValue },
+        // };
+        me.configData = {
+          headers: headers,
+          params: { skip: loadOptions.skip, take: loadOptions.take, searchValue: loadOptions.filter, table_name: 'tra_customoffice_info' }
+        };
+
+        try {
+          const response: any = await lastValueFrom(
+            me.httpClient.get(AppSettings.base_url + '/api/import-export/onLoadCustomsOfficeData', me.configData)
+          );
+
+          return {
+            data: response.data || [],
+            totalCount: response.totalCount || 0
+          };
+        } catch (error) {
+          console.error('Data Loading Error', error);
+          throw 'Data Loading Error';
+        }
+      }
+    });
+  }
 
   onsearchConsignee() {
 
