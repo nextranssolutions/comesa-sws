@@ -194,23 +194,6 @@ export class SharedImpExpdashboardClass {
   }
 
   
-  onAdvanceDataGridSearch(e){
-    e.toolbarOptions.items.unshift({
-      location: 'after',
-      widget: 'dxCheckBox',
-      options: {
-        icon: 'select',
-        text: 'Show Advanced Search',
-        value: this.show_advancesearch,
-        onValueChanged: this.onActivatetheAdvanceSearch.bind(this)
-      }
-    });
-  }
-  onActivatetheAdvanceSearch(e){
-
-      this.show_advancesearch =  e.value;
-
-  }
   reloadPermitApplicationsApplications(appworkflow_status_id = 0,) {
     this.spinnerShow('Loading...........');
     var data_submit = {
