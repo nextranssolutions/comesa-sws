@@ -243,7 +243,7 @@ ngOnInit() {
         regulatory_subfunction_id: new FormControl('', Validators.compose([])),
         // regulated_productstype_id: new FormControl('', Validators.compose([])),
         firstName: new FormControl('', Validators.compose([])),
-        organisation_id:new FormControl('', Validators.compose([])),
+        organisation_id:new FormControl('', Validators.compose([Validators.required])),
       });
 
   this.workflowStagesFrm = new FormGroup({
