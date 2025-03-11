@@ -35,7 +35,9 @@ export class ApplicantDetailsComponent {
   userAccountTypeData: any;
   accountStatusData: any;
   configData: any;
+  spinnerMessage: string;
   data_record: any;
+  loadingVisible: boolean;
   response: any;
   is_local_agent: boolean;
   isRegistrantDetailsWinshow: boolean = false;
@@ -332,7 +334,7 @@ export class ApplicantDetailsComponent {
         this.toastr.error('Fill In All Mandatory fields with (*), missing value on ' + name.replace('_id', ''), 'Alert');
         return;
       }
-      this.spinner.show();
+      this.spinnerShow('');
       this.userservice.onsaveUserData(this.table_name, this.userAccountFrm.value, 'onsaveTraderData')
         .subscribe(
           response => {
@@ -346,17 +348,17 @@ export class ApplicantDetailsComponent {
             } else {
               this.toastr.error(this.response.message, 'Alert');
             }
-            this.spinner.hide();
+            this.spinnerHide();
           },
           error => {
             this.toastr.error('Error Occurred', 'Alert');
-            this.spinner.hide();
+            this.spinnerHide();
           });
     }
     if (this.userAccountFrm.invalid) {
       return;
     }
-    this.spinner.show();
+    this.spinnerShow('');
     this.userservice.onsaveUserData(this.table_name, this.userAccountFrm.value, 'onSaveUniformApplicantDataset')
       .subscribe(
         response => {
@@ -370,11 +372,11 @@ export class ApplicantDetailsComponent {
           } else {
             this.toastr.error(this.response.message, 'Alert');
           }
-          this.spinner.hide();
+          this.spinnerHide();
         },
         error => {
           this.toastr.error('Error Occurred', 'Alert');
-          this.spinner.hide();
+          this.spinnerHide();
         });
   }
 
@@ -436,6 +438,14 @@ export class ApplicantDetailsComponent {
 
     this.show_advancesearch = e.value;
 
+  }
+
+  spinnerShow(spinnerMessage) {
+    this.loadingVisible = true;
+    this.spinnerMessage = spinnerMessage;
+  }
+  spinnerHide() {
+    this.loadingVisible = false;
   }
 
 }

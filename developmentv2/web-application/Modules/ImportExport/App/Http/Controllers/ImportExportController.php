@@ -813,7 +813,7 @@ class ImportExportController extends Controller
                     'manufacturing_date' => $manufacturing_date,
                     'expiry_date' => $expiry_date,
                     'storage_condition_id' => $req->storage_condition_id,
-
+                    'product_description' =>$req->product_description,
                     'common_name_id' => $req->common_name_id,
                     'classification_id' => $req->classification_id,
                     'product_category_id' => $req->product_category_id,
@@ -1716,7 +1716,7 @@ class ImportExportController extends Controller
                 ->leftJoin('tra_trader_account as t18', 't1.applicant_id', 't18.id')
                 ->leftJoin('par_application_options as t19', 't1.applicationapplicant_option_id', 't19.id')
                 
-                ->select('t18.*','t19.name as applicationapplicant_option','t1.created_on as date_added','t6.current_stage_id as workflow_stage_id','t15.name as invoice_type', 't18.name as applicant_name', 't1.id as application_id', 't1.*','t17.name as declaration', 't16.name as currency_name', 't15.name as invoice_type', 't14.name as final_destination_country', 't5.name as port_of_entry', 't13.name as mode_of_transport', 't12.name as currency_name', 't2.name as permit_typecategory', 't10.name as application_status', 't8.name as action_name', 't8.iconCls as iconCls', 't8.action as action', 't2.name as permit_name', 't3.name as port_type', 't1.id', 't4.name as importer_exporter_name');
+                ->select('t18.*','t19.name as applicationapplicant_option','t1.created_on as date_added','t6.current_stage_id as workflow_stage_id','t15.name as invoice_type', 't18.name as applicant_name', 't1.id as application_id', 't1.*','t17.name as declaration', 't15.name as invoice_type', 't14.name as final_destination_country', 't5.name as port_of_entry', 't13.name as mode_of_transport', 't12.name as currency_name', 't2.name as permit_typecategory', 't10.name as application_status', 't8.name as action_name', 't8.iconCls as iconCls', 't8.action as action', 't2.name as permit_name', 't3.name as port_type', 't1.id', 't4.name as importer_exporter_name');
 
                
             if ($workflow_status_id != '') {

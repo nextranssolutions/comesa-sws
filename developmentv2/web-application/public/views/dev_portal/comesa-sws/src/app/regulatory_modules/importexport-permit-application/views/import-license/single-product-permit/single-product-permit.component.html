@@ -58,7 +58,7 @@
                     [elementAttr]="{  class: 'pull-left' }" (onClick)="onApplicationDashboard()">
                 </dx-button>
                 <dx-button text="{{'permit_general_information' | translate}}" iconPosition="right" type="success"
-                    icon="fa fa-angle-double-right" [elementAttr]="{ id: 'elementId' }" (onClick)="nextStep()">
+                    icon="fa fa-angle-double-right" [elementAttr]="{ id: 'elementId' }" (onClick)="onextStep()">
                 </dx-button>
             </div>
         </ng-wizard-step>
@@ -81,17 +81,17 @@
             </div>
 
             <div class="div_footer button-container">
-                <dx-button text="{{'previous_step' | translate}}" iconPosition="left" type="danger"
+                <dx-button text="{{'applicant_information' | translate}}" iconPosition="left" type="danger"
                     icon="fa fa-angle-double-left" [elementAttr]="{ id: 'elementId', }" (onClick)="previousStep()">
                 </dx-button>
 
-                <dx-button text="{{'on_save_application' | translate}}" iconPosition="left" type="default"
+                <dx-button text="{{'save_general_permit_information' | translate}}" iconPosition="left" type="default"
                     icon="fa fa-save" (onClick)="onSaveImportExportApplication()" icon="fa fa-angle-double-left"
                     [elementAttr]="{ id: 'elementId', }">
                 </dx-button>
 
                 <dx-button text="{{'permit_product_information' | translate}}" iconPosition="right" type="success"
-                    icon="fa fa-angle-double-right" [elementAttr]="{ id: 'elementId' }" (onClick)="nextTab()">
+                    icon="fa fa-angle-double-right" [elementAttr]="{ id: 'elementId' }" (onClick)="onNextStep()">
                 </dx-button>
             </div>
 
@@ -112,15 +112,15 @@
                 </div>
             </div>
             <div class="div_footer button-container">
-                <dx-button text="{{'previous_step' | translate}}" iconPosition="left" type="danger"
+                <dx-button text="{{'general_permit_information' | translate}}" iconPosition="left" type="danger"
                     icon="fa fa-angle-double-left" [elementAttr]="{ id: 'elementId', }" (onClick)="previousStep()">
                 </dx-button>
-                <dx-button text="{{'on_save_application' | translate}}" iconPosition="left" type="default"
+                <dx-button text="{{'save_permit_product_application' | translate}}" iconPosition="left" type="default"
                     icon="fa fa-save" (onClick)="onsavePermitProductdetails()" icon="fa fa-angle-double-left"
                     [elementAttr]="{ id: 'elementId', }">
                 </dx-button>
-                <dx-button text="{{'next_step' | translate}}" iconPosition="right" type="success"
-                    icon="fa fa-angle-double-right" [elementAttr]="{ id: 'elementId', }" (onClick)="nextTab()">
+                <dx-button text="{{'document_submission' | translate}}" iconPosition="right" type="success"
+                    icon="fa fa-angle-double-right" [elementAttr]="{ id: 'elementId', }" (onClick)="onNextStep()">
                 </dx-button>
 
             </div>
@@ -138,10 +138,10 @@
                 </div>
             </div>
             <div class="div_footer button-container">
-                <dx-button text="{{'previous_step' | translate}}" iconPosition="left" type="danger"
+                <dx-button text="{{'permit_product_application' | translate}}" iconPosition="left" type="danger"
                     icon="fa fa-angle-double-left" [elementAttr]="{ id: 'elementId', }" (onClick)="previousStep()">
                 </dx-button>
-                <dx-button text="{{'next_step' | translate}}" iconPosition="right" type="success"
+                <dx-button text="{{'permit_checklist' | translate}}" iconPosition="right" type="success"
                     icon="fa fa-angle-double-right" [elementAttr]="{ id: 'elementId', }" (onClick)="nextTab()">
                 </dx-button>
 
@@ -157,10 +157,10 @@
                 </div>
             </div>
             <div class="div_footer button-container">
-                <dx-button text="{{'previous_step' | translate}}" iconPosition="left" type="danger"
+                <dx-button text="{{'document_submission' | translate}}" iconPosition="left" type="danger"
                     icon="fa fa-angle-double-left" [elementAttr]="{ id: 'elementId', }" (onClick)="previousStep()">
                 </dx-button>
-                <dx-button text="{{'next_step' | translate}}" iconPosition="right" type="success"
+                <dx-button text="{{'applicable_fees_charges' | translate}}" iconPosition="right" type="success"
                     icon="fa fa-angle-double-right" [elementAttr]="{ id: 'elementId', }" (onClick)="nextTab()">
                 </dx-button>
 
@@ -177,7 +177,7 @@
                 </div>
             </div>
             <div class="div_footer button-container">
-                <dx-button text="{{'previous_step' | translate}}" iconPosition="left" type="danger"
+                <dx-button text="{{'permit_checklist' | translate}}" iconPosition="left" type="danger"
                     icon="fa fa-angle-double-left" [elementAttr]="{ id: 'elementId', }" (onClick)="previousStep()">
                 </dx-button>
                 <dx-button text="{{'submit_application' | translate }}" type="default" icon="fa fa-save"

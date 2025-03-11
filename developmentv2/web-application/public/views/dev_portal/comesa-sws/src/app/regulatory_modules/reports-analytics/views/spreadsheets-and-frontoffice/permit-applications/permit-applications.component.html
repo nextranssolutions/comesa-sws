@@ -1,36 +1,16 @@
 <div class="page-header">
     <h1>{{'draft_applications' | translate}} </h1>
-</div><!-- /.page-header -->
-
-
-<div class="row">
+</div>
+<!-- <div class="row">
     <div class="col-xs-12">
-        <!-- PAGE CONTENT BEGINS -->
         <div class="sidebar h-sidebar navbar-collapse ace-save-state">
             <ul class="nav nav-list">
-                <li class="link-bggreen dropdown">
-                    <a href="javascript:void(0)" class="nav-item nav-link dropdown-toggle" id="navbarDropdownMenuLink"
-                        role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                        <i class="fa fa-file-alt" aria-hidden="true"></i>
-                        {{ 'permit_application' | translate }}
-                    </a>
-                    <ul class="dropdown-menu" aria-labelledby="navbarDropdownMenuLink">
-                        <li>
-                            <a routerLink="/importexport-permit-application/single-productapplication-permits"
-                                class="dropdown-item"
-                                (click)="onInitiatenewSingleProductPermitImportExpApplications(1)">
-                                {{ 'single_product_application' | translate }}
-                            </a>
-                        </li>
-                        <li>
-                            <a routerLink="/importexport-permit-application/initiate-importapp" class="dropdown-item"
-                                (click)="onInitiatenewImportExpApplications(2)">
-                                {{ 'multiple_product_application' | translate }}
-                            </a>
-                        </li>
-                    </ul>
+                <li class="link-bggreen">
+                    <a (click)="onInitiatenewImportExpApplications()" href="javascript:void(0)"><span class=""> <i
+                                class="menu-icon fa fa-plus"></i> &nbsp; {{'initiate_importexport_application'
+                            |translate}}</span>
+                    </a> <b class="arrow"></b>
                 </li>
-
                 <li class="link-bgorange">
                     <a href="javascript:void(0)"><span class=""> <i class="menu-icon fa fa-money"></i> &nbsp;
                             {{'fees_and_charges' | translate}}</span></a>
@@ -47,26 +27,84 @@
                     </a><b class="arrow"></b>
                 </li>
                 <li class="spacer"></li>
-
+                <li class="link-bggray">
+                    <a href="javascript:void(0)"><span> <i class="menu-icon fa fa-book"></i>&nbsp;{{'manual' |
+                            translate}}</span></a>
+                </li>
                 <li class="link-bgyellow">
                     <a href="javascript:void(0)"><span><i class="menu-icon fa fa-book"></i>&nbsp;{{'faqs' |
                             translate}}</span></a>
                 </li>
 
-            </ul><!-- /.nav-list -->
-        </div><!-- .sidebar -->
+            </ul>
+        </div>
 
-    </div><!-- /.col -->
-</div><!-- /.row -->
+    </div>
+</div> -->
 
-<div class="col-lg-12 div-backwhite no-padding">
-    <dx-data-grid class=" row-border hover " (onCellPrepared)="onCellPrepared($event)" [showRowLines]="true"
+
+<!-- <div class="col-lg-12 div-backwhite no-padding"> -->
+    <section class="content">
+    <div class="container-fluid">
+     <div class="flex-container">
+      <div class="column-selector" >
+        <div class="column-header" >{{ 'select_visible_columns' | translate }}</div><br>            
+          <div>     
+         
+          <!-- <div class="dx-fieldset"> -->
+            <div class="dx-field">
+                    <dx-check-box [value]="true" [elementAttr]="{ 'aria-label': 'Checked' }" [(ngModel)]="columnVisibility.application_reference"></dx-check-box>
+                <div class="dx-field-label">{{ 'application_reference' | translate }}</div>
+            </div>
+            <div class="dx-field">
+                    <dx-check-box [value]="true" [elementAttr]="{ 'aria-label': 'Checked' }" [(ngModel)]="columnVisibility.permit_type"></dx-check-box>
+                <div class="dx-field-label">{{ 'permit_type' | translate }}</div>
+            </div>
+            <div class="dx-field">
+                    <dx-check-box [value]="true" [elementAttr]="{ 'aria-label': 'Checked' }" [(ngModel)]="columnVisibility.date_of_application"></dx-check-box>
+                <div class="dx-field-label">{{ 'date_of_application' | translate }}</div>
+            </div>
+            <div class="dx-field">
+                    <dx-check-box [value]="true" [elementAttr]="{ 'aria-label': 'Checked' }" [(ngModel)]="columnVisibility.invoice_number"></dx-check-box>
+                <div class="dx-field-label">{{ 'invoice_number' | translate }}</div>
+            </div>
+            <div class="dx-field">
+                    <dx-check-box [value]="true" [elementAttr]="{ 'aria-label': 'Checked' }" [(ngModel)]="columnVisibility.invoice_date"></dx-check-box>
+                <div class="dx-field-label">{{ 'invoice_date' | translate }}</div>
+            </div>
+            <div class="dx-field">
+                    <dx-check-box [value]="true" [elementAttr]="{ 'aria-label': 'Checked' }" [(ngModel)]="columnVisibility.total_invoice_value"></dx-check-box>
+                <div class="dx-field-label">{{ 'total_invoice_value' | translate }}</div>
+            </div>
+            <div class="dx-field">
+                    <dx-check-box [value]="true" [elementAttr]="{ 'aria-label': 'Checked' }" [(ngModel)]="columnVisibility.currency_of_transaction"></dx-check-box>
+                <div class="dx-field-label">{{ 'currency_of_transaction' | translate }}</div>
+            </div>
+            <div class="dx-field">
+                    <dx-check-box [value]="true" [elementAttr]="{ 'aria-label': 'Checked' }" [(ngModel)]="columnVisibility.importer_exporter_name"></dx-check-box>
+                <div class="dx-field-label">{{ 'importer_exporter_name' | translate }}</div>
+            </div>
+            <div class="dx-field">
+                    <dx-check-box [value]="true" [elementAttr]="{ 'aria-label': 'Checked' }" [(ngModel)]="columnVisibility.date_added"></dx-check-box>
+                <div class="dx-field-label">{{ 'date_added' | translate }}</div>
+            </div>
+            <div class="dx-field">
+                <!-- <div class="dx-field-value"> -->
+                    <dx-check-box [value]="true" [elementAttr]="{ 'aria-label': 'Checked' }" [(ngModel)]="columnVisibility.application_status"></dx-check-box>
+                <!-- </div> -->
+                <div class="dx-field-label">{{ 'application_status' | translate }}</div>
+            </div>
+        <!-- </div> -->
+          
+          
+        
+         
+        </div> 
+       </div>
+      <dx-data-grid class="table row-border hover " (onCellPrepared)="onCellPrepared($event)" [showRowLines]="true"
         [allowColumnResizing]="true" [columnHidingEnabled]="false" [wordWrapEnabled]="true"
-
-        (onToolbarPreparing)="onAdvanceDataGridSearch($event)" [dataSource]="dtImportExpApplicationData"
-        [showBorders]="true" keyExpr="id">
-        <dxo-filter-row [visible]="show_advancesearch"></dxo-filter-row>
-
+        [dataSource]="dtImportExpApplicationData" [showBorders]="true" keyExpr="id">
+        <dxo-filter-row [visible]="true"></dxo-filter-row>
         <dxo-load-panel [enabled]="true">
         </dxo-load-panel>
         <dxo-paging [enabled]="true">
@@ -79,40 +117,48 @@
         <dxo-export [enabled]="true" fileName="ImportExport" [allowExportSelectedData]="true"></dxo-export>
 
         <dxo-selection mode="single"></dxo-selection>
-        <dxi-column [width]=80 caption="{{'actions' | translate }}" name="command-editing" [allowFiltering]="false"
+        <!-- <dxi-column [width]=200 caption="{{'actions' | translate}}" name="command-editing" [allowFiltering]="false"
             [allowSorting]="false" cellTemplate="cellTemplateSingle">
             <div *dxTemplate="let d of 'cellTemplateSingle'">
                 <dx-button text="{{d.data.action_name}}" (click)="singleApplicationActionColClick(d.data)"
-                    type="default" icon="{{d.data.iconCls}}">
+                    type="success" icon="{{d.data.iconCls}}">
                 </dx-button>
             </div>
-        </dxi-column>
-        <dxi-column caption="{{'more_actions' | translate}}" [width]=100 name="command-editing" [allowFiltering]="false"
-            [allowSorting]="false" cellTemplate="cellTemplate">
-            <div *dxTemplate="let d of 'cellTemplate'">
-                <dx-menu [items]="d.data.contextMenu" displayExpr="text"
-                    (onItemClick)="applicationActionColClick($event,d)">
-                </dx-menu>
-            </div>
-        </dxi-column>
-        
-        <dxi-column dataField="reference_no" caption="{{'application_reference' | translate}}"></dxi-column>
+        </dxi-column> -->
+        <!-- <dxi-column caption="{{'more_actions' | translate}}" [width]=150 name="command-editing" [allowFiltering]="false"
+        [allowSorting]="false" cellTemplate="cellTemplate">
+        <div *dxTemplate="let d of 'cellTemplate'">
+            <dx-menu [items]="d.data.contextMenu" displayExpr="text"
+                (onItemClick)="applicationActionColClick($event,d)">
+            </dx-menu>
+        </div>
+    </dxi-column> -->
 
-        <dxi-column [width]=100 dataField="invoice_type" caption="{{'invoice_type' | translate}}"></dxi-column>
-        <dxi-column [width]=100 dataField="invoice_number" caption="{{'invoice_number' | translate}}"></dxi-column>
-        <dxi-column dataField="invoice_date" caption="{{'invoice_date' | translate}}"></dxi-column>
-        <dxi-column dataField="port_entryexit" caption="{{'port_of_entryexit' | translate}}"></dxi-column>
-        <dxi-column dataField="currency_name" caption="{{'currency_of_transaction' | translate}}"></dxi-column>
-        <dxi-column [groupIndex]="0" dataField="applicationapplicant_option" caption="{{'applicationapplicant_option' | translate}}"></dxi-column>
-        <dxi-column  dataField="applicant_name" caption="{{'applicant_name' | translate}}"></dxi-column>
-        <dxi-column dataField="importer_exporter_name" caption="{{'importer_exporter_name' | translate}}"></dxi-column>
-        <dxi-column dataField="date_of_application" caption="{{'date_of_application' | translate}}"></dxi-column>
-        <dxi-column dataField="current_process" caption="{{'current_process' | translate}}"></dxi-column>
-        <dxi-column dataField="expectednext_process" caption="{{'expectednext_process' | translate}}"></dxi-column>
+        <dxi-column dataField="reference_no" caption="{{'application_reference' | translate}}"*ngIf="columnVisibility.application_reference"></dxi-column>
+        <dxi-column [width]=90 [groupIndex]="0" dataField="permit_name"
+            caption="{{'permit_type' | translate}}" *ngIf="columnVisibility.permit_type"></dxi-column>
+        <dxi-column [width]=100 dataField="date_of_application"
+            caption="{{'date_of_application' | translate}}" *ngIf="columnVisibility.date_of_application"></dxi-column>
+
+        <dxi-column [width]=100 dataField="invoice_number" caption="{{'invoice_number' | translate}}"*ngIf="columnVisibility.invoice_number"></dxi-column>
+        <dxi-column dataField="invoice_date" caption="{{'invoice_date' | translate}}"*ngIf="columnVisibility.invoice_date"></dxi-column>
+        <dxi-column dataField="total_invoice_value" caption="{{'total_invoice_value' | translate}}"*ngIf="columnVisibility.total_invoice_value"></dxi-column>
+        <dxi-column dataField="currency_name" caption="{{'currency_of_transaction' | translate}}"*ngIf="columnVisibility.currency_of_transaction"></dxi-column>
+        <dxi-column dataField="importer_exporter_name" caption="{{'importer_exporter_name' | translate}}"*ngIf="columnVisibility.importer_exporter_name"></dxi-column>
+        <dxi-column [width]=100 [allowFiltering]="false" dataField="date_added" caption="{{'date_added' | translate}}"*ngIf="columnVisibility.date_added"></dxi-column>
+        <!-- <dxi-column [groupIndex]="1" dataField="status_name" caption="{{'status_name' | translate}}"></dxi-column> -->
+        <dxi-column dataField="status_name" caption="{{'application_status' | translate}}"*ngIf="columnVisibility.application_status"></dxi-column>
         <dxo-grouping #expand [autoExpandAll]="true"></dxo-grouping>
-    </dx-data-grid>
+     </dx-data-grid>
+    </div>
+    </div>
+    </section>
 
-</div>
+<!-- </div> -->
+
+<dx-load-panel #loadPanel shadingColor="rgba(0,0,0,0.4)" [position]="{ of: '#employee' }" [(visible)]="loadingVisible"
+    [showIndicator]="true" [showPane]="true" [shading]="true" [message]="spinnerMessage" [hideOnOutsideClick]="false">
+</dx-load-panel>
 
 
 <dx-popup class="popup" [width]="funcpopWidth(80)" [height]="450" [showTitle]="true"
@@ -264,8 +310,6 @@
             <dxi-column [width]=90 dataField="added_on" caption="{{'added_on' | translate}}"></dxi-column>
             <dxi-column [width]=200 cssClass='WrappedColumnClass' dataField="rejection_remarks"
                 caption="{{'rejection_remarks' | translate}}"></dxi-column>
-
-
         </dx-data-grid>
     </div>
 </dx-popup>
@@ -277,6 +321,34 @@
     </div>
 </dx-popup>
 
+<dx-popup class="popup" [width]="funcpopWidth(45)" [height]="funcpopHeight(45)" [showTitle]="true"
+    title="Import License Application" [dragEnabled]="false" [hideOnOutsideClick]="false"
+    [(visible)]="isPermitInitialisation">
+    <div *dxTemplate="let data of 'content'">
+        <dx-scroll-view>
+            <form enctype="multipart/form-data" style="margin:0.5px" class="row div-whiteback " role="form"
+                [formGroup]="applicationSelectionfrm" (ngSubmit)="onApplicationSelection()">
+                <div class="col-lg-12">
+                    <h6>{{'permit_type_selection_description' | translate}}</h6>
+                </div>
+                <div class="col-lg-12">
+                    <label>{{'permit_type' | translate}}</label>
+                    <dx-select-box [dataSource]="permitTypesData" valueExpr="id" displayExpr="name"
+                        placeholder="{{'select_permit_type' | translate}}" [searchEnabled]="true"
+                        formControlName="transactionpermit_type_id">
+                    </dx-select-box>
+                </div>
+                <div class="col-lg-12  pull-right row" style="text-align: center;">
+
+                    <dx-button icon="fa fa-arrow-right" text="{{'initiate_permit_application' | translate}}"
+                        type="success" (onClick)="onApplicationSelection()">
+                    </dx-button>
+                </div>
+
+            </form>
+        </dx-scroll-view>
+    </div>
+</dx-popup>
 
 
 <dx-popup class="popup" [width]=450 [height]=150 [showTitle]="true" title="Invoice Printing and Submission"
@@ -288,7 +360,3 @@
         </dx-scroll-view>
     </div>
 </dx-popup>
-
-<dx-load-panel #loadPanel shadingColor="rgba(0,0,0,0.4)" [position]="{ of: '#employee' }" [(visible)]="loadingVisible"
-    [showIndicator]="true" [showPane]="true" [shading]="true" [message]="spinnerMessage" [hideOnOutsideClick]="false">
-</dx-load-panel>
