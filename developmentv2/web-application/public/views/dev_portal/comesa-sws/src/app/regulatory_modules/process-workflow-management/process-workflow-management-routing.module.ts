@@ -27,7 +27,8 @@ const routes: Routes = [{
   path: '',
     component: ProcessWorkflowMgtLayoutComponent,
     canActivate: [AuthGuard],
-    children: [{
+    children: [
+      {
       path: 'app-process-workflows',
       component: ProcessWorkflowsComponent
     },
