@@ -201,6 +201,7 @@ export class SharedImpexpApplicationClass {
     this.application_details = JSON.parse(this.application_details);
    
     this.form_fielddata = this.application_details.application_form;
+
     this.products_fielddata = this.application_details.permit_products_details;
     this.applicants_fielddata = this.application_details.applicant_details;
 
@@ -519,7 +520,6 @@ export class SharedImpexpApplicationClass {
     
     let applicant_id = this.applicantDetailsForm.get('id')?.value;
     let applicationapplicant_option_id = this.applicantDetailsForm.get('applicationapplicant_option_id')?.value;
-
     this.applicationGeneraldetailsfrm.value['applicant_id'] = applicant_id;
     this.applicationGeneraldetailsfrm.value['applicationapplicant_option_id'] = applicationapplicant_option_id;
 

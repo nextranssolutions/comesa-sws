@@ -168,17 +168,17 @@ export class PermitgeneraldetailsComponent implements OnInit {
       this.ammendReadOnly = false;
     }
     this.customOfficeFrm = new FormGroup({
-          id: new FormControl('', Validators.compose([])),
-          name: new FormControl('', Validators.compose([Validators.required])),
-          country_id: new FormControl('', Validators.compose([Validators.required])),
-          region_id: new FormControl('', Validators.compose([])),
-          district_id: new FormControl('', Validators.compose([])),
-          email_address: new FormControl('', Validators.compose([])),
-          postal_address: new FormControl('', Validators.compose([])),
-          telephone_no: new FormControl('', Validators.compose([])),
-          mobile_no: new FormControl('', Validators.compose([])),
-          physical_address: new FormControl('', Validators.compose([]))
-        });
+      id: new FormControl('', Validators.compose([])),
+      name: new FormControl('', Validators.compose([Validators.required])),
+      country_id: new FormControl('', Validators.compose([Validators.required])),
+      region_id: new FormControl('', Validators.compose([])),
+      district_id: new FormControl('', Validators.compose([])),
+      email_address: new FormControl('', Validators.compose([])),
+      postal_address: new FormControl('', Validators.compose([])),
+      telephone_no: new FormControl('', Validators.compose([])),
+      mobile_no: new FormControl('', Validators.compose([])),
+      physical_address: new FormControl('', Validators.compose([]))
+    });
   }
   onApplicationCategorySelection($event) {
     let permit_category_id = $event.selectedItem.id;
@@ -370,7 +370,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
     this.config.onLoadConfigurationData(data)
       .subscribe(
         data => {
-          
+
           this.data_record = data;
 
           if (this.data_record.success) {
@@ -389,7 +389,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
     this.config.onLoadConfigurationData(data)
       .subscribe(
         data => {
-          
+
           this.data_record = data;
 
           if (this.data_record.success) {
@@ -410,7 +410,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
     this.config.onLoadConfigurationData(data)
       .subscribe(
         data => {
-          
+
           this.data_record = data;
 
           if (this.data_record.success) {
@@ -431,7 +431,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
     this.config.onLoadConfigurationData(data)
       .subscribe(
         data => {
-          
+
           this.data_record = data;
 
           if (this.data_record.success) {
@@ -452,7 +452,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
     this.config.onLoadConfigurationData(data)
       .subscribe(
         data => {
-          
+
           this.data_record = data;
 
           if (this.data_record.success) {
@@ -468,13 +468,13 @@ export class PermitgeneraldetailsComponent implements OnInit {
     var data = {
       table_name: 'par_currencies',
       is_enabled: 1,
-      
+
     };
 
     this.config.onLoadConfigurationData(data)
       .subscribe(
         data => {
-          
+
           this.data_record = data;
 
           if (this.data_record.success) {
@@ -535,7 +535,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
     this.config.onLoadConfigurationData(data)
       .subscribe(
         data => {
-          
+
           this.data_record = data;
 
           if (this.data_record.success) {
@@ -553,13 +553,13 @@ export class PermitgeneraldetailsComponent implements OnInit {
     var data = {
       table_name: 'par_permit_typecategories',
       is_enabled: true,
-      
+
     };
 
     this.config.onLoadConfigurationData(data)
       .subscribe(
         data => {
-          
+
           this.data_record = data;
 
           if (this.data_record.success) {
@@ -984,99 +984,98 @@ export class PermitgeneraldetailsComponent implements OnInit {
 
   onCustomPreparing(e) {
     this.functDataGridToolbar(e, this.funcAddCustomOfficeSite, 'Customs Office');
-  } 
+  }
 
   funcAddCustomOfficeSite() {
     this.isnewcustomoffice = true;
     this.customOfficeFrm.reset();
   }
 
-   funcSearchCustomOffice() {
-      this.isCustomOfficePopupVisible = true;
-      const me = this;
-  
-      this.customOfficeData.store = new CustomStore({
-        load: async function (loadOptions: any) {
-        // console.log(loadOptions);
-  
-          // Extract pagination parameters safely
-          const skip = loadOptions.skip ?? 0;
-          const take = loadOptions.take ?? 50;
-  
-          // Extract search filter properly
-          let searchValue = '';
-          if (Array.isArray(loadOptions.filter) && loadOptions.filter.length > 0) {
-            searchValue = loadOptions.filter[2] || ''; // Adjust index based on actual filter structure
-          }
-  
-          // Set up request headers
-          const headers = new HttpHeaders({
+  onsearchCustomOfficeInfo() {
+
+    this.checkifsenderreceiver = false;
+    this.isCustomOfficePopupVisible = true;  // Show popup
+
+    let me = this;
+    this.customOfficeData = {
+      store: new CustomStore({
+        load: function (loadOptions: any) {
+          let params = '?skip=' + (loadOptions.skip || 0);
+          params += '&take=' + (loadOptions.take || 50);
+
+          let headers = new HttpHeaders({
             "Accept": "application/json",
             "Authorization": "Bearer " + me.authService.getAccessToken(),
           });
-  
-          // API request configuration
-          const configData = {
-            headers,
-            params: { skip, take, searchValue },
+
+          me.configData = {
+            headers: headers,
+            params: {
+              skip: loadOptions.skip || 0,
+              take: loadOptions.take || 50,
+              searchValue: loadOptions.filter || '',
+              table_name: 'tra_customoffice_info'
+            }
           };
-  
-          try {
-            const response: any = await lastValueFrom(
-              me.httpClient.get(AppSettings.base_url + '/api/import-export/onLoadCustomsOfficeData', configData)
-            );
-  
-            return {
-              data: response.data || [],
-              totalCount: response.totalCount || 0
-            };
-          } catch (error) {
-            console.error('Data Loading Error', error);
-            throw 'Data Loading Error';
+
+          return me.httpClient.get(AppSettings.base_url + '/api/import-export/onLoadCustomsOfficeData', me.configData)
+            .toPromise()
+            .then((data: any) => {
+
+              return {
+                data: data.data || [],
+                totalCount: data.totalCount || 0
+              };
+            })
+            .catch(error => {
+              throw 'Data Loading Error';
+            });
+        }
+      })
+    };
+  }
+
+
+
+
+  onAddCustomDetails() {
+    this.spinner.show();
+    let custom_office = this.customOfficeFrm.get('name')?.value;
+
+    this.appService.onAddManufacturingSite('tra_manufacturer_info', this.customOfficeFrm.value, 'saveManufacturerDetails')
+      .subscribe({
+        next: (response) => {
+          this.product_resp = response;
+
+          if (this.product_resp.success) {
+            this.isnewcustomoffice = false;
+            this.isproductManufacturerModalShow = false;
+
+            let custom_office_id = this.product_resp.record_id; // Ensure API sends this value
+
+            if (custom_office_id) {
+              this.customOfficeFrm.patchValue({
+                custom_office: custom_office,
+                custom_office_id: custom_office_id
+              });
+
+              this.isCustomOfficePopupVisible = false;
+              this.toastr.success(this.product_resp.message, 'Success');
+            } else {
+              this.toastr.warning('Custom saved, but ID not returned.', 'Warning');
+            }
+          } else {
+            this.toastr.error(this.product_resp.message, 'Alert');
           }
+        },
+        error: (error) => {
+          console.error('Error Occurred:', error);
+          this.toastr.error('An error occurred while saving details.', 'Error');
+        },
+        complete: () => {
+          this.spinner.hide();
         }
       });
-    }
-
-
-    onAddCustomDetails() {
-      this.spinner.show();
-      let custom_office = this.customOfficeFrm.get('name')?.value;
-  
-      this.appService.onAddManufacturingSite('tra_manufacturer_info', this.customOfficeFrm.value, 'saveManufacturerDetails')
-        .subscribe({
-          next: (response) => {
-            this.product_resp = response;
-            
-            if (this.product_resp.success) {
-              this.isnewcustomoffice = false;
-              this.isproductManufacturerModalShow = false;
-  
-              let custom_office_id = this.product_resp.record_id; // Ensure API sends this value
-  
-              if (custom_office_id) {
-                this.customOfficeFrm.patchValue({ 
-                  custom_office: custom_office, 
-                  custom_office_id: custom_office_id 
-                });
-  
-                this.isCustomOfficePopupVisible = false;
-                this.toastr.success(this.product_resp.message, 'Success');
-              } else {
-                this.toastr.warning('Custom saved, but ID not returned.', 'Warning');
-              }
-            } else {
-              this.toastr.error(this.product_resp.message, 'Alert');
-            }
-          },
-          error: (error) => {
-            console.error('Error Occurred:', error);
-            this.toastr.error('An error occurred while saving details.', 'Error');
-          },
-          complete: () => {
-            this.spinner.hide();
-          }
-        });
   }
 
 

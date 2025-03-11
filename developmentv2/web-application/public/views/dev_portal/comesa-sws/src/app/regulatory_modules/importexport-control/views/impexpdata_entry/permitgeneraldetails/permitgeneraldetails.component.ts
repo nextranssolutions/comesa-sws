@@ -386,16 +386,18 @@ export class PermitgeneraldetailsComponent implements OnInit {
 
 
 
+  // funcSelectCustomOffice(data) {
+  //   let data_resp = data.data;
+  //   this.customOfficeFrm.patchValue({ custom_office: data_resp.custom_office, custom_office_id: data_resp.custom_office_id, country_oforigin_id: data_resp.country_id });
+
+  //   this.isCustomOfficePopupVisible = false;
+
+  // }
   funcSelectCustomOffice(data) {
-    let data_resp = data.data;
-    this.customOfficeFrm.patchValue({ custom_office: data_resp.custom_office, custom_office_id: data_resp.custom_office_id, country_oforigin_id: data_resp.country_id });
-
+    let record = data.data;
+    this.applicationGeneraldetailsfrm.get('custom_office_id')?.setValue(data.data.id);
+    this.applicationGeneraldetailsfrm.get('customs_office')?.setValue(data.data.name);
     this.isCustomOfficePopupVisible = false;
-
-  }
-
-  onCustomPreparing(e) {
-    this.functDataGridToolbar(e, this.funcAddCustomOfficeSite, 'Customs Office');
   }
 
   funcAddCustomOfficeSite() {
@@ -648,93 +650,53 @@ export class PermitgeneraldetailsComponent implements OnInit {
 
   }
 
+
   onsearchCustomOfficeInfo() {
-    this.consignee_sendertitle = this.consignor_title;
-    // this.checkifsenderreceiver = true;
-
-    this.isCustomOfficePopupVisible = true;
-
+  
+    this.checkifsenderreceiver = false;
+    this.isCustomOfficePopupVisible = true;  // Show popup
+  
     let me = this;
-    this.customOfficeData.store = new CustomStore({
-      load: function (loadOptions: any) {
-        console.log(loadOptions)
-        var params = '?';
-        params += 'skip=' + loadOptions.skip;
-        params += '&take=' + loadOptions.take;//searchValue
-        var headers = new HttpHeaders({
-          "Accept": "application/json",
-          "Authorization": "Bearer " + me.authService.getAccessToken(),
-        });
-
-        me.configData = {
-          headers: headers,
-          params: { skip: loadOptions.skip, take: loadOptions.take, searchValue: loadOptions.filter, table_name: 'tra_customoffice_info' }
-        };
-        return me.httpClient.get(AppSettings.base_url + '/' + 'api/import-export/onLoadCustomsOfficeData', me.configData)
-          .toPromise()
-          .then((data: any) => {
-            return {
-              data: data.data,
-              totalCount: data.totalCount
+    this.customOfficeData = {  
+      store: new CustomStore({
+        load: function (loadOptions: any) {
+          let params = '?skip=' + (loadOptions.skip || 0);
+          params += '&take=' + (loadOptions.take || 50);
+  
+          let headers = new HttpHeaders({
+            "Accept": "application/json",
+            "Authorization": "Bearer " + me.authService.getAccessToken(),
+          });
+  
+          me.configData = {
+            headers: headers,
+            params: {
+              skip: loadOptions.skip || 0,
+              take: loadOptions.take || 50,
+              searchValue: loadOptions.filter || '',
+              table_name: 'tra_customoffice_info'
             }
-          })
-          .catch(error => { throw 'Data Loading Error' });
-      }
-    });
-
-  }
-
-  funcSearchCustomOffice() {
-    this.isCustomOfficePopupVisible = true;
-    const me = this;
-
-    this.customOfficeData.store = new CustomStore({
-      load: async function (loadOptions: any) {
-        // console.log(loadOptions);
-
-        // Extract pagination parameters safely
-        const skip = loadOptions.skip ?? 0;
-        const take = loadOptions.take ?? 50;
-
-        // Extract search filter properly
-        let searchValue = '';
-        if (Array.isArray(loadOptions.filter) && loadOptions.filter.length > 0) {
-          searchValue = loadOptions.filter[2] || ''; // Adjust index based on actual filter structure
-        }
-
-        // Set up request headers
-        const headers = new HttpHeaders({
-          "Accept": "application/json",
-          "Authorization": "Bearer " + me.authService.getAccessToken(),
-        });
-
-        // API request configuration
-        // const configData = {
-        //   headers,
-        //   params: { skip, take, searchValue },
-        // };
-        me.configData = {
-          headers: headers,
-          params: { skip: loadOptions.skip, take: loadOptions.take, searchValue: loadOptions.filter, table_name: 'tra_customoffice_info' }
-        };
-
-        try {
-          const response: any = await lastValueFrom(
-            me.httpClient.get(AppSettings.base_url + '/api/import-export/onLoadCustomsOfficeData', me.configData)
-          );
-
-          return {
-            data: response.data || [],
-            totalCount: response.totalCount || 0
           };
-        } catch (error) {
-          console.error('Data Loading Error', error);
-          throw 'Data Loading Error';
+  
+          return me.httpClient.get(AppSettings.base_url + '/api/import-export/onLoadCustomsOfficeData', me.configData)
+            .toPromise()
+            .then((data: any) => {
+              
+              return {
+                data: data.data || [],
+                totalCount: data.totalCount || 0
+              };
+            })
+            .catch(error => { 
+              throw 'Data Loading Error';
+            });
         }
-      }
-    });
+      })
+    };
   }
-
+  
+  
+  
   onsearchConsignee() {
 
     this.consignee_sendertitle = 'Consignee Details';
@@ -744,7 +706,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
     let me = this;
     this.consigneeReceiverData.store = new CustomStore({
       load: function (loadOptions: any) {
-        console.log(loadOptions)
+      
         var params = '?';
         params += 'skip=' + loadOptions.skip;
         params += '&take=' + loadOptions.take;//searchValue
@@ -787,7 +749,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
     let me = this;
     this.registered_premisesData.store = new CustomStore({
       load: function (loadOptions: any) {
-        console.log(loadOptions)
+        
         var params = '?';
         params += 'skip=' + loadOptions.skip;
         params += '&take=' + loadOptions.take;
