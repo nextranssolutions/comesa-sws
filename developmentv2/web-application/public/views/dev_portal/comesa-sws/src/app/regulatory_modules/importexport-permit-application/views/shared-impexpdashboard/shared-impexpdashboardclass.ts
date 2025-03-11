@@ -434,7 +434,6 @@ export class SharedImpExpdashboardClass {
   singleApplicationActionColClick(data) {
 
     this.funcActionsProcess(data, data);
-
   }
 
   funcActionsProcess(action_btn, data) {
@@ -615,12 +614,12 @@ export class SharedImpExpdashboardClass {
     this.regulatory_subfunction_id = app_data.regulatory_subfunction_id;
     this.applicationsubmission_type_id = app_data.applicationsubmission_type_id;
 
-    this.spinner.show();
+    this.spinnerShow('Loading...........');
 
     this.configService.getSectionUniformApplication(this.regulatory_subfunction_id, this.applicationsubmission_type_id)
       .subscribe(
         data => {
-          this.spinner.hide();
+          
           if (data.success) {
             this.processData = data.data.process_infor;
             this.application_data = data.data;
@@ -638,7 +637,7 @@ export class SharedImpExpdashboardClass {
           }
           else {
             this.toastr.error(this.processData.message, 'Alert!');
-
+            this.spinner.hide();
           }
 
 
@@ -646,6 +645,7 @@ export class SharedImpExpdashboardClass {
     return false;
   }
 
+ 
 
   funcArchivePermitApplication(data) {
     this.utilityService.funcApplicationArchiceCall(this.viewRef, data, 'txn_importexport_applications', this.reloadPermitApplicationsApplications);
