@@ -541,7 +541,7 @@ export class SharedImpExpdashboardClass {
 
   funcApplicationRejection(app_data) {
 
-    //this.spinner.show();
+    this.spinner.show();
     this.utilityService.getApplicationPreRejectionDetails(app_data.application_code, 'txn_importexport_applications', 'application_status_id')
       .subscribe(
         data => {
