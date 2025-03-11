@@ -78,10 +78,11 @@ export class SharedImpExpdashboardClass {
   process_title: string;
   tracking_no: string;
   application_id: number;
-  oga_application_code: number;
+  oga_application_code: any;
   permit_type_id: number;
   application_type_id: any;
   table_name: string;
+  isprodnextdisable: boolean;
 
   constructor(public utilityService: UtilityService, public viewRef: ViewContainerRef,
     public spinner: SpinnerVisibilityService,
@@ -117,10 +118,10 @@ export class SharedImpExpdashboardClass {
     this.onLoadProductTypes();
     this.onLoadconfirmDataParam();
     this.onLoadproducttypeDefinationData();
+    this.onLoadPermitProductsData(this.oga_application_code);
     this.reloadPermitApplicationsApplications();
     this.onLoadPermitTypesData();
     this.onLoadWorkflowStatusData();
-
   }
 
   scrollToTop(): void {
@@ -481,14 +482,18 @@ onApplicationSelection() {
     this.frmPreviewAppDetails.patchValue(data);
     this.onLoadPermitProductsData(data.oga_application_code);
   }
+
+
   onLoadPermitProductsData(oga_application_code) {
     this.spinner.show();
-    this.appService.getPermitsOtherDetails({ 'oga_application_code': oga_application_code }, 'getPermitProductsDetails')
+    this.appService.getPermitsOtherDetails({ 'oga_application_code': oga_application_code }, 'getApplicantPermitProductsDetails')
       .subscribe(
         data => {
           if (data.success) {
-
             this.permitProductsData = data.data;
+            if (this.permitProductsData.length > 0) {
+              this.isprodnextdisable = false;
+            }
 
           }
           else {
