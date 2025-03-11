@@ -66,7 +66,7 @@ export class SharedImpexpApplicationClass {
   process_title: string;;
   regulated_productstype_id: number;
   application_id: number;
-  oga_application_code: number;
+  oga_application_code: any;
   transactionpermit_type_id: number;
 
   process_id: number;

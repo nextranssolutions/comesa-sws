@@ -532,6 +532,8 @@ export class PermitproductdetailsComponent implements OnInit {
           return false
         });
   }
+
+  
   onRegisteredProductGridToolbar(e) {
     if (this.regulated_productstype_id == 2 || this.regulated_productstype_id == 7) {
       if (this.regulatory_subfunction_id == 81 || this.regulatory_subfunction_id == 83) {

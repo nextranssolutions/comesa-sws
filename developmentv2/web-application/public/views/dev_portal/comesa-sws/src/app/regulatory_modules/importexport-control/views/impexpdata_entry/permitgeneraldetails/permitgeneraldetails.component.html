@@ -56,16 +56,16 @@
       </dx-select-box>
     </div>
 
-    <div class="input-group col-lg-12">
-      <div class="col-lg-10">
+    <div class="input-group col-lg-4">
+      <div class="col-lg-8">
         <label>{{'customs_office' | translate}}</label>
         <dx-text-box [readOnly]="true" formControlName="customs_office"
           [placeholder]="'customs_office' | translate" [showClearButton]="true">
         </dx-text-box>
         <input type="hidden" formControlName="custom_office_id" />
       </div>
-      <div class="col-lg-2 pt-5">
-        <dx-button [elementAttr]="{ class: 'btn btn-primary pull-left' }" [disabled]="ammendReadOnly"
+      <div class="col-lg-4 pt-5">
+        <dx-button class="btn btn-primary pull-left" [disabled]="ammendReadOnly"
           style="margin-top:25px !important;" text="{{ 'search_details' | translate }}" type="default"
           (onClick)="onsearchCustomOfficeInfo()">
           <i class="fa fa-search"></i> {{ 'search' | translate }} {{ 'customs_office' | translate }}
