@@ -23,14 +23,14 @@
                             </dx-text-box>
                         </div>
 
-                        <div class="col-lg-2">
-                            <dx-button [disabled]="!showSearchButton"
-                                [elementAttr]="{ class: 'btn btn-primary pull-left'}"
-                                style="margin-top:25px  !important;" text="{{'search_applicant' | translate}}"
-                                type="default" (onClick)="onSearchConsignorName(1)">
-                                <i class="fa fa-search"></i>{{'search_applicant' | translate}}
+
+                        <div class="col-lg-2 pt-5">
+                            <dx-button [elementAttr]="{ class: 'btn btn-primary pull-left' }" [disabled]="!showSearchButton"
+                              style="margin-top:25px !important;" text="{{ 'search_details' | translate }}" type="default"
+                              (onClick)="onSearchConsignorName(1)">
+                              <i class="fa fa-search"></i> {{ 'search_applicant' | translate }}
                             </dx-button>
-                        </div>
+                          </div>
 
                    
                     </div>

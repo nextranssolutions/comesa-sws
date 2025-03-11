@@ -580,12 +580,14 @@ class UtilityHelper
     {
         //return records
         $records = DB::table('wb_workflowstageprocess_actions as t1')
-            ->select('t2.*', 't2.name as text', 't2.iconCls as icon')
+            ->select('t2.*','t1.workflow_stage_id', 't2.name as text', 't2.iconCls as icon')
             ->join('wf_statuses_actions as t2', 't1.statuses_action_id', '=', 't2.id')
+            ->where('t1.workflowprocess_id', $workflowprocess_id)
             ->get();
         return convertStdClassObjToArray($records);
     }
 
+   
     public static function returnContextMisMenuActions($process_id)
     {
         //return records
@@ -632,6 +634,7 @@ class UtilityHelper
                 "items2" => $dataPrint
             )
         );
+    
 
         return $action_data;
     }

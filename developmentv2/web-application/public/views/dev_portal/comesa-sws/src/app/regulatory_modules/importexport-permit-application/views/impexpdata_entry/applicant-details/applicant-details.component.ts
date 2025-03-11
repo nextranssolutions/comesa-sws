@@ -381,8 +381,7 @@ export class ApplicantDetailsComponent {
   applicant_id: any;
   onApplicationOptionChange(event: any) {
     const selectedId = event.value; // Get the selected option ID
-    this.applicationapplicant_options_id = selectedId; // Store it for use in the template
-
+    this.applicationapplicant_option_id = selectedId; // Store it for use in the template
     if (selectedId === 1) {
       this.showHiddenFields = true;
       this.showSearchButton = true;
@@ -391,7 +390,7 @@ export class ApplicantDetailsComponent {
     } else if (selectedId === 2) {
       this.showHiddenFields = true;
       this.showSearchButton = false;
-      this.applicantDetailsSet = false; // Make applicant_name editable
+      this.applicantDetailsSet = false; 
       this.patchApplicantDetailsFromLocalStorage(); // Patch details from localStorage
      
     }
