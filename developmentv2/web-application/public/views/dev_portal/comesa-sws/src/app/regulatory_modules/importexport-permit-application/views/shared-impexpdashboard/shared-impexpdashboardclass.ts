@@ -156,13 +156,13 @@ export class SharedImpExpdashboardClass {
   }
   onApplicationSelection(regulatory_subfunction_id, applicationsubmission_type_id) {
 
-    this.spinner.show();
+    this.spinnerShow(' ');
 
 
     this.configService.getSectionUniformApplication(regulatory_subfunction_id, applicationsubmission_type_id)
       .subscribe(
         data => {
-          this.spinner.hide();
+          this.spinnerHide();
           if (data.success) {
             this.processData = data.data.process_infor;
 
@@ -406,7 +406,7 @@ export class SharedImpExpdashboardClass {
     this.onLoadPermitProductsData(data.application_code);
   }
   onLoadPermitProductsData(application_code) {
-    this.spinner.show();
+    this.spinnerShow(' ');
     this.appService.getPermitsOtherDetails({ 'application_code': application_code }, 'getPermitProductsDetails')
       .subscribe(
         data => {
@@ -418,7 +418,7 @@ export class SharedImpExpdashboardClass {
           else {
             this.toastr.success(data.message, 'Alert');
           }
-          this.spinner.hide();
+          this.spinnerHide();
         },
         error => {
           return false
@@ -541,12 +541,12 @@ export class SharedImpExpdashboardClass {
 
   funcApplicationRejection(app_data) {
 
-    this.spinner.show();
+    this.spinnerShow('Loading...........');
     this.utilityService.getApplicationPreRejectionDetails(app_data.application_code, 'txn_importexport_applications', 'application_status_id')
       .subscribe(
         data => {
           this.applicationRejectionData = data.data;
-          this.spinner.hide();
+          this.spinnerHide();
 
           this.isApplicationRejectionVisible = true;
         });
@@ -637,7 +637,7 @@ export class SharedImpExpdashboardClass {
           }
           else {
             this.toastr.error(this.processData.message, 'Alert!');
-            this.spinner.hide();
+            this.spinnerHide();
           }
 
 
@@ -680,7 +680,7 @@ export class SharedImpExpdashboardClass {
             text: 'Yes',
             buttonClass: 'btn btn-danger',
             onAction: () => new Promise((resolve: any, reject: any) => {
-              this.spinner.show();
+              this.spinnerShow(' ');
               this.utilityService.getApplicationProcessInformation(app_data.application_code, 'importexportapp/funcInitiateInspectionBooking')
                 .subscribe(
                   data => {
@@ -697,7 +697,7 @@ export class SharedImpExpdashboardClass {
                     else {
                       this.toastr.error(data.message, 'Alert!');
                     }
-                    this.spinner.hide();
+                    this.spinnerHide();
                   });
               resolve();
             })
@@ -727,7 +727,7 @@ export class SharedImpExpdashboardClass {
             text: 'Yes',
             buttonClass: 'btn btn-danger',
             onAction: () => new Promise((resolve: any, reject: any) => {
-              this.spinner.show();
+              this.spinnerShow(' ');
               this.utilityService.getApplicationProcessInformation(app_data.application_code, 'importexportapp/funcInitiateLicenseApplication')
                 .subscribe(
                   data => {
@@ -746,7 +746,7 @@ export class SharedImpExpdashboardClass {
     
                     }
     
-                    this.spinner.hide();
+                    this.spinnerHide();
                   });
               resolve();
             })
