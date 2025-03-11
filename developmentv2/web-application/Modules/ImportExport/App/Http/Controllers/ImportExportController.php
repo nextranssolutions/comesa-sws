@@ -1289,7 +1289,7 @@ class ImportExportController extends Controller
                 ->leftJoin('tra_manufacturer_info as t3', 't1.manufacturer_id', '=', 't3.id')
                 ->leftJoin('par_unit_of_measure as t4', 't1.unit_of_measure_id', '=', 't4.id')
                 ->leftJoin('par_currencies as t5', 't1.currency_id', '=', 't5.id')
-                ->leftJoin('par_storage_conditions as t6', 't1.storage_conditions_id', '=', 't6.id')
+                ->leftJoin('par_storage_conditions as t6', 't1.storage_condition_id', '=', 't6.id')
                 ->select(
                     't1.id',
                     't1.*',
@@ -1328,7 +1328,7 @@ class ImportExportController extends Controller
                 ->leftJoin('tra_manufacturer_info as t3', 't1.manufacturer_id', '=', 't3.id')
                 ->leftJoin('par_unit_of_measure as t4', 't1.unit_of_measure_id', '=', 't4.id')
                 ->leftJoin('par_currencies as t5', 't1.currency_id', '=', 't5.id')
-                ->leftJoin('par_storage_conditions as t6', 't1.storage_conditions_id', '=', 't6.id')
+                ->leftJoin('par_storage_conditions as t6', 't1.storage_condition_id', '=', 't6.id')
                 ->select(
                     't1.id',
                     't1.*',
@@ -1438,7 +1438,6 @@ class ImportExportController extends Controller
                     't2.name as country_name',
                     't3.name as region_name',
                     't4.name as district',
-                    DB::raw("CONCAT(t1.name, ' (', t2.name, ')') as manufacturer_namecountry")
                 )
                 ->when($search_value, function ($query) use ($search_value) {
                     $query->where('t1.name', 'LIKE', "%{$search_value}%");
