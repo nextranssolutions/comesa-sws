@@ -1265,6 +1265,7 @@ class ImportExportController extends Controller
             ]);
         }
     }
+    
 
     public function getPermitProductsDetails(Request $req)
     {
@@ -1272,20 +1273,12 @@ class ImportExportController extends Controller
             $search_value = '';
             $take = 50; // Default take
             $skip = 0; // Default skip
-            $searchValue = $req->searchValue ?? '';
-
-            if (!empty($searchValue) && $searchValue !== 'undefined') {
-                $searchValue = explode(',', $searchValue);
-                $search_value = $searchValue[2] ?? '';
-            }
-
+            
             $oga_application_code = $req->oga_application_code;
-            print_r($oga_application_code);
             $data = collect();
             $totalCount = 0;
-
-            $data = DB::table('tra_permit_products as t1')
-                // ->leftJoin('par_regulatedproduct_categories as t2', 't1.regulated_productcategory_id', '=', 't2.id')
+            if(validateisNumeric($oga_application_code)){
+                $data = DB::table('tra_permit_products as t1')
                 ->leftJoin('tra_manufacturer_info as t3', 't1.manufacturer_id', '=', 't3.id')
                 ->leftJoin('par_unit_of_measure as t4', 't1.unit_of_measure_id', '=', 't4.id')
                 ->leftJoin('par_currencies as t5', 't1.currency_id', '=', 't5.id')
@@ -1294,13 +1287,19 @@ class ImportExportController extends Controller
                     't1.id',
                     't1.*',
                     't3.name as manufacturer_name',
-                    't4.name as unit_of_measure',
+                    't4.name as packaging_units',
+                    't5.name as currency_name',
                     't6.name as storage_conditions'
                 )
                 ->where('t1.oga_application_code',$oga_application_code)
                 ->orderByDesc('t1.id')
                 ->get();
+
             $totalCount = $data->count();
+
+
+            }
+            
             return response()->json([
                 'success' => true,
                 'data' => $data,
@@ -1313,6 +1312,7 @@ class ImportExportController extends Controller
             ]);
         }
     }
+
     public function getApplicantPermitProductsDetails(Request $req)
     {
         try {
@@ -1554,16 +1554,15 @@ class ImportExportController extends Controller
             $filter = $req->filter;
             $table_name = 'txn_importexport_applications';
             $appworkflow_status_id = $req->appworkflow_status_id;
-            $application_status_id = $req->application_status_id;
             $workflow_status_id = $req->workflow_status_id;
             $appworkflowstatus_category_id = $req->appworkflowstatus_category_id;
-
+            
             $permit_product_data = array();
             $sectionSelection = $req->sectionSelection;
             unset($requestData['table_name']);
 
             $sql = DB::table($table_name . ' as t1')
-                ->leftJoin('tra_transactionpermit_types as t2', 't2.id', 't1.permit_typecategory_id')
+                ->leftJoin('tra_transactionpermit_types as t2', 't2.id', 't1.transactionpermit_type_id')
                 ->leftJoin('par_port_type as t3', 't3.id', 't1.port_type_id')
                 ->leftJoin('tra_permitsenderreceiver_data as t4', 't4.id', 't1.importer_exporter_id')
                 ->leftJoin('par_entryexit_port as t5', 't1.port_of_entryexit_id', 't5.id')
@@ -1585,8 +1584,12 @@ class ImportExportController extends Controller
                 ->leftJoin('par_invoice_types as t15', 't1.invoice_type_id', 't15.id')
                 ->leftJoin('par_confirmations as t17', 't1.declaration_statuses_id', 't17.id')
                 ->leftJoin('tra_customoffice_info as t18', 't1.customs_office_id', 't18.id')
-
-                ->select('t1.*', 't18.name as customs_office', 't17.name as declaration','t15.name as invoice_type', 't14.name as final_destination_country', 't5.name as port_of_entry', 't13.name as mode_of_transport', 't12.name as currency_name', 't2.name as permit_type', 't10.name as application_status', 't8.name as action_name', 't8.iconCls as iconCls', 't8.action as action', 't2.name as permit_name', 't3.name as port_type', 't1.id', 't4.name as importer_exporter_name');
+                ->leftJoin('tra_trader_account as t19', 't1.applicant_id', 't19.id')
+                ->leftJoin('par_regions as t20', 't19.region_id', 't20.id')
+                ->leftJoin('par_regulatory_functions as t21', 't1.regulatory_function_id', 't21.id')
+                ->leftJoin('par_regulatory_subfunctions as t22', 't1.regulatory_subfunction_id', 't22.id')
+                
+                ->select('t1.*','t19.*', 't19.name as applicant_name', 't18.name as customs_office', 't17.name as declaration','t15.name as invoice_type', 't14.name as final_destination_country', 't5.name as port_of_entry', 't13.name as mode_of_transport', 't12.name as currency_name', 't2.name as permit_type', 't10.name as application_status', 't8.name as action_name', 't8.iconCls as iconCls', 't8.action as action', 't3.name as port_type', 't1.id', 't4.name as importer_exporter_name','t22.id as regulatory_subfunction_id');
 
             if ($workflow_status_id != '') {
                 $workflow_status = explode(',', $workflow_status_id);
@@ -1601,18 +1604,19 @@ class ImportExportController extends Controller
 
             $actionColumnData = returnContextMisMenuActions($process_id);
             //check the usres 
-
+    
             $data = $sql->get();
-
             foreach ($data as $rec) {
                 $application_data[] = array(
                     'id' => $rec->id,
                     'action_name' => $rec->action_name,
                     'iconCls' => $rec->iconCls,
+                    'regulatory_function_id' => $rec->regulatory_function_id,
+                    'regulatory_subfunction_id' => $rec->regulatory_subfunction_id,
                     'application_status' => $rec->application_status,
-                    'applicationsubmission_type_id' => $rec->applicationsubmission_type_id,
                     'permit_typecategory_id' => $rec->permit_typecategory_id,
-                    'permit_name' => $rec->permit_name,
+                    'permit_type' => $rec->permit_type,
+                    'applicant_name' => $rec->applicant_name,
                     'port_type' => $rec->port_type,
                     'port_type_id' => $rec->port_type_id,
                     'port_of_entry' => $rec->port_of_entry,
@@ -1620,6 +1624,7 @@ class ImportExportController extends Controller
                     'customs_office_id' => $rec->customs_office_id,
                     'invoice_type' => $rec->invoice_type,
                     'invoice_type_id' => $rec->invoice_type_id,
+                    'transactionpermit_type_id'=> $rec->transactionpermit_type_id,
                     'final_destination_country_id' => $rec->final_destination_country_id,
                     'final_destination_country' => $rec->final_destination_country,
                     'invoice_number' => $rec->invoice_number,
@@ -1627,6 +1632,7 @@ class ImportExportController extends Controller
                     'importer_exporter_name' => $rec->importer_exporter_name,
                     'action' => $rec->action,
                     'currency_name' => $rec->currency_name,
+                    'date_added' => $rec->date_added,
                     'declaration' => $rec->declaration,
                     'declaration_statuses_id' => $rec->declaration_statuses_id,
                     'currency_oftransaction_id' => $rec->currency_oftransaction_id,
@@ -1636,15 +1642,23 @@ class ImportExportController extends Controller
                     'date_of_application' => formatDaterpt($rec->date_of_application),
                     'expected_date_of_shipment' => $rec->expected_date_of_shipment,
                     'tracking_no' => $rec->tracking_no,
+                    'application_status_id' =>$rec->application_status_id,
                     'created_on' => $rec->created_on,
-                    'date_added' => $rec->created_on,
-                    'process_id' => $rec->process_id,
+                    'workflowprocess_id' => $rec->workflowprocess_id,
                     'application_code' => $rec->application_code,
                     'reference_no' => $rec->reference_no,
-                    'regulatory_subfunction_id' => $rec->regulatory_subfunction_id,
-                    'appworkflow_status_id' => $rec->appworkflow_status_id,
+                    'applicationapplicant_option_id' => $rec->applicationapplicant_option_id, 
+                    'applicant_id' => $rec->applicant_id,
+                    'country_id' => $rec->country_id,
+                    'region_id' => $rec->region_id,
+                    'district_id'=>$rec->district_id,
+                    'appworkflow_status_id' =>$rec->appworkflow_status_id,
+                    'email_address' => $rec->email_address,
+                    'physical_address' => $rec->physical_address,
+                    'postal_address' => $rec->postal_address,
+                    'telephone_no' => $rec->telephone_no,
+                    'mobile_no' => $rec->telephone_no,
                     'created_by' => $rec->created_by,
-
                     'contextMenu' => returnActionColumn($rec->appworkflow_status_id, $actionColumnData)
                 );
             }

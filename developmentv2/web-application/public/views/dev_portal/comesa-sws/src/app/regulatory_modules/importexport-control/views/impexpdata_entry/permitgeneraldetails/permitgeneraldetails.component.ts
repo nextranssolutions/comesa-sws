@@ -385,14 +385,6 @@ export class PermitgeneraldetailsComponent implements OnInit {
   }
 
 
-
-  // funcSelectCustomOffice(data) {
-  //   let data_resp = data.data;
-  //   this.customOfficeFrm.patchValue({ custom_office: data_resp.custom_office, custom_office_id: data_resp.custom_office_id, country_oforigin_id: data_resp.country_id });
-
-  //   this.isCustomOfficePopupVisible = false;
-
-  // }
   funcSelectCustomOffice(data) {
     let record = data.data;
     this.applicationGeneraldetailsfrm.get('custom_office_id')?.setValue(data.data.id);
