@@ -87,7 +87,7 @@ export class SharedImpExpdashboardClass {
   table_name: string;
   isprodnextdisable: boolean;
   applicationsubmission_type_id: number;
-
+  nav_data: any;
 
   constructor(public utilityService: UtilityService, public viewRef: ViewContainerRef,
     public spinner: SpinnerVisibilityService,
@@ -138,7 +138,11 @@ export class SharedImpExpdashboardClass {
   }
 
   onInitiatenewImportExpApplications(){
-    this.onClickSubModuleAppSelection(1, 'New Import Application')
+    this.nav_data = localStorage.getItem('nav_data');
+    this.nav_data = JSON.parse(this.nav_data);
+    let regulatory_subfunction_id = this.nav_data.regulatory_function_id;
+      
+    this.onClickSubModuleAppSelection(regulatory_subfunction_id, 'New Import Application')
     this.isPermitInitialisation = true; 
 }
 
