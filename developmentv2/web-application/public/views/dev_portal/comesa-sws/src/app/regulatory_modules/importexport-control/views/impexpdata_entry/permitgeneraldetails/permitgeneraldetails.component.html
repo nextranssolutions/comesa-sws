@@ -2,7 +2,7 @@
   <div class="row  wizard-content">
 
 
-    <div class="input-group">
+    <div class="input-group col-lg-12">
       <div class="col-lg-10">
         <label>{{'importer_exporter_details' | translate}}</label>
         <dx-text-box [readOnly]="true" formControlName="importer_exporter_name"
@@ -22,7 +22,7 @@
     <div class="col-lg-4">
       <label>{{'permit_type' | translate}}</label>
       <dx-select-box [dataSource]="permitTypeData" [readOnly]="true" valueExpr="id" displayExpr="name"
-        placeholder="{{'permit_type' | translate}}" [searchEnabled]="true" formControlName="permit_type_id">
+        placeholder="{{'permit_type' | translate}}" [searchEnabled]="true" formControlName="transactionpermit_type_id">
       </dx-select-box>
     </div>
 
@@ -56,12 +56,21 @@
       </dx-select-box>
     </div>
 
-    <div class="col-lg-4">
-      <label>{{'customs_office'| translate}}</label>
-      <dx-text-box formControlName="customs_office" placeholder="{{'customs_office' | translate}}"
-        [showClearButton]="true">
-      </dx-text-box>
-
+    <div class="input-group col-lg-12">
+      <div class="col-lg-10">
+        <label>{{'customs_office' | translate}}</label>
+        <dx-text-box [readOnly]="true" formControlName="customs_office"
+          [placeholder]="'customs_office' | translate" [showClearButton]="true">
+        </dx-text-box>
+        <input type="hidden" formControlName="custom_office_id" />
+      </div>
+      <div class="col-lg-2 pt-5">
+        <dx-button [elementAttr]="{ class: 'btn btn-primary pull-left' }" [disabled]="ammendReadOnly"
+          style="margin-top:25px !important;" text="{{ 'search_details' | translate }}" type="default"
+          (onClick)="onsearchCustomOfficeInfo()">
+          <i class="fa fa-search"></i> {{ 'search' | translate }} {{ 'customs_office' | translate }}
+        </dx-button>
+      </div>
     </div>
 
     <div class="col-lg-4" *ngIf="is_licensepermit">
@@ -341,6 +350,47 @@
           </div>
         </form>
       </div>
+    </dx-scroll-view>
+  </div>
+</dx-popup>
+
+<dx-popup class="popup" [width]="funcpopWidth(80)" [height]="600" [showTitle]="true"
+  title="{{'custom_office' | translate}}" [dragEnabled]="false" [hideOnOutsideClick]="false"
+  [(visible)]="isCustomOfficePopupVisible">
+  <div *dxTemplate="let data of 'content'">
+    <dx-scroll-view>
+      <dx-data-grid class="table row-border hover" [allowColumnResizing]="true" [wordWrapEnabled]="true"
+        [columnHidingEnabled]="true" [dataSource]="customOfficeData"
+        [remoteOperations]='true' keyExpr="id">
+        <dxo-filter-row [visible]="false"></dxo-filter-row>
+        <dxo-search-panel [visible]="true">
+        </dxo-search-panel>
+        <dxo-paging [enabled]="true">
+        </dxo-paging>
+        <dxo-pager [showInfo]="true" infoText="Page #{0}. Total: {1} ({2} items)">
+        </dxo-pager>
+        <dxo-export [enabled]="true" fileName="customOfficeFile" [allowExportSelectedData]="true"></dxo-export>
+        <dxo-selection mode="single"></dxo-selection>
+        <dxo-group-panel [visible]="true"></dxo-group-panel>
+        <dxi-column [width]="150" caption="{{'action' | translate}}" name="command-editing" [allowFiltering]="false"
+          [allowSorting]="false" cellTemplate="cellTemplate">
+          <div *dxTemplate="let data of 'cellTemplate'">
+
+            <dx-button text="{{'select_custom_office' | translate}}" (click)="funcSelectCustomOffice(data)"
+              type="success" icon="edit" [elementAttr]="{ class: 'btn btn-primary' }">
+            </dx-button>
+          </div>
+        </dxi-column>
+        <dxi-column dataField="custom_office" caption="{{'custom_office' | translate}}"></dxi-column>
+        <dxi-column dataField="country_name" caption="{{'country' | translate}}"></dxi-column>
+        <dxi-column dataField="region_name" caption="{{'region' | translate}}"></dxi-column>
+        <dxi-column dataField="district" caption="{{'district' | translate}}"></dxi-column>
+        <dxi-column dataField="physical_address" caption="{{'physical_address' | translate}}"></dxi-column>
+        <dxi-column dataField="postal_address" caption="{{'postal_address' | translate}}"></dxi-column>
+        <dxi-column dataField="email_address" caption="{{'email_address' | translate}}"></dxi-column>
+
+        <dxo-paging [pageSize]="50"></dxo-paging>
+      </dx-data-grid>
     </dx-scroll-view>
   </div>
 </dx-popup>

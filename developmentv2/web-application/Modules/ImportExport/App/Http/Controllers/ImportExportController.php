@@ -78,6 +78,7 @@ class ImportExportController extends Controller
         try {
             DB::beginTransaction();
             $application_id = $req->application_id;
+            $transactionpermit_type_id = $req->transactionpermit_type_id;
             $transactionpermit_typecategory_id = $req->transactionpermit_typecategory_id;
             $product_type_id = $req->product_type_id;
             $permit_typecategory_id = $req->permit_typecategory_id;
@@ -88,7 +89,7 @@ class ImportExportController extends Controller
             $local_agent_id = $req->local_agent_id;
             $reference_no = $req->reference_no;
             $application_reference_number = $req->application_reference_number;
-            $regulatory_subfunction_id = $req->regulatory_subfunction_id;
+            // $regulatory_subfunction_id = $req->regulatory_subfunction_id;
             $zone_id = $req->zone_id;
             $process_id = $req->process_id;
             $id = $req->id;
@@ -100,8 +101,9 @@ class ImportExportController extends Controller
                 'local_agent_id' => $local_agent_id,
                 'application_code' => $req->application_code,
                 'oga_application_code' => $req->oga_application_code,
-                'regulatory_subfunction_id' => $req->regulatory_subfunction_id,
+                'regulatory_subfunction_id' => $regulatory_subfunction_id,
                 'application_id' => $application_id,
+                // 'transactionpermit_type_id' => $req->transactionpermit_type_id,
                 'regulatory_function_id' => $regulatory_function_id,
                 'product_type_id' => $req->product_type_id,
                 'zone_id' => $req->zone_id,
@@ -113,6 +115,7 @@ class ImportExportController extends Controller
                 'transactionpermit_typecategory_id' => $transactionpermit_typecategory_id,
                 'document_upload_id' => $req->document_upload_id,
                 'application_type_id' => $req->application_type_id,
+                'applicant_id' => $req->applicant_id,
                 'application_reference_number' => $req->application_reference_number,
                 'applicant_type_id' => $req->applicant_type_id,
                 'permit_typecategory_id' => $req->permit_typecategory_id,
@@ -187,6 +190,7 @@ class ImportExportController extends Controller
                     'application_id' => $application_id,
                     'product_type_id' => $product_type_id,
                     'permit_typecategory_id' => $permit_typecategory_id,
+                    // 'transactionpermit_type_id' => $transactionpermit_type_id,
                     'trader_initiator_id' => $trader_initiator_id,
                     'applicant_id' => $applicant_id,
                     'application_reference_number' => $application_reference_number,
@@ -228,9 +232,7 @@ class ImportExportController extends Controller
                 $app_data['tracking_no'] = $tracking_no;
                 $app_data['reference_no'] = $tracking_no;
                 $app_data['process_id'] = $process_id;
-
                 $app_data['regulatory_function_id'] = $regulatory_function_id;
-
                 $app_data['date_added'] = Carbon::now();
                 $app_data['application_code'] = $application_code;
 
@@ -248,9 +250,9 @@ class ImportExportController extends Controller
                     $tra_app_data['application_code'] = $application_code;
                     $tra_app_data['oga_application_code'] = $oga_application_code;
                     $tra_app_data['applicant_id'] = $applicant_id;
-
                     $tra_app_data['permit_typecategory_id'] = $permit_typecategory_id;
-                 
+                    $tra_app_data['transactionpermit_type_id'] = $transactionpermit_type_id;
+
                     $response = insertRecord('txn_importexport_applications', $tra_app_data, $email_address);
 
                     if ($response['success']) {
@@ -260,7 +262,7 @@ class ImportExportController extends Controller
                             'regulatory_function_id' => $regulatory_function_id,
                             'application_code' => $application_code,
                             'applicant_id' => $applicant_id,
-                            'transactionpermit_typecategory_id' => $transactionpermit_typecategory_id,
+                            'transactionpermit_type_id' => $transactionpermit_type_id,
                             'oga_application_code' => $oga_application_code, // Include in response
                             'success' => true,
                             'message' => 'Application Saved Successfully, with Tracking No:' . $tracking_no
@@ -1286,13 +1288,13 @@ class ImportExportController extends Controller
                 ->leftJoin('tra_manufacturer_info as t3', 't1.manufacturer_id', '=', 't3.id')
                 ->leftJoin('par_unit_of_measure as t4', 't1.unit_of_measure_id', '=', 't4.id')
                 ->leftJoin('par_currencies as t5', 't1.currency_id', '=', 't5.id')
-                ->leftJoin('par_storage_conditions as t6', 't1.storage_conditions_id', '=', 't6.id')
+                ->leftJoin('par_storage_conditions as t6', 't1.storage_condition_id', '=', 't6.id')
                 ->select(
                     't1.id',
                     't1.*',
                     't3.name as manufacturer_name',
                     't4.name as unit_of_measure',
-                    't5.name as storage_conditions'
+                    't6.name as storage_conditions'
                 )
                 ->where('t1.oga_application_code',$oga_application_code)
                 ->orderByDesc('t1.id')
@@ -1436,7 +1438,6 @@ class ImportExportController extends Controller
                     't2.name as country_name',
                     't3.name as region_name',
                     't4.name as district',
-                    DB::raw("CONCAT(t1.name, ' (', t2.name, ')') as manufacturer_namecountry")
                 )
                 ->when($search_value, function ($query) use ($search_value) {
                     $query->where('t1.name', 'LIKE', "%{$search_value}%");
@@ -1581,11 +1582,10 @@ class ImportExportController extends Controller
                 ->leftJoin('par_mode_oftransport as t13', 't1.mode_of_transport_id', 't13.id')
                 ->leftJoin('par_countries as t14', 't1.final_destination_country_id', 't14.id')
                 ->leftJoin('par_invoice_types as t15', 't1.invoice_type_id', 't15.id')
-                ->leftJoin('par_currencies as t16', 't1.currency_oftransaction_id', 't16.id')
                 ->leftJoin('par_confirmations as t17', 't1.declaration_statuses_id', 't17.id')
                 ->leftJoin('tra_customoffice_info as t18', 't1.customs_office_id', 't18.id')
 
-                ->select('t1.*', 't18.name as customs_office', 't17.name as declaration', 't16.name as currency_name', 't15.name as invoice_type', 't14.name as final_destination_country', 't5.name as port_of_entry', 't13.name as mode_of_transport', 't12.name as currency_name', 't11.name as permit_type', 't10.name as application_status', 't8.name as action_name', 't8.iconCls as iconCls', 't8.action as action', 't2.name as permit_name', 't3.name as port_type', 't1.id', 't4.name as importer_exporter_name');
+                ->select('t1.*', 't18.name as customs_office', 't17.name as declaration','t15.name as invoice_type', 't14.name as final_destination_country', 't5.name as port_of_entry', 't13.name as mode_of_transport', 't12.name as currency_name', 't2.name as permit_type', 't10.name as application_status', 't8.name as action_name', 't8.iconCls as iconCls', 't8.action as action', 't2.name as permit_name', 't3.name as port_type', 't1.id', 't4.name as importer_exporter_name');
 
             if ($workflow_status_id != '') {
                 $workflow_status = explode(',', $workflow_status_id);
@@ -1636,6 +1636,7 @@ class ImportExportController extends Controller
                     'expected_date_of_shipment' => $rec->expected_date_of_shipment,
                     'tracking_no' => $rec->tracking_no,
                     'created_on' => $rec->created_on,
+                    'date_added' => $rec->created_on,
                     'process_id' => $rec->process_id,
                     'application_code' => $rec->application_code,
                     'reference_no' => $rec->reference_no,
@@ -1696,12 +1697,11 @@ class ImportExportController extends Controller
                 ->leftJoin('par_mode_oftransport as t13', 't1.mode_of_transport_id', 't13.id')
                 ->leftJoin('par_countries as t14', 't1.final_destination_country_id', 't14.id')
                 ->leftJoin('par_invoice_types as t15', 't1.invoice_type_id', 't15.id')
-                ->leftJoin('par_currencies as t16', 't1.currency_oftransaction_id', 't16.id')
                 ->leftJoin('par_confirmations as t17', 't1.declaration_statuses_id', 't17.id')
                 ->leftJoin('tra_trader_account as t18', 't1.applicant_id', 't18.id')
                 ->leftJoin('par_application_options as t19', 't1.applicationapplicant_option_id', 't19.id')
                 
-                ->select('t18.*','t19.name as applicationapplicant_option','t6.current_stage_id as workflow_stage_id','t15.name as invoice_type', 't18.name as applicant_name', 't1.id as application_id', 't1.*','t17.name as declaration', 't16.name as currency_name', 't15.name as invoice_type', 't14.name as final_destination_country', 't5.name as port_of_entry', 't13.name as mode_of_transport', 't12.name as currency_name', 't2.name as permit_typecategory', 't10.name as application_status', 't8.name as action_name', 't8.iconCls as iconCls', 't8.action as action', 't2.name as permit_name', 't3.name as port_type', 't1.id', 't4.name as importer_exporter_name');
+                ->select('t18.*','t19.name as applicationapplicant_option','t1.created_on as date_added','t6.current_stage_id as workflow_stage_id','t15.name as invoice_type', 't18.name as applicant_name', 't1.id as application_id', 't1.*','t17.name as declaration', 't16.name as currency_name', 't15.name as invoice_type', 't14.name as final_destination_country', 't5.name as port_of_entry', 't13.name as mode_of_transport', 't12.name as currency_name', 't2.name as permit_typecategory', 't10.name as application_status', 't8.name as action_name', 't8.iconCls as iconCls', 't8.action as action', 't2.name as permit_name', 't3.name as port_type', 't1.id', 't4.name as importer_exporter_name');
 
                
             if ($workflow_status_id != '') {
@@ -1744,6 +1744,7 @@ class ImportExportController extends Controller
                     'importer_exporter_name' => $rec->importer_exporter_name,
                     'action' => $rec->action,
                     'currency_name' => $rec->currency_name,
+                    'date_added' => $rec->date_added,
                     'declaration' => $rec->declaration,
                     'declaration_statuses_id' => $rec->declaration_statuses_id,
                     'currency_oftransaction_id' => $rec->currency_oftransaction_id,

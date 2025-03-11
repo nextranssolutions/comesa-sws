@@ -297,73 +297,21 @@ export class SharedImpexpApplicationClass {
     this.ngWizardService.next();
   }
 
-  nextStep1() {
-    if (!this.applicantDetailsForm.get('applicant_id')?.value) {
-      this.toastr.error('Please search and select applicant before proceeding to the next step.', 'Error');
-      return;
-    }
-    // Proceed to the next step after ensuring applicant_id is set
-    this.ngWizardService.next();
-  }
-
-
   previousStep() {
     this.ngWizardService.previous();
   }
+  private prepareSavePermitDoc(): any {
+    //let input = new FormData();
+    let input = this.applicationGeneraldetailsfrm.value;
+    const files: Array<File> = this.filesToUpload;
+    // input.append('file', this.uploadpaymentdetailsfrm.get('file').value);
+    for (let i = 0; i < files.length; i++) {
+      input.append("file", files[i], files[i]['name']);
+    }
+    return input;
+  }
 
-  // onSaveImportExportApplication() {
-
-  //   const invalid = [];
-  //   const controls = this.applicationGeneraldetailsfrm.controls;
-  //   for (const name in controls) {
-  //     if (controls[name].invalid) {
-  //       this.toastr.error('Fill In All Mandatory fields with (*), missing value on ' + name.replace('_id', ''), 'Alert');
-  //       return;
-  //     }
-  //   }
-  //   if (this.applicationGeneraldetailsfrm.invalid) {
-  //     return;
-  //   }
-
-  //   this.spinner.show();
-  //   // let registrant_details = this.applicationApplicantdetailsfrm.value;//applicant values
-  //   let applicant_id = this.applicantDetailsForm.get('id')?.value;
-  //   // let application_options_id = this.applicantDetailsForm.get('application_options_id')?.value;
-
-  //   this.applicationGeneraldetailsfrm.value['applicant_id'] = applicant_id;
-  //   // this.applicationGeneraldetailsfrm.value['application_options_id'] = application_options_id;
-
-  //   this.applicationGeneraldetailsfrm.value['regulatory_subfunction_id'] = this.regulatory_subfunction_id;
-  //   this.spinner.show();
-  //   this.appService.onSavePermitApplication(this.applicationGeneraldetailsfrm.value, 'uploaData', 'saveOgaImportExportApplication')
-  //     .subscribe(
-  //       response => {
-  //         this.product_resp = response;
-  //         if (this.product_resp.success) {
-  //           this.tracking_no = this.product_resp.tracking_no;
-  //           this.trasactionpermit_type_id = this.product_resp.trasactionpermit_type_id;
-
-  //           this.oga_application_code = this.product_resp.oga_application_code;
-
-  //           this.applicationGeneraldetailsfrm.patchValue({ trasactionpermit_type_id: this.trasactionpermit_type_id })
-  //           this.toastr.success(this.product_resp.message, 'Response');
-  //           this.isSaved = true;
-
-  //         } else {
-  //           this.toastr.error(this.product_resp.message, 'Alert');
-  //           this.isSaved = false;
-  //         }
-  //         this.spinner.hide();
-  //       },
-  //       error => {
-  //         this.loading = false;
-  //         this.isSaved = false;
-  //         this.spinner.hide();
-  //       });
-  // }
   onSaveImportExportApplication() {
-
-    const invalid = [];
     const controls = this.applicationGeneraldetailsfrm.controls;
     for (const name in controls) {
       if (controls[name].invalid) {
@@ -371,45 +319,52 @@ export class SharedImpexpApplicationClass {
         return;
       }
     }
+  
     if (this.applicationGeneraldetailsfrm.invalid) {
       return;
     }
-    // const uploadData = this.prepareSavePermitDoc();
-
-    this.spinner.show();
-    // let registrant_details = this.applicationApplicantdetailsfrm.value;//applicant values
-    let applicant_id = this.applicantDetailsForm.get('id')?.value;
-  this.applicationGeneraldetailsfrm.value['applicant_id'] = applicant_id;
   
-  this.applicationGeneraldetailsfrm.value['regulatory_subfunction_id'] = this.regulatory_subfunction_id;
-  this.spinner.show();
-  this.appService.onSavePermitApplication(this.applicationGeneraldetailsfrm.value, 'uploadData', 'saveOgaImportExportApplication')
-    .subscribe(
-      response => {
-        this.product_resp = response;
-        if (this.product_resp.success) {
-          this.tracking_no = this.product_resp.tracking_no;
-          this.trasactionpermit_type_id = this.product_resp.trasactionpermit_type_id;
-
-          this.oga_application_code = this.product_resp.oga_application_code;
-
-          this.applicationGeneraldetailsfrm.patchValue({ trasactionpermit_type_id: this.trasactionpermit_type_id })
-          this.toastr.success(this.product_resp.message, 'Response');
-          this.isSaved = true; 
-
-        } else {
-          this.toastr.error(this.product_resp.message, 'Alert');
+    // Retrieve applicant_id and transactionpermit_type_id
+    const transactionpermit_type_id = Number(localStorage.getItem('transactionpermit_type_id')) || null;
+    const applicant_id = Number(this.applicantDetailsForm.get('id')?.value) || null;
+  
+    // Patch values to form
+    this.applicationGeneraldetailsfrm.patchValue({
+      applicant_id: applicant_id,
+      transactionpermit_type_id: transactionpermit_type_id,
+      regulatory_subfunction_id: this.regulatory_subfunction_id
+    });
+  
+    const uploadData = this.prepareSavePermitDoc();
+    this.spinner.show();
+  
+    // Pass the correct transactionpermit_type_id
+    this.appService.onSavePermitApplication(this.applicationGeneraldetailsfrm.value, uploadData, 'saveOgaImportExportApplication', transactionpermit_type_id)
+      .subscribe(
+        response => {
+          this.product_resp = response;
+          if (this.product_resp.success) {
+            this.tracking_no = this.product_resp.tracking_no;
+            this.transactionpermit_type_id = this.product_resp.transactionpermit_type_id;
+            this.oga_application_code = this.product_resp.oga_application_code;
+            this.applicationGeneraldetailsfrm.get('applicant_id')?.patchValue(applicant_id);
+  
+            this.toastr.success(this.product_resp.message, 'Response');
+            this.isSaved = true;
+          } else {
+            this.toastr.error(this.product_resp.message, 'Alert');
+            this.isSaved = false;
+          }
+          this.spinner.hide();
+        },
+        error => {
+          this.loading = false;
           this.isSaved = false;
+          this.spinner.hide();
         }
-        this.spinner.hide();
-      },
-      error => {
-        this.loading = false;
-        this.isSaved = false;
-        this.spinner.hide();
-      });
-}
-
+      );
+  }
+  
   // Function to handle the next step
   onNextStep() {
     if (!this.isSaved) {
