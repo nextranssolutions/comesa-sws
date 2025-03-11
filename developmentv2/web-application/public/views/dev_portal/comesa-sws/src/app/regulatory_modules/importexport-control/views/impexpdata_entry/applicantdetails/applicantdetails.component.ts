@@ -66,8 +66,6 @@ export class ApplicantdetailsComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.onLoadRegions(this.country_id);
-    this.onLoadDistrictsData(this.region_id);
     this.onLoadAccountTypesData();
     this.fetchTraderCategoryData()
     this.onLoadTraderAccountTypesData();
@@ -87,7 +85,7 @@ export class ApplicantdetailsComponent implements OnInit {
 
   fetchAccountStatusData() {
     var data_submit = {
-      'table_name': 'par_workflow_status'
+      'table_name': 'wf_workflow_statuses'
     }
     this.configService.onLoadConfigurationData(data_submit)
       .subscribe(
@@ -263,21 +261,10 @@ export class ApplicantdetailsComponent implements OnInit {
   // }
   funcSelectTraderDetails(data) {
     let record = data.data;
-
-    this.applicantDetailsForm.patchValue({
-        applicant_name: record.applicant_name || '',
-        email_address: record.email_address || '',
-        country_id: record.country_id || null,
-        region_id: record.region_id || null,
-        district_id: record.district_id || null,
-        telephone_no: record.telephone_no || '',
-        mobile_no: record.mobile_no || '',
-        physical_address: record.physical_address || '',
-    });
-
+    this.applicantDetailsForm.patchValue(record);
+   
     this.isRegistrantDetailsWinshow = false;
-}
-
+  }
 
   funcpopWidth(percentage_width) {
     return window.innerWidth * percentage_width / 100;
