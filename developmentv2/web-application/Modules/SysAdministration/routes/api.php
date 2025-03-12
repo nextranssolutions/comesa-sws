@@ -9,9 +9,13 @@ Route::middleware(['XssSanitizer','clear_cache_config','firewall.all'])->prefix(
     Route::get('onLoadSystemAdministrationData', [SysAdministrationController::class, 'onLoadSystemAdministrationData']);
     Route::get('onLoadTransactionProductRegistryDetails', [SysAdministrationController::class, 'onLoadTransactionProductRegistryDetails']);
     Route::get('onLoadTransactionRestrictionProhibitions', [SysAdministrationController::class, 'onLoadTransactionRestrictionProhibitions']);
+    Route::get('onLoadTransactionEmailConfigurations', [SysAdministrationController::class, 'onLoadTransactionEmailConfigurations']);
     Route::get('onLoadTransactionPermitTypeData', [SysAdministrationController::class, 'onLoadTransactionPermitTypeData']);
+    Route::get('onLoadNotificationScheduleConfigurations', [SysAdministrationController::class, 'onLoadNotificationScheduleConfigurations']);
+    Route::get('onLoadTransactionPaymentIntegration', [SysAdministrationController::class, 'onLoadTransactionPaymentIntegration']);
     Route::get('getAppPermitSignatoriesData', [SysAdministrationController::class, 'getAppPermitSignatoriesData']);
     Route::get('getAppPermitSpecialConditions', [SysAdministrationController::class, 'getAppPermitSpecialConditions']);
+    Route::get('getAdditionalFormFields', [SysAdministrationController::class, 'getAdditionalFormFields']);
     Route::get('getAppPermitChecklist', [SysAdministrationController::class, 'getAppPermitChecklist']);
     Route::get('getAppPermitRequiredDocuments', [SysAdministrationController::class, 'getAppPermitRequiredDocuments']);
     Route::post('onsaveSysAdminData', [SysAdministrationController::class, 'onSaveSystemAdministrationDetails']);

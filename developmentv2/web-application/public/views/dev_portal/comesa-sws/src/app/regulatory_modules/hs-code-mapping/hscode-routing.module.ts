@@ -38,6 +38,7 @@ import { QuotaLimitationstypeComponent } from './views/permit_type_management_co
 import { SharedPermitTypeManagementConfigComponent } from './views/permit_type_management_config/shared-permit-type-management-config/shared-permit-type-management-config.component';
 import { RenewableStatusesComponent } from './views/permit_type_management_config/renewable-statuses/renewable-statuses/renewable-statuses.component';
 import { PermitTemplatesComponent } from './views/permit-templates/permit-templates/permit-templates.component';
+import { PermitapplicationTimelineComponent } from './views/hscodes-mapping/permitapplication-timeline/permitapplication-timeline.component';
 
 
 const routes: Routes = [{
@@ -188,6 +189,10 @@ const routes: Routes = [{
   {
     path: 'app-permit-templates',
     component: PermitTemplatesComponent
+  },
+  {
+    path: 'app-permitapplication-timeline',
+    component: PermitapplicationTimelineComponent
   },
   ]
 }]

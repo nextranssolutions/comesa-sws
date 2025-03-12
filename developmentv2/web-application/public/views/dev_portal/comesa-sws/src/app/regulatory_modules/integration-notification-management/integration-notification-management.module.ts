@@ -17,6 +17,13 @@ import { IntegrationNtfMgtHeaderComponent } from './views/layout/integration-ntf
 import { IntegrationNtfMgtLayoutComponent } from './views/layout/integration-ntf-mgt-layout/integration-ntf-mgt-layout.component';
 import { IntegrationNtfMgtNavigationComponent } from './views/layout/integration-ntf-mgt-navigation/integration-ntf-mgt-navigation.component';
 import { IntegrationNtfManagementDashboardComponent } from './views/integration-ntf-management-dashboard/integration-ntf-management-dashboard.component';
+import { EmailConfigurationComponent } from './views/Notification-integration/email-configuration/email-configuration.component';
+import { EmailsetupTypesComponent } from './views/Notification-integration/emailsetup-types/emailsetup-types.component';
+import { NotificationscheduleConfigComponent } from './views/Notification-integration/notificationschedule-config/notificationschedule-config.component';
+import { NotificationscheduleTypeComponent } from './views/Notification-integration/notificationschedule-type/notificationschedule-type.component';
+import { PaymentintegrationSetupComponent } from './views/payment-integration/paymentintegration-setup/paymentintegration-setup.component';
+import { PaymentintegrationTypesComponent } from './views/payment-integration/paymentintegration-types/paymentintegration-types.component';
+import { PaymentremittanceOptionsComponent } from './views/payment-integration/paymentremittance-options/paymentremittance-options.component';
 
 
 
@@ -26,7 +33,10 @@ const ngWizardConfig: NgWizardConfig = {
 
 
 @NgModule({
-  declarations: [IntegrationNtfMgtHeaderComponent, IntegrationNtfMgtLayoutComponent, IntegrationNtfMgtNavigationComponent,IntegrationNtfManagementDashboardComponent],
+  declarations: [IntegrationNtfMgtHeaderComponent, IntegrationNtfMgtLayoutComponent, IntegrationNtfMgtNavigationComponent,IntegrationNtfManagementDashboardComponent,
+    EmailConfigurationComponent,EmailsetupTypesComponent,NotificationscheduleTypeComponent,NotificationscheduleConfigComponent,PaymentintegrationSetupComponent,PaymentintegrationTypesComponent,
+    PaymentremittanceOptionsComponent
+  ],
   imports: [
     CommonModule, IntegrationNotificationManagementRoutingModule,
     SharedModuleModule,

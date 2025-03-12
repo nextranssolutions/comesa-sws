@@ -82,6 +82,7 @@ export class PermittypeConfigurationsComponent {
   PermitSignatoriesFrm: FormGroup;
   PermitChecklistFrm: FormGroup;
   PermitSpecialConditionsFrm: FormGroup;
+  PermitAddFormFieldsFrm: FormGroup;
   PermitRqdDocFrm: FormGroup;
   isnewrecord: boolean;
   submitted = false;
@@ -104,6 +105,7 @@ export class PermittypeConfigurationsComponent {
   PermitSpecialConditionsPopupVisible: boolean = false;
   PermitRqdDocPopupVisible: boolean = false;
   PermitChecklistPopupVisible: boolean = false;
+  PermitAddFormFieldsPopupVisible: boolean = false;
   showWizard = false;
   createdResponsePopupVisible = false;
   editedResponsePopupVisible = false;
@@ -123,6 +125,7 @@ export class PermittypeConfigurationsComponent {
   AppHsCodes: any;
   AppPermitCertificateTemplate: any;
   AppPermitReportGeneration: any;
+  AdditionalFormFields: any;
   AppPermitRequiredDocuments: any;
   AppPermitChecklist: any;
   enablePopupVisible: boolean;
@@ -165,7 +168,7 @@ export class PermittypeConfigurationsComponent {
   selectedTabIndex = 0;
   selectTextOnEditStart: boolean;
   startEditAction: boolean;
-  tabNames = ["PermitTypes", "HsCodes", "PermitRequiredDocuments", "PermitChecklists", "PermitSignatories", "PermitSpecialConditions"];
+  tabNames = ["PermitTypes", "HsCodes", "PermitRequiredDocuments", "PermitChecklists", "PermitSignatories", "PermitSpecialConditions", "AdditionalFormFields"];
   constructor(
     private spinner: SpinnerVisibilityService,
     private router: Router,
@@ -289,6 +292,18 @@ export class PermittypeConfigurationsComponent {
       is_enabled: new FormControl('', Validators.compose([])),
   });
 
+  this.PermitAddFormFieldsFrm = new FormGroup({
+    id: new FormControl('', Validators.compose([])),
+    name: new FormControl('', Validators.compose([])),
+    description: new FormControl('', Validators.compose([])),
+    transactionpermit_type_id: new FormControl('', Validators.compose([])),
+    default_value: new FormControl('', Validators.compose([])),
+    is_readonly: new FormControl('', Validators.compose([])),
+    is_hidden: new FormControl('', Validators.compose([])),
+    is_mandatory:  new FormControl('', Validators.compose([])),
+    is_enabled: new FormControl('', Validators.compose([])),
+});
+
     // this.resetcolumns = 'resetcolumns,account_type_id,routerLink,has_partnerstate_defination';
 
   }
@@ -386,6 +401,12 @@ export class PermittypeConfigurationsComponent {
     this.PermitChecklistFrm.reset();
     this.PermitChecklistPopupVisible = true;
     this.AppNavigationMenus = [];
+  }
+
+  onAddNewPermitAddFormFields() {
+  this.PermitAddFormFieldsFrm.reset();
+  this.PermitAddFormFieldsPopupVisible = true;
+  this.AppNavigationMenus = [];
   }
 
   onOrganisationDefinationSelection($event) {
@@ -1256,6 +1277,24 @@ onSelectSpecificHsCode(selectedHsCode: any) {
     this.spinnerHide();
   }
 
+  fetchAdditionalFormFields(transactionpermit_type_id) {
+    this.spinnerShow('Loading User Permissions Details');
+
+    var data_submit = {
+      table_name: 'tra_transactionpermit_prodadditionafields',
+      transactionpermit_type_id: transactionpermit_type_id
+    }
+    this.admnistrationService.onLoadDataUrl(data_submit, 'getAdditionalFormFields')
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.AdditionalFormFields = this.data_record.data;
+          }
+        });
+    this.spinnerHide();
+  }
+
   fetchAppPermitRequiredDocuments(transactionpermit_type_id) {
     this.spinnerShow('Loading User Permissions Details');
 
@@ -1582,6 +1621,50 @@ onSelectSpecificHsCode(selectedHsCode: any) {
           this.spinnerHide();
         });
   }
+
+  onFuncSavePermitAddFormFields() {
+    const formData = new FormData();
+    const invalid = [];
+    const controls = this.PermitAddFormFieldsFrm.controls;
+    for (const name in controls) {
+      if (controls[name].invalid) {
+        this.toastr.error('Fill In All Mandatory fields with (*), missing value on ' + name.replace('_id', ''), 'Alert');
+        return;
+      }
+    }
+    if (this.PermitAddFormFieldsFrm.invalid) {
+      return;
+    }
+
+    this.PermitAddFormFieldsFrm.get('resetcolumns')?.setValue(this.resetcolumns);
+    this.spinnerShow('Saving ' + this.parameter_name);
+
+
+    this.spinner.show();
+    this.PermitAddFormFieldsFrm.get('transactionpermit_type_id')?.setValue(this.transactionpermit_type_id);
+    this.admnistrationService.onSaveSystemAdministrationDetails('tra_transactionpermit_prodadditionafields', this.PermitAddFormFieldsFrm.value, 'onsaveSysAdminData')
+      .subscribe(
+        response => {
+          this.response = response;
+          //the details 
+          if (this.response.success) {
+
+            this. fetchAdditionalFormFields(this.transactionpermit_type_id);
+            this.PermitAddFormFieldsPopupVisible = false;
+            this.toastr.success(this.response.message, 'Response');
+            this.spinnerHide();
+          } else {
+            this.toastr.error(this.response.message, 'Alert');
+            this.spinnerHide();
+          }
+          this.spinnerHide();
+        },
+        error => {
+          this.toastr.error('Error Occurred', 'Alert');
+          this.spinnerHide();
+        });
+  }
+
 
  
   funcpopWidth(percentage_width) {

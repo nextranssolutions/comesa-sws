@@ -26,7 +26,7 @@
     </dxi-column>
 
     <dxi-column dataField="name" caption="{{ 'name' | translate }}"></dxi-column>
-    <dxi-column dataField="description" caption="{{ 'description' | translate }}"></dxi-column>
+
     <dxi-column *ngIf="table_name == 'par_hscodechapters_defination'" dataField="hscode" caption="{{ 'hscode' | translate }}"></dxi-column>
 
     <dxi-column *ngIf="table_name == 'par_hscodesheading_definations' || table_name == 'par_hscodessubheading_defination' || table_name == 'tra_hscodesproducts_registry'"
@@ -47,6 +47,33 @@
         </dxo-lookup>
     </dxi-column>
 
+    <dxi-column *ngIf="table_name == 'par_permitexpirytime_span'" dataField="time_span" caption="{{ 'time_span' | translate }}">
+    </dxi-column>
+
+    <dxi-column *ngIf="table_name == 'par_permitexpirytime_span'" dataField="timespan_defination_id"
+    caption="{{ 'timespan_defination' | translate }}">
+    <dxo-lookup [dataSource]="timespanDefinationData" displayExpr="name" valueExpr="id">
+    </dxo-lookup>
+   </dxi-column>
+
+   <dxi-column *ngIf="table_name == 'par_permitexpirytime_span'" dataField="regulatory_function_id"
+   caption="{{ 'regulatory_function' | translate }}">
+   <dxo-lookup [dataSource]="regFunctionData" displayExpr="name" valueExpr="id">
+   </dxo-lookup>
+  </dxi-column>
+   
+  <dxi-column *ngIf="table_name == 'par_permitexpirytime_span'" dataField="regulatory_subfunction_id"
+   caption="{{ 'regulatory_subfunction' | translate }}">
+   <dxo-lookup [dataSource]="regSubFunctionData" displayExpr="name" valueExpr="id">
+   </dxo-lookup>
+  </dxi-column>
+
+  <dxi-column *ngIf="table_name == 'par_permitexpirytime_span'" dataField="organisation_id"
+   caption="{{ 'organisation' | translate }}">
+   <dxo-lookup [dataSource]="organisationData" displayExpr="name" valueExpr="id">
+   </dxo-lookup>
+  </dxi-column>
+
     <dxi-column *ngIf="table_name == 'par_hscodestariff_details'" dataField="tariff_code" caption="{{ 'tariff_code' | translate }}">
     </dxi-column>
     <dxi-column *ngIf="table_name == 'par_hscodestariff_details'" dataField="country_code" caption="{{ 'country_code' | translate }}">
@@ -56,6 +83,9 @@
 
     <dxi-column *ngIf="table_name == 'par_permit_typecategories'" dataField="code" caption="{{ 'code' | translate }}">
     </dxi-column>
+
+    <dxi-column dataField="description" caption="{{ 'description' | translate }}"></dxi-column>
+
     <dxi-column dataField="is_enabled" caption="{{ 'is_enabled' | translate }}" [dataType]="'boolean'" [width]="100">
         <dxo-editing [allowUpdating]="true" [allowDeleting]="true" [allowAdding]="true"></dxo-editing>
     </dxi-column>
@@ -81,10 +111,7 @@
                     <dx-text-box formControlName="name" [showClearButton]="true"></dx-text-box>
                 </div>
 
-                <div class="col-lg-6">
-                    <label>{{ 'description' | translate }}</label>
-                    <dx-text-box formControlName="description" [showClearButton]="true"></dx-text-box>
-                </div>
+               
 
                 <div *ngIf="table_name == 'par_hscodestariff_details'" class="col-lg-6">
                     <label>{{ 'tariff_code' | translate }}</label>
@@ -121,11 +148,44 @@
                             valueExpr="id" [searchEnabled]="true" displayExpr="start_hs_code"></dx-select-box>
                     </div>
 
-                    <div *ngIf="table_name == 'tra_hscodesproducts_registry' || table_name == 'par_hscodestariff_details'" class="col-lg-6">
+                    <div *ngIf="table_name == 'tra_hscodesproducts_registry' || table_name == 'par_hscodestariff_details'"  class="col-lg-6">
                         <label>{{ 'hscode_subheading_defination' | translate }}</label>
                         <dx-select-box [dataSource]="subHeadingDefinationData"
                             formControlName="subheading_definations_id" valueExpr="id" [searchEnabled]="true"
                             displayExpr="specific_hs_code"></dx-select-box>
+                    </div>
+                    
+                    <div *ngIf="table_name == 'par_permitexpirytime_span'" class="col-lg-6">
+                        <label>{{ 'timespan_defination' | translate }}</label>
+                        <dx-select-box [dataSource]="timespanDefinationData"
+                            formControlName="timespan_defination_id" valueExpr="id" [searchEnabled]="true"
+                            displayExpr="name"></dx-select-box>
+                    </div>
+
+                    <div *ngIf="table_name == 'par_permitexpirytime_span'" class="col-lg-6">
+                        <label>{{ 'regulatory_function' | translate }}</label>
+                        <dx-select-box [dataSource]="regFunctionData"
+                            formControlName="regulatory_function_id" valueExpr="id" [searchEnabled]="true"
+                            displayExpr="name"></dx-select-box>
+                    </div>
+                    
+                    <div *ngIf="table_name == 'par_permitexpirytime_span'" class="col-lg-6">
+                        <label>{{ 'regulatory_subfunction' | translate }}</label>
+                        <dx-select-box [dataSource]="regSubFunctionData"
+                            formControlName="regulatory_subfunction_id" valueExpr="id" [searchEnabled]="true"
+                            displayExpr="name"></dx-select-box>
+                    </div>
+
+                    <div *ngIf="table_name == 'par_permitexpirytime_span'" class="col-lg-6">
+                        <label>{{ 'organisation' | translate }}</label>
+                        <dx-select-box [dataSource]="organisationData"
+                            formControlName="organisation_id" valueExpr="id" [searchEnabled]="true"
+                            displayExpr="name"></dx-select-box>
+                    </div>
+
+                    <div class="col-lg-6">
+                        <label>{{ 'description' | translate }}</label>
+                        <dx-text-box formControlName="description" [showClearButton]="true"></dx-text-box>
                     </div>
 
                     <div  class="col-lg-6">

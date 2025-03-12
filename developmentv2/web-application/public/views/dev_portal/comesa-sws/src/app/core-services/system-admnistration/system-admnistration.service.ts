@@ -144,6 +144,47 @@ export class ServiceAdmnistrationService {
         return <any>data;
       }));
   }
+
+ 
+  onLoadTransactionEmailConfigurations(data) {
+    data.table_name = btoa(data.table_name);
+    this.system = {
+      params: data,
+      headers: { 'Accept': 'application/json' }
+    };
+
+    return this.HttpClient.get(this.baseUrl + '/onLoadTransactionEmailConfigurations', this.system)
+      .pipe(map(data => {
+        return <any>data;
+      }));
+  }
+  
+  onLoadNotificationScheduleConfigurations(data) {
+    data.table_name = btoa(data.table_name);
+    this.system = {
+      params: data,
+      headers: { 'Accept': 'application/json' }
+    };
+
+    return this.HttpClient.get(this.baseUrl + '/onLoadNotificationScheduleConfigurations', this.system)
+      .pipe(map(data => {
+        return <any>data;
+      }));
+  } 
+
+  onLoadTransactionPaymentIntegration(data) {
+    data.table_name = btoa(data.table_name);
+    this.system = {
+      params: data,
+      headers: { 'Accept': 'application/json' }
+    };
+
+    return this.HttpClient.get(this.baseUrl + '/onLoadTransactionPaymentIntegration', this.system)
+      .pipe(map(data => {
+        return <any>data;
+      }));
+  } 
+
   onLoadSystemGuideline(data) {
     data.table_name = btoa(data.table_name);
     this.system = {
