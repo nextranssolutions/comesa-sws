@@ -17,20 +17,21 @@
                 {{parameter_name | translate}}
                 <small>
                     <i class="ace-icon fa fa-angle-double-right"></i>
-                    overview &amp; stats
+                    {{'configuration' | translate}}
                 </small>
             </h1>
         </div>
 
 
         <div class="container-fluid">
+
             <dx-button text="{{ 'add_new' | translate }} {{ parameter_name | translate}}" type="default"
                 icon="fa fa-plus" [elementAttr]="{ class: '' }" (onClick)="hasReadpermissions=false;onAddNewConfig()">
             </dx-button>
 
             <dx-data-grid (onCellPrepared)="onCellPrepared($event)" class="col-lg-12 table row-border hover"
-                (onExporting)="onExporting($event)" [wordWrapEnabled]="true" [dataSource]="NewConfigData"
-                [remoteOperations]="true" [showBorders]="true" [allowColumnResizing]="true" [columnHidingEnabled]="true"
+                (onExporting)="onExporting($event)" [wordWrapEnabled]="true" [dataSource]="regulatoryProcessDocdefinationData"
+                [remoteOperations]="true" [showBorders]="true" [allowColumnResizing]="true" [columnHidingEnabled]="false"
                 keyExpr="id" (onToolbarPreparing)="onAdvanceProductRegistrySearch($event)">
 
                 <dxo-export [enabled]="true" [fileName]="'records' | translate" [formats]="['pdf', 'xlsx']"
@@ -51,18 +52,20 @@
                     </div>
                 </dxi-column>
 
+                <dxi-column dataField="regulatory_function" caption="{{ 'regulatory_function' | translate }}">
+                    
+                </dxi-column>
+                <dxi-column dataField="regulatory_subfunction" caption="{{ 'regulatory_subfunction' | translate }}">
+
+                </dxi-column>
                 <dxi-column dataField="name" caption="{{ 'name' | translate }}"></dxi-column>
                 <dxi-column dataField="description" caption="{{ 'description' | translate }}"></dxi-column>
 
-                <dxi-column dataField="regulatory_function_id" caption="{{ 'regulatory_function_id' | translate }}">
-                    <dxo-lookup [dataSource]="regulatoryFunctionIdData" displayExpr="name" valueExpr="id">
-                    </dxo-lookup>
+                <dxi-column dataField="dms_site" caption="{{ 'dms_site' | translate }}">
+
                 </dxi-column>
 
-
-                <dxi-column dataField="organisation_id" caption="{{ 'organisation' | translate }}">
-                    <dxo-lookup [dataSource]="organisationData" displayExpr="name" valueExpr="id">
-                    </dxo-lookup>
+                <dxi-column dataField="node_ref" caption="{{ 'node_ref' | translate }}">
                 </dxi-column>
 
                 <dxi-column dataField="is_enabled" caption="{{ 'is_enabled' | translate }}" [dataType]="'boolean'"
@@ -76,57 +79,66 @@
     </div>
 </div>
 
+
+
 <dx-load-panel #loadPanel shadingColor="rgba(0,0,0,0.4)" [position]="{ of: '#employee' }" [(visible)]="loadingVisible"
     [showIndicator]="true" [showPane]="true" [shading]="true" [message]="spinnerMessage" [hideOnOutsideClick]="false">
 </dx-load-panel>
 
 <dx-popup class="popup" [width]="funcpopWidth(75)" [height]="400" [showTitle]="true"
-    title="{{ 'add' | translate }} {{parameter_name | translate }}" [dragEnabled]="false"  [hideOnOutsideClick]="false"
-    [(visible)]="onAddNewConfiVisible">
+    title="{{ 'add_new' | translate }} {{parameter_name | translate }}" [dragEnabled]="false"
+    [hideOnOutsideClick]="false" [(visible)]="onAddNewConfiVisible">
 
     <div *dxTemplate="let data of 'content'">
         <dx-scroll-view>
 
             <form role="form" enctype="multipart/form-data" [formGroup]="createNewDataFrm"
-                (ngSubmit)="onFuncSaveNewConfigData()">
-                <div class="col-lg-4">
+                (ngSubmit)="onFuncSaveregulatoryProcessDocdefinationData()">
+                <div  class="col-lg-6">
+                    <label>{{ 'regulatory_function' | translate }}</label>
+                    <dx-select-box [dataSource]="regulatoryFunctionIdData" formControlName="regulatory_function_id"
+                        valueExpr="id" (onSelectionChanged)="onRegulatoryFunctionChange($event)" [searchEnabled]="true"
+                        displayExpr="name"></dx-select-box>
+                </div>
+                <div  class="col-lg-6">
+                    <label>{{ 'regulatory_subfunction' | translate }}</label>
+                    <dx-select-box [dataSource]="regulatorySubFunctionData" formControlName="regulatory_subfunction_id"
+                        valueExpr="id"  
+                        [searchEnabled]="true" displayExpr="name"></dx-select-box>
+                </div>
+                <div class="col-lg-6">
                     <label>{{ 'name' | translate }}</label>
                     <dx-text-box formControlName="name" [showClearButton]="true"></dx-text-box>
                 </div>
 
-                <div class="col-lg-4">
-                    <label>{{ 'description' | translate }}</label>
-                    <dx-text-box formControlName="description" [showClearButton]="true"></dx-text-box>
-                </div>
-
-                <div class="col-lg-4">
-                    <label>{{ 'regulatory_function_id' | translate }}</label>
-                    <dx-select-box [dataSource]="regulatoryFunctionIdData" formControlName="regulatory_function_id"
+                <div class="col-lg-6">
+                    <label>{{ 'dms_site' | translate }}</label>
+                    <dx-select-box [dataSource]="dmsSitesData" formControlName="dms_site_id"
                         valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
-                </div>
 
-                <div class="col-lg-4">
-                    <label>{{ 'organisation' | translate }}</label>
-                    <dx-select-box [dataSource]="organisationData" formControlName="organisation_id" valueExpr="id"
-                        [searchEnabled]="true" displayExpr="name"></dx-select-box>
                 </div>
-
-                <div class="col-lg-4">
+                <div class="col-lg-6">
                     <label>{{ "is_enabled" | translate }}</label>
                     <dx-select-box [searchEnabled]="true" formControlName="is_enabled" [dataSource]="regStatusOptions"
-                        valueExpr="value" displayExpr="text"></dx-select-box>
+                        valueExpr="value" displayExpr="name"></dx-select-box>
                 </div>
                 <div class="col-lg-12">
-                    <dx-button text="{{ 'save' | translate }} {{ parameter_name | translate }}" type="default"
-                        icon="fa fa-save" [elementAttr]="{ id: 'elementId', class: 'pull-right' }"
-                        (onClick)="onFuncSaveNewConfigData()">
-                    </dx-button>
+                    <label>{{ 'description' | translate }}</label>
+                    <dx-text-area formControlName="description" ></dx-text-area>
+                </div>
 
+                <div class="col-lg-12">
+                        <dx-button text="{{ 'save' | translate }} {{ parameter_name | translate }}" type="default"
+                            icon="fa fa-save" [elementAttr]="{ id: 'elementId', class: 'pull-right' }"
+                            (onClick)="onFuncSaveregulatoryProcessDocdefinationData()">
+                        </dx-button>
+                 
                 </div>
             </form>
         </dx-scroll-view>
     </div>
 </dx-popup>
+
 
 <dx-popup [visible]="deletePopupVisible" [width]="funcpopWidth(30)" [height]="funcpopHeight(25)" [showTitle]="true"
     title="{{ 'delete_confirmation_of'+parameter_name | translate }}" (onHidden)="deletePopupVisible = false">

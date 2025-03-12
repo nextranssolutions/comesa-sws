@@ -4,27 +4,28 @@ import { Router } from '@angular/router';
 import { TranslateService } from '@ngx-translate/core';
 import { DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
 import { SpinnerVisibilityService } from 'ng-http-loader';
+// import { NgxSmartModalService } from 'ngx-smart-modal';
 import { ToastrService } from 'ngx-toastr';
 import { ConfigurationsService } from 'src/app/core-services/configurations/configurations.service';
+import { DocumentManagementService } from 'src/app/core-services/document-management/document-management.service';
 import { ReportsService } from 'src/app/core-services/reports/reports.service';
 import { UtilityService } from 'src/app/core-services/utilities/utility.service';
 
 @Component({
-  selector: 'app-document-types',
-
-  templateUrl: './document-types.component.html',
-  styleUrl: './document-types.component.css'
+  selector: 'app-regulatoryprocess-docdefination',
+  templateUrl: './regulatoryprocess-docdefination.component.html',
+  styleUrl: './regulatoryprocess-docdefination.component.css'
 })
-export class DocumentTypesComponent {
+export class RegulatoryprocessDocdefinationComponent {
   table_name: string;
   parameter_name: string;
   hasReadpermissions: boolean;
   createNewDataFrm: FormGroup;
   onAddNewConfiVisible: boolean;
-  NewConfigData: any;
-
+  regulatoryProcessDocdefinationData: any;
+  sopIdData: any;
+  nodeRefData: any;
   isMandatoryData: any;
-  organisationData: any;
   isDmsSideRoot: any;
   nodeNameData: any;
   regulatoryFunctionIdData: any;
@@ -40,13 +41,12 @@ export class DocumentTypesComponent {
   loadingVisible: boolean;
   spinnerMessage: string;
   response: any;
-  regStatusOptions = [
-    { value: true, text: 'Yes' },
-    { value: false, text: 'No' },
-  ];
+  regStatusOptions: any;
 
   loading = false;
+  dmsSitesData: any;
 
+  regulatorySubFunctionData: any;
   actionsMenuItems = [
     {
       text: "Action",
@@ -68,37 +68,57 @@ export class DocumentTypesComponent {
     public viewRef: ViewContainerRef,
     public translate: TranslateService,
     public utilityService: UtilityService,
+    public dmsService: DocumentManagementService,
     public reportingAnalytics: ReportsService,
     public configService: ConfigurationsService,
   ) {
-
-    this.table_name = 'par_document_types';
-    this.parameter_name = "Document Types";
+    this.table_name = 'dms_regulatoryprocess_docdefination';
+    this.parameter_name = "dms_regulatoryprocess_docdefination";
     this.createNewDataFrm = new FormGroup({
       id: new FormControl('', Validators.compose([])),
       name: new FormControl('', Validators.compose([Validators.required])),
-      description: new FormControl('', Validators.compose([Validators.required])),
-      is_enabled: new FormControl('', Validators.compose([])),
-      regulatory_function_id: new FormControl('', Validators.compose([])),
-
-      document_no: new FormControl('', Validators.compose([])),
-      code: new FormControl('', Validators.compose([])),
-      organisation_id: new FormControl('', Validators.compose([Validators.required]))
+      description: new FormControl('', Validators.compose([])),
+      dms_site_id: new FormControl('', Validators.compose([])),
+      node_ref: new FormControl('', Validators.compose([])),
+      regulatory_function_id: new FormControl('', Validators.compose([Validators.required])),
+      regulatory_subfunction_id: new FormControl('', Validators.compose([Validators.required])),
+      is_enabled: new FormControl('', Validators.compose([Validators.required]))
 
     });
-
-
-
   }
 
   ngOnInit() {
-    this.fetchNewConfigData();
-    this.fetchRegulatoryFunctionIdData();
-   
-    this.fetchorganisationData();
+    this.fetchregulatoryProcessDocdefinationData();
+    this.onLoadregStatusOptions();
+    this.onloadregulatoryFunctionIdData();
 
   }
 
+  onRegulatoryFunctionChange($event) {
+    if ($event.selectedItem) {
+      let regulatory_function = $event.selectedItem;
+      this.onloadregulatorySubFunctionIdData(regulatory_function.id)
+      this.onLoaddmsSitesData(regulatory_function.id)
+    }
+  }
+  onloadregulatorySubFunctionIdData(regulatory_function_id) {
+
+    var data_submit = {
+      'table_name': 'par_regulatory_subfunctions',
+      regulatory_function_id: regulatory_function_id
+    }
+    this.configService.onLoadConfigurationData(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.regulatorySubFunctionData = this.data_record.data
+          }
+        },
+        error => {
+
+        });
+  }
   spinnerShow(spinnerMessage) {
     this.loadingVisible = true;
     this.spinnerMessage = spinnerMessage;
@@ -120,26 +140,8 @@ export class DocumentTypesComponent {
     this.onAddNewConfiVisible = true;
   }
 
-  fetchNewConfigurations() {
-    this.spinnerShow('Loading...........');
-    var data_submit = {
-      'table_name': this.table_name
-    }
-    this.configService.onLoadConfigurationData(data_submit)
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            // this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
-            this.NewConfigData = this.data_record.data;
-          }
-          this.spinnerHide();
-        },
-        error => {
-          this.spinnerHide();
-        });
-  }
-  onFuncSaveNewConfigData() {
+
+  onFuncSaveregulatoryProcessDocdefinationData() {
 
     const formData = new FormData();
     const invalid = [];
@@ -154,13 +156,13 @@ export class DocumentTypesComponent {
       return;
     }
     this.spinnerShow('saving ' + this.parameter_name);
-    this.configService.onSaveConfigurationDetailsDetails(this.table_name, this.createNewDataFrm.value, 'onsaveConfigData')
+    this.dmsService.onSaveDocumentDetailsDetails(this.table_name, this.createNewDataFrm.value, 'onSaveDMSProcessDocumentdefinationdetails')
       .subscribe(
         response => {
           this.response = response;
           //the details 
           if (this.response.success) {
-            this.fetchNewConfigurations();
+            this.fetchregulatoryProcessDocdefinationData();
             this.onAddNewConfiVisible = false;
             this.toastr.success(this.response.message, 'Response');
 
@@ -174,11 +176,11 @@ export class DocumentTypesComponent {
           this.spinnerHide();
         });
   }
-
-  fetchNewConfigData() {
+  onLoaddmsSitesData(regulatory_function_id) {
 
     var data_submit = {
-      'table_name': this.table_name
+      'table_name': 'dms_sites_repository_defination',
+      'regulatory_function_id': regulatory_function_id
     }
     this.configService.onLoadConfigurationData(data_submit)
       .subscribe(
@@ -186,7 +188,7 @@ export class DocumentTypesComponent {
           this.data_record = data;
           ;
           if (this.data_record.success) {
-            this.NewConfigData = this.data_record.data;
+            this.dmsSitesData = this.data_record.data;
           }
 
         },
@@ -195,9 +197,7 @@ export class DocumentTypesComponent {
         });
 
   }
-
-
-  fetchRegulatoryFunctionIdData() {
+  onloadregulatoryFunctionIdData() {
 
     var data_submit = {
       'table_name': 'par_regulatory_functions'
@@ -206,32 +206,60 @@ export class DocumentTypesComponent {
       .subscribe(
         data => {
           this.data_record = data;
+          ;
           if (this.data_record.success) {
-            this.regulatoryFunctionIdData = this.data_record.data
+            this.regulatoryFunctionIdData = this.data_record.data;
           }
+
         },
         error => {
 
         });
 
   }
-
-  fetchorganisationData() {
+  onLoadregStatusOptions() {
 
     var data_submit = {
-      'table_name': 'tra_organisation_information'
+      'table_name': 'par_confirmations'
     }
-    this.configService.onLoadUserOrganisationData(data_submit)
+    this.configService.onLoadConfigurationData(data_submit)
       .subscribe(
         data => {
           this.data_record = data;
+          ;
           if (this.data_record.success) {
-            this.organisationData = this.data_record.data
+            this.regStatusOptions = this.data_record.data;
           }
+
         },
         error => {
+
         });
+
   }
+
+  fetchregulatoryProcessDocdefinationData() {
+
+    var data_submit = {
+      'table_name': this.table_name
+    }
+    this.dmsService.onConfigurationItemswithUrl(data_submit, 'onLoadRegulatoryProcessDocdefination')
+      .subscribe(
+        data => {
+          this.data_record = data;
+          ;
+          if (this.data_record.success) {
+            this.regulatoryProcessDocdefinationData = this.data_record.data;
+          }
+
+        },
+        error => {
+
+        });
+
+  }
+
+
 
   funcpopWidth(percentage_width) {
     return window.innerWidth * percentage_width / 100;
@@ -293,7 +321,7 @@ export class DocumentTypesComponent {
           this.spinner.hide();
           this.response = response;
           if (this.response.success) {
-            this.fetchNewConfigurations();
+            this.fetchregulatoryProcessDocdefinationData();
             this.enablePopupVisible = false;
             this.toastr.success(this.response.message, 'Response');
             this.deletePopupVisible = false;
@@ -336,7 +364,7 @@ export class DocumentTypesComponent {
           this.spinner.hide();
           this.response = response;
           if (this.response.success) {
-            this.fetchNewConfigurations();
+            this.fetchregulatoryProcessDocdefinationData();
             this.toastr.success(this.response.message, 'Response');
             this.deletePopupVisible = false;
           }
@@ -354,8 +382,6 @@ export class DocumentTypesComponent {
         });
 
   }
-
-
 
   onExporting(e: DxDataGridTypes.ExportingEvent) {
 

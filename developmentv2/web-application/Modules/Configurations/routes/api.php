@@ -9,13 +9,20 @@ Route::middleware(['XssSanitizer','clear_cache_config','firewall.all'])->prefix(
     Route::get('funcFetchPublicDetailsCounter', [ConfigurationsController::class, 'funcFetchPublicDetailsCounter']);
 	Route::get('getUserNavigationItems', [ConfigurationsController::class, 'getUserNavigationItems']);
     Route::get('onLoadConfigurationData', [ConfigurationsController::class, 'onLoadConfigurationData']);
+    Route::get('onLoadUserOrganisationData', [ConfigurationsController::class, 'onLoadUserOrganisationData']);
+    Route::get('onLoadDocumentRequriementrecords', [ConfigurationsController::class, 'onLoadDocumentRequriementrecords']);
+    
+    
     Route::get('onLoadTranslationManagement', [ConfigurationsController::class, 'onLoadTranslationManagement']);
     Route::get('onLoadInformationSharingConfig', [ConfigurationsController::class, 'onLoadInformationSharingConfig']);
     
     Route::post('onEnableConfigurationsDetails', [ConfigurationsController::class, 'onEnableConfigurationsDetails']);
     Route::post('onSavingLanguageTranslationManagement', [ConfigurationsController::class, 'onSavingLanguageTranslationManagement']);
     Route::post('onsaveConfigData', [ConfigurationsController::class, 'onsaveConfigData']);
-	Route::post('onDeleteConfigData', [ConfigurationsController::class, 'onDeleteConfigData']);
+    Route::post('onSaveDocumentRequirements', [ConfigurationsController::class, 'onSaveDocumentRequirements']);
+	
+    
+    Route::post('onDeleteConfigData', [ConfigurationsController::class, 'onDeleteConfigData']);
     Route::post('onDeleteWorkflowsDetails', [ConfigurationsController::class, 'onDeleteConfigData']);
     Route::post('onDeleteConfigurationsDetails', [ConfigurationsController::class, 'onDeleteConfigurationsDetails']);
 

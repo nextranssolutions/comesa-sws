@@ -1,12 +1,11 @@
-<div class="page-header">
-  <h3>
+<div class="col-lg-12">
+  <h5>
     {{ parameter_name | translate }}
     <small>
       <i class="ace-icon fa fa-angle-double-right"></i>
     </small>
-  </h3>
+  </h5>
 </div><!-- /.page-header -->
-
 <dx-button text="{{ 'add_new' | translate }} {{ parameter_name | translate}}" type="default" icon="fa fa-plus"
   [elementAttr]="{ class: '' }" (onClick)="hasReadpermissions=false;onAddNewConfig()">
 </dx-button>
@@ -87,7 +86,6 @@
     </dxo-lookup>
   </dxi-column>
 
- 
 
   <dxi-column *ngIf="table_name == 'tra_documentrequirements_defination'" dataField="importexport_permittype_id"
   caption="{{ 'importexport_permittype_id' | translate }}">
@@ -118,11 +116,7 @@
     <dxo-lookup [dataSource]="gmpTypeIdData" displayExpr="name" valueExpr="id">
     </dxo-lookup>
   </dxi-column>
-
-  <dxi-column *ngIf="table_name == 'par_document_types'" dataField="name"
-  caption="{{ 'name' | translate }}">
-  </dxi-column>
-
+  
   <dxi-column *ngIf="table_name == 'par_document_types'" dataField="document_no"
   caption="{{ 'document_no' | translate }}">
   </dxi-column>
@@ -141,9 +135,6 @@
   caption="{{ 'extension' | translate }}">
   </dxi-column>
 
-  <!-- <dxi-column *ngIf="table_name == 'par_permit_typecategories'" dataField="code"
-  caption="{{ 'code' | translate }}">
-  </dxi-column> -->
   <dxi-column dataField="is_enabled" caption="{{ 'is_enabled' | translate }}" [dataType]="'boolean'" [width]="100">
       <dxo-editing [allowUpdating]="true" [allowDeleting]="true" [allowAdding]="true"></dxo-editing>
   </dxi-column>
