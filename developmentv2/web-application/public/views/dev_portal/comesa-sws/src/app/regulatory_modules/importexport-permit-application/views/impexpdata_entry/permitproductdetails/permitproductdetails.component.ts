@@ -350,6 +350,7 @@ export class PermitproductdetailsComponent implements OnInit {
   onLoadCountryData() {
     var data = {
       table_name: 'par_countries',
+      is_enabled: true
     };
 
     this.config.onLoadConfigurationData(data)
@@ -846,7 +847,7 @@ export class PermitproductdetailsComponent implements OnInit {
       return;
     }
     this.spinnerShow('');
-    this.appService.onsavePermitProductdetails(this.application_code, this.permitProductsFrm.value, this.tracking_no, 'onSaveApplicantPermitProductsDetails')
+    this.appService.onsavePermitProductdetails(this.application_code, this.permitProductsFrm.value, 'onSaveApplicantPermitProductsDetails')
       .subscribe(
         response => {
           this.app_resp = response;
@@ -883,7 +884,7 @@ export class PermitproductdetailsComponent implements OnInit {
       return;
     }
     this.spinnerShow('');
-    this.appService.onsavePermitProductdetails(this.application_code, this.permitProductsFrm.value, this.tracking_no, 'savePermitProductdetails')
+    this.appService.onsavePermitProductdetails(this.application_code, this.permitProductsFrm.value, 'savePermitProductdetails')
       .subscribe(
         response => {
           this.app_resp = response;

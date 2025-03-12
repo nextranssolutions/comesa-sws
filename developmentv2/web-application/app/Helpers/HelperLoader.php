@@ -672,11 +672,7 @@ if ( !function_exists( 'generateApplicationRefNumber' ) ) {
     }
 }
 
-if ( !function_exists( 'generateSingleApplicationRefNumber' ) ) {
-    function generateSingleApplicationRefNumber( $ref_id, $codes_array, $year, $workflowprocess_id, $user_id ) {
-        return ReferencingHelper::generateSingleApplicationRefNumber( $ref_id, $codes_array, $year, $workflowprocess_id, $user_id );
-    }
-}
+
 
 if ( !function_exists( 'generateSingleApplicationRefNumber' ) ) {
     function generateSingleApplicationRefNumber( $ref_id, $codes_array, $year, $workflowprocess_id, $user_id ) {

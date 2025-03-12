@@ -5,6 +5,7 @@ namespace App\Helpers;
 
 use Illuminate\Support\Facades\DB;
 use App\Helpers\SerialTracker;
+use App\Helpers\ApplicantSerialTracker;
 use Carbon\Carbon;
 class ReferencingHelper
 {
@@ -248,7 +249,7 @@ class ReferencingHelper
             'workflowprocess_id' => $workflowprocess_id,
             // 'zone_id' => $zone_id
         );
-        $serial_num_tracker = new SerialTracker();
+        $serial_num_tracker = new ApplicantSerialTracker();
         $serial_track = $serial_num_tracker->where($where)->first();
         if ($serial_track == '' || is_null($serial_track)) {
             $current_serial_id = 1;

@@ -178,7 +178,7 @@ export class ApplicantDetailsComponent {
           this.data_record = data;
 
           if (this.data_record.success) {
-            this.userAccountFrm.patchValue(this.data_record.data)
+            this.applicantDetailsForm.patchValue(this.data_record.data)
           }
         },
         error => {

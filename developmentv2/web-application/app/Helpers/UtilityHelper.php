@@ -815,7 +815,7 @@ class UtilityHelper
             ->leftJoin('wb_workflow_stages as t2', 't1.prevworkflow_stage_id', '=', 't2.id')
             ->leftJoin('wb_workflow_definition as t3', 't1.workflow_id', '=', 't3.id')
             ->select('t3.workflowprocess_id', 't1.prevworkflow_stage_id', 'nextworkflow_stage_id', 'workflow_status_id')
-            ->where(array('t3.process_id' => $workflowprocess_id, 't2.stage_status_id' => 1))
+            ->where(array('t3.workflowprocess_id' => $workflowprocess_id, 't2.stage_status_id' => 1))
             ->first();
 
         if ($rec) {
@@ -875,11 +875,8 @@ class UtilityHelper
     static function getApplicationGeneralFormsFields($req)
     {
         $regulatory_subfunction_id = $req->regulatory_subfunction_id;
-        $prodclass_category_id = $req->prodclass_category_id;
+      
         $regulatory_function_id = $req->regulatory_function_id;
-        $regulated_productstype_id = $req->regulated_productstype_id;
-        $appsubmissions_type_id = $req->appsubmissions_type_id;
-        $transactionpermit_type_id = $req->transactionpermit_type_id;
         if (!validateIsNumeric($regulatory_function_id)) {
             $submodule_data = getTableData('par_regulatory_subfunctions', array('id' => $regulatory_subfunction_id));
             $regulatory_function_id = $submodule_data->regulatory_function_id;
