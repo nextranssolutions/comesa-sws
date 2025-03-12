@@ -6679,6 +6679,9 @@ dx-selectbox .col-lg-1,
     position: absolute;
     top: 0;
     left: 0;
+    font-family: "Arial", sans-serif;
+    font-weight: bold;
+    /* font-size: 16px; */
   }
 
   .column-selector {

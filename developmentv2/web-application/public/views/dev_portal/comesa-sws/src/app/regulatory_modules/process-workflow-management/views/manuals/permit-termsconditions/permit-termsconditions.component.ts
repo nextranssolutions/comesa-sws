@@ -13,15 +13,16 @@ import { DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
 import { ReportsService } from 'src/app/core-services/reports/reports.service';
 import { ConfigurationsService } from 'src/app/core-services/configurations/configurations.service';
 import { DxTabPanelTypes } from 'devextreme-angular/ui/tab-panel';
+
 @Component({
-  selector: 'app-shared-sys-administration',
-  templateUrl: './shared-sys-administration.component.html',
-  styleUrl: './shared-sys-administration.component.css'
+  selector: 'app-permit-termsconditions',
+  templateUrl: './permit-termsconditions.component.html',
+  styleUrl: './permit-termsconditions.component.css'
 })
-export class SharedSysAdministrationComponent {
-  @Input() table_name: string;
-  @Input() parameter_name: string;
-  @Input() resetcolumns: string;
+export class PermitTermsconditionsComponent {
+ table_name: string;
+  parameter_name: string;
+   resetcolumns: string;
   is_enabled: boolean;
   enabledisable_tracer: string;
   enabledisable_tracerdescription: string;
@@ -52,6 +53,7 @@ export class SharedSysAdministrationComponent {
   deletedResponsePopupVisible = false;
   hideAnimation: any;
   showAnimation: any;
+  organisationData: any;
   record_id: number;
   addPopupVisible = false;
   deletePopupVisible = false;
@@ -127,30 +129,17 @@ export class SharedSysAdministrationComponent {
       name: new FormControl('', Validators.compose([Validators.required])),
       description: new FormControl('', Validators.compose([Validators.required])),
       code: new FormControl('', Validators.compose([Validators.required])),
-      resetcolumns: new FormControl(this.resetcolumns, Validators.compose([])),
-      account_type_id: new FormControl(this.resetcolumns, Validators.compose([])),
-      routerLink: new FormControl(this.resetcolumns, Validators.compose([])),
-      // dashboard_type_id: new FormControl(this.resetcolumns, Validators.compose([])),
-      has_partnerstate_defination: new FormControl(this.resetcolumns, Validators.compose([])),
-      institution_type_id: new FormControl(this.resetcolumns, Validators.compose([])),
-      is_super_admin: new FormControl(this.resetcolumns, Validators.compose([])),
-      // regulatory_function_id: new FormControl('', Validators.compose([Validators.required])),
-      // regulatory_subfunction_id: new FormControl('', Validators.compose([Validators.required])),
-      // termsconditions_type_id: new FormControl('', Validators.compose([Validators.required])),
+      regulatory_function_id: new FormControl('', Validators.compose([])),
+      regulatory_subfunction_id: new FormControl('', Validators.compose([])),
+      termsconditions_type_id: new FormControl('', Validators.compose([])),
+      organisation_id: new FormControl('', Validators.compose([Validators.required])),
       is_enabled: new FormControl('', Validators.compose([])),
 
     });
-    if(this.table_name == 'par_systems_functionalities'){
+    this.table_name = 'tra_permits_termsconditions';
+    this.parameter_name = 'permit_terms_and_conditions';
       
-      this.createNewDataFrm.addControl('process_id',new FormControl('', Validators.required));
-    };
-    if(this.table_name == 'tra_permits_termsconditions'){
-      
-      this.createNewDataFrm.addControl('regulatory_function_id',new FormControl('', Validators.compose([])));
-      this.createNewDataFrm.addControl('regulatory_subfunction_id',new FormControl('', Validators.compose([])));
-      this.createNewDataFrm.addControl('termsconditions_type_id',new FormControl('', Validators.compose([])));
-    }
-
+   
   }
   ngOnInit() {
     this.fetchSysAdminDetails();
@@ -160,12 +149,6 @@ export class SharedSysAdministrationComponent {
     if(this.table_name == 'par_systems_functionalities'){
       this.createNewDataFrm.addControl('process_id',new FormControl('', Validators.required));
     }
-    if(this.table_name == 'tra_permits_termsconditions'){
-      
-      this.createNewDataFrm.addControl('regulatory_function_id',new FormControl('', Validators.compose([])));
-      this.createNewDataFrm.addControl('regulatory_subfunction_id',new FormControl('', Validators.compose([])));
-      this.createNewDataFrm.addControl('termsconditions_type_id',new FormControl('', Validators.compose([])));
-    }
     this.spinnerShow('Loading ' + this.parameter_name);
     this.spinnerHide();
 
@@ -174,10 +157,8 @@ export class SharedSysAdministrationComponent {
         { text: "Permission", action: 'user_permissions', icon: 'fa fa-users' }
       );
     }
-    this.onLoadAccountTypeData();
-    this.onloaddashboardTypeData();
-    this.onloadaccountTypesData();
-    this.onloadinstutitionTypesData();
+   
+    this.onloadorganisationData();
     this.onLoadregulatoryFunctionsData();
     this.onLoadTermsConditionTypesData();
 
@@ -239,10 +220,10 @@ export class SharedSysAdministrationComponent {
   onNextNavigationItems(nextStep) {
     this.selectedTabIndex = this.tabNames.indexOf(nextStep);
   }
-  onloadinstutitionTypesData() {
+  onloadorganisationData() {
     var data_submit = {
-      'table_name': 'par_institutions_types',
-      is_enabled: true,
+      'table_name': 'tra_organisation_information',
+     
     }
     this.admnistrationService.onLoadSystemAdministrationData(data_submit)
       .subscribe(
@@ -250,7 +231,7 @@ export class SharedSysAdministrationComponent {
           this.data_record = data;
 
           if (this.data_record.success) {
-            this.instutitionTypesData = this.data_record.data;
+            this.organisationData = this.data_record.data;
           }
         },
         error => {
@@ -258,67 +239,10 @@ export class SharedSysAdministrationComponent {
         });
 
   }
-  onloadaccountTypesData() {
-    var data_submit = {
-      'table_name': 'sys_account_types',
-      is_enabled: true,
-    }
-    this.admnistrationService.onLoadSystemAdministrationData(data_submit)
-      .subscribe(
-        data => {
-          this.data_record = data;
-
-          if (this.data_record.success) {
-            this.accountTypesData = this.data_record.data;
-          }
-        },
-        error => {
-
-        });
-  }
 
 
-  onloaddashboardTypeData() {
-
-    var data_submit = {
-      'table_name': 'sys_dashboard_types',
-      is_enabled: true,
-    }
-    this.admnistrationService.onLoadSystemAdministrationData(data_submit)
-      .subscribe(
-        data => {
-          this.data_record = data;
-
-          if (this.data_record.success) {
-            this.dashboardTypeData = this.data_record.data;
-          }
-        },
-        error => {
-
-        });
-
-  }
-  onLoadAccountTypeData() {
-
-    var data_submit = {
-      'table_name': 'sys_account_types',
-      is_enabled: true,
-    }
-    this.admnistrationService.onLoadSystemAdministrationData(data_submit)
-      .subscribe(
-        data => {
-          this.data_record = data;
-
-          if (this.data_record.success) {
-            this.AccountTypesData = this.data_record.data;
-          }
-
-        },
-        error => {
-
-        });
-
-  }
+ 
+ 
   spinnerShow(spinnerMessage) {
     this.loadingVisible = true;
     this.spinnerMessage = spinnerMessage;
