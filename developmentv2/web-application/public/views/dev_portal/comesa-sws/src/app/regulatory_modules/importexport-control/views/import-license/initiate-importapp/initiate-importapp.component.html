@@ -33,7 +33,7 @@
                         style="font-weight: bold;margin: 5px; font-style:italics;font-size: 15px;font-style: italics;color: green;">Application
                         {{'status' | translate}}:<i> {{status_name}}</i> </label>
                 </small>
-              
+
             </h1>
         </div>
 
@@ -46,19 +46,20 @@
 
         <ng-wizard-step [title]="'step_one' | translate" [description]="'applicant_details' | translate"
             [canEnter]="isValidTypeBoolean">
-            <div class="container_div">
+            <div class="div_maincontent">
                 <div class="scrollable-content">
-                    <app-applicantdetails [userApplicantAccountFrm] ="userApplicantAccountFrm" [applicantDetailsForm]="applicantDetailsForm"></app-applicantdetails>
+                    <app-applicantdetails [userApplicantAccountFrm]="userApplicantAccountFrm"
+                        [applicantDetailsForm]="applicantDetailsForm"></app-applicantdetails>
                 </div>
             </div>
 
-            <div class="div_footer button-container">
+            <div class="div_contentfooter pull-right">
 
                 <dx-button text="{{'dashboard' | translate}}" type="success" icon="fa fa-eraser"
-                    [elementAttr]="{  class: 'pull-left' }" (onClick)="onApplicationDashboard()">
+                    (onClick)="onApplicationDashboard()">
                 </dx-button>
                 <dx-button text="{{'permit_general_information' | translate}}" iconPosition="right" type="success"
-                    icon="fa fa-angle-double-right" [elementAttr]="{ id: 'elementId' }" (onClick)="nextStep()">
+                    icon="fa fa-angle-double-right" (onClick)="nextStep()">
                 </dx-button>
             </div>
         </ng-wizard-step>
@@ -66,7 +67,7 @@
         <ng-wizard-step [title]="'step_two' | translate" [description]="'permit_general_information' | translate"
             [canEnter]="isValidTypeBoolean">
 
-            <div class="container_div">
+            <div class="div_maincontent">
                 <div class="scrollable-content">
                     <!-- Your content goes here -->
                     <div>
@@ -78,28 +79,26 @@
             </div>
 
 
-            <div class="div_footer button-container">
+            <div class="pull-right div_contentfooter">
 
                 <dx-button text="{{'applicant_details' | translate}}" type="success" icon="fa fa-angle-double-left"
-                    [elementAttr]="{  class: 'pull-left'}" (onClick)="previousStep()">
+                    (onClick)="previousStep()">
                 </dx-button>
 
                 <dx-button text="{{'save_application' | translate}}" iconPosition="left" type="default"
-                    icon="fa fa-save" (onClick)="onSaveImportExportApplication()" icon="fa fa-angle-double-right"
-                    [elementAttr]="{ id: 'elementId', }">
+                    icon="fa fa-save" (onClick)="onSaveImportExportApplication()" icon="fa fa-angle-double-right">
                 </dx-button>
 
                 <dx-button text="{{'permit_product_details' | translate}}" iconPosition="right" type="success"
-                    icon="fa fa-angle-double-right" [elementAttr]="{ id: 'elementId', }" (onClick)="onNextStep()">
+                    icon="fa fa-angle-double-right" (onClick)="onNextStep()">
                 </dx-button>
-
             </div>
 
         </ng-wizard-step>
 
         <ng-wizard-step [title]="'step_three' | translate" [description]="'permit_product_details'| translate"
             [canEnter]="isValidTypeBoolean">
-            <div class="container_div">
+            <div class="container_div div_maincontent">
 
 
                 <div class="scrollable-content">
@@ -111,33 +110,32 @@
 
                 </div>
             </div>
-            <div class="div_footer button-container">
+            <div class="div_footer button-container pull-right div_contentfooter">
                 <dx-button text="{{'permit_general_information' | translate}}" iconPosition="left" type="danger"
-                    icon="fa fa-angle-double-left" [elementAttr]="{ id: 'elementId', }" (onClick)="previousStep()">
+                    icon="fa fa-angle-double-left" class="pull-right" (onClick)="previousStep()">
                 </dx-button>
                 <dx-button text="{{'document_requirement_submission' | translate}}" iconPosition="right" type="success"
-                    icon="fa fa-angle-double-right" [elementAttr]="{ id: 'elementId', }" (onClick)="nextStep()">
+                    icon="fa fa-angle-double-right" class="pull-right" (onClick)="nextStep()">
                 </dx-button>
-
             </div>
         </ng-wizard-step>
 
 
         <ng-wizard-step [title]="'step_four' | translate" [description]="'document_requirement_submission' | translate"
             [canEnter]="isValidTypeBoolean">
-            <div class="container_div">
+            <div class="container_div div_maincontent">
                 <div class="scrollable-content">
 
                     <app-sharedapplicationdocumentuploads [oga_application_code]="oga_application_code"
                         [process_id]="process_id"></app-sharedapplicationdocumentuploads>
                 </div>
             </div>
-            <div class="div_footer button-container">
+            <div class="div_footer button-container pull-right div_contentfooter">
                 <dx-button text="{{'permit_product_details' | translate}}" iconPosition="left" type="danger"
-                    icon="fa fa-angle-double-left" [elementAttr]="{ id: 'elementId', }" (onClick)="previousStep()">
+                    icon="fa fa-angle-double-left" (onClick)="previousStep()">
                 </dx-button>
                 <dx-button text="{{'screening_checklist' | translate}}" iconPosition="right" type="success"
-                    icon="fa fa-angle-double-right" [elementAttr]="{ id: 'elementId', }" (onClick)="nextStep()">
+                    icon="fa fa-angle-double-right" (onClick)="nextStep()">
                 </dx-button>
 
             </div>
@@ -145,18 +143,18 @@
 
         <ng-wizard-step [title]="'step_five' | translate" [description]="'screening_checklist' | translate"
             [canEnter]="isValidTypeBoolean">
-            <div class="container_div">
+            <div class="container_div div_maincontent">
                 <div class="scrollable-content">
                     <app-sharedevaluation-checklist [transactionpermit_type_id]="transactionpermit_type_id"
                         [oga_application_code]="oga_application_code"></app-sharedevaluation-checklist>
                 </div>
             </div>
-            <div class="div_footer button-container">
+            <div class="div_footer button-container pull-right div_contentfooter">
                 <dx-button text="{{'document_requirement_submission' | translate}}" iconPosition="left" type="danger"
-                    icon="fa fa-angle-double-left" [elementAttr]="{ id: 'elementId', }" (onClick)="previousStep()">
+                    icon="fa fa-angle-double-left" (onClick)="previousStep()">
                 </dx-button>
                 <dx-button text="{{'billing_&_payment' | translate}}" iconPosition="right" type="success"
-                    icon="fa fa-angle-double-right" [elementAttr]="{ id: 'elementId', }" (onClick)="nextStep()">
+                    icon="fa fa-angle-double-right" (onClick)="nextStep()">
                 </dx-button>
 
             </div>
@@ -164,16 +162,16 @@
 
         <ng-wizard-step [title]="'step_six'| translate" [description]="'billing_&_payment'| translate"
             [canEnter]="isValidTypeBoolean">
-            <div class="container_div">
+            <div class="container_div div_maincontent">
                 <div class="scrollable-content">
                     <!-- Your content goes here -->
                     <div>Step 1 content</div>
                     <!-- Add more content to see the scroll effect -->
                 </div>
             </div>
-            <div class="div_footer button-container">
+            <div class="div_footer button-container pull-right div_contentfooter">
                 <dx-button text="{{'screening_checklist' | translate}}" iconPosition="left" type="success"
-                    icon="fa fa-angle-double-left" [elementAttr]="{ id: 'elementId', }" (onClick)="previousStep()">
+                    icon="fa fa-angle-double-left" (onClick)="previousStep()">
                 </dx-button>
 
                 <dx-button text="{{'submit_application' | translate }}" type="default" icon="fa fa-save"

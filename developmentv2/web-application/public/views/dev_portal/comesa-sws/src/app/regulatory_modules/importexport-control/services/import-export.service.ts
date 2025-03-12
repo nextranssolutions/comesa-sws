@@ -42,7 +42,7 @@ export class ImportExportService {
   //     }));
   // }
 
-  onSavePermitApplication(permitData, registrant_details, action_url, transactionpermit_type_id) {
+  onSavePermitApplication(permitData, registrant_details, action_url, transactionpermit_type_id,) {
     const headers = new HttpHeaders({
       "Accept": "application/json",
       "Authorization": "Bearer " + this.authService.getAccessToken(),

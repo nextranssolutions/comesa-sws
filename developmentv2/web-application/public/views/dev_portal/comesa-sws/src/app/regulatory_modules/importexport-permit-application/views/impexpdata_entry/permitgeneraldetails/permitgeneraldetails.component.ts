@@ -51,6 +51,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
   consignee_options_check: any;
   show_advancesearch: boolean;
   zoneData: any;
+  spinnerMessage: string;
   regulatory_function_id: any;
   permit_category_id: any;
   application_code: any;
@@ -99,6 +100,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
   filesToUpload: Array<File> = [];
   showsupporting_document: boolean;
   has_submittedpremisesapp: boolean;
+  loadingVisible: boolean;
   processData: any;
   title: string;
   router_link: string;
@@ -274,6 +276,14 @@ export class PermitgeneraldetailsComponent implements OnInit {
 
     }
 
+  }
+
+  spinnerShow(spinnerMessage) {
+    this.loadingVisible = true;
+    this.spinnerMessage = spinnerMessage;
+  }
+  spinnerHide() {
+    this.loadingVisible = false;
   }
 
   onhaveRegOutletsChange($event) {
@@ -902,7 +912,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
 
 
   onsavePermitReceiverSender() {
-    this.spinner.show();
+    this.spinnerShow('');
     let table_name;
     if (this.checkifsenderreceiver) {
       table_name = 'tra_permitsenderreceiver_data';
@@ -924,7 +934,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
           } else {
             this.toastr.error(this.app_resp.message, 'Alert');
           }
-          this.spinner.hide();
+          this.spinnerHide();
         },
         error => {
           this.toastr.error('Error Occurred', 'Alert');
@@ -1039,7 +1049,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
 
 
   onAddCustomDetails() {
-    this.spinner.show();
+    this.spinnerShow('');
     let custom_office = this.customOfficeFrm.get('name')?.value;
 
     this.appService.onAddManufacturingSite('tra_manufacturer_info', this.customOfficeFrm.value, 'saveManufacturerDetails')
@@ -1073,7 +1083,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
           this.toastr.error('An error occurred while saving details.', 'Error');
         },
         complete: () => {
-          this.spinner.hide();
+          this.spinnerHide();
         }
       });
   }

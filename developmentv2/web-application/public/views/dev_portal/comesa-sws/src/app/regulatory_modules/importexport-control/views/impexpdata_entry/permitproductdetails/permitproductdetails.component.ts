@@ -1425,7 +1425,7 @@ export class PermitproductdetailsComponent implements OnInit {
     // Patch the form with selected values
     this.permitProductsFrm.patchValue({ 
         regulated_product_category: selectedCategory, 
-        regulated_product_category_id: data_resp.regulated_product_category_id 
+        regulated_productcategory_id: data_resp.regulated_product_category_id 
     });
 
     // Close the popup

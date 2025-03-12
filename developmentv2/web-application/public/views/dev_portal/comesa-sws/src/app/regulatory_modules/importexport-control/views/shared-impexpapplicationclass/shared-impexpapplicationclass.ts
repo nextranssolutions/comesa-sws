@@ -66,7 +66,7 @@ export class SharedImpexpApplicationClass {
   process_title: string;;
   regulated_productstype_id: number;
   application_id: number;
-  oga_application_code: any;
+  oga_application_code: number;
   transactionpermit_type_id: number;
 
   process_id: number;
@@ -113,7 +113,7 @@ export class SharedImpexpApplicationClass {
   permits_fielddata: any;
   products_fielddata: any;
   applicants_fielddata: any;
-
+  nav_data: any;
   id: number;
   applicant_details: any;
 
@@ -137,7 +137,10 @@ export class SharedImpexpApplicationClass {
     this.applicant_id = user.applicant_id;
     this.application_details = localStorage.getItem('application_details');
 
+    this.nav_data = localStorage.getItem('nav_data');
     this.application_details = JSON.parse(this.application_details);
+    this.nav_data = JSON.parse(this.nav_data);
+    let regulatory_subfunction_id =this.nav_data.regulatory_subfunction_id;
 
     this.form_fielddata = this.application_details.application_form;
     this.products_fielddata = this.application_details.permit_products_details;
@@ -258,7 +261,7 @@ export class SharedImpexpApplicationClass {
   }
 
   onApplicationDashboard() {
-    // this.app_route = this.funcREturnApplicationDashboardROute();
+    this.app_route = ['./importexport-control/draft-importlicense-dashboard'];
     this.router.navigate(this.app_route);
     this.scrollToTop();
   }
@@ -310,7 +313,6 @@ export class SharedImpexpApplicationClass {
     }
     return input;
   }
-
   onSaveImportExportApplication() {
     const controls = this.applicationGeneraldetailsfrm.controls;
     for (const name in controls) {
@@ -328,11 +330,19 @@ export class SharedImpexpApplicationClass {
     const transactionpermit_type_id = Number(localStorage.getItem('transactionpermit_type_id')) || null;
     const applicant_id = Number(this.applicantDetailsForm.get('id')?.value) || null;
   
+    this.nav_data = localStorage.getItem('nav_data');
+    this.nav_data = this.nav_data ? JSON.parse(this.nav_data) : {};
+  
+    // Ensure regulatory_subfunction_id is set correctly
+    let regulatory_subfunction_id = this.nav_data?.regulatory_subfunction_id || null;
+    let regulatory_function_id = this.nav_data?.regulatory_function_id || null;
+
     // Patch values to form
     this.applicationGeneraldetailsfrm.patchValue({
       applicant_id: applicant_id,
       transactionpermit_type_id: transactionpermit_type_id,
-      regulatory_subfunction_id: this.regulatory_subfunction_id
+      regulatory_subfunction_id: regulatory_subfunction_id,
+      regulatory_function_id: regulatory_function_id
     });
   
     const uploadData = this.prepareSavePermitDoc();

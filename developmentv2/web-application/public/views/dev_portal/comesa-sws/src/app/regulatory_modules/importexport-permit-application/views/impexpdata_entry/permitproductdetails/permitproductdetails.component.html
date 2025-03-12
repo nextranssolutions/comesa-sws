@@ -111,6 +111,13 @@
 
                                 <div class="input-group col-md-4">
                                     <div class="col-xs-12 col-md-6 col-lg-6 col-xl-6 ">
+                                        <label for="ti" class="control-label">{{'quantity'| translate}}</label>
+                                        <dx-text-box formControlName="quantity"
+                                            placeholder="{{'quantity' | translate}}">
+                                        </dx-text-box>
+
+                                    </div>
+                                    <div class="col-xs-12 col-md-6 col-lg-6 col-xl-6 ">
                                         <label for="ti" class="control-label">{{'unit_of_measure'| translate}}</label>
                                         <dx-select-box [dataSource]="unitOfMeasureData" valueExpr="id"
                                             displayExpr="name" [searchEnabled]="true"
@@ -118,13 +125,7 @@
                                         </dx-select-box>
                                     </div>
 
-                                    <div class="col-xs-12 col-md-6 col-lg-6 col-xl-6 ">
-                                        <label for="ti" class="control-label">{{'quantity'| translate}}</label>
-                                        <dx-text-box formControlName="quantity"
-                                            placeholder="{{'quantity' | translate}}">
-                                        </dx-text-box>
-
-                                    </div>
+                                    
 
                                 </div>
 
@@ -237,8 +238,7 @@
                                 <div class="col-lg-12 btn-margin-5">
                                     <br />
                                     <button type="submit" (submit)="onsavePermitProductdetails()"
-                                        class="btn btn-primary"><i class="fa fa-user"></i> {{ 'save' | translate }}
-                                        {{'permit_product' | translate}}</button>
+                                        class="btn btn-primary"><i class="fa fa-user"></i> {{ 'save_permit_product_application' | translate }}</button>
                                 </div>
                             </div>
                         </form>
@@ -448,3 +448,7 @@
         <div class="col-lg-12 row" [innerHTML]="printiframeUrl | safe: 'html'"></div>
     </div>
 </dx-popup>
+
+<dx-load-panel #loadPanel shadingColor="rgba(0,0,0,0.4)" [position]="{ of: '#employee' }" [(visible)]="loadingVisible"
+    [showIndicator]="true" [showPane]="true" [shading]="true" [message]="spinnerMessage" [hideOnOutsideClick]="false">
+</dx-load-panel>
