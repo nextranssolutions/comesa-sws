@@ -267,8 +267,7 @@ class ImportExportController extends Controller
     {
         try {
             DB::beginTransaction();
-            
-            $applicant_id = $req->applicant_id;
+
             $user_id = $req->user_id;
             $applicationsubmission_type_id = $req->applicationsubmission_type_id;
             $applicationapplicant_option_id = $req->applicationapplicant_option_id;
@@ -328,7 +327,7 @@ class ImportExportController extends Controller
                     $sql = DB::table('tra_application_documentsdefination')->where(array('application_code' => $application_code))->first();
                     if (!$sql) {
                         
-                        // initializeApplicationDMS($product_type_id, $regulatory_function_id, $regulatory_subfunction_id, $application_code, $tracking_no . rand(0, 100), $trader_id);
+                        initializeApplicationDMS($regulatory_subfunction_id, $application_code, $reference_no, $user_id);
                     }
                     $res = array(
                         'reference_no' => $reference_no,
@@ -362,7 +361,6 @@ class ImportExportController extends Controller
                     return \response()->json(array('success' => false, 'reference_no' => $reference_no, 'message' => $reference_no));
                 }
                 $application_code = generateApplicationCode($regulatory_subfunction_id, 'wb_importexport_applications');
-                
                 $app_data['created_by'] = $user_id;
                 $app_data['created_on'] = Carbon::now();
                 $app_data['reference_no'] = $reference_no;
@@ -373,11 +371,10 @@ class ImportExportController extends Controller
                 $app_data['applicationapplicant_option_id'] = $applicationapplicant_option_id;
                 $app_data['date_added'] = Carbon::now();
                 $app_data['application_code'] = $application_code;
-                //remove this 
                 $app_data['application_status_id'] = getInitialApplicantWorkflowStatusId($workflowprocess_id);
 
                 $resp = insertRecord('wb_importexport_applications', $app_data, $user_id);
-
+                
                 if ($resp['success']) {
                     initiateApplicantInitialProcessSubmission($table_name, $application_code, $workflowprocess_id);
 
