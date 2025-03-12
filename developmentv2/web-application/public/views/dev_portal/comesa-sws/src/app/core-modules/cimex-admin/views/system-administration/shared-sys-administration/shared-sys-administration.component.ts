@@ -40,6 +40,8 @@ export class SharedSysAdministrationComponent {
   hasReadpermissions: boolean;
   show_advancesearch: boolean;
   data_value: string;
+  regulatoryFunctionsData: any;
+  regulatorySubFunctionsData: any;
   response: any;
   showTabPanel: boolean = false;
   tabPanelPopupVisible: boolean = false;
@@ -95,6 +97,7 @@ export class SharedSysAdministrationComponent {
   accountTypesData: any;
   instutitionTypesData: any;
   systemFunctionalitiesData: any;
+  termsConditionTypeData: any;
   partnerStateOptions = [
     { value: true, text: 'True' },
     { value: false, text: 'False' },
@@ -131,11 +134,23 @@ export class SharedSysAdministrationComponent {
       has_partnerstate_defination: new FormControl(this.resetcolumns, Validators.compose([])),
       institution_type_id: new FormControl(this.resetcolumns, Validators.compose([])),
       is_super_admin: new FormControl(this.resetcolumns, Validators.compose([])),
+      // regulatory_function_id: new FormControl('', Validators.compose([Validators.required])),
+      // regulatory_subfunction_id: new FormControl('', Validators.compose([Validators.required])),
+      // termsconditions_type_id: new FormControl('', Validators.compose([Validators.required])),
+      is_enabled: new FormControl('', Validators.compose([])),
+
     });
     if(this.table_name == 'par_systems_functionalities'){
       
       this.createNewDataFrm.addControl('process_id',new FormControl('', Validators.required));
+    };
+    if(this.table_name == 'tra_permits_termsconditions'){
+      
+      this.createNewDataFrm.addControl('regulatory_function_id',new FormControl('', Validators.compose([])));
+      this.createNewDataFrm.addControl('regulatory_subfunction_id',new FormControl('', Validators.compose([])));
+      this.createNewDataFrm.addControl('termsconditions_type_id',new FormControl('', Validators.compose([])));
     }
+
   }
   ngOnInit() {
     this.fetchSysAdminDetails();
@@ -144,6 +159,12 @@ export class SharedSysAdministrationComponent {
     this.onLoadsystemProcessesData();
     if(this.table_name == 'par_systems_functionalities'){
       this.createNewDataFrm.addControl('process_id',new FormControl('', Validators.required));
+    }
+    if(this.table_name == 'tra_permits_termsconditions'){
+      
+      this.createNewDataFrm.addControl('regulatory_function_id',new FormControl('', Validators.compose([])));
+      this.createNewDataFrm.addControl('regulatory_subfunction_id',new FormControl('', Validators.compose([])));
+      this.createNewDataFrm.addControl('termsconditions_type_id',new FormControl('', Validators.compose([])));
     }
     this.spinnerShow('Loading ' + this.parameter_name);
     this.spinnerHide();
@@ -157,6 +178,8 @@ export class SharedSysAdministrationComponent {
     this.onloaddashboardTypeData();
     this.onloadaccountTypesData();
     this.onloadinstutitionTypesData();
+    this.onLoadregulatoryFunctionsData();
+    this.onLoadTermsConditionTypesData();
 
   }
   funcUserRolesTabClick(e) {
@@ -348,6 +371,67 @@ export class SharedSysAdministrationComponent {
     if (this.table_name == 'usr_users_groups') {
       this.AppNavigationMenus = [];
     }
+  }
+  onLoadregulatoryFunctionsData() {
+    var data_submit = {
+      'table_name': 'par_regulatory_functions',
+      // process_id: process_id
+    }
+    this.admnistrationService.onLoadSystemAdministrationData(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.regulatoryFunctionsData = this.data_record.data;
+          }
+        },
+        error => {
+  
+        });
+  
+  }
+  onLoadregulatorySubFunctionsData(regulatory_function_id) {
+    var data_submit = {
+      'table_name': 'par_regulatory_subfunctions',
+      regulatory_function_id: regulatory_function_id
+    }
+    this.admnistrationService.onLoadSystemAdministrationData(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.regulatorySubFunctionsData = this.data_record.data;
+          }
+        },
+        error => {
+  
+        });
+  
+  }
+  onRegulatoryFunctionChange($event) {
+    if ($event.selectedItem) {
+      let regulatory_function = $event.selectedItem;
+      this.onLoadregulatorySubFunctionsData(regulatory_function.id)
+    }
+  }
+
+  onLoadTermsConditionTypesData() {
+    var data_submit = {
+      'table_name': 'par_termsconditions_types',
+      // process_id: process_id
+    }
+    this.admnistrationService.onLoadSystemAdministrationData(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.termsConditionTypeData = this.data_record.data;
+          }
+        },
+        error => {
+  
+        });
+  
   }
 
   onFuncSaveRecordData() {

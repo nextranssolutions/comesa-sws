@@ -15,19 +15,15 @@ use Modules\DocumentManagement\App\Http\Controllers\DocumentManagementController
     |
 */
 
-Route::middleware(['auth:sanctum'])->prefix('v1')->name('api.')->group(function () {
-    Route::get('documentmanagement', fn (Request $request) => $request->user())->name('documentmanagement');
-});
-
-
-
 
 Route::middleware(['XssSanitizer','clear_cache_config','firewall.all'])->prefix('documentmanagement')->group(function () {
     Route::post('onaplicationDocumentUpload', [DocumentManagementController::class, 'onaplicationDocumentUpload']);
 	
     Route::get('onLoaddocumentTypeRequirements', [DocumentManagementController::class, 'onLoaddocumentTypeRequirements']);
     Route::get('onLoadonLoadDocumentDataConfig', [DocumentManagementController::class, 'onLoadonLoadDocumentDataConfig']);
+    Route::get('onLoadRegulatoryProcessDocdefination', [DocumentManagementController::class, 'onLoadRegulatoryProcessDocdefination']);
 
+    
     Route::post('onSaveDMSSitedetails', [DocumentManagementController::class, 'onSaveDMSSitedetails']);
     Route::post('onSaveDMSProcessDocumentdefinationdetails', [DocumentManagementController::class, 'onSaveDMSProcessDocumentdefinationdetails']);
     Route::post('onSaveDMSNonStructuredDocdefinationdetails', [DocumentManagementController::class, 'onSaveDMSNonStructuredDocdefinationdetails']);

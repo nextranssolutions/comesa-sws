@@ -28,6 +28,10 @@ import { ApprovedPermitsComponent } from './views/import-license/approved-permit
 import { AwaitingPaymentRemittanceComponent } from './views/import-license/awaiting-payment-remittance/awaiting-payment-remittance.component';
 import { RejectedPermitsComponent } from './views/import-license/rejected-permits/rejected-permits.component';
 import { RequestAdditionalInfoComponent } from './views/import-license/request-additional-info/request-additional-info.component';
+import { DraftExportlicensedashComponent } from './views/export-license/draft-exportlicensedash/draft-exportlicensedash.component';
+import { InitiateExportappComponent } from './views/export-license/initiate-exportapp/initiate-exportapp.component';
+import { PersonaluseproductsDashComponent } from './views/permit-personaluse-products/personaluseproducts-dash/personaluseproducts-dash.component';
+import { InitiatePermitsforPersonaluseproductsComponent } from './views/permit-personaluse-products/initiate-permitsfor-personaluseproducts/initiate-permitsfor-personaluseproducts.component';
 
 const ngWizardConfig: NgWizardConfig = {
   theme: THEME.default
@@ -37,10 +41,10 @@ const ngWizardConfig: NgWizardConfig = {
 @NgModule({
   declarations: [ImportexportNavigationComponent,ImportexportDashboardComponent,
     ImportexportLayoutComponent, DraftImportlicensedashComponent,ApprovedPermitsComponent,AwaitingPaymentRemittanceComponent,
-    RejectedPermitsComponent,RequestAdditionalInfoComponent,
+    RejectedPermitsComponent,RequestAdditionalInfoComponent,PersonaluseproductsDashComponent,InitiatePermitsforPersonaluseproductsComponent,
     PermitproductdetailsComponent, PermitgeneraldetailsComponent,ApplicantdetailsComponent,
-    ImportexportHeaderComponent,InitiateImportappComponent,
-    UnderprocessingImportlicencedashComponent,
+    ImportexportHeaderComponent,InitiateImportappComponent,DraftExportlicensedashComponent,
+    UnderprocessingImportlicencedashComponent,InitiateExportappComponent,
   ],
   imports: [
     CommonModule, ImportexportRoutingModule,

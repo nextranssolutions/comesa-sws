@@ -474,13 +474,13 @@ if ( !function_exists( 'validateIsNumeric' ) ) {
 }
 //start of DMS
 if ( !function_exists( 'initializeApplicationDMS' ) ) {
-    function initializeApplicationDMS( $process_id,  $application_code,  $user_id ) {
-        DMSHelper::initializeApplicationDMS( $process_id,  $application_code,  $user_id );
+    function initializeApplicationDMS( $regulatory_subfunction_id,$oga_application_code,   $application_code,  $user_id ) {
+        DMSHelper::initializeApplicationDMS( $regulatory_subfunction_id,  $oga_application_code, $application_code, $user_id );
     }
 }
 if ( !function_exists( 'getApplicationRootNode' ) ) {
-    function getApplicationRootNode( $application_code ) {
-        return DMSHelper::getApplicationRootNode( $application_code );
+    function getApplicationRootNode($oga_application_code, $application_code ) {
+        return DMSHelper::getApplicationRootNode($oga_application_code, $application_code );
 
     }
 }

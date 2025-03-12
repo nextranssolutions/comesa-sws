@@ -1420,7 +1420,6 @@ class ImportExportController extends Controller
             $appworkflow_status_id = $req->appworkflow_status_id;
             $workflow_status_id = $req->workflow_status_id;
             $appworkflowstatus_category_id = $req->appworkflowstatus_category_id;
-            
             $permit_product_data = array();
             $sectionSelection = $req->sectionSelection;
             unset($requestData['table_name']);
@@ -1451,12 +1450,18 @@ class ImportExportController extends Controller
                 ->leftJoin('par_regions as t20', 't19.region_id', 't20.id')
                 ->leftJoin('par_regulatory_functions as t21', 't1.regulatory_function_id', 't21.id')
                 ->leftJoin('par_regulatory_subfunctions as t22', 't1.regulatory_subfunction_id', 't22.id')
+                ->leftJoin('par_zones as t23', 't1.zone_id', 't23.id')
+                ->leftJoin('par_port_type as t24', 't1.port_type_id', 't24.id')
+                ->leftJoin('par_applicationsubmission_type as t25', 't1.applicationsubmission_type_id', 't25.id')
+                ->leftJoin('tra_transactionpermit_types as t26', 't1.transactionpermit_type_id', 't26.id')
+                ->leftJoin('tra_organisation_information as t27', 't1.organisation_id', 't27.id')
                 
                 ->select('t1.*','t19.*', 't19.name as applicant_name', 't18.name as customs_office', 't17.name as declaration',
                 't15.name as invoice_type', 't14.name as final_destination_country', 't5.name as port_of_entry', 't13.name as mode_of_transport', 
-                't12.name as currency_name', 't2.name as permit_type', 't8.name as action_name', 
-                't8.iconCls as iconCls', 't8.action as action', 't3.name as port_type', 't1.id', 't4.name as importer_exporter_name',
-                't22.id as regulatory_subfunction_id', 't9.name as status_name');
+                't12.name as currency_name', 't2.name as permit_type', 't8.name as action_name', 't11.name as permit_typecategory',
+                't8.iconCls as iconCls', 't8.action as action', 't3.name as port_type', 't1.id', 't4.name as importer_exporter_name','t21.name as regulatory_function',
+                't22.id as regulatory_subfunction_id', 't9.name as status_name','t23.name as zone','t24.name as port_type','t9.name as workflow_status',
+                't25.name as applicationsubmission_type','t26.name as transactionpermit_type','t27.name as organisation');
 
             if ($workflow_status_id != '') {
                 $workflow_status = explode(',', $workflow_status_id);

@@ -64,7 +64,6 @@ import { ShareusermanagementClassComponent } from './views/user-management/share
 import { ApplicationDocumentuploadsComponent } from './views/utilities/application-documentuploads/application-documentuploads.component';
 import { ApplicationWorkflowsubmissionsComponent } from './views/utilities/application-workflowsubmissions/application-workflowsubmissions.component';
 import { PublicationDashboardComponent } from './views/information-sharing/publication-dashboard/publication-dashboard.component';
-import { EcredResourcesmanagementComponent } from './views/information-sharing/ecred-resourcesmanagement/ecred-resourcesmanagement.component';
 import { AppNationalitiesComponent } from './views/configurations/app-nationalities/app-nationalities.component';
 import { AppGenderComponent } from './views/configurations/app-gender/app-gender.component';
 import { AppPublicationTypesComponent } from './views/configurations/app-publication-types/app-publication-types.component';
@@ -73,10 +72,10 @@ import { DisclaimerStatementTypesComponent } from './views/configurations/discla
 import { DisclaimerStatementsComponent } from './views/configurations/disclaimer-statements/disclaimer-statements.component';
 import { TruncateWordsadminPipe } from 'src/app/core-services/TruncateWordsadminPipe';
 import { AppProcesssubmissionComponent } from './views/utilities/app-processsubmission/app-processsubmission.component';
-import { AppDosageformsComponent } from './views/configurations/app-dosageforms/app-dosageforms.component';
+
 import { AppApplicationtypesComponent } from './views/configurations/app-applicationtypes/app-applicationtypes.component';
 import { AppFirewallipsComponent } from './views/configurations/app-firewallips/app-firewallips.component';
-import { EcredResourcedashboardComponent } from './views/information-sharing/ecred-resourcedashboard/ecred-resourcedashboard.component';
+
 import { KnowledgecenterDashboardComponent } from './views/information-sharing/knowledgecenter-dashboard/knowledgecenter-dashboard.component';
 import { SystemsFunctionalitiesComponent } from './views/system-administration/system-guidelines/systems-functionalities/systems-functionalities.component';
 import { SystemguidelinesDetailComponent } from './views/system-administration/system-guidelines/systemguidelines-detail/systemguidelines-detail.component';
@@ -100,7 +99,7 @@ import { TermsconditionsDetailsComponent } from './views/system-administration/s
 import { GuidelinesoptionsComponent } from './views/system-administration/system-guidelines/guidelinesoptions/guidelinesoptions.component';
 import { MultilingualConfigurationsComponent } from './views/multilingual-configurations/multilingual-configurations.component';
 import { NavigationSetupComponent } from './views/workflow-management/navigation/navigation-setup/navigation-setup.component';
-import { ExpertprofileSetupComponent } from './views/configurations/expertprofile-setup/expertprofile-setup.component';
+
 import { InstitutionsInformationComponent } from './views/system-administration/institutions-information/institutions-information.component';
 import { UserSetupComponent } from './views/system-administration/user-setup/user-setup.component';
 import { AppOrganizationinformationComponent } from './views/system-administration/app-organizationinformation/app-organizationinformation.component';
@@ -110,27 +109,8 @@ import { AppWorkflowstatusesinterfacesComponent } from './views/workflow-managem
 import { KnowledgeCenterinfomanagementComponent } from './views/information-sharing/knowledge-centerinfomanagement/knowledge-centerinfomanagement.component';
 import { AppGenericnamesComponent } from './views/configurations/app-genericnames/app-genericnames.component';
 import { UserDashboardComponent } from './views/dashboard/user-dashboard/user-dashboard.component';
-import { FinanceDashboardComponent } from './views/dashboard/finance-dashboard/finance-dashboard.component';
-import { ExternalDashboardComponent } from './views/dashboard/external-dashboard/external-dashboard.component';
-import { SharedPortalNavigationsComponent } from './views/workflow-management/portal-navigations/shared-portal-navigations/shared-portal-navigations.component';
-import { PortalNavigationComponent } from './views/workflow-management/portal-navigations/portal-navigations/portal-navigations.component';
-import { PortalNavigationTypesComponent } from './views/workflow-management/portal-navigations/portal-navigation-types/portal-navigation-types.component';
-import { PortalNavigationSetupComponent } from './views/workflow-management/portal-navigations/portal-navigation-setup/portal-navigation-setup.component';
-import { PortalNavigationLevelsComponent } from './views/workflow-management/portal-navigations/portal-navigation-levels/portal-navigation-levels.component';
-import { PortalNavigationInterfacesComponent } from './views/workflow-management/portal-navigations/portal-navigation-interfaces/portal-navigation-interfaces.component';
 import { CertificateConditionComponent } from './views/quality_auditmanagement/certificate-condition/certificate-condition.component';
-import { ControlDocmasterlistComponent } from './views/quality_auditmanagement/control-docmasterlist/control-docmasterlist.component';
-import { ControlDocumentmanagementComponent } from './views/quality_auditmanagement/control-documentmanagement/control-documentmanagement.component';
 import { DocumentControlsetupComponent } from './views/quality_auditmanagement/document-controlsetup/document-controlsetup.component';
-import { RegistrationConditionComponent } from './views/quality_auditmanagement/registration-condition/registration-condition.component';
-import { RegistrationRegulationComponent } from './views/quality_auditmanagement/registration-regulation/registration-regulation.component';
-import { PortalTermsComponent } from './views/workflow-management/portal-modules/portal-terms/portal-terms.component';
-import { PortalProcessesComponent } from './views/workflow-management/portal-modules/portal-processes/portal-processes.component';
-import { PortalProcessguidelinesComponent } from './views/workflow-management/portal-modules/portal-processguidelines/portal-processguidelines.component';
-import { PortalStatusactionsComponent } from './views/workflow-management/portal-modules/portal-statusactions/portal-statusactions.component';
-import { PortalServicesComponent } from './views/workflow-management/portal-modules/portal-services/portal-services.component';
-import { PortalProcesstransitionComponent } from './views/workflow-management/portal-modules/portal-processtransition/portal-processtransition.component';
-import { PortalDocdefinationComponent } from './views/workflow-management/portal-modules/portal-docdefination/portal-docdefination.component';
 import { AppFormsComponent } from './views/configurations/forms/app-forms-setup/app-forms.component';
 import { DynamicFormComponent } from './views/configurations/forms/dynamic-form/dynamic-form.component';
 import { FormFieldsComponent } from './views/configurations/forms/form-fields/form-fields.component';
@@ -140,13 +120,6 @@ import { IntegrationManagementComponent } from './views/integration-management/i
 
 import { GeneralApplicationFormComponent } from './views/configurations/forms/general-application-form/general-application-form.component';
 import { DataEntryFormSetupComponent } from './views/configurations/forms/data-entry-form-setup/data-entry-form-setup.component';
-import { AnnualCeilconfComponent } from './views/configurations/controlled-drugs-configurations/annual-ceilingconfiguration/annual-ceilconf.component';
-import { CtrlDrugsbasesaltsComponent } from './views/configurations/controlled-drugs-configurations/ctrl-drugsbasesalts/ctrl-drugsbasesalts.component';
-import { CtrlDrugsconvfactComponent } from './views/configurations/controlled-drugs-configurations/ctrl-drugsconvfact/ctrl-drugsconvfact.component';
-import { CtrlDrugssaltsComponent } from './views/configurations/controlled-drugs-configurations/ctrl-drugssalts/ctrl-drugssalts.component';
-import { CtrlDrugssubstancesComponent } from './views/configurations/controlled-drugs-configurations/ctrl-drugssubstances/ctrl-drugssubstances.component';
-import { CtrlDrugstypeComponent } from './views/configurations/controlled-drugs-configurations/ctrl-drugstype/ctrl-drugstype.component';
-import { ControlleddrugsConfsetupComponent } from './views/configurations/controlled-drugs-configurations/controlleddrugs-confsetup/controlleddrugs-confsetup.component';
 import { SharedCtrldrugsconfigurationComponent } from './views/configurations/controlled-drugs-configurations/shared-ctrldrugsconfiguration/shared-ctrldrugsconfiguration.component';
 import { TraderAccountManagementComponent } from './views/user-management/trader-account-management/trader-account-management.component';
 
@@ -155,65 +128,6 @@ import { PermitReasonsComponent } from './views/configurations/import-exportconf
 import { PermittypeCategoriesComponent } from './views/configurations/import-exportconfigurations/permittype-categories/permittype-categories.component';
 import { PortentryExitComponent } from './views/configurations/import-exportconfigurations/portentry-exit/portentry-exit.component';
 import { SharedImportexportconfigComponent } from './views/configurations/import-exportconfigurations/shared-importexportconfig/shared-importexportconfig.component';
-import { AssessmentProcedureComponent } from './views/configurations/gmp-configurations/assessment-procedure/assessment-procedure.component';
-import { GmpConfigsetupComponent } from './views/configurations/gmp-configurations/gmp-configsetup/gmp-configsetup.component';
-import { GmpProductcategoryComponent } from './views/configurations/gmp-configurations/gmp-productcategory/gmp-productcategory.component';
-import { GmpProductlineComponent } from './views/configurations/gmp-configurations/gmp-productline/gmp-productline.component';
-import { SharedGmpconfigurationsComponent } from './views/configurations/gmp-configurations/shared-gmpconfigurations/shared-gmpconfigurations.component';
-import { AdvertisementTypesComponent } from './views/configurations/promotional_advertisements_configurations/advertisement-types/advertisement-types.component';
-import { PromotionMaterialsComponent } from './views/configurations/promotional_advertisements_configurations/promotion-materials/promotion-materials.component';
-import { PromotionalAdvertconfigsetupComponent } from './views/configurations/promotional_advertisements_configurations/promotional-advertconfigsetup/promotional-advertconfigsetup.component';
-import { SharedPromotionAdvertConfigurationsComponent } from './views/configurations/promotional_advertisements_configurations/shared-promotion-advert-configurations/shared-promotion-advert-configurations.component';
-import { BusinessCategoriesComponent } from './views/configurations/premises-configurations/business-categories/business-categories.component';
-import { BusinessScalesComponent } from './views/configurations/premises-configurations/business-scales/business-scales.component';
-import { BusinessTypeCategoryComponent } from './views/configurations/premises-configurations/business-type-category/business-type-category.component';
-import { BusinessTypeDetailsComponent } from './views/configurations/premises-configurations/business-type-details/business-type-details.component';
-import { BusinessTypesComponent } from './views/configurations/premises-configurations/business-types/business-types.component';
-import { PersonnelInstitutionsComponent } from './views/configurations/premises-configurations/personnel-institutions/personnel-institutions.component';
-import { PersonnelPositionComponent } from './views/configurations/premises-configurations/personnel-position/personnel-position.component';
-import { PersonnelQualificationsComponent } from './views/configurations/premises-configurations/personnel-qualifications/personnel-qualifications.component';
-import { PersonnelstudyFieldComponent } from './views/configurations/premises-configurations/personnelstudy-field/personnelstudy-field.component';
-import { PremiseConfigsetupComponent } from './views/configurations/premises-configurations/premise-configsetup/premise-configsetup.component';
-import { PremiseTypeComponent } from './views/configurations/premises-configurations/premise-type/premise-type.component';
-import { PremiseinspectRecommendationComponent } from './views/configurations/premises-configurations/premiseinspect-recommendation/premiseinspect-recommendation.component';
-import { SharedPremisesconfigurationsComponent } from './views/configurations/premises-configurations/shared-premisesconfigurations/shared-premisesconfigurations.component';
-import { PmsConfigsetupComponent } from './views/configurations/pms-configurations/pms-configsetup/pms-configsetup.component';
-import { PmsScreeningdecisionsComponent } from './views/configurations/pms-configurations/pms-screeningdecisions/pms-screeningdecisions.component';
-import { PmsanalysisDecisionComponent } from './views/configurations/pms-configurations/pmsanalysis-decision/pmsanalysis-decision.component';
-import { PmsapprovalDecisionComponent } from './views/configurations/pms-configurations/pmsapproval-decision/pmsapproval-decision.component';
-import { PmsevaluationDecisionsComponent } from './views/configurations/pms-configurations/pmsevaluation-decisions/pmsevaluation-decisions.component';
-import { PmssamplingStagesComponent } from './views/configurations/pms-configurations/pmssampling-stages/pmssampling-stages.component';
-import { PmstcmeetingDecisionComponent } from './views/configurations/pms-configurations/pmstcmeeting-decision/pmstcmeeting-decision.component';
-import { SampleApplicationtypesComponent } from './views/configurations/pms-configurations/sample-applicationtypes/sample-applicationtypes.component';
-import { SamplingReasonComponent } from './views/configurations/pms-configurations/sampling-reason/sampling-reason.component';
-import { SharedPmsconfigurationsComponent } from './views/configurations/pms-configurations/shared-pmsconfigurations/shared-pmsconfigurations.component';
-import { PortalworkflowsComponent } from './views/workflow-management/portal-workflows/portalworkflows/portalworkflows.component';
-import { PortalWorkflowsetupComponent } from './views/workflow-management/portal-workflows/portal-workflowsetup/portal-workflowsetup.component';
-import { PortalInterfacesComponent } from './views/workflow-management/portal-workflows/portal-interfaces/portal-interfaces.component';
-import { AgeGroupsComponent } from './views/configurations/clinical-trialconfigurations/age-groups/age-groups.component';
-import { ClinicalTrialpersonnelComponent } from './views/configurations/clinical-trialconfigurations/clinical-trialpersonnel/clinical-trialpersonnel.component';
-import { ClinicalallocationSequenceComponent } from './views/configurations/clinical-trialconfigurations/clinicalallocation-sequence/clinicalallocation-sequence.component';
-import { ClinicaldiseaseConditionsComponent } from './views/configurations/clinical-trialconfigurations/clinicaldisease-conditions/clinicaldisease-conditions.component';
-import { ClinicalinterventAllocationComponent } from './views/configurations/clinical-trialconfigurations/clinicalintervent-allocation/clinicalintervent-allocation.component';
-import { ClinicalinterventTypesComponent } from './views/configurations/clinical-trialconfigurations/clinicalintervent-types/clinicalintervent-types.component';
-import { ClinicalinterventionAssignmentComponent } from './views/configurations/clinical-trialconfigurations/clinicalintervention-assignment/clinicalintervention-assignment.component';
-import { ClinicalmaskingBindingComponent } from './views/configurations/clinical-trialconfigurations/clinicalmasking-binding/clinicalmasking-binding.component';
-import { ClinicalmaskingUsedComponent } from './views/configurations/clinical-trialconfigurations/clinicalmasking-used/clinicalmasking-used.component';
-import { ClinicalnatureControlsComponent } from './views/configurations/clinical-trialconfigurations/clinicalnature-controls/clinicalnature-controls.component';
-import { ClinicaloutcomesTypesComponent } from './views/configurations/clinical-trialconfigurations/clinicaloutcomes-types/clinicaloutcomes-types.component';
-import { ClinicalrecruitStatusesComponent } from './views/configurations/clinical-trialconfigurations/clinicalrecruit-statuses/clinicalrecruit-statuses.component';
-import { ClinicalreportTypesComponent } from './views/configurations/clinical-trialconfigurations/clinicalreport-types/clinicalreport-types.component';
-import { ClinicalsequenceGenerationComponent } from './views/configurations/clinical-trialconfigurations/clinicalsequence-generation/clinicalsequence-generation.component';
-import { ClinicalstudyPhaseComponent } from './views/configurations/clinical-trialconfigurations/clinicalstudy-phase/clinicalstudy-phase.component';
-import { ClinicalstudyPurposesComponent } from './views/configurations/clinical-trialconfigurations/clinicalstudy-purposes/clinicalstudy-purposes.component';
-import { ClinicalstudyStatusComponent } from './views/configurations/clinical-trialconfigurations/clinicalstudy-status/clinicalstudy-status.component';
-import { ClinicaltrialDesignsComponent } from './views/configurations/clinical-trialconfigurations/clinicaltrial-designs/clinicaltrial-designs.component';
-import { FundingsourceTypesComponent } from './views/configurations/clinical-trialconfigurations/fundingsource-types/fundingsource-types.component';
-import { SponsorLevelsComponent } from './views/configurations/clinical-trialconfigurations/sponsor-levels/sponsor-levels.component';
-import { SponsorsNatureComponent } from './views/configurations/clinical-trialconfigurations/sponsors-nature/sponsors-nature.component';
-import { StudySitesComponent } from './views/configurations/clinical-trialconfigurations/study-sites/study-sites.component';
-import { ClinicaltrialConfigsetupComponent } from './views/configurations/clinical-trialconfigurations/clinicaltrial-configsetup/clinicaltrial-configsetup.component';
-import { SharedclinicalTrialconfigurationsComponent } from './views/configurations/clinical-trialconfigurations/sharedclinical-trialconfigurations/sharedclinical-trialconfigurations.component';
 import { ApiUsersComponent } from './views/user-management/api-users/api-users.component';
 import { ExternalUsersComponent } from './views/user-management/external-users/external-users.component';
 import { RefNumberformatsComponent } from './views/configurations/reference-numberconfigurations/ref-numberformats/ref-numberformats.component';
@@ -234,40 +148,6 @@ import { DistrictsComponent } from './views/configurations/location-parameters/d
 import { ProvincesComponent } from './views/configurations/location-parameters/provinces/provinces.component';
 import { LocationCountriesComponent } from './views/configurations/location-parameters/location-countries/location-countries.component';
 import { LocationParametersComponent } from './views/configurations/location-parameters/locationpar-configsetup/location-parameters.component';
-import { AssessmentProceduresComponent } from './views/configurations/product-configurations/assessment-procedures/assessment-procedures.component';
-import { AtccodesDefinationsComponent } from './views/configurations/product-configurations/atccodes-definations/atccodes-definations.component';
-import { ClassificationRulesComponent } from './views/configurations/product-configurations/classification-rules/classification-rules.component';
-import { ClassificationComponent } from './views/configurations/product-configurations/classification/classification.component';
-import { CommonNameComponent } from './views/configurations/product-configurations/common-name/common-name.component';
-import { DeviceTypesComponent } from './views/configurations/product-configurations/device-types/device-types.component';
-import { DistributionCategoryComponent } from './views/configurations/product-configurations/distribution-category/distribution-category.component';
-import { DosageFormComponent } from './views/configurations/product-configurations/dosage-form/dosage-form.component';
-import { GmdnCategoriesComponent } from './views/configurations/product-configurations/gmdn-categories/gmdn-categories.component';
-import { IngredientTypeComponent } from './views/configurations/product-configurations/ingredient-type/ingredient-type.component';
-import { IngredientsCategoryComponent } from './views/configurations/product-configurations/ingredients-category/ingredients-category.component';
-import { IngredientsSpecificationsComponent } from './views/configurations/product-configurations/ingredients-specifications/ingredients-specifications.component';
-import { IntendedendUseComponent } from './views/configurations/product-configurations/intendedend-use/intendedend-use.component';
-import { IntendedendUserComponent } from './views/configurations/product-configurations/intendedend-user/intendedend-user.component';
-import { MasterIngredientsComponent } from './views/configurations/product-configurations/master-ingredients/master-ingredients.component';
-import { MethodofUseComponent } from './views/configurations/product-configurations/methodof-use/methodof-use.component';
-import { NutrientsComponent } from './views/configurations/product-configurations/nutrients/nutrients.component';
-import { ProdclassificationCategoriesComponent } from './views/configurations/product-configurations/prodclassification-categories/prodclassification-categories.component';
-import { ProdclassificationRulesComponent } from './views/configurations/product-configurations/prodclassification-rules/prodclassification-rules.component';
-import { ProductFormsComponent } from './views/configurations/product-configurations/product-forms/product-forms.component';
-import { ProductclassCategoriesComponent } from './views/configurations/product-configurations/productclass-categories/productclass-categories.component';
-import { ProductconfigurationsSetupComponent } from './views/configurations/product-configurations/productconfigurations-setup/productconfigurations-setup.component';
-import { ProductspecialCategoryComponent } from './views/configurations/product-configurations/productspecial-category/productspecial-category.component';
-import { ProductsubCategoriesComponent } from './views/configurations/product-configurations/productsub-categories/productsub-categories.component';
-import { ReasonforInclusionComponent } from './views/configurations/product-configurations/reasonfor-inclusion/reasonfor-inclusion.component';
-import { RouteofAdministrationComponent } from './views/configurations/product-configurations/routeof-administration/routeof-administration.component';
-import { SharedproductConfigurationsComponent } from './views/configurations/product-configurations/sharedproduct-configurations/sharedproduct-configurations.component';
-import { SiUnitsComponent } from './views/configurations/product-configurations/si-units/si-units.component';
-import { StorageConditionComponent } from './views/configurations/product-configurations/storage-condition/storage-condition.component';
-import { GmdnCodesComponent } from './views/configurations/product-configurations/gmdn-codes/gmdn-codes.component';
-import { AdvertisementChannelComponent } from './views/configurations/promotional_advertisements_configurations/advertisement-channel/advertisement-channel.component';
-import { PrommaterialBookcataloguesComponent } from './views/configurations/promotional_advertisements_configurations/prommaterial-bookcatalogues/prommaterial-bookcatalogues.component';
-import { PromotionadvertChannelsComponent } from './views/configurations/promotional_advertisements_configurations/promotionadvert-channels/promotionadvert-channels.component';
-import { PromotionmaterialCategoriesComponent } from './views/configurations/promotional_advertisements_configurations/promotionmaterial-categories/promotionmaterial-categories.component';
 import { SharedDocumentchecklistmngComponent } from './views/document-checklistsmng/shared-documentchecklistmng/shared-documentchecklistmng.component';
 import { SectionsComponent } from './views/configurations/forms/sections/sections.component';
 import { SharedProcessconfigsComponent } from './views/configurations/process-configurations/shared-processconfigs/shared-processconfigs.component';
@@ -299,6 +179,10 @@ import { SharedImportexportProceduresComponent } from './views/configurations/im
 import { StatusesActionsComponent } from './views/user-management/statuses-actions/statuses-actions.component';
 import { GeneralSystemFormsComponent } from './views/configurations/forms/general-system-forms/general-system-forms.component';
 
+import { RegulatoryprocessDocdefinationComponent } from './views/document-checklistsmng/dms/regulatoryprocess-docdefination/regulatoryprocess-docdefination.component';
+
+import { PermitTermsconditionsComponent } from './views/system-administration/system-guidelines/permit-termsconditions/permit-termsconditions.component';
+
 @NgModule({
   declarations: [AppdashboardComponent,
     AppfooterComponent, AppNationalitiesComponent,
@@ -314,11 +198,10 @@ import { GeneralSystemFormsComponent } from './views/configurations/forms/genera
     RegFunctionsComponent,
     AppealsTypesComponent,
     SharedDocumentManagementSysComponent,
-    ProcessConfigsetupComponent,
+    ProcessConfigsetupComponent,RegulatoryprocessDocdefinationComponent,
     AppUserTitle, DisclaimerStatementTypesComponent, DisclaimerStatementsComponent,
     AppUserIdentificationType,
     AppInstitution,
-    PortalworkflowsComponent,
     ApiUsersComponent,
     RegulatedProductsTypesComponent,
     AppInstitutionDepartments,
@@ -328,29 +211,14 @@ import { GeneralSystemFormsComponent } from './views/configurations/forms/genera
     RecursiveMenuDirective,
     AppSectionsComponent,
     AppGenericnamesComponent,
-    ControlDocumentmanagementComponent,
     AppCurrenciesComponent,
     AppAuditTrail,
     RegulatoryFunctionGuidelinesComponent,
     SharedProcessconfigsComponent,
     GeneralApplicationFormComponent,
-    SharedPortalNavigationsComponent,
-    PortalNavigationComponent,
-    PortalNavigationTypesComponent,
-    PortalNavigationSetupComponent,
-    PortalNavigationLevelsComponent,
-    PortalNavigationInterfacesComponent,
-    PortalTermsComponent,
+
     TraderAccountManagementComponent,
-    PortalWorkflowsetupComponent,
     SectionsComponent,
-    PortalInterfacesComponent,
-    AnnualCeilconfComponent,
-    CtrlDrugsbasesaltsComponent,
-    CtrlDrugsconvfactComponent,
-    CtrlDrugssaltsComponent,
-    CtrlDrugssubstancesComponent,
-    CtrlDrugstypeComponent,
     SharedCtrldrugsconfigurationComponent,
     DmsRepositoryDefinitionComponent,
     ImportExportconfsetupComponent,
@@ -358,20 +226,12 @@ import { GeneralSystemFormsComponent } from './views/configurations/forms/genera
     PermittypeCategoriesComponent,
     PortentryExitComponent,
     SharedImportexportconfigComponent,
-    AssessmentProcedureComponent,
-    GmpConfigsetupComponent,
-    GmpProductcategoryComponent,
-    GmpProductlineComponent,
-    SharedGmpconfigurationsComponent,
     ExternalUsersComponent,
-    AdvertisementTypesComponent,
-    PromotionMaterialsComponent,
-    PromotionalAdvertconfigsetupComponent,
-    SharedPromotionAdvertConfigurationsComponent,
     ApplicantWorkflowInterfacesComponent,
     ApplicantWorkflowsComponent,
     ApplicantWorkflowsetupComponent,
     ApplicantSystemprocessesComponent,
+    PermitTermsconditionsComponent,
    
 
 
@@ -380,30 +240,6 @@ import { GeneralSystemFormsComponent } from './views/configurations/forms/genera
     RefSubmodulesComponent,
     RefNumberformatsComponent,
     SharedRefnumberconfigurationsComponent,
-
-    BusinessCategoriesComponent,
-    BusinessScalesComponent,
-    BusinessTypeCategoryComponent,
-    BusinessTypeDetailsComponent,
-    BusinessTypesComponent,
-    PersonnelInstitutionsComponent,
-    PersonnelPositionComponent,
-    PersonnelQualificationsComponent,
-    PersonnelstudyFieldComponent,
-    PremiseConfigsetupComponent,
-    PremiseTypeComponent,
-    PremiseinspectRecommendationComponent,
-    SharedPremisesconfigurationsComponent,
-    PmsConfigsetupComponent,
-    PmsScreeningdecisionsComponent,
-    PmsanalysisDecisionComponent,
-    PmsapprovalDecisionComponent,
-    PmsevaluationDecisionsComponent,
-    PmssamplingStagesComponent,
-    PmstcmeetingDecisionComponent,
-    SampleApplicationtypesComponent,
-    SamplingReasonComponent,
-    SharedPmsconfigurationsComponent,
 
     AgeanalysisDaysspanComponent,
     ApplicationProcessdefinationComponent,
@@ -419,32 +255,6 @@ import { GeneralSystemFormsComponent } from './views/configurations/forms/genera
     DistrictcouncilDefinationComponent,
     LocationParametersComponent,
 
-
-
-    StudySitesComponent,
-    SponsorsNatureComponent,
-    SponsorLevelsComponent,
-    FundingsourceTypesComponent,
-    ClinicaltrialDesignsComponent,
-    ClinicalstudyStatusComponent,
-    ClinicalstudyPurposesComponent,
-    ClinicalstudyPhaseComponent,
-    ClinicalsequenceGenerationComponent,
-    ClinicalreportTypesComponent,
-    ClinicalrecruitStatusesComponent,
-    ClinicaloutcomesTypesComponent,
-    ClinicalnatureControlsComponent,
-    ClinicalmaskingUsedComponent,
-    ClinicalmaskingBindingComponent,
-    ClinicalinterventionAssignmentComponent,
-    ClinicalinterventTypesComponent,
-    ClinicalinterventAllocationComponent,
-    ClinicaldiseaseConditionsComponent,
-    ClinicalallocationSequenceComponent,
-    ClinicalTrialpersonnelComponent,
-    AgeGroupsComponent,
-    ClinicaltrialConfigsetupComponent,
-    SharedclinicalTrialconfigurationsComponent,
     CertificateConditionComponent,
     GeneralSystemFormsComponent,
 
@@ -458,12 +268,10 @@ import { GeneralSystemFormsComponent } from './views/configurations/forms/genera
     PortEntryExitComponent,
     
     AppPartnerStates,
-    ControlDocmasterlistComponent,
     AppNotificationsComponent,
     AppDashboardsectionsComponent,
 
     DocumentControlsetupComponent,
-    ControlleddrugsConfsetupComponent,
 
     SystemAdministratorsComponent,
     ReportsanalyticsdashboardComponent,
@@ -491,15 +299,9 @@ import { GeneralSystemFormsComponent } from './views/configurations/forms/genera
     ApplicationWorkflowsubmissionsComponent,
     PublicationDashboardComponent,
 
-    AdvertisementChannelComponent,
-    PrommaterialBookcataloguesComponent,
-    PromotionadvertChannelsComponent,
-    PromotionmaterialCategoriesComponent,
-
     AppProcesssubmissionComponent,
     AppSubmissionmethodsComponent,
     AppFormsComponent,
-    EcredResourcesmanagementComponent,
     DynamicFormComponent,
     FormFieldsComponent,
     FormTypesComponent,
@@ -513,10 +315,7 @@ import { GeneralSystemFormsComponent } from './views/configurations/forms/genera
 
 
     InstitutionsTypesComponent, AppNationalitiesComponent, AppGenderComponent, AppPublicationTypesComponent,
-
-    RegistrationConditionComponent,
-    AppDosageformsComponent, AppApplicationtypesComponent, AppFirewallipsComponent,
-    EcredResourcedashboardComponent,
+   AppApplicationtypesComponent, AppFirewallipsComponent,
     KnowledgecenterDashboardComponent,
     SystemguidelinesDetailComponent,
     SystemguidelinesDashComponent, AdminsystemguudelinesDetailsComponent,
@@ -535,38 +334,6 @@ import { GeneralSystemFormsComponent } from './views/configurations/forms/genera
     SyslogsComponent,
     UserloginoutLogsComponent,
     UserfaildloginsLogsComponent,
-
-    AssessmentProceduresComponent,
-    AtccodesDefinationsComponent,
-    ClassificationComponent,
-    ClassificationRulesComponent,
-    CommonNameComponent,
-    DeviceTypesComponent,
-    DistributionCategoryComponent,
-    DosageFormComponent,
-    GmdnCategoriesComponent,
-    IngredientTypeComponent,
-    IngredientsCategoryComponent,
-    IngredientsSpecificationsComponent,
-    IntendedendUseComponent,
-    IntendedendUserComponent,
-    MasterIngredientsComponent,
-    MethodofUseComponent,
-    
-    NutrientsComponent,
-    ProdclassificationCategoriesComponent,
-    ProdclassificationRulesComponent,
-    ProductFormsComponent,
-    ProductclassCategoriesComponent,
-    ProductspecialCategoryComponent,
-    ProductsubCategoriesComponent,
-    ReasonforInclusionComponent,
-    RouteofAdministrationComponent,
-    SiUnitsComponent,
-    StorageConditionComponent,
-    GmdnCodesComponent,
-    ProductconfigurationsSetupComponent,
-    SharedproductConfigurationsComponent,
     AppWorkflowactiontypesComponent,
     SystemmanualConfigurationComponent,
     SigninSignupGuidelinesComponent,
@@ -577,31 +344,12 @@ import { GeneralSystemFormsComponent } from './views/configurations/forms/genera
     NavigationSetupComponent,
     InstitutionsInformationComponent,
    
-    
-    
-    
-    ExpertprofileSetupComponent,
-    
-    RegistrationRegulationComponent,
+  
     RefnumberConfigsetupComponent,
 
 
 
     UserDashboardComponent,
-    FinanceDashboardComponent,
-    ExternalDashboardComponent,
-    SharedPortalNavigationsComponent,
-    PortalNavigationComponent,
-    PortalNavigationTypesComponent,
-    PortalNavigationSetupComponent,
-    PortalNavigationLevelsComponent,
-    PortalNavigationInterfacesComponent,
-    PortalProcessesComponent,
-    PortalProcessguidelinesComponent,
-    PortalStatusactionsComponent,
-    PortalServicesComponent,
-    PortalProcesstransitionComponent,
-    PortalDocdefinationComponent,
     IntegrationManagementComponent,
 
     ImportexportProceduredetailsComponent,
@@ -666,11 +414,6 @@ import { GeneralSystemFormsComponent } from './views/configurations/forms/genera
     AppDashboardsectionsComponent,
     AppWorkflowstatusesinterfacesComponent,
     AppNmrasinfoComponent,
-    AdvertisementChannelComponent,
-    PrommaterialBookcataloguesComponent,
-    PromotionadvertChannelsComponent,
-    PromotionmaterialCategoriesComponent,
-    PortalTermsComponent,
     FormsModule,
     ReactiveFormsModule,
     FormsModule,
@@ -680,14 +423,13 @@ import { GeneralSystemFormsComponent } from './views/configurations/forms/genera
     AppTranslationmanagementComponent, AppSystemlanguagesComponent, AppSystemlabelsmanagementComponent,
     InstitutionsInformationComponent,
     SharedusermanagementComponent,
-    EcredResourcedashboardComponent,
     TranslateModule,
     SharedSysAdministrationComponent, InstitutionsDepartmentsComponent, InstitutionsDetailsComponent, InstitutionsTypesComponent,
     TranslateModule,
     SharedSysAdministrationComponent, InstitutionsDepartmentsComponent,
     InstitutionsDetailsComponent, InstitutionsTypesComponent, AppNationalitiesComponent, AppGenderComponent,
     AppPublicationTypesComponent,
-    AppDosageformsComponent,
+
     AppApplicationtypesComponent,
     AppFirewallipsComponent,
     KnowledgecenterDashboardComponent,
@@ -699,19 +441,6 @@ import { GeneralSystemFormsComponent } from './views/configurations/forms/genera
     AppStatusesactionsComponent,
     SharedDocumentManagementSysComponent,
     SyserrorLogsComponent,
-    SharedPortalNavigationsComponent,
-    PortalNavigationComponent,
-    PortalNavigationTypesComponent,
-    PortalNavigationSetupComponent,
-    PortalNavigationLevelsComponent,
-    PortalNavigationInterfacesComponent,
-    PortalProcessesComponent,
-    PortalProcessguidelinesComponent,
-    PortalStatusactionsComponent,
-    PortalServicesComponent,
-    PortalWorkflowsetupComponent,
-    PortalProcesstransitionComponent,
-    PortalDocdefinationComponent,
     AppFormsComponent,
     GeneralSystemFormsComponent,
    
@@ -731,9 +460,7 @@ import { GeneralSystemFormsComponent } from './views/configurations/forms/genera
     UserpwdchangerequestLogsComponent,
     UsermaliciousaccessComponent,
     SyslogsUsersaccessComponent,
-    PortalInterfacesComponent,
     SyslogsComponent,
-    PortalworkflowsComponent,
     UserloginoutLogsComponent,
     UserfaildloginsLogsComponent,
     SigninSignupGuidelinesComponent,
@@ -741,40 +468,16 @@ import { GeneralSystemFormsComponent } from './views/configurations/forms/genera
     GuidelinesoptionsComponent,
     UserSetupComponent,
 
-    SharedPortalNavigationsComponent,
-    ControlleddrugsConfsetupComponent,
-    PortalNavigationComponent,
-    PortalNavigationTypesComponent,
-
-    PortalNavigationSetupComponent,
-    PortalNavigationLevelsComponent,
-    PortalNavigationInterfacesComponent,
     DataEntryFormSetupComponent,
     CertificateConditionComponent,
-    ControlDocmasterlistComponent,
-    ControlDocumentmanagementComponent,
     DocumentControlsetupComponent,
-    RegistrationConditionComponent,
-    RegistrationRegulationComponent,
     IntegrationManagementComponent,
-
-    AnnualCeilconfComponent,
-    CtrlDrugsbasesaltsComponent,
-    CtrlDrugsconvfactComponent,
-    CtrlDrugssaltsComponent,
-    CtrlDrugssubstancesComponent,
-    CtrlDrugstypeComponent,
 
     ImportExportconfsetupComponent,
     PermitReasonsComponent,
     PermittypeCategoriesComponent,
     PortentryExitComponent,
     SharedImportexportconfigComponent,
-    AssessmentProcedureComponent,
-    GmpConfigsetupComponent,
-    GmpProductcategoryComponent,
-    GmpProductlineComponent,
-
 
     RefNumbertypesComponent,
     RefNumbervariablesComponent,
@@ -783,36 +486,6 @@ import { GeneralSystemFormsComponent } from './views/configurations/forms/genera
     SharedRefnumberconfigurationsComponent,
 
 
-    AssessmentProceduresComponent,
-    AtccodesDefinationsComponent,
-    ClassificationComponent,
-    ClassificationRulesComponent,
-    CommonNameComponent,
-    DeviceTypesComponent,
-    DistributionCategoryComponent,
-    DosageFormComponent,
-    GmdnCategoriesComponent,
-    IngredientTypeComponent,
-    IngredientsCategoryComponent,
-    IngredientsSpecificationsComponent,
-    IntendedendUseComponent,
-    IntendedendUserComponent,
-    MasterIngredientsComponent,
-    MethodofUseComponent,
-    NutrientsComponent,
-    ProdclassificationCategoriesComponent,
-    ProdclassificationRulesComponent,
-    ProductFormsComponent,
-    ProductclassCategoriesComponent,
-    ProductspecialCategoryComponent,
-    ProductsubCategoriesComponent,
-    ReasonforInclusionComponent,
-    RouteofAdministrationComponent,
-    GmdnCodesComponent,
-    SiUnitsComponent,
-    StorageConditionComponent,
-    ProductconfigurationsSetupComponent,
-    SharedproductConfigurationsComponent,
     DmsRepositoryDefinitionComponent,
 
 
@@ -823,37 +496,6 @@ import { GeneralSystemFormsComponent } from './views/configurations/forms/genera
     SharedTimeframeconfigurationsComponent,
     TimeframeConfigsetupComponent,
 
-
-
-    AdvertisementTypesComponent,
-    PromotionMaterialsComponent,
-    PromotionalAdvertconfigsetupComponent,
-    SharedPromotionAdvertConfigurationsComponent,
-
-    BusinessCategoriesComponent,
-    BusinessScalesComponent,
-    BusinessTypeCategoryComponent,
-    BusinessTypeDetailsComponent,
-    BusinessTypesComponent,
-    PersonnelInstitutionsComponent,
-    PersonnelPositionComponent,
-    PersonnelQualificationsComponent,
-    PersonnelstudyFieldComponent,
-    PremiseConfigsetupComponent,
-    PremiseTypeComponent,
-    PremiseinspectRecommendationComponent,
-    SharedPremisesconfigurationsComponent,
-
-    PmsConfigsetupComponent,
-    PmsScreeningdecisionsComponent,
-    PmsanalysisDecisionComponent,
-    PmsapprovalDecisionComponent,
-    PmsevaluationDecisionsComponent,
-    PmssamplingStagesComponent,
-    PmstcmeetingDecisionComponent,
-    SampleApplicationtypesComponent,
-    SamplingReasonComponent,
-    SharedPmsconfigurationsComponent,
     ApplicantWorkflowInterfacesComponent,
     ApplicantWorkflowsComponent,
     ApplicantWorkflowsetupComponent,
@@ -862,31 +504,7 @@ import { GeneralSystemFormsComponent } from './views/configurations/forms/genera
 
     SharedCtrldrugsconfigurationComponent,
 
-
-    StudySitesComponent,
-    SponsorsNatureComponent,
-    SponsorLevelsComponent,
-    FundingsourceTypesComponent,
-    ClinicaltrialDesignsComponent,
-    ClinicalstudyStatusComponent,
-    ClinicalstudyPurposesComponent,
-    ClinicalstudyPhaseComponent,
-    ClinicalsequenceGenerationComponent,
-    ClinicalreportTypesComponent,
-    ClinicalrecruitStatusesComponent,
-    ClinicaloutcomesTypesComponent,
-    ClinicalnatureControlsComponent,
-    ClinicalmaskingUsedComponent,
-    ClinicalmaskingBindingComponent,
-    ClinicalinterventionAssignmentComponent,
-    ClinicalinterventTypesComponent,
-    ClinicalinterventAllocationComponent,
-    ClinicaldiseaseConditionsComponent,
-    ClinicalallocationSequenceComponent,
-    ClinicalTrialpersonnelComponent,
-    AgeGroupsComponent,
-    ClinicaltrialConfigsetupComponent,
-    SharedclinicalTrialconfigurationsComponent,
+    
     RefnumberConfigsetupComponent,
 
     LocationCountriesComponent,

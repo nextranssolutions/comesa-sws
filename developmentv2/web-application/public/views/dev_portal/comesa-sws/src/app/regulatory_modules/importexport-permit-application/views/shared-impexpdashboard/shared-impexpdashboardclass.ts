@@ -83,6 +83,7 @@ export class SharedImpExpdashboardClass {
   producttype_defination_id: number;
   importExportPermitTypesData: any;
   processingData: any;
+  
   constructor(public utilityService: UtilityService, public publicService: PublicDashboardService, public translate: TranslateService, public viewRef: ViewContainerRef, public spinner: SpinnerVisibilityService, public toastr: ToastrService, public router: Router, public configService: ConfigurationsService, public appService: ImportExportService) { // this.onLoadApplicationCounterDetails();
 
 

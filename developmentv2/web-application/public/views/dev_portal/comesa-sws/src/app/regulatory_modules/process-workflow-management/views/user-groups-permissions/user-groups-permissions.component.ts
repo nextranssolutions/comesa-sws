@@ -529,6 +529,7 @@ onFuncSaveRecordData() {
         this.spinnerHide();
       });
 }
+
 onFuncUserData() {
 
   const formData = new FormData();

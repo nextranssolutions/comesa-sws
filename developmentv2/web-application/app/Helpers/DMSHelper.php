@@ -24,10 +24,11 @@ class DMSHelper
 {
     //hiram code on the dms functionalities
     static function authDms()
-    {
-       
+    { 
+        $dms_url = env('dms_url');
+            
         $client = new Client([
-            'base_uri' => config('dms.url'),
+            'base_uri' => $dms_url,
             'headers' => [
                 'Accept' => 'application/json',
                 'Content-Type' => 'application/json',
@@ -35,15 +36,14 @@ class DMSHelper
         ]);
         $data = '';
         try {
-            $usr_name = config('dms.adminusr');
-            $usr_password = config('dms.adminpassword');
+            $usr_name = env('dms_adminusr');
+            $usr_password = env('dms_adminpassword');
 
-            $url = config('dms.url');
-
+           
             $res = $client->request('GET', 'service/api/login?u=' . $usr_name . '&pw=' . $usr_password . '&format=json', ['exceptions' => false]);
-            
+           
             $success = false;
-
+         
             if ($res->getStatusCode() == 200) {
 
                 $res->getBody()->rewind();
@@ -58,8 +58,7 @@ class DMSHelper
 
                 $data = array('success' => $success, 'message' => $response->message);
             } else  if ($res->getStatusCode() == 404) {
-                print_r($res->getStatusCode());
-                exit();
+            
                 $data = array('success' => false, 'message' => 'Check DMS Connection to proceed');
             } else {
                 $response = json_decode((string)$res->getBody());
@@ -410,7 +409,7 @@ class DMSHelper
     //get the root site 
     public static function getSiteNodeRef($site_id)
     {
-        $sql = DB::table('dms_dmsdocument_sites')
+        $sql = DB::table('dms_sites_repository_defination')
             ->where(array('id' => $site_id))
             ->first();
         $node_ref = '';
@@ -806,6 +805,7 @@ class DMSHelper
     {
         
         $auth_resp  = self::authDms('');
+      
         $ticket = $auth_resp['ticket'];
 
         $client = new Client([
@@ -1008,32 +1008,33 @@ class DMSHelper
         return $url;
     }
 
-    public static function getApplicationProcessNodeDetails($process_id)
+    public static function getApplicationProcessNodeDetails($regulatory_subfunction_id)
     {
         $record = '';
         $dms_site_id = config('dms.approotsite');
         $record = '';
-        $dms_table_name = 'dms_processes_docdefination';
-        $rec = DB::table('dms_processes_docdefination as t1')
+        $dms_table_name = 'dms_regulatoryprocess_docdefination';
+        $rec = DB::table('dms_regulatoryprocess_docdefination as t1')
             ->select('t1.*')
-            ->join('wf_processes as t2', 't1.process_id', '=', 't2.id')
-            ->where(array('t2.id' => $process_id, 't1.dms_site_id' => $dms_site_id))
+            ->join('par_regulatory_functions as t2', 't1.regulatory_function_id', '=', 't2.id')
+            ->where(array('t1.regulatory_subfunction_id' => $regulatory_subfunction_id, 't1.dms_site_id' => $dms_site_id))
             ->first();
             
         if ($rec) {
             $record = $rec;
-
         } else {
-            //createa node for the module and submodule 
-            //root site node ref
-            $table_name = 'wf_processes';
-            $where_section = array('id' => $process_id);
+            $table_name = 'par_regulatory_subfunctions';
+            $where_section = array('id' => $regulatory_subfunction_id);
             $record = getSingleRecord($table_name, $where_section);
           
             $variable_name =  $record->name;
+            $regulatory_function_id =  $record->regulatory_function_id;
             
-            $site_node_ref = getSingleRecordColValue('dms_dmsdocument_sites', array('id' => $dms_site_id), 'node_ref');
-            $table_data = array('dms_site_id' => $dms_site_id, 'process_id' => $process_id);
+            $site_node_ref = getSingleRecordColValue('dms_sites_repository_defination', array('id' => $dms_site_id), 'node_ref');
+            $table_data = array('dms_site_id' => $dms_site_id, 
+                                'regulatory_function_id' => $regulatory_function_id, 
+                                'regulatory_subfunction_id'=>$regulatory_subfunction_id,
+                                'name'=>$variable_name);
 
             $record = self::funcCreatApplicationNode($dms_table_name, $variable_name, $site_node_ref, $table_data, 0);
             
@@ -1078,14 +1079,18 @@ class DMSHelper
         return array('node_ref' => $node_ref, 'record_id' => $record_id);
     }
 
-    public static function getApplicationRootNode($application_code)
+    public static function getApplicationRootNode($oga_application_code,$application_code)
     {
         $record = '';
         $root_site = config('dms.approotsite');
-
+        if(validateIsNumeric($oga_application_code)){
+            $where_defination = array('oga_application_code'=>$oga_application_code);
+        }else if(validateIsNumeric($application_code)){
+            $where_defination = array('application_code'=>$application_code);
+        }
         $rec = DB::table('dms_application_documentsdefination as t1')
             ->select('t1.*')
-            ->where(array('t1.application_code' => $application_code))
+            ->where($where_defination)
             ->first();
         if ($rec) {
             $record = $rec;
@@ -1219,9 +1224,9 @@ class DMSHelper
         $processdata = convertAssArrayToSimpleArray($processdata, 'id');
         return $processdata;
     }
-    static function getApplicationApplicableDocuments($section_id, $sub_module_id,    $status_id)
+    static function getApplicationApplicableDocuments($section_id, $regulatory_subfunction_id,    $status_id)
     {
-        $where = array('sub_module_id' => $sub_module_id);
+        $where = array('regulatory_subfunction_id' => $regulatory_subfunction_id);
         $process_data = self::getDocumentsProcess($section_id, $where);
 
         $data = DB::connection('mysql')->table('wb_applicable_appdocuments')
@@ -1233,11 +1238,14 @@ class DMSHelper
 
         return convertAssArrayToSimpleArray($data, 'document_type_id');
     }
-    public static function initializeApplicationDMS($process_id, $application_code, $trader_id)
+    public static function initializeApplicationDMS($regulatory_subfunction_id,$oga_application_code, $application_code, $user_id)
     {
-        $dms_node_details = self::getApplicationProcessNodeDetails($process_id);
-        
-        $nodeTracking = $application_code.'-'.rand(25,458752);
+        $dms_node_details = self::getApplicationProcessNodeDetails($regulatory_subfunction_id);
+        $dmsapplication_code = $oga_application_code;
+        if(validateIsNumeric($application_code)){
+            $dmsapplication_code = $application_code;
+        }
+        $nodeTracking = $dmsapplication_code.'-'.rand(25,458752);
         $parentNode_ref = $dms_node_details->node_ref;
         
         $node_details = array(
@@ -1249,17 +1257,19 @@ class DMSHelper
        
         if ($dms_res['success']) {
             $dms_node_id = $dms_res['node_details']->id;
-            $res = self::saveApplicationDocumentNodedetails( $process_id,$application_code,  $dms_node_id, $trader_id);
+            $res = self::saveApplicationDocumentNodedetails($regulatory_function_id, $regulatory_subfunction_id,$oga_application_code,  $application_code,  $dms_node_id, $user_id);
         }
        
         return $res;
     }
     
-    static function saveApplicationDocumentNodedetails($process_id,$application_code, $dms_node_id, $user)
+    static function saveApplicationDocumentNodedetails($regulatory_function_id,$regulatory_subfunction_id,$oga_application_code,  $application_code, $dms_node_id, $user)
     {
         $dmsapp_data = array(
             'application_code' => $application_code,
-            'process_id' => $process_id,
+            'oga_application_code' => $oga_application_code,
+            'regulatory_subfunction_id' => $regulatory_subfunction_id,
+            'regulatory_function_id' => $regulatory_function_id,
             'dms_node_id' => $dms_node_id,
             'node_ref' => $dms_node_id,
             'created_by' => $user,

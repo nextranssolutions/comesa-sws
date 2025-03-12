@@ -1,0 +1,185 @@
+<div class="main-content-inner">
+    <div class="breadcrumbs ace-save-state" id="breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="ace-icon fa fa-home home-icon"></i>
+                <a href="#"><a routerLink="/admin-cimex/app-dashboard">{{ 'home' | translate }}</a></a>
+            </li>
+            <li class="active">{{ parameter_name | translate }}</li>
+        </ul>
+
+    </div>
+
+
+    <div class="page-content">
+
+        <div class="page-header">
+            <h1>
+                {{ parameter_name | translate }}
+                <small>
+                    <i class="ace-icon fa fa-angle-double-right"></i>
+                    overview &amp; stats
+                </small>
+            </h1>
+        </div>
+
+        <dx-button text="{{ 'add' | translate }} {{ parameter_name | translate}}" type="default" icon="fa fa-plus"
+        [elementAttr]="{ class: '' }" (onClick)="onAddNewNtfSchedule()">
+        </dx-button>
+
+        <dx-data-grid [allowColumnReordering]="true" (onCellPrepared)="onCellPrepared($event)"
+        class="table row-border hover" [wordWrapEnabled]="true" [dataSource]="NtfScheduleDetails" [remoteOperations]="true"
+        [showBorders]="true" [allowColumnResizing]="true" [columnHidingEnabled]="false" keyExpr="id"
+        (onToolbarPreparing)="onAdvanceProductRegistrySearch($event)">
+
+        <dxo-export [enabled]="true" fileName="Data" [allowExportSelectedData]="true"></dxo-export>
+        <dxo-search-panel [visible]="true"></dxo-search-panel>
+        <!-- <dxo-header-filter [visible]="true"></dxo-header-filter> -->
+        <dxo-filter-row [visible]="show_advancesearch"></dxo-filter-row>
+        <dxo-paging [enabled]="true">
+            <dxo-pager [showInfo]="true" infoText="Page #{0}. Total: {1} ({2} items)" [showPageSizeSelector]="true"
+                [allowedPageSizes]="[50,100]"></dxo-pager>
+        </dxo-paging>
+
+        <dxi-column [width]="100" caption="{{ 'action' | translate }}" name="command-editing"
+            [allowFiltering]="false" [allowSorting]="false" cellTemplate="cellTemplate">
+            <div *dxTemplate="let data of 'cellTemplate'">
+                <dx-menu (onItemClick)="funcActionColClick($event,data)" [items]="actionsMenuItems"></dx-menu>
+            </div>
+        </dxi-column>
+        <dxi-column dataField="name" caption="{{ 'name' | translate }}"></dxi-column>
+        <dxi-column dataField="notification_type" caption="{{ 'notification_type' | translate }}"></dxi-column>
+        <dxi-column dataField="notification_group" caption="{{ 'notification_group' | translate }}"></dxi-column>
+        <dxi-column dataField="notification_schedule_type" caption="{{ 'notification_schedule_type' | translate }}"></dxi-column>
+        <dxi-column dataField="custom_expression" caption="{{ 'custom_expression' | translate }}"></dxi-column>
+        <dxi-column dataField="is_specific_notification" caption="{{ 'is_specific_notification' | translate }}"></dxi-column>
+        <dxi-column dataField="description" caption="{{ 'description' | translate }}"></dxi-column>      
+        <dxi-column dataField="code" caption="{{ 'code' | translate }}"></dxi-column>
+        <dxi-column dataField="is_enabled" caption="{{ 'is_enabled' | translate }}" [dataType]="'boolean'"
+        [width]="100">
+        <dxo-editing [allowUpdating]="true" [allowDeleting]="true" [allowAdding]="true"></dxo-editing>
+    </dxi-column>
+    <dxo-selection mode="multiple"></dxo-selection>
+    <dxo-group-panel [visible]="true"></dxo-group-panel>
+
+    <dxo-paging [pageSize]="500"></dxo-paging>
+
+    </dx-data-grid>
+
+    <dx-popup [visible]="EmailConfigPopupVisible" [width]="funcpopWidth(65)" [height]="funcpopHeight(55)"
+    [showTitle]="true" [title]="'HS Codes'" (onHidden)="EmailConfigPopupVisible = false">
+
+
+    <form (ngSubmit)="onUpdateRestrictions()" [formGroup]="createNewDataFrm" formControlName="description">
+
+        <div class="row">
+            <div class="col-lg-6">
+                <label>{{ 'name' | translate }}</label>
+                <dx-text-box formControlName="name" [showClearButton]="true">
+                </dx-text-box>
+            </div>
+
+            <div class="col-lg-6">
+            <label>{{ 'notification_type' | translate }}</label>
+            <dx-select-box [dataSource]="notifcationTypeData" formControlName="notification_type_id"
+                valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
+            </div>
+
+            <div class="col-lg-6">
+                <label>{{ 'notification_group' | translate }}</label>
+                <dx-select-box [dataSource]="notifcationGroupData" formControlName="notification_type_id"
+                    valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
+            </div>
+
+            <div class="col-lg-6">
+                    <label>{{ 'notification_schedule_type' | translate }}</label>
+                    <dx-select-box [dataSource]="notifcationScheduleTypeData" formControlName="notification_type_id"
+                        valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
+            </div>
+
+            <div class="col-lg-6">
+                <label>{{ 'custom_expression' | translate }}</label>
+                <dx-text-area formControlName="custom_expression">
+                </dx-text-area>
+            </div>
+
+            <div class="col-lg-6">
+                <label>{{ "is_specific_notification" | translate }}</label>
+                <dx-select-box [searchEnabled]="true" formControlName="is_specific_notification"
+                    [dataSource]="regStatusOptions" valueExpr="value" displayExpr="text"></dx-select-box>
+            </div>
+
+            <div class="col-lg-6">
+                <label>{{ 'description' | translate }}</label>
+                <dx-text-area formControlName="description">
+                </dx-text-area>
+            </div>
+
+            <div class="col-lg-6">
+                <label>{{ 'code' | translate }}</label>
+                <dx-text-area formControlName="code">
+                </dx-text-area>
+            </div>
+
+            <div class="col-lg-6">
+                <label>{{ "is_enabled" | translate }}</label>
+                <dx-select-box [searchEnabled]="true" formControlName="is_enabled"
+                    [dataSource]="regStatusOptions" valueExpr="value" displayExpr="text"></dx-select-box>
+            </div>
+        </div>
+    </form>
+
+
+    <div class="col-lg-12 row">
+        <dx-button text="{{ 'save'   + 'hs_code' | translate }}" type="default" icon="fa fa-save"
+            [elementAttr]="{ id: 'elementId', class: 'pull-left' }" (onClick)="onFuncSaveRecordData()">
+        </dx-button>
+    </div>
+   </dx-popup> 
+
+<dx-popup [visible]="deletePopupVisible" [width]="funcpopWidth(30)" [height]="funcpopHeight(25)"
+[showTitle]="true" title="{{ 'delete_confirmation_of '+parameter_name | translate }}"
+(onHidden)="deletePopupVisible = false">
+
+<div>
+    <p class="confirmation-text">
+        {{ 'are_you_sure_you_want_to_delete' | translate }}
+        "<strong>{{config_record}}</strong>"?
+    </p>
+    <div class="button-container">
+        <dx-button text="{{ 'yes' | translate }}" type="default"
+            (onClick)="onDeleteSystemAdministrationDetails()">
+        </dx-button>
+        <dx-button text="{{ 'no' | translate }}" (onClick)="deletePopupVisible = false">
+        </dx-button>
+    </div>
+</div>
+
+</dx-popup>
+
+<dx-popup [visible]="enablePopupVisible" [width]="funcpopWidth(30)" [height]="funcpopHeight(25)"
+[showTitle]="true" title="{{ enabledisable_permit_type | translate }}"
+(onHidden)="enablePopupVisible = false">
+
+<div>
+    <p class="confirmation-text">
+        {{ enabledisable_permit_typedescription | translate }}
+        "<strong>{{config_record}}</strong>"?
+    </p>
+    <div class="button-container">
+        <dx-button text="{{ 'yes' | translate }}" type="danger" (onClick)="iniateEnableDisableRecord()">
+        </dx-button>
+        <dx-button text="{{ 'no' | translate }}" (onClick)="enablePopupVisible = false">
+        </dx-button>
+    </div>
+</div>
+</dx-popup>
+
+
+<dx-load-panel #loadPanel shadingColor="rgba(0,0,0,0.4)" [position]="{ of: '#employee' }"
+    [(visible)]="loadingVisible" [showIndicator]="true" [showPane]="true" [shading]="true"
+    [message]="spinnerMessage" [hideOnOutsideClick]="false">
+</dx-load-panel>
+
+</div>
+</div>

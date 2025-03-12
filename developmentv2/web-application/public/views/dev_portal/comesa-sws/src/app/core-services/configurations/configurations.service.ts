@@ -93,9 +93,27 @@ export class ConfigurationsService {
       }));
   }
 
+  
+  onLoadUserOrganisationData(data, action_url = 'onLoadUserOrganisationData') {
+    data.table_name = btoa(data.table_name);
+    const loggedInUserId = localStorage.getItem('id');
+    data.user_id = loggedInUserId;
+    
+    this.config = {
+      params: data,
+      headers: { 'Accept': 'application/json' }
+    };
 
+    return this.HttpClient.get(this.baseUrl + '/' + action_url, this.config)
+      .pipe(map(data => {
+        return <any>data;
+      }));
+  }
   onLoadConfigurationData(data, action_url = 'onLoadConfigurationData') {
     data.table_name = btoa(data.table_name);
+    const loggedInUserId = localStorage.getItem('id');
+    data.user_id = loggedInUserId;
+    
     // data.table_name=this.encryptionService.OnEncryptData(data.table_name)
     this.config = {
       params: data,
@@ -110,6 +128,9 @@ export class ConfigurationsService {
 
   getAppRegulatoryFunctionFeeConfig(data, action_url = 'getAppRegulatoryFunctionFeeConfig') {
     data.table_name = btoa(data.table_name);
+    const loggedInUserId = localStorage.getItem('id');
+    data.user_id = loggedInUserId;
+    
     // data.table_name=this.encryptionService.OnEncryptData(data.table_name)
     this.config = {
       params: data,
@@ -124,6 +145,9 @@ export class ConfigurationsService {
 
   getFeesChargesConfigurations(data, action_url = 'getFeesChargesConfigurations') {
     data.table_name = btoa(data.table_name);
+    const loggedInUserId = localStorage.getItem('id');
+    data.user_id = loggedInUserId;
+    
     // data.table_name=this.encryptionService.OnEncryptData(data.table_name)
     this.config = {
       params: data,
