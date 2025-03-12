@@ -674,6 +674,157 @@ class SysAdministrationController extends Controller
 
         return response()->json($res, 200);
     }
+
+    public function onLoadTransactionEmailConfigurations(Request $req)
+    {
+        try {
+            $requestData = $req->all();
+            $table_name = 'tra_email_configurations';
+            $email_config_data = array();
+            unset($requestData['table_name']);
+
+            $sql = DB::table($table_name . ' as t1')
+
+                ->leftJoin('par_emailssetup_types as t2', 't1.emailssetup_type_id', 't2.id')
+                              
+
+                ->select(
+                    't1.*',
+                    't2.name as email_setup_type',
+                                      
+
+                );
+
+            $data = $sql->get();
+            foreach ($data as $rec) {
+                $email_config_data[] = array(
+                    'id' => $rec->id,
+                    'name' => $rec->name,
+                    'description' => $rec->description,
+                    'is_enabled' => $rec->is_enabled,
+                    'code' => $rec->code,
+                    'mail_mailer' => $rec->mail_mailer,
+                    'mail_host' => $rec->mail_host,
+                    'mail_port' => $rec->mail_port,
+                    'mail_username' => $rec->mail_username,
+                    'mail_password' => $rec->mail_password,
+                    'mail_encryption' => $rec->mail_encryption,
+                    'mail_from_address' => $rec->mail_from_address,
+                    'mail_from_name' => $rec->mail_from_name,
+                    'emailssetup_type_id' => $rec->emailssetup_type_id,
+                    
+                );
+            }
+            $res = ['success' => true, 'data' => $email_config_data];
+        } catch (\Exception $exception) {
+            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        } catch (\Throwable $throwable) {
+            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        }
+
+        return response()->json($res, 200);
+    }
+
+    public function onLoadNotificationScheduleConfigurations(Request $req)
+    {
+        try {
+            $requestData = $req->all();
+            $table_name = 'tra_notificationschedule_configurations';
+            $email_config_data = array();
+            unset($requestData['table_name']);
+
+            $sql = DB::table($table_name . ' as t1')
+
+                ->leftJoin('ntf_notification_types as t2', 't1.notification_type_id', 't2.id')
+                ->leftJoin('par_notifications_group as t3', 't1.notification_group_id', 't3.id')
+                ->leftJoin('par_notificationschedule_types as t4', 't1.notificationschedule_type_id', 't4.id')            
+               
+
+                ->select(
+                    't1.*',
+                    't2.name as notification_type',
+                    't3.name as notification_group',
+                    't4.name as notification_schedule_type',
+                    
+                                      
+
+                );
+
+            $data = $sql->get();
+            foreach ($data as $rec) {
+                $email_config_data[] = array(
+                    'id' => $rec->id,
+                    'name' => $rec->name,
+                    'description' => $rec->description,
+                    'is_enabled' => $rec->is_enabled,
+                    'code' => $rec->code,
+                    'custom_expression' => $rec->custom_expression,
+                    'is_specific_notification' => $rec->is_specific_notification,
+                    'notification_type_id' => $rec->notification_type_id,
+                    'notification_group_id' => $rec->notification_group_id,
+                    'notificationschedule_type_id' => $rec->notificationschedule_type_id,
+                    
+                );
+            }
+            $res = ['success' => true, 'data' => $email_config_data];
+        } catch (\Exception $exception) {
+            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        } catch (\Throwable $throwable) {
+            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        }
+
+        return response()->json($res, 200);
+    }
+
+
+    public function onLoadTransactionPaymentIntegration(Request $req)
+    {
+        try {
+            $requestData = $req->all();
+            $table_name = 'tra_payment_integration';
+            $email_config_data = array();
+            unset($requestData['table_name']);
+
+            $sql = DB::table($table_name . ' as t1')
+
+                ->leftJoin('par_paymentremittance_options as t2', 't1.paymentremittance_options_id', 't2.id')
+                ->leftJoin('par_paymentintegration_types as t3', 't1.paymentintegrationtype_id', 't3.id')
+                        
+               
+
+                ->select(
+                    't1.*',
+                    't2.name as payment_remittance_options',
+                    't3.name as payment_integration_type',               
+                                      
+                );
+
+            $data = $sql->get();
+            foreach ($data as $rec) {
+                $email_config_data[] = array(
+                    'id' => $rec->id,
+                    'name' => $rec->name,
+                    'description' => $rec->description,
+                    'is_enabled' => $rec->is_enabled,
+                    'code' => $rec->code,
+                    'signed_fields_name' => $rec->signed_fields_name,
+                    'payment_url' => $rec->payment_url,
+                    'paymentremittance_options_id' => $rec->paymentremittance_options_id,
+                    'paymentintegrationtype_id' => $rec->paymentintegrationtype_id,
+                                      
+                );
+            }
+            $res = ['success' => true, 'data' => $email_config_data];
+        } catch (\Exception $exception) {
+            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        } catch (\Throwable $throwable) {
+            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        }
+
+        return response()->json($res, 200);
+    }
+
+
     public function onLoadSystemAdministrationData(Request $req)
     {
         try {
@@ -1413,6 +1564,53 @@ public function onGetSpecificHsCode(Request $req)
                 );
             }
             $res = ['success' => true, 'data' => $permit_report_generation_data];
+        } catch (\Exception $exception) {
+            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        } catch (\Throwable $throwable) {
+            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        }
+
+        return response()->json($res, 200);
+    }
+
+    public function getAdditionalFormFields(Request $req)
+    {
+        try {
+            $requestData = $req->all();
+            $table_name = 'tra_transactionpermit_prodadditionafields';
+            $additional_form_fields_data = array();
+            unset($requestData['table_name']);
+
+            $sql = DB::table($table_name . ' as t1')
+
+                ->leftJoin('tra_transactionpermit_types as t2', 't1.transactionpermit_type_id', 't2.id')
+    
+
+                ->select(
+                    't1.*',
+                  
+                );
+
+                if (isset($requestData['transactionpermit_type_id']) && !empty($requestData['transactionpermit_type_id'])) {
+                    $sql->where('t1.transactionpermit_type_id', '=', $requestData['transactionpermit_type_id']);
+                }
+
+
+
+            $data = $sql->get();
+            foreach ($data as $rec) {
+                $additional_form_fields_data[] = array(
+                    'id' => $rec->id,
+                    'name' => $rec->name,
+                    'default_value' => $rec->default_value,
+                    'is_readonly' => $rec->is_readonly,
+                    'is_hidden' => $rec->is_hidden,
+                    'is_mandatory' => $rec->is_mandatory,
+                    'transactionpermit_type_id' => $rec->transactionpermit_type_id,
+                    
+                );
+            }
+            $res = ['success' => true, 'data' => $additional_form_fields_data];
         } catch (\Exception $exception) {
             $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
         } catch (\Throwable $throwable) {

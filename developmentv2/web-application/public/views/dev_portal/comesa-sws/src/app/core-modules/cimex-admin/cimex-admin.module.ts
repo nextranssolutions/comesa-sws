@@ -178,7 +178,10 @@ import { ProceduresSubcategoriesComponent } from './views/configurations/import-
 import { SharedImportexportProceduresComponent } from './views/configurations/import-export-procedures/shared-importexport-procedures/shared-importexport-procedures.component';
 import { StatusesActionsComponent } from './views/user-management/statuses-actions/statuses-actions.component';
 import { GeneralSystemFormsComponent } from './views/configurations/forms/general-system-forms/general-system-forms.component';
+
 import { RegulatoryprocessDocdefinationComponent } from './views/document-checklistsmng/dms/regulatoryprocess-docdefination/regulatoryprocess-docdefination.component';
+
+import { PermitTermsconditionsComponent } from './views/system-administration/system-guidelines/permit-termsconditions/permit-termsconditions.component';
 
 @NgModule({
   declarations: [AppdashboardComponent,
@@ -228,6 +231,7 @@ import { RegulatoryprocessDocdefinationComponent } from './views/document-checkl
     ApplicantWorkflowsComponent,
     ApplicantWorkflowsetupComponent,
     ApplicantSystemprocessesComponent,
+    PermitTermsconditionsComponent,
    
 
 

@@ -259,15 +259,25 @@ input[type=email] {
 }
 
 .div_maincontent {
-  height: 68vh;
+  height: 65vh;
   /* Adjust this value based on your needs */
   display: flex;
   flex-direction: column;
-  border: 1px solid #ccc;
+  /* border: 1px solid #ccc; */
   padding: 0 !important;
   margin: 0px !important;
 }
 
+.ng-wizard-theme-arrows {
+  border: none !important;
+  border-bottom: 1px solid #ccc !important;
+  margin-top: 1px !important;
+}
+
+div .ng-wizard-theme-arrows .ng-wizard-toolbar {
+  /* padding: 10px; */
+  margin-bottom: 10px !important;
+}
 .div_popupcontent{
   height: 52vh;
   /* Adjust this value based on your needs */
@@ -6679,6 +6689,9 @@ dx-selectbox .col-lg-1,
     position: absolute;
     top: 0;
     left: 0;
+    font-family: "Arial", sans-serif;
+    font-weight: bold;
+    /* font-size: 16px; */
   }
 
   .column-selector {
@@ -6686,7 +6699,7 @@ dx-selectbox .col-lg-1,
     border: 2px solid #ccc;
     padding: 30px;
     position: relative;
-    height: 800px;
+    height: 1000px;
     overflow-y: scroll;
   }
 
