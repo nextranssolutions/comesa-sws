@@ -82,12 +82,24 @@ onCellCountriesPrepared(e) {
         
         e.cellElement.style.color = 'white';
         e.cellElement.style.backgroundColor = '#FF5D48';  
-    
       }
   }
 
-
+  if (e.rowType === "data" && e.column.dataField === "application_status") {
+    let application_status = e.data.application_status; // Get status from row data
+  
+    if (application_status === 'Draft') {
+      e.cellElement.style.color = 'grey';
+      e.cellElement.style.backgroundColor = '#64B0F2';  
+    } else if (application_status === 'Under Processing') {
+      e.cellElement.style.color = 'white';
+      e.cellElement.style.backgroundColor = '#FF5D48';  
+    }
+  }
+  
 }
+
+
 returnReportIframe(report_url){
   let iframe = '<iframe class="w-100 h-100" style="height:650px !important" src="'+report_url+'" frameborder="0" allow="autoplay; encrypted-media" allowfullscreen>Data</iframe>';
   let text = this.sanitizer.bypassSecurityTrustHtml(iframe);

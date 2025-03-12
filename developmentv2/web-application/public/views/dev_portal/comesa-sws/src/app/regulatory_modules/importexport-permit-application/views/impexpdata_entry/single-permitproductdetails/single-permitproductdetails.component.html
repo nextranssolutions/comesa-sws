@@ -39,18 +39,18 @@
         </div>
 
         <div class="input-group col-md-4">
-            <div class="col-xs-12 col-md-6 col-lg-6 col-xl-6 ">
-                <label for="ti" class="control-label">{{'unit_of_measure'| translate}}</label>
-                <dx-select-box [dataSource]="unitOfMeasureData" valueExpr="id" displayExpr="name" [searchEnabled]="true"
-                    formControlName="unit_of_measure_id">
-                </dx-select-box>
-            </div>
 
             <div class="col-xs-12 col-md-6 col-lg-6 col-xl-6 ">
                 <label for="ti" class="control-label">{{'quantity'| translate}}</label>
                 <dx-text-box formControlName="quantity" placeholder="{{'quantity' | translate}}">
                 </dx-text-box>
 
+            </div>
+            <div class="col-xs-12 col-md-6 col-lg-6 col-xl-6 ">
+                <label for="ti" class="control-label">{{'unit_of_measure'| translate}}</label>
+                <dx-select-box [dataSource]="unitOfMeasureData" valueExpr="id" displayExpr="name" [searchEnabled]="true"
+                    formControlName="unit_of_measure_id">
+                </dx-select-box>
             </div>
 
         </div>

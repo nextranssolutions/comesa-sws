@@ -285,11 +285,13 @@ export class ConfigurationsService {
       params: { regulatory_subfunction_id:regulatory_subfunction_id, applicationsubmission_type_id:applicationsubmission_type_id},
       headers: headers
     };
-    return this.HttpClient.get(this.baseUrl + '/getApplicantUniformApplicationProces', this.config)
+    return this.HttpClient.get(this.baseUrl + '/getUniformSectionApplicationProcess', this.config)
       .pipe(map(data => {
         return <any>data;
       }));
   } 
+
+  
 
   getSingleApplicantSectionUniformApplication(regulatory_subfunction_id) {
     

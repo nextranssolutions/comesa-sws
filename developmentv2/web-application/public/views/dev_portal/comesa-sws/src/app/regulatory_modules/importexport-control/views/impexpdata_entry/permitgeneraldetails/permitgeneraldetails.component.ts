@@ -17,6 +17,7 @@ import { ImportExportService } from '../../../services/import-export.service';
 import { AuthenticationService } from 'src/app/core-services/authentication/authentication.service';
 
 import { PremisesLicensingService } from 'src/app/regulatory_modules/premises-licensing/services/premises-licensing.service';
+import { lastValueFrom } from 'rxjs';
 
 @Component({
   selector: 'app-permitgeneraldetails',
@@ -26,6 +27,7 @@ import { PremisesLicensingService } from 'src/app/regulatory_modules/premises-li
 export class PermitgeneraldetailsComponent implements OnInit {
   @Input() applicationGeneraldetailsfrm: FormGroup;
   @Input() permitReceiverSenderFrm: FormGroup;
+  @Input() transactionpermit_type_id: number;
   today: Date = new Date();
   configData: any;
   regulatedProdTypeData: any;
@@ -108,11 +110,15 @@ export class PermitgeneraldetailsComponent implements OnInit {
   spinnerMessage: string;
   registration_process_action: string;
   select_registration_section_process: string;
+  isCustomOfficePopupVisible: boolean;
+  customOfficeData: any;
+  isnewcustomoffice: boolean;
+  customOfficeFrm: FormGroup;
   constructor(
-    public utilityService: UtilityService, public premappService: PremisesLicensingService, 
-    public fb: FormBuilder, public spinner: SpinnerVisibilityService, 
+    public utilityService: UtilityService, public premappService: PremisesLicensingService,
+    public fb: FormBuilder, public spinner: SpinnerVisibilityService,
     public configService: ConfigurationsService, public appService: ImportExportService,
-    public router: Router, public formBuilder: FormBuilder, public config: ConfigurationsService, 
+    public router: Router, public formBuilder: FormBuilder, public config: ConfigurationsService,
     public toastr: ToastrService, public authService: AuthenticationService, public httpClient: HttpClient
   ) {
   }
@@ -137,7 +143,6 @@ export class PermitgeneraldetailsComponent implements OnInit {
     this.onLoadcountryData();
     this.onLoadinvoiceTypeData();
     this.onLoadcurrencyData();
-    this.onLoadpermitProductsCategoryData(this.permit_category_id);
     this.onLoadproducttypeDefinationData();
     // this.onsavePermitReceiverSender();
     this.onLoadRegulatedSubfunctionData();
@@ -170,10 +175,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
       this.ammendReadOnly = false;
     }
   }
-  onApplicationCategorySelection($event) {
-    let permit_category_id = $event.selectedItem.id;
-    this.onLoadpermitProductsCategoryData(permit_category_id);
-  }
+
   onProductTypesDefinationSelection($event) {
     let producttype_defination_id = $event.selectedItem.id;
     this.onLoadapplicationCategoryData(producttype_defination_id);
@@ -193,26 +195,6 @@ export class PermitgeneraldetailsComponent implements OnInit {
           if (this.data_record.success) {
             this.applicationCategoryData = this.data_record.data;
             ;
-          }
-        });
-  }
-
-
-  onLoadpermitProductsCategoryData(permit_category_id) {
-    var data = {
-      table_name: 'par_product_categories',
-      permit_category_id: permit_category_id
-    };
-
-    this.config.onLoadConfigurationData(data)
-      .subscribe(
-        data => {
-
-          this.data_record = data;
-
-          if (this.data_record.success) {
-            this.permitProductsCategoryData = this.data_record.data;
-
           }
         });
   }
@@ -352,7 +334,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
     this.config.onLoadConfigurationData(data)
       .subscribe(
         data => {
-          
+
           this.data_record = data;
 
           if (this.data_record.success) {
@@ -371,7 +353,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
     this.config.onLoadConfigurationData(data)
       .subscribe(
         data => {
-          
+
           this.data_record = data;
 
           if (this.data_record.success) {
@@ -392,7 +374,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
     this.config.onLoadConfigurationData(data)
       .subscribe(
         data => {
-          
+
           this.data_record = data;
 
           if (this.data_record.success) {
@@ -401,7 +383,19 @@ export class PermitgeneraldetailsComponent implements OnInit {
           }
         });
   }
-  // 
+
+
+  funcSelectCustomOffice(data) {
+    let record = data.data;
+    this.applicationGeneraldetailsfrm.get('custom_office_id')?.setValue(data.data.id);
+    this.applicationGeneraldetailsfrm.get('customs_office')?.setValue(data.data.name);
+    this.isCustomOfficePopupVisible = false;
+  }
+
+  funcAddCustomOfficeSite() {
+    this.isnewcustomoffice = true;
+    this.customOfficeFrm.reset();
+  }
 
   onLoadmodeOfTransportData() {
     var data = {
@@ -413,7 +407,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
     this.config.onLoadConfigurationData(data)
       .subscribe(
         data => {
-          
+
           this.data_record = data;
 
           if (this.data_record.success) {
@@ -434,7 +428,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
     this.config.onLoadConfigurationData(data)
       .subscribe(
         data => {
-          
+
           this.data_record = data;
 
           if (this.data_record.success) {
@@ -456,7 +450,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
     this.config.onLoadConfigurationData(data)
       .subscribe(
         data => {
-          
+
           this.data_record = data;
 
           if (this.data_record.success) {
@@ -517,7 +511,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
     this.config.onLoadConfigurationData(data)
       .subscribe(
         data => {
-          
+
           this.data_record = data;
 
           if (this.data_record.success) {
@@ -622,7 +616,6 @@ export class PermitgeneraldetailsComponent implements OnInit {
     let me = this;
     this.senderReceiverData.store = new CustomStore({
       load: function (loadOptions: any) {
-        console.log(loadOptions)
         var params = '?';
         params += 'skip=' + loadOptions.skip;
         params += '&take=' + loadOptions.take;//searchValue
@@ -650,6 +643,52 @@ export class PermitgeneraldetailsComponent implements OnInit {
   }
 
 
+  onsearchCustomOfficeInfo() {
+  
+    this.checkifsenderreceiver = false;
+    this.isCustomOfficePopupVisible = true;  // Show popup
+  
+    let me = this;
+    this.customOfficeData = {  
+      store: new CustomStore({
+        load: function (loadOptions: any) {
+          let params = '?skip=' + (loadOptions.skip || 0);
+          params += '&take=' + (loadOptions.take || 50);
+  
+          let headers = new HttpHeaders({
+            "Accept": "application/json",
+            "Authorization": "Bearer " + me.authService.getAccessToken(),
+          });
+  
+          me.configData = {
+            headers: headers,
+            params: {
+              skip: loadOptions.skip || 0,
+              take: loadOptions.take || 50,
+              searchValue: loadOptions.filter || '',
+              table_name: 'tra_customoffice_info'
+            }
+          };
+  
+          return me.httpClient.get(AppSettings.base_url + '/api/import-export/onLoadCustomsOfficeData', me.configData)
+            .toPromise()
+            .then((data: any) => {
+              
+              return {
+                data: data.data || [],
+                totalCount: data.totalCount || 0
+              };
+            })
+            .catch(error => { 
+              throw 'Data Loading Error';
+            });
+        }
+      })
+    };
+  }
+  
+  
+  
   onsearchConsignee() {
 
     this.consignee_sendertitle = 'Consignee Details';
@@ -659,7 +698,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
     let me = this;
     this.consigneeReceiverData.store = new CustomStore({
       load: function (loadOptions: any) {
-        console.log(loadOptions)
+      
         var params = '?';
         params += 'skip=' + loadOptions.skip;
         params += '&take=' + loadOptions.take;//searchValue
@@ -702,7 +741,7 @@ export class PermitgeneraldetailsComponent implements OnInit {
     let me = this;
     this.registered_premisesData.store = new CustomStore({
       load: function (loadOptions: any) {
-        console.log(loadOptions)
+        
         var params = '?';
         params += 'skip=' + loadOptions.skip;
         params += '&take=' + loadOptions.take;

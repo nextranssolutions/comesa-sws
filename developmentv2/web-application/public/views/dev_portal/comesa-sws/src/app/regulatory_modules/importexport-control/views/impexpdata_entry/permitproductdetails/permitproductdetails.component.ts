@@ -532,6 +532,8 @@ export class PermitproductdetailsComponent implements OnInit {
           return false
         });
   }
+
+  
   onRegisteredProductGridToolbar(e) {
     if (this.regulated_productstype_id == 2 || this.regulated_productstype_id == 7) {
       if (this.regulatory_subfunction_id == 81 || this.regulatory_subfunction_id == 83) {
@@ -1423,7 +1425,7 @@ export class PermitproductdetailsComponent implements OnInit {
     // Patch the form with selected values
     this.permitProductsFrm.patchValue({ 
         regulated_product_category: selectedCategory, 
-        regulated_product_category_id: data_resp.regulated_product_category_id 
+        regulated_productcategory_id: data_resp.regulated_product_category_id 
     });
 
     // Close the popup

@@ -15,7 +15,6 @@ class ImportExportController extends Controller
     protected $user_id;
     public function getSenderreceiversDetails(Request $req)
     {
-
         try {
 
             $take = $req->take;
@@ -77,51 +76,39 @@ class ImportExportController extends Controller
     {
         try {
             DB::beginTransaction();
-            $application_id = $req->application_id;
-            $transactionpermit_typecategory_id = $req->transactionpermit_typecategory_id;
-            $product_type_id = $req->product_type_id;
+            $user_id = $req->user_id;
+            $oga_application_code = $req->oga_application_code;
+            $transactionpermit_type_id = $req->transactionpermit_type_id;
             $permit_typecategory_id = $req->permit_typecategory_id;
-            $trader_initiator_id = $req->trader_id;
-            $trader_id = $req->trader_id;
-            $email_address = $req->email_address;
             $applicant_id = $req->applicant_id;
-            $local_agent_id = $req->local_agent_id;
             $reference_no = $req->reference_no;
-            $application_reference_number = $req->application_reference_number;
             $regulatory_subfunction_id = $req->regulatory_subfunction_id;
-            $zone_id = $req->zone_id;
-            $process_id = $req->process_id;
+            $regulatory_function_id = $req->regulatory_function_id;
+            
+            $transactionpermit_typesdata = getSingleRecord('tra_transactionpermit_types', array('id' => $transactionpermit_type_id));
+                
+            $permit_process_id = $transactionpermit_typesdata->process_id;
+            $ref_id = $transactionpermit_typesdata->reference_noformat_id;
+            $organisation_id =  $transactionpermit_typesdata->organisation_id;
+
+            $transactionpermit_type_id = $req->transactionpermit_type_id;
             $id = $req->id;
             $product_res = '';
-            $regulatory_function_id = 1;
-            $regulatory_subfunction_id = 1;
             $app_data = array(
-                'trader_id' => $trader_id,
-                'local_agent_id' => $local_agent_id,
                 'application_code' => $req->application_code,
-                'oga_application_code' => $req->oga_application_code,
-                'regulatory_subfunction_id' => $req->regulatory_subfunction_id,
-                'application_id' => $application_id,
+                'regulatory_subfunction_id' => $regulatory_subfunction_id,
+                'transactionpermit_type_id' => $req->transactionpermit_type_id,
+                'organisation_id'=>$organisation_id,
                 'regulatory_function_id' => $regulatory_function_id,
-                'product_type_id' => $req->product_type_id,
                 'zone_id' => $req->zone_id,
                 'reference_no' => $reference_no,
-                'paying_currency_id' => $req->paying_currency_id,
-                'application_status_id' => 1,
-                'appworkflow_status_id' => 1,
-                'process_id' => $process_id,
-                'transactionpermit_typecategory_id' => $transactionpermit_typecategory_id,
-                'document_upload_id' => $req->document_upload_id,
-                'application_type_id' => $req->application_type_id,
-                'application_reference_number' => $req->application_reference_number,
-                'applicant_type_id' => $req->applicant_type_id,
+                'applicant_id' => $req->applicant_id,
                 'permit_typecategory_id' => $req->permit_typecategory_id,
-                'date_of_application' => $req->date_of_application,
                 'expected_date_of_shipment' => $req->expected_date_of_shipment,
                 'importer_exporter_id' => $req->importer_exporter_id,
                 'port_type_id' => $req->port_type_id,
                 'port_of_entryexit_id' => $req->port_of_entryexit_id,
-                'customs_office' => $req->customs_office,
+                'customs_office_id' => $req->customs_office_id,
                 'mode_oftransport_id' => $req->mode_oftransport_id,
                 'transpoter_name' => $req->transpoter_name,
                 'transporter_contact' => $req->transporter_contact,
@@ -134,136 +121,104 @@ class ImportExportController extends Controller
                 'currency_oftransaction_id' => $req->currency_oftransaction_id,
                 'declaration_statuses_id' => $req->declaration_statuses_id,
             );
-            $table_name = 'wb_importexport_applications';
+            $table_name = 'txn_importexport_applications';
             /** Already Saved */
-            if (validateIsNumeric($application_id)) {
+            if (validateIsNumeric($oga_application_code)) {
 
-                $where = array('id' => $application_id);
-                $where_app = array('application_id' => $application_id);
+                $where = array('oga_application_code' => $oga_application_code);
 
-                if (recordExists('wb_importexport_applications', $where)) {
+                if (recordExists('txn_importexport_applications', $where)) {
 
-                    $product_infor['dola'] = Carbon::now();
-                    $product_infor['altered_by'] = $email_address;
+                    $app_data['dola'] = Carbon::now();
+                    $app_data['altered_by'] = $user_id;
 
                     $previous_data = getPreviousRecords($table_name, $where);
-                    $res = updateRecord('wb_importexport_applications', $previous_data, $where, $product_infor, $email_address);
-
-                    $app_data = array(
-                        'date_added' => Carbon::now(),
-                        'altered_by' => $email_address,
-                        'dola' => Carbon::now()
-                    );
-                    $previous_data = getPreviousRecords('wb_importexport_applications', $where_app);
-                    $tracking_no = $previous_data['results'][0]['tracking_no'];
+                    $reference_no = $previous_data['results'][0]['reference_no'];
                     $application_code = $previous_data['results'][0]['application_code'];
-                    $application_reference_number = $tracking_no;
-                    $resp = updateRecord('wb_importexport_applications', $previous_data, $where_app, $app_data, $email_address);
+                    $application_id = $previous_data['results'][0]['id'];
+                    $resp = updateRecord('txn_importexport_applications', $previous_data, $where, $app_data, $user_id);
                 }
 
                 if ($resp['success']) {
-                    $sql = DB::table('tra_application_documentsdefination')->where(array('application_code' => $application_code))->first();
-                    if (!$sql) {
-                        //print_r('test');
-                        initializeApplicationDMS($product_type_id, $regulatory_function_id, $regulatory_subfunction_id, $application_code, $tracking_no . rand(0, 100), $trader_id);
-                    }
                     $res = array(
-                        'tracking_no' => $tracking_no,
+                        'reference_no' => $reference_no,
                         'application_id' => $application_id,
                         'regulatory_function_id' => $regulatory_function_id,
                         'success' => true,
-
-                        'application_code' => $application_code,
-                        'message' => 'Product Application Saved Successfully, with Tracking No: ' . $tracking_no
+                        'oga_application_code' => $oga_application_code,
+                        'message' => 'Permit Application Saved Successfully, with Tracking No: ' . $reference_no
                     );
                 } else {
                     $res = array(
                         'success' => false,
-                        'message' => 'Error Occurred Product Application not saved, it this persists contact the system Administrator'
+                        'message' => 'Error Occurred. Permit Application not saved, it this persists contact the system Administrator'
                     );
                 }
             } else {
-                $product_infor = array(
-                    'application_id' => $application_id,
-                    'product_type_id' => $product_type_id,
-                    'permit_typecategory_id' => $permit_typecategory_id,
-                    'trader_initiator_id' => $trader_initiator_id,
-                    'applicant_id' => $applicant_id,
-                    'application_reference_number' => $application_reference_number,
-                );
-
-                $resp = insertRecord('tra_application_documentsdefination', $product_infor, $email_address);
-
-                $product_res = $resp;
-
-                $ref_id = getSingleRecordColValue('tra_submodule_referenceformats', array('regulatory_function_id' => $regulatory_function_id), 'reference_format_id');
-                // print_r('Hello: ' . $ref_id);
-                // exit;
-
-                $class_code = getSingleRecordColValue('par_classifications', array('id' => $req->classification_id), 'code');
-                $process_id = getSingleRecordColValue('wf_processes', array('id' => $id, ), 'id');
-
-             
+              
+                $permit_type_code = getSingleRecordColValue('par_regulatory_subfunctions', array('id' => $regulatory_subfunction_id ), 'id');
+                //portal_application
+                $workflowprocess_id = getSingleRecordColValue('wb_workflowprocesses', array('regulatory_subfunction_id' => $regulatory_subfunction_id, ), 'id');
+                $organisation_code = getSingleRecordColValue('tra_organisation_information', array('id' => $organisation_id ), 'id');
+               
                 $codes_array = array(
-                  
-                    'class_code' => $class_code,
-                    'process_id' => $process_id,
+                    'permit_type_code' => $permit_type_code,
+                    'organisation_code' => $organisation_code,
+                    'permit_process_id' => $permit_process_id
                 );
 
-                $tracking_no = generateApplicationRefNumber($ref_id, $codes_array, date('Y'), $process_id, $trader_id);
-
+                $reference_no = generateApplicationRefNumber($ref_id, $codes_array, date('Y'), $permit_process_id, $user_id);
 
                 if (!validateIsNumeric($ref_id)) {
                     return \response()->json(array('success' => false, 'message' => 'Reference No Format has not been set, contact the system administrator'));
-                } else if ($tracking_no == '') {
-                    return \response()->json(array('success' => false, 'tracking_no' => $tracking_no, 'message' => $tracking_no));
+                } else if ($reference_no == '') {
+                    return \response()->json(array('success' => false, 'tracking_no' => $reference_no, 'message' => $reference_no));
                 }
+
                 $application_code = generateApplicationCode($regulatory_subfunction_id, 'wb_importexport_applications');
                 $oga_application_code = generateApplicationCode($regulatory_subfunction_id, 'txn_importexport_applications'); // Unique code
 
-                $application_id = $resp['record_id'];
-
-                $app_data['created_by'] = $email_address;
+                $app_data['created_by'] = $user_id;
                 $app_data['created_on'] = Carbon::now();
-                $app_data['tracking_no'] = $tracking_no;
-                $app_data['reference_no'] = $tracking_no;
-                $app_data['process_id'] = $process_id;
-
-                $app_data['regulatory_function_id'] = $regulatory_function_id;
-
-                $app_data['date_added'] = Carbon::now();
+                $app_data['reference_no'] = $reference_no;
+                $app_data['date_of_application'] = Carbon::now();
                 $app_data['application_code'] = $application_code;
+                $app_data['workflowprocess_id'] = $workflowprocess_id;
+                
+                //check the process
+                $app_data['application_status_id'] = getInitialWorkflowStatusId($workflowprocess_id);
 
-
-
-                $app_data['application_status_id'] = 1;
-
-                $resp = insertRecord('wb_importexport_applications', $app_data, $email_address);
-
+                $resp = insertRecord('wb_importexport_applications', $app_data, $user_id);
 
                 if ($resp['success']) {
-                    // initializeApplicationDMS($product_type_id, $regulatory_function_id, $regulatory_subfunction_id);
-                    // saveApplicationSubmissionDetails($application_code, 'ptl_product_applications');
                     $tra_app_data = $app_data;
+                    
+                    $tra_app_data['workflowprocess_id'] = $permit_process_id;
                     $tra_app_data['application_code'] = $application_code;
                     $tra_app_data['oga_application_code'] = $oga_application_code;
                     $tra_app_data['applicant_id'] = $applicant_id;
-
                     $tra_app_data['permit_typecategory_id'] = $permit_typecategory_id;
-                 
-                    $response = insertRecord('txn_importexport_applications', $tra_app_data, $email_address);
+                    $tra_app_data['transactionpermit_type_id'] = $transactionpermit_type_id;
 
+                    $response = insertRecord('txn_importexport_applications', $tra_app_data, $user_id);
+                    
                     if ($response['success']) {
+                        // $doc_record = DB::table('dms_application_documentsdefination')->where('application_code', $application_code)->first();
+                        
+                        // if (!$doc_record) {
+                        //     initializeApplicationDMS($permit_process_id, $oga_application_code, $user_id);
+                        // }
+                        initiateInitialProcessSubmission($table_name, $application_code, $permit_process_id);
+
                         $res = array(
-                            'tracking_no' => $tracking_no,
-                            'application_id' => $application_id,
+                            'reference_no' => $reference_no,
                             'regulatory_function_id' => $regulatory_function_id,
                             'application_code' => $application_code,
                             'applicant_id' => $applicant_id,
-                            'transactionpermit_typecategory_id' => $transactionpermit_typecategory_id,
+                            'transactionpermit_type_id' => $transactionpermit_type_id,
                             'oga_application_code' => $oga_application_code, // Include in response
                             'success' => true,
-                            'message' => 'Application Saved Successfully, with Tracking No:' . $tracking_no
+                            'message' => 'Application Saved Successfully, with Tracking No:' . $reference_no
                         );
                     } else {
                         $res = array(
@@ -306,250 +261,168 @@ class ImportExportController extends Controller
     }
 
 
-    public function saveImportExportApplication(Request $req)
-    {
-        try {
-            DB::beginTransaction();
-            $workflowprocess_id = 1;
-            $application_id = $req->application_id;
-            $applicant_id = $req->applicant_id;
-            $product_type_id = $req->product_type_id;
-            $trader_initiator_id = $req->trader_id;
-            $applicant_id = $req->trader_id;
-            $trader_id = $req->trader_id;
-            $email_address = $req->email_address;
-            $applicationsubmission_type_id = $req->applicationsubmission_type_id;
-            $applicationapplicant_option_id = $req->applicationapplicant_option_id;
-            $local_agent_id = $req->local_agent_id;
+    // public function saveImportExportApplication(Request $req)
+    // {
+    //     try {
+    //         DB::beginTransaction();
+            
+    //         $application_code = $req->application_code;
+    //         $applicant_id = $req->applicant_id;
+    //         $user_id = $req->user_id;
+    //         $applicationsubmission_type_id = $req->applicationsubmission_type_id;
+    //         $applicationapplicant_option_id = $req->applicationapplicant_option_id;
+    //         $regulatory_subfunction_id = $req->regulatory_subfunction_id;
+    //         $regulatory_function_id = $req->regulatory_function_id;
 
-            $reference_no = $req->reference_no;
-            $regulatory_subfunction_id = 1; 
-           
-            $workflowprocess_id = $req->workflowprocess_id;
-          
-            $product_res = '';
+    //         $workflowprocess_id = $req->workflowprocess_id;
+            
+    //         $app_data = array(
+    //             'application_code' => $req->application_code,
+    //             'regulatory_subfunction_id' => $req->regulatory_subfunction_id,
+    //             'applicant_id' => $req->applicant_id,
+    //             'regulatory_function_id' => $regulatory_function_id,
+    //             'applicationapplicant_option_id' =>$req->applicationapplicant_option_id,
+    //             'zone_id' => $req->zone_id,
+    //             'currency_oftransaction_id' => $req->currency_oftransaction_id,
+    //             'wb_workflowprocesses' => $workflowprocess_id,
+    //             'applicationsubmission_type_id' =>$req->applicationsubmission_type_id,
+    //             'permit_typecategory_id' => $req->permit_typecategory_id,
+    //             'expected_date_of_shipment' => $req->expected_date_of_shipment,
+    //             'importer_exporter_id' => $req->importer_exporter_id,
+    //             'port_type_id' => $req->port_type_id,
+    //             'port_of_entryexit_id' => $req->port_of_entryexit_id,
+    //             'customs_office_id' => $req->customs_office_id,
+    //             'mode_of_transport_id' => $req->mode_of_transport_id,
+    //             'transpoter_name' => $req->transpoter_name,
+    //             'transporter_contact' => $req->transporter_contact,
+    //             'transporter_country_id' => $req->transporter_country_id,
+    //             'final_destination_country_id' => $req->final_destination_country_id,
+    //             'invoice_type_id' => $req->invoice_type_id,
+    //             'invoice_number' => $req->invoice_number,
+    //             'invoice_date' => $req->invoice_date,
+    //             'total_invoice_value' => $req->total_invoice_value,
+    //             'declaration_statuses_id' => $req->declaration_statuses_id,
+    //         );
+    //         $table_name = 'wb_importexport_applications';
+    //         /** Already Saved */
+    //         if (validateIsNumeric($application_code)) {
 
-            // $regulatory_function_id = getSingleRecordColValue('par_regulatory_subfunctions', array('id' => $req->regulatory_subfunction_id), 'regulatory_function_id');
+    //             $where = array('application_code' => $application_code);
+    //             $where_app = array('application_code' => $application_code);
 
-            $regulatory_function_id = 1;
+    //             if (recordExists('wb_importexport_applications', $where)) {
 
+    //                 $product_infor['dola'] = Carbon::now();
+    //                 $product_infor['altered_by'] = $user_id;
 
-            $app_data = array(
-                'trader_id' => $trader_id,
-                'local_agent_id' => $local_agent_id,
-                'application_code' => $req->application_code,
-                'regulatory_subfunction_id' => $req->regulatory_subfunction_id,
-                'application_id' => $application_id,
-                'applicant_id' => $req->applicant_id,
-                'regulatory_function_id' => $regulatory_function_id,
-                'applicationapplicant_option_id' =>$req->applicationapplicant_option_id,
-                'product_type_id' => $req->product_type_id,
-                'zone_id' => $req->zone_id,
-                'reference_no' => $reference_no,
-                'currency_oftransaction_id' => $req->currency_oftransaction_id,
-                'application_status_id' => 1,
-                'appworkflow_status_id' => 1,
-                'wb_workflowprocesses' => $workflowprocess_id,
-                'document_upload_id' => $req->document_upload_id,
-                'application_type_id' => $req->application_type_id,
-                'applicationsubmission_type_id' =>$req->applicationsubmission_type_id,
-                'applicationapplicant_option_id' =>$req->applicationapplicant_option_id,
-                'application_reference_number' => $req->application_reference_number,
-                'applicant_type_id' => $req->applicant_type_id,
-                'permit_typecategory_id' => $req->permit_typecategory_id,
-                'date_of_application' => Carbon::now(),
-                'expected_date_of_shipment' => $req->expected_date_of_shipment,
-                'importer_exporter_id' => $req->importer_exporter_id,
-                'port_type_id' => $req->port_type_id,
-                'port_of_entryexit_id' => $req->port_of_entryexit_id,
-                'customs_office_id' => $req->customs_office_id,
-                'mode_of_transport_id' => $req->mode_of_transport_id,
-                'transpoter_name' => $req->transpoter_name,
-                'transporter_contact' => $req->transporter_contact,
-                'transporter_country_id' => $req->transporter_country_id,
-                'final_destination_country_id' => $req->final_destination_country_id,
-                'invoice_type_id' => $req->invoice_type_id,
-                'invoice_number' => $req->invoice_number,
-                'invoice_date' => $req->invoice_date,
-                'total_invoice_value' => $req->total_invoice_value,
-                'declaration_statuses_id' => $req->declaration_statuses_id,
-            );
-            $table_name = 'wb_importexport_applications';
-            /** Already Saved */
-            if (validateIsNumeric($application_id)) {
+    //                 $previous_data = getPreviousRecords($table_name, $where);
+    //                 $reference_no = $previous_data['results'][0]['reference_no'];
+    //                 $application_code = $previous_data['results'][0]['application_code'];
 
-                $where = array('id' => $application_id);
-                $where_app = array('application_id' => $application_id);
+    //                 $resp = updateRecord('wb_importexport_applications', $previous_data, $where, $product_infor, $user_id);
 
-                if (recordExists('wb_importexport_applications', $where)) {
+    //             }
 
-                    $product_infor['dola'] = Carbon::now();
-                    $product_infor['altered_by'] = $email_address;
+    //             if ($resp['success']) {
+    //                 $sql = DB::table('tra_application_documentsdefination')->where(array('application_code' => $application_code))->first();
+    //                 if (!$sql) {
+    //                     //print_r('test');
+    //                     // initializeApplicationDMS($product_type_id, $regulatory_function_id, $regulatory_subfunction_id, $application_code, $tracking_no . rand(0, 100), $trader_id);
+    //                 }
+    //                 $res = array(
+    //                     'reference_no' => $reference_no,
+    //                     'regulatory_function_id' => $regulatory_function_id,
+    //                     'success' => true,
+    //                     'application_code' => $application_code,
+    //                     'message' => 'Product Application Saved Successfully, with Tracking No: ' . $reference_no
+    //                 );
+    //             } else {
+    //                 $res = array(
+    //                     'success' => false,
+    //                     'message' => 'Error Occurred Product Application not saved, it this persists contact the system Administrator'
+    //                 );
+    //             }
+    //         } else {
+                
+    //             $ref_id = getSingleRecordColValue('wb_submodule_referenceformats', array('regulatory_subfunction_id' => $regulatory_subfunction_id), 'reference_format_id');
 
-                    $previous_data = getPreviousRecords($table_name, $where);
-                    $res = updateRecord('wb_importexport_applications', $previous_data, $where, $product_infor, $email_address);
+    //             $permit_type_code = getSingleRecordColValue('par_regulatory_subfunctions', array('id' => $req->regulatory_subfunction_id), 'zone_code');
+    //             $workflowprocess_id = getSingleRecordColValue('wb_workflowprocesses', array('regulatory_subfunction_id' => $regulatory_subfunction_id, ), 'id');
 
-                    $app_data = array(
-                        'date_added' => Carbon::now(),
-                        'altered_by' => $email_address,
-                        'dola' => Carbon::now()
-                    );
-                    $previous_data = getPreviousRecords('wb_importexport_applications', $where_app);
-                    $tracking_no = $previous_data['results'][0]['tracking_no'];
-                    $application_code = $previous_data['results'][0]['application_code'];
-
-                    $resp = updateRecord('wb_importexport_applications', $previous_data, $where_app, $app_data, $email_address);
-                }
-
-                if ($resp['success']) {
-                    $sql = DB::table('tra_application_documentsdefination')->where(array('application_code' => $application_code))->first();
-                    if (!$sql) {
-                        //print_r('test');
-                        // initializeApplicationDMS($product_type_id, $regulatory_function_id, $regulatory_subfunction_id, $application_code, $tracking_no . rand(0, 100), $trader_id);
-                    }
-                    $res = array(
-                        'tracking_no' => $tracking_no,
-                        'application_id' => $application_id,
-                        'regulatory_function_id' => $regulatory_function_id,
-                        'success' => true,
-
-                        'application_code' => $application_code,
-                        'message' => 'Product Application Saved Successfully, with Tracking No: ' . $tracking_no
-                    );
-                } else {
-                    $res = array(
-                        'success' => false,
-                        'message' => 'Error Occurred Product Application not saved, it this persists contact the system Administrator'
-                    );
-                }
-            } else {
-                $product_infor = array(
-                    'application_id' => $application_id,
-                    'product_type_id' => $product_type_id,
-                    'trader_initiator_id' => $trader_initiator_id,
-                    'applicant_id' => $applicant_id,
-                );
-
-                $resp = insertRecord('tra_application_documentsdefination', $product_infor, $email_address);
-
-                $product_res = $resp;
-
-                $ref_id = getSingleRecordColValue('tra_submodule_referenceformats', array('regulatory_function_id' => $regulatory_function_id), 'reference_format_id');
-
-                $zone_code = getSingleRecordColValue('par_zones', array('id' => $req->zone_id), 'zone_code');
-                $section_code = getSingleRecordColValue('par_regulated_productstypes', array('id' => $req->product_type_id), 'code');
-                $class_code = getSingleRecordColValue('par_classifications', array('id' => $req->classification_id), 'code');
-                $workflowprocess_id = getSingleRecordColValue('wb_workflowprocesses', array('regulatory_function_id' => $regulatory_function_id, ), 'id');
-
-                if ($class_code == '') {
-                    $class_code = $section_code;
-                }
-                $codes_array = array(
-                    'section_code' => $section_code,
-                    'zone_code' => $zone_code,
-                    'class_code' => $class_code,
-                    'workflowprocess_id' => $workflowprocess_id,
-
-                );
+    //             $codes_array = array(
+    //                 'permit_type_code' => $permit_type_code,
+    //                 'workflowprocess_id' => $workflowprocess_id,
+    //             );
+    //             $reference_no = generateApplicationRefNumber($ref_id, $codes_array, date('Y'), $workflowprocess_id, $user_id);
 
 
-                $tracking_no = generateApplicationRefNumber($ref_id, $codes_array, date('Y'), $workflowprocess_id, $trader_id);
+    //             if (!validateIsNumeric($ref_id)) {
+    //                 return \response()->json(array('success' => false, 'message' => 'Reference No Format has not been set, contact the system administrator'));
+    //             } else if ($tracking_no == '') {
+    //                 return \response()->json(array('success' => false, 'tracking_no' => $tracking_no, 'message' => $tracking_no));
+    //             }
+    //             $application_code = generateApplicationCode($regulatory_subfunction_id, 'wb_importexport_applications');
+                
+    //             $app_data['created_by'] = $user_id;
+    //             $app_data['created_on'] = Carbon::now();
+    //             $app_data['reference_no'] = $reference_no;
+    //             $app_data['workflowprocess_id'] = $workflowprocess_id;
+    //             $app_data['applicationsubmission_type_id'] = $applicationsubmission_type_id;
+    //             $app_data['regulatory_function_id'] = $regulatory_function_id;
+    //             $app_data['regulatory_subfunction_id'] = $regulatory_subfunction_id;
+    //             $app_data['applicationapplicant_option_id'] = $applicationapplicant_option_id;
+    //             $app_data['date_added'] = Carbon::now();
+    //             $app_data['application_code'] = $application_code;
+    //             //remove this 
+    //             $app_data['application_status_id'] = getInitialApplicantWorkflowStatusId($workflowprocess_id);
 
+    //             $resp = insertRecord('wb_importexport_applications', $app_data, $email_address);
 
-                if (!validateIsNumeric($ref_id)) {
-                    return \response()->json(array('success' => false, 'message' => 'Reference No Format has not been set, contact the system administrator'));
-                } else if ($tracking_no == '') {
-                    return \response()->json(array('success' => false, 'tracking_no' => $tracking_no, 'message' => $tracking_no));
-                }
-                $application_code = generateApplicationCode($regulatory_subfunction_id, 'wb_importexport_applications');
-                $tra_application_code = $application_code;
-             
-                $workflowprocess_id = getSingleRecordColValue('wb_workflowprocesses', array('regulatory_function_id' => $regulatory_function_id, ), 'id');
+    //             if ($resp['success']) {
+    //                 initiateApplicantInitialProcessSubmission($table_name, $application_code, $process_id);
 
-                $application_id = $resp['record_id'];
+    //                 $response = insertRecord('txn_importexport_applications', $app_data, $email_address);
+    //                 $res = array(
+    //                     'reference_no' => $reference_no,
+    //                     'regulatory_function_id' => $regulatory_function_id,
+    //                     'applicationsubmission_type_id' =>$applicationsubmission_type_id,
+    //                     'applicationapplicant_option_id' =>$applicationapplicant_option_id,
+    //                     'application_code' => $tra_application_code,
+    //                     'success' => true,
+    //                     'message' => 'Application Saved Successfully, with Tracking No:' . $reference_no
+    //                 );
+    //             } else {
+    //                 $res = array(
+    //                     'success' => false,
+    //                     'message1' => $resp['message'],
+    //                     'message' => 'Error Occurred Application not saved, it this persists contact the system Administrator'
+    //                 );
+    //             }
+    //         }
 
-                $app_data['created_by'] = $email_address;
-                $app_data['created_on'] = Carbon::now();
-                $app_data['tracking_no'] = $tracking_no;
-                $app_data['reference_no'] = $tracking_no;
-                $app_data['workflowprocess_id'] = $workflowprocess_id;
-                $app_data['applicationsubmission_type_id'] = $applicationsubmission_type_id;
-                $app_data['regulatory_function_id'] = $regulatory_function_id;
-                $app_data['applicationapplicant_option_id'] = $applicationapplicant_option_id;
-                $app_data['date_added'] = Carbon::now();
-                $app_data['application_code'] = $application_code;
-               
+    //         if ($res['success']) {
+    //             DB::commit();
+    //         } else {
+    //             DB::rollBack();
+    //         }
+    //     } catch (\Exception $exception) {
+    //         DB::rollBack();
+    //         $res = array(
+    //             'success' => false,
+    //             'message1' => $product_res,
+    //             'message' => $exception->getMessage()
+    //         );
+    //     } catch (\Throwable $throwable) {
+    //         DB::rollBack();
+    //         $res = array(
+    //             'success' => false,
+    //             'message1' => $product_res,
+    //             'message' => $throwable->getMessage()
+    //         );
+    //     }
 
-
-
-                $app_data['application_status_id'] = 1;
-
-                $resp = insertRecord('wb_importexport_applications', $app_data, $email_address);
-
-
-                if ($resp['success']) {
-                    // initializeApplicationDMS($product_type_id, $regulatory_function_id, $regulatory_subfunction_id);
-                    // saveApplicationSubmissionDetails($application_code, 'ptl_product_applications');
-                    $tracking_no . rand(0, 100);
-
-                    $res = array(
-                        'tracking_no' => $tracking_no,
-                        'application_id' => $application_id,
-                        'regulatory_function_id' => $regulatory_function_id,
-                        'applicationsubmission_type_id' => $applicationsubmission_type_id,
-                        'applicationapplicant_option_id' => $applicationapplicant_option_id,
-                        'application_code' => $application_code,
-                        'workflowprocess_id' => $workflowprocess_id,
-                        'success' => true,
-                        'message' => 'Application Saved Successfully, with Tracking No:' . $tracking_no
-                    );
-
-                    $response = insertRecord('txn_importexport_applications', $app_data, $email_address);
-
-                    if ($response['success']) {
-                        $res = array(
-                            'tracking_no' => $tracking_no,
-                            'application_id' => $application_id,
-                            'regulatory_function_id' => $regulatory_function_id,
-                            'applicationsubmission_type_id' =>$applicationsubmission_type_id,
-                            'applicationapplicant_option_id' =>$applicationapplicant_option_id,
-                            'application_code' => $tra_application_code,
-                            'success' => true,
-                            'message' => 'Application Saved Successfully, with Tracking No:' . $tracking_no
-                        );
-                    }
-                } else {
-                    $res = array(
-                        'success' => false,
-                        'message1' => $resp['message'],
-                        'message' => 'Error Occurred Application not saved, it this persists contact the system Administrator'
-                    );
-                }
-            }
-
-            if ($res['success']) {
-                DB::commit();
-            } else {
-                DB::rollBack();
-            }
-        } catch (\Exception $exception) {
-            DB::rollBack();
-            $res = array(
-                'success' => false,
-                'message1' => $product_res,
-                'message' => $exception->getMessage()
-            );
-        } catch (\Throwable $throwable) {
-            DB::rollBack();
-            $res = array(
-                'success' => false,
-                'message1' => $product_res,
-                'message' => $throwable->getMessage()
-            );
-        }
-
-        return response()->json($res);
-    }
+    //     return response()->json($res);
+    // }
 
     public function onSaveUniformApplicantDataset(Request $req)
     {
@@ -815,7 +688,7 @@ class ImportExportController extends Controller
                     'manufacturing_date' => $manufacturing_date,
                     'expiry_date' => $expiry_date,
                     'storage_condition_id' => $req->storage_condition_id,
-
+                    'product_description' =>$req->product_description,
                     'common_name_id' => $req->common_name_id,
                     'classification_id' => $req->classification_id,
                     'product_category_id' => $req->product_category_id,
@@ -1267,6 +1140,7 @@ class ImportExportController extends Controller
             ]);
         }
     }
+    
 
     public function getPermitProductsDetails(Request $req)
     {
@@ -1274,34 +1148,33 @@ class ImportExportController extends Controller
             $search_value = '';
             $take = 50; // Default take
             $skip = 0; // Default skip
-            $searchValue = $req->searchValue ?? '';
-
-            if (!empty($searchValue) && $searchValue !== 'undefined') {
-                $searchValue = explode(',', $searchValue);
-                $search_value = $searchValue[2] ?? '';
-            }
-
+            
             $oga_application_code = $req->oga_application_code;
             $data = collect();
             $totalCount = 0;
-
-            $data = DB::table('tra_permit_products as t1')
-                // ->leftJoin('par_regulatedproduct_categories as t2', 't1.regulated_productcategory_id', '=', 't2.id')
+            if(validateisNumeric($oga_application_code)){
+                $data = DB::table('tra_permit_products as t1')
                 ->leftJoin('tra_manufacturer_info as t3', 't1.manufacturer_id', '=', 't3.id')
                 ->leftJoin('par_unit_of_measure as t4', 't1.unit_of_measure_id', '=', 't4.id')
                 ->leftJoin('par_currencies as t5', 't1.currency_id', '=', 't5.id')
-                ->leftJoin('par_storage_conditions as t6', 't1.storage_conditions_id', '=', 't6.id')
+                ->leftJoin('par_storage_conditions as t6', 't1.storage_condition_id', '=', 't6.id')
                 ->select(
                     't1.id',
                     't1.*',
                     't3.name as manufacturer_name',
-                    't4.name as unit_of_measure',
-                    't5.name as storage_conditions'
+                    't4.name as packaging_units',
+                    't5.name as currency_name',
+                    't6.name as storage_conditions'
                 )
                 ->where('t1.oga_application_code',$oga_application_code)
                 ->orderByDesc('t1.id')
                 ->get();
+
             $totalCount = $data->count();
+
+
+            }
+            
             return response()->json([
                 'success' => true,
                 'data' => $data,
@@ -1314,6 +1187,7 @@ class ImportExportController extends Controller
             ]);
         }
     }
+
     public function getApplicantPermitProductsDetails(Request $req)
     {
         try {
@@ -1329,13 +1203,14 @@ class ImportExportController extends Controller
                 ->leftJoin('tra_manufacturer_info as t3', 't1.manufacturer_id', '=', 't3.id')
                 ->leftJoin('par_unit_of_measure as t4', 't1.unit_of_measure_id', '=', 't4.id')
                 ->leftJoin('par_currencies as t5', 't1.currency_id', '=', 't5.id')
-                ->leftJoin('par_storage_conditions as t6', 't1.storage_conditions_id', '=', 't6.id')
+                ->leftJoin('par_storage_conditions as t6', 't1.storage_condition_id', '=', 't6.id')
                 ->select(
                     't1.id',
                     't1.*',
                     't3.name as manufacturer_name',
                     't4.name as unit_of_measure',
-                    't5.name as storage_conditions'
+                    't5.name as currency_name',
+                    't6.name as storage_conditions'
                 )
                 ->where('t1.application_code',$application_code)
                 ->orderByDesc('t1.id')
@@ -1438,8 +1313,7 @@ class ImportExportController extends Controller
                     't1.contact_person',
                     't2.name as country_name',
                     't3.name as region_name',
-                    't4.name as district',
-                    DB::raw("CONCAT(t1.name, ' (', t2.name, ')') as manufacturer_namecountry")
+                    't4.name as district'
                 )
                 ->when($search_value, function ($query) use ($search_value) {
                     $query->where('t1.name', 'LIKE', "%{$search_value}%");
@@ -1555,16 +1429,15 @@ class ImportExportController extends Controller
             $filter = $req->filter;
             $table_name = 'txn_importexport_applications';
             $appworkflow_status_id = $req->appworkflow_status_id;
-            $application_status_id = $req->application_status_id;
             $workflow_status_id = $req->workflow_status_id;
             $appworkflowstatus_category_id = $req->appworkflowstatus_category_id;
-
+            
             $permit_product_data = array();
             $sectionSelection = $req->sectionSelection;
             unset($requestData['table_name']);
 
             $sql = DB::table($table_name . ' as t1')
-                ->leftJoin('tra_transactionpermit_types as t2', 't2.id', 't1.permit_typecategory_id')
+                ->leftJoin('tra_transactionpermit_types as t2', 't2.id', 't1.transactionpermit_type_id')
                 ->leftJoin('par_port_type as t3', 't3.id', 't1.port_type_id')
                 ->leftJoin('tra_permitsenderreceiver_data as t4', 't4.id', 't1.importer_exporter_id')
                 ->leftJoin('par_entryexit_port as t5', 't1.port_of_entryexit_id', 't5.id')
@@ -1578,17 +1451,23 @@ class ImportExportController extends Controller
 
                 ->leftJoin('wf_statuses_actions as t8', 't7.statuses_action_id', 't8.id')
                 ->leftJoin('wf_workflow_statuses as t9', 't1.appworkflow_status_id', 't9.id')
-                ->leftJoin('par_application_statuses as t10', 't1.application_status_id', 't10.id')
                 ->leftJoin('par_permit_typecategories as t11', 't1.permit_typecategory_id', 't11.id')
                 ->leftJoin('par_currencies as t12', 't1.currency_oftransaction_id', 't12.id')
                 ->leftJoin('par_mode_oftransport as t13', 't1.mode_of_transport_id', 't13.id')
                 ->leftJoin('par_countries as t14', 't1.final_destination_country_id', 't14.id')
                 ->leftJoin('par_invoice_types as t15', 't1.invoice_type_id', 't15.id')
-                ->leftJoin('par_currencies as t16', 't1.currency_oftransaction_id', 't16.id')
                 ->leftJoin('par_confirmations as t17', 't1.declaration_statuses_id', 't17.id')
                 ->leftJoin('tra_customoffice_info as t18', 't1.customs_office_id', 't18.id')
-
-                ->select('t1.*', 't18.name as customs_office', 't17.name as declaration', 't16.name as currency_name', 't15.name as invoice_type', 't14.name as final_destination_country', 't5.name as port_of_entry', 't13.name as mode_of_transport', 't12.name as currency_name', 't11.name as permit_type', 't10.name as application_status', 't8.name as action_name', 't8.iconCls as iconCls', 't8.action as action', 't2.name as permit_name', 't3.name as port_type', 't1.id', 't4.name as importer_exporter_name');
+                ->leftJoin('tra_trader_account as t19', 't1.applicant_id', 't19.id')
+                ->leftJoin('par_regions as t20', 't19.region_id', 't20.id')
+                ->leftJoin('par_regulatory_functions as t21', 't1.regulatory_function_id', 't21.id')
+                ->leftJoin('par_regulatory_subfunctions as t22', 't1.regulatory_subfunction_id', 't22.id')
+                
+                ->select('t1.*','t19.*', 't19.name as applicant_name', 't18.name as customs_office', 't17.name as declaration',
+                't15.name as invoice_type', 't14.name as final_destination_country', 't5.name as port_of_entry', 't13.name as mode_of_transport', 
+                't12.name as currency_name', 't2.name as permit_type', 't8.name as action_name', 
+                't8.iconCls as iconCls', 't8.action as action', 't3.name as port_type', 't1.id', 't4.name as importer_exporter_name',
+                't22.id as regulatory_subfunction_id', 't9.name as status_name');
 
             if ($workflow_status_id != '') {
                 $workflow_status = explode(',', $workflow_status_id);
@@ -1603,18 +1482,19 @@ class ImportExportController extends Controller
 
             $actionColumnData = returnContextMisMenuActions($process_id);
             //check the usres 
-
+    
             $data = $sql->get();
-
             foreach ($data as $rec) {
                 $application_data[] = array(
                     'id' => $rec->id,
                     'action_name' => $rec->action_name,
                     'iconCls' => $rec->iconCls,
-                    'application_status' => $rec->application_status,
-                    'applicationsubmission_type_id' => $rec->applicationsubmission_type_id,
+                    'regulatory_function_id' => $rec->regulatory_function_id,
+                    'regulatory_subfunction_id' => $rec->regulatory_subfunction_id,
                     'permit_typecategory_id' => $rec->permit_typecategory_id,
-                    'permit_name' => $rec->permit_name,
+                    'permit_type' => $rec->permit_type,
+                    'applicant_name' => $rec->applicant_name,
+                    'status_name' => $rec->status_name,
                     'port_type' => $rec->port_type,
                     'port_type_id' => $rec->port_type_id,
                     'port_of_entry' => $rec->port_of_entry,
@@ -1622,6 +1502,7 @@ class ImportExportController extends Controller
                     'customs_office_id' => $rec->customs_office_id,
                     'invoice_type' => $rec->invoice_type,
                     'invoice_type_id' => $rec->invoice_type_id,
+                    'transactionpermit_type_id'=> $rec->transactionpermit_type_id,
                     'final_destination_country_id' => $rec->final_destination_country_id,
                     'final_destination_country' => $rec->final_destination_country,
                     'invoice_number' => $rec->invoice_number,
@@ -1637,15 +1518,22 @@ class ImportExportController extends Controller
                     'total_invoice_value' => $rec->total_invoice_value,
                     'date_of_application' => formatDaterpt($rec->date_of_application),
                     'expected_date_of_shipment' => $rec->expected_date_of_shipment,
-                    'tracking_no' => $rec->tracking_no,
                     'created_on' => $rec->created_on,
-                    'process_id' => $rec->process_id,
+                    'workflowprocess_id' => $rec->workflowprocess_id,
                     'application_code' => $rec->application_code,
                     'reference_no' => $rec->reference_no,
-                    'regulatory_subfunction_id' => $rec->regulatory_subfunction_id,
-                    'appworkflow_status_id' => $rec->appworkflow_status_id,
+                    'applicationapplicant_option_id' => $rec->applicationapplicant_option_id, 
+                    'applicant_id' => $rec->applicant_id,
+                    'country_id' => $rec->country_id,
+                    'region_id' => $rec->region_id,
+                    'district_id'=>$rec->district_id,
+                    'appworkflow_status_id' =>$rec->appworkflow_status_id,
+                    'email_address' => $rec->email_address,
+                    'physical_address' => $rec->physical_address,
+                    'postal_address' => $rec->postal_address,
+                    'telephone_no' => $rec->telephone_no,
+                    'mobile_no' => $rec->telephone_no,
                     'created_by' => $rec->created_by,
-
                     'contextMenu' => returnActionColumn($rec->appworkflow_status_id, $actionColumnData)
                 );
             }
@@ -1669,7 +1557,7 @@ class ImportExportController extends Controller
             $filter = $req->filter;
             $table_name = 'wb_importexport_applications';
             $appworkflow_status_id = $req->appworkflow_status_id;
-            $application_status_id = $req->application_status_id;
+           
             $workflow_status_id = $req->workflow_status_id;
             $appworkflowstage_category_id = $req->appworkflowstage_category_id;
 
@@ -1683,14 +1571,14 @@ class ImportExportController extends Controller
                 ->leftJoin('par_port_type as t3', 't3.id', 't1.port_type_id')
                 ->leftJoin('tra_permitsenderreceiver_data as t4', 't4.id', 't1.importer_exporter_id')
                 ->leftJoin('par_entryexit_port as t5', 't1.port_of_entryexit_id', 't5.id')
-                ->leftJoin('wb_applicationprocess_submissions as t6', function ($join) {
-                    $join->on('t1.application_code', '=', 't6.application_code');
-                    $join->on('t7.isdone', '=',0);
-                })
+                ->leftJoin('wb_applicationprocess_submissions as t6', 't1.application_code', '=', 't6.application_code')
                 ->leftJoin('wb_workflowstageprocess_actions as t7', function ($join) {
-                    $join->on('t6.current_stage_id', '=', 't6.workflow_stage_id');
-                    $join->on('t7.is_default_action', '=', DB::raw(True));
+                    $join->on('t6.current_stage_id', '=', 't7.workflow_stage_id');
+                    $join->on('t7.isdone', '=', DB::raw(0)); 
+                    
                 })
+                
+               
                 ->leftJoin('wf_statuses_actions as t8', 't7.statuses_action_id', 't8.id')
                 ->leftJoin('wf_workflow_statuses as t9', 't1.appworkflow_status_id', 't9.id')
                 ->leftJoin('par_application_statuses as t10', 't1.application_status_id', 't10.id')
@@ -1699,11 +1587,11 @@ class ImportExportController extends Controller
                 ->leftJoin('par_mode_oftransport as t13', 't1.mode_of_transport_id', 't13.id')
                 ->leftJoin('par_countries as t14', 't1.final_destination_country_id', 't14.id')
                 ->leftJoin('par_invoice_types as t15', 't1.invoice_type_id', 't15.id')
-                ->leftJoin('par_currencies as t16', 't1.currency_oftransaction_id', 't16.id')
                 ->leftJoin('par_confirmations as t17', 't1.declaration_statuses_id', 't17.id')
                 ->leftJoin('tra_trader_account as t18', 't1.applicant_id', 't18.id')
-     
-                ->select('t18.*','t6.current_stage_id as workflow_stage_id','t15.name as invoice_type', 't18.name as applicant_name', 't1.id as application_id', 't1.*','t17.name as declaration', 't16.name as currency_name', 't15.name as invoice_type', 't14.name as final_destination_country', 't5.name as port_of_entry', 't13.name as mode_of_transport', 't12.name as currency_name', 't2.name as permit_typecategory', 't10.name as application_status', 't8.name as action_name', 't8.iconCls as iconCls', 't8.action as action', 't2.name as permit_name', 't3.name as port_type', 't1.id', 't4.name as importer_exporter_name');
+                ->leftJoin('par_application_options as t19', 't1.applicationapplicant_option_id', 't19.id')
+                
+                ->select('t18.*','t19.name as applicationapplicant_option','t1.created_on as date_added','t6.current_stage_id as workflow_stage_id','t15.name as invoice_type', 't18.name as applicant_name', 't1.id as application_id', 't1.*','t17.name as declaration', 't15.name as invoice_type', 't14.name as final_destination_country', 't5.name as port_of_entry', 't13.name as mode_of_transport', 't12.name as currency_name', 't2.name as permit_typecategory', 't10.name as application_status', 't8.name as action_name', 't8.iconCls as iconCls', 't8.action as action', 't2.name as permit_name', 't3.name as port_type', 't1.id', 't4.name as importer_exporter_name');
 
                
             if ($workflow_status_id != '') {
@@ -1746,6 +1634,7 @@ class ImportExportController extends Controller
                     'importer_exporter_name' => $rec->importer_exporter_name,
                     'action' => $rec->action,
                     'currency_name' => $rec->currency_name,
+                    'date_added' => $rec->date_added,
                     'declaration' => $rec->declaration,
                     'declaration_statuses_id' => $rec->declaration_statuses_id,
                     'currency_oftransaction_id' => $rec->currency_oftransaction_id,
@@ -1760,23 +1649,19 @@ class ImportExportController extends Controller
                     'workflowprocess_id' => $rec->workflowprocess_id,
                     'application_code' => $rec->application_code,
                     'reference_no' => $rec->reference_no,
-                    'applicationapplicant_option_id' => $rec->applicationapplicant_option_id,
-                    
+                    'applicationapplicant_option_id' => $rec->applicationapplicant_option_id, 
                     'applicant_id' => $rec->applicant_id,
                     'country_id' => $rec->country_id,
-                    'applicant_name' => $rec->applicant_name,
-
-
                     'region_id' => $rec->region_id,
                     'district_id'=>$rec->district_id,
-
+                    'appworkflow_status_id' =>$rec->appworkflow_status_id,
                     'email_address' => $rec->email_address,
                     'physical_address' => $rec->physical_address,
                     'postal_address' => $rec->postal_address,
                     'telephone_no' => $rec->telephone_no,
                     'mobile_no' => $rec->telephone_no,
                     'created_by' => $rec->created_by,
-                    'contextMenu' => returnActionColumn($rec->workflow_stage_id, $actionColumnData)
+                    'contextMenu' => returnActionColumn($rec->appworkflow_status_id, $actionColumnData)
                 );
             }
 

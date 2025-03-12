@@ -157,13 +157,13 @@ export class SharedImpExpdashboardClass {
   }
   onApplicationSelection(regulatory_subfunction_id, applicationsubmission_type_id) {
 
-    this.spinner.show();
+    this.spinnerShow(' ');
 
 
     this.configService.getSectionUniformApplication(regulatory_subfunction_id, applicationsubmission_type_id)
       .subscribe(
         data => {
-          this.spinner.hide();
+          this.spinnerHide();
           if (data.success) {
             this.processData = data.data.process_infor;
 
@@ -195,23 +195,6 @@ export class SharedImpExpdashboardClass {
   }
 
   
-  onAdvanceDataGridSearch(e){
-    e.toolbarOptions.items.unshift({
-      location: 'after',
-      widget: 'dxCheckBox',
-      options: {
-        icon: 'select',
-        text: 'Show Advanced Search',
-        value: this.show_advancesearch,
-        onValueChanged: this.onActivatetheAdvanceSearch.bind(this)
-      }
-    });
-  }
-  onActivatetheAdvanceSearch(e){
-
-      this.show_advancesearch =  e.value;
-
-  }
   reloadPermitApplicationsApplications(appworkflow_status_id = 0,) {
     this.spinnerShow('Loading...........');
     var data_submit = {
@@ -424,7 +407,7 @@ export class SharedImpExpdashboardClass {
     this.onLoadPermitProductsData(data.application_code);
   }
   onLoadPermitProductsData(application_code) {
-    this.spinner.show();
+    this.spinnerShow(' ');
     this.appService.getPermitsOtherDetails({ 'application_code': application_code }, 'getPermitProductsDetails')
       .subscribe(
         data => {
@@ -436,7 +419,7 @@ export class SharedImpExpdashboardClass {
           else {
             this.toastr.success(data.message, 'Alert');
           }
-          this.spinner.hide();
+          this.spinnerHide();
         },
         error => {
           return false
@@ -452,7 +435,6 @@ export class SharedImpExpdashboardClass {
   singleApplicationActionColClick(data) {
 
     this.funcActionsProcess(data, data);
-
   }
 
   funcActionsProcess(action_btn, data) {
@@ -560,12 +542,12 @@ export class SharedImpExpdashboardClass {
 
   funcApplicationRejection(app_data) {
 
-    //this.spinner.show();
+    this.spinnerShow('Loading...........');
     this.utilityService.getApplicationPreRejectionDetails(app_data.application_code, 'txn_importexport_applications', 'application_status_id')
       .subscribe(
         data => {
           this.applicationRejectionData = data.data;
-          this.spinner.hide();
+          this.spinnerHide();
 
           this.isApplicationRejectionVisible = true;
         });
@@ -633,12 +615,12 @@ export class SharedImpExpdashboardClass {
     this.regulatory_subfunction_id = app_data.regulatory_subfunction_id;
     this.applicationsubmission_type_id = app_data.applicationsubmission_type_id;
 
-    this.spinner.show();
+    this.spinnerShow('Loading...........');
 
     this.configService.getSectionUniformApplication(this.regulatory_subfunction_id, this.applicationsubmission_type_id)
       .subscribe(
         data => {
-          this.spinner.hide();
+          
           if (data.success) {
             this.processData = data.data.process_infor;
             this.application_data = data.data;
@@ -656,7 +638,7 @@ export class SharedImpExpdashboardClass {
           }
           else {
             this.toastr.error(this.processData.message, 'Alert!');
-
+            this.spinnerHide();
           }
 
 
@@ -664,6 +646,7 @@ export class SharedImpExpdashboardClass {
     return false;
   }
 
+ 
 
   funcArchivePermitApplication(data) {
     this.utilityService.funcApplicationArchiceCall(this.viewRef, data, 'txn_importexport_applications', this.reloadPermitApplicationsApplications);
@@ -698,7 +681,7 @@ export class SharedImpExpdashboardClass {
             text: 'Yes',
             buttonClass: 'btn btn-danger',
             onAction: () => new Promise((resolve: any, reject: any) => {
-              this.spinner.show();
+              this.spinnerShow(' ');
               this.utilityService.getApplicationProcessInformation(app_data.application_code, 'importexportapp/funcInitiateInspectionBooking')
                 .subscribe(
                   data => {
@@ -715,7 +698,7 @@ export class SharedImpExpdashboardClass {
                     else {
                       this.toastr.error(data.message, 'Alert!');
                     }
-                    this.spinner.hide();
+                    this.spinnerHide();
                   });
               resolve();
             })
@@ -745,7 +728,7 @@ export class SharedImpExpdashboardClass {
             text: 'Yes',
             buttonClass: 'btn btn-danger',
             onAction: () => new Promise((resolve: any, reject: any) => {
-              this.spinner.show();
+              this.spinnerShow(' ');
               this.utilityService.getApplicationProcessInformation(app_data.application_code, 'importexportapp/funcInitiateLicenseApplication')
                 .subscribe(
                   data => {
@@ -764,7 +747,7 @@ export class SharedImpExpdashboardClass {
     
                     }
     
-                    this.spinner.hide();
+                    this.spinnerHide();
                   });
               resolve();
             })
@@ -784,6 +767,30 @@ export class SharedImpExpdashboardClass {
     this.utilityService.onCellPrepared(e);
 
   }
+
+
+ 
+  onAdvanceDataGridSearch(e) {
+    e.toolbarOptions.items.unshift({
+      location: 'after',
+      widget: 'dxCheckBox',
+      options: {
+        icon: 'select',
+        text: 'Show Advanced Search',
+        value: this.show_advancesearch,
+        onValueChanged: this.onActivatetheAdvanceSearch.bind(this)
+      }
+    });
+  }
+
+  onActivatetheAdvanceSearch(e) {
+
+    this.show_advancesearch = e.value;
+
+  }
+
+
+
 
 
 }

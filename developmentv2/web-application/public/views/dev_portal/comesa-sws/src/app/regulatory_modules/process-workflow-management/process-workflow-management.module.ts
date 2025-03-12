@@ -58,6 +58,7 @@ import { DocumentTypesComponent } from './views/dms/document-types/document-type
 import { NonstructuredDocDefinationComponent } from './views/dms/nonstructured-doc-defination/nonstructured-doc-defination.component';
 import { SharedDmsComponent } from './views/dms/shared-dms/shared-dms.component';
 import { SopMasterlistComponent } from './views/dms/sop-masterlist/sop-masterlist.component';
+import { PermitTermsconditionsComponent } from './views/manuals/permit-termsconditions/permit-termsconditions.component';
 
 
 
@@ -76,7 +77,7 @@ const ngWizardConfig: NgWizardConfig = {
     TraderAccountManagementComponent, AppSignatoriesComponent, SharedprocessConfigurationsComponent,InstitutionInformationComponent,SharedDocumentchecklistingComponent,
     InstitutionDepartmentsComponent, SharedProcessconfigurationComponent,AppealTypesComponent,ProcessConfsetupComponent,RegulatedProductTypesComponent,RegulatoryFunctionsComponent,
     InterfacesComponent,UserGroupsPermissionsComponent,DmsConfigsetupComponent,DmsSitesRepositoryDefinationComponent,DocumentExtensionTypesComponent,DocumentRequirementDefinationComponent,
-    DocumentTypesComponent,NonstructuredDocDefinationComponent,SharedDmsComponent,SopMasterlistComponent
+    DocumentTypesComponent,PermitTermsconditionsComponent,NonstructuredDocDefinationComponent,SharedDmsComponent,SopMasterlistComponent
 
   ],
   imports: [

@@ -22,12 +22,14 @@ import { ProcessConfsetupComponent } from './views/process-configuration/process
 import { UserGroupsPermissionsComponent } from './views/user-groups-permissions/user-groups-permissions.component';
 import { DmsConfigsetupComponent } from './views/dms/dms-configsetup/dms-configsetup.component';
 import { DocumentTypesComponent } from './views/dms/document-types/document-types.component';
+import { PermitTermsconditionsComponent } from './views/manuals/permit-termsconditions/permit-termsconditions.component';
 
 const routes: Routes = [{
   path: '',
     component: ProcessWorkflowMgtLayoutComponent,
     canActivate: [AuthGuard],
-    children: [{
+    children: [
+      {
       path: 'app-process-workflows',
       component: ProcessWorkflowsComponent
     },
@@ -107,7 +109,11 @@ const routes: Routes = [{
     {
       path: 'app-hscodesconfig-setup',
       component: HscodesconfigSetupComponent
-    }
+    },
+    {
+      path: 'app-permit-termsconditions',
+      component: PermitTermsconditionsComponent
+    },
   
   ]
 }]

@@ -327,7 +327,7 @@ export class TraderAccountManagementComponent {
 
   fetchAccountStatusData() {
     var data_submit = {
-      'table_name': 'par_workflow_status'
+      'table_name': 'wf_workflow_statuses'
     }
     this.configService.onLoadConfigurationData(data_submit)
       .subscribe(

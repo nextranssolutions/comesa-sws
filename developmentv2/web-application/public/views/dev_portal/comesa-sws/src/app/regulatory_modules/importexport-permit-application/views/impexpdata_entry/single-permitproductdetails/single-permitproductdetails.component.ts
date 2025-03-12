@@ -491,12 +491,12 @@ export class SinglePermitproductdetailsComponent {
           text: 'Yes',
           buttonClass: 'btn btn-danger',
           onAction: () => new Promise((resolve: any, reject: any) => {
-            this.spinner.show();
+            this.spinnerShow('');
             this.appService.onDeletePermitProductsDetails(record_id, 'wb_permits_products', this.application_code, 'Permit products Details')
               .subscribe(
                 response => {
    
-                  this.spinner.hide();
+                  this.spinnerHide();
                   let response_data = response.json();
                   if (response_data.success) {
    
@@ -554,7 +554,7 @@ export class SinglePermitproductdetailsComponent {
       this.loadingVisible = false;
     }
     // onLoadPermitProductsData(application_code) {
-    //   this.spinner.show();
+    //   this.spinnerShow('');
     //   this.appService.getPermitsOtherDetails({ 'application_code': application_code }, 'getPermitProductsDetails')
     //     .subscribe(
     //       data => {
@@ -572,7 +572,7 @@ export class SinglePermitproductdetailsComponent {
     //         else {
     //           this.toastr.success(data.message, 'Alert');
     //         }
-    //         this.spinner.hide();
+    //         this.spinnerHide();
     //       },
     //       error => {
     //         return false
@@ -753,7 +753,7 @@ export class SinglePermitproductdetailsComponent {
             } else {
               this.toastr.error(this.product_resp.message, 'Alert');
             }
-            this.spinner.hide();
+            this.spinnerHide();
           },
           error => {
             this.toastr.error('Error Occurred', 'Alert');
@@ -835,13 +835,13 @@ export class SinglePermitproductdetailsComponent {
       if (this.permitProductsFrm.invalid) {
         return;
       }
-      this.spinner.show();
+      this.spinnerShow('');
       this.appService.onsavePermitProductdetails(this.application_code, this.permitProductsFrm.value, this.tracking_no, 'onSaveApplicantPermitProductsDetails')
         .subscribe(
           response => {
             this.app_resp = response;
             //the details 
-            this.spinner.hide();
+            this.spinnerHide();
   
             if (this.app_resp.success) {
               // this.permitProductsFrm.reset();
@@ -860,7 +860,7 @@ export class SinglePermitproductdetailsComponent {
           },
           error => {
             this.loading = false;
-            this.spinner.hide();
+            this.spinnerHide();
   
           });
     }
@@ -869,13 +869,13 @@ export class SinglePermitproductdetailsComponent {
       if (this.permitProductsFrm.invalid) {
         return;
       }
-      this.spinner.show();
+      this.spinnerShow('');
       this.appService.onsavePermitProductdetails(this.application_code, this.permitProductsFrm.value, this.tracking_no, 'savePermitProductdetails')
         .subscribe(
           response => {
             this.app_resp = response;
             //the details 
-            this.spinner.hide();
+            this.spinnerHide();
   
             if (this.app_resp.success) {
   
@@ -984,12 +984,12 @@ export class SinglePermitproductdetailsComponent {
           text: 'Yes',
           buttonClass: 'btn btn-danger',
           onAction: () => new Promise((resolve: any, reject: any) => {
-            this.spinner.show();
+            this.spinnerShow('');
             this.appService.onSynchronisedUploadedProducts('wb_uploadpermits_products', this.application_code, 'Permit products Details')
               .subscribe(
                 response => {
    
-                  this.spinner.hide();
+                  this.spinnerHide();
                   let response_data = response.json();
                   if (response_data.success) {
                     this.onLoadpermitUploadedProductsData(this.application_code);
@@ -1042,12 +1042,12 @@ export class SinglePermitproductdetailsComponent {
               text: 'Yes',
               buttonClass: 'btn btn-danger',
               onAction: () => new Promise((resolve: any, reject: any) => {
-                this.spinner.show();
+                this.spinnerShow('');
                 this.appService.onDeletePermitUploadedProductsDetails('wb_uploadpermits_products', this.application_code, 'Permit products Details')
                   .subscribe(
                     response => {
       
-                      this.spinner.hide();
+                      this.spinnerHide();
                       let response_data = response.json();
                       if (response_data.success) {
                         this.onLoadpermitUploadedProductsData(this.application_code);
@@ -1144,7 +1144,7 @@ export class SinglePermitproductdetailsComponent {
     }
   
     onLoadpermitUploadedProductsData(application_code) {
-      this.spinner.show();
+      this.spinnerShow('');
       this.appService.getPermitsOtherDetails({ 'application_code': application_code }, 'getPermitUploadedProductsDetails')
         .subscribe(
           data => {
@@ -1163,7 +1163,7 @@ export class SinglePermitproductdetailsComponent {
             else {
               this.toastr.success(data.message, 'Alert');
             }
-            this.spinner.hide();
+            this.spinnerHide();
           },
           error => {
             return false
@@ -1228,7 +1228,7 @@ export class SinglePermitproductdetailsComponent {
     }
   
     funAddApprovedVisaPermitProducts() {
-      this.spinner.show();
+      this.spinnerShow('');
       this.appService.getPermitsOtherDetails({ 'application_code': this.application_code }, 'getApprrovedVisaProducts')
         .subscribe(
           data => {
@@ -1241,7 +1241,7 @@ export class SinglePermitproductdetailsComponent {
             else {
               this.toastr.success(data.message, 'Alert');
             }
-            this.spinner.hide();
+            this.spinnerHide();
           },
           error => {
             return false
@@ -1289,7 +1289,7 @@ export class SinglePermitproductdetailsComponent {
       }
       this.productGeneraldetailsfrm.get('regulated_productstype_id')?.setValue(this.regulated_productstype_id);
       let brand_name = this.productGeneraldetailsfrm.get('brand_name')?.value;
-      this.spinner.show();
+      this.spinnerShow('');
       this.appService.onAddNewProductinformation(this.productGeneraldetailsfrm.value, 'onAddNewProductinformation')
         .subscribe(
           response => {
@@ -1309,7 +1309,7 @@ export class SinglePermitproductdetailsComponent {
             } else {
               this.toastr.error(this.product_resp.message, 'Alert');
             }
-            this.spinner.hide();
+            this.spinnerHide();
           },
           error => {
             this.loading = false;
@@ -1317,7 +1317,7 @@ export class SinglePermitproductdetailsComponent {
     }
   
     onAddManufacturerDetails() {
-      this.spinner.show();
+      this.spinnerShow('');
       let manufacturer_name = this.manufacturerFrm.get('name')?.value;
   
       this.appService.onAddManufacturingSite('tra_manufacturer_info', this.manufacturerFrm.value, 'saveManufacturerDetails')
@@ -1351,7 +1351,7 @@ export class SinglePermitproductdetailsComponent {
             this.toastr.error('An error occurred while saving manufacturer details.', 'Error');
           },
           complete: () => {
-            this.spinner.hide();
+            this.spinnerHide();
           }
         });
     }
@@ -1583,12 +1583,12 @@ export class SinglePermitproductdetailsComponent {
         return;
       }
       const uploadData = this.prepareUploadSave();
-      this.spinner.show();
+      this.spinnerShow('');
       this.dmsService.uploadApplicationDMSDocument(uploadData, this.regulatory_function_id, this.regulatory_subfunction_id, '', this.application_code, '', 'onunInvoiceProductsUpload')
         //.pipe(first())
         .subscribe(
           response => {
-            this.spinner.hide();
+            this.spinnerHide();
             this.response_data = response;
   
             if (this.response_data.success) {
@@ -1606,7 +1606,7 @@ export class SinglePermitproductdetailsComponent {
   
           },
           error => {
-            this.spinner.hide();
+            this.spinnerHide();
             this.toastr.success('Error occurred', 'Response');
   
           });
@@ -1615,12 +1615,12 @@ export class SinglePermitproductdetailsComponent {
     onApprovedVisaProductsUpload() {
   
       const uploadData = this.prepareUploadSave();
-      this.spinner.show();
+      this.spinnerShow('');
       this.dmsService.uploadApplicationDMSDocument(uploadData, this.regulatory_function_id, this.regulatory_subfunction_id, '', this.application_code, '', 'onApprovedVisaProductsUpload')
         //.pipe(first())
         .subscribe(
           response => {
-            this.spinner.hide();
+            this.spinnerHide();
             this.response_data = response;
   
             if (this.response_data.success) {
@@ -1638,7 +1638,7 @@ export class SinglePermitproductdetailsComponent {
   
           },
           error => {
-            this.spinner.hide();
+            this.spinnerHide();
             this.toastr.success('Error occurred', 'Response');
   
           });

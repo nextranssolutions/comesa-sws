@@ -95,7 +95,7 @@
                 </dx-menu>
             </div>
         </dxi-column>
-
+        
         <dxi-column dataField="reference_no" caption="{{'application_reference' | translate}}"></dxi-column>
 
         <dxi-column [width]=100 dataField="invoice_type" caption="{{'invoice_type' | translate}}"></dxi-column>
@@ -103,7 +103,8 @@
         <dxi-column dataField="invoice_date" caption="{{'invoice_date' | translate}}"></dxi-column>
         <dxi-column dataField="port_entryexit" caption="{{'port_of_entryexit' | translate}}"></dxi-column>
         <dxi-column dataField="currency_name" caption="{{'currency_of_transaction' | translate}}"></dxi-column>
-        <dxi-column [groupIndex]="0" dataField="applicant_name" caption="{{'applicant_name' | translate}}"></dxi-column>
+        <dxi-column [groupIndex]="0" dataField="applicationapplicant_option" caption="{{'applicationapplicant_option' | translate}}"></dxi-column>
+        <dxi-column  dataField="applicant_name" caption="{{'applicant_name' | translate}}"></dxi-column>
         <dxi-column dataField="importer_exporter_name" caption="{{'importer_exporter_name' | translate}}"></dxi-column>
         <dxi-column dataField="date_of_application" caption="{{'date_of_application' | translate}}"></dxi-column>
         <dxi-column dataField="current_process" caption="{{'current_process' | translate}}"></dxi-column>
@@ -287,3 +288,7 @@
         </dx-scroll-view>
     </div>
 </dx-popup>
+
+<dx-load-panel #loadPanel shadingColor="rgba(0,0,0,0.4)" [position]="{ of: '#employee' }" [(visible)]="loadingVisible"
+    [showIndicator]="true" [showPane]="true" [shading]="true" [message]="spinnerMessage" [hideOnOutsideClick]="false">
+</dx-load-panel>

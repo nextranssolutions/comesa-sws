@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { catchError, map } from 'rxjs/operators';
 import { Observable, throwError } from 'rxjs';
 import { AuthenticationService } from 'src/app/core-services/authentication/authentication.service';
@@ -42,23 +42,30 @@ export class ImportExportService {
   //     }));
   // }
 
-  onSavePermitApplication(permitData,registrant_details,action_url) {
-    var headers = new HttpHeaders({
+  onSavePermitApplication(permitData, registrant_details, action_url, transactionpermit_type_id,) {
+    const headers = new HttpHeaders({
       "Accept": "application/json",
       "Authorization": "Bearer " + this.authService.getAccessToken(),
     });
+  
+    const params = new HttpParams().set('transactionpermit_type_id', transactionpermit_type_id);
+  
     let user = this.authService.getUserDetails();
     let registrant_data = JSON.stringify(registrant_details);
+  
     console.log(permitData);
-    return this.http.post(AppSettings.base_url + '/api/import-export/'+action_url, permitData, { headers: headers })
-      .pipe(map(data => {
-        return data;
-      }));
+  
+    return this.http.post(
+      `${AppSettings.base_url}/api/import-export/${action_url}`,
+      permitData,
+      { headers: headers, params: params }
+    ).pipe(
+      map(data => data)
+    );
   }
+  
 
   onsavePermitProductdetails(oga_application_code, permitData, tracking_no, action_url) {
-
-
 
     let data_header = {
       params: { oga_application_code: oga_application_code, tracking_no: tracking_no },

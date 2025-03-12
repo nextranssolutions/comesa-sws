@@ -35,7 +35,9 @@ export class ApplicantDetailsComponent {
   userAccountTypeData: any;
   accountStatusData: any;
   configData: any;
+  spinnerMessage: string;
   data_record: any;
+  loadingVisible: boolean;
   response: any;
   is_local_agent: boolean;
   isRegistrantDetailsWinshow: boolean = false;
@@ -100,7 +102,7 @@ export class ApplicantDetailsComponent {
 
   fetchAccountStatusData() {
     var data_submit = {
-      'table_name': 'par_workflow_status'
+      'table_name': 'wf_workflow_statuses'
     }
     this.configService.onLoadConfigurationData(data_submit)
       .subscribe(
@@ -332,7 +334,7 @@ export class ApplicantDetailsComponent {
         this.toastr.error('Fill In All Mandatory fields with (*), missing value on ' + name.replace('_id', ''), 'Alert');
         return;
       }
-      this.spinner.show();
+      this.spinnerShow('');
       this.userservice.onsaveUserData(this.table_name, this.userAccountFrm.value, 'onsaveTraderData')
         .subscribe(
           response => {
@@ -346,17 +348,17 @@ export class ApplicantDetailsComponent {
             } else {
               this.toastr.error(this.response.message, 'Alert');
             }
-            this.spinner.hide();
+            this.spinnerHide();
           },
           error => {
             this.toastr.error('Error Occurred', 'Alert');
-            this.spinner.hide();
+            this.spinnerHide();
           });
     }
     if (this.userAccountFrm.invalid) {
       return;
     }
-    this.spinner.show();
+    this.spinnerShow('');
     this.userservice.onsaveUserData(this.table_name, this.userAccountFrm.value, 'onSaveUniformApplicantDataset')
       .subscribe(
         response => {
@@ -370,19 +372,18 @@ export class ApplicantDetailsComponent {
           } else {
             this.toastr.error(this.response.message, 'Alert');
           }
-          this.spinner.hide();
+          this.spinnerHide();
         },
         error => {
           this.toastr.error('Error Occurred', 'Alert');
-          this.spinner.hide();
+          this.spinnerHide();
         });
   }
 
   applicant_id: any;
   onApplicationOptionChange(event: any) {
     const selectedId = event.value; // Get the selected option ID
-    this.applicationapplicant_options_id = selectedId; // Store it for use in the template
-
+    this.applicationapplicant_option_id = selectedId; // Store it for use in the template
     if (selectedId === 1) {
       this.showHiddenFields = true;
       this.showSearchButton = true;
@@ -391,7 +392,7 @@ export class ApplicantDetailsComponent {
     } else if (selectedId === 2) {
       this.showHiddenFields = true;
       this.showSearchButton = false;
-      this.applicantDetailsSet = false; // Make applicant_name editable
+      this.applicantDetailsSet = false; 
       this.patchApplicantDetailsFromLocalStorage(); // Patch details from localStorage
      
     }
@@ -437,6 +438,14 @@ export class ApplicantDetailsComponent {
 
     this.show_advancesearch = e.value;
 
+  }
+
+  spinnerShow(spinnerMessage) {
+    this.loadingVisible = true;
+    this.spinnerMessage = spinnerMessage;
+  }
+  spinnerHide() {
+    this.loadingVisible = false;
   }
 
 }

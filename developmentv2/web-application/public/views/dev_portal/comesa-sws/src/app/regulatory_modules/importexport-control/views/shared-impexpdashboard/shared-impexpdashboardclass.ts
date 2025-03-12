@@ -19,7 +19,7 @@ export class SharedImpExpdashboardClass {
   dtImportExpApplicationData: any = [];
   expanded: boolean = false;
   app_route: any;
-  regulatory_function_id: number = 4;
+  regulatory_function_id: number = 1;
   app_response: any;
   processData: any;
   title: string;
@@ -45,7 +45,7 @@ export class SharedImpExpdashboardClass {
   data_record: any;
   guidelines_title: string;
   regulatory_subfunction_id: number;
-  transactionpermit_type_id: any;
+  transactionpermit_type_id: number;
   application_title: string;
   sectionItem: any;
   app_typeItem: any;
@@ -73,15 +73,21 @@ export class SharedImpExpdashboardClass {
   processingData: any;
   wofklowStatusData: any;
   form_fielddata: any;
+  products_fielddata: any;
+  applicants_fielddata: any;
+  applicant_details: any;
   trader_id: number;
   mistrader_id: number;
   process_title: string;
   tracking_no: string;
   application_id: number;
-  oga_application_code: number;
+  oga_application_code: any;
   permit_type_id: number;
   application_type_id: any;
   table_name: string;
+  isprodnextdisable: boolean;
+  applicationsubmission_type_id: number;
+  nav_data: any;
 
   constructor(public utilityService: UtilityService, public viewRef: ViewContainerRef,
     public spinner: SpinnerVisibilityService,
@@ -117,10 +123,11 @@ export class SharedImpExpdashboardClass {
     this.onLoadProductTypes();
     this.onLoadconfirmDataParam();
     this.onLoadproducttypeDefinationData();
+    this.onLoadPermitProductsData(this.oga_application_code);
     this.reloadPermitApplicationsApplications();
     this.onLoadPermitTypesData();
     this.onLoadWorkflowStatusData();
-
+    this.onLoadApplicationStatusData();
   }
 
   scrollToTop(): void {
@@ -131,7 +138,11 @@ export class SharedImpExpdashboardClass {
   }
 
   onInitiatenewImportExpApplications(){
-    this.onClickSubModuleAppSelection(1, 'New Import Application')
+    this.nav_data = localStorage.getItem('nav_data');
+    this.nav_data = JSON.parse(this.nav_data);
+    let regulatory_subfunction_id = this.nav_data.regulatory_function_id;
+      
+    this.onClickSubModuleAppSelection(regulatory_subfunction_id, 'New Import Application')
     this.isPermitInitialisation = true; 
 }
 
@@ -167,36 +178,35 @@ export class SharedImpExpdashboardClass {
 
   }
 
-  onApplicationSelection() {
+onApplicationSelection() {
     if (this.applicationSelectionfrm.invalid) {
       this.toastr.error('Fill in all the Mandatory Fields', 'Alert!');
       return;
     }
 
     this.spinnerShow('loading...');
+    this.sectionItem = this.applicationSelectionfrm.controls['transactionpermit_type_id'];
 
-    // Fetch transactionpermit_type_id value
-    let transactionpermit_type_id = this.applicationSelectionfrm.get('transactionpermit_type_id')?.value;
+    // let transactionpermit_type_id = this.applicationSelectionfrm.get('transactionpermit_type_id')?.value;
     let regulatory_subfunction_id = this.applicationSelectionfrm.get('regulatory_subfunction_id')?.value;
 
-
     this.regulatory_subfunction_id = regulatory_subfunction_id;
-    this.transactionpermit_type_id = transactionpermit_type_id;
+    this.transactionpermit_type_id = this.sectionItem.value;
 
-    localStorage.setItem('transactionpermit_type_id', JSON.stringify(this.transactionpermit_type_id));
+
+    // localStorage.setItem('transactionpermit_type_id', JSON.stringify(this.transactionpermit_type_id));
+    
     this.configService.getSectionUniformApplicationProces(this.regulatory_subfunction_id, this.transactionpermit_type_id)
       .subscribe(
         data => {
+          
           if (data.success) {
-
             this.processData = data.data.process_infor;
-
 
             this.router_link = this.processData.router_link;
             this.productsapp_details = this.processData;
 
             this.appService.setApplicationDetail(data.data);
-
             localStorage.setItem('application_details', JSON.stringify(data.data));
 
             this.app_route = ['./importexport-control/' + this.router_link];
@@ -205,7 +215,6 @@ export class SharedImpExpdashboardClass {
           } else {
             this.toastr.error(this.processData.message, 'Alert!');
           }
-
           this.spinnerHide();
         },
         error => {
@@ -215,7 +224,8 @@ export class SharedImpExpdashboardClass {
       );
 
     return false;
-  }
+}
+
 
 
 
@@ -252,7 +262,6 @@ export class SharedImpExpdashboardClass {
   }
 
 
-
   onLoadimportExportPermitTypesData() {
     var data = {
       table_name: 'par_importexport_permittypes',
@@ -272,6 +281,24 @@ export class SharedImpExpdashboardClass {
 
   }
 
+  onLoadApplicationStatusData() {
+    var data = {
+      table_name: 'par_application_statuses',
+      is_enabled: true
+    };
+
+    this.configService.onLoadConfigurationData(data)
+      .subscribe(
+        data => {
+          this.data_record = data;
+
+          if (this.data_record.success) {
+            this.applicationStatusData = this.data_record.data;
+            ;
+          }
+        });
+
+  }
   onLoadPermitTypesData() {
     var data = {
       table_name: 'tra_transactionpermit_types',
@@ -348,7 +375,7 @@ export class SharedImpExpdashboardClass {
 
     var data = {
       table_name: 'par_regulatory_subfunctions',
-      regulatory_function_id: 4,
+      regulatory_function_id: 1,
       regulatory_subfunction_id: regulatory_subfunction_id
     };
     this.configService.onLoadConfigurationData(data)
@@ -482,13 +509,14 @@ export class SharedImpExpdashboardClass {
     this.frmPreviewAppDetails.patchValue(data);
     this.onLoadPermitProductsData(data.oga_application_code);
   }
-  onLoadPermitProductsData(oga_application_code) {
+
+
+  onLoadPermitProductsData(oga_application_code: any) {
     this.spinner.show();
     this.appService.getPermitsOtherDetails({ 'oga_application_code': oga_application_code }, 'getPermitProductsDetails')
       .subscribe(
         data => {
           if (data.success) {
-
             this.permitProductsData = data.data;
 
           }
@@ -594,6 +622,7 @@ export class SharedImpExpdashboardClass {
   application_data: any;
   funcApplicationPreveditDetails(app_data) {
     this.regulatory_subfunction_id = app_data.regulatory_subfunction_id;
+    this.applicationsubmission_type_id = app_data.applicationsubmission_type_id;
 
     this.spinner.show();
 
@@ -607,6 +636,7 @@ export class SharedImpExpdashboardClass {
 
             this.router_link = this.processData.router_link;
             this.productsapp_details = this.processData;
+            
             let merged_appdata = Object.assign({}, this.application_data, app_data);
 
             localStorage.setItem('application_details', JSON.stringify(merged_appdata));
@@ -615,17 +645,22 @@ export class SharedImpExpdashboardClass {
 
             this.router.navigate(this.app_route);
             this.scrollToTop();
-
           }
           else {
-            this.toastr.error(this.processData.message, 'Alert!');
-
+            this.toastr.error(data.message || "An error occurred", 'Alert!');
           }
+        },
+        error => {
+          this.spinner.hide();
+          this.toastr.error("Failed to fetch application details", "Error");
+          console.error("API Error:", error);
+        }
+      );
 
-
-        });
     return false;
-  }
+}
+
+
 
   funcApplicationRejection(app_data) {
 
@@ -764,8 +799,37 @@ export class SharedImpExpdashboardClass {
 
   }
   
+  // onCellPrepared(e) {
+  //   this.utilityService.onCellPrepared(e);
+  // }
+
   onCellPrepared(e) {
-    this.utilityService.onCellPrepared(e);
+    this.utilityService.onCellCountriesPrepared(e);
   }
+
+  onCellAppStatusPrepared(e: any) {
+    if (e.rowType === "data" && e.column.dataField === "appworkflow_status_id") {
+      let statusId = e.data.appworkflow_status_id;  // Ensure the value is retrieved correctly
+  
+      switch (statusId) {
+        case 1:  // Draft
+          e.cellElement.style.color = "white";
+          e.cellElement.style.backgroundColor = "#64B0F2";
+          break;
+        case 2:  // Under Processing
+          e.cellElement.style.color = "white";
+          e.cellElement.style.backgroundColor = "#FF5D48";
+          break;
+        case 3:  // Approved
+          e.cellElement.style.color = "white";
+          e.cellElement.style.backgroundColor = "green";
+          break;
+        default: // Default style
+          e.cellElement.style.color = "black";
+      }
+    }
+  }
+  
+  
 
 }

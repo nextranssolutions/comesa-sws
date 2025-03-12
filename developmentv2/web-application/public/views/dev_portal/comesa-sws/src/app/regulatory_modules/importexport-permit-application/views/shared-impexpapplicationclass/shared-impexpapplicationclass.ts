@@ -51,13 +51,13 @@ export class SharedImpexpApplicationClass {
   isPreviewApplicationProcessing: boolean = false;
   deviceTypeData: any;
   data_record: any;
-
+  spinnerMessage: string;
   product_resp: any; confirmDataParam: any;
   applicationGeneraldetailsfrm: FormGroup;
   documentUploadfrm: FormGroup;
   permitProductsFrm: FormGroup;
   regulatedProductsPermitData: any;
-
+  isSaved: boolean;
   sectionsData: any;
   zoneData: any;
   permit_product_id: number;
@@ -100,7 +100,7 @@ export class SharedImpexpApplicationClass {
   tracking_no: string;
   status_name: string;
   regulatory_function_id: number = 4;
-
+  loadingVisible: boolean;
   app_route: any;
   applicationTypeData: any;
   applicationCategoryData: any;
@@ -201,6 +201,7 @@ export class SharedImpexpApplicationClass {
     this.application_details = JSON.parse(this.application_details);
    
     this.form_fielddata = this.application_details.application_form;
+
     this.products_fielddata = this.application_details.permit_products_details;
     this.applicants_fielddata = this.application_details.applicant_details;
 
@@ -469,13 +470,13 @@ export class SharedImpexpApplicationClass {
     this.permitProductsFrm.value['applicant_id'] = applicant_id;
     this.applicationGeneraldetailsfrm.value['permit_generalinformation_id'] = permit_generalinformation_id;
 
-    this.spinner.show();
+    this.spinnerShow(' ');
     this.appService.onsavePermitProductdetails(this.application_code, this.permitProductsFrm.value, this.tracking_no, 'onSaveApplicantPermitProductsDetails')
       .subscribe(
         response => {
           this.app_resp = response;
           //the details 
-          this.spinner.hide();
+          this.spinnerHide();
 
           if (this.app_resp.success) {
             // this.permitProductsFrm.reset();
@@ -485,13 +486,15 @@ export class SharedImpexpApplicationClass {
             this.permit_product_id = this.app_resp.record_id;
             this.isPermitVisaLicProductsAddPopupVisible = false;
             this.toastr.success(this.app_resp.message, 'Response');
+            this.isSaved = true;
           } else {
             this.toastr.error(this.app_resp.message, 'Alert');
+            this.isSaved = false;
           }
         },
         error => {
           this.loading = false;
-          this.spinner.hide();
+          this.spinnerHide();
 
         });
   }
@@ -502,6 +505,7 @@ export class SharedImpexpApplicationClass {
 
   onSaveImportExportApplication() {
 
+    this.spinnerShow(' ');
     const invalid = [];
     const controls = this.applicationGeneraldetailsfrm.controls;
     for (const name in controls) {
@@ -515,18 +519,16 @@ export class SharedImpexpApplicationClass {
     }
     const uploadData = this.prepareSavePermitDoc();
 
-    this.spinner.show();
+    
     
     let applicant_id = this.applicantDetailsForm.get('id')?.value;
     let applicationapplicant_option_id = this.applicantDetailsForm.get('applicationapplicant_option_id')?.value;
-
     this.applicationGeneraldetailsfrm.value['applicant_id'] = applicant_id;
     this.applicationGeneraldetailsfrm.value['applicationapplicant_option_id'] = applicationapplicant_option_id;
 
     this.applicationGeneraldetailsfrm.value['applicationsubmission_type_id'] = this.applicationsubmission_type_id;
    
     this.applicationGeneraldetailsfrm.value['regulatory_subfunction_id'] = this.regulatory_subfunction_id;
-    this.spinner.show();
     this.appService.onSavePermitApplication(this.applicationGeneraldetailsfrm.value, uploadData, 'saveImportExportApplication')
       .subscribe(
         response => {
@@ -545,12 +547,12 @@ export class SharedImpexpApplicationClass {
             this.toastr.error(this.product_resp.message, 'Alert');
             this.isSaved = false;
           }
-          this.spinner.hide();
+          this.spinnerHide();
         },
         error => {
           this.loading = false;
           this.isSaved = false;
-          this.spinner.hide();
+          this.spinnerHide();
         });
   }
 
@@ -624,7 +626,7 @@ export class SharedImpexpApplicationClass {
 
   funcValidatePermitProductDetails(validation_title, nextStep) {
 
-    this.spinner.show();
+    this.spinnerShow(' ');
     this.appService.onfuncValidatePermitDetails(this.application_code, validation_title, 'wb_permits_products')
       .subscribe(
         response => {
@@ -633,18 +635,18 @@ export class SharedImpexpApplicationClass {
           } else {
             this.toastr.error(response.message, 'Alert');
           }
-          this.spinner.hide();
+          this.spinnerHide();
         },
         error => {
           this.toastr.error(error.message, 'Alert');
-          this.spinner.hide();
+          this.spinnerHide();
         });
   }
 
 
   funcValidateApplicationQueryresponse(nextStep) {
 
-    this.spinner.show();
+    this.spinnerShow(' ');
     this.utilityService.funcValidateApplicationQueryresponse(this.application_code, 'txn_importexport_applications')
       .subscribe(
         response => {
@@ -653,11 +655,11 @@ export class SharedImpexpApplicationClass {
           } else {
             this.toastr.error(response.message, 'Alert');
           }
-          this.spinner.hide();
+          this.spinnerHide();
         },
         error => {
           this.toastr.error(error.message, 'Alert');
-          this.spinner.hide();
+          this.spinnerHide();
         });
   }
 
@@ -665,7 +667,7 @@ export class SharedImpexpApplicationClass {
     this.utilityService.validateApplicationDocumentsQuerySubmission(this.application_code, this.status_id, 'txn_importexport_applications')
       .subscribe(
         response => {
-          this.spinner.hide();
+          this.spinnerHide();
           let response_data = response;
           if (response_data.success) {
             // this.wizard.model.navigationMode.goToStep(nextStep);
@@ -676,7 +678,7 @@ export class SharedImpexpApplicationClass {
             this.toastr.error(response_data.message, 'Response');
           }
 
-          this.spinner.hide();
+          this.spinnerHide();
         });
 
 
@@ -750,7 +752,7 @@ export class SharedImpexpApplicationClass {
 
   funcValidateNavPermitProductDetails(nextStep, direction) {
 
-    this.spinner.show();
+    this.spinnerShow(' ');
     this.appService.onfuncValidatePermitDetails(this.application_code, 'Invoice Product details', 'wb_permits_products')
       .subscribe(
         response => {
@@ -761,11 +763,11 @@ export class SharedImpexpApplicationClass {
 
             return;
           }
-          this.spinner.hide();
+          this.spinnerHide();
         },
         error => {
           this.toastr.error(error.message, 'Alert');
-          this.spinner.hide();
+          this.spinnerHide();
         });
   }
 
@@ -780,7 +782,7 @@ export class SharedImpexpApplicationClass {
   nextTab() {
     this.ngWizardService.next();
   }
-  isSaved: boolean;
+
   onNextStep() {
     if (!this.isSaved) {
       this.toastr.error('Kindly save before proceeding to the next step.', 'Validation Error');
@@ -789,11 +791,33 @@ export class SharedImpexpApplicationClass {
     this.ngWizardService.next(); // Move to the next step only if saved
   }
 
+  onextStep() {
+    const applicant_id = this.applicantDetailsForm.get('id')?.value;
+  
+    if (!applicant_id || applicant_id < 0) {
+      this.toastr.error('Kindly select an applicant before proceeding to the next step.', 'Validation Error');
+      return;
+    }
+  
+    this.applicationGeneraldetailsfrm.patchValue({ applicant_id });
+    this.ngWizardService.next();
+  }
+  
+
   previousStep() {
     this.ngWizardService.previous();
   }
   nextStep() {
     this.ngWizardService.next();
+  }
+
+  
+  spinnerShow(spinnerMessage) {
+    this.loadingVisible = true;
+    this.spinnerMessage = spinnerMessage;
+  }
+  spinnerHide() {
+    this.loadingVisible = false;
   }
 
 }
