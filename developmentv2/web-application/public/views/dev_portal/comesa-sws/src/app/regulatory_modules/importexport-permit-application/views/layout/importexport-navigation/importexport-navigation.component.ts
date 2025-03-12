@@ -91,7 +91,7 @@ nav_data: any;
       }
     }
     localStorage.setItem('nav_data', JSON.stringify(this.nav_data));
-
+    
     // this.utilityService.setNavigationData(this.nav_data);
     this.router.navigate(['./importexport-permit-application/' + routerlink]);
     this.scrollToTop();

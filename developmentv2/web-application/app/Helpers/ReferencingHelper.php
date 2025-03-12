@@ -271,11 +271,7 @@ class ReferencingHelper
         $reg_year = substr($year, -2);
         $codes_array['serial_no'] = $serial_no;
         $codes_array['reg_year'] = $reg_year;
-       
-
-        // 
-       
-        
+  
         $ref_number = self::generateRefNumber($codes_array, $ref_id);
         $trac_refcode =  env('TRACKREF_CODE', 'COMESA');
         $ref_number = str_replace("COMESA",$trac_refcode,$ref_number);

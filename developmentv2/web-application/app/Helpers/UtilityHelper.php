@@ -761,6 +761,21 @@ class UtilityHelper
         return $record;
 
     }
+
+    public static function getInitialApplicantWorkflowStatusId($workflowprocess_id){
+        $record = null;
+        if(validateIsNumeric($workflowprocess_id)){
+                $record = DB::table('wb_workflow_transitions as t1')
+                            ->join('wb_workflow_stages as t2', 't1.prevworkflow_stage_id', 't2.id')
+                            ->leftJoin('wb_workflow_definition as t3', 't1.workflow_id', '=', 't3.id')
+                            ->select('t1.*', 't1.workflow_status_id as appworkflow_status_id')
+                            ->where(array('t3.workflowprocess_id'=>$workflowprocess_id, 't2.stage_status_id'=>1))
+                            ->first();
+                
+        }
+        return $record;
+
+    }
     public  static function initiateInitialProcessSubmission($table_name, $application_code, $process_id, $user_id)
     {
         $res = '';
@@ -787,6 +802,38 @@ class UtilityHelper
             );
             $submission_data['created_on'] = Carbon::now();
             $res = insertRecord('tra_applicationprocess_submissions', $submission_data);
+
+        }
+
+        return $res;
+    }
+
+    public  static function initiateApplicantInitialProcessSubmission($table_name, $application_code, $workflowprocess_id, $user_id)
+    {
+        $res = '';
+        $rec = DB::table('wb_workflow_transitions as t1')
+            ->leftJoin('wb_workflow_stages as t2', 't1.prevworkflow_stage_id', '=', 't2.id')
+            ->leftJoin('wb_workflow_definition as t3', 't1.workflow_id', '=', 't3.id')
+            ->select('t3.workflowprocess_id', 't1.prevworkflow_stage_id', 'nextworkflow_stage_id', 'workflow_status_id')
+            ->where(array('t3.process_id' => $workflowprocess_id, 't2.stage_status_id' => 1))
+            ->first();
+
+        if ($rec) {
+
+            $submission_data = array(
+                'application_code' => $application_code,
+                'current_stage_id' => $rec->prevworkflow_stage_id,
+                'previous_stage_id' => $rec->prevworkflow_stage_id,
+                'appworkflow_status_id' => $rec->workflow_status_id,
+                'workflowprocess_id' => $rec->workflowprocess_id,
+                'previous_user_id' => 0,
+                'current_user_id' => $user_id,
+                'isdone' => 0,
+                'isread' => 0,
+                'date_received' => Carbon::now()
+            );
+            $submission_data['created_on'] = Carbon::now();
+            $res = insertRecord('wb_applicationprocess_submissions', $submission_data);
 
         }
 
