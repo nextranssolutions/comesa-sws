@@ -373,7 +373,7 @@ class DocumentManagementController extends Controller
                     //section_id
                     $doc_record = DB::table('dms_application_documentsdefination')->where('oga_application_code', $oga_application_code)->first();
                     if (!$doc_record) {
-                        initializeApplicationDMS($regulatory_subfunction_id, $oga_application_code, $user_id);
+                        initializeApplicationDMS($regulatory_subfunction_id, $oga_application_code,$application_code, $user_id);
                     }
                 }
             }
@@ -383,7 +383,7 @@ class DocumentManagementController extends Controller
                 if ($app_record) {
                     $doc_record = DB::table('dms_application_documentsdefination')->where('application_code', $application_code)->first();
                     if (!$doc_record) {
-                        initializeApplicationDMS($regulatory_subfunction_id, $application_code, $user_id);
+                        initializeApplicationDMS($regulatory_subfunction_id, $oga_application_code,$application_code, $user_id);
                     }
                 }
             }
