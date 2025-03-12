@@ -235,7 +235,7 @@ export class SystemguidelinesDashComponent {
       app_refence_no: '' // Corrected typo
     }
     this.admnistrationService.setApplicationDetail(this.data_resp);
-    this.router.navigate(['/admin-ecres/app-systemguidelines-detail']);
+    this.router.navigate(['/admin-cimex/app-systemguidelines-detail']);
     this.scrollToTop();
   }
 

@@ -97,8 +97,7 @@ class AuthHelper {
                                     'created_on'=>Carbon::now(),
                                     'altered_by'=>$loggedInUserId, 
                                     'dola'=>Carbon::now());
-                   DB::table('tra_user_group')->insert($user_groupsdata);
-
+                  
                    $user_resp = insertRecord('tra_user_group', $user_groupsdata);
 
             }

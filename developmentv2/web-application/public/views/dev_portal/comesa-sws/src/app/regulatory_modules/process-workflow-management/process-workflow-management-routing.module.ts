@@ -23,6 +23,10 @@ import { UserGroupsPermissionsComponent } from './views/user-groups-permissions/
 import { DmsConfigsetupComponent } from './views/dms/dms-configsetup/dms-configsetup.component';
 import { DocumentTypesComponent } from './views/dms/document-types/document-types.component';
 
+import { DocumentExtensionTypesComponent } from './views/dms/document-extension-types/document-extension-types.component';
+
+import { PermitTermsconditionsComponent } from './views/manuals/permit-termsconditions/permit-termsconditions.component';
+
 const routes: Routes = [{
   path: '',
     component: ProcessWorkflowMgtLayoutComponent,
@@ -108,8 +112,15 @@ const routes: Routes = [{
     {
       path: 'app-hscodesconfig-setup',
       component: HscodesconfigSetupComponent
+    },{
+      path: 'app-document-extension-types',
+      component: DocumentExtensionTypesComponent
     }
-  
+    },
+    {
+      path: 'app-permit-termsconditions',
+      component: PermitTermsconditionsComponent
+    }
   ]
 }]
 

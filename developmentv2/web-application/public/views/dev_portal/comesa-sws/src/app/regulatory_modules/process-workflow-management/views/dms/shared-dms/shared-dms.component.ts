@@ -91,8 +91,11 @@ export class SharedDmsComponent {
         name: new FormControl('', Validators.compose([Validators.required])),
         description: new FormControl('', Validators.compose([Validators.required])),
         is_enabled: new FormControl('', Validators.compose([])),
-        // product_type_id: new FormControl('', Validators.compose([])),
-        document_no: new FormControl('', Validators.compose([])),
+         product_type_id: new FormControl('', Validators.compose([])),
+         regulatory_function_id: new FormControl('', Validators.compose([])),
+         regulatory_subfunction_id: new FormControl('', Validators.compose([])),
+       
+         document_no: new FormControl('', Validators.compose([])),
         code: new FormControl('', Validators.compose([])),
         organisation_id: new FormControl('', Validators.compose([Validators.required]))
         

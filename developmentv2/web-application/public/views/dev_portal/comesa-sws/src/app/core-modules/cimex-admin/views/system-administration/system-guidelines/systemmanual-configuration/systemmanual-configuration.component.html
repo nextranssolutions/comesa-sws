@@ -28,28 +28,31 @@
         <div class="container-fluid">
             <dx-tab-panel id="supplierPanel" [swipeEnabled]="false" [showNavButtons]="true" [animationEnabled]="true" [tabsPosition]="tabsPosition">
 
-                <dxi-item title="{{'system_guidelines_detail' | translate}}" icon="group">
+                <dxi-item title="{{'system_guidelines_detail' | translate}}" icon="map">
                     <app-systemguidelines-dash></app-systemguidelines-dash>
                 </dxi-item>
 
-                <dxi-item title="{{'systems_functionalities' | translate}}" icon="group">
+                <dxi-item title="{{'systems_functionalities' | translate}}" icon="map">
                     <app-systems-functionalities></app-systems-functionalities>
                 </dxi-item>
 
-                <dxi-item title= "{{'guidelinesoptions' | translate}}" icon="group">
+                <dxi-item title= "{{'guidelinesoptions' | translate}}" icon="map">
                     <app-guidelinesoptions></app-guidelinesoptions>
                 </dxi-item> 
                 
-                <dxi-item title="{{'signinsignup_guidelines' | translate}}" icon="group">
+                <dxi-item title="{{'signinsignup_guidelines' | translate}}" icon="map">
                     <app-signin-signup-guidelines></app-signin-signup-guidelines>
                 </dxi-item>
               
-                <dxi-item title= "{{'termsconditions_details' | translate}}" icon="group">
+                <dxi-item title= "{{'termsconditions_details' | translate}}" icon="map">
                     <app-termsconditions-details></app-termsconditions-details>
                 </dxi-item>
+                <dxi-item title= "{{'permit_termsconditions' | translate}}" icon="map">
+                  <app-permit-termsconditions></app-permit-termsconditions>
+              </dxi-item>
                 
             </dx-tab-panel>
-
+            
             
         </div>
         </section>

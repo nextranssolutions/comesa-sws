@@ -24,6 +24,10 @@ export class SharedhscodesConfigurationsComponent {
   chapterDefinationData: any[] = [];
   headingDefinationData: any[] = [];
   subHeadingDefinationData: any[] = [];
+  timespanDefinationData: any[] = [];
+  regFunctionData: any[] = [];
+  regSubFunctionData: any[] = [];
+  organisationData: any[] = [];
   show_advancesearch: boolean;
   isnewprocess: boolean;
   config_record: string;
@@ -77,6 +81,10 @@ export class SharedhscodesConfigurationsComponent {
       chapters_defination_id: new FormControl('', Validators.compose([])),
       heading_definations_id: new FormControl('', Validators.compose([])),
       subheading_definations_id: new FormControl('', Validators.compose([])),
+      timespan_defination_id: new FormControl('', Validators.compose([])),
+      regulatory_function_id: new FormControl('', Validators.compose([])),
+      regulatory_subfunction_id: new FormControl('', Validators.compose([])),
+      organisation_id:  new FormControl('', Validators.compose([])),
       tariff_code: new FormControl('', Validators.compose([])),
       country_code: new FormControl('', Validators.compose([])),
       tariff_rate: new FormControl('', Validators.compose([])),
@@ -92,7 +100,12 @@ export class SharedhscodesConfigurationsComponent {
     this.fetchChapterDefinationData();
     this.fetchNewConfigurations();
     this.fetchHeadingDefinationData();
-    this.fetchSubHeadingDefinationData()
+    this.fetchSubHeadingDefinationData();
+    this.fetchTimespanDefinationData();
+    this.fetchRegFunctionData();
+    this.fetchRegSubFunctionData();
+    this.fetchOrganisationData()
+
   }
 
   spinnerShow(spinnerMessage) {
@@ -246,7 +259,79 @@ export class SharedhscodesConfigurationsComponent {
 
         });
   }
+  fetchTimespanDefinationData() {
 
+    var data_submit = {
+      'table_name': 'par_timeline_type'
+    }
+    this.configService.onLoadConfigurationData(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.timespanDefinationData = this.data_record.data
+          }
+        },
+        error => {
+
+        });
+  }
+
+  fetchRegFunctionData() {
+
+    var data_submit = {
+      'table_name': 'par_regulatory_functions'
+    }
+    this.configService.onLoadConfigurationData(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.regFunctionData = this.data_record.data
+          }
+        },
+        error => {
+
+        });
+  }
+
+  fetchRegSubFunctionData() {
+
+    var data_submit = {
+      'table_name': 'par_regulatory_subfunctions'
+    }
+    this.configService.onLoadConfigurationData(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.regSubFunctionData = this.data_record.data
+          }
+        },
+        error => {
+
+        });
+  }
+  
+  fetchOrganisationData() {
+
+    var data_submit = {
+      'table_name': 'tra_organisation_information'
+    }
+    this.configService.onLoadConfigurationData(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.organisationData = this.data_record.data
+          }
+        },
+        error => {
+
+        });
+  }
+  
+  
   funcpopWidth(percentage_width) {
     return window.innerWidth * percentage_width / 100;
   }

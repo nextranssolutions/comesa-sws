@@ -12,9 +12,9 @@ export class DmsConfigsetupComponent {
   tabsPositions: DxTabPanelTypes.Position[] = [
     'left', 'top', 'right', 'bottom',
   ];
-  tabsPosition: DxTabPanelTypes.Position = this.tabsPositions[0];
+  tabsPosition: DxTabPanelTypes.Position = this.tabsPositions[1];
   stylingModes: DxTabPanelTypes.TabsStyle[] = ['primary', 'secondary'];
-  stylingMode: DxTabPanelTypes.TabsStyle = this.stylingModes[0];
+  stylingMode: DxTabPanelTypes.TabsStyle = this.stylingModes[1];
   screenWidth: any;
 
   constructor(){
@@ -33,9 +33,9 @@ export class DmsConfigsetupComponent {
 
   checkScreenSize(): void{
     if(this.screenWidth < 768){
-      this.tabsPosition = 'left';
+      this.tabsPosition = 'top';
     }else{
-      this.tabsPosition = 'left';
+      this.tabsPosition = 'top';
     }
   }
   onFuncSaveNavigationData(){
