@@ -57,6 +57,7 @@ export class SharedImpExpdashboardClass {
   data_record: any;
   guidelines_title: string;
   regulatory_subfunction_id: any;
+  appworkflowstage_category_id:any;
   permit_type_id: 1;
   application_title: string;
   sectionItem: any;
@@ -208,15 +209,41 @@ export class SharedImpExpdashboardClass {
   }
 
 
+  // reloadPermitApplicationsApplications(appworkflow_status_id = 0) {
+  //   this.spinnerShow('Loading...........');
+
+  //   var data_submit = {
+  //     'table_name': this.table_name,
+  //     'appworkflow_status_id': appworkflow_status_id
+  //   };
+
+  //   this.appService.onPermitApplicationLoading('getImportExpApplicantPermitsLoading', data_submit, this.regulatory_subfunction_id)
+  //     .subscribe(
+  //       data => {
+  //         this.data_record = data;
+  //         if (this.data_record.success) {
+  //           this.dtImportExpApplicationData = this.data_record.data;
+  //         }
+  //         this.spinnerHide();
+  //       },
+  //       error => {
+  //         this.spinnerHide();
+  //       }
+  //     );
+  // }
+
   reloadPermitApplicationsApplications(appworkflow_status_id = 0) {
     this.spinnerShow('Loading...........');
-
-    var data_submit = {
+  
+    let data_submit = {
       'table_name': this.table_name,
-      'appworkflow_status_id': appworkflow_status_id
+      'appworkflow_status_id': appworkflow_status_id,
+      'regulatory_function_id': this.regulatory_function_id,
+      'regulatory_subfunction_id': this.regulatory_subfunction_id,
+      'appworkflowstage_category_id': this.appworkflowstage_category_id
     };
-
-    this.appService.onPermitApplicationLoading('getImportExpApplicantPermitsLoading', data_submit, this.regulatory_subfunction_id)
+  
+    this.appService.onPermitApplicationLoading('getImportExpApplicantPermitsLoading', data_submit)
       .subscribe(
         data => {
           this.data_record = data;
@@ -230,6 +257,7 @@ export class SharedImpExpdashboardClass {
         }
       );
   }
+  
 
 
   spinnerShow(spinnerMessage) {

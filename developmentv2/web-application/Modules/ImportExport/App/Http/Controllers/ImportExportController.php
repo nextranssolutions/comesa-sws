@@ -1541,15 +1541,12 @@ class ImportExportController extends Controller
     public function getImportExpApplicantPermitsLoading(Request $req)
     {
         try {
-            $workflowprocess_id = 1;
-            $user_id = $req->user_id;
-
             $requestData = $req->all();
             $filter = $req->filter;
             $table_name = 'wb_importexport_applications';
-            $appworkflow_status_id = $req->appworkflow_status_id;
+            $regulatory_function_id = $req->regulatory_function_id;
             $regulatory_subfunction_id = $req->regulatory_subfunction_id;
-             $workflow_status_id = $req->workflow_status_id;
+            $workflow_status_id = $req->workflow_status_id;
             $appworkflowstage_category_id = $req->appworkflowstage_category_id;
             unset($requestData['table_name']);
 
@@ -1589,13 +1586,13 @@ class ImportExportController extends Controller
             if (validateIsNumeric($appworkflowstage_category_id)) {
                 $sql->where(array('t9.appworkflowstage_category_id' => $appworkflowstage_category_id));
             }
-            if (validateIsNumeric($appworkflow_status_id)) {
-                $sql->where('appworkflow_status_id', $appworkflow_status_id);
+            if (validateIsNumeric($regulatory_function_id)) {
+                $sql->where('t1.regulatory_function_id', $regulatory_function_id);
             }
             if (validateIsNumeric($regulatory_subfunction_id)) {
                 $sql->where('t1.regulatory_subfunction_id', $regulatory_subfunction_id);
             }
-            
+            $workflowprocess_id = getSingleRecordColValue('wb_workflowprocesses', array('regulatory_subfunction_id' => $regulatory_subfunction_id, ), 'id');
 
             $actionColumnData = returnContextMenuActions($workflowprocess_id);
             //check the usres 
@@ -1636,7 +1633,6 @@ class ImportExportController extends Controller
                     'total_invoice_value' => $rec->total_invoice_value,
                     'date_of_application' => formatDaterpt($rec->date_of_application),
                     'expected_date_of_shipment' => $rec->expected_date_of_shipment,
-                    'tracking_no' => $rec->tracking_no,
                     'application_status_id' =>$rec->application_status_id,
                     'created_on' => $rec->created_on,
                     'workflowprocess_id' => $rec->workflowprocess_id,

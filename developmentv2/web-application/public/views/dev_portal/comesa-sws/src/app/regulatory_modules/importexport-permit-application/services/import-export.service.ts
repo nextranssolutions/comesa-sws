@@ -104,40 +104,40 @@ export class ImportExportService {
     this.applicant_details = data;
   }
 
-  onPermitApplicationLoading(action_url, filter_params, regulatory_subfunction_id) {
+  // onPermitApplicationLoading(action_url, filter_params, regulatory_subfunction_id) {
 
-    var headers = new HttpHeaders({
-      "Accept": "application/json",
-      "Authorization": 'Bearer ' + this.authService.getAccessToken(),
-    });
-
-    // filter_params.trader_id = this.trader_id;
-    // filter_params.mistrader_id = this.mistrader_id;
-    regulatory_subfunction_id = regulatory_subfunction_id;
-
-    this.config = {
-      params: filter_params,
-      headers: headers
-    };
-
-    return this.HttpClient.get(this.baseUrl + '/' + action_url, this.config)
-    .pipe(map(data => {
-      return <any>data;
-    }));
-  }
-
-  // onPermitApplicationLoading(filter_params, action_url) {
   //   var headers = new HttpHeaders({
   //     "Accept": "application/json",
-  //     "Authorization": "Bearer " + this.authService.getAccessToken(),
-  //     "Content-Type": "application/json"
+  //     "Authorization": 'Bearer ' + this.authService.getAccessToken(),
   //   });
 
-  //   return this.HttpClient.get(this.baseUrl + '/' + action_url, filter_params)
-  //     .pipe(map(data => {
-  //       return <any>data;
-  //     }));
+  //   // filter_params.trader_id = this.trader_id;
+  //   // filter_params.mistrader_id = this.mistrader_id;
+  //   regulatory_subfunction_id = regulatory_subfunction_id;
+
+  //   this.config = {
+  //     params: filter_params,
+  //     headers: headers
+  //   };
+
+  //   return this.HttpClient.get(this.baseUrl + '/' + action_url, this.config)
+  //   .pipe(map(data => {
+  //     return <any>data;
+  //   }));
   // }
+
+  onPermitApplicationLoading(filter_params, action_url) {
+    var headers = new HttpHeaders({
+      "Accept": "application/json",
+      "Authorization": "Bearer " + this.authService.getAccessToken(),
+      "Content-Type": "application/json"
+    });
+
+    return this.HttpClient.get(this.baseUrl + '/' + action_url, filter_params)
+      .pipe(map(data => {
+        return <any>data;
+      }));
+  }
 
 
 
