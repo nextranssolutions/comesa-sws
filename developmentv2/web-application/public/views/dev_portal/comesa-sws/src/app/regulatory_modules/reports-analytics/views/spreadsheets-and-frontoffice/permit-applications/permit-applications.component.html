@@ -227,14 +227,14 @@
                 </dx-button>
             </div>
         </dxi-column>
-        <!-- <dxi-column caption="{{'more_actions' | translate}}" [width]=150 name="command-editing" [allowFiltering]="false"
+        <dxi-column caption="{{'more_actions' | translate}}" [width]=150 name="command-editing" [allowFiltering]="false"
         [allowSorting]="false" cellTemplate="cellTemplate">
         <div *dxTemplate="let d of 'cellTemplate'">
             <dx-menu [items]="d.data.contextMenu" displayExpr="text"
                 (onItemClick)="applicationActionColClick($event,d)">
             </dx-menu>
         </div>
-    </dxi-column> -->
+    </dxi-column>
 
         <dxi-column dataField="reference_no" caption="{{'application_reference' | translate}}"*ngIf="columnVisibility.application_reference"></dxi-column>
         <dxi-column [width]=90 [groupIndex]="0" dataField="permit_name"

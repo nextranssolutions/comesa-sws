@@ -541,15 +541,15 @@ title="{{ 'delete_confirmation_of '+'workflow_transition' | translate }}" (onHid
                 <dxi-column [width]="100" caption="{{ 'action' | translate }}" name="command-editing"
                     [allowFiltering]="false" [allowSorting]="false" cellTemplate="cellTemplate">
                     <div *dxTemplate="let data of 'cellTemplate'">
-                        <dx-menu (onItemClick)="funcStageActionClick($event,data)"
-                            [items]="workflowStageActionsMenuItems"></dx-menu>
+                        <dx-menu (onItemClick)="StagesActionsClick($event,data)"
+                            [items]="StageActionsMenuItems"></dx-menu>
                     </div>
                 </dxi-column>
                 <dxi-column dataField="name" caption="{{ 'name' | translate }}">
 
                 </dxi-column>
 
-                <dxi-column dataField="stage_id" caption="{{ 'stage' | translate }}">
+                <dxi-column dataField="workflow_stage_id" caption="{{ 'stage' | translate }}">
                     <dxo-lookup [dataSource]="workflowStageData" displayExpr="name" valueExpr="id">
                     </dxo-lookup>
                 </dxi-column>
@@ -656,8 +656,8 @@ title="{{ 'delete_confirmation_of '+'workflow_transition' | translate }}" (onHid
             </div>
             <div class="col-lg-4">
                 <label for="unitName">{{ 'stage' | translate }}</label>
-                <dx-select-box [dataSource]="workflowStageData" formControlName="stage_id" [showClearButton]="true"
-                    valueExpr="id" [searchEnabled]="true" displayExpr="name"> </dx-select-box>
+                <dx-select-box [dataSource]="workflowStageData" formControlName="workflow_stage_id" [showClearButton]="true"
+                    valueExpr="id" [searchEnabled]="true" displayExpr="name" [readOnly]="true"> </dx-select-box>
             </div>
             <div class="col-lg-4">
                 <label for="unitName">{{ 'order_no' | translate }}</label>
@@ -692,6 +692,12 @@ title="{{ 'delete_confirmation_of '+'workflow_transition' | translate }}" (onHid
                     formControlName="is_paymentrequest_submission" [showClearButton]="true" valueExpr="value"
                     [searchEnabled]="true" displayExpr="text"> </dx-select-box>
             </div>
+            <div class="col-lg-4">
+                <label>{{ "is_enabled" | translate }}</label>
+                <dx-select-box [searchEnabled]="true" formControlName="is_enabled" [dataSource]="regStatusOptions"
+                  valueExpr="value" displayExpr="text">
+                </dx-select-box>
+              </div>
 
            
             <div class="col-lg-12">
@@ -884,6 +890,40 @@ title="{{ 'delete_confirmation_of '+'workflow_transition' | translate }}" (onHid
     </div>
 
 </dx-popup>
+<dx-popup [visible]="deleteWorkflowStageProcessActionPopup" [width]="funcpopWidth(30)" [height]="funcpopHeight(25)" [showTitle]="true"
+    title="{{ 'delete_confirmation_of '+'workflow_stage_process_actions' | translate }}" (onHidden)="deleteWorkflowStageProcessActionPopup = false">
+
+    <div>
+        <p class="confirmation-text">
+            {{ 'are_you_sure_you_want_to_delete' | translate }}
+            "<strong>{{config_record}}</strong>"?
+        </p>
+        <div class="button-container">
+            <dx-button text="{{ 'yes' | translate }}" type="danger" (onClick)="onDeleteWorkflowStageProcessActionDetails()">
+            </dx-button>
+            <dx-button text="{{ 'no' | translate }}" (onClick)="deleteWorkflowStageProcessActionPopup = false">
+            </dx-button>
+        </div>
+    </div>
+
+</dx-popup>
+<dx-popup [visible]="deleteWorkflowStageActionPopupVisible" [width]="funcpopWidth(30)" [height]="funcpopHeight(25)" [showTitle]="true"
+    title="{{ 'delete_confirmation_of '+'workflow_stage_action' | translate }}" (onHidden)="deleteWorkflowStageActionPopupVisible = false">
+
+    <div>
+        <p class="confirmation-text">
+            {{ 'are_you_sure_you_want_to_delete' | translate }}
+            "<strong>{{config_record}}</strong>"?
+        </p>
+        <div class="button-container">
+            <dx-button text="{{ 'yes' | translate }}" type="danger" (onClick)="onDeleteWorkflowStageActionDetails()">
+            </dx-button>
+            <dx-button text="{{ 'no' | translate }}" (onClick)="deleteWorkflowStageActionPopupVisible = false">
+            </dx-button>
+        </div>
+    </div>
+
+</dx-popup>
 
 <dx-popup [visible]="deleteWorkflowTransitionsPopupVisible" [width]="funcpopWidth(30)" [height]="funcpopHeight(25)" [showTitle]="true"
 title="{{ 'delete_confirmation_of '+'workflow_transition' | translate }}" (onHidden)="deleteWorkflowTransitionsPopupVisible = false">
@@ -921,9 +961,43 @@ title="{{ 'delete_confirmation_of '+'workflow_transition' | translate }}" (onHid
   </div>
 
 </dx-popup>
+<dx-popup [visible]="enableStageProcessPopupVisible" [width]="funcpopWidth(30)" [height]="funcpopHeight(25)" [showTitle]="true"
+  title="{{ enabledisable_stage | translate }}" (onHidden)="enableStageProcessPopupVisible = false">
+
+  <div>
+    <p class="confirmation-text">
+      {{ enabledisable_stagedescription | translate }}
+      "<strong>{{config_record}}</strong>"?
+    </p>
+    <div class="button-container">
+      <dx-button text="{{ 'yes' | translate }}" type="danger" (onClick)="iniateEnableDisableStageProcess()">
+      </dx-button>
+      <dx-button text="{{ 'no' | translate }}" (onClick)="enableStageProcessPopupVisible = false">
+      </dx-button>
+    </div>
+  </div>
+
+</dx-popup>
+<dx-popup [visible]="enableStageActionPopupVisible" [width]="funcpopWidth(30)" [height]="funcpopHeight(25)" [showTitle]="true"
+  title="{{ enabledisable_stage | translate }}" (onHidden)="enableStageActionPopupVisible = false">
+
+  <div>
+    <p class="confirmation-text">
+      {{ enabledisable_stagedescription | translate }}
+      "<strong>{{config_record}}</strong>"?
+    </p>
+    <div class="button-container">
+      <dx-button text="{{ 'yes' | translate }}" type="danger" (onClick)="iniateEnableDisableStageAction()">
+      </dx-button>
+      <dx-button text="{{ 'no' | translate }}" (onClick)="enableStageActionPopupVisible = false">
+      </dx-button>
+    </div>
+  </div>
+
+</dx-popup>
 
 <dx-popup [visible]="enableWorkflowPopupVisible" [width]="funcpopWidth(30)" [height]="funcpopHeight(25)" [showTitle]="true"
-  title="{{ enabledisable_workflow | translate }}" (onHidden)="enableStagePopupVisible = false">
+  title="{{ enabledisable_workflow | translate }}" (onHidden)="enableWorkflowPopupVisible = false">
 
   <div>
     <p class="confirmation-text">
@@ -940,7 +1014,7 @@ title="{{ 'delete_confirmation_of '+'workflow_transition' | translate }}" (onHid
 
 </dx-popup>
 <dx-popup [visible]="enableWorkflowTransitionPopupVisible" [width]="funcpopWidth(30)" [height]="funcpopHeight(25)" [showTitle]="true"
-  title="{{ enabledisable_workflow_transition | translate }}" (onHidden)="enableStagePopupVisible = false">
+  title="{{ enabledisable_workflow_transition | translate }}" (onHidden)="enableWorkflowTransitionPopupVisible = false">
 
   <div>
     <p class="confirmation-text">

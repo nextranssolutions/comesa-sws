@@ -25,9 +25,12 @@ export class ApplicantWorkflowsComponent {
   onAddWorkFlowItemVisible: boolean;
   hasReadpermissions: boolean;
   workflow_stage_id: number;
+ 
 
   is_enabled: boolean;
   enableStagePopupVisible: boolean;
+  enableStageProcessPopupVisible: boolean;
+  enableStageActionPopupVisible: boolean;
   enabledisable_stage: string;
   enabledisable_stagedescription: string;
 
@@ -49,6 +52,8 @@ export class ApplicantWorkflowsComponent {
   workflowDetailsVisible = false;
   workflowStageDetailsVisible = false;
   deleteWorkflowStagePopupVisible: boolean;
+  deleteWorkflowStageProcessActionPopup: boolean;
+  deleteWorkflowStageActionPopupVisible: boolean;
   deleteWorkflowTransitionsPopupVisible: boolean;
   workflowStagesVisible = false;
   workflow_id: number;
@@ -198,7 +203,19 @@ export class ApplicantWorkflowsComponent {
       text: "Action",
       icon: 'menu',
       items: [
-        { text: "Edit workflow Stage details", action: 'edit_record', icon: 'fa fa-edit' },
+        { text: "Edit", action: 'edit_record', icon: 'fa fa-edit' },
+        { text: "Delete", action: 'delete_record', icon: 'fa fa-trash' },
+        { text: "Enable/Disable", action: 'enable_record', icon: 'fa fa-check' },
+      ]
+    }
+  ];
+  StageActionsMenuItems = [
+    {
+      text: "Action",
+      icon: 'menu',
+      items: [
+        { text: "Edit Stage Action", action: 'edit_record', icon: 'fa fa-edit' },
+        // { text: "workflow details", action: 'workflow_details', icon: 'fa fa-code-fork' },
         { text: "Delete", action: 'delete_record', icon: 'fa fa-trash' },
         { text: "Enable/Disable", action: 'enable_record', icon: 'fa fa-check' },
       ]
@@ -279,7 +296,7 @@ export class ApplicantWorkflowsComponent {
       description: new FormControl('', Validators.compose([])),
       code: new FormControl('', Validators.compose([])),
       order_no: new FormControl('', Validators.compose([])),
-      stage_id: new FormControl('', Validators.compose([])),
+      // stage_id: new FormControl('', Validators.compose([])),
       is_status_tied: new FormControl('', Validators.compose([])),
       application_status_id: new FormControl('', Validators.compose([])),
       is_checklist_tied: new FormControl('', Validators.compose([])),
@@ -332,6 +349,9 @@ export class ApplicantWorkflowsComponent {
     this.onLoadStageStatusData();
     this.onLoadProcessTypesData();
     this.onLoadProcessCategoryData();
+    this.onLoadStageData();
+    this.onLoadApplicationStatusData();
+    this.onLoadStatusActionsData();
     
 
   }
@@ -362,7 +382,7 @@ export class ApplicantWorkflowsComponent {
     this.workflowStagesFrm.reset();
     this.workflowStagesVisible = true;
     // this.workflowStageDetailsVisible = true;
-    this.workflowStagesFrm.get('table_name')?.setValue('wf_workflow_stages');
+    this.workflowStagesFrm.get('table_name')?.setValue('wb_workflowprocesses_stages');
     this.workflowStagesFrm.get('workflow_id')?.setValue(this.workflow_id);
 
 
@@ -446,10 +466,11 @@ export class ApplicantWorkflowsComponent {
 
   }
 
-  fetchWorkflowStageActionsDetails(workflowprocess_id) {
+  fetchWorkflowStageActionsDetails(workflow_stage_id) {
     var data_submit = {
       'table_name': 'ptl_workflowprocess_actions',
-      workflowprocess_id: workflowprocess_id
+      // workflowprocess_id: workflowprocess_id
+      workflow_stage_id: workflow_stage_id
     }
     this.workflowService.getPortalWorkflowsConfigs(data_submit)
       .subscribe(
@@ -460,6 +481,7 @@ export class ApplicantWorkflowsComponent {
             this.workflowStageActionsData = this.data_record.data;
           }
         });
+        console.log(data_submit);
     this.spinnerHide();
 
 
@@ -645,7 +667,7 @@ export class ApplicantWorkflowsComponent {
 
   onLoadStageCategoryData() {
     var data_submit = {
-      'table_name': 'wkf_stage_categories',
+      'table_name': 'wf_stage_categories',
       // process_id: process_id
     }
     this.workflowService.getWorkflowConfigs(data_submit)
@@ -719,7 +741,7 @@ export class ApplicantWorkflowsComponent {
 
   onLoadProcessCategoryData() {
     var data_submit = {
-      'table_name': 'wkf_workflow_process_category',
+      'table_name': 'wf_workflow_process_category',
       // process_id: process_id
     }
     this.workflowService.getWorkflowConfigs(data_submit)
@@ -826,8 +848,9 @@ export class ApplicantWorkflowsComponent {
   }
   onLoadStageData() {
     var data_submit = {
-      'table_name': 'wf_workflow_stages',
-      // process_id: process_id
+      'table_name': 'wb_workflowprocesses_stages',
+      // workflow_stage_id: workflow_stage_id
+     
     }
     this.workflowService.getWorkflowConfigs(data_submit)
       .subscribe(
@@ -940,7 +963,23 @@ export class ApplicantWorkflowsComponent {
     this.deleteWorkflowStagePopupVisible = true;
     this.workflowStagesFrm.get('table_name')?.setValue('wb_workflowprocesses_stages');
     this.workflowStagesFrm.get('workflowprocess_id')?.setValue(this.workflowprocess_id);
-    console.log(data);
+   
+  }
+
+  funcDeleteWorkflowStageProcessActionDetails(data){
+    this.workflowStageProcessActionsFrm.patchValue(data.data);
+    this.config_record = data.data.name;
+    this.deleteWorkflowStageProcessActionPopup = true;
+    this.workflowStageProcessActionsFrm.get('table_name')?.setValue('wb_workflowstageprocess_actions');
+    this.workflowStageProcessActionsFrm.get('workflow_stage_id')?.setValue(this.workflow_stage_id);
+  }
+
+  funcDeleteWorkflowStageActionDetails(data){
+    this.workflowStageActionsItemsFrm.patchValue(data.data);
+    this.config_record = data.data.name;
+    this.deleteWorkflowStageActionPopupVisible = true;
+    this.workflowStageActionsItemsFrm.get('table_name')?.setValue('ptl_workflowprocess_actions');
+    this.workflowStageActionsItemsFrm.get('workflow_stage_id')?.setValue(this.workflow_stage_id);
   }
   funcWorkflowDetails(data) {
 
@@ -975,6 +1014,26 @@ export class ApplicantWorkflowsComponent {
       this.funcEnableDisableStageRecord(data);
     }
   }
+  funcStageDetailsOnClick(e, data) {
+    var action_btn = e.itemData;
+    if (action_btn.action === 'edit_record') {
+      this.funcEditStageProcessActionDetails(data);
+    } else if (action_btn.action === 'delete_record') {
+      this.funcDeleteWorkflowStageProcessActionDetails(data);
+    } else if (action_btn.action === 'enable_record') {
+      this.funcEnableDisableWorkflowStageProcessAction(data);
+    }
+  }
+  StagesActionsClick(e, data){
+    var action_btn = e.itemData;
+    if (action_btn.action === 'edit_record') {
+      this.funcEditStageActionDetails(data);
+    } else if (action_btn.action === 'delete_record') {
+      this.funcDeleteWorkflowStageActionDetails(data);
+    }else if (action_btn.action === 'enable_record') {
+      this.funcEnableDisableStageActionRecord(data);
+    }
+  }
   funcActionColClick(e, data) {
     var action_btn = e.itemData;
     if (action_btn.action === 'edit_record') {
@@ -990,7 +1049,10 @@ export class ApplicantWorkflowsComponent {
     }
   }
 
+
+
   funcEditStageDetails(data) {
+    // console.log(data);
     this.workflowStagesFrm.reset();
     this.workflowStageDetailsVisible = true
     this.workflowStagesFrm.patchValue(data.data);
@@ -998,10 +1060,31 @@ export class ApplicantWorkflowsComponent {
     this.workflowStagesFrm.get('table_name')?.setValue('wb_workflowprocesses_stages');
     this.workflowStagesFrm.get('workflowprocess_id')?.setValue(this.workflowprocess_id);
 
-    this.fetchWorkflowStageActionsDetails(data.data.workflowprocess_id);
-    this.fetchWorkflowStageProcessActions(data.data.workflowprocess_id);
+    this.workflow_stage_id = data.data.id;
+    // console.log(this.workflow_stage_id)
+   
+   
+    this.fetchWorkflowStageActionsDetails(this.workflow_stage_id);
+    this.fetchWorkflowStageProcessActions(this.workflow_stage_id);
 
 
+  }
+  funcEditStageProcessActionDetails(data){
+    this.workflowStageProcessActionsFrm.reset();
+    this.workflowStageProcessActionsVisible = true;
+    this.workflowStageProcessActionsFrm.patchValue(data.data);
+
+    this.workflowStageProcessActionsFrm.get('table_name')?.setValue('wb_workflowstageprocess_actions');
+    this.workflowStageProcessActionsFrm.get('workflow_stage_id')?.setValue(this.workflow_stage_id);
+  }
+
+  funcEditStageActionDetails(data){
+    this.workflowStageActionsItemsFrm.reset();
+    this.workflowStageActionDetailsVisible = true;
+    this.workflowStageActionsItemsFrm.patchValue(data.data);
+
+    this.workflowStageActionsItemsFrm.get('table_name')?.setValue('ptl_workflowprocess_actions');
+    this.workflowStageActionsItemsFrm.get('workflow_stage_id')?.setValue(this.workflow_stage_id);
   }
 
   iniateEnableDisableStage() {
@@ -1029,11 +1112,62 @@ export class ApplicantWorkflowsComponent {
           this.spinnerHide();
         });
   }
+
+  iniateEnableDisableStageProcess() {
+
+    this.spinnerShow('Saving_details');
+    this.workflowStageProcessActionsFrm.get('table_name')?.setValue('wb_workflowstageprocess_actions');
+    this.workflowService.onEnablePortalWorkflowsDetails(this.workflowStageProcessActionsFrm.value, 'wb_workflowstageprocess_actions', this.parameter_name)
+      .subscribe(
+        response => {
+          this.spinner.hide();
+          this.response = response;
+          if (this.response.success) {
+            this.fetchWorkflowStageProcessActions(this.workflowStageProcessActionsFrm.value.workflow_stage_id);
+            this.enableStagePopupVisible = false;
+            this.toastr.success(this.response.message, 'Response');
+            // this.deletePopupVisible = false;
+          }
+          else {
+            this.toastr.success(this.response.message, 'Response');
+          }
+          this.spinnerHide();
+        },
+        error => {
+          this.loading = false;
+          this.spinnerHide();
+        });
+  }
+  iniateEnableDisableStageAction() {
+
+    this.spinnerShow('Saving_details');
+    this.workflowStageActionsItemsFrm.get('table_name')?.setValue('ptl_workflowprocess_actions');
+    this.workflowService.onEnablePortalWorkflowsDetails(this.workflowStageActionsItemsFrm.value, 'ptl_workflowprocess_actions', this.parameter_name)
+      .subscribe(
+        response => {
+          this.spinner.hide();
+          this.response = response;
+          if (this.response.success) {
+            this.funcEditStageActionDetails(this.workflowStageActionsItemsFrm.value.workflow_stage_id);
+            this.enableStageActionPopupVisible = false;
+            this.toastr.success(this.response.message, 'Response');
+            // this.deletePopupVisible = false;
+          }
+          else {
+            this.toastr.success(this.response.message, 'Response');
+          }
+          this.spinnerHide();
+        },
+        error => {
+          this.loading = false;
+          this.spinnerHide();
+        });
+  }
   iniateEnableDisableWorkflowStage() {
  
     this.spinnerShow('Saving_details');
-    this.workflowStageItemsFrm.get('table_name')?.setValue('wf_workflow_stages');
-    this.workflowService.onEnableWorkflowDetails(this.workflowStageItemsFrm.value, 'wf_workflow_stages', this.parameter_name)
+    this.workflowStageItemsFrm.get('table_name')?.setValue('wb_workflowprocesses_stages');
+    this.workflowService.onEnableWorkflowDetails(this.workflowStageItemsFrm.value, 'wb_workflowprocesses_stages', this.parameter_name)
       .subscribe(
         response => {
           this.spinner.hide();
@@ -1054,7 +1188,44 @@ export class ApplicantWorkflowsComponent {
           this.spinnerHide();
         });
   }
+
+  funcEnableDisableStageActionRecord(data){
+    this.workflowStageActionsItemsFrm.patchValue(data.data);
+
+    this.config_record = data.data.name;
+    this.is_enabled = data.data.is_enabled;
+    // console.log(this.is_enabled)
+    if (this.is_enabled) {
+      this.enabledisable_stage = "disable_workflow_stage_action";
+      this.enabledisable_stagedescription = "are_you_sure_you_want_to_disableworkflow_stage_action";
+
+    }
+    else {
+      this.enabledisable_stage = "enable_workflow_stage_action";
+      this.enabledisable_stagedescription = "are_you_sure_you_want_to_enableworkflow_stage_action";
+    }
+
+    this.enableStagePopupVisible = true;
+  }
   
+  funcEnableDisableWorkflowStageProcessAction(data){
+    this.workflowStageProcessActionsFrm.patchValue(data.data);
+
+    this.config_record = data.data.name;
+    this.is_enabled = data.data.is_enabled;
+    // console.log(this.is_enabled)
+    if (this.is_enabled) {
+      this.enabledisable_stage = "disable_workflow_stage_process_action";
+      this.enabledisable_stagedescription = "are_you_sure_you_want_to_disableworkflow_stage_process_action";
+
+    }
+    else {
+      this.enabledisable_stage = "enable_workflow_stage_process_action";
+      this.enabledisable_stagedescription = "are_you_sure_you_want_to_enableworkflow_stage_process_action";
+    }
+
+    this.enableStageProcessPopupVisible = true;
+  }
 
   funcEnableDisableStageRecord(data) {
     this.workflowStagesFrm.patchValue(data.data);
@@ -1170,7 +1341,7 @@ export class ApplicantWorkflowsComponent {
   // fetchWorkflowStagesInfo(workflow_id) {
   //   this.spinnerShow('Loading Workflow Stages Details');
   //   var data_submit = {
-  //     'table_name': 'wf_workflow_stages',
+  //     'table_name': 'wb_workflowprocesses_stages',
   //     workflow_id: workflow_id
   //   }
   //   this.workflowService.getWorkflowConfigs(data_submit)
@@ -1202,11 +1373,11 @@ export class ApplicantWorkflowsComponent {
         });
   
   }
-  fetchWorkflowStageProcessActions(workflowprocess_id) {
+  fetchWorkflowStageProcessActions(workflow_stage_id) {
     this.spinnerShow('Loading Workflow Stages Details');
     var data_submit = {
       'table_name': 'wb_workflowstageprocess_actions',
-      workflowprocess_id: workflowprocess_id
+      workflow_stage_id: workflow_stage_id
     }
     this.workflowService.getWorkflowConfigs(data_submit)
     .subscribe(
@@ -1238,7 +1409,7 @@ export class ApplicantWorkflowsComponent {
     this.workflowStagesProcessActionsData = [];
     this.workflowStageActionsItemsFrm.get('workflow_stage_id')?.setValue(this.workflow_stage_id);
     
-    //this.workflowStageProcessActionsFrm.get('table_name')?.setValue('wf_workflow_stages');
+    //this.workflowStageProcessActionsFrm.get('table_name')?.setValue('wb_workflowprocesses_stages');
    //this.workflowStageProcessActionsFrm.get('workflow_id')?.setValue(this.workflow_id);
   
     
@@ -1264,16 +1435,7 @@ export class ApplicantWorkflowsComponent {
     this.enableWorkflowStageVisible = true;
   }
 
-  funcStageDetailsOnClick(e, data) {
-    var action_btn = e.itemData;
-    if (action_btn.action === 'edit_record') {
-      this.funcEditStageDetails(data);
-    } else if (action_btn.action === 'delete_record') {
-      this.funcDeleteWorkflowStageDetails(data);
-    } else if (action_btn.action === 'enable_record') {
-      this.funcEnableDisableWorkflowStage(data);
-    }
-  }
+
 
   onFuncSaveWorlflowStageActionData() {
     const formData = new FormData();
@@ -1294,7 +1456,7 @@ export class ApplicantWorkflowsComponent {
     this.action_url = 'onsavePortalWorkflowConfigData';
   
     this.spinner.show();
-    this.workflowStageActionsItemsFrm.get('workflowprocess_id')?.setValue(this.workflowprocess_id);
+    this.workflowStageActionsItemsFrm.get('workflow_stage_id')?.setValue(this.workflow_stage_id);
     this.workflowService.onSaveWorkflowDetailsDetails('ptl_workflowprocess_actions', this.workflowStageActionsItemsFrm.value, this.action_url)
       .subscribe(
         response => {
@@ -1302,8 +1464,8 @@ export class ApplicantWorkflowsComponent {
           //the details 
           if (this.response.success) {
   
-            this.fetchWorkflowStageActionsDetails(this.workflowprocess_id);
-            this.workflowStageDetailsVisible = false;
+            this.fetchWorkflowStageActionsDetails(this.workflow_stage_id);
+            this.workflowStageActionDetailsVisible = false;
             this.toastr.success(this.response.message, 'Response');
             this.spinnerHide();
           } else {
@@ -1382,7 +1544,7 @@ export class ApplicantWorkflowsComponent {
     this.action_url = 'onsavePortalWorkflowConfigData';
   
     this.spinner.show();
-    this.workflowStageProcessActionsFrm.get('workflowprocess_id')?.setValue(this.workflowprocess_id);
+    this.workflowStageProcessActionsFrm.get('workflow_stage_id')?.setValue(this.workflow_stage_id);
     this.workflowService.onSaveWorkflowDetailsDetails('wb_workflowstageprocess_actions', this.workflowStageProcessActionsFrm.value, this.action_url)
       .subscribe(
         response => {
@@ -1390,7 +1552,7 @@ export class ApplicantWorkflowsComponent {
           //the details 
           if (this.response.success) {
   
-            this.fetchWorkflowStageProcessActions(this.workflowprocess_id);
+            this.fetchWorkflowStageProcessActions(this.workflow_stage_id);
             this.workflowStageProcessActionsVisible = false;
             this.toastr.success(this.response.message, 'Response');
             this.spinnerHide();
@@ -1500,6 +1662,60 @@ export class ApplicantWorkflowsComponent {
             this.fetchWorkflowStagesDetails(this.workflowprocess_id);
             this.toastr.success(this.response.message, 'Response');
             this.deleteWorkflowStagePopupVisible = false;
+          }
+          else {
+
+            this.toastr.success(this.response.message, 'Response');
+
+          } this.spinnerHide();
+
+        },
+        error => {
+          this.loading = false;
+        });
+
+  }
+
+  onDeleteWorkflowStageProcessActionDetails() {
+    this.spinnerShow('deleting ' + this.parameter_name);
+    this.workflowStageProcessActionsFrm.get('table_name')?.setValue('wb_workflowstageprocess_actions');  
+    this.workflowService.onDeletePortalWorkflowsDetails( this.workflowStageProcessActionsFrm.value,'wb_workflowstageprocess_actions', this.parameter_name)
+      .subscribe(
+        response => {
+
+          this.response = response;
+          if (this.response.success) {
+            // this.fetchWorkflowItemsDetails();
+            this.fetchWorkflowStageProcessActions(this.workflow_stage_id);
+            this.toastr.success(this.response.message, 'Response');
+            this.deleteWorkflowStageProcessActionPopup = false;
+          }
+          else {
+
+            this.toastr.success(this.response.message, 'Response');
+
+          } this.spinnerHide();
+
+        },
+        error => {
+          this.loading = false;
+        });
+
+  }
+
+  onDeleteWorkflowStageActionDetails() {
+    this.spinnerShow('deleting ' + this.parameter_name);
+    this.workflowStageActionsItemsFrm.get('table_name')?.setValue('ptl_workflowprocess_actions');  
+    this.workflowService.onDeletePortalWorkflowsDetails( this.workflowStageActionsItemsFrm.value,'ptl_workflowprocess_actions', this.parameter_name)
+      .subscribe(
+        response => {
+
+          this.response = response;
+          if (this.response.success) {
+            // this.fetchWorkflowItemsDetails();
+            this.fetchWorkflowStageActionsDetails(this.workflow_stage_id);
+            this.toastr.success(this.response.message, 'Response');
+            this.deleteWorkflowStageActionPopupVisible = false;
           }
           else {
 
