@@ -26,32 +26,15 @@
         <div class="container-fluid">
             <dx-tab-panel class="fullpage-tab" id="Navigation Tab" [stylingMode]="stylingMode"
                 [tabsPosition]="tabsPosition" [swipeEnabled]="false" [showNavButtons]="true" [animationEnabled]="true">
+                <dxi-item title="{{ 'processdocument_requirements_setup' | translate }}" icon="fa fa-th-list">
 
-                <dxi-item title="{{ 'DMS Sites Repository Defination' | translate }}" icon="fa fa-th-list">
+                    <app-document-requirement-defination></app-document-requirement-defination>
+                </dxi-item>
+                <dxi-item title="{{ 'dms_site_repositories' | translate }}" icon="fa fa-th-list">
 
                     <app-dms-sites-repository-defination></app-dms-sites-repository-defination>
                 </dxi-item>
 
-                <dxi-item title="{{ 'Non-Structured Documents Defination' | translate }}" icon="fa fa-th-list">
-                    <app-nonstructured-doc-defination></app-nonstructured-doc-defination>
-
-                </dxi-item>
-
-                <dxi-item title="{{ 'Documents Requirement Defination' | translate }}" icon="fa fa-th-list">
-
-                    <app-document-requirement-defination></app-document-requirement-defination>
-                </dxi-item>
-
-              
-                <dxi-item title="{{ 'SOP Master List' | translate }}" icon="fa fa-th-list">
-
-                    <app-sop-masterlist></app-sop-masterlist>
-                </dxi-item>
-
-                <dxi-item title="{{ 'Document Extension Types' | translate }}" icon="fa fa-th-list">
-
-                    <app-document-extension-types></app-document-extension-types>
-                </dxi-item>
 
             </dx-tab-panel>
         </div>

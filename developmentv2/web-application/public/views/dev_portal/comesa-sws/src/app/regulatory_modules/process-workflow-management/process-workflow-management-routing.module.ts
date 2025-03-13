@@ -22,6 +22,9 @@ import { ProcessConfsetupComponent } from './views/process-configuration/process
 import { UserGroupsPermissionsComponent } from './views/user-groups-permissions/user-groups-permissions.component';
 import { DmsConfigsetupComponent } from './views/dms/dms-configsetup/dms-configsetup.component';
 import { DocumentTypesComponent } from './views/dms/document-types/document-types.component';
+
+import { DocumentExtensionTypesComponent } from './views/dms/document-extension-types/document-extension-types.component';
+
 import { PermitTermsconditionsComponent } from './views/manuals/permit-termsconditions/permit-termsconditions.component';
 
 const routes: Routes = [{
@@ -109,12 +112,15 @@ const routes: Routes = [{
     {
       path: 'app-hscodesconfig-setup',
       component: HscodesconfigSetupComponent
-    },
+    },{
+      path: 'app-document-extension-types',
+      component: DocumentExtensionTypesComponent
+    }
+    ,
     {
       path: 'app-permit-termsconditions',
       component: PermitTermsconditionsComponent
-    },
-  
+    }
   ]
 }]
 

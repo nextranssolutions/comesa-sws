@@ -178,55 +178,49 @@ export class SharedImpExpdashboardClass {
 
   }
 
-onApplicationSelection() {
+  onApplicationSelection() {
     if (this.applicationSelectionfrm.invalid) {
-      this.toastr.error('Fill in all the Mandatory Fields', 'Alert!');
-      return;
+        this.toastr.error('Fill in all the Mandatory Fields', 'Alert!');
+        return;
     }
 
     this.spinnerShow('loading...');
     this.sectionItem = this.applicationSelectionfrm.controls['transactionpermit_type_id'];
-
-    // let transactionpermit_type_id = this.applicationSelectionfrm.get('transactionpermit_type_id')?.value;
     let regulatory_subfunction_id = this.applicationSelectionfrm.get('regulatory_subfunction_id')?.value;
 
     this.regulatory_subfunction_id = regulatory_subfunction_id;
     this.transactionpermit_type_id = this.sectionItem.value;
 
+    // Store transactionpermit_type_id in localStorage
+    localStorage.setItem('transactionpermit_type_id', JSON.stringify(this.transactionpermit_type_id));
 
-    // localStorage.setItem('transactionpermit_type_id', JSON.stringify(this.transactionpermit_type_id));
-    
     this.configService.getSectionUniformApplicationProces(this.regulatory_subfunction_id, this.transactionpermit_type_id)
-      .subscribe(
-        data => {
-          
-          if (data.success) {
-            this.processData = data.data.process_infor;
+        .subscribe(
+            data => {
+                if (data.success) {
+                    this.processData = data.data.process_infor;
 
-            this.router_link = this.processData.router_link;
-            this.productsapp_details = this.processData;
+                    this.router_link = this.processData.router_link;
+                    this.productsapp_details = this.processData;
 
-            this.appService.setApplicationDetail(data.data);
-            localStorage.setItem('application_details', JSON.stringify(data.data));
-
-            this.app_route = ['./importexport-control/' + this.router_link];
-            this.router.navigate(this.app_route);
-            this.scrollToTop();
-          } else {
-            this.toastr.error(this.processData.message, 'Alert!');
-          }
-          this.spinnerHide();
-        },
-        error => {
-          this.toastr.error('An error occurred while processing', 'Error');
-          this.spinnerHide();
-        }
-      );
+                    this.appService.setApplicationDetail(data.data);
+                    localStorage.setItem('application_details', JSON.stringify(data.data));
+                    this.app_route = ['./importexport-control/' + this.router_link];
+                    this.router.navigate(this.app_route);
+                    this.scrollToTop();
+                } else {
+                    this.toastr.error(this.processData.message, 'Alert!');
+                }
+                this.spinnerHide();
+            },
+            error => {
+                this.toastr.error('An error occurred while processing', 'Error');
+                this.spinnerHide();
+            }
+        );
 
     return false;
 }
-
-
 
 
   funcpopWidth(percentage_width) {

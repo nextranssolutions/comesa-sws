@@ -11,6 +11,10 @@ import { ApprovedPermitsComponent } from './views/import-license/approved-permit
 import { AwaitingPaymentRemittanceComponent } from './views/import-license/awaiting-payment-remittance/awaiting-payment-remittance.component';
 import { RejectedPermitsComponent } from './views/import-license/rejected-permits/rejected-permits.component';
 import { RequestAdditionalInfoComponent } from './views/import-license/request-additional-info/request-additional-info.component';
+import { DraftExportlicensedashComponent } from './views/export-license/draft-exportlicensedash/draft-exportlicensedash.component';
+import { InitiateExportappComponent } from './views/export-license/initiate-exportapp/initiate-exportapp.component';
+import { PersonaluseproductsDashComponent } from './views/permit-personaluse-products/personaluseproducts-dash/personaluseproducts-dash.component';
+import { InitiatePermitsforPersonaluseproductsComponent } from './views/permit-personaluse-products/initiate-permitsfor-personaluseproducts/initiate-permitsfor-personaluseproducts.component';
 
 const routes: Routes = [{
   path: '',
@@ -28,21 +32,33 @@ const routes: Routes = [{
   }, {
     path: 'underprocessing-importapp',
     component: UnderprocessingImportlicencedashComponent
-  },{
-      path: 'request-additional-info',
-      component: RequestAdditionalInfoComponent
-    },{
-      path: 'rejected-importapp',
-      component: RejectedPermitsComponent
-    },{
-      path: 'awaitingpayment-remittance',
-      component: AwaitingPaymentRemittanceComponent
-    },{
-      path: 'approved-permits',
-      component: ApprovedPermitsComponent
-    }
-]
-}]
+  }, {
+    path: 'request-additional-info',
+    component: RequestAdditionalInfoComponent
+  }, {
+    path: 'rejected-importapp',
+    component: RejectedPermitsComponent
+  }, {
+    path: 'awaitingpayment-remittance',
+    component: AwaitingPaymentRemittanceComponent
+  }, {
+    path: 'approved-permits',
+    component: ApprovedPermitsComponent
+  }, {
+    path: 'draft-exportlicensedash',
+    component: DraftExportlicensedashComponent
+  }, {
+    path: 'initiate-exportapp',
+    component: InitiateExportappComponent
+  },  {
+    path: 'personaluseproducts-dash',
+    component: PersonaluseproductsDashComponent
+  }, {
+    path: 'initiate-permitsfor-personaluseproducts',
+    component: InitiatePermitsforPersonaluseproductsComponent
+  }, 
+  ]  
+}] 
 
 @NgModule({
   imports: [RouterModule.forChild(routes)],
