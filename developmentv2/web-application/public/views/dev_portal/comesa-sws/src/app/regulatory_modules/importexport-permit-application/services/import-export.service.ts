@@ -104,16 +104,12 @@ export class ImportExportService {
     this.applicant_details = data;
   }
 
-  onPermitApplicationLoading(action_url, filter_params, regulatory_subfunction_id) {
+  onPermitApplicationLoading(action_url, filter_params) {
 
     var headers = new HttpHeaders({
       "Accept": "application/json",
       "Authorization": 'Bearer ' + this.authService.getAccessToken(),
     });
-
-    // filter_params.trader_id = this.trader_id;
-    // filter_params.mistrader_id = this.mistrader_id;
-    regulatory_subfunction_id = regulatory_subfunction_id;
 
     this.config = {
       params: filter_params,

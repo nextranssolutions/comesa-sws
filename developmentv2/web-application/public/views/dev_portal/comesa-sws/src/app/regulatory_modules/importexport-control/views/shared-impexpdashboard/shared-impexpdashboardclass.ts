@@ -74,6 +74,8 @@ export class SharedImpExpdashboardClass {
 
   win_submitinvoicepayments:boolean;
   permitProductsData:any;
+
+  appworkflowstage_category_id:number;
   constructor(public utilityService: UtilityService, public viewRef: ViewContainerRef,
     public spinner: SpinnerVisibilityService,
     public toastr: ToastrService,
@@ -105,11 +107,19 @@ export class SharedImpExpdashboardClass {
     });
     this.table_name = 'txn_importexport_applications';
 
+    
+    this.nav_data = localStorage.getItem('nav_data');
+    this.nav_data = JSON.parse(this.nav_data);
+    this.regulatory_function_id = this.nav_data.regulatory_function_id;
+    this.regulatory_subfunction_id = this.nav_data.regulatory_subfunction_id;
+    this.appworkflowstage_category_id = this.nav_data.appworkflowstage_category_id;
+    
     this.onLoadconfirmDataParam();
     this.reloadPermitApplicationsApplications();
     this.onLoadPermitTypesData();
     this.onLoadWorkflowStatusData();
     this.onLoadApplicationStatusData();
+
   }
 
   scrollToTop(): void {
@@ -214,12 +224,13 @@ export class SharedImpExpdashboardClass {
   }
 
 
-  reloadPermitApplicationsApplications(filter_params = { application_status_id: this.application_status_id }) {
+  reloadPermitApplicationsApplications() {
     this.spinnerShow('Loading...........');
+    let filter_params = {regulatory_subfunction_id:this.regulatory_subfunction_id,appworkflowstage_category_id:this.appworkflowstage_category_id};
+    console.log(filter_params);
     this.appService.onPermitApplicationLoading(filter_params, 'getImportExpPermitApplicationLoading')
       .subscribe(
         data => {
-
           this.data_record = data;
           if (this.data_record.success) {
             this.dtImportExpApplicationData = this.data_record.data;
