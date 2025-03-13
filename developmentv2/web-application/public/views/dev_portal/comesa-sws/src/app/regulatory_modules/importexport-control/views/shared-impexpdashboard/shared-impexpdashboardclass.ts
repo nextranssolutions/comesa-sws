@@ -39,9 +39,7 @@ export class SharedImpExpdashboardClass {
   applicationRejectionData: any;
   isApplicationRejectionVisible: boolean = false;
   FilterDetailsFrm: FormGroup;
-  productappTypeData: any;
   applicationStatusData: any;
-  productTypeData: any;
   data_record: any;
   guidelines_title: string;
   regulatory_subfunction_id: number;
@@ -53,31 +51,16 @@ export class SharedImpExpdashboardClass {
   regulatory_subfunction_idsel: number;
   isPermitInitialisation: boolean;
   confirmDataParam: any;
-  has_nonregisteredproducts: boolean = false;
-  win_submitinvoicepayments: boolean;
-  permitProductsData: any;
   application_status_id: any;
   loadingVisible: boolean;
   spinnerMessage: string;
-  appregulatory_subfunction_id: number;
   app_routing: any;
-  appregulatory_function_id: number;
-  appregulated_productstype_id: number;
   appstatus_id: number;
-  appapplication_code: number;
-  producttypeDefinationData: any;
   onApplicationSubmissionFrm: FormGroup;
-  hasFinishedProducts: boolean;
-  producttype_defination_id: number;
   importExportPermitTypesData: any;
   processingData: any;
   wofklowStatusData: any;
-  form_fielddata: any;
-  products_fielddata: any;
-  applicants_fielddata: any;
-  applicant_details: any;
-  trader_id: number;
-  mistrader_id: number;
+  
   process_title: string;
   tracking_no: string;
   application_id: number;
@@ -89,6 +72,8 @@ export class SharedImpExpdashboardClass {
   applicationsubmission_type_id: number;
   nav_data: any;
 
+  win_submitinvoicepayments:boolean;
+  permitProductsData:any;
   constructor(public utilityService: UtilityService, public viewRef: ViewContainerRef,
     public spinner: SpinnerVisibilityService,
     public toastr: ToastrService,
@@ -120,10 +105,7 @@ export class SharedImpExpdashboardClass {
     });
     this.table_name = 'txn_importexport_applications';
 
-    this.onLoadProductTypes();
     this.onLoadconfirmDataParam();
-    this.onLoadproducttypeDefinationData();
-    this.onLoadPermitProductsData(this.oga_application_code);
     this.reloadPermitApplicationsApplications();
     this.onLoadPermitTypesData();
     this.onLoadWorkflowStatusData();
@@ -329,25 +311,6 @@ export class SharedImpExpdashboardClass {
 
   }
 
-  onLoadProductTypes() {
-    var data = {
-      table_name: 'par_regulated_productstypes',
-      is_enabled: 1
-    };
-
-    this.configService.onLoadConfigurationData(data)
-      .subscribe(
-        data => {
-          this.data_record = data;
-
-          if (this.data_record.success) {
-            this.productTypeData = this.data_record.data;
-            ;
-          }
-        });
-  }
-
-
   onLoadconfirmDataParam() {
     var data = {
       table_name: 'par_confirmations'
@@ -365,40 +328,6 @@ export class SharedImpExpdashboardClass {
 
   }
 
-  onLoadProductAppType(regulatory_subfunction_id) {
-
-    var data = {
-      table_name: 'par_regulatory_subfunctions',
-      regulatory_function_id: 1,
-      regulatory_subfunction_id: regulatory_subfunction_id
-    };
-    this.configService.onLoadConfigurationData(data)
-      .subscribe(
-        data => {
-          this.data_record = data;
-
-          if (this.data_record.success) {
-            this.productappTypeData = this.data_record.data;
-            ;
-          }
-        });
-  }
-  onLoadproducttypeDefinationData() {
-    var data = {
-      table_name: 'par_producttype_definations',
-    };
-    this.configService.onLoadConfigurationData(data)
-      .subscribe(
-        data => {
-          this.data_record = data;
-
-          if (this.data_record.success) {
-            this.producttypeDefinationData = this.data_record.data;
-            ;
-          }
-        });
-
-  }
   funcRequestforPermitAlteration() {
     this.app_route = ['./import-export/importexport-approvedappsel'];
     this.router.navigate(this.app_route);
@@ -498,31 +427,7 @@ export class SharedImpExpdashboardClass {
   refreshDataGrid() {
     this.dataGrid.instance.refresh();
   }
-  funcProductPreviewDetails(data) {
-    this.isPreviewApplicationDetails = true;
-    this.frmPreviewAppDetails.patchValue(data);
-    this.onLoadPermitProductsData(data.oga_application_code);
-  }
-
-
-  onLoadPermitProductsData(oga_application_code: any) {
-    this.spinner.show();
-    this.appService.getPermitsOtherDetails({ 'oga_application_code': oga_application_code }, 'getPermitProductsDetails')
-      .subscribe(
-        data => {
-          if (data.success) {
-            this.permitProductsData = data.data;
-
-          }
-          else {
-            this.toastr.success(data.message, 'Alert');
-          }
-          this.spinner.hide();
-        },
-        error => {
-          return false
-        });
-  }
+  
   applicationActionColClick(e, data) {
 
     var action_btn = e.itemData;
@@ -544,7 +449,7 @@ export class SharedImpExpdashboardClass {
 
     }
     else if (action_btn.action === 'preview') {
-      this.funcProductPreviewDetails(data);
+      //this.funcProductPreviewDetails(data);
     }
     else if (action_btn.action == 'print_applications') {
       this.funcPrintApplicationDetails(data);
@@ -614,13 +519,14 @@ export class SharedImpExpdashboardClass {
     this.utilityService.funcApplicationRestoreArchiceCall(this.viewRef, data, 'txn_importexport_applications', this.reloadPermitApplicationsApplications)
   }
   application_data: any;
+  current_stage_id:number;
   funcApplicationPreveditDetails(app_data) {
     this.regulatory_subfunction_id = app_data.regulatory_subfunction_id;
-    this.applicationsubmission_type_id = app_data.applicationsubmission_type_id;
-
+    this.transactionpermit_type_id = app_data.transactionpermit_type_id;
+    this.current_stage_id = app_data.current_stage_id;
+    let appprocess_data = {current_stage_id:this.current_stage_id,oga_application_code:this.oga_application_code,transactionpermit_type_id:this.transactionpermit_type_id,regulatory_subfunction_id:this.regulatory_subfunction_id }
     this.spinner.show();
-
-    this.configService.getSectionUniformApplication(this.regulatory_subfunction_id)
+    this.configService.getPermitUniformApplicationProces(appprocess_data, 'getPermitUniformApplicationProces')
       .subscribe(
         data => {
           this.spinner.hide();
