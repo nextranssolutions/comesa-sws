@@ -55,12 +55,12 @@ export class ImportExportService {
       }));
   }
 
-  onsavePermitProductdetails(application_code, permitData, tracking_no, action_url) {
+  onsavePermitProductdetails(application_code, permitData,  action_url) {
 
 
 
     let data_header = {
-      params: { application_code: application_code, tracking_no: tracking_no, 'trader_id': this.trader_id, 'trader_email': this.email_address },
+      params: { application_code: application_code },
 
       headers: { 'Accept': 'application/json', "Authorization": "Bearer " + this.authService.getAccessToken() }
     };
@@ -87,8 +87,7 @@ export class ImportExportService {
       }));
   } getApplicationDetail() {
     return this.application_details;
-    return this.permit_details;
-
+   
   }
   setApplicationDetail(data: any[]) {
     this.application_details = data;
@@ -105,40 +104,40 @@ export class ImportExportService {
     this.applicant_details = data;
   }
 
-  // onPermitApplicationLoading(action_url, filter_params, regulatory_function_id) {
+  onPermitApplicationLoading(action_url, filter_params, regulatory_subfunction_id) {
 
-  //   var headers = new HttpHeaders({
-  //     "Accept": "application/json",
-  //     "Authorization": 'Bearer ' + this.authService.getAccessToken(),
-  //   });
-
-  //   // filter_params.trader_id = this.trader_id;
-  //   // filter_params.mistrader_id = this.mistrader_id;
-  //   filter_params.regulatory_function_id = regulatory_function_id;
-
-  //   this.config = {
-  //     params: filter_params,
-  //     headers: headers
-  //   };
-
-  //   return this.HttpClient.get(this.baseUrl + '/' + action_url, this.config)
-  //   .pipe(map(data => {
-  //     return <any>data;
-  //   }));
-  // }
-
-  onPermitApplicationLoading(filter_params, action_url) {
     var headers = new HttpHeaders({
       "Accept": "application/json",
-      "Authorization": "Bearer " + this.authService.getAccessToken(),
-      "Content-Type": "application/json"
+      "Authorization": 'Bearer ' + this.authService.getAccessToken(),
     });
 
-    return this.HttpClient.get(this.baseUrl + '/' + action_url, filter_params)
-      .pipe(map(data => {
-        return <any>data;
-      }));
+    // filter_params.trader_id = this.trader_id;
+    // filter_params.mistrader_id = this.mistrader_id;
+    regulatory_subfunction_id = regulatory_subfunction_id;
+
+    this.config = {
+      params: filter_params,
+      headers: headers
+    };
+
+    return this.HttpClient.get(this.baseUrl + '/' + action_url, this.config)
+    .pipe(map(data => {
+      return <any>data;
+    }));
   }
+
+  // onPermitApplicationLoading(filter_params, action_url) {
+  //   var headers = new HttpHeaders({
+  //     "Accept": "application/json",
+  //     "Authorization": "Bearer " + this.authService.getAccessToken(),
+  //     "Content-Type": "application/json"
+  //   });
+
+  //   return this.HttpClient.get(this.baseUrl + '/' + action_url, filter_params)
+  //     .pipe(map(data => {
+  //       return <any>data;
+  //     }));
+  // }
 
 
 

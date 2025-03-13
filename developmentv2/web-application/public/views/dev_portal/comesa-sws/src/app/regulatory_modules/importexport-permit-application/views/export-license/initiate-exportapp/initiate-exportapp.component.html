@@ -1,0 +1,209 @@
+<div class="main-content-inner">
+    <div class="breadcrumbs ace-save-state" id="breadcrumbs">
+        <ul class="breadcrumb">
+            <li>
+                <i class="ace-icon fa fa-home home-icon"></i>
+                <a href="#">{{'dashboard' | translate}}</a>
+            </li>
+            <li class="active">{{'import_license_application' | translate}}</li>
+        </ul><!-- /.breadcrumb -->
+    </div>
+
+</div>
+<div class="row">
+    <div class="col-lg-4">
+        <div class="page-header">
+
+            <h1>
+                <small>
+                    <i class="ace-icon fa fa-angle-double-right"></i>
+                    <label
+                        style="font-weight: bold;margin: 5px; font-style:italics;font-size: 15px;font-style: italics; color: green;">
+                        {{'process_title' | translate}}: <i> {{process_title}}</i> </label>
+                </small>
+                <small>
+                    <i class="ace-icon fa fa-angle-double-right"></i>
+                    <label
+                        style="font-weight: bold;margin: 5px; font-style:italics;font-size: 15px;font-style: italics; color: green;">
+                        {{'tracking_no' | translate}}: <i> {{tracking_no}}</i> </label>
+                </small>
+                <small>
+                    <i class="ace-icon fa fa-angle-double-right"></i>
+                    <label
+                        style="font-weight: bold;margin: 5px; font-style:italics;font-size: 15px;font-style: italics;color: green;">Application
+                        {{'status' | translate}}:<i> {{status_name}}</i> </label>
+                </small>
+            </h1>
+        </div>
+
+    </div>
+
+</div>
+<div class="col-lg-12 div-hero">
+
+
+    <ng-wizard [config]="config" (stepChanged)="stepChanged($event)">
+
+        <ng-wizard-step [title]="'step_one' | translate" [description]="'applicant_details' | translate"
+            [canEnter]="isValidTypeBoolean">
+            <div class="container_div">
+                <div class="scrollable-content">
+                    <app-applicant-details [applicantDetailsForm]="applicantDetailsForm"
+                        [userAccountFrm]="userAccountFrm"></app-applicant-details>
+                </div>
+            </div>
+
+            <div class="div_footer button-container">
+
+                <dx-button text="{{'dashboard' | translate}}" type="success" icon="fa fa-eraser"
+                    [elementAttr]="{  class: 'pull-left' }" (onClick)="onApplicationDashboard()">
+                </dx-button>
+                <dx-button text="{{'permit_general_information' | translate}}" iconPosition="right" type="success"
+                    icon="fa fa-angle-double-right" [elementAttr]="{ id: 'elementId' }" (onClick)="onextStep()">
+                </dx-button>
+            </div>
+        </ng-wizard-step>
+
+        <ng-wizard-step [title]="'step_two' | translate" [description]="'permit_general_information' | translate"
+            [canEnter]="isValidTypeBoolean">
+
+            <div class="container_div">
+                <div class="scrollable-content">
+                    <!-- Your content goes here -->
+
+                    <div>
+                        <app-permitgeneraldetails [applicationGeneraldetailsfrm]="applicationGeneraldetailsfrm"
+                            [permitReceiverSenderFrm]="permitReceiverSenderFrm"
+                            [applicantDetailsForm]="applicantDetailsForm"></app-permitgeneraldetails>
+                    </div>
+
+                    <!-- Add more content to see the scroll effect -->
+                </div>
+            </div>
+
+            <div class="div_footer button-container">
+                <dx-button text="{{'applicant_information' | translate}}" iconPosition="left" type="danger"
+                    icon="fa fa-angle-double-left" [elementAttr]="{ id: 'elementId', }" (onClick)="previousStep()">
+                </dx-button>
+
+                <dx-button text="{{'save_general_permit_information' | translate}}" iconPosition="left" type="default"
+                    icon="fa fa-save" (onClick)="onSaveImportExportApplication()" icon="fa fa-angle-double-left"
+                    [elementAttr]="{ id: 'elementId', }">
+                </dx-button>
+
+                <dx-button text="{{'permit_product_information' | translate}}" iconPosition="right" type="success"
+                    icon="fa fa-angle-double-right" [elementAttr]="{ id: 'elementId' }" (onClick)="onNextStep()">
+                </dx-button>
+            </div>
+
+        </ng-wizard-step>
+        <ng-wizard-step [title]="'step_three' | translate" [description]="'permit_product_information'| translate"
+            [canEnter]="isValidTypeBoolean">
+            <div class="container_div">
+
+
+                <div class="scrollable-content">
+                    <!-- Your content goes here -->
+                    <div>
+                        <app-permitproductdetails [productGeneraldetailsfrm]="productGeneraldetailsfrm"
+                            [application_code]="application_code"
+                            [permitProductsFrm]="permitProductsFrm"></app-permitproductdetails>
+                    </div>
+
+                </div>
+            </div>
+            <div class="div_footer button-container">
+                <dx-button text="{{'save_permit_product_application' | translate}}" iconPosition="left" type="danger"
+                    icon="fa fa-angle-double-left" [elementAttr]="{ id: 'elementId', }" (onClick)="previousStep()">
+                </dx-button>
+                <dx-button text="{{'document_submission' | translate}}" iconPosition="right" type="success"
+                    icon="fa fa-angle-double-right" [elementAttr]="{ id: 'elementId', }" (onClick)="onNextStep()">
+                </dx-button>
+
+            </div>
+        </ng-wizard-step>
+
+
+        <ng-wizard-step [title]="'step_four' | translate" [description]="'document_requirement_submission' | translate"
+            [canEnter]="isValidTypeBoolean">
+            <div class="container_div">
+                <div class="scrollable-content">
+                    <!-- Your content goes here -->
+                    <!-- <app-appresumable-documents [prodclass_category_id]="prodclass_category_id"
+                        [query_ref_id]="query_ref_id" [product_type_id]="product_type_id"
+                        [regulatory_function_id]="regulatory_function_id" [status_id]="status_id"
+                        [regulatory_subfunction_id]="regulatory_subfunction_id"
+                        [application_code]="application_code"></app-appresumable-documents> -->
+
+                    <!-- Add more content to see the scroll effect -->
+
+                    <app-sharedapplicationdocumentuploads [application_code]="application_code"
+                        [process_id]="process_id"></app-sharedapplicationdocumentuploads>
+
+                </div>
+            </div>
+            <div class="div_footer button-container">
+                <dx-button text="{{'permit_product_application' | translate}}" iconPosition="left" type="danger"
+                    icon="fa fa-angle-double-left" [elementAttr]="{ id: 'elementId', }" (onClick)="previousStep()">
+                </dx-button>
+                <dx-button text="{{'permit_checklist' | translate}}" iconPosition="right" type="success"
+                    icon="fa fa-angle-double-right" [elementAttr]="{ id: 'elementId', }" (onClick)="nextTab()">
+                </dx-button>
+
+            </div>
+        </ng-wizard-step>
+
+        <ng-wizard-step [title]="'step_five'| translate" [description]="'permit_checklists'| translate"
+            [canEnter]="isValidTypeBoolean">
+            <div class="container_div">
+                <div class="scrollable-content">
+                    <app-sharedevaluation-checklist [transactionpermit_type_id]="transactionpermit_type_id"
+                        [application_code]="application_code"></app-sharedevaluation-checklist>
+                </div>
+            </div>
+            <div class="div_footer button-container">
+                <dx-button text="{{'document_submission' | translate}}" iconPosition="left" type="danger"
+                    icon="fa fa-angle-double-left" [elementAttr]="{ id: 'elementId', }" (onClick)="previousStep()">
+                </dx-button>
+                <dx-button text="{{'applicable_fees_charges' | translate}}" iconPosition="right" type="success"
+                    icon="fa fa-angle-double-right" [elementAttr]="{ id: 'elementId', }" (onClick)="nextTab()">
+                </dx-button>
+
+            </div>
+        </ng-wizard-step>
+
+        <ng-wizard-step [title]="'step_six'| translate" [description]="'expected_fees_charges'| translate"
+            [canEnter]="isValidTypeBoolean">
+            <div class="container_div">
+                <div class="scrollable-content">
+                    <!-- Your content goes here -->
+                    <div>Step 1 content</div>
+                    <!-- Add more content to see the scroll effect -->
+                </div>
+            </div>
+            <div class="div_footer button-container">
+                <dx-button text="{{'permit_checklist' | translate}}" iconPosition="left" type="danger"
+                    icon="fa fa-angle-double-left" [elementAttr]="{ id: 'elementId', }" (onClick)="previousStep()">
+                </dx-button>
+                <dx-button text="{{'submit_application' | translate }}" type="default" icon="fa fa-save"
+                    (onClick)="onFuncSubmitApplication()">
+                </dx-button>
+
+            </div>
+        </ng-wizard-step>
+       
+    </ng-wizard>
+
+</div>
+
+
+<dx-popup [visible]="isShowAppProcessSubmission" [width]="funcpopWidth(40)" [height]="funcpopHeight(55)"
+    [showTitle]="true" title="{{ 'submission_process' | translate }}" (onHidden)="isShowAppProcessSubmission = false">
+    <dx-scroll-view>
+        <div class="row">
+
+            <app-sharedapp-processsubmission [appworkflow_status_id]="appworkflow_status_id"
+                [application_code]="application_code" [process_id]="process_id"></app-sharedapp-processsubmission>
+        </div>
+    </dx-scroll-view>
+</dx-popup>

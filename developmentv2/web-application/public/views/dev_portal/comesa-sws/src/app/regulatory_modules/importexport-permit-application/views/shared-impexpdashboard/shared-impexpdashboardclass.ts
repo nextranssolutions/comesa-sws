@@ -148,19 +148,31 @@ export class SharedImpExpdashboardClass {
     }
   }
 
-  onInitiatenewImportExpApplications(applicationsubmission_type_id) {
-    this.onApplicationSelection(1, applicationsubmission_type_id);
+
+
+  onInitiatenewImportExpApplications(regulatory_subfunction_id, applicationsubmission_type_id) {
+    this.nav_data = localStorage.getItem('nav_data');
+    this.nav_data = JSON.parse(this.nav_data);
+
+    regulatory_subfunction_id = this.nav_data.regulatory_subfunction_id;
+
+    this.onApplicationSelection(regulatory_subfunction_id, applicationsubmission_type_id);
   }
 
-  onInitiatenewSingleProductPermitImportExpApplications(applicationsubmission_type_id) {
-    this.onApplicationSelection(1, applicationsubmission_type_id);
+
+  onInitiatenewSingleProductPermitImportExpApplications(regulatory_subfunction_id, applicationsubmission_type_id) {
+    this.nav_data = localStorage.getItem('nav_data');
+    this.nav_data = JSON.parse(this.nav_data);
+    regulatory_subfunction_id = this.nav_data.regulatory_subfunction_id;
+
+    this.onApplicationSelection(regulatory_subfunction_id, applicationsubmission_type_id);
   }
   onApplicationSelection(regulatory_subfunction_id, applicationsubmission_type_id) {
 
     this.spinnerShow(' ');
 
 
-    this.configService.getSectionUniformApplication(regulatory_subfunction_id, applicationsubmission_type_id)
+    this.configService.getApplicantSectionUniformApplication(regulatory_subfunction_id, applicationsubmission_type_id)
       .subscribe(
         data => {
           this.spinnerHide();
@@ -190,23 +202,23 @@ export class SharedImpExpdashboardClass {
     return false;
   }
 
+
   funcpopWidth(percentage_width) {
     return window.innerWidth * percentage_width / 100;
   }
 
-  
-  reloadPermitApplicationsApplications(appworkflow_status_id = 0,) {
+
+  reloadPermitApplicationsApplications(appworkflow_status_id = 0) {
     this.spinnerShow('Loading...........');
+
     var data_submit = {
       'table_name': this.table_name,
-      'appworkflow_status_id': appworkflow_status_id,
-
+      'appworkflow_status_id': appworkflow_status_id
     };
 
-    this.appService.onPermitApplicationLoading(data_submit, 'getImportExpApplicantPermitsLoading')
+    this.appService.onPermitApplicationLoading('getImportExpApplicantPermitsLoading', data_submit, this.regulatory_subfunction_id)
       .subscribe(
         data => {
-
           this.data_record = data;
           if (this.data_record.success) {
             this.dtImportExpApplicationData = this.data_record.data;
@@ -214,12 +226,10 @@ export class SharedImpExpdashboardClass {
           this.spinnerHide();
         },
         error => {
-
           this.spinnerHide();
         }
       );
   }
-
 
 
   spinnerShow(spinnerMessage) {
@@ -620,7 +630,7 @@ export class SharedImpExpdashboardClass {
     this.configService.getSectionUniformApplication(this.regulatory_subfunction_id, this.applicationsubmission_type_id)
       .subscribe(
         data => {
-          
+
           if (data.success) {
             this.processData = data.data.process_infor;
             this.application_data = data.data;
@@ -646,7 +656,7 @@ export class SharedImpExpdashboardClass {
     return false;
   }
 
- 
+
 
   funcArchivePermitApplication(data) {
     this.utilityService.funcApplicationArchiceCall(this.viewRef, data, 'txn_importexport_applications', this.reloadPermitApplicationsApplications);
@@ -769,7 +779,7 @@ export class SharedImpExpdashboardClass {
   }
 
 
- 
+
   onAdvanceDataGridSearch(e) {
     e.toolbarOptions.items.unshift({
       location: 'after',

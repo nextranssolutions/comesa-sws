@@ -55,6 +55,12 @@ if ( !function_exists( 'getInitialWorkflowStatusId' ) ) {
     }
 }
 
+if ( !function_exists( 'getInitialApplicantWorkflowStatusId' ) ) {
+    function getInitialApplicantWorkflowStatusId( $workflowprocess_id ) {
+        return UtilityHelper::getInitialApplicantWorkflowStatusId( $workflowprocess_id );
+    }
+}
+
 if ( !function_exists( 'returnContxtMenuActions' ) ) {
     function returnContxtMenuActions() {
         return UtilityHelper::returnContxtMenuActions();
@@ -419,6 +425,12 @@ if ( !function_exists( 'initiateInitialProcessSubmission' ) ) {
     }
 }
 
+if ( !function_exists( 'initiateApplicantInitialProcessSubmission' ) ) {
+    function initiateApplicantInitialProcessSubmission( $table_name, $application_code, $workflowprocess_id, $user_id = 0 ) {
+        return UtilityHelper::initiateApplicantInitialProcessSubmission( $table_name, $application_code, $workflowprocess_id, $user_id );
+    }
+}
+
 if ( !function_exists( 'getTableData' ) ) {
     function getTableData( $table_name, $where, $col = 'pgsql' ) {
         return DbHelper::getTableData( $table_name, $where, $col );
@@ -659,6 +671,8 @@ if ( !function_exists( 'generateApplicationRefNumber' ) ) {
         return ReferencingHelper::generateApplicationRefNumber( $ref_id, $codes_array, $year, $process_id, $user_id );
     }
 }
+
+
 
 if ( !function_exists( 'generateSingleApplicationRefNumber' ) ) {
     function generateSingleApplicationRefNumber( $ref_id, $codes_array, $year, $workflowprocess_id, $user_id ) {

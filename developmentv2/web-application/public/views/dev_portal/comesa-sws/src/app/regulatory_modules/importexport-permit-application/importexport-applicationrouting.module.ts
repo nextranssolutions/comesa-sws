@@ -12,6 +12,9 @@ import { ApprovedPermitsComponent } from './views/import-license/approved-permit
 import { AwaitingPaymentRemittanceComponent } from './views/import-license/awaiting-payment-remittance/awaiting-payment-remittance.component';
 import { RejectedPermitsComponent } from './views/import-license/rejected-permits/rejected-permits.component';
 import { SingleProductPermitComponent } from './views/import-license/single-product-permit/single-product-permit.component';
+import { DraftExportlicencedashboardComponent } from './views/export-license/draft-exportlicencedashboard/draft-exportlicencedashboard.component';
+import { InitiateExportappComponent } from './views/export-license/initiate-exportapp/initiate-exportapp.component';
+import { SingleProductExportpermitComponent } from './views/export-license/single-product-exportpermit/single-product-exportpermit.component';
 
 const routes: Routes = [{
   path: '',
@@ -23,6 +26,12 @@ const routes: Routes = [{
   },{
     path: 'draft-importlicense-dashboard',
     component: DraftImportlicensedashComponent
+  },{
+    path: 'draft-exportlicense-dashboard',
+    component: DraftExportlicencedashboardComponent
+  },{
+    path: 'initiate-exportapp',
+    component: InitiateExportappComponent
   },{
     path: 'initiate-importapp',
     component: InitiateImportappComponent
@@ -44,8 +53,11 @@ const routes: Routes = [{
   },{
     path: 'single-productapplication-permits',
     component: SingleProductPermitComponent
+  },{
+    path: 'single-export-productapplication-permits',
+    component: SingleProductExportpermitComponent
   }
-
+  
 ]
 }]
 

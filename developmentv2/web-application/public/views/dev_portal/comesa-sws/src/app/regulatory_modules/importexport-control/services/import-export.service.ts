@@ -110,14 +110,14 @@ export class ImportExportService {
   }
 
 
-  onPermitApplicationLoading(filter_params, action_url) {
+  onPermitApplicationLoading(regulatory_subfunction_id, action_url) {
     var headers = new HttpHeaders({
       "Accept": "application/json",
       "Authorization": "Bearer " + this.authService.getAccessToken(),
     });
 
     this.config = {
-      params: { filter_params },
+      params: { regulatory_subfunction_id },
       headers: headers
     };
     return this.httpClient.get(this.baseUrl + '/' + action_url, this.config)
