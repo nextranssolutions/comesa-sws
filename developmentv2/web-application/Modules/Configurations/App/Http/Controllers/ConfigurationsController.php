@@ -931,4 +931,33 @@ class ConfigurationsController extends Controller
 
         return response()->json($res);
     }
+
+    public function getTransactionPermitTypeData(Request $req)
+    {
+        
+        $regulatory_function_id = $req->regulatory_function_id;
+        try{
+			
+            $qry = DB::table('tra_transactionpermit_types as t1')
+                ->leftJoin('par_regulatory_subfunctions as t2', 't1.regulatory_subfunction_id', 't2.id')
+                ->select('t1.*');
+			
+				if(validateIsNumeric($regulatory_function_id)){
+					$qry->where('t1.regulatory_function_id', $regulatory_function_id);
+				}
+            $results = $qry->get();
+            $res = array(
+                'success'=>true,
+                'message'=>'All is well',
+                'results'=>$results
+            );
+        }
+        catch (\Exception $exception) {
+            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+            } 
+        catch (\Throwable $throwable) {
+            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+            }
+        return response()->json($res);
+    }
 }

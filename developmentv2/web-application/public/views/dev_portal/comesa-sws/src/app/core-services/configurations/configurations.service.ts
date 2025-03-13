@@ -140,8 +140,8 @@ export class ConfigurationsService {
     return this.HttpClient.get(this.baseUrl + '/' + action_url, this.config)
       .pipe(map(data => {
         return <any>data;
-      }));
-  }
+      })); 
+  }   
 
   getFeesChargesConfigurations(data, action_url = 'getFeesChargesConfigurations') {
     data.table_name = btoa(data.table_name);

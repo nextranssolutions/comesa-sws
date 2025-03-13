@@ -736,17 +736,17 @@ class UtilityHelper
         return $res;
 
     }
-    public static function getInitialWorkflowStatusId($process_id){
+    public static function getInitialWorkflowStatusId($workflowprocess_id){
         $record = null;
-        if(validateIsNumeric($process_id)){
+        if(validateIsNumeric($workflowprocess_id)){
                 $record = DB::table('wf_workflow_transitions as t1')
                             ->join('wf_workflow_stages as t2', 't1.prevworkflow_stage_id', 't2.id')
                             ->leftJoin('wf_workflow_definition as t3', 't1.workflow_id', '=', 't3.id')
                             ->select('t1.*', 't1.workflow_status_id as appworkflow_status_id')
-                            ->where(array('t3.process_id'=>$process_id, 't2.stage_status_id'=>1))
+                            ->where(array('t3.process_id'=>$workflowprocess_id, 't2.stage_status_id'=>1))
                             ->first();
         }
-        return $record;
+        return $record ->appworkflow_status_id;
     }
 
     public static function getInitialApplicantWorkflowStatusId($workflowprocess_id) {

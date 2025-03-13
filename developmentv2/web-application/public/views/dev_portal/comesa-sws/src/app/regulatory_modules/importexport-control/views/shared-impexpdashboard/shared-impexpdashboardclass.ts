@@ -284,7 +284,6 @@ export class SharedImpExpdashboardClass {
             ;
           }
         });
-
   }
   onLoadPermitTypesData() {
     var data = {
@@ -321,6 +320,8 @@ export class SharedImpExpdashboardClass {
         });
 
   }
+
+  getWorkflowStatusData
 
   onLoadconfirmDataParam() {
     var data = {

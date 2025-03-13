@@ -50,8 +50,8 @@ if ( !function_exists( 'getDateDifference' ) ) {
 }
 
 if ( !function_exists( 'getInitialWorkflowStatusId' ) ) {
-    function getInitialWorkflowStatusId( $process_id ) {
-        return UtilityHelper::getInitialWorkflowStatusId( $process_id );
+    function getInitialWorkflowStatusId( $workflowprocess_id ) {
+        return UtilityHelper::getInitialWorkflowStatusId( $workflowprocess_id );
     }
 }
 

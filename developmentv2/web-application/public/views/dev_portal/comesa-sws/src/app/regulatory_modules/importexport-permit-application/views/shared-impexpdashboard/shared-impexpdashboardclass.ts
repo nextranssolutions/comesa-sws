@@ -55,6 +55,7 @@ export class SharedImpExpdashboardClass {
   data_record: any;
   guidelines_title: string;
   regulatory_subfunction_id: any;
+  appworkflowstage_category_id:any;
   permit_type_id: 1;
   application_title: string;
   sectionItem: any;
@@ -77,7 +78,6 @@ export class SharedImpExpdashboardClass {
   onApplicationSubmissionFrm: FormGroup;
   importExportPermitTypesData: any;
   processingData: any;
-  appworkflowstage_category_id:any;
   productApplicationProcessingData:any;
   constructor(public utilityService: UtilityService, public publicService: PublicDashboardService, public translate: TranslateService, public viewRef: ViewContainerRef, public spinner: SpinnerVisibilityService, public toastr: ToastrService, public router: Router, public configService: ConfigurationsService, public appService: ImportExportService) { // this.onLoadApplicationCounterDetails();
 
@@ -99,11 +99,13 @@ export class SharedImpExpdashboardClass {
     this.onLoadimportExportPermitTypesData();
     this.nav_data = localStorage.getItem('nav_data');
     this.nav_data = JSON.parse(this.nav_data);
+
     this.regulatory_function_id = this.nav_data.regulatory_function_id;
     this.regulatory_subfunction_id = this.nav_data.regulatory_subfunction_id;
     this.appworkflowstage_category_id = this.nav_data.appworkflowstage_category_id;
 
     this.reloadPermitApplicationsApplications(this.regulatory_subfunction_id,this.appworkflowstage_category_id);
+
 
   }
 
@@ -174,10 +176,10 @@ export class SharedImpExpdashboardClass {
   }
 
 
-  reloadPermitApplicationsApplications(regulatory_subfunction_id,appworkflowstage_category_id) {
+  reloadPermitApplicationsApplications(regulatory_subfunction_id, appworkflowstage_category_id) {
     this.spinnerShow('Loading...........');
 
-    var data_submit = {
+    let data_submit = {
       'table_name': this.table_name,
       'regulatory_subfunction_id': regulatory_subfunction_id,
       'appworkflowstage_category_id': appworkflowstage_category_id
@@ -197,6 +199,7 @@ export class SharedImpExpdashboardClass {
         }
       );
   }
+
 
 
   spinnerShow(spinnerMessage) {
@@ -566,7 +569,7 @@ export class SharedImpExpdashboardClass {
     this.FilterDetailsFrm.reset();
     this.FilterDetailsFrm.reset();
 
-    this.reloadPermitApplicationsApplications(this.regulatory_subfunction_id,this.appworkflowstage_category_id);
+    this.reloadPermitApplicationsApplications(this.regulatory_subfunction_id, this.appworkflowstage_category_id);
 
 
   }
