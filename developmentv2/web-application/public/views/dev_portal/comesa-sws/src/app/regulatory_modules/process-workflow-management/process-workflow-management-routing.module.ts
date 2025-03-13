@@ -115,8 +115,8 @@ const routes: Routes = [{
     },{
       path: 'app-document-extension-types',
       component: DocumentExtensionTypesComponent
-    }
-    ,
+
+    },
     {
       path: 'app-permit-termsconditions',
       component: PermitTermsconditionsComponent

@@ -69,7 +69,6 @@ nav_data: any;
 
     access_level_id = childGroup.user_access_levels_id;
 
-      
     this.nav_data = {
       navigation_id: navigation_id,
       navigation_name: navigation_name,

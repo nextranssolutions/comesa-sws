@@ -1452,13 +1452,15 @@ class ImportExportController extends Controller
                 ->leftJoin('par_applicationsubmission_type as t25', 't1.applicationsubmission_type_id', 't25.id')
                 ->leftJoin('tra_transactionpermit_types as t26', 't1.transactionpermit_type_id', 't26.id')
                 ->leftJoin('tra_organisation_information as t27', 't1.organisation_id', 't27.id')
+                ->leftJoin('par_application_options as t28', 't1.applicationapplicant_option_id', 't28.id')
+                ->leftJoin('wf_processes as t29', 't1.workflowprocess_id', 't29.id')
                 
                 ->select('t1.*','t19.*', 't19.name as applicant_name', 't18.name as customs_office', 't17.name as declaration',
                 't15.name as invoice_type', 't14.name as final_destination_country', 't5.name as port_of_entry', 't13.name as mode_of_transport', 
                 't12.name as currency_name', 't2.name as permit_type', 't8.name as action_name', 't11.name as permit_typecategory',
                 't8.iconCls as iconCls', 't8.action as action', 't3.name as port_type', 't1.id', 't4.name as importer_exporter_name','t21.name as regulatory_function',
-                't22.id as regulatory_subfunction_id', 't9.name as status_name','t23.name as zone','t24.name as port_type','t9.name as workflow_status',
-                't25.name as applicationsubmission_type','t26.name as transactionpermit_type','t27.name as organisation');
+                't22.name as regulatory_subfunction_id', 't9.name as status_name','t23.name as zone','t24.name as port_type','t9.name as workflow_status',
+                't25.name as applicationsubmission_type','t26.name as transactionpermit_type','t27.name as organisation','t28.name as application_option','t29.name as workflowprocess');
 
             if ($workflow_status_id != '') {
                 $workflow_status = explode(',', $workflow_status_id);
