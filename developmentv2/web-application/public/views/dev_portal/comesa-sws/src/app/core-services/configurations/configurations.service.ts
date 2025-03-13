@@ -284,6 +284,22 @@ export class ConfigurationsService {
         return <any>data;
       }));
   } 
+
+  getPermitUniformApplicationProces(app_data, action_url) {
+    
+    var headers = new Headers({
+      "Accept": "application/json",
+      "Authorization": "Bearer " + this.authService.getAccessToken(),
+    });
+    this.config = {
+      params: app_data,
+      headers: headers
+    };
+    return this.HttpClient.get(this.baseUrl + '/'+action_url, this.config)
+      .pipe(map(data => {
+        return <any>data;
+      }));
+  } 
   getApplicantUniformApplicationProces(regulatory_subfunction_id, status_id, permit_type_id= 0 ) {
     
     var headers = new Headers({

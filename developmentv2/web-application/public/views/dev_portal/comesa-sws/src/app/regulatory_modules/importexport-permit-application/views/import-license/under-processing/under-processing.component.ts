@@ -10,7 +10,7 @@ import { SharedImpExpdashboardClass } from '../../shared-impexpdashboard/shared-
 export class UnderProcessingComponent extends SharedImpExpdashboardClass {
   ngOnInit(): void {
     this.onLoadconfirmDataParam();
-    this.reloadPermitApplicationsApplications();
+  //  this.reloadPermitApplicationsApplications();
     
   }
 }

@@ -724,7 +724,66 @@ class ConfigurationsController extends Controller
             }
         return response()->json($res);
     } 
-    
+    public function getPermitUniformApplicationProces(Request $req)
+    {
+        try {
+            $app_data = array();
+            $regulatory_subfunction_id = $req->regulatory_subfunction_id;
+            $regulatory_function_id = $req->regulatory_function_id;
+            $current_stage_id = $req->current_stage_id;
+            $transactionpermit_type_id = $req->transactionpermit_type_id;
+
+            $data = DB::table('wf_workflows as t1')
+                ->join('wf_workflow_stages as t2', 't2.workflow_id', 't1.id')
+                ->leftJoin('wf_workflow_interfaces as t3', 't3.id', 't2.interface_id')
+                ->select(
+                    't1.*',
+                    't2.id as workflowprocess_stage_id',
+                    't2.name as workflowprocess_stage',
+                    't3.routerlink as router_link'
+                )
+                ->where('t2.id', $current_stage_id)
+                ->first();
+                    
+            if ($data) {
+                $app_data['process_infor'] = $data;
+                $app_data['transactionpermit_type_id'] = $transactionpermit_type_id;
+                $form_fields = getApplicationGeneralFormsFields($req);
+               
+                $app_data['application_form'] = $form_fields;
+                switch ($regulatory_function_id) {
+                    case 1: // Import Export Permit Application
+                        $app_data['applicant_details'] = getApplicationDataEntryFormsFields($req, 20);
+                        $app_data['permit_products_details'] = getApplicationDataEntryFormsFields($req, 21);
+                        
+                        break;
+                    case 2: // Business operations
+                        $app_data['personnel_information'] = getApplicationDataEntryFormsFields($req, 1);
+                        $app_data['business_operations'] = getApplicationDataEntryFormsFields($req, 2);
+                        $app_data['storelocations'] = getApplicationDataEntryFormsFields($req, 4);
+                        break;
+                    case 3:
+                        // Additional cases can be handled here
+                        break;
+                    case 4:
+                        // Additional cases can be handled here
+                        break;
+                    default:
+                        // Handle other cases
+                        break;
+                }
+                $res = array('success' => true, 'data' => $app_data);
+            } else {
+                $res = array('success' => false, 'message' => 'The specified Module Not Mapped');
+            }
+        } catch (\Exception $exception) {
+            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        } catch (\Throwable $throwable) {
+            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        }
+
+        return response()->json($res);
+    }
     public function getUniformSectionApplicationProcess(Request $req)
     {
         try {
@@ -750,7 +809,6 @@ class ConfigurationsController extends Controller
             $data = DB::table('wf_workflows as t1')
                 ->join('wf_workflow_stages as t2', 't2.workflow_id', 't1.id')
                 ->leftJoin('wf_workflow_interfaces as t3', 't3.id', 't2.interface_id')
-
                 ->join('tra_transactionpermit_types as t4', 't1.id', 't4.workflow_id')
                 ->select(
                     't1.*',

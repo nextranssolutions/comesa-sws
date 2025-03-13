@@ -9,6 +9,6 @@ import { SharedImpExpdashboardClass } from '../../shared-impexpdashboard/shared-
 })
 export class ApprovedPermitsComponent extends SharedImpExpdashboardClass {
   ngOnInit(): void {
-    this.reloadPermitApplicationsApplications();
+    //this.reloadPermitApplicationsApplications();
   }
 }
