@@ -113,7 +113,12 @@ export class SharedImpExpdashboardClass {
     this.onLoadconfirmDataParam();
     this.onLoadproducttypeDefinationData();
     this.onLoadimportExportPermitTypesData();
-    this.reloadPermitApplicationsApplications();
+    this.nav_data = localStorage.getItem('nav_data');
+    this.nav_data = JSON.parse(this.nav_data);
+    let regulatory_subfunction_id = this.nav_data.regulatory_subfunction_id;
+    let appworkflowstage_category_id = this.nav_data.appworkflowstage_category_id;
+
+    this.reloadPermitApplicationsApplications(regulatory_subfunction_id, appworkflowstage_category_id);
 
     //navigation items and get the sub_function_id 
 
@@ -209,40 +214,15 @@ export class SharedImpExpdashboardClass {
   }
 
 
-  // reloadPermitApplicationsApplications(appworkflow_status_id = 0) {
-  //   this.spinnerShow('Loading...........');
-
-  //   var data_submit = {
-  //     'table_name': this.table_name,
-  //     'appworkflow_status_id': appworkflow_status_id
-  //   };
-
-  //   this.appService.onPermitApplicationLoading('getImportExpApplicantPermitsLoading', data_submit, this.regulatory_subfunction_id)
-  //     .subscribe(
-  //       data => {
-  //         this.data_record = data;
-  //         if (this.data_record.success) {
-  //           this.dtImportExpApplicationData = this.data_record.data;
-  //         }
-  //         this.spinnerHide();
-  //       },
-  //       error => {
-  //         this.spinnerHide();
-  //       }
-  //     );
-  // }
-
-  reloadPermitApplicationsApplications(appworkflow_status_id = 0) {
+  reloadPermitApplicationsApplications(regulatory_subfunction_id, appworkflowstage_category_id) {
     this.spinnerShow('Loading...........');
-  
+
     let data_submit = {
       'table_name': this.table_name,
-      'appworkflow_status_id': appworkflow_status_id,
-      'regulatory_function_id': this.regulatory_function_id,
-      'regulatory_subfunction_id': this.regulatory_subfunction_id,
-      'appworkflowstage_category_id': this.appworkflowstage_category_id
+      'regulatory_subfunction_id': regulatory_subfunction_id,
+      'appworkflowstage_category_id': appworkflowstage_category_id
     };
-  
+
     this.appService.onPermitApplicationLoading('getImportExpApplicantPermitsLoading', data_submit)
       .subscribe(
         data => {
@@ -257,7 +237,7 @@ export class SharedImpExpdashboardClass {
         }
       );
   }
-  
+
 
 
   spinnerShow(spinnerMessage) {
@@ -703,7 +683,7 @@ export class SharedImpExpdashboardClass {
     this.FilterDetailsFrm.reset();
     this.FilterDetailsFrm.reset();
 
-    this.reloadPermitApplicationsApplications();
+    this.reloadPermitApplicationsApplications(this.regulatory_subfunction_id, this.appworkflowstage_category_id);
 
 
   }

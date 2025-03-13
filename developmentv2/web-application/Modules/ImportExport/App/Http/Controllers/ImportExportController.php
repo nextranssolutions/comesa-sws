@@ -371,7 +371,7 @@ class ImportExportController extends Controller
                 $app_data['applicationapplicant_option_id'] = $applicationapplicant_option_id;
                 $app_data['date_added'] = Carbon::now();
                 $app_data['application_code'] = $application_code;
-                $app_data['application_status_id'] = getInitialApplicantWorkflowStatusId($workflowprocess_id);
+                $app_data['appworkflow_status_id'] = getInitialApplicantWorkflowStatusId($workflowprocess_id);
 
                 $resp = insertRecord('wb_importexport_applications', $app_data, $user_id);
                 
@@ -1579,16 +1579,14 @@ class ImportExportController extends Controller
                 ->select('t18.*','t2.name as regulatory_subfunction','t19.name as applicationapplicant_option','t1.created_on as date_added','t6.current_stage_id as workflow_stage_id','t15.name as invoice_type', 't18.name as applicant_name', 't1.id as application_id', 't1.*','t17.name as declaration', 't15.name as invoice_type', 't14.name as final_destination_country', 't5.name as port_of_entry', 't13.name as mode_of_transport', 't12.name as currency_name', 't2.name as permit_typecategory', 't10.name as application_status', 't8.name as action_name', 't8.iconCls as iconCls', 't8.action as action', 't2.name as permit_name', 't3.name as port_type', 't1.id', 't4.name as importer_exporter_name');
 
                
-            if ($workflow_status_id != '') {
-                $workflow_status = explode(',', $workflow_status_id);
-                $sql->whereIn('appworkflow_status_id', $workflow_status);
-            }
+            // if ($workflow_status_id != '') {
+            //     $workflow_status = explode(',', $workflow_status_id);
+            //     $sql->whereIn('appworkflow_status_id', $workflow_status);
+            // }
             if (validateIsNumeric($appworkflowstage_category_id)) {
                 $sql->where(array('t9.appworkflowstage_category_id' => $appworkflowstage_category_id));
             }
-            if (validateIsNumeric($regulatory_function_id)) {
-                $sql->where('t1.regulatory_function_id', $regulatory_function_id);
-            }
+           
             if (validateIsNumeric($regulatory_subfunction_id)) {
                 $sql->where('t1.regulatory_subfunction_id', $regulatory_subfunction_id);
             }
@@ -1598,6 +1596,8 @@ class ImportExportController extends Controller
             //check the usres 
 
             $data = $sql->get();
+            // print_r($data);
+            // exit();
 
             foreach ($data as $rec) {
                 $application_data[] = array(
