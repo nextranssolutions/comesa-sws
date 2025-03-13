@@ -53,7 +53,8 @@ export class SharedNavigationsComponent {
   AppSystemInterfaceData: any;
   AppRegulatoryFunctionsData: any;
   AppRegulatorySubFunctionsData: any;
-  NavigationTypeData: any
+  NavigationTypeData: any;
+  appWorkflowStageCategory: any;
   actionsMenuItems = [
     {
       text: "Action",
@@ -67,6 +68,10 @@ export class SharedNavigationsComponent {
   ];
 
   regStatusOptions = [
+    { value: true, text: 'Yes' },
+    { value: false, text: 'No' },
+  ];
+  has_appworkflowstage = [
     { value: true, text: 'Yes' },
     { value: false, text: 'No' },
   ];
@@ -103,6 +108,8 @@ export class SharedNavigationsComponent {
         regulatory_function_id: new FormControl('', Validators.compose([])),
         regulatory_subfunction_id: new FormControl('', Validators.compose([])),
         account_type_id: new FormControl('', Validators.compose([])),
+        has_appworkflowstage_category: new FormControl('', Validators.compose([Validators.required])),
+        appworkflowstage_category_id: new FormControl('', Validators.compose([])),
 
       });
     }
@@ -134,6 +141,7 @@ export class SharedNavigationsComponent {
       this.onLoadAppSystemInterfaceData();
       this.onLoadAppRegulatoryFunctionsData();
       this.onLoadAppRegulatorySubFunctionsData();
+      this.onloadappWorkflowStageCategoryData();
     }
     this.spinnerHide();
 
@@ -245,6 +253,23 @@ export class SharedNavigationsComponent {
           this.data_record = data;
           if (this.data_record.success) {
             this.workflowData = this.data_record.data;
+          }
+        },
+        error => {
+
+        });
+
+  }
+  onloadappWorkflowStageCategoryData() {
+    var data_submit = {
+      'table_name': 'par_appworkflowstage_categories',
+    }
+    this.workflowService.getWorkflowConfigs(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.appWorkflowStageCategory = this.data_record.data;
           }
         },
         error => {

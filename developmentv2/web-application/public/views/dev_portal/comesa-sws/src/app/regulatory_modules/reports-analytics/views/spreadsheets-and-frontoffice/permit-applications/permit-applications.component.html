@@ -219,14 +219,14 @@
         <dxo-export [enabled]="true" fileName="ImportExport" [allowExportSelectedData]="true"></dxo-export>
 
         <dxo-selection mode="single"></dxo-selection>
-        <!-- <dxi-column [width]=200 caption="{{'actions' | translate}}" name="command-editing" [allowFiltering]="false"
+        <dxi-column [width]=200 caption="{{'actions' | translate}}" name="command-editing" [allowFiltering]="false"
             [allowSorting]="false" cellTemplate="cellTemplateSingle">
             <div *dxTemplate="let d of 'cellTemplateSingle'">
                 <dx-button text="{{d.data.action_name}}" (click)="singleApplicationActionColClick(d.data)"
                     type="success" icon="{{d.data.iconCls}}">
                 </dx-button>
             </div>
-        </dxi-column> -->
+        </dxi-column>
         <!-- <dxi-column caption="{{'more_actions' | translate}}" [width]=150 name="command-editing" [allowFiltering]="false"
         [allowSorting]="false" cellTemplate="cellTemplate">
         <div *dxTemplate="let d of 'cellTemplate'">
@@ -267,9 +267,9 @@
         <dxi-column dataField="workflow_status" caption="{{'appworkflow_status' | translate}}"*ngIf="columnVisibility.appworkflow_status"></dxi-column>
         <dxi-column dataField="declaration" caption="{{'declaration_statuses' | translate}}"*ngIf="columnVisibility.declaration_statuses"></dxi-column>
         <dxi-column dataField="applicationsubmission_type" caption="{{'applicationsubmission_type' | translate}}"*ngIf="columnVisibility.applicationsubmission_type"></dxi-column>
-        <dxi-column dataField="workflowprocess_id" caption="{{'workflowprocess' | translate}}"*ngIf="columnVisibility.workflowprocess"></dxi-column>
+        <dxi-column dataField="workflowprocess" caption="{{'workflowprocess' | translate}}"*ngIf="columnVisibility.workflowprocess"></dxi-column>
         <dxi-column dataField="applicant_name" caption="{{'applicant' | translate}}"*ngIf="columnVisibility.applicant"></dxi-column>
-        <dxi-column dataField="applicationapplicant_option_id" caption="{{'applicationapplicant_option' | translate}}"*ngIf="columnVisibility.applicationapplicant_option"></dxi-column>
+        <dxi-column dataField="application_option" caption="{{'applicationapplicant_option' | translate}}"*ngIf="columnVisibility.applicationapplicant_option"></dxi-column>
         <dxi-column dataField="customs_office" caption="{{'customs_office' | translate}}"*ngIf="columnVisibility.customs_office"></dxi-column>
         <dxi-column dataField="permit_typecategory" caption="{{'permit_typecategory' | translate}}"*ngIf="columnVisibility.permit_typecategory"></dxi-column>
         <dxi-column dataField="transactionpermit_type" caption="{{'transactionpermit_type' | translate}}"*ngIf="columnVisibility.transactionpermit_type"></dxi-column>
