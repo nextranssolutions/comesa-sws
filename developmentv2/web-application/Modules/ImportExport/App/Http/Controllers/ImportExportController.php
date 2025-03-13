@@ -187,10 +187,11 @@ class ImportExportController extends Controller
                 $app_data['workflowprocess_id'] = $workflowprocess_id;
                 
                 //check the process
-                $app_data['application_status_id'] = getInitialWorkflowStatusId($workflowprocess_id);
+                $app_data['appworkflow_status_id'] = getInitialWorkflowStatusId($workflowprocess_id);
+                
 
                 $resp = insertRecord('wb_importexport_applications', $app_data, $user_id);
-
+                print_r($resp);
                 if ($resp['success']) {
                     $tra_app_data = $app_data;
                     
@@ -200,6 +201,7 @@ class ImportExportController extends Controller
                     $tra_app_data['applicant_id'] = $applicant_id;
                     $tra_app_data['permit_typecategory_id'] = $permit_typecategory_id;
                     $tra_app_data['transactionpermit_type_id'] = $transactionpermit_type_id;
+                    
 
                     $response = insertRecord('txn_importexport_applications', $tra_app_data, $user_id);
                     
