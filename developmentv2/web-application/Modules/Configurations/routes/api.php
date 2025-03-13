@@ -33,6 +33,9 @@ Route::middleware(['XssSanitizer','clear_cache_config','firewall.all'])->prefix(
     Route::get('getUniformSectionApplicationProcess', [ConfigurationsController::class, 'getUniformSectionApplicationProcess']);
     Route::get('getApplicantUniformApplicationProces', [ConfigurationsController::class, 'getApplicantUniformApplicationProces']);
 
+    Route::get('getPermitUniformApplicationProces', [ConfigurationsController::class, 'getPermitUniformApplicationProces']);
+
+    
     //fetInforamtion get.....
     //save information save....
     //delete onDelete....  
