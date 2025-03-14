@@ -111,10 +111,11 @@ export class SharedImpExpdashboardClass {
     let regulatory_subfunction_id = this.nav_data.regulatory_subfunction_id;
     let appworkflowstage_category_id = this.nav_data.appworkflowstage_category_id;
 
-    this.reloadPermitApplicationsApplications(regulatory_subfunction_id, appworkflowstage_category_id);
+    this.reloadPermitApplicationsApplications(regulatory_subfunction_id,appworkflowstage_category_id);
     this.onLoadPermitTypesData(regulatory_subfunction_id);
     this.onLoadWorkflowStatusData();
     this.onLoadApplicationStatusData();
+
   }
 
   scrollToTop(): void {
@@ -175,7 +176,10 @@ export class SharedImpExpdashboardClass {
     this.sectionItem = this.applicationSelectionfrm.controls['transactionpermit_type_id'];
     // let regulatory_subfunction_id = this.applicationSelectionfrm.get('regulatory_subfunction_id')?.value;
 
-    this.regulatory_subfunction_id = this.regulatory_subfunction_id;
+    this.nav_data = localStorage.getItem('nav_data');
+    this.nav_data = JSON.parse(this.nav_data);
+    this.regulatory_subfunction_id = this.nav_data.regulatory_function_id;
+    console.log(this.regulatory_subfunction_id);
     this.transactionpermit_type_id = this.sectionItem.value;
 
     // Store transactionpermit_type_id in localStorage
@@ -219,18 +223,16 @@ export class SharedImpExpdashboardClass {
   }
 
 
-  reloadPermitApplicationsApplications(regulatory_subfunction_id, appworkflowstage_category_id) {
-    
-    let data_submit = {
-      'table_name': this.table_name,
-      'regulatory_subfunction_id': regulatory_subfunction_id,
-      'appworkflowstage_category_id': appworkflowstage_category_id
-    };
+  reloadPermitApplicationsApplications(regulatory_subfunction_id,appworkflowstage_category_id) {
     this.spinnerShow('Loading...........');
-    this.appService.onPermitApplicationLoading(data_submit, 'getImportExpPermitApplicationLoading')
+    let filter_params = {
+      regulatory_subfunction_id: regulatory_subfunction_id,
+      appworkflowstage_category_id: appworkflowstage_category_id
+    };
+    
+    this.appService.onPermitApplicationLoading(filter_params, 'getImportExpPermitApplicationLoading')
       .subscribe(
         data => {
-
           this.data_record = data;
           if (this.data_record.success) {
             this.dtImportExpApplicationData = this.data_record.data;
@@ -327,7 +329,7 @@ export class SharedImpExpdashboardClass {
 
   onLoadWorkflowStatusData() {
     var data = {
-      table_name: 'wf_workflow_statuses',
+      table_name: 'wf_appworkflow_statuses',
       // is_enabled: true
     };
 
@@ -342,8 +344,6 @@ export class SharedImpExpdashboardClass {
         });
 
   }
-
-  getWorkflowStatusData
 
   onLoadconfirmDataParam() {
     var data = {

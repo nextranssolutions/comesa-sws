@@ -467,7 +467,7 @@ class PublicInfoManagementController extends Controller
                     $join->on('t6.is_default_action', '=', DB::raw(True));
                 })
                 ->leftJoin('wf_statuses_actions as t7', 't6.statuses_action_id', 't7.id')
-                ->leftJoin('wf_workflow_statuses as t8', 't1.appworkflow_status_id', 't8.id')
+                ->leftJoin('wf_appworkflow_statuses as t8', 't1.appworkflow_status_id', 't8.id')
                 ->leftJoin('par_institutions_types as t9', 't1.institution_type_id', 't9.id')
                 ->leftJoin('par_institutions as t10', 't1.institution_id', 't10.id')
                 ->leftJoin('usr_identification_type as t11', 't1.identification_type_id', 't11.id')
@@ -659,7 +659,7 @@ class PublicInfoManagementController extends Controller
                     $join->on('t2.is_default_action', '=', DB::raw(True));
                 })
                 ->leftJoin('wf_statuses_actions as t3', 't2.statuses_action_id', 't3.id')
-                ->leftJoin('wf_workflow_statuses as t4', 't1.appworkflow_status_id', 't4.id')
+                ->leftJoin('wf_appworkflow_statuses as t4', 't1.appworkflow_status_id', 't4.id')
                 ->select('t1.id as publication_management_id', 't4.name as appworkflow_status', 't1.*', 't3.name as action_name', 't3.iconCls', 't3.action');
 
             if (validateIsNumeric($appworkflow_status_id)) {
@@ -720,7 +720,7 @@ class PublicInfoManagementController extends Controller
                     $join->on('t2.is_default_action', '=', DB::raw(True));
                 })
                 ->leftJoin('wf_statuses_actions as t3', 't2.statuses_action_id', 't3.id')
-                ->leftJoin('wf_workflow_statuses as t4', 't1.appworkflow_status_id', 't4.id')
+                ->leftJoin('wf_appworkflow_statuses as t4', 't1.appworkflow_status_id', 't4.id')
                 ->select('t1.id as resource_id', 't4.name as appworkflow_status', 't1.*', 't3.name as action_name', 't3.iconCls', 't3.action');
 
             if (validateIsNumeric($appworkflow_status_id)) {
@@ -775,7 +775,7 @@ class PublicInfoManagementController extends Controller
                     $join->on('t2.is_default_action', '=', DB::raw(True));
                 })
                 ->leftJoin('wf_statuses_actions as t3', 't2.statuses_action_id', 't3.id')
-                ->leftJoin('wf_workflow_statuses as t4', 't1.appworkflow_status_id', 't4.id')
+                ->leftJoin('wf_appworkflow_statuses as t4', 't1.appworkflow_status_id', 't4.id')
                 ->select('t1.id as knowledgecenter_id', 't4.name as appworkflow_status', 't1.*', 't3.name as action_name', 't3.iconCls', 't3.action');
 
             if (validateIsNumeric($appworkflow_status_id)) {

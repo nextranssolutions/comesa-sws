@@ -85,7 +85,7 @@ export class ApplicantdetailsComponent implements OnInit {
 
   fetchAccountStatusData() {
     var data_submit = {
-      'table_name': 'wf_workflow_statuses'
+      'table_name': 'wf_appworkflow_statuses'
     }
     this.configService.onLoadConfigurationData(data_submit)
       .subscribe(

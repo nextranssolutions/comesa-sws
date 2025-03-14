@@ -36,7 +36,7 @@
         </div>
     </dxi-column>
     <dxi-column [groupIndex]="0"
-        *ngIf="table_name == 'wf_workflow_definition' || table_name == 'wf_workflowstatuses_actions' || table_name =='wf_statuses_actions' || table_name == 'wf_workflow_statuses' || table_name == 'wf_workflowsubmission_actions' || table_name == 'wf_workflow_actionstypes' "
+        *ngIf="table_name == 'wf_workflow_definition' || table_name == 'wf_workflowstatuses_actions' || table_name =='wf_statuses_actions' || table_name == 'wf_appworkflow_statuses' || table_name == 'wf_workflowsubmission_actions' || table_name == 'wf_workflow_actionstypes' "
         dataField="process_id" caption="{{ 'process_name' | translate }}">
         <dxo-lookup [dataSource]="processData" displayExpr="name" valueExpr="id">
         </dxo-lookup>
@@ -166,7 +166,7 @@
                     </div>
 
                     <div class="col-lg-6"
-                        *ngIf="table_name == 'wf_workflow_definition'  || table_name == 'wf_workflowstatuses_actions' || table_name == 'wf_statuses_actions' || table_name == 'wf_workflow_statuses' || table_name == 'wf_workflowsubmission_actions' || table_name === 'wf_workflow_actionstypes' ">
+                        *ngIf="table_name == 'wf_workflow_definition'  || table_name == 'wf_workflowstatuses_actions' || table_name == 'wf_statuses_actions' || table_name == 'wf_appworkflow_statuses' || table_name == 'wf_workflowsubmission_actions' || table_name === 'wf_workflow_actionstypes' ">
 
                         <label for="unitName">{{ 'process_name' | translate }}</label>
                         <dx-select-box (onSelectionChanged)="onValueChangeprocesses($event)" [dataSource]="processData"

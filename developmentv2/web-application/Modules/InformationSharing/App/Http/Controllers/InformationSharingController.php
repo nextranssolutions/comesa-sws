@@ -159,7 +159,7 @@ class InformationSharingController extends Controller
                     $join->on('t2.is_default_action', '=', DB::raw(True));
                 })
                 ->leftJoin('wf_statuses_actions as t3', 't2.statuses_action_id', 't3.id')
-                ->leftJoin('wf_workflow_statuses as t4', 't1.appworkflow_status_id', 't4.id')
+                ->leftJoin('wf_appworkflow_statuses as t4', 't1.appworkflow_status_id', 't4.id')
                 ->select('t1.id as publication_management_id', 't4.name as appworkflow_status', 't1.*', 't3.name as action_name', 't3.iconCls', 't3.action');
 
             if (validateIsNumeric($appworkflow_status_id)) {
@@ -310,7 +310,7 @@ class InformationSharingController extends Controller
                     $join->on('t2.is_default_action', '=', DB::raw(True));
                 })
                 ->leftJoin('wf_statuses_actions as t3', 't2.statuses_action_id', 't3.id')
-                ->leftJoin('wf_workflow_statuses as t4', 't1.appworkflow_status_id', 't4.id')
+                ->leftJoin('wf_appworkflow_statuses as t4', 't1.appworkflow_status_id', 't4.id')
                 ->select('t1.id as resource_id', 't4.name as appworkflow_status', 't1.*', 't3.name as action_name', 't3.iconCls', 't3.action');
 
             if (validateIsNumeric($appworkflow_status_id)) {
@@ -451,7 +451,7 @@ class InformationSharingController extends Controller
                     $join->on('t2.is_default_action', '=', DB::raw(True));
                 })
                 ->leftJoin('wf_statuses_actions as t3', 't2.statuses_action_id', 't3.id')
-                ->leftJoin('wf_workflow_statuses as t4', 't1.appworkflow_status_id', 't4.id')
+                ->leftJoin('wf_appworkflow_statuses as t4', 't1.appworkflow_status_id', 't4.id')
                 ->select('t1.id as knowledgecenter_id', 't4.name as appworkflow_status', 't1.*', 't3.name as action_name', 't3.iconCls', 't3.action');
 
             if (validateIsNumeric($appworkflow_status_id)) {
@@ -525,7 +525,7 @@ class InformationSharingController extends Controller
             $member_state_id = $req->member_state_id;
 
             $records = DB::table('tra_resources_managementrepository as t1')
-                ->join('wf_workflow_statuses as t2', 't1.appworkflow_status_id', '=', 't2.id')
+                ->join('wf_appworkflow_statuses as t2', 't1.appworkflow_status_id', '=', 't2.id')
                 ->select(DB::raw("t1.appworkflow_status_id, t2.name as statusname, count(t1.id) as statuses_counter"));
             if (validateIsNumeric($account_type_id)) {
                 $account_types = getTableData('sys_account_types', array('id' => $account_type_id));
@@ -556,7 +556,7 @@ class InformationSharingController extends Controller
 
 
             $records = DB::table('tra_publication_management as t1')
-                ->join('wf_workflow_statuses as t2', 't1.appworkflow_status_id', '=', 't2.id')
+                ->join('wf_appworkflow_statuses as t2', 't1.appworkflow_status_id', '=', 't2.id')
                 ->select(DB::raw("t1.appworkflow_status_id, t2.name as statusname, count(t1.id) as statuses_counter"));
             if (validateIsNumeric($user_information_id)) {
                 // $records = $records->where("user_information_id", $user_information_id);
@@ -581,7 +581,7 @@ class InformationSharingController extends Controller
 
 
             $records = DB::table('tra_knowledgecenter_management as t1')
-                ->join('wf_workflow_statuses as t2', 't1.appworkflow_status_id', '=', 't2.id')
+                ->join('wf_appworkflow_statuses as t2', 't1.appworkflow_status_id', '=', 't2.id')
                 ->select(DB::raw("t1.appworkflow_status_id, t2.name as statusname, count(t1.id) as statuses_counter"));
             if (validateIsNumeric($user_information_id)) {
                 // $records = $records->where("user_information_id", $user_information_id);
@@ -603,7 +603,7 @@ class InformationSharingController extends Controller
             $application_code = $req->application_code;
             $data = array();
             $records = DB::table('tra_applicationprocess_submissions as t1')
-                ->join('wf_workflow_statuses as t2', 't1.appworkflow_status_id', 't2.id')
+                ->join('wf_appworkflow_statuses as t2', 't1.appworkflow_status_id', 't2.id')
                 ->join('wf_workflow_stages as t3', 't1.previous_stage_id', 't3.id')
                 ->join('wf_workflow_stages as t4', 't1.current_stage_id', 't4.id')
                 ->join('usr_users_information as t5', 't1.previous_user_id', 't5.id')
