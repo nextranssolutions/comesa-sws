@@ -65,8 +65,9 @@ nav_data: any;
       is_super_admin = childGroup.is_super_admin,
       regulatory_function_id = childGroup.regulatory_function_id,
       regulatory_subfunction_id = childGroup.regulatory_subfunction_id,
+      appworkflowstage_category_id = childGroup.appworkflowstage_category_id,
       access_level_id = childGroup.user_access_levels_id;
-
+  
     this.nav_data = {
       navigation_id: navigation_id,
       navigation_name: navigation_name,
@@ -75,8 +76,9 @@ nav_data: any;
       access_level_id: access_level_id,
       regulatory_function_id:regulatory_function_id,
       regulatory_subfunction_id:regulatory_subfunction_id,
+      appworkflowstage_category_id: appworkflowstage_category_id
     };
-    
+    console.log(this.nav_data.regulatory_subfunction_id)
     if (is_super_admin) {
       this.nav_data.access_level_id = 4;
       this.nav_data.is_deleteallowed = true;
@@ -95,7 +97,7 @@ nav_data: any;
         this.nav_data.is_readonly = false;
       }
     }
-    localStorage.setItem('nav_data', JSON.stringify(this.nav_data));
+    // localStorage.setItem('nav_data', JSON.stringify(this.nav_data));
     this.router.navigate(['./importexport-control/' + routerlink]);
     this.scrollToTop();
   }

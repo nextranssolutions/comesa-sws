@@ -191,7 +191,7 @@ class ImportExportController extends Controller
                 
 
                 $resp = insertRecord('wb_importexport_applications', $app_data, $user_id);
-                print_r($resp);
+                
                 if ($resp['success']) {
                     $tra_app_data = $app_data;
                     
@@ -212,7 +212,7 @@ class ImportExportController extends Controller
                         //     initializeApplicationDMS($permit_process_id, $oga_application_code, $user_id);
                         // }
                         initiateInitialProcessSubmission($table_name, $application_code, $permit_process_id);
-
+                        
                         $res = array(
                             'reference_no' => $reference_no,
                             'regulatory_function_id' => $regulatory_function_id,
@@ -1414,13 +1414,12 @@ class ImportExportController extends Controller
             $user_id = $req->user_id;
 
             $requestData = $req->all();
-            $filter = $req->filter;
+            $regulatory_subfunction_id = $req->regulatory_subfunction_id;
             $table_name = 'txn_importexport_applications';
             $appworkflow_status_id = $req->appworkflow_status_id;
             $workflow_status_id = $req->workflow_status_id;
-            $appworkflowstatus_category_id = $req->appworkflowstatus_category_id;
-            $permit_product_data = array();
-            $sectionSelection = $req->sectionSelection;
+            $application_data = array();
+            $appworkflowstage_category_id = $req->appworkflowstage_category_id;
             unset($requestData['table_name']);
 
             $sql = DB::table($table_name . ' as t1')
@@ -1457,22 +1456,23 @@ class ImportExportController extends Controller
                 ->leftJoin('par_application_options as t28', 't1.applicationapplicant_option_id', 't28.id')
                 ->leftJoin('wf_processes as t29', 't1.workflowprocess_id', 't29.id')
                 
-                ->select('t1.*','t19.*', 't19.name as applicant_name', 't18.name as customs_office', 't17.name as declaration',
+                ->select('t1.*','t19.*','t9.appworkflowstage_category_id', 't19.name as applicant_name', 't18.name as customs_office', 't17.name as declaration',
                 't15.name as invoice_type', 't14.name as final_destination_country', 't5.name as port_of_entry', 't13.name as mode_of_transport', 
                 't12.name as currency_name', 't2.name as permit_type', 't8.name as action_name', 't11.name as permit_typecategory',
                 't8.iconCls as iconCls', 't8.action as action', 't3.name as port_type', 't1.id', 't4.name as importer_exporter_name','t21.name as regulatory_function',
-                't22.name as regulatory_subfunction_id', 't9.name as status_name','t23.name as zone','t24.name as port_type','t9.name as workflow_status',
+                't22.name as regulatory_subfunction', 't9.name as status_name','t23.name as zone','t24.name as port_type','t9.name as workflow_status',
                 't25.name as applicationsubmission_type','t26.name as transactionpermit_type','t27.name as organisation','t28.name as application_option','t29.name as workflowprocess');
 
             if ($workflow_status_id != '') {
                 $workflow_status = explode(',', $workflow_status_id);
                 $sql->whereIn('appworkflow_status_id', $workflow_status);
             }
-            if (validateIsNumeric($appworkflowstatus_category_id)) {
-                $sql->where(array('t9.appworkflowstatus_category_id' => $appworkflowstatus_category_id));
+            if (validateIsNumeric($appworkflowstage_category_id)) {
+                $sql->where(array('t9.appworkflowstage_category_id' => $appworkflowstage_category_id));
             }
-            if (validateIsNumeric($appworkflow_status_id)) {
-                $sql->where('appworkflow_status_id', $appworkflow_status_id);
+
+            if (validateIsNumeric($regulatory_subfunction_id)) {
+                $sql->where('t22.id', $regulatory_subfunction_id);
             }
 
             $actionColumnData = returnContextMisMenuActions($process_id);
@@ -1563,8 +1563,7 @@ class ImportExportController extends Controller
                 ->leftJoin('wb_applicationprocess_submissions as t6', 't1.application_code', '=', 't6.application_code')
                 ->leftJoin('wb_workflowstageprocess_actions as t7', function ($join) {
                     $join->on('t6.current_stage_id', '=', 't7.workflow_stage_id');
-                    $join->on('t7.isdone', '=', DB::raw(0)); 
-                    
+                    $join->on('t7.isdone', '=', DB::raw(0));   
                 })
                 
                
@@ -1583,10 +1582,10 @@ class ImportExportController extends Controller
                 ->select('t18.*','t2.name as regulatory_subfunction','t19.name as applicationapplicant_option','t1.created_on as date_added','t6.current_stage_id as workflow_stage_id','t15.name as invoice_type', 't18.name as applicant_name', 't1.id as application_id', 't1.*','t17.name as declaration', 't15.name as invoice_type', 't14.name as final_destination_country', 't5.name as port_of_entry', 't13.name as mode_of_transport', 't12.name as currency_name', 't2.name as permit_typecategory', 't10.name as application_status', 't8.name as action_name', 't8.iconCls as iconCls', 't8.action as action', 't2.name as permit_name', 't3.name as port_type', 't1.id', 't4.name as importer_exporter_name');
 
                
-            // if ($workflow_status_id != '') {
-            //     $workflow_status = explode(',', $workflow_status_id);
-            //     $sql->whereIn('appworkflow_status_id', $workflow_status);
-            // }
+            if ($workflow_status_id != '') {
+                $workflow_status = explode(',', $workflow_status_id);
+                $sql->whereIn('appworkflow_status_id', $workflow_status);
+            }
             if (validateIsNumeric($appworkflowstage_category_id)) {
                 $sql->where(array('t9.appworkflowstage_category_id' => $appworkflowstage_category_id));
             }
@@ -1600,8 +1599,7 @@ class ImportExportController extends Controller
             //check the usres 
 
             $data = $sql->get();
-            // print_r($data);
-            // exit();
+         
 
             foreach ($data as $rec) {
                 $application_data[] = array(

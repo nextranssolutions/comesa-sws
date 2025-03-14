@@ -19,7 +19,7 @@ export class SharedImpExpdashboardClass {
   dtImportExpApplicationData: any = [];
   expanded: boolean = false;
   app_route: any;
-  regulatory_function_id: number = 1;
+  regulatory_function_id: number;
   app_response: any;
   processData: any;
   title: string;
@@ -60,7 +60,7 @@ export class SharedImpExpdashboardClass {
   importExportPermitTypesData: any;
   processingData: any;
   wofklowStatusData: any;
-  
+  appworkflowstage_category_id: any;
   process_title: string;
   tracking_no: string;
   application_id: number;
@@ -106,8 +106,13 @@ export class SharedImpExpdashboardClass {
     this.table_name = 'txn_importexport_applications';
 
     this.onLoadconfirmDataParam();
-    this.reloadPermitApplicationsApplications();
-    this.onLoadPermitTypesData();
+    this.nav_data = localStorage.getItem('nav_data');
+    this.nav_data = JSON.parse(this.nav_data);
+    let regulatory_subfunction_id = this.nav_data.regulatory_subfunction_id;
+    let appworkflowstage_category_id = this.nav_data.appworkflowstage_category_id;
+
+    this.reloadPermitApplicationsApplications(regulatory_subfunction_id, appworkflowstage_category_id);
+    this.onLoadPermitTypesData(regulatory_subfunction_id);
     this.onLoadWorkflowStatusData();
     this.onLoadApplicationStatusData();
   }
@@ -168,9 +173,9 @@ export class SharedImpExpdashboardClass {
 
     this.spinnerShow('loading...');
     this.sectionItem = this.applicationSelectionfrm.controls['transactionpermit_type_id'];
-    let regulatory_subfunction_id = this.applicationSelectionfrm.get('regulatory_subfunction_id')?.value;
+    // let regulatory_subfunction_id = this.applicationSelectionfrm.get('regulatory_subfunction_id')?.value;
 
-    this.regulatory_subfunction_id = regulatory_subfunction_id;
+    this.regulatory_subfunction_id = this.regulatory_subfunction_id;
     this.transactionpermit_type_id = this.sectionItem.value;
 
     // Store transactionpermit_type_id in localStorage
@@ -214,9 +219,15 @@ export class SharedImpExpdashboardClass {
   }
 
 
-  reloadPermitApplicationsApplications(filter_params = { application_status_id: this.application_status_id }) {
+  reloadPermitApplicationsApplications(regulatory_subfunction_id, appworkflowstage_category_id) {
+    
+    let data_submit = {
+      'table_name': this.table_name,
+      'regulatory_subfunction_id': regulatory_subfunction_id,
+      'appworkflowstage_category_id': appworkflowstage_category_id
+    };
     this.spinnerShow('Loading...........');
-    this.appService.onPermitApplicationLoading(filter_params, 'getImportExpPermitApplicationLoading')
+    this.appService.onPermitApplicationLoading(data_submit, 'getImportExpPermitApplicationLoading')
       .subscribe(
         data => {
 
@@ -228,6 +239,45 @@ export class SharedImpExpdashboardClass {
         },
       );
   }
+
+  onLoadPermitTypesData(regulatory_subfunction_id) {
+    
+    let data_submit = {
+      table_name: 'tra_transactionpermit_types',
+      regulatory_subfunction_id: regulatory_subfunction_id,
+    };
+
+    this.spinnerShow('Loading...........');
+    this.configService.onPermitApplicationLoading(data_submit, 'getTransactionPermitTypeData')
+      .subscribe(
+        data => {
+
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.permitTypesData = this.data_record.data;
+          }
+          this.spinnerHide();
+        },
+      );
+  }
+  // onLoadPermitTypesData() {
+  //   var data = {
+  //     table_name: 'tra_transactionpermit_types',
+  //     // is_enabled: true
+  //   };
+
+  //   this.configService.onLoadConfigurationData(data)
+  //     .subscribe(
+  //       data => {
+  //         this.data_record = data;
+
+  //         if (this.data_record.success) {
+  //           this.permitTypesData = this.data_record.data;
+  //           
+  //         }
+  //       });
+
+  // }
 
   spinnerShow(spinnerMessage) {
     this.loadingVisible = true;
@@ -274,24 +324,7 @@ export class SharedImpExpdashboardClass {
           }
         });
   }
-  onLoadPermitTypesData() {
-    var data = {
-      table_name: 'tra_transactionpermit_types',
-      // is_enabled: true
-    };
 
-    this.configService.onLoadConfigurationData(data)
-      .subscribe(
-        data => {
-          this.data_record = data;
-
-          if (this.data_record.success) {
-            this.permitTypesData = this.data_record.data;
-            ;
-          }
-        });
-
-  }
   onLoadWorkflowStatusData() {
     var data = {
       table_name: 'wf_workflow_statuses',
@@ -649,9 +682,7 @@ export class SharedImpExpdashboardClass {
     this.FilterDetailsFrm.reset();
     this.FilterDetailsFrm.reset();
 
-    this.reloadPermitApplicationsApplications();
-
-
+    this.reloadPermitApplicationsApplications(this.regulatory_subfunction_id, this.appworkflowstage_category_id);
   }
   funcInitiateInspectionBooking(app_data) {
     /*
