@@ -67,7 +67,7 @@ nav_data: any;
       regulatory_subfunction_id = childGroup.regulatory_subfunction_id,
       appworkflowstage_category_id = childGroup.appworkflowstage_category_id,
       access_level_id = childGroup.user_access_levels_id;
-  
+      
     this.nav_data = {
       navigation_id: navigation_id,
       navigation_name: navigation_name,

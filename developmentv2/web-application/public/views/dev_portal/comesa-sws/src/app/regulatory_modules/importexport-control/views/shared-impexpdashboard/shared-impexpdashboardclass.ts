@@ -12,68 +12,71 @@ import { AuthenticationService } from 'src/app/core-services/authentication/auth
 
 @Directive()
 export class SharedImpExpdashboardClass {
-
   @ViewChild(DxDataGridComponent) dataGrid: DxDataGridComponent;
-  is_popupguidelines: boolean;
-  productsapp_details: any;
-  dtImportExpApplicationData: any = [];
-  expanded: boolean = false;
-  app_route: any;
-  regulatory_function_id: number;
-  app_response: any;
-  processData: any;
-  title: string;
-  router_link: string;
+
   base_url = AppSettings.base_url;
   mis_url = AppSettings.mis_url;
-  productApplicationProcessingData: any;
-  isPreviewApplicationProcessing: boolean = false;
-  printReportTitle: string;
-  isPrintReportVisible: boolean = false;
-  printiframeUrl: string;
-  isPreviewApplicationDetails: boolean = false;
-  frmPreviewAppDetails: FormGroup;
-  regulated_productstype_id: number;
-  permitTypesData: any;
+  table_name = 'txn_importexport_applications';
+  is_popupguidelines = false;
+  expanded = false;
+  isPreviewApplicationProcessing = false;
+  isPrintReportVisible = false;
+  isPreviewApplicationDetails = false;
+  isApplicationRejectionVisible = false;
+  isPermitInitialisation = false;
+  loadingVisible = false;
+  isprodnextdisable = false;
+  win_submitinvoicepayments = false;
+  
+  productsapp_details: any;
+  dtImportExpApplicationData: any[] = [];
   applicationSelectionfrm: FormGroup;
-  applicationRejectionData: any;
-  isApplicationRejectionVisible: boolean = false;
+  frmPreviewAppDetails: FormGroup;
+  onApplicationSubmissionFrm: FormGroup;
   FilterDetailsFrm: FormGroup;
+  productApplicationProcessingData: any;
+  applicationRejectionData: any;
   applicationStatusData: any;
-  data_record: any;
-  guidelines_title: string;
-  regulatory_subfunction_id: number;
-  transactionpermit_type_id: number;
-  application_title: string;
+  processData: any;
+  importExportPermitTypesData: any;
+  wofklowStatusData: any;
+  processingData: any;
+  permitTypesData: any;
+  application_details: any;
+  confirmDataParam: any;
   sectionItem: any;
   app_typeItem: any;
-  application_details: any;
+  nav_data: any;
+  data_record: any;
+  permitProductsData: any;
+
+  // Identifiers
+  regulatory_function_id: number;
+  regulatory_subfunction_id: number;
   regulatory_subfunction_idsel: number;
-  isPermitInitialisation: boolean;
-  confirmDataParam: any;
+  transactionpermit_type_id: number;
   application_status_id: any;
-  loadingVisible: boolean;
-  spinnerMessage: string;
-  app_routing: any;
-  appstatus_id: number;
-  onApplicationSubmissionFrm: FormGroup;
-  importExportPermitTypesData: any;
-  processingData: any;
-  wofklowStatusData: any;
   appworkflowstage_category_id: any;
-  process_title: string;
-  tracking_no: string;
-  application_id: number;
-  oga_application_code: any;
+  applicationsubmission_type_id: number;
+  appstatus_id: number;
   permit_type_id: number;
   application_type_id: any;
-  table_name: string;
-  isprodnextdisable: boolean;
-  applicationsubmission_type_id: number;
-  nav_data: any;
+  application_id: number;
+  
+  // Strings
+  app_route: any;
+  app_routing: any;
+  app_response: any;
+  process_title: string;
+  application_title: string;
+  guidelines_title: string;
+  printReportTitle: string;
+  printiframeUrl: string;
+  router_link: string;
+  spinnerMessage: string;
+  tracking_no: string;
+  oga_application_code: any;
 
-  win_submitinvoicepayments:boolean;
-  permitProductsData:any;
   constructor(public utilityService: UtilityService, public viewRef: ViewContainerRef,
     public spinner: SpinnerVisibilityService,
     public toastr: ToastrService,
@@ -140,20 +143,7 @@ export class SharedImpExpdashboardClass {
       this.isPermitInitialisation = true;
       this.applicationSelectionfrm.get('regulatory_subfunction_id')?.setValue(regulatory_subfunction_id);
 
-    } else if (regulatory_subfunction_id == 30) {
-      this.isPermitInitialisation = true;
-      this.applicationSelectionfrm.get('regulatory_subfunction_id')?.setValue(regulatory_subfunction_id);
-
-    } else if (regulatory_subfunction_id == 94) {
-
-      this.application_details = { regulatory_function_id: this.regulatory_function_id, process_title: subfunction_name, regulatory_subfunction_id: regulatory_subfunction_id };
-      this.appService.setApplicationDetail(this.application_details);
-
-      this.app_route = ['./importexport-control/product-variantapp-selection'];
-
-      this.router.navigate(this.app_route);
-      this.scrollToTop();
-    } else {
+    }  else {
 
       this.application_details = { regulatory_function_id: this.regulatory_function_id, process_title: subfunction_name, regulatory_subfunction_id: regulatory_subfunction_id };
       this.appService.setApplicationDetail(this.application_details);
@@ -174,12 +164,10 @@ export class SharedImpExpdashboardClass {
 
     this.spinnerShow('loading...');
     this.sectionItem = this.applicationSelectionfrm.controls['transactionpermit_type_id'];
-    // let regulatory_subfunction_id = this.applicationSelectionfrm.get('regulatory_subfunction_id')?.value;
-
     this.nav_data = localStorage.getItem('nav_data');
     this.nav_data = JSON.parse(this.nav_data);
-    this.regulatory_subfunction_id = this.nav_data.regulatory_function_id;
-    console.log(this.regulatory_subfunction_id);
+    let regulatory_subfunction_id = this.nav_data.regulatory_subfunction_id;
+    this.regulatory_subfunction_id = regulatory_subfunction_id;
     this.transactionpermit_type_id = this.sectionItem.value;
 
     // Store transactionpermit_type_id in localStorage
@@ -682,7 +670,7 @@ export class SharedImpExpdashboardClass {
     this.FilterDetailsFrm.reset();
     this.FilterDetailsFrm.reset();
 
-    this.reloadPermitApplicationsApplications(this.regulatory_subfunction_id, this.appworkflowstage_category_id);
+    this.reloadPermitApplicationsApplications(this.regulatory_subfunction_id,this.appworkflowstage_category_id);
   }
   funcInitiateInspectionBooking(app_data) {
     /*
