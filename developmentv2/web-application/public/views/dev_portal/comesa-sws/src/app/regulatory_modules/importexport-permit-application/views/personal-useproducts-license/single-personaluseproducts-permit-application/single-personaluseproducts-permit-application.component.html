@@ -1,0 +1,359 @@
+<form enctype="multipart/form-data" role="form" [formGroup]="permitProductsFrm">
+    <div class="row">
+        <div class="input-group col-md-4">
+            <div class="col-lg-10">
+                <label>{{'hs_product_details' | translate}}</label>
+                <dx-text-box [readOnly]="true" formControlName="regulated_product_category"
+                    [placeholder]="'hs_product_details' | translate" [showClearButton]="true">
+                </dx-text-box>
+                <input type="hidden" formControlName="regulated_productcategory_id" />
+            </div>
+            <div class="col-lg-2 pt-5">
+                <dx-button [elementAttr]="{ class: 'btn btn-primary pull-left' }" [disabled]="ammendReadOnly"
+                    style="margin-top:25px !important;" text="{{ 'search' | translate }}" type="default"
+                    (onClick)="onsearchProductCategory()">
+                    <i class="fa fa-search"></i> {{ 'search' | translate }} {{
+                    'product_hs_code' |
+                    translate }}
+                </dx-button>
+            </div>
+        </div>
+
+        <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
+            <label class="control-label">{{'brand_name'| translate}}</label>
+            <dx-text-box formControlName="brand_name">
+            </dx-text-box>
+        </div>
+
+        <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
+            <label class="control-label">{{'product_description'| translate}}</label>
+            <dx-text-box formControlName="product_description">
+            </dx-text-box>
+        </div>
+
+        <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
+            <label class="control-label">{{ 'permit_product_purposes' | translate }}</label>
+            <dx-select-box [dataSource]="productPurposeData" valueExpr="id" displayExpr="name"
+                formControlName="permit_product_purposes_id" placeholder="{{ 'select' | translate }}">
+            </dx-select-box>
+        </div>
+
+        <div class="input-group col-md-4">
+
+            <div class="col-xs-12 col-md-6 col-lg-6 col-xl-6 ">
+                <label for="ti" class="control-label">{{'quantity'| translate}}</label>
+                <dx-text-box formControlName="quantity" placeholder="{{'quantity' | translate}}">
+                </dx-text-box>
+
+            </div>
+            <div class="col-xs-12 col-md-6 col-lg-6 col-xl-6 ">
+                <label for="ti" class="control-label">{{'unit_of_measure'| translate}}</label>
+                <dx-select-box [dataSource]="unitOfMeasureData" valueExpr="id" displayExpr="name" [searchEnabled]="true"
+                    formControlName="unit_of_measure_id">
+                </dx-select-box>
+            </div>
+
+        </div>
+
+        <div class="input-group col-md-4">
+            <div class="col-xs-12 col-md-6 col-lg-6 col-xl-6 ">
+                <label for="ti" class="control-label">{{'product_value'| translate}}</label>
+
+                <dx-text-box formControlName="product_value" placeholder="{{'product_value' | translate}}">
+                </dx-text-box>
+            </div>
+
+            <div class="col-xs-12 col-md-6 col-lg-6 col-xl-6 ">
+                <label for="ti" class="control-label">{{'currency'| translate}}</label>
+                <dx-select-box [dataSource]="currencyData" valueExpr="id" displayExpr="name" [searchEnabled]="true"
+                    formControlName="currency_id">
+                </dx-select-box>
+            </div>
+        </div>
+        <div class="input-group col-md-4">
+            <div class="col-xs-12 col-md-6 col-lg-6 col-xl-6 ">
+                <label for="ti" class="control-label">{{'total_weight'| translate}}</label>
+
+                <dx-text-box formControlName="total_weight" placeholder="{{'total_weight' | translate}}">
+                </dx-text-box>
+            </div>
+
+            <div class="col-xs-12 col-md-6 col-lg-6 col-xl-6 ">
+                <label class="control-label">{{ 'weight_unit' | translate }}</label>
+                <dx-select-box [dataSource]="weightUnitData" valueExpr="id" displayExpr="name"
+                    formControlName="weight_unit_id" placeholder="{{ 'select' | translate }}">
+                </dx-select-box>
+            </div>
+        </div>
+
+
+        <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
+            <label for="ti" class="control-label">{{'product_packaging'| translate}}</label>
+
+            <dx-text-box formControlName="product_packaging" placeholder="{{'product_packaging' | translate}}">
+            </dx-text-box>
+        </div>
+
+        <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
+            <label class="control-label">{{ 'country_of_origin' | translate }}</label>
+            <dx-select-box [dataSource]="countryData" valueExpr="id" displayExpr="name"
+                formControlName="country_of_origin_id" placeholder="{{ 'select' | translate }}">
+            </dx-select-box>
+        </div>
+
+        <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
+            <label for="ti" class="control-label">{{ 'consignment_details_provided' | translate
+                }}</label>
+            <dx-select-box [dataSource]="confirmDataParam" valueExpr="id" displayExpr="name" [searchEnabled]="true"
+                formControlName="consignment_id" placeholder="{{ 'select' | translate }}"
+                (onValueChanged)="toggleDetailsVisibility($event)">
+            </dx-select-box>
+        </div>
+
+        <div *ngIf="showConsignmentDetails" class="col-md-12">
+            <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
+                <label class="control-label">{{ 'batch_number' | translate }}</label>
+                <dx-text-box formControlName="batch_number"
+                    placeholder="{{ 'enter_batch_number' | translate }}"></dx-text-box>
+            </div>
+
+            <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
+                <label class="control-label">{{ 'manufacturing_date' | translate }}</label>
+                <dx-date-box formControlName="manufacturing_date" type="date"></dx-date-box>
+            </div>
+
+            <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
+                <label class="control-label">{{ 'expiry_date' | translate }}</label>
+                <dx-date-box formControlName="expiry_date" type="date"></dx-date-box>
+            </div>
+
+            <div class="col-xs-12 col-md-4 col-lg-4 col-xl-4">
+                <label class="control-label">{{ 'storage_conditions' | translate }}</label>
+                <dx-select-box [dataSource]="storageConditionsData" valueExpr="id" displayExpr="name"
+                    formControlName="storage_condition_id" placeholder="{{ 'select' | translate }}">
+                </dx-select-box>
+            </div>
+        </div>
+
+        <div class="input-group col-md-4">
+            <div class="col-lg-10">
+                <label>{{'manufacturer_name' | translate}}</label>
+                <dx-text-box [readOnly]="true" formControlName="manufacturer_name"
+                    [placeholder]="'manufacturer_name' | translate" [showClearButton]="true">
+                </dx-text-box>
+                <input type="hidden" formControlName="manufacturer_id" />
+            </div>
+            <div class="col-lg-2 pt-5">
+                <dx-button [elementAttr]="{ class: 'btn btn-primary pull-left' }" [disabled]="ammendReadOnly"
+                    style="margin-top:25px !important;" text="{{ 'search_details' | translate }}" type="default"
+                    (onClick)="funcSearchManufacturingSite()">
+                    <i class="fa fa-search"></i> {{ 'search' | translate }} {{ 'manufacturer' |
+                    translate }}
+                </dx-button>
+            </div>
+
+        </div>
+
+    </div>
+</form>
+
+
+<dx-popup class="popup" [width]="funcpopWidth(80)" [height]="600" [showTitle]="true"
+    title="{{'product_categories' | translate}}" [dragEnabled]="false" [hideOnOutsideClick]="false"
+    [(visible)]="isProductCategoryPopupVisible">
+    <div *dxTemplate="let data of 'content'">
+        <dx-scroll-view>
+            <dx-data-grid class="table row-border hover" [allowColumnResizing]="true" [wordWrapEnabled]="true"
+                [columnHidingEnabled]="true" [dataSource]="productCategoryData" [remoteOperations]='true' keyExpr="id" (onToolbarPreparing)="onAdvanceDataGridSearch($event)">
+                <dxo-filter-row [visible]="show_advancesearch"></dxo-filter-row>
+                <dxo-filter-row [visible]="false"></dxo-filter-row>
+                <dxo-search-panel [visible]="true">
+                </dxo-search-panel>
+                <dxo-paging [enabled]="true">
+                </dxo-paging>
+                <dxo-pager [showInfo]="true" infoText="Page #{0}. Total: {1} ({2} items)">
+                </dxo-pager>
+                <dxo-export [enabled]="true" fileName="productCategoryFile"
+                    [allowExportSelectedData]="true"></dxo-export>
+                <dxo-selection mode="single"></dxo-selection>
+                <dxo-group-panel [visible]="true"></dxo-group-panel>
+                <dxi-column [width]="150" caption="{{'action' | translate}}" name="command-editing"
+                    [allowFiltering]="false" [allowSorting]="false" cellTemplate="cellTemplate">
+                    <div *dxTemplate="let data of 'cellTemplate'">
+
+                        <dx-button text="{{'select_product' | translate}}" (click)="funcSelectProductCategory(data)"
+                            type="success" icon="edit" [elementAttr]="{ class: 'btn btn-primary' }">
+                        </dx-button>
+                    </div>
+                </dxi-column>
+                <dxi-column dataField="hscodechapters" caption="{{'product' | translate}}"></dxi-column>
+                <dxi-column dataField="hscodesheading" caption="{{'product_category' | translate}}"></dxi-column>
+                <dxi-column dataField="hscodessubheading" caption="{{'product_subcategory' | translate}}"></dxi-column>
+                <dxo-paging [pageSize]="50"></dxo-paging>
+            </dx-data-grid>
+        </dx-scroll-view>
+    </div>
+</dx-popup>
+
+
+<dx-popup class="popup" [width]="funcpopWidth(40)" [height]="400" [showTitle]="true" title="Add Details"
+    [dragEnabled]="false" [hideOnOutsideClick]="false" [(visible)]="addproductCommonNameModal">
+
+    <div *dxTemplate="let data of 'content'">
+        <dx-scroll-view>
+            <form [formGroup]="addProductParamsdetailsfrm" class="col-lg-12  div-nopadding" style="background: #fff;"
+                enctype="multipart/form-data" role="form" (ngSubmit)="onSaveNewGenericDetails()">
+                <div class="col-lg-12">
+                    <label class="control-label">{{'name' | translate}}</label>
+                    <dx-text-box formControlName="name" placeholder="name" [showClearButton]="true">
+                    </dx-text-box>
+                </div>
+                <div class="col-lg-12">
+                    <label class="control-label">{{'description' | translate}}</label>
+                    <dx-text-area formControlName="description" placeholder="description">
+                    </dx-text-area>
+                </div>
+                <input type='hidden' value='{{regulated_productstype_id}}'
+                    formControlName="regulated_productstype_id" />
+                <input type='hidden' value='par_common_names' formControlName="tablename" />
+
+                <div class="col-lg-12">
+                    <dx-button text="Save Details" type="success" icon="fa fa-plus"
+                        [elementAttr]="{  class: 'pull-left' }" (onClick)="onSaveNewGenericDetails()">
+                    </dx-button>
+                </div>
+            </form>
+        </dx-scroll-view>
+    </div>
+</dx-popup>
+
+
+<dx-popup class="popup" [width]="funcpopWidth(65)" [height]=620 [showTitle]="true" title="Add Manufacturer"
+    [dragEnabled]="false" [hideOnOutsideClick]="false" [(visible)]="isnewmanufacturerModalShow">
+
+    <div *dxTemplate="let data of 'content'" class="row">
+        <dx-scroll-view>
+            <div class="col-lg-12">
+                <form enctype="multipart/form-data" role="form" [formGroup]="manufacturerFrm"
+                    (ngSubmit)="onAddManufacturerDetails()">
+
+                    <div class="row">
+
+                        <div class="col-xs-12 col-md-6 col-lg-6 col-xl-6">
+
+                            <label class="control-label">{{'name' | translate}}</label>
+                            <dx-text-box formControlName="name">
+                            </dx-text-box>
+
+                        </div>
+                        <div class="col-xs-12 col-md-6 col-lg-6 col-xl-6">
+                            <label class="control-label">{{'country' | translate}}</label>
+
+                            <dx-select-box [dataSource]="countries" valueExpr="id" displayExpr="name"
+                                placeholder="{{'select_country_placeholder' | translate}}"
+                                (onSelectionChanged)="onCoutryCboSelect($event)" [searchEnabled]="true"
+                                formControlName="country_id">
+                            </dx-select-box>
+                        </div>
+                        <div class="col-xs-12 col-md-6 col-lg-6 col-xl-6">
+                            <label for="ti" class="control-label">{{'region/city(optional)' | translate}}</label>
+
+                            <dx-select-box [dataSource]="regions" valueExpr="id" displayExpr="name"
+                                [searchEnabled]="true" formControlName="region_id">
+                            </dx-select-box>
+
+                        </div>
+                        <div class="col-xs-12 col-md-6 col-lg-6 col-xl-6">
+                            <label for="ti" class="control-label">{{'email_address' | translate}}</label>
+                            <dx-text-box formControlName="email_address" placeholder="{{'email_address' | translate}}">
+                            </dx-text-box>
+                        </div>
+                        <div class="col-xs-12 col-md-6 col-lg-6 col-xl-6">
+                            <label for="ti" class="control-label">{{'postal_address' | translate}}</label>
+                            <dx-text-box formControlName="postal_address"
+                                placeholder="{{'postal_address' | translate}}">
+                            </dx-text-box>
+                        </div>
+                        <div class="col-lg-12">
+                            <label class="control-label">{{'physical_address' | translate}}</label>
+
+                            <dx-text-area [height]="60" formControlName="physical_address"
+                                placeholder="{{'physical_address' | translate}}">
+                            </dx-text-area>
+                        </div>
+                        <div class="col-lg-12 btn-margin-5">
+                            <br />
+                            <button type="submit" (submit)="onAddManufacturerDetails()"
+                                [disabled]="!manufacturerFrm.valid" class="btn btn-primary"><i class="fa fa-user"></i>
+                                {{'save_manufacturer'}}</button>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </dx-scroll-view>
+    </div>
+</dx-popup>
+
+
+<dx-popup class="popup" [width]="funcpopWidth(80)" [height]="600" [showTitle]="true"
+    title="{{'manufacturer_details' | translate}}" [dragEnabled]="false" [hideOnOutsideClick]="false"
+    [(visible)]="isManufacturerSitePopupVisible">
+    <div *dxTemplate="let data of 'content'">
+        <dx-scroll-view>
+            <dx-data-grid class="table row-border hover" [allowColumnResizing]="true" [wordWrapEnabled]="true"
+                [columnHidingEnabled]="true" (onToolbarPreparing)="onManufacturerPreparing($event)"
+                [dataSource]="manufacturersData" [remoteOperations]='true' keyExpr="id" (onToolbarPreparing)="onAdvanceDataGridSearch($event)">
+                <dxo-filter-row [visible]="show_advancesearch"></dxo-filter-row>
+                <dxo-filter-row [visible]="false"></dxo-filter-row>
+                <dxo-search-panel [visible]="true">
+                </dxo-search-panel>
+                <dxo-paging [enabled]="true">
+                </dxo-paging>
+                <dxo-pager [showInfo]="true" infoText="Page #{0}. Total: {1} ({2} items)">
+                </dxo-pager>
+                <dxo-export [enabled]="true" fileName="manufacturingFile" [allowExportSelectedData]="true"></dxo-export>
+                <dxo-selection mode="single"></dxo-selection>
+                <dxo-group-panel [visible]="true"></dxo-group-panel>
+                <dxi-column [width]="150" caption="{{'action' | translate}}" name="command-editing"
+                    [allowFiltering]="false" [allowSorting]="false" cellTemplate="cellTemplate">
+                    <div *dxTemplate="let data of 'cellTemplate'">
+
+                        <dx-button text="{{'select_manufacturer' | translate}}" (click)="funcSelectManufacturer(data)"
+                            type="success" icon="edit" [elementAttr]="{ class: 'btn btn-primary' }">
+                        </dx-button>
+                    </div>
+                </dxi-column>
+                <dxi-column dataField="manufacturer_name" caption="{{'manufacturer_name' | translate}}"></dxi-column>
+                <dxi-column dataField="country_name" caption="{{'country' | translate}}"></dxi-column>
+                <dxi-column dataField="region_name" caption="{{'region' | translate}}"></dxi-column>
+                <dxi-column dataField="district" caption="{{'district' | translate}}"></dxi-column>
+                <dxi-column dataField="physical_address" caption="{{'physical_address' | translate}}"></dxi-column>
+                <dxi-column dataField="postal_address" caption="{{'postal_address' | translate}}"></dxi-column>
+                <dxi-column dataField="email_address" caption="{{'email_address' | translate}}"></dxi-column>
+
+                <dxo-paging [pageSize]="50"></dxo-paging>
+            </dx-data-grid>
+        </dx-scroll-view>
+    </div>
+</dx-popup>
+
+<dx-popup class="popup" [width]="funcpopWidth(80)" [height]="450" [showTitle]="true"
+    title="{{'document_preview' | translate}}" [dragEnabled]="false" [hideOnOutsideClick]="true"
+    [(visible)]="isDocumentPreviewDownloadwin">
+    <div *dxTemplate="let data of 'content'" class="row">
+
+        <dx-scroll-view>
+            <!-- <app-appresumable-documents [regulated_productstype_id]="regulated_productstype_id"
+                [regulatory_function_id]="regulatory_function_id" [status_id]="status_id"
+                [regulatory_subfunction_id]="regulatory_subfunction_id"
+                [application_code]="application_code"></app-appresumable-documents> -->
+        </dx-scroll-view>
+    </div>
+</dx-popup>
+
+<dx-popup class="popup" [width]="funcpopWidth(80)" [height]="700" [showTitle]="true" title="{{printReportTitle}}"
+    [dragEnabled]="false" [hideOnOutsideClick]="true" [(visible)]="isPrintReportVisible">
+    <div *dxTemplate="let data of 'content'">
+        <div class="col-lg-12 row" [innerHTML]="printiframeUrl | safe: 'html'"></div>
+    </div>
+</dx-popup>

@@ -327,7 +327,7 @@ class ImportExportController extends Controller
                     $sql = DB::table('tra_application_documentsdefination')->where(array('application_code' => $application_code))->first();
                     if (!$sql) {
                         
-                        initializeApplicationDMS($regulatory_subfunction_id, $application_code, $reference_no, $user_id);
+                        // initializeApplicationDMS($regulatory_subfunction_id, $application_code, $reference_no, $user_id);
                     }
                     $res = array(
                         'reference_no' => $reference_no,
@@ -1544,9 +1544,8 @@ class ImportExportController extends Controller
     {
         try {
             $requestData = $req->all();
-            $filter = $req->filter;
             $table_name = 'wb_importexport_applications';
-            $regulatory_function_id = $req->regulatory_function_id;
+            $applicant_id = $req->applicant_id;
             $regulatory_subfunction_id = $req->regulatory_subfunction_id;
             $workflow_status_id = $req->workflow_status_id;
             $appworkflowstage_category_id = $req->appworkflowstage_category_id;
@@ -1561,13 +1560,13 @@ class ImportExportController extends Controller
                 ->leftJoin('wb_applicationprocess_submissions as t6', 't1.application_code', '=', 't6.application_code')
                 ->leftJoin('wb_workflowstageprocess_actions as t7', function ($join) {
                     $join->on('t6.current_stage_id', '=', 't7.workflow_stage_id');
-                    $join->on('t7.isdone', '=', DB::raw(0)); 
+                    // $join->on('t7.isdone', '=', DB::raw(0)); 
                     
                 })
                 
                
                 ->leftJoin('wf_statuses_actions as t8', 't7.statuses_action_id', 't8.id')
-                ->leftJoin('wf_workflow_statuses as t9', 't1.appworkflow_status_id', 't9.id')
+                ->leftJoin('wf_appworkflow_statuses as t9', 't1.appworkflow_status_id', 't9.id')
                 ->leftJoin('par_application_statuses as t10', 't1.application_status_id', 't10.id')
                
                 ->leftJoin('par_currencies as t12', 't1.currency_oftransaction_id', 't12.id')
@@ -1578,13 +1577,13 @@ class ImportExportController extends Controller
                 ->leftJoin('tra_trader_account as t18', 't1.applicant_id', 't18.id')
                 ->leftJoin('par_application_options as t19', 't1.applicationapplicant_option_id', 't19.id')
                 
-                ->select('t18.*','t2.name as regulatory_subfunction','t19.name as applicationapplicant_option','t1.created_on as date_added','t6.current_stage_id as workflow_stage_id','t15.name as invoice_type', 't18.name as applicant_name', 't1.id as application_id', 't1.*','t17.name as declaration', 't15.name as invoice_type', 't14.name as final_destination_country', 't5.name as port_of_entry', 't13.name as mode_of_transport', 't12.name as currency_name', 't2.name as permit_typecategory', 't10.name as application_status', 't8.name as action_name', 't8.iconCls as iconCls', 't8.action as action', 't2.name as permit_name', 't3.name as port_type', 't1.id', 't4.name as importer_exporter_name');
+                ->select('t18.*','t9.name as current_process','t2.name as regulatory_subfunction','t19.name as applicationapplicant_option','t1.created_on as date_added','t6.current_stage_id as workflow_stage_id','t15.name as invoice_type', 't18.name as applicant_name', 't1.id as application_id', 't1.*','t17.name as declaration', 't15.name as invoice_type', 't14.name as final_destination_country', 't5.name as port_of_entry', 't13.name as mode_of_transport', 't12.name as currency_name', 't2.name as permit_typecategory', 't10.name as application_status', 't8.name as action_name', 't8.iconCls as iconCls', 't8.action as action', 't2.name as permit_name', 't3.name as port_type', 't1.id', 't4.name as importer_exporter_name');
 
                
-            // if ($workflow_status_id != '') {
-            //     $workflow_status = explode(',', $workflow_status_id);
-            //     $sql->whereIn('appworkflow_status_id', $workflow_status);
-            // }
+            if ($workflow_status_id != '') {
+                $workflow_status = explode(',', $workflow_status_id);
+                $sql->whereIn('appworkflow_status_id', $workflow_status);
+            }
             if (validateIsNumeric($appworkflowstage_category_id)) {
                 $sql->where(array('t9.appworkflowstage_category_id' => $appworkflowstage_category_id));
             }
@@ -1592,14 +1591,17 @@ class ImportExportController extends Controller
             if (validateIsNumeric($regulatory_subfunction_id)) {
                 $sql->where('t1.regulatory_subfunction_id', $regulatory_subfunction_id);
             }
+            if (validateIsNumeric($applicant_id)) {
+                $sql->where('t1.applicant_id', $applicant_id);
+            }
+            
             $workflowprocess_id = getSingleRecordColValue('wb_workflowprocesses', array('regulatory_subfunction_id' => $regulatory_subfunction_id, ), 'id');
 
             $actionColumnData = returnContextMenuActions($workflowprocess_id);
             //check the usres 
 
             $data = $sql->get();
-            // print_r($data);
-            // exit();
+            
 
             foreach ($data as $rec) {
                 $application_data[] = array(
@@ -1618,6 +1620,8 @@ class ImportExportController extends Controller
                     'customs_office_id' => $rec->customs_office_id,
                     'invoice_type' => $rec->invoice_type,
                     'invoice_type_id' => $rec->invoice_type_id,
+                    'regulatory_subfunction_id' => $rec->regulatory_subfunction_id,
+                    'applicationsubmission_type_id' =>$rec->applicationsubmission_type_id,
                     'regulatory_subfunction' =>$rec->regulatory_subfunction,
                     'final_destination_country_id' => $rec->final_destination_country_id,
                     'final_destination_country' => $rec->final_destination_country,
@@ -1625,6 +1629,7 @@ class ImportExportController extends Controller
                     'invoice_date' => formatDaterpt($rec->invoice_date),
                     'importer_exporter_name' => $rec->importer_exporter_name,
                     'action' => $rec->action,
+                    'current_process' => $rec->current_process,
                     'currency_name' => $rec->currency_name,
                     'date_added' => $rec->date_added,
                     'declaration' => $rec->declaration,

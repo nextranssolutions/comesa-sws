@@ -110,7 +110,7 @@ export class SharedImpexpApplicationClass {
   payingCurrencyData: any;
   consigneeOptionsData: any;
   modeOfTransportData: any;
-
+  workflowprocess_id: number;
   termscheckbox: boolean = false;
   app_resp: any;
   consignee_options_id: number;
