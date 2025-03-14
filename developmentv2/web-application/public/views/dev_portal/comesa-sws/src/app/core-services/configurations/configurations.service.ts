@@ -325,7 +325,7 @@ export class ConfigurationsService {
       params: app_data,
       headers: headers
     };
-    return this.HttpClient.get(this.baseUrl + '/' +action_url, this.config)
+    return this.HttpClient.get(this.baseUrl + '/' + action_url, this.config)
       .pipe(map(data => {
         return <any>data;
       }));
