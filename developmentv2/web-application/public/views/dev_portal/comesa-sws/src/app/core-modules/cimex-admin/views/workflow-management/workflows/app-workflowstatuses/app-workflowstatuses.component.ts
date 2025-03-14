@@ -8,23 +8,19 @@ import { ServiceAdmnistrationService } from 'src/app/core-services/system-admnis
 import { UtilityService } from 'src/app/core-services/utilities/utility.service';
 
 @Component({
-  selector: 'app-restrictions-prohibitions',
-  templateUrl: './restrictions-prohibitions.component.html',
-  styleUrl: './restrictions-prohibitions.component.css'
+  selector: 'app-app-workflowstatuses',
+  templateUrl: './app-workflowstatuses.component.html',
+  styleUrl: './app-workflowstatuses.component.css'
 })
-export class RestrictionsProhibitionsComponent {
-  table_name: string = 'tra_restrictions_prohibitions';
-  parameter_name: string = 'restrictions_prohibitions';
+export class AppWorkflowstatusesComponent {
+table_name: string = 'wf_appworkflow_statuses';
+  parameter_name: string = 'application_workflow_statuses';
   show_advancesearch: boolean;
   resetcolumns = 'resetcolumns,routerLink';
   is_enabled: boolean;
   data_record: any;
   action_url: string;
   showWizard = false;
-  chapterDefinationData: any;
-  subHeadingDefinationData: any;
-  permitOperationsData: any;
-  HeadingDefinationData: any;
   response: any;
   config_record: string;
   deletePopupVisible = false;
@@ -32,10 +28,9 @@ export class RestrictionsProhibitionsComponent {
   enabledisable_permit_typedescription: string;
   enablePopupVisible: boolean;
   loading = false;
-
-  restrictionProhibitionDetails: any;
-  restrictionProhibitionPopupVisible: boolean = false;
+  appWorkflowStatuses: any;
   createNewDataFrm: FormGroup;
+  appWorkflowStatusesPopupVisible = false;
   loadingVisible: boolean;
   spinnerMessage: string;
   regStatusOptions = [
@@ -72,11 +67,6 @@ export class RestrictionsProhibitionsComponent {
           id: new FormControl('', Validators.compose([])),
           name: new FormControl('', Validators.compose([])),
           description: new FormControl('', Validators.compose([])),
-          restrictions_accesslinks: new FormControl('', Validators.compose([])),
-          chapters_defination_id: new FormControl('', Validators.compose([])),
-          heading_defination_id: new FormControl('', Validators.compose([])),
-          subheading_defination_id: new FormControl('', Validators.compose([])),
-          permit_operations_id: new FormControl('', Validators.compose([])),
           code: new FormControl('', Validators.compose([])),
           is_enabled: new FormControl('', Validators.compose([]))
         });
@@ -84,11 +74,7 @@ export class RestrictionsProhibitionsComponent {
 
       
     ngOnInit() {
-      this.fetchrestrictionProhibitionDetails();
-      this.fetchChapterDefinationData();
-      this.fetchHeadingDefinationData();
-      this.fetchSubHeadingDefinationData();
-      this.fetchPermitOperationsData()
+      this.fetchappWorkflowStatuses();
       this.spinnerShow('Loading ' + this.parameter_name);
     }
 
@@ -96,9 +82,9 @@ export class RestrictionsProhibitionsComponent {
         this.utilityService.onCellCountriesPrepared(e);
       }
 
-  onAddNewRestrictionPohibition() {
+  onAddNewRecord() {
     this.createNewDataFrm.reset();
-    this.restrictionProhibitionPopupVisible = true;
+    this.appWorkflowStatusesPopupVisible = true;
   }
 
   onAdvanceProductRegistrySearch(e) {
@@ -120,9 +106,9 @@ export class RestrictionsProhibitionsComponent {
 
   }
 
-  
+ 
 
- fetchrestrictionProhibitionDetails() {
+  fetchappWorkflowStatuses() {
     this.spinnerShow('Loading...........');
     var data_submit = {
       'table_name': this.table_name
@@ -133,7 +119,7 @@ export class RestrictionsProhibitionsComponent {
           this.data_record = data;
           if (this.data_record.success) {
             // this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
-            this.restrictionProhibitionDetails = this.data_record.data;
+            this.appWorkflowStatuses = this.data_record.data;
           }
           this.spinnerHide();
         },
@@ -142,75 +128,7 @@ export class RestrictionsProhibitionsComponent {
         });
   }
 
-  fetchChapterDefinationData() {
   
-    var data_submit = {
-      'table_name': 'par_hscodechapters_defination',
-    }
-    this.configService.onLoadConfigurationData(data_submit)
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            this.chapterDefinationData = this.data_record.data;
-          }
-        },
-        error => {
-        });
-  }
-
-  fetchHeadingDefinationData() {
-  
-    var data_submit = {
-      'table_name': 'par_hscodesheading_definations',
-    }
-    this.configService.onLoadConfigurationData(data_submit)
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            this.HeadingDefinationData = this.data_record.data;
-          }
-        },
-        error => {
-        });
-  }
-
-  fetchSubHeadingDefinationData() {
-  
-    var data_submit = {
-      'table_name': 'par_hscodessubheading_defination',
-    }
-    this.configService.onLoadConfigurationData(data_submit)
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            this.subHeadingDefinationData = this.data_record.data;
-          }
-        },
-        error => {
-        });
-  }
-
-  
-  fetchPermitOperationsData() {
-  
-    var data_submit = {
-      'table_name': 'par_operation_type',
-    }
-    this.configService.onLoadConfigurationData(data_submit)
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            this.permitOperationsData = this.data_record.data;
-          }
-        },
-        error => {
-        });
-        this.spinnerHide();
-  }
 
   funcpopWidth(percentage_width) {
     return window.innerWidth * percentage_width / 100;
@@ -230,7 +148,7 @@ export class RestrictionsProhibitionsComponent {
     this.loadingVisible = false;
   }
 
-  onUpdateRestrictions() {
+  onUpdatepaymentIntegrationTypes() {
 
     this.showWizard = true;
   }
@@ -261,8 +179,7 @@ export class RestrictionsProhibitionsComponent {
           this.response = response;
 
           if (this.response.success) {
-            this.fetchrestrictionProhibitionDetails();
-            this.restrictionProhibitionPopupVisible = false;
+            this.fetchappWorkflowStatuses();
             this.toastr.success(this.response.message, 'Response');
             this.spinnerHide();
           } else {
@@ -286,7 +203,7 @@ onDeleteSystemAdministrationDetails() {
 
         this.response = response;
         if (this.response.success) {
-          this.fetchrestrictionProhibitionDetails();
+          this.fetchappWorkflowStatuses();
           this.deletePopupVisible = false;
           this.toastr.success(this.response.message, 'Response');
         }
@@ -312,8 +229,7 @@ iniateEnableDisableRecord() {
         this.spinner.hide();
         this.response = response;
         if (this.response.success) {
-          this.fetchrestrictionProhibitionDetails();
-          this.restrictionProhibitionPopupVisible = false;
+          this.fetchappWorkflowStatuses();
           this.enablePopupVisible = false;
           this.toastr.success(this.response.message, 'Response');
           this.deletePopupVisible = false;
@@ -332,7 +248,6 @@ iniateEnableDisableRecord() {
 
 funcEditDetails(data) {
   this.createNewDataFrm.patchValue(data.data);
-  this.restrictionProhibitionPopupVisible = true;
 }
 funcDeleteDetails(data) {
   this.createNewDataFrm.patchValue(data.data);
@@ -371,4 +286,5 @@ funcEnableDisableRecord(data) {
       this.funcDeleteDetails(data);
     }
   } 
+
 }

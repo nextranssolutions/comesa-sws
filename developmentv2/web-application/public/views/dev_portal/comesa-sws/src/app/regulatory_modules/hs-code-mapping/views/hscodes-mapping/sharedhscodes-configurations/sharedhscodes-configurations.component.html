@@ -27,9 +27,11 @@
 
     <dxi-column dataField="name" caption="{{ 'name' | translate }}"></dxi-column>
 
-    <dxi-column *ngIf="table_name == 'par_hscodechapters_defination'" dataField="hscode" caption="{{ 'hscode' | translate }}"></dxi-column>
+    <dxi-column *ngIf="table_name == 'par_hscodechapters_defination'" dataField="hscode"
+        caption="{{ 'hscode' | translate }}"></dxi-column>
 
-    <dxi-column *ngIf="table_name == 'par_hscodesheading_definations' || table_name == 'par_hscodessubheading_defination' || table_name == 'tra_hscodesproducts_registry'"
+    <dxi-column
+        *ngIf="table_name == 'par_hscodesheading_definations' || table_name == 'par_hscodessubheading_defination' || table_name == 'tra_hscodesproducts_registry'"
         dataField="chapters_defination_id" caption="{{ 'hscode_chapter_defination' | translate }}">
         <dxo-lookup [dataSource]="chapterDefinationData" displayExpr="hscode" valueExpr="id">
         </dxo-lookup>
@@ -41,44 +43,48 @@
         </dxo-lookup>
     </dxi-column>
 
-    <dxi-column *ngIf="table_name == 'tra_hscodesproducts_registry' || table_name == 'par_hscodestariff_details'" dataField="subheading_definations_id"
-        caption="{{ 'hscode_subheading_defination' | translate }}">
+    <dxi-column *ngIf="table_name == 'tra_hscodesproducts_registry' || table_name == 'par_hscodestariff_details'"
+        dataField="subheading_definations_id" caption="{{ 'hscode_subheading_defination' | translate }}">
         <dxo-lookup [dataSource]="subHeadingDefinationData" displayExpr="specific_hs_code" valueExpr="id">
         </dxo-lookup>
     </dxi-column>
 
-    <dxi-column *ngIf="table_name == 'par_permitexpirytime_span'" dataField="time_span" caption="{{ 'time_span' | translate }}">
+    <dxi-column *ngIf="table_name == 'par_permitexpirytime_span'" dataField="time_span"
+        caption="{{ 'time_span' | translate }}">
     </dxi-column>
 
     <dxi-column *ngIf="table_name == 'par_permitexpirytime_span'" dataField="timespan_defination_id"
-    caption="{{ 'timespan_defination' | translate }}">
-    <dxo-lookup [dataSource]="timespanDefinationData" displayExpr="name" valueExpr="id">
-    </dxo-lookup>
-   </dxi-column>
-
-   <dxi-column *ngIf="table_name == 'par_permitexpirytime_span'" dataField="regulatory_function_id"
-   caption="{{ 'regulatory_function' | translate }}">
-   <dxo-lookup [dataSource]="regFunctionData" displayExpr="name" valueExpr="id">
-   </dxo-lookup>
-  </dxi-column>
-   
-  <dxi-column *ngIf="table_name == 'par_permitexpirytime_span'" dataField="regulatory_subfunction_id"
-   caption="{{ 'regulatory_subfunction' | translate }}">
-   <dxo-lookup [dataSource]="regSubFunctionData" displayExpr="name" valueExpr="id">
-   </dxo-lookup>
-  </dxi-column>
-
-  <dxi-column *ngIf="table_name == 'par_permitexpirytime_span'" dataField="organisation_id"
-   caption="{{ 'organisation' | translate }}">
-   <dxo-lookup [dataSource]="organisationData" displayExpr="name" valueExpr="id">
-   </dxo-lookup>
-  </dxi-column>
-
-    <dxi-column *ngIf="table_name == 'par_hscodestariff_details'" dataField="tariff_code" caption="{{ 'tariff_code' | translate }}">
+        caption="{{ 'timespan_defination' | translate }}">
+        <dxo-lookup [dataSource]="timespanDefinationData" displayExpr="name" valueExpr="id">
+        </dxo-lookup>
     </dxi-column>
-    <dxi-column *ngIf="table_name == 'par_hscodestariff_details'" dataField="country_code" caption="{{ 'country_code' | translate }}">
+
+    <dxi-column *ngIf="table_name == 'par_permitexpirytime_span'" dataField="regulatory_function_id"
+        caption="{{ 'regulatory_function' | translate }}">
+        <dxo-lookup [dataSource]="regFunctionData" displayExpr="name" valueExpr="id">
+        </dxo-lookup>
     </dxi-column>
-    <dxi-column *ngIf="table_name == 'par_hscodestariff_details'" dataField="tariff_rate" caption="{{ 'tariff_rate' | translate }}">
+
+    <dxi-column *ngIf="table_name == 'par_permitexpirytime_span'" dataField="regulatory_subfunction_id"
+        caption="{{ 'regulatory_subfunction' | translate }}">
+        <dxo-lookup [dataSource]="regSubFunctionData" displayExpr="name" valueExpr="id">
+        </dxo-lookup>
+    </dxi-column>
+
+    <dxi-column *ngIf="table_name == 'par_permitexpirytime_span'" dataField="organisation_id"
+        caption="{{ 'organisation' | translate }}">
+        <dxo-lookup [dataSource]="organisationData" displayExpr="name" valueExpr="id">
+        </dxo-lookup>
+    </dxi-column>
+
+    <dxi-column *ngIf="table_name == 'par_hscodestariff_details'" dataField="tariff_code"
+        caption="{{ 'tariff_code' | translate }}">
+    </dxi-column>
+    <dxi-column *ngIf="table_name == 'par_hscodestariff_details'" dataField="country_code"
+        caption="{{ 'country_code' | translate }}">
+    </dxi-column>
+    <dxi-column *ngIf="table_name == 'par_hscodestariff_details'" dataField="tariff_rate"
+        caption="{{ 'tariff_rate' | translate }}">
     </dxi-column>
 
     <dxi-column *ngIf="table_name == 'par_permit_typecategories'" dataField="code" caption="{{ 'code' | translate }}">
@@ -97,7 +103,7 @@
     [showIndicator]="true" [showPane]="true" [shading]="true" [message]="spinnerMessage" [hideOnOutsideClick]="false">
 </dx-load-panel>
 
-<dx-popup class="popup" [width]="funcpopWidth(75)" [height]="440" [showTitle]="true" 
+<dx-popup class="popup" [width]="funcpopWidth(75)" [height]="440" [showTitle]="true"
     title="{{ 'add_new' | translate }} {{parameter_name | translate }}" [dragEnabled]="false"
     [hideOnOutsideClick]="true" [(visible)]="onAddNewConfiVisible">
 
@@ -106,34 +112,34 @@
 
             <form role="form" enctype="multipart/form-data" [formGroup]="createNewDataFrm"
                 (ngSubmit)="onFuncSaveNewConfigData()">
-                <div class="col-lg-6">
-                    <label>{{ 'name' | translate }}</label>
-                    <dx-text-box formControlName="name" [showClearButton]="true"></dx-text-box>
-                </div>
-
-               
-
-                <div *ngIf="table_name == 'par_hscodestariff_details'" class="col-lg-6">
-                    <label>{{ 'tariff_code' | translate }}</label>
-                    <dx-text-box formControlName="tariff_code" [showClearButton]="true"></dx-text-box>
-                </div>
-
-                <div *ngIf="table_name == 'par_hscodestariff_details'" class="col-lg-6">
-                    <label>{{ 'country_code' | translate }}</label>
-                    <dx-text-box formControlName="country_code" [showClearButton]="true"></dx-text-box>
-                </div>
-
-                <div *ngIf="table_name == 'par_hscodestariff_details'" class="col-lg-6">
-                    <label>{{ 'tariff_rate' | translate }}</label>
-                    <dx-text-box formControlName="tariff_rate" [showClearButton]="true"></dx-text-box>
-                </div>
-
-                <div *ngIf="table_name == 'par_hscodechapters_defination'" class="col-lg-6">
-                    <label>{{ 'hscode' | translate }}</label>
-                    <dx-text-box formControlName="hscode" [showClearButton]="true"></dx-text-box>
-                </div>
-
                 <div class="row">
+                    <div class="col-lg-6">
+                        <label>{{ 'name' | translate }}</label>
+                        <dx-text-box formControlName="name" [showClearButton]="true"></dx-text-box>
+                    </div>
+
+
+
+                    <div *ngIf="table_name == 'par_hscodestariff_details'" class="col-lg-6">
+                        <label>{{ 'tariff_code' | translate }}</label>
+                        <dx-text-box formControlName="tariff_code" [showClearButton]="true"></dx-text-box>
+                    </div>
+
+                    <div *ngIf="table_name == 'par_hscodestariff_details'" class="col-lg-6">
+                        <label>{{ 'country_code' | translate }}</label>
+                        <dx-text-box formControlName="country_code" [showClearButton]="true"></dx-text-box>
+                    </div>
+
+                    <div *ngIf="table_name == 'par_hscodestariff_details'" class="col-lg-6">
+                        <label>{{ 'tariff_rate' | translate }}</label>
+                        <dx-text-box formControlName="tariff_rate" [showClearButton]="true"></dx-text-box>
+                    </div>
+
+                    <div *ngIf="table_name == 'par_hscodechapters_defination'" class="col-lg-6">
+                        <label>{{ 'hscode' | translate }}</label>
+                        <dx-text-box formControlName="hscode" [showClearButton]="true"></dx-text-box>
+                    </div>
+
                     <div *ngIf="table_name == 'par_hscodesheading_definations' || table_name == 'par_hscodessubheading_defination' || table_name == 'tra_hscodesproducts_registry'"
                         class="col-lg-6">
                         <label>{{ 'hscode_chapter_defination' | translate }}</label>
@@ -148,39 +154,36 @@
                             valueExpr="id" [searchEnabled]="true" displayExpr="start_hs_code"></dx-select-box>
                     </div>
 
-                    <div *ngIf="table_name == 'tra_hscodesproducts_registry' || table_name == 'par_hscodestariff_details'"  class="col-lg-6">
+                    <div *ngIf="table_name == 'tra_hscodesproducts_registry' || table_name == 'par_hscodestariff_details'"
+                        class="col-lg-6">
                         <label>{{ 'hscode_subheading_defination' | translate }}</label>
                         <dx-select-box [dataSource]="subHeadingDefinationData"
                             formControlName="subheading_definations_id" valueExpr="id" [searchEnabled]="true"
                             displayExpr="specific_hs_code"></dx-select-box>
                     </div>
-                    
+
                     <div *ngIf="table_name == 'par_permitexpirytime_span'" class="col-lg-6">
                         <label>{{ 'timespan_defination' | translate }}</label>
-                        <dx-select-box [dataSource]="timespanDefinationData"
-                            formControlName="timespan_defination_id" valueExpr="id" [searchEnabled]="true"
-                            displayExpr="name"></dx-select-box>
+                        <dx-select-box [dataSource]="timespanDefinationData" formControlName="timespan_defination_id"
+                            valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
                     </div>
 
                     <div *ngIf="table_name == 'par_permitexpirytime_span'" class="col-lg-6">
                         <label>{{ 'regulatory_function' | translate }}</label>
-                        <dx-select-box [dataSource]="regFunctionData"
-                            formControlName="regulatory_function_id" valueExpr="id" [searchEnabled]="true"
-                            displayExpr="name"></dx-select-box>
+                        <dx-select-box [dataSource]="regFunctionData" formControlName="regulatory_function_id"
+                            valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
                     </div>
-                    
+
                     <div *ngIf="table_name == 'par_permitexpirytime_span'" class="col-lg-6">
                         <label>{{ 'regulatory_subfunction' | translate }}</label>
-                        <dx-select-box [dataSource]="regSubFunctionData"
-                            formControlName="regulatory_subfunction_id" valueExpr="id" [searchEnabled]="true"
-                            displayExpr="name"></dx-select-box>
+                        <dx-select-box [dataSource]="regSubFunctionData" formControlName="regulatory_subfunction_id"
+                            valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
                     </div>
 
                     <div *ngIf="table_name == 'par_permitexpirytime_span'" class="col-lg-6">
                         <label>{{ 'organisation' | translate }}</label>
-                        <dx-select-box [dataSource]="organisationData"
-                            formControlName="organisation_id" valueExpr="id" [searchEnabled]="true"
-                            displayExpr="name"></dx-select-box>
+                        <dx-select-box [dataSource]="organisationData" formControlName="organisation_id" valueExpr="id"
+                            [searchEnabled]="true" displayExpr="name"></dx-select-box>
                     </div>
 
                     <div class="col-lg-6">
@@ -188,7 +191,7 @@
                         <dx-text-box formControlName="description" [showClearButton]="true"></dx-text-box>
                     </div>
 
-                    <div  class="col-lg-6">
+                    <div class="col-lg-6">
                         <label>{{ 'code' | translate }}</label>
                         <dx-text-box formControlName="code" [showClearButton]="true"></dx-text-box>
                     </div>
@@ -201,7 +204,7 @@
                 </div>
 
                 <div class="row">
-                    <div class="col-lg-4 pull-right">
+                    <div class="col-lg-4">
                         <dx-button text="{{ 'save' | translate }} {{ parameter_name | translate }}" type="default"
                             icon="fa fa-save" [elementAttr]="{ id: 'elementId', class: 'pull-right' }"
                             (onClick)="onFuncSaveNewConfigData()">

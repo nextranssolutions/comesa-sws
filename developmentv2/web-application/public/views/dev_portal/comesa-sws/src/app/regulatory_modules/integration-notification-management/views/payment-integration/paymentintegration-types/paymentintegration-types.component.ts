@@ -30,9 +30,8 @@ table_name: string = 'par_paymentintegration_types';
   loading = false;
 
   paymentIntegrationTypesDetails: any;
-  restrictionProhibitionPopupVisible: boolean = false;
   createNewDataFrm: FormGroup;
-  paymentIntegrationTypesDetailsPopupVisible: boolean;
+  paymentIntegrationTypesDetailsPopupVisible: boolean = false;
   loadingVisible: boolean;
   spinnerMessage: string;
   regStatusOptions = [
@@ -46,7 +45,7 @@ table_name: string = 'par_paymentintegration_types';
       icon: 'menu',
       items: [
         //  { text: "View", action: 'view_record', icon: 'fa fa-eye' },
-        { text: "Edit Permit Type", action: 'edit_record', icon: 'fa fa-edit' },
+        { text: "Edit Payment Integration Type", action: 'edit_record', icon: 'fa fa-edit' },
         { text: "Delete", action: 'delete_record', icon: 'fa fa-trash' },
         { text: "Enable/Disable", action: 'enable_record', icon: 'fa fa-check' }
       ]
@@ -86,7 +85,7 @@ table_name: string = 'par_paymentintegration_types';
 
   onAddNewRecord() {
     this.createNewDataFrm.reset();
-    this.restrictionProhibitionPopupVisible = true;
+    this.paymentIntegrationTypesDetailsPopupVisible = true;
   }
 
   onAdvanceProductRegistrySearch(e) {
@@ -107,9 +106,8 @@ table_name: string = 'par_paymentintegration_types';
     this.show_advancesearch = e.value;
 
   }
-
-  fetchpaymentIntegrationTypesDetails() {
-
+fetchpaymentIntegrationTypesDetails() {
+    this.spinnerShow('Loading...........');
     var data_submit = {
       'table_name': this.table_name
     }
@@ -118,14 +116,14 @@ table_name: string = 'par_paymentintegration_types';
         data => {
           this.data_record = data;
           if (this.data_record.success) {
+            // this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
             this.paymentIntegrationTypesDetails = this.data_record.data;
           }
-
+          this.spinnerHide();
         },
         error => {
-
+          this.spinnerHide();
         });
-
   }
 
   
@@ -180,6 +178,7 @@ table_name: string = 'par_paymentintegration_types';
 
           if (this.response.success) {
             this.fetchpaymentIntegrationTypesDetails();
+            this.paymentIntegrationTypesDetailsPopupVisible = false;
             this.toastr.success(this.response.message, 'Response');
             this.spinnerHide();
           } else {
@@ -230,6 +229,7 @@ iniateEnableDisableRecord() {
         this.response = response;
         if (this.response.success) {
           this.fetchpaymentIntegrationTypesDetails();
+          
           this.enablePopupVisible = false;
           this.toastr.success(this.response.message, 'Response');
           this.deletePopupVisible = false;
@@ -248,6 +248,7 @@ iniateEnableDisableRecord() {
 
 funcEditDetails(data) {
   this.createNewDataFrm.patchValue(data.data);
+  this.paymentIntegrationTypesDetailsPopupVisible = true;
 }
 funcDeleteDetails(data) {
   this.createNewDataFrm.patchValue(data.data);

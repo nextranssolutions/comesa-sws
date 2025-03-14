@@ -9,6 +9,8 @@ Route::middleware(['XssSanitizer','clear_cache_config','firewall.all'])->prefix(
     Route::get('funcFetchPublicDetailsCounter', [ConfigurationsController::class, 'funcFetchPublicDetailsCounter']);
 	Route::get('getUserNavigationItems', [ConfigurationsController::class, 'getUserNavigationItems']);
     Route::get('onLoadConfigurationData', [ConfigurationsController::class, 'onLoadConfigurationData']);
+    Route::get('onLoadNewConfigurationData', [ConfigurationsController::class, 'onLoadNewConfigurationData']);
+    
     Route::get('onLoadTranslationManagement', [ConfigurationsController::class, 'onLoadTranslationManagement']);
     Route::get('onLoadInformationSharingConfig', [ConfigurationsController::class, 'onLoadInformationSharingConfig']);
     

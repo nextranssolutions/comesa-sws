@@ -243,6 +243,7 @@ import { ProceduresCategoriesComponent } from './views/configurations/import-exp
 import { ProceduresSubcategoriesComponent } from './views/configurations/import-export-procedures/procedures-subcategories/procedures-subcategories.component';
 import { SharedImportexportProceduresComponent } from './views/configurations/import-export-procedures/shared-importexport-procedures/shared-importexport-procedures.component';
 import { StatusesActionsComponent } from './views/user-management/statuses-actions/statuses-actions.component';
+import { AppWorkflowstatusesComponent } from './views/workflow-management/workflows/app-workflowstatuses/app-workflowstatuses.component';
 
 //./admin-ecres/app-dashboard
 const routes: Routes = [{
@@ -622,7 +623,10 @@ const routes: Routes = [{
     path: 'app-location-parameters',
     component: LocationParametersComponent
   },
-
+  {
+    path: 'app-app-workflowstatuses',
+    component: AppWorkflowstatusesComponent
+  },
   {
     path: 'app-sharedproduct-configurations',
     component: SharedproductConfigurationsComponent

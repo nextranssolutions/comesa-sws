@@ -494,11 +494,11 @@ fetchWorkflowStagesDetails(workflow_id) {
 
 }
 
-fetchWorkflowStageProcessActions(workflow_id) {
+fetchWorkflowStageProcessActions(workflow_stage_id) {
   this.spinnerShow('Loading Workflow Stages Details');
   var data_submit = {
     'table_name': 'wf_workflowstageprocess_actions',
-    workflow_id: workflow_id
+    workflow_stage_id: workflow_stage_id
   }
   this.workflowService.getWorkflowConfigs(data_submit)
   .subscribe(
@@ -530,11 +530,11 @@ fetchWorkflowStagesInfo(workflow_id) {
     this.spinnerHide();
 }
 
-fetchWorkflowStageActionsDetails(workflow_id) {
+fetchWorkflowStageActionsDetails(workflow_stage_id) {
   this.spinnerShow('Loading Workflow Stages Details');
   var data_submit = {
     'table_name': 'wf_workflow_actions',
-    workflow_id: workflow_id
+    workflow_stage_id: workflow_stage_id
   }
   this.workflowService.getWorkflowConfigs(data_submit)
   .subscribe(
@@ -1159,7 +1159,7 @@ onFuncSaveWorlflowStageActionData() {
   this.action_url = 'onsaveWorkflowConfigData';
 
   this.spinner.show();
-  this.workflowStageActionsItemsFrm.get('workflow_id')?.setValue(this.workflow_id);
+  this.workflowStageActionsItemsFrm.get('workflow_stage_id')?.setValue(this.workflow_stage_id);
   this.workflowService.onSaveWorkflowDetailsDetails('wf_workflow_actions', this.workflowStageActionsItemsFrm.value, this.action_url)
     .subscribe(
       response => {
@@ -1167,7 +1167,7 @@ onFuncSaveWorlflowStageActionData() {
         //the details 
         if (this.response.success) {
 
-          this.fetchWorkflowStageActionsDetails(this.workflow_id);
+          this.fetchWorkflowStageActionsDetails(this.workflow_stage_id);
           this.workflowStageDetailsVisible = false;
           this.toastr.success(this.response.message, 'Response');
           this.spinnerHide();
@@ -1203,7 +1203,7 @@ onFuncSaveWorkflowStageProcessActionsData() {
   this.action_url = 'onsaveWorkflowConfigData';
 
   this.spinner.show();
-  this.workflowStageProcessActionsFrm.get('workflow_id')?.setValue(this.workflow_id);
+  this.workflowStageProcessActionsFrm.get('workflow_stage_id')?.setValue(this.workflow_stage_id);
   this.workflowService.onSaveWorkflowDetailsDetails('wf_workflowstageprocess_actions', this.workflowStageProcessActionsFrm.value, this.action_url)
     .subscribe(
       response => {
@@ -1211,7 +1211,7 @@ onFuncSaveWorkflowStageProcessActionsData() {
         //the details 
         if (this.response.success) {
 
-          this.fetchWorkflowStageProcessActions(this.workflow_id);
+          this.fetchWorkflowStageProcessActions(this.workflow_stage_id);
           this.workflowStageProcessActionsVisible = false;
           this.toastr.success(this.response.message, 'Response');
           this.spinnerHide();

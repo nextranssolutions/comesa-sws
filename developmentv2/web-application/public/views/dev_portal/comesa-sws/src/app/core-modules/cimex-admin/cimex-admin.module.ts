@@ -299,6 +299,7 @@ import { SharedImportexportProceduresComponent } from './views/configurations/im
 import { StatusesActionsComponent } from './views/user-management/statuses-actions/statuses-actions.component';
 import { GeneralSystemFormsComponent } from './views/configurations/forms/general-system-forms/general-system-forms.component';
 import { PermitTermsconditionsComponent } from './views/system-administration/system-guidelines/permit-termsconditions/permit-termsconditions.component';
+import { AppWorkflowstatusesComponent } from './views/workflow-management/workflows/app-workflowstatuses/app-workflowstatuses.component';
 
 @NgModule({
   declarations: [AppdashboardComponent,
@@ -374,6 +375,7 @@ import { PermitTermsconditionsComponent } from './views/system-administration/sy
     ApplicantWorkflowsetupComponent,
     ApplicantSystemprocessesComponent,
     PermitTermsconditionsComponent,
+    AppWorkflowstatusesComponent,
    
 
 
@@ -716,6 +718,7 @@ import { PermitTermsconditionsComponent } from './views/system-administration/sy
     PortalDocdefinationComponent,
     AppFormsComponent,
     GeneralSystemFormsComponent,
+    AppWorkflowstatusesComponent,
    
    
     TransactionCurrencyComponent,
