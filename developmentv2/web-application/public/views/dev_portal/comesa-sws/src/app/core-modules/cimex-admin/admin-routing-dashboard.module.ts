@@ -130,6 +130,7 @@ import { ProceduresCategoriesComponent } from './views/configurations/import-exp
 import { ProceduresSubcategoriesComponent } from './views/configurations/import-export-procedures/procedures-subcategories/procedures-subcategories.component';
 import { SharedImportexportProceduresComponent } from './views/configurations/import-export-procedures/shared-importexport-procedures/shared-importexport-procedures.component';
 import { StatusesActionsComponent } from './views/user-management/statuses-actions/statuses-actions.component';
+import { AppWorkflowstatusesComponent } from './views/workflow-management/workflows/app-workflowstatuses/app-workflowstatuses.component';
 import { RegulatoryprocessDocdefinationComponent } from './views/document-checklistsmng/dms/regulatoryprocess-docdefination/regulatoryprocess-docdefination.component';
 
 //./admin-ecres/app-dashboard
@@ -454,6 +455,133 @@ const routes: Routes = [{
   },
 
 
+  {
+    path: 'app-app-workflowstatuses',
+    component: AppWorkflowstatusesComponent
+  },
+  {
+    path: 'app-sharedproduct-configurations',
+    component: SharedproductConfigurationsComponent
+  },
+  {
+    path: 'app-productconfigurations-setup',
+    component: ProductconfigurationsSetupComponent
+  },
+  {
+    path: 'app-storage-condition',
+    component: StorageConditionComponent
+  },
+  {
+    path: 'SiUnitsComponent',
+    component: SiUnitsComponent
+  },
+  {
+    path: 'app-routeof-administration',
+    component: RouteofAdministrationComponent
+  },
+
+  {
+    path: 'app-reasonfor-inclusion',
+    component: ReasonforInclusionComponent
+  },
+  {
+    path: 'app-productsub-categories',
+    component: ProductsubCategoriesComponent
+  },
+  {
+    path: 'app-productspecial-category',
+    component: ProductspecialCategoryComponent
+  },
+  {
+    path: 'app-productclass-categories',
+    component: ProductclassCategoriesComponent
+  },
+  {
+    path: 'app-product-forms',
+    component: ProductFormsComponent
+  },
+  {
+    path: 'app-prodclassification-rules',
+    component: ProdclassificationRulesComponent
+  },
+  {
+    path: 'app-prodclassification-categories',
+    component: ProdclassificationCategoriesComponent
+  },
+  {
+    path: 'app-nutrients',
+    component: NutrientsComponent
+  },
+  {
+    path: 'app-methodof-use',
+    component: MethodofUseComponent
+  },
+  {
+    path: 'app-master-ingredients',
+    component: MasterIngredientsComponent
+  },
+  {
+    path: 'app-intendedend-user',
+    component: IntendedendUserComponent
+  },
+  {
+    path: 'app-intendedend-use',
+    component: IntendedendUseComponent
+  },
+  {
+    path: 'app-ingredients-specifications',
+    component: IngredientsSpecificationsComponent
+  },
+  {
+    path: 'app-ingredients-category',
+    component: IngredientsCategoryComponent
+  },
+
+  {
+    path: 'app-ingredient-type',
+    component: IngredientTypeComponent
+  },
+  {
+    path: 'app-gmdn-codes',
+    component: GmdnCodesComponent
+  },
+  {
+    path: 'app-gmdn-categories',
+    component: GmdnCategoriesComponent
+  },
+  {
+    path: 'app-dosage-form',
+    component: DosageFormComponent
+  },
+  {
+    path: 'app-distribution-category',
+    component: DistributionCategoryComponent
+  },
+  {
+    path: 'app-device-types',
+    component: DeviceTypesComponent
+  },
+  {
+    path: 'app-common-name',
+    component: CommonNameComponent
+  },
+  {
+    path: 'app-classification-rules',
+    component: ClassificationRulesComponent
+  },
+  {
+    path: 'app-classification',
+    component: ClassificationComponent
+  },
+  {
+    path: 'app-atccodes-definations',
+    component: AtccodesDefinationsComponent
+  },
+  {
+    path: 'app-assessment-procedures',
+    component: AssessmentProceduresComponent
+  },
+  
   {
     path: 'systemmanual-configuration',
     component: SystemmanualConfigurationComponent

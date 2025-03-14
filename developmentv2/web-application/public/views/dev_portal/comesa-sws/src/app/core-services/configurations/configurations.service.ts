@@ -142,6 +142,20 @@ export class ConfigurationsService {
       }));
   }
 
+  onLoadNewConfigurationData(data, action_url = 'onLoadNewConfigurationData') {
+    data.table_name = btoa(data.table_name);
+    // data.table_name=this.encryptionService.OnEncryptData(data.table_name)
+    this.config = {
+      params: data,
+      headers: { 'Accept': 'application/json' }
+    };
+
+    return this.HttpClient.get(this.baseUrl + '/' + action_url, this.config)
+      .pipe(map(data => {
+        return <any>data;
+      }));
+  }
+
   getAppRegulatoryFunctionFeeConfig(data, action_url = 'getAppRegulatoryFunctionFeeConfig') {
     data.table_name = btoa(data.table_name);
     const loggedInUserId = localStorage.getItem('id');

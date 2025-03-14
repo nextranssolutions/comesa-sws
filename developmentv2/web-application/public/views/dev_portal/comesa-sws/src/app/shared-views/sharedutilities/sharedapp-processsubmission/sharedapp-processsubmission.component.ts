@@ -14,7 +14,7 @@ import { WokflowManagementService } from 'src/app/core-services/workflow-managem
 export class SharedappProcesssubmissionComponent {
   @Input() application_code: number;
   @Input() oga_application_code: number;
-  
+  @Input() workflowprocess_id: number;
   @Input() process_id: number;
   @Input() app_reference_no: any;
   @Input() appworkflow_status_id: number;
@@ -67,8 +67,10 @@ export class SharedappProcesssubmissionComponent {
     this.onLoadworkflowStatusData()
     this.onLoadprocessData();
     this.onLoadworkflowStageData(this.process_id);
+    this.onLoadworkflowProcessesStageData(this.workflowprocess_id);
     this.onLoadWorkflowStatusActions();
-
+    this.onLoadworkflowprocessData();
+    this.onLoadWorkflowStatusProcessActions();
   }
   scrollToTop(): void {
     window.scrollTo({
@@ -96,6 +98,26 @@ export class SharedappProcesssubmissionComponent {
     var data_submit = {
       'table_name': 'wf_workflow_stages',
       'process_id': process_id
+    }
+    this.workflowService.getWorkflowConfigsUrl(data_submit, 'onLoadworkflowStageData')
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.workflowStageData = this.data_record.data;
+          }
+        },
+        error => {
+          
+        });
+
+  }
+
+
+  onLoadworkflowProcessesStageData(workflowprocess_id) {
+    var data_submit = {
+      'table_name': 'wb_workflowprocesses_stages',
+      'workflowprocess_id': workflowprocess_id
     }
     this.workflowService.getWorkflowConfigsUrl(data_submit, 'onLoadworkflowStageData')
       .subscribe(
@@ -183,9 +205,47 @@ export class SharedappProcesssubmissionComponent {
         });
   }
 
+  onLoadWorkflowStatusProcessActions(){
+    var data_submit = {
+      'table_name': 'wb_applicationprocess_submissions',
+      'workflow_status_id': this.appworkflow_status_id,
+      'workflowprocess_id': this.workflowprocess_id
+    }
+    this.workflowService.getWorkflowConfigsUrl(data_submit, 'onLoadWorkflowStatusActions')
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.workflowStatusActionsData = this.data_record.data;
+          }
+        },
+        error => {
+          
+        });
+  }
+
   onLoadprocessData() {
     var data_submit = {
       'table_name': 'wf_processes'
+    }
+    this.workflowService.getWorkflowConfigs(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.processData = this.data_record.data;
+          }
+        },
+        error => {
+          
+        });
+
+  }
+
+
+  onLoadworkflowprocessData() {
+    var data_submit = {
+      'table_name': 'wb_workflowprocesses'
     }
     this.workflowService.getWorkflowConfigs(data_submit)
       .subscribe(

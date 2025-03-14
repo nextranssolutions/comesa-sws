@@ -6,6 +6,8 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Schema;
+
 
 class ConfigurationsController extends Controller
 {
@@ -273,6 +275,37 @@ class ConfigurationsController extends Controller
         return response()->json($res, 200);
     }
 
+    public function onLoadNewConfigurationData(Request $req)
+    {
+        try {
+            $table_name = base64_decode($req->table_name);
+    
+            if (empty($table_name)) {
+                return response()->json(['success' => false, 'message' => 'Invalid table name']);
+            }
+    
+            
+            $check_exempt = DB::table('tra_exemptedpublic_tables')
+                ->where('table_name', $table_name)
+                ->exists();
+    
+            if ($check_exempt) {
+                return response()->json(['success' => false, 'message' => 'Table has been blocked for access']);
+            }
+    
+            
+            $columns = Schema::getColumnListing($table_name);
+           
+    
+            return response()->json(['success' => true, 'columns' => $columns]);
+    
+        } catch (\Exception $exception) {
+            return response()->json(sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__)), 500);
+        } catch (\Throwable $throwable) {
+            return response()->json(sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__)), 500);
+        }
+    }
+    
     public function onLoadApplicationtablsList(Request $req)
     {
         try {
@@ -891,6 +924,8 @@ class ConfigurationsController extends Controller
                 ->where($filter)
                 ->where('t2.stage_status_id', 1) // Qualified column
                 ->first();
+            // print_r($data);
+            // exit();
             // Process application data
             if ($data) {
                 $app_data['process_infor'] = $data;

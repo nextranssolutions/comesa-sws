@@ -50,7 +50,7 @@ table_name: string = 'tra_email_configurations';
       icon: 'menu',
       items: [
         //  { text: "View", action: 'view_record', icon: 'fa fa-eye' },
-        { text: "Edit Permit Type", action: 'edit_record', icon: 'fa fa-edit' },
+        { text: "Edit Email Configuration", action: 'edit_record', icon: 'fa fa-edit' },
         { text: "Delete", action: 'delete_record', icon: 'fa fa-trash' },
         { text: "Enable/Disable", action: 'enable_record', icon: 'fa fa-check' }
       ]
@@ -123,23 +123,23 @@ table_name: string = 'tra_email_configurations';
   }
 
   fetchEmailConfigurationsDetails() {
-
+    this.spinnerShow('Loading...........');
     var data_submit = {
       'table_name': this.table_name
     }
-    this.admnistrationService.onLoadTransactionEmailConfigurations(data_submit)
+    this.configService.onLoadConfigurationData(data_submit)
       .subscribe(
         data => {
           this.data_record = data;
           if (this.data_record.success) {
+            // this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
             this.emailConfigurationsDetails = this.data_record.data;
           }
-
+          this.spinnerHide();
         },
         error => {
-
+          this.spinnerHide();
         });
-
   }
 
   fetchEmailSetUpData() {
@@ -235,6 +235,7 @@ onDeleteSystemAdministrationDetails() {
         this.response = response;
         if (this.response.success) {
           this.fetchEmailConfigurationsDetails();
+          this.EmailConfigPopupVisible = false;
           this.deletePopupVisible = false;
           this.toastr.success(this.response.message, 'Response');
         }
@@ -279,6 +280,7 @@ iniateEnableDisableRecord() {
 
 funcEditDetails(data) {
   this.createNewDataFrm.patchValue(data.data);
+  this.EmailConfigPopupVisible = true;
 }
 funcDeleteDetails(data) {
   this.createNewDataFrm.patchValue(data.data);

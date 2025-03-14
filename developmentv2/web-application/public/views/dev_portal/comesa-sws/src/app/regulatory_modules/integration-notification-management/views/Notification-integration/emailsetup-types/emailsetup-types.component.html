@@ -62,8 +62,8 @@
 
     </dx-data-grid>
 
-    <dx-popup [visible]="RestrctionPopupVisible" [width]="funcpopWidth(65)" [height]="funcpopHeight(55)"
-    [showTitle]="true" [title]="'HS Codes'" (onHidden)="RestrctionPopupVisible = false">
+    <dx-popup [visible]="NewRecordPopupVisible" [width]="funcpopWidth(65)" [height]="funcpopHeight(55)"
+    [showTitle]="true" [title]="'email_setup_types'" (onHidden)="NewRecordPopupVisible = false">
 
 
     <form (ngSubmit)="onUpdateRestrictions()" [formGroup]="createNewDataFrm" formControlName="description">
@@ -77,14 +77,14 @@
 
             <div class="col-lg-6">
                 <label>{{ 'description' | translate }}</label>
-                <dx-text-area formControlName="description">
-                </dx-text-area>
+                <dx-text-box formControlName="description">
+                </dx-text-box>
             </div>
 
             <div class="col-lg-6">
                 <label>{{ 'code' | translate }}</label>
-                <dx-text-area formControlName="code">
-                </dx-text-area>
+                <dx-text-box formControlName="code">
+                </dx-text-box>
             </div>
 
             <div class="col-lg-6">
@@ -97,7 +97,7 @@
 
 
     <div class="col-lg-12 row">
-        <dx-button text="{{ 'save'   + 'hs_code' | translate }}" type="default" icon="fa fa-save"
+        <dx-button text="{{ 'save'   + ' email_setup_type' | translate }}" type="default" icon="fa fa-save"
             [elementAttr]="{ id: 'elementId', class: 'pull-left' }" (onClick)="onFuncSaveRecordData()">
         </dx-button>
     </div>
@@ -141,11 +141,9 @@
 </div>
 </dx-popup>
 
-
+</div>
+</div>
 <dx-load-panel #loadPanel shadingColor="rgba(0,0,0,0.4)" [position]="{ of: '#employee' }"
     [(visible)]="loadingVisible" [showIndicator]="true" [showPane]="true" [shading]="true"
     [message]="spinnerMessage" [hideOnOutsideClick]="false">
 </dx-load-panel>
-
-</div>
-</div>

@@ -36,7 +36,6 @@ export class RestrictionsProhibitionsComponent {
   restrictionProhibitionDetails: any;
   restrictionProhibitionPopupVisible: boolean = false;
   createNewDataFrm: FormGroup;
-  RestrctionPopupVisible: boolean;
   loadingVisible: boolean;
   spinnerMessage: string;
   regStatusOptions = [
@@ -121,24 +120,26 @@ export class RestrictionsProhibitionsComponent {
 
   }
 
-  fetchrestrictionProhibitionDetails() {
+  
 
+ fetchrestrictionProhibitionDetails() {
+    this.spinnerShow('Loading...........');
     var data_submit = {
       'table_name': this.table_name
     }
-    this.admnistrationService.onLoadTransactionRestrictionProhibitions(data_submit)
+    this.configService.onLoadConfigurationData(data_submit)
       .subscribe(
         data => {
           this.data_record = data;
           if (this.data_record.success) {
+            // this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
             this.restrictionProhibitionDetails = this.data_record.data;
           }
-
+          this.spinnerHide();
         },
         error => {
-
+          this.spinnerHide();
         });
-
   }
 
   fetchChapterDefinationData() {
@@ -208,6 +209,7 @@ export class RestrictionsProhibitionsComponent {
         },
         error => {
         });
+        this.spinnerHide();
   }
 
   funcpopWidth(percentage_width) {
@@ -260,6 +262,7 @@ export class RestrictionsProhibitionsComponent {
 
           if (this.response.success) {
             this.fetchrestrictionProhibitionDetails();
+            this.restrictionProhibitionPopupVisible = false;
             this.toastr.success(this.response.message, 'Response');
             this.spinnerHide();
           } else {
@@ -310,6 +313,7 @@ iniateEnableDisableRecord() {
         this.response = response;
         if (this.response.success) {
           this.fetchrestrictionProhibitionDetails();
+          this.restrictionProhibitionPopupVisible = false;
           this.enablePopupVisible = false;
           this.toastr.success(this.response.message, 'Response');
           this.deletePopupVisible = false;
@@ -328,6 +332,7 @@ iniateEnableDisableRecord() {
 
 funcEditDetails(data) {
   this.createNewDataFrm.patchValue(data.data);
+  this.restrictionProhibitionPopupVisible = true;
 }
 funcDeleteDetails(data) {
   this.createNewDataFrm.patchValue(data.data);

@@ -1469,6 +1469,91 @@ public function onGetSpecificHsCode(Request $req)
     }
 }
 
+public function onGetUserDetails(Request $req)
+{
+    try {
+        $table_name = 'usr_users_information';
+        $take = 50; // Default take value
+        $skip = 0; // Default skip value
+        $searchValue = $req->searchValue ?? '';
+        $chapters_keywordsearch = $req->chapters_keywordsearch;
+
+        // Process search value
+        $search_value = '';
+        if (!empty($searchValue) && $searchValue !== 'undefined') {
+            $searchValueArray = explode(',', $searchValue);
+            $search_value = $searchValueArray[2] ?? '';
+        }
+
+        // Initialize query with necessary joins and select statements
+        $query = DB::table("{$table_name} as t1")
+            ->leftJoin('usr_users_title as t2', 't1.user_title_id', '=', 't2.id')
+            ->leftJoin('usr_identification_type as t3', 't1.identification_type_id', '=', 't3.id')
+            ->leftJoin('par_countries as t4', 't1.country_of_origin_id', '=', 't4.id')
+            ->leftJoin('tra_organisation_information as t5', 't1.organisation_id', '=', 't5.id')
+            ->leftJoin('sys_account_types as t6', 't1.account_type_id', '=', 't6.id')
+            ->leftJoin('usr_usersaccount_roles as t7', 't1.account_roles_id', '=', 't7.id')
+            
+            
+            
+            ->select(
+                't1.id',
+                't1.chapters_defination_id',
+                't3.name as hscodechapters',
+                
+            );
+
+        // Apply keyword search filter before fetching data
+        if (!empty($chapters_keywordsearch)) {
+            $query->where(function ($q) use ($chapters_keywordsearch) {
+                $q->where('t1.user_title_id', 'like', "%{$chapters_keywordsearch}%")
+                    ->orWhere('t1.identification_type_id', 'like', "%{$chapters_keywordsearch}%")
+                    ->orWhere('t1.country_of_origin_id', 'like', "%{$chapters_keywordsearch}%")
+                    ->orWhere('t1.organisation_id', 'like', "%{$chapters_keywordsearch}%")
+                    ->orWhere('t1.account_type_id', 'like', "%{$chapters_keywordsearch}%")
+                    ->orWhere('t1.account_roles_id', 'like', "%{$chapters_keywordsearch}%");
+            });
+        }
+
+
+        // Fetch total count before pagination
+        $totalCount = $query->count();
+
+        // Apply pagination
+        $data = $query->orderByDesc('t1.id')->take($take)->skip($skip)->get();
+
+        // Transform data efficiently
+        $productregistry_data = $data->map(function ($rec) {
+            return [
+                'id' => $rec->id,
+                'start_hs_code' => $rec->start_hs_code,
+                'user_title_id' => $rec->user_title_id,   
+                'identification_type_id' => $rec->identification_type_id,
+                'country_of_origin_id' => $rec->country_of_origin_id,            
+                'organisation_id' => $rec->organisation_id,
+                'account_type_id' => $rec->account_type_id,
+                'account_roles_id' => $rec->account_roles_id,
+                
+                // 'hscodechapters' => trim("{$rec->chapterscode} {$rec->hscodechapters}"),
+               
+                
+                
+            ];
+        });
+
+        return response()->json([
+            'success' => true,
+            'data' => $productregistry_data,
+            'totalCount' => $totalCount
+        ]);
+    } catch (\Throwable $e) {
+        return response()->json([
+            'success' => false,
+            'message' => $e->getMessage()
+        ]);
+    }
+}
+
     public function getAppPermitSignatoriesData(Request $req)
     {
         try {
@@ -1527,6 +1612,8 @@ public function onGetSpecificHsCode(Request $req)
 
         return response()->json($res, 200);
     }
+
+    
 
     public function getAppPermitSpecialConditions(Request $req)
     {

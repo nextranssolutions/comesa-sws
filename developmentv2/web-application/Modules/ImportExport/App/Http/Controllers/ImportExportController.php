@@ -327,7 +327,7 @@ class ImportExportController extends Controller
                     $sql = DB::table('tra_application_documentsdefination')->where(array('application_code' => $application_code))->first();
                     if (!$sql) {
                         
-                        initializeApplicationDMS($regulatory_subfunction_id, $application_code, $reference_no, $user_id);
+                        // initializeApplicationDMS($regulatory_subfunction_id, $application_code, $reference_no, $user_id);
                     }
                     $res = array(
                         'reference_no' => $reference_no,
@@ -1482,9 +1482,8 @@ class ImportExportController extends Controller
     {
         try {
             $requestData = $req->all();
-            $filter = $req->filter;
             $table_name = 'wb_importexport_applications';
-            $regulatory_function_id = $req->regulatory_function_id;
+            $applicant_id = $req->applicant_id;
             $regulatory_subfunction_id = $req->regulatory_subfunction_id;
             $workflow_status_id = $req->workflow_status_id;
             $appworkflowstage_category_id = $req->appworkflowstage_category_id;
@@ -1510,7 +1509,7 @@ class ImportExportController extends Controller
                 ->leftJoin('tra_trader_account as t18', 't1.applicant_id', 't18.id')
                 ->leftJoin('par_application_options as t19', 't1.applicationapplicant_option_id', 't19.id')
                 
-                ->select('t18.*','t2.name as regulatory_subfunction','t19.name as applicationapplicant_option','t1.created_on as date_added','t6.current_stage_id as workflow_stage_id','t15.name as invoice_type', 't18.name as applicant_name', 't1.id as application_id', 't1.*','t17.name as declaration', 't15.name as invoice_type', 't14.name as final_destination_country', 't5.name as port_of_entry', 't13.name as mode_of_transport', 't12.name as currency_name', 't2.name as permit_typecategory', 't10.name as application_status', 't8.name as action_name', 't8.iconCls as iconCls', 't8.action as action', 't2.name as permit_name', 't3.name as port_type', 't1.id', 't4.name as importer_exporter_name');
+                ->select('t18.*','t9.name as current_process','t2.name as regulatory_subfunction','t19.name as applicationapplicant_option','t1.created_on as date_added','t6.current_stage_id as workflow_stage_id','t15.name as invoice_type', 't18.name as applicant_name', 't1.id as application_id', 't1.*','t17.name as declaration', 't15.name as invoice_type', 't14.name as final_destination_country', 't5.name as port_of_entry', 't13.name as mode_of_transport', 't12.name as currency_name', 't2.name as permit_typecategory', 't10.name as application_status', 't8.name as action_name', 't8.iconCls as iconCls', 't8.action as action', 't2.name as permit_name', 't3.name as port_type', 't1.id', 't4.name as importer_exporter_name');
 
             if ($workflow_status_id != '') {
                 $workflow_status = explode(',', $workflow_status_id);
@@ -1524,6 +1523,11 @@ class ImportExportController extends Controller
             if (validateIsNumeric($regulatory_subfunction_id)) {
                 $sql->where('t1.regulatory_subfunction_id', $regulatory_subfunction_id);
             }
+            if (validateIsNumeric($applicant_id)) {
+                $sql->where('t1.applicant_id', $applicant_id);
+            }
+            
+            $workflowprocess_id = getSingleRecordColValue('wb_workflowprocesses', array('regulatory_subfunction_id' => $regulatory_subfunction_id, ), 'id');
 
             
             $actionColumnData = returnContextMenuActions();

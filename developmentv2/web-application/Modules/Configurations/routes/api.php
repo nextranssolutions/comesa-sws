@@ -13,6 +13,8 @@ Route::middleware(['XssSanitizer','clear_cache_config','firewall.all'])->prefix(
     Route::get('onLoadDocumentRequriementrecords', [ConfigurationsController::class, 'onLoadDocumentRequriementrecords']);
     
     
+    Route::get('onLoadNewConfigurationData', [ConfigurationsController::class, 'onLoadNewConfigurationData']);
+    
     Route::get('onLoadTranslationManagement', [ConfigurationsController::class, 'onLoadTranslationManagement']);
     Route::get('onLoadInformationSharingConfig', [ConfigurationsController::class, 'onLoadInformationSharingConfig']);
     

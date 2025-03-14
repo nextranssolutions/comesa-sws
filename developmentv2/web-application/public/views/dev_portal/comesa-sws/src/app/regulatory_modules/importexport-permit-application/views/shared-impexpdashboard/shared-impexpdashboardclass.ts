@@ -56,6 +56,7 @@ export class SharedImpExpdashboardClass {
   guidelines_title: string;
   regulatory_subfunction_id: any;
   appworkflowstage_category_id:any;
+  applicant_id: any
   permit_type_id: 1;
   application_title: string;
   sectionItem: any;
@@ -69,7 +70,7 @@ export class SharedImpExpdashboardClass {
   win_submitinvoicepayments: boolean;
   permitProductsData: any;
   table_name: string;
-
+  productApplicationProcessingData: any;
   appregulatory_subfunction_id: number;
   app_routing: any;
   appregulatory_function_id: number;
@@ -78,7 +79,7 @@ export class SharedImpExpdashboardClass {
   onApplicationSubmissionFrm: FormGroup;
   importExportPermitTypesData: any;
   processingData: any;
-  productApplicationProcessingData:any;
+  
   constructor(public utilityService: UtilityService, public publicService: PublicDashboardService, public translate: TranslateService, public viewRef: ViewContainerRef, public spinner: SpinnerVisibilityService, public toastr: ToastrService, public router: Router, public configService: ConfigurationsService, public appService: ImportExportService) { // this.onLoadApplicationCounterDetails();
 
     //get the navigation process  inform //navigation items and get the sub_function_id 
@@ -99,12 +100,15 @@ export class SharedImpExpdashboardClass {
     this.onLoadimportExportPermitTypesData();
     this.nav_data = localStorage.getItem('nav_data');
     this.nav_data = JSON.parse(this.nav_data);
+    let regulatory_subfunction_id = this.nav_data.regulatory_subfunction_id;
+    let appworkflowstage_category_id = this.nav_data.appworkflowstage_category_id;
+    let applicant_id = this.nav_data.applicant_id;
 
-    this.regulatory_function_id = this.nav_data.regulatory_function_id;
-    this.regulatory_subfunction_id = this.nav_data.regulatory_subfunction_id;
-    this.appworkflowstage_category_id = this.nav_data.appworkflowstage_category_id;
+    
 
-    this.reloadPermitApplicationsApplications(this.regulatory_subfunction_id,this.appworkflowstage_category_id);
+    this.reloadPermitApplicationsApplications(regulatory_subfunction_id, appworkflowstage_category_id, applicant_id);
+
+    //navigation items and get the sub_function_id 
 
 
   }
@@ -176,13 +180,14 @@ export class SharedImpExpdashboardClass {
   }
 
 
-  reloadPermitApplicationsApplications(regulatory_subfunction_id, appworkflowstage_category_id) {
+  reloadPermitApplicationsApplications(regulatory_subfunction_id, appworkflowstage_category_id,applicant_id) {
     this.spinnerShow('Loading...........');
 
     let data_submit = {
       'table_name': this.table_name,
       'regulatory_subfunction_id': regulatory_subfunction_id,
-      'appworkflowstage_category_id': appworkflowstage_category_id
+      'appworkflowstage_category_id': appworkflowstage_category_id,
+      'applicant_id':applicant_id
     };
 
     this.appService.onPermitApplicationLoading('getImportExpApplicantPermitsLoading', data_submit)
@@ -518,7 +523,9 @@ export class SharedImpExpdashboardClass {
 
   }
   application_data: any;
-  funcApplicationPreveditDetails(app_data) {
+  funcApplicationPreveditDetails(app_data) { 
+    let data = app_data;
+    console.log(data);
     this.regulatory_subfunction_id = app_data.regulatory_subfunction_id;
     this.applicationsubmission_type_id = app_data.applicationsubmission_type_id;
 
@@ -531,12 +538,13 @@ export class SharedImpExpdashboardClass {
           if (data.success) {
             this.processData = data.data.process_infor;
             this.application_data = data.data;
-
+            
             this.router_link = this.processData.router_link;
             this.productsapp_details = this.processData;
             let merged_appdata = Object.assign({}, this.application_data, app_data);
-
+            console.log(merged_appdata);
             localStorage.setItem('applicant_details', JSON.stringify(merged_appdata));
+
             this.app_route = ['./importexport-permit-application/' + this.router_link];
 
             this.router.navigate(this.app_route);
@@ -569,7 +577,7 @@ export class SharedImpExpdashboardClass {
     this.FilterDetailsFrm.reset();
     this.FilterDetailsFrm.reset();
 
-    this.reloadPermitApplicationsApplications(this.regulatory_subfunction_id, this.appworkflowstage_category_id);
+    this.reloadPermitApplicationsApplications(this.regulatory_subfunction_id, this.appworkflowstage_category_id, this.applicant_id);
 
 
   }
