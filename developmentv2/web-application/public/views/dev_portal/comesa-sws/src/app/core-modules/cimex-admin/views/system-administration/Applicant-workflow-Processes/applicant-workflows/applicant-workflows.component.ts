@@ -1309,7 +1309,7 @@ export class ApplicantWorkflowsComponent {
 
     this.spinner.show();
     this.workflowSubmissionActionsItemsFrm.get('workflowprocess_id')?.setValue(this.workflowprocess_id);
-    this.workflowService.onSaveWorkflowDetailsDetails('ptl_workflowprocess_actions', this.workflowSubmissionActionsItemsFrm.value, this.action_url)
+    this.workflowService.onSaveWorkflowDetailsDetails('wb_submissionworkflowprocess_actions', this.workflowSubmissionActionsItemsFrm.value, this.action_url)
       .subscribe(
         response => {
           this.response = response;
