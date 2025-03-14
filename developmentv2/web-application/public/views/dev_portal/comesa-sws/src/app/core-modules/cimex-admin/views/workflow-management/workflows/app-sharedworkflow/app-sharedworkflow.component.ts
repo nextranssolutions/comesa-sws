@@ -255,7 +255,7 @@ onRegulatoryFunctionChange($event) {
   }
   onLoadworkflowStatusData(process_id) {
     var data_submit = {
-      'table_name': 'wf_workflow_statuses',
+      'table_name': 'wf_appworkflow_statuses',
       process_id:process_id
     }
     this.workflowService.getWorkflowConfigs(data_submit)

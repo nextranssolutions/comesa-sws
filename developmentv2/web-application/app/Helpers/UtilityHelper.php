@@ -576,37 +576,26 @@ class UtilityHelper
         return $tel_value;
 
     }
-    public static function returnContextMenuActions($workflowprocess_id)
+    public static function returnContextMenuActions()
     {
         //return records
         $records = DB::table('wb_workflowstageprocess_actions as t1')
             ->select('t2.*','t1.workflow_stage_id', 't2.name as text', 't2.iconCls as icon')
             ->join('wf_statuses_actions as t2', 't1.statuses_action_id', '=', 't2.id')
-            ->where('t1.workflowprocess_id', $workflowprocess_id)
             ->get();
         return convertStdClassObjToArray($records);
     }
 
-   
-    public static function returnContextMisMenuActions($process_id)
+    public static function returnContextMisMenuActions()
     {
         //return records
         $records = DB::table('wf_workflowstageprocess_actions as t1')
-            ->select('t2.*', 't1.workflow_status_id as appworkflow_status_id', 't2.name as text', 't2.iconCls as icon')
-            ->join('wf_statuses_actions as t2', 't1.statuses_action_id', '=', 't2.id')
-            ->where('t1.process_id', $process_id)
-            ->get();
-        return convertStdClassObjToArray($records);
-    }
-    public static function returnContxtMenuActions()
-    {
-        //return records
-        $records = DB::table('wb_workflowstageprocess_actions as t1')
-            ->select('t2.*', 't1.workflow_status_id as appworkflow_status_id', 't2.name as text', 't2.iconCls as icon')
+            ->select('t2.*', 't1.workflow_stage_id', 't2.name as text', 't2.iconCls as icon')
             ->join('wf_statuses_actions as t2', 't1.statuses_action_id', '=', 't2.id')
             ->get();
         return convertStdClassObjToArray($records);
     }
+   
     public static function returnActionColumn($workflow_stage_id, $actionColumnData)
     {
         $data = array();
@@ -747,17 +736,17 @@ class UtilityHelper
         return $res;
 
     }
-    public static function getInitialWorkflowStatusId($process_id){
+    public static function getInitialWorkflowStatusId($workflowprocess_id){
         $record = null;
-        if(validateIsNumeric($process_id)){
+        if(validateIsNumeric($workflowprocess_id)){
                 $record = DB::table('wf_workflow_transitions as t1')
                             ->join('wf_workflow_stages as t2', 't1.prevworkflow_stage_id', 't2.id')
                             ->leftJoin('wf_workflow_definition as t3', 't1.workflow_id', '=', 't3.id')
                             ->select('t1.*', 't1.workflow_status_id as appworkflow_status_id')
-                            ->where(array('t3.process_id'=>$process_id, 't2.stage_status_id'=>1))
+                            ->where(array('t3.process_id'=>$workflowprocess_id, 't2.stage_status_id'=>1))
                             ->first();
         }
-        return $record;
+        return $record ->appworkflow_status_id;
     }
 
     public static function getInitialApplicantWorkflowStatusId($workflowprocess_id) {

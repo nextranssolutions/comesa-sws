@@ -126,6 +126,22 @@ export class ConfigurationsService {
       }));
   }
 
+    onPermitApplicationLoading(filter_params, action_url) {
+    var headers = new HttpHeaders({
+      "Accept": "application/json",
+      "Authorization": "Bearer " + this.authService.getAccessToken(),
+    });
+
+    this.config = {
+      params: filter_params,
+      headers: headers
+    };
+    return this.HttpClient.get(this.baseUrl + '/' + action_url, this.config)
+      .pipe(map(data => {
+        return <any>data;
+      }));
+  }
+
   getAppRegulatoryFunctionFeeConfig(data, action_url = 'getAppRegulatoryFunctionFeeConfig') {
     data.table_name = btoa(data.table_name);
     const loggedInUserId = localStorage.getItem('id');
@@ -140,8 +156,8 @@ export class ConfigurationsService {
     return this.HttpClient.get(this.baseUrl + '/' + action_url, this.config)
       .pipe(map(data => {
         return <any>data;
-      }));
-  }
+      })); 
+  }   
 
   getFeesChargesConfigurations(data, action_url = 'getFeesChargesConfigurations') {
     data.table_name = btoa(data.table_name);
@@ -295,7 +311,7 @@ export class ConfigurationsService {
       params: app_data,
       headers: headers
     };
-    return this.HttpClient.get(this.baseUrl + '/'+action_url, this.config)
+    return this.HttpClient.get(this.baseUrl + '/' +action_url, this.config)
       .pipe(map(data => {
         return <any>data;
       }));

@@ -342,7 +342,7 @@ export class PermitApplicationsComponent {
   
    onLoadWorkflowStatusData() {
      var data = {
-       table_name: 'wf_workflow_statuses',
+       table_name: 'wf_appworkflow_statuses',
        // is_enabled: true
      };
  

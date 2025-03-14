@@ -262,7 +262,7 @@ export class SharedappProcesssubmissionComponent {
   }
   onLoadworkflowStatusData() {
     var data_submit = {
-      'table_name': 'wf_workflow_statuses'
+      'table_name': 'wf_appworkflow_statuses'
     }
     this.workflowService.getWorkflowConfigs(data_submit)
       .subscribe(

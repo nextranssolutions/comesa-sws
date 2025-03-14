@@ -13,7 +13,7 @@ export class AppProcessworkflowstatusesComponent {
   constructor(
     // private http: HttpClient,
   ) {
-    this.table_name = 'wf_workflow_statuses';
+    this.table_name = 'wf_appworkflow_statuses';
     this.parameter_name = "workflow_statuses";
     this.resetcolumns = 'table_name,stage_status_id,workflow_id,prevworkflow_stage_id,nextworkflow_stage_id,workflow_status_id';
      

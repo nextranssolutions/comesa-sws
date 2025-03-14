@@ -819,7 +819,6 @@ class ConfigurationsController extends Controller
                 ->where($filter)
                 ->where('t2.stage_status_id', 1) // Qualified column
                 ->first();
-         
             // Process application data
             if ($data) {
                 $app_data['process_infor'] = $data;
@@ -933,4 +932,35 @@ class ConfigurationsController extends Controller
 
         return response()->json($res);
     }
+
+    public function getTransactionPermitTypeData(Request $req)
+    {
+        $regulatory_subfunction_id = $req->regulatory_subfunction_id;
+    
+        try {
+            $qry = DB::table('tra_transactionpermit_types as t1')
+                ->leftJoin('par_regulatory_subfunctions as t2', 't1.regulatory_subfunction_id', 't2.id')
+                ->select('t1.*');
+    
+            // Ensure filtering is applied
+            if (validateIsNumeric($regulatory_subfunction_id)) {
+                $qry->where('t1.regulatory_subfunction_id', $regulatory_subfunction_id);
+            }
+    
+            $data = $qry->get();
+    
+            $res = [
+                'success' => true,
+                'data' => $data
+            ];
+        } catch (\Exception $exception) {
+            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        } catch (\Throwable $throwable) {
+            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        }
+    
+        return response()->json($res);
+    }
+    
+    
 }

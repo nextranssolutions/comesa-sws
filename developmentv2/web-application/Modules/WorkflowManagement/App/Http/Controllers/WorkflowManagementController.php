@@ -976,13 +976,13 @@ public function getRegulatoryFunctionGuidelines(Request $req)
 
     //         $where_state = array('id' => $record_id);
     //         // print_r($where_state);
-    //         $records = DB::connection('portal')->table($table_name)
+    //         $records = DB::table($table_name)
     //             ->where($where_state)
     //             ->get();
-    //         print_r($records);
     //         if (count($records) > 0) {
-    //             $previous_data = getPreviousRecords($table_name, $where_state, 'portal');
+    //             $previous_data = getPreviousRecords($table_name, $where_state);
     //             $resp = deleteRecordNoTransaction($table_name, $previous_data['results'], $where_state, $user_id);
+
     //         }
 
 

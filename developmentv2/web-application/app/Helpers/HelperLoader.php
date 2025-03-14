@@ -27,14 +27,14 @@ if ( !function_exists( 'getAssignedProcessStages' ) ) {
     }
 }
 if ( !function_exists( 'returnContextMenuActions' ) ) {
-    function returnContextMenuActions( $workflowprocess_id ) {
-        return UtilityHelper::returnContextMenuActions( $workflowprocess_id );
+    function returnContextMenuActions(  ) {
+        return UtilityHelper::returnContextMenuActions( );
     }
 }
 
 if ( !function_exists( 'returnContextMisMenuActions' ) ) {
-    function returnContextMisMenuActions( $process_id ) {
-        return UtilityHelper::returnContextMisMenuActions( $process_id );
+    function returnContextMisMenuActions( ) {
+        return UtilityHelper::returnContextMisMenuActions( );
     }
 }
 if ( !function_exists( 'funcUpdateCurrentSubmission' ) ) {
@@ -50,8 +50,8 @@ if ( !function_exists( 'getDateDifference' ) ) {
 }
 
 if ( !function_exists( 'getInitialWorkflowStatusId' ) ) {
-    function getInitialWorkflowStatusId( $process_id ) {
-        return UtilityHelper::getInitialWorkflowStatusId( $process_id );
+    function getInitialWorkflowStatusId( $workflowprocess_id ) {
+        return UtilityHelper::getInitialWorkflowStatusId( $workflowprocess_id );
     }
 }
 

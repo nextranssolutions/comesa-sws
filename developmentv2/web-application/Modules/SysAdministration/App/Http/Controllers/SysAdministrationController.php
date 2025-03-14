@@ -1830,7 +1830,7 @@ public function onGetSpecificHsCode(Request $req)
                     $join->on('t6.is_default_action', '=', DB::raw(True));
                 })
                 ->leftJoin('wf_statuses_actions as t7', 't6.statuses_action_id', 't7.id')
-                ->leftJoin('wf_workflow_statuses as t8', 't1.appworkflow_status_id', 't8.id')
+                ->leftJoin('wf_appworkflow_statuses as t8', 't1.appworkflow_status_id', 't8.id')
                 ->leftJoin('par_systems_functionalities as t11', 't1.systems_functionality_id', 't11.id')
                 ->leftJoin('sys_dashboard_types as t9', 't1.dashboard_type_id', 't9.id')
                 ->select('t1.id as systemguide_id', 't8.name as appworkflow_status', 't11.name as systems_functionality', 't9.name as dashboard_type', 't1.*', 't7.name as action_name', 't7.iconCls', 't7.action');
