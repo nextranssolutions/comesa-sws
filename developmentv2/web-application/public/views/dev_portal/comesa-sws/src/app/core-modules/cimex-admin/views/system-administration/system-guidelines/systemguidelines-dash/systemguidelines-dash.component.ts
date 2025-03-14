@@ -121,7 +121,7 @@ export class SystemguidelinesDashComponent {
 
   onLoadEoiStatusData() {
     var data_submit = {
-      'table_name': 'wf_workflow_statuses'
+      'table_name': 'wf_appworkflow_statuses'
     }
     this.admnistrationService.onLoadSystemAdministrationData(data_submit)
       .subscribe(

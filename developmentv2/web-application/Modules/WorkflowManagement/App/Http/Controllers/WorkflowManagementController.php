@@ -506,6 +506,8 @@ public function getRegulatoryFunctionGuidelines(Request $req)
 
             if ($table_name == 'wf_workflow_stages') {
                 $sql->orderBy('t1.id', 'asc');
+            }elseif($table_name == 'wb_workflowprocesses_stages'){
+                $sql->orderBy('t1.id', 'asc');
             } else {
                 $sql->orderBy('t1.name', 'asc');
             }
@@ -974,13 +976,13 @@ public function getRegulatoryFunctionGuidelines(Request $req)
 
     //         $where_state = array('id' => $record_id);
     //         // print_r($where_state);
-    //         $records = DB::connection('portal')->table($table_name)
+    //         $records = DB::table($table_name)
     //             ->where($where_state)
     //             ->get();
-    //         print_r($records);
     //         if (count($records) > 0) {
-    //             $previous_data = getPreviousRecords($table_name, $where_state, 'portal');
+    //             $previous_data = getPreviousRecords($table_name, $where_state);
     //             $resp = deleteRecordNoTransaction($table_name, $previous_data['results'], $where_state, $user_id);
+
     //         }
 
 
@@ -1096,6 +1098,27 @@ public function getRegulatoryFunctionGuidelines(Request $req)
 
         return response()->json($res);
     }
+
+    public function onLoadworkflowProcessStageData(Request $req)
+    {
+        try {
+
+            $process_id = $req->process_id;
+            $records = Db::table('wb_workflow_definition as t1')
+                ->join('wb_workflow_transitions  as t2', 't1.id', 't2.workflow_id')
+                ->select('t2.*')
+                // ->where(array('t1.process_id' => $process_id))
+                ->get();
+            $res = array('success' => true, 'data' => $records);
+
+        } catch (\Exception $exception) {
+            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        } catch (\Throwable $throwable) {
+            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        }
+
+        return response()->json($res);
+    }
     public function onLoadWorkflowTransitionData(Request $req)
     {
         try {
@@ -1151,6 +1174,43 @@ public function getRegulatoryFunctionGuidelines(Request $req)
 
         return response()->json($res);
     }
+
+    public function onLoadWorkflowProcessStatusActions(Request $req)
+    {
+        try {
+
+            $workflowprocess_id = $req->workflowprocess_id;
+            $workflow_status_id = $req->workflow_status_id;
+            if (!validateIsNumeric($workflow_status_id)) {
+                $app_statusrecord = getInitialApplicantWorkflowStatusId($workflowprocess_id);
+                if (!$app_statusrecord) {
+
+                    return response()->json([
+                        'success' => false,
+                        'message' => 'The Initial Workflow Status Has not been set, contact the system admin',
+                    ], 200);
+                }
+                $workflow_status_id = $app_statusrecord->appworkflow_status_id;
+
+            }
+            $records = Db::table('wb_workflow_definition as t1')
+                ->join('wb_workflow_transitions  as t2', 't1.id', 't2.workflow_id')
+                ->join('wf_workflowsubmission_actions as t3', 't2.workflow_action_id', 't3.id')
+                ->select('t3.*')
+                ->where(array('t2.workflow_status_id' => $workflow_status_id, 't1.workflowprocess_id' => $workflowprocess_id))
+                ->get();
+
+            $res = array('success' => true, 'data' => $records);
+
+        } catch (\Exception $exception) {
+            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        } catch (\Throwable $throwable) {
+            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        }
+
+        return response()->json($res);
+    }
+
     public function onApplicationProcessSubmission(Request $req)
     {
         try {

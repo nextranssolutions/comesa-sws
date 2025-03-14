@@ -29,6 +29,14 @@ import { UnderProcessingComponent } from './views/import-license/under-processin
 import { RejectedPermitsComponent } from './views/import-license/rejected-permits/rejected-permits.component';
 import { SingleProductPermitComponent } from './views/import-license/single-product-permit/single-product-permit.component';
 import { SinglePermitproductdetailsComponent } from './views/impexpdata_entry/single-permitproductdetails/single-permitproductdetails.component';
+import { InitiateExportappComponent } from './views/export-license/initiate-exportapp/initiate-exportapp.component';
+import { DraftExportlicencedashboardComponent } from './views/export-license/draft-exportlicencedashboard/draft-exportlicencedashboard.component';
+import { SingleProductExportpermitComponent } from './views/export-license/single-product-exportpermit/single-product-exportpermit.component';
+import { DraftPersonalproductsLicencedashboardComponent } from './views/personal-useproducts-license/draft-personalproducts-licencedashboard/draft-personalproducts-licencedashboard.component';
+import { LetterofapprovalPersonalproductsComponent } from './views/personal-useproducts-license/letterofapproval-personalproducts/letterofapproval-personalproducts.component';
+import { RejectedpermitsPersonalproductsComponent } from './views/personal-useproducts-license/rejectedpermits-personalproducts/rejectedpermits-personalproducts.component';
+import { InitiatePersonalproductsPermitComponent } from './views/personal-useproducts-license/initiate-personalproducts-permit/initiate-personalproducts-permit.component';
+import { SinglePersonaluseproductsPermitApplicationComponent } from './views/personal-useproducts-license/single-personaluseproducts-permit-application/single-personaluseproducts-permit-application.component';
 
 
 const ngWizardConfig: NgWizardConfig = {
@@ -41,8 +49,8 @@ const ngWizardConfig: NgWizardConfig = {
     ImportexportLayoutComponent, DraftImportlicensedashComponent,
     PermitproductdetailsComponent, PermitgeneraldetailsComponent,ApprovedPermitsComponent,SingleProductPermitComponent,
     AwaitingPaymentRemittanceComponent,RejectedPermitsComponent,RequestForadditionalInformationComponent,SinglePermitproductdetailsComponent,
-    UnderProcessingComponent,
-    ApplicantDetailsComponent,
+    UnderProcessingComponent,InitiateExportappComponent,DraftExportlicencedashboardComponent,InitiatePersonalproductsPermitComponent,SinglePersonaluseproductsPermitApplicationComponent,
+    ApplicantDetailsComponent,SingleProductExportpermitComponent,RejectedpermitsPersonalproductsComponent,LetterofapprovalPersonalproductsComponent,DraftPersonalproductsLicencedashboardComponent,
     ImportexportHeaderComponent,InitiateImportappComponent, DashboardComponent],
   imports: [
     CommonModule, ImportexportapplicationRoutingModule,

@@ -24,6 +24,7 @@ nav_data: any;
   appmenuItems: any[] = [];
   response: any;
   loadingVisible: boolean;
+  regulatory_subfunction_id:number;
   spinnerMessage: string;
   loggedInUserNavigationItems: any[] = [];
   decryptedPayload: any;
@@ -38,9 +39,7 @@ nav_data: any;
     private workflow: WokflowManagementService,
     public encryptionService: EncryptionService
   ) { 
-    // this.regulatory_data = localStorage.getItem('regulatory_function');
-    // this.regulatory_data = JSON.parse(this.regulatory_data);
-    // console.log(this.regulatory_data);
+    
     this.regulatory_function_id = 1;
     this.getApplicantNavigationItems(this.regulatory_function_id);
 
@@ -60,17 +59,25 @@ nav_data: any;
   navigationClickEvent(childGroup: any): void {
 
     let navigation_id = childGroup.id,
-      navigation_name = childGroup.name,
-      routerlink = childGroup.routerlink,
-      user_group_id = childGroup.user_group_id,
-      is_super_admin = childGroup.is_super_admin,
-      access_level_id = childGroup.user_access_levels_id;
+    navigation_name = childGroup.name,
+    routerlink = childGroup.routerlink,
+    user_group_id = childGroup.user_group_id,
+    is_super_admin = childGroup.is_super_admin,
+    regulatory_function_id = childGroup.regulatory_function_id,
+    regulatory_subfunction_id = childGroup.regulatory_subfunction_id,
+    appworkflowstage_category_id = childGroup.appworkflowstage_category_id,
+
+    access_level_id = childGroup.user_access_levels_id;
+
     this.nav_data = {
       navigation_id: navigation_id,
       navigation_name: navigation_name,
       user_group_id: user_group_id,
       is_super_admin: is_super_admin,
-      access_level_id: access_level_id
+      access_level_id: access_level_id,
+      regulatory_subfunction_id: regulatory_subfunction_id,
+      regulatory_function_id: regulatory_function_id,
+      appworkflowstage_category_id: appworkflowstage_category_id
     };
     if (is_super_admin) {
       this.nav_data.access_level_id = 4;
@@ -91,7 +98,6 @@ nav_data: any;
       }
     }
     localStorage.setItem('nav_data', JSON.stringify(this.nav_data));
-
     // this.utilityService.setNavigationData(this.nav_data);
     this.router.navigate(['./importexport-permit-application/' + routerlink]);
     this.scrollToTop();

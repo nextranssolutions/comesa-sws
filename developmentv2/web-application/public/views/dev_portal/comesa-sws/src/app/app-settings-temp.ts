@@ -10,8 +10,8 @@ if(window.location.hostname =='localhost'){
 }
 if(app_connection == 'development'){
   
-   base_url = 'http://localhost:82/COMESASWS/comesa-sws/developmentv2/web-application/public/index.php';
-   assets_url = 'http://localhost:82/COMESASWS/comesa-sws/developmentv2/web-application/public/index.php';
+   base_url = 'http://localhost:82/nextrans-sol/comesa-sws/developmentv2/web-application/public/index.php';
+   assets_url = 'http://localhost:82/nextrans-sol/comesa-sws/developmentv2/web-application/public/index.php';
    mis_url = '';
    siteKey = '6LcoH54UAAAAAOqpAGCXC4cmup6N2c5KseVHmv1c';
 }

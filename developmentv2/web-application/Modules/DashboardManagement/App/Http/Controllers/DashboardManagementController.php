@@ -85,7 +85,7 @@ class DashboardManagementController extends Controller
             $records = DB::table('tra_applicationprocess_submissions as t1')
                 ->join('wf_workflow_stages as t2', 't1.current_stage_id', 't2.id')
                 ->join('wf_workflow_stages as t3', 't1.previous_stage_id', 't3.id')
-                ->leftJoin('wf_workflow_statuses as t4', 't1.appworkflow_status_id', 't4.id')
+                ->leftJoin('wf_appworkflow_statuses as t4', 't1.appworkflow_status_id', 't4.id')
                 ->join('wf_processes as t5', 't1.process_id', 't5.id')
                 ->leftJoin('wf_workflowstatuses_actions as t6', function ($join) {
                     $join->on('t1.appworkflow_status_id', '=', 't6.workflow_status_id');
@@ -125,7 +125,7 @@ class DashboardManagementController extends Controller
             //wf_workflowstatuses_interfaces
             $records = DB::table('tra_applicationprocess_submissions as t1')
                 ->join('wf_workflow_stages as t2', 't1.current_stage_id', 't2.id')
-                ->leftJoin('wf_workflow_statuses as t4', 't1.appworkflow_status_id', 't4.id')
+                ->leftJoin('wf_appworkflow_statuses as t4', 't1.appworkflow_status_id', 't4.id')
                 ->join('wf_processes as t5', 't1.process_id', 't5.id')
                 ->leftJoin('wf_workflowstatuses_interfaces as t6', 't1.appworkflow_status_id', 't6.workflow_status_id')
                 ->leftJoin('wf_system_interfaces as t7', 't6.system_interface_id', 't7.id')
@@ -178,7 +178,7 @@ class DashboardManagementController extends Controller
                 //wf_workflowstatuses_interfaces
                 $records = DB::table('tra_applicationprocess_submissions as t1')
                     ->join('wf_workflow_stages as t2', 't1.current_stage_id', 't2.id')
-                    ->leftJoin('wf_workflow_statuses as t4', 't1.appworkflow_status_id', 't4.id')
+                    ->leftJoin('wf_appworkflow_statuses as t4', 't1.appworkflow_status_id', 't4.id')
                     ->join('wf_processes as t5', 't1.process_id', 't5.id')
                     ->leftJoin('wf_workflowstatuses_interfaces as t6', 't1.appworkflow_status_id', 't6.workflow_status_id')
                     ->leftJoin('wf_system_interfaces as t7', 't6.system_interface_id', 't7.id')

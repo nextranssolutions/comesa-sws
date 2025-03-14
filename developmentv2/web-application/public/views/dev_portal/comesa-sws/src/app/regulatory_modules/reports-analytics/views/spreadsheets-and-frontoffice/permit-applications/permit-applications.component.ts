@@ -139,6 +139,32 @@ export class PermitApplicationsComponent {
     importer_exporter_name: true,
     date_added: true,
     application_status: true,
+
+    expected_date_of_shipment: true,
+    port_of_entryexit: true,
+    mode_of_transport: true,
+    transpoter_name: true,
+    transporter_contact: true,
+    invoice_type: true,
+    regulatory_function: true,
+    regulatory_subfunction: true,
+    transporter_country: true,
+    zone: true,
+    final_destination_country: true,
+    currency_oftransaction: true,
+    port_type: true,
+    appworkflow_status: true,
+    declaration_statuses: true,
+    applicationsubmission_type: true,
+    workflowprocess: true,
+    applicant: true,
+    applicationapplicant_option: true,
+    customs_office: true,
+    permit_typecategory: true,
+    transactionpermit_type: true,
+    organisation: true,
+    oga_application_code: true,
+    application_code: true,
    
   };
 
@@ -294,27 +320,29 @@ export class PermitApplicationsComponent {
  
    }
  
+
    onLoadPermitTypesData() {
-     var data = {
-       table_name: 'tra_transactionpermit_types',
-       // is_enabled: true
-     };
- 
-     this.configService.onLoadConfigurationData(data)
-       .subscribe(
-         data => {
-           this.data_record = data;
- 
-           if (this.data_record.success) {
-             this.permitTypesData = this.data_record.data;
-             ;
-           }
-         });
- 
-   }
+    var data = {
+      table_name: 'tra_transactionpermit_types',
+      // is_enabled: true
+    };
+
+    this.configService.onLoadConfigurationData(data)
+      .subscribe(
+        data => {
+          this.data_record = data;
+
+          if (this.data_record.success) {
+            this.permitTypesData = this.data_record.data;
+            ;
+          }
+        });
+
+  }
+  
    onLoadWorkflowStatusData() {
      var data = {
-       table_name: 'wf_workflow_statuses',
+       table_name: 'wf_appworkflow_statuses',
        // is_enabled: true
      };
  

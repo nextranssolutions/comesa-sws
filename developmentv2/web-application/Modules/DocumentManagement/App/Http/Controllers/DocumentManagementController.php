@@ -112,7 +112,7 @@ class DocumentManagementController extends Controller
             $document_type_id = $req->document_type_id;
             $appworkflow_status_id = $req->appworkflow_status_id;
 
-            $sql = DB::table('dms_document_requirements as t1')
+            $sql = DB::table('dms_documentrequirements_defination as t1')
                 ->join('dms_docrequirements_appstatus as t2', 't1.id', 't2.document_requirement_id')
                 ->select('t2.document_requirement_id', 't1.*');
 
@@ -207,18 +207,19 @@ class DocumentManagementController extends Controller
 
         try {
             $user_id = $req->user_id;
-            $post_data = $req->all();
-            $table_name = 'dms_processes_docdefination';
-            $id = $post_data['id'];
-            $site_id = $post_data['dms_site_id'];
-            $process_id = $post_data['process_id'];
-
-            $unsetData = $req->input('unset_data');
+            $table_name = 'dms_regulatoryprocess_docdefination';
+            $id = $req->id;
+            $site_id = $req->dms_site_id;
+            $regulatory_subfunction_id = $req->regulatory_subfunction_id;
 
             $table_data = array(
                 'name' => $req->name,
                 'dms_site_id' => $req->dms_site_id,
-                'process_id' => $req->process_id
+                'regulatory_function_id' => $req->regulatory_function_id,
+                'regulatory_subfunction_id' => $req->regulatory_subfunction_id,
+                'description' => $req->description,
+                'is_enabled'=>$req->is_enabled,
+
             );
 
             $where = array(
@@ -240,18 +241,17 @@ class DocumentManagementController extends Controller
                 }
             } else {
                 $sql = DB::table($table_name)
-                    ->where(array('dms_site_id' => $site_id, 'process_id' => $process_id))
+                    ->where(array('dms_site_id' => $site_id, 'regulatory_subfunction_id' => $regulatory_subfunction_id))
                     ->get();
                 if (!count($sql) > 0) {
                     $site_node_ref = getSiteNodeRef($site_id);
-                    $process_name = $this->getTableDataName($process_id, 'wf_processes');
-                    //create a node in the site 
+                    $process_name = $this->getTableDataName($regulatory_subfunction_id, 'par_regulatory_subfunctions');
                     $node_name = $process_name . ' Documents';
 
                     $process_name = strtolower(str_replace(' ', '', $process_name));
 
                     $node_details = array(
-                        'name' => $node_name,
+                        'name' => $node_name.'-' .rand(0,1000),
                         'nodeType' => 'cm:folder'
                     );
 
@@ -299,98 +299,7 @@ class DocumentManagementController extends Controller
         return response()->json($res);
 
     }
-    public function onSaveDMSNonStructuredDocdefinationdetails(Request $req)
-    {
-
-        try {
-            $user_id = $req->user_id;
-            $post_data = $req->all();
-            $table_name = 'dms_nonstructured_docrequirement';
-            $id = $post_data['id'];
-            $site_id = $post_data['dms_site_id'];
-
-            $table_data = array(
-                'name' => $req->name,
-                'dms_site_id' => $req->dms_site_id
-            );
-
-            $where = array(
-                'id' => $id
-            );
-            if (validateIsNumeric($id)) {
-                if (recordExists($table_name, $where)) {
-
-                    $table_data['dola'] = Carbon::now();
-                    $table_data['altered_by'] = $user_id;
-                    $previous_data = getPreviousRecords($table_name, $where);
-                    if ($previous_data['success'] == false) {
-                        return $previous_data;
-                    }
-                    $previous_data = $previous_data['results'];
-                    //dms function call with validation 
-                    $res = updateRecord($table_name, $previous_data, $where, $table_data, $user_id);
-
-                }
-            } else {
-                $sql = DB::table($table_name)
-                    ->where(array('dms_site_id' => $site_id, 'name' => $req->name))
-                    ->get();
-                if (!count($sql) > 0) {
-                    $site_node_ref = getSiteNodeRef($site_id);
-
-                    $node_name = $req->name . ' Documents';
-
-
-                    $node_details = array(
-                        'name' => $node_name,
-                        'nodeType' => 'cm:folder'
-                    );
-
-                    $response = dmsCreateAppRootNodesChildren($site_node_ref, $node_details);
-
-                    if ($response['success']) {
-                        $node_id = $response['node_details']->id;
-                        $table_data['node_ref'] = $node_id;
-
-                        $table_data['created_on'] = Carbon::now();
-                        $table_data['created_by'] = $user_id;
-
-                        $table_data['node_name'] = $node_name;
-
-                        $table_data['is_enabled'] = true;
-                        $res = insertRecord($table_name, $table_data, $user_id);
-                        if ($res['success']) {
-                            $res['message'] = $node_name . ' has been created successfully';
-
-                        }
-
-                    } else {
-                        $res = $response;
-                    }
-                } else {
-
-                    $res = array(
-                        'success' => false,
-                        'message' => "Node Repository has already been defined"
-                    );
-                }
-            }
-
-        } catch (\Exception $exception) {
-            $res = array(
-                'success' => false,
-                'message' => $exception->getMessage()
-            );
-        } catch (\Throwable $throwable) {
-            $res = array(
-                'success' => false,
-                'message' => $throwable->getMessage()
-            );
-        }
-        return response()->json($res);
-
-    }
-
+    
     function getTableDataName($record_id, $table_name)
     {
         $sql = DB::table($table_name)
@@ -404,102 +313,7 @@ class DocumentManagementController extends Controller
         return $record_name;
 
     }
-    public function saveDMSNoStructuredDocDefinationDetails(Request $req)
-    {
-
-        try {
-            $user_id = \Auth::user()->id;
-            $post_data = $req->all();
-            $table_name = 'tra_nonstructured_docdefination';
-            $id = $post_data['id'];
-            $site_id = $post_data['dms_site_id'];
-
-            $document_type_id = $post_data['document_type_id'];
-            $unsetData = $req->input('unset_data');
-
-            $post_data = $this->funcReturnResetPostData($post_data);
-
-            if (isset($unsetData)) {
-                $unsetData = explode(",", $unsetData);
-                $post_data = unsetArrayData($post_data, $unsetData);
-            }
-            $table_data = $post_data;
-            //add extra params
-
-            $where = array(
-                'id' => $id
-            );
-            if (validateIsNumeric($id)) {
-                if (recordExists($table_name, $where)) {
-
-                    $table_data['dola'] = Carbon::now();
-                    $table_data['altered_by'] = $user_id;
-                    $previous_data = getPreviousRecords($table_name, $where);
-                    if ($previous_data['success'] == false) {
-                        return $previous_data;
-                    }
-                    $previous_data = $previous_data['results'];
-                    //dms function call with validation 
-                    $res = updateRecord($table_name, $previous_data, $where, $table_data, $user_id);
-
-                }
-            } else {
-                $sql = DB::table($table_name)
-                    ->where(array('dms_site_id' => $site_id, 'document_type_id' => $document_type_id))
-                    ->get();
-                if (!count($sql) > 0) {
-                    $site_node_ref = getSiteNodeRef($site_id);
-                    $section_name = $this->getTableDataName($document_type_id, 'par_document_types');
-                    //create a node in the site data
-
-                    $node_name = $section_name . ' Documents';
-
-                    $section_name = strtolower(str_replace(' ', '', $section_name));
-
-                    $node_details = array(
-                        'name' => $node_name,
-                        'nodeType' => 'cm:folder'
-                    );
-                    $response = dmsCreateAppRootNodesChildren($site_node_ref, $node_details);
-
-                    if ($response['success']) {
-                        $node_id = $response['node_details']->id;
-                        $table_data['node_ref'] = $node_id;
-
-                        $table_data['created_on'] = Carbon::now();
-                        $table_data['created_by'] = $user_id;
-
-                        $table_data['node_name'] = $node_name;
-
-                        $res = insertRecord($table_name, $table_data, $user_id);
-                        if ($res['success']) {
-                            $res['message'] = $node_name . ' has been created successfully';
-
-                        }
-
-                    } else {
-                        $res = $response;
-                    }
-
-                } else {
-
-                    $res = array(
-                        'success' => false,
-                        'message' => "Node Repository has already been defined"
-                    );
-                }
-            }
-
-        } catch (\Exception $exception) {
-            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
-        } catch (\Throwable $throwable) {
-            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
-        }
-
-        return response()->json($res);
-
-    }
-
+    
     function funcReturnResetPostData($post_data)
     {
         //unset unnecessary values
@@ -511,6 +325,30 @@ class DocumentManagementController extends Controller
         unset($post_data['user_id']);
         return $post_data;
     }
+    function validateDocumentExtension($extension,$documentrequirements_defination_id){
+        //get all the file types under the said requiredment
+        $records = DB::table('dms_documentrequirements_extensions as t1')
+                                        ->join('dms_document_extension_types as t2', 't1.document_extension_id', 't2.id')
+                                        ->where(array('documentrequirements_defination_id'=>$documentrequirements_defination_id, 'extension'=>$extension))
+                                        ->first();
+        if($records){
+            $response = array('is_allowedextension'=>true);
+        }
+        else{
+            $record = DB::select("(select group_concat(concat(`j`.`name`, '.',`j`.`extension`) separator ' ,') as allowed_filetypes FROM dms_documentrequirements_extensions t INNER JOIN dms_document_extension_types j ON t.document_extension_id = j.id WHERE t.documentupload_requirement_id = $document_requirement_id) limit 1");
+            $allowed_filetypes = $record[0]->allowed_filetypes;
+
+            if(isset($record[0]) &&  $allowed_filetypes != ''){
+                                        
+                    $response = array('is_allowedextension'=>false,'allowed_filetypes'=>$allowed_filetypes);
+            }
+            else{
+                    $response = array('is_allowedextension'=>true);
+            }
+        }
+       
+        return $response;
+}
     public function onaplicationDocumentUpload(Request $req)
     {
         try {
@@ -522,66 +360,78 @@ class DocumentManagementController extends Controller
             $user_id = $req->user_id;
             //get the documetn definations 
             $application_code = $req->application_code;
-            $workallocations_assignment_id  = $req->workallocations_assignment_id;
+            $oga_application_code = $req->oga_application_code;
             $document_requirement_id = $req->document_requirement_id;
-            $process_id = $req->process_id;
-            $node_ref = $req->node_ref;
-            if(!validateIsNumeric($workallocations_assignment_id)){
-                $workallocations_assignment_id =0;
-            }
+            $regulatory_function_id = $req->regulatory_function_id;
             $file = $req->file('file');
-            $apptable_name = getSingleRecordColValue('wf_processes', array('id' => $process_id), 'table_name');
+            $appfunction_data = getSingleRecord('par_regulatory_functions', array('id' => $regulatory_function_id));
+            if(validateIsNumeric($oga_application_code)){
+                $apptable_name = $appfunction_data->applicationtable_name;
+                $app_record = Db::table($apptable_name)->where('oga_application_code', $oga_application_code)->first();
+                if ($app_record) {
 
-            $app_record = Db::table($apptable_name)->where('application_code', $application_code)->first();
-            if ($app_record) {
-
-                $process_id = $app_record->process_id;
-                //section_id
-                $doc_record = DB::table('dms_application_documentsdefination')->where('application_code', $application_code)->first();
-                if (!$doc_record) {
-                    initializeApplicationDMS($process_id, $application_code, $user_id);
+                    //section_id
+                    $doc_record = DB::table('dms_application_documentsdefination')->where('oga_application_code', $oga_application_code)->first();
+                    if (!$doc_record) {
+                        initializeApplicationDMS($regulatory_subfunction_id, $oga_application_code,$application_code, $user_id);
+                    }
                 }
             }
+            if(validateIsNumeric($application_code)){
+                $apptable_name = $appfunction_data->applicant_applicationtable_name;
+                $app_record = Db::table($apptable_name)->where('application_code', $application_code)->first();
+                if ($app_record) {
+                    $doc_record = DB::table('dms_application_documentsdefination')->where('application_code', $application_code)->first();
+                    if (!$doc_record) {
+                        initializeApplicationDMS($regulatory_subfunction_id, $oga_application_code,$application_code, $user_id);
+                    }
+                }
+            }
+           
+            $app_rootnode = getApplicationRootNode($oga_application_code,$application_code);
 
-            $app_rootnode = getApplicationRootNode($application_code);
-
-            $table_name = 'tra_application_uploadeddocuments';
+            $table_name = 'dms_uploaded_applicationdocs';
 
             if ($app_rootnode) {
                 if ($req->hasFile('file')) {
                     $origFileName = $file->getClientOriginalName();
                     $extension = $file->getClientOriginalExtension();
+                    $extension = $file->getClientOriginalExtension();
+                    $docextension_check = $this->validateDocumentExtension($extension, $document_requirement_id);
+                    $is_allowedextension = $docextension_check['is_allowedextension'];
 
+                    if (!$is_allowedextension) {
+                        $allowed_filetypes = $docextension_check['allowed_filetypes'];
+                        $res = array('success' => false, 'message' => 'Upload the allowed file types or contact the authority for further guidelines. Allowed File Types extensions:.' . $allowed_filetypes);
+                        return response()->json($res);
+                    } 
                     $fileSize = '';
                     $file_path = $file->getPathName();
-                    $document_rootupload = Config('constants.dms.doc_rootupload');
-
-                    $destination = getcwd() . $document_rootupload;
+                    
                     $savedName = rand(15, 1000) . time() . '.' . $extension;
-
-
-                    $doc_req = getSingleRecord('dms_document_requirements', array('id' => $document_requirement_id));
+                    $doc_req = getSingleRecord('dms_documentrequirements_defination', array('id' => $document_requirement_id));
                     $document_requirement = $doc_req->name;
                     $document_type_id = $doc_req->document_type_id;
 
                     $uploadfile_name = $document_requirement . rand(15, 1000) . '.' . $extension;
                     $destination_node = $app_rootnode->node_ref;
 
-
                     $response = dmsUploadNodeDocument($destination_node, $file_path, $uploadfile_name, '');
 
                     $node_ref = $response['nodeRef'];
                     $document_data = array(
                         'application_code' => $application_code,
+                        'oga_application_code' => $oga_application_code,
                         'document_requirement_id' => $document_requirement_id,
                         'document_type_id' => $document_type_id,
                         'uploaded_on' => Carbon::now(),
                         'uploaded_by' => $user_id,
-                        'workallocations_assignment_id'=>$workallocations_assignment_id,
                         'file_name' => $uploadfile_name,
                         'initial_file_name' => $origFileName,
                         'filetype' => $extension,
                         'node_ref' => $node_ref,
+                        'regulatory_function_id'=>$regulatory_function_id,
+                        'regularoty_subfunction_id'=>$regulatory_subfunction_id,
                         'created_on' => Carbon::now(),
                         'created_by' => $user_id
                     );
@@ -590,12 +440,9 @@ class DocumentManagementController extends Controller
                     if ($res['success']) {
                         $res['message'] = 'Document Uploaded Successfully, proceed with submission';
                     } else {
-                        //$res['message'] = 'Document Upload failed, try again or contact the system admin';
+                        $res['message'] = 'Document Upload failed, try again or contact the system admin';
 
                     }
-
-
-
                 } else {
                     $res = array(
                         'success' => false,
@@ -620,11 +467,10 @@ class DocumentManagementController extends Controller
     }
     public function OnSaveDocumentRequirementsDef(Request $req)
     {
-
         try {
             $user_id = $req->user_id;
             $post_data = $req->all();
-            $table_name = 'dms_document_requirements';
+            $table_name = 'dms_documentrequirements_defination';
             $id = $post_data['id'];
             $has_document_template = $req->has_document_template;
             $uploaded_nonstructureddocument_id = 0;
@@ -678,8 +524,6 @@ class DocumentManagementController extends Controller
 
                         $uploaded_nonstructureddocument_id = $document_ref['record_id'];
                         $table_data['uploaded_nonstructureddocument_id'] = $uploaded_nonstructureddocument_id;
-
-
 
                     }
                     $node_name = '';
@@ -800,180 +644,7 @@ class DocumentManagementController extends Controller
         return $res;
 
     }
-    public function uploadApplicationDocumentFile(Request $req)
-    {
-        try {
-            ini_set('upload_max_filesize', '500M');
-            ini_set('post_max_size', '500M');
-            ini_set('max_input_time', 300000000000);
-            ini_set('max_execution_time', 3000000000);
-            $user_id = $this->user_id;
-            //get the documetn definations 
-            $application_code = $req->application_code;
 
-            $module_id = $req->module_id;
-            $record_id = $req->id;
-            $node_ref = $req->node_ref;
-            $sub_module_id = $req->sub_module_id;
-            $document_type_id = $req->document_type_id;
-            $document_requirement_id = $req->document_requirement_id;
-            $assessment_start_date = $req->assessment_start_date;
-            $assessment_end_date = $req->assessment_end_date;
-            $assessment_by = $req->assessment_by;
-            $query_ref_id = $req->query_ref_id;
-            $file = $req->file('file');
-            $apptable_name = getSingleRecordColValue('modules', array('id' => $module_id), 'table_name');
-
-            $app_record = Db::table($apptable_name)->where('application_code', $application_code)->first();
-            if ($app_record) {
-                $section_id = $app_record->section_id;
-                $ref_number = $app_record->reference_no;
-                if (!validateIsNumeric($section_id)) {
-                    $section_id = 7;
-                }
-                $doc_record = Db::table('tra_application_documentsdefination')->where('application_code', $application_code)->first();
-
-                if (!$doc_record) {
-
-                    $res = initializeApplicationDMS($section_id, $module_id, $sub_module_id, $application_code, $ref_number . rand(0, 100), $user_id);
-                }
-            }
-
-            $app_rootnode = getApplicationRootNode($application_code);
-
-            $app_rootnode = getDocumentTypeRootNode($app_rootnode->dms_node_id, $application_code, $document_type_id, $user_id);
-
-            $table_name = 'tra_application_uploadeddocuments';
-
-            if ($app_rootnode) {
-                if ($req->hasFile('uploaded_doc')) {
-                    $origFileName = $file->getClientOriginalName();
-                    $extension = $file->getClientOriginalExtension();
-                    $docextension_check = $this->validateDocumentExtension($extension, $document_requirement_id);
-                    $is_allowedextension = $docextension_check['is_allowedextension'];
-
-                    if (!$is_allowedextension) {
-                        $allowed_filetypes = $docextension_check['allowed_filetypes'];
-                        $res = array('success' => false, 'message' => 'Upload the allowed file types or contact the authority for further guidelines. Allowed File Types extensions:.' . $allowed_filetypes);
-
-                    } else {
-
-                        $fileSize = $file->getClientSize();
-                        $file_path = $file->getPathName();
-                        $document_rootupload = Config('constants.dms.doc_rootupload');
-
-                        $destination = getcwd() . $document_rootupload;
-                        $savedName = rand(15, 1000) . time() . '.' . $extension;
-
-                        //$file->move($destination, $savedName);
-                        $document_path = $destination . $savedName;
-                        //check if tje dpcument type has been mapped and not autoCreate the folder
-                        $document_requirement = getParameterItem('tra_documentupload_requirements', $document_requirement_id);
-
-                        //get the application root folder str_random
-
-                        $uploadfile_name = $document_requirement . rand(15, 1000) . '.' . $extension;
-                        $destination_node = $app_rootnode->node_ref;
-
-                        if (validateIsNumeric($record_id)) {
-
-                            $response = dmsUploadNodeDocument($destination_node, $file_path, $uploadfile_name, $node_ref);
-                            $node_ref = $response['nodeRef'];
-                            $document_data = array(
-                                'application_code' => $application_code,
-                                'document_requirement_id' => $document_requirement_id,
-                                'uploaded_on' => Carbon::now(),
-                                'uploaded_by' => $user_id,
-                                'file_name' => $uploadfile_name,
-                                'initial_file_name' => $origFileName,
-                                'file_type' => $extension,
-                                'node_ref' => $node_ref,
-                                'query_ref_id' => $query_ref_id,
-                                'dola' => Carbon::now(),
-                                'altered_by' => $user_id,
-                                'assessment_start_date' => $assessment_start_date,
-                                'assessment_end_date' => $assessment_end_date,
-                                'assessment_by' => $assessment_by
-                            );
-
-                            $where = array('id' => $record_id);
-
-                            if (recordExists($table_name, $where)) {
-
-                                $previous_data = getPreviousRecords('tra_application_uploadeddocuments', $where);
-                                $previous_data = $previous_data['results'];
-                                $res = updateRecord('tra_application_uploadeddocuments', $previous_data, $where, $document_data, $user_id);
-
-                                $previous_data = $previous_data[0];
-                                $document_upload_id = $previous_data['id'];
-                                unset($previous_data['id']);
-                                $previous_data['document_upload_id'] = $document_upload_id;
-                                $res = insertRecord('tra_documents_prevversions', $previous_data, $user_id);
-                                if ($res['success'] == false) {
-                                    return $res;
-                                }
-
-                            }
-                        } else {
-                            $response = dmsUploadNodeDocument($destination_node, $file_path, $uploadfile_name, '');
-
-                            $node_ref = $response['nodeRef'];
-                            $document_data = array(
-                                'application_code' => $application_code,
-                                'document_requirement_id' => $document_requirement_id,
-                                'document_type_id' => $document_type_id,
-                                'uploaded_on' => Carbon::now(),
-                                'uploaded_by' => $user_id,
-                                'file_name' => $uploadfile_name,
-                                'initial_file_name' => $origFileName,
-                                'file_type' => $extension,
-                                'node_ref' => $node_ref,
-                                'query_ref_id' => $query_ref_id,
-                                'created_on' => Carbon::now(),
-                                'created_by' => $user_id,
-                                'assessment_start_date' => $assessment_start_date,
-                                'assessment_end_date' => $assessment_end_date,
-                                'assessment_by' => $assessment_by
-                            );
-                            $res = insertRecord('tra_application_uploadeddocuments', $document_data, $user_id);
-
-                            if ($res['success']) {
-
-                                $res['message'] = 'Document Uploaded Successfully';
-                            } else {
-                                $res['message'] = 'Document Upload failed, try again or contact the system admin';
-
-                            }
-
-
-                        }
-
-                    }
-
-                } else {
-                    $res = array(
-                        'success' => false,
-                        'message' => 'No document attachement for upload'
-                    );
-                }
-
-            } else {
-                $res = array(
-                    'success' => false,
-                    'message' => 'DMS Document Type Node not configured, contact the system Admin'
-                );
-
-            }
-
-        } catch (\Exception $exception) {
-            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
-        } catch (\Throwable $throwable) {
-            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
-        }
-
-        return response()->json($res);
-
-    }
     //onLoadApplicationUploadeddocument
     public function onDeleteUploadedDocumentDetails(Request $req)
     {
@@ -1035,7 +706,7 @@ class DocumentManagementController extends Controller
             $i = 1;
             DB::enableQueryLog();
 
-            $sql = DB::table('dms_document_requirements as t1')
+            $sql = DB::table('dms_documentrequirements_defination as t1')
                 ->leftJoin('dms_document_types as t2', 't1.document_type_id', '=', 't2.id')
                 ->leftJoin('dms_docrequirements_appstatus as t4', 't1.id', '=', 't4.document_requirement_id')
                 ->join('dms_uploaded_applicationdocs as t5', 't1.id', '=', 't5.document_requirement_id')
@@ -1104,7 +775,7 @@ class DocumentManagementController extends Controller
             $doc_data = array();
             $i = 1;
             DB::enableQueryLog();
-            $sql = DB::table('dms_document_requirements as t1')
+            $sql = DB::table('dms_documentrequirements_defination as t1')
                 ->leftJoin('dms_document_types as t2', 't1.document_type_id', '=', 't2.id')
                 ->leftJoin('dms_docrequirements_appstatus as t4', 't1.id', '=', 't4.document_requirement_id')
                 ->select(DB::raw("t1.*, t2.name as document_type, '' as allowed_extensions"));
@@ -1272,5 +943,28 @@ class DocumentManagementController extends Controller
         }
         return response()->json($res);
     }
+    public function onLoadRegulatoryProcessDocdefination(Request $req)
+    {
+        try {
+            $requestData = $req->all();
+            $filter = $req->filter;
+            $user_id = $req->user_id;
+            $sql = DB::table('dms_regulatoryprocess_docdefination as t1')
+                        ->leftJoin('par_regulatory_functions as t2', 't1.regulatory_function_id', 't2.id')
+                        ->leftJoin('par_regulatory_subfunctions as t3', 't1.regulatory_subfunction_id', 't3.id')
+                        ->leftJoin('dms_sites_repository_defination as t4', 't1.dms_site_id', 't4.id')
+                        ->select('t1.*', 't2.name as regulatory_function', 't3.name as regulatory_subfunction', 't4.name as dms_site');
 
+           $data_record = $sql->get();
+           
+            $res = array('success' => true, 'data' => $data_record);
+
+        } catch (\Exception $exception) {
+            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        } catch (\Throwable $throwable) {
+            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        }
+
+        return response()->json($res, 200);
+    }
 }

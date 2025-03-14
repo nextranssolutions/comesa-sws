@@ -44,7 +44,7 @@ export class SharedImpexpApplicationClass {
   process_id: number;
   transactionpermit_type_id: number;
   appworkflow_status_id: number;
-  
+  nav_data: any;
   permit_id: any;
   dataGrid: DxDataGridComponent;
   productApplicationProcessingData: any;
@@ -110,7 +110,7 @@ export class SharedImpexpApplicationClass {
   payingCurrencyData: any;
   consigneeOptionsData: any;
   modeOfTransportData: any;
-
+  workflowprocess_id: number;
   termscheckbox: boolean = false;
   app_resp: any;
   consignee_options_id: number;
@@ -201,7 +201,6 @@ export class SharedImpexpApplicationClass {
     this.application_details = JSON.parse(this.application_details);
    
     this.form_fielddata = this.application_details.application_form;
-
     this.products_fielddata = this.application_details.permit_products_details;
     this.applicants_fielddata = this.application_details.applicant_details;
 
@@ -465,13 +464,13 @@ export class SharedImpexpApplicationClass {
 
     let applicant_id = this.applicantDetailsForm.get('id')?.value;
     let permit_generalinformation_id = this.applicationGeneraldetailsfrm.get('id')?.value;
-
     
     this.permitProductsFrm.value['applicant_id'] = applicant_id;
+   
     this.applicationGeneraldetailsfrm.value['permit_generalinformation_id'] = permit_generalinformation_id;
 
     this.spinnerShow(' ');
-    this.appService.onsavePermitProductdetails(this.application_code, this.permitProductsFrm.value, this.tracking_no, 'onSaveApplicantPermitProductsDetails')
+    this.appService.onsavePermitProductdetails(this.application_code, this.permitProductsFrm.value, 'onSaveApplicantPermitProductsDetails')
       .subscribe(
         response => {
           this.app_resp = response;
@@ -499,10 +498,6 @@ export class SharedImpexpApplicationClass {
         });
   }
 
-
-
-
-
   onSaveImportExportApplication() {
 
     this.spinnerShow(' ');
@@ -527,8 +522,15 @@ export class SharedImpexpApplicationClass {
     this.applicationGeneraldetailsfrm.value['applicationapplicant_option_id'] = applicationapplicant_option_id;
 
     this.applicationGeneraldetailsfrm.value['applicationsubmission_type_id'] = this.applicationsubmission_type_id;
-   
-    this.applicationGeneraldetailsfrm.value['regulatory_subfunction_id'] = this.regulatory_subfunction_id;
+    this.nav_data = localStorage.getItem('nav_data');
+    this.nav_data = this.nav_data ? JSON.parse(this.nav_data) : {};
+    console.log(this.nav_data);
+    let regulatory_subfunction_id = this.nav_data?.regulatory_subfunction_id || null;
+    let regulatory_function_id = this.nav_data?.regulatory_function_id || null;
+
+    this.applicationGeneraldetailsfrm.value['regulatory_subfunction_id'] = regulatory_subfunction_id;
+    this.applicationGeneraldetailsfrm.value['regulatory_function_id'] = regulatory_function_id;
+    
     this.appService.onSavePermitApplication(this.applicationGeneraldetailsfrm.value, uploadData, 'saveImportExportApplication')
       .subscribe(
         response => {

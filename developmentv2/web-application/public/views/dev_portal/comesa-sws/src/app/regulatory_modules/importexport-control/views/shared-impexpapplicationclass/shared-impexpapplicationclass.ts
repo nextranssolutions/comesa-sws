@@ -140,7 +140,6 @@ export class SharedImpexpApplicationClass {
     this.nav_data = localStorage.getItem('nav_data');
     this.application_details = JSON.parse(this.application_details);
     this.nav_data = JSON.parse(this.nav_data);
-    let regulatory_subfunction_id =this.nav_data.regulatory_subfunction_id;
 
     this.form_fielddata = this.application_details.application_form;
     this.products_fielddata = this.application_details.permit_products_details;
@@ -321,34 +320,36 @@ export class SharedImpexpApplicationClass {
         return;
       }
     }
-  
+
     if (this.applicationGeneraldetailsfrm.invalid) {
       return;
     }
-  
-    // Retrieve applicant_id and transactionpermit_type_id
-    const transactionpermit_type_id = Number(localStorage.getItem('transactionpermit_type_id')) || null;
+
+    // Retrieve transactionpermit_type_id from localStorage
+    const transactionpermit_type_id = localStorage.getItem('transactionpermit_type_id')
+      ? Number(localStorage.getItem('transactionpermit_type_id'))
+      : null;
+
+    console.log('Retrieved transactionpermit_type_id:', transactionpermit_type_id);
+
     const applicant_id = Number(this.applicantDetailsForm.get('id')?.value) || null;
-  
+
     this.nav_data = localStorage.getItem('nav_data');
     this.nav_data = this.nav_data ? JSON.parse(this.nav_data) : {};
-  
-    // Ensure regulatory_subfunction_id is set correctly
+
     let regulatory_subfunction_id = this.nav_data?.regulatory_subfunction_id || null;
     let regulatory_function_id = this.nav_data?.regulatory_function_id || null;
 
-    // Patch values to form
     this.applicationGeneraldetailsfrm.patchValue({
       applicant_id: applicant_id,
       transactionpermit_type_id: transactionpermit_type_id,
       regulatory_subfunction_id: regulatory_subfunction_id,
       regulatory_function_id: regulatory_function_id
     });
-  
+
     const uploadData = this.prepareSavePermitDoc();
     this.spinner.show();
-  
-    // Pass the correct transactionpermit_type_id
+
     this.appService.onSavePermitApplication(this.applicationGeneraldetailsfrm.value, uploadData, 'saveOgaImportExportApplication', transactionpermit_type_id)
       .subscribe(
         response => {
@@ -358,7 +359,7 @@ export class SharedImpexpApplicationClass {
             this.transactionpermit_type_id = this.product_resp.transactionpermit_type_id;
             this.oga_application_code = this.product_resp.oga_application_code;
             this.applicationGeneraldetailsfrm.get('applicant_id')?.patchValue(applicant_id);
-  
+
             this.toastr.success(this.product_resp.message, 'Response');
             this.isSaved = true;
           } else {
@@ -374,13 +375,13 @@ export class SharedImpexpApplicationClass {
         }
       );
   }
-  
+
   // Function to handle the next step
   onNextStep() {
-    if (!this.isSaved) {
-      this.toastr.error('Kindly save before proceeding to the next step.', 'Validation Error');
-      return;
-    }
+    // if (!this.isSaved) {
+    //   this.toastr.error('Kindly save before proceeding to the next step.', 'Validation Error');
+    //   return;
+    // }
     this.ngWizardService.next(); // Move to the next step only if saved
   }
 

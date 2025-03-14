@@ -94,15 +94,10 @@ export class ApplicantDetailsComponent {
     this.onLoadRegions($event.selectedItem.id);
   }
 
-  onAddTraderAccountsClick() {
-    this.is_readonly = false;
-    this.addTraderPopupVisible = true;
-    this.userAccountFrm.reset();
-  }
 
   fetchAccountStatusData() {
     var data_submit = {
-      'table_name': 'wf_workflow_statuses'
+      'table_name': 'wf_appworkflow_statuses'
     }
     this.configService.onLoadConfigurationData(data_submit)
       .subscribe(
@@ -183,7 +178,7 @@ export class ApplicantDetailsComponent {
           this.data_record = data;
 
           if (this.data_record.success) {
-            this.userAccountFrm.patchValue(this.data_record.data)
+            this.applicantDetailsForm.patchValue(this.data_record.data)
           }
         },
         error => {
@@ -447,5 +442,86 @@ export class ApplicantDetailsComponent {
   spinnerHide() {
     this.loadingVisible = false;
   }
+
+  onAddTraderAccountsClick() {
+    this.is_readonly = false;
+    this.addTraderPopupVisible = true;
+    this.userAccountFrm.reset();
+  }
+
+  onsaveTraderAccountsDetails() {
+    const formData = new FormData();
+    const invalid = [];
+    const controls = this.userAccountFrm.controls;
+    for (const name in controls) {
+      if (controls[name].invalid) {
+        this.toastr.error('Fill In All Mandatory fields with (*), missing value on ' + name.replace('_id', ''), 'Alert');
+        return;
+      }
+    }
+    if (this.userAccountFrm.invalid) {
+      return;
+    }
+    this.spinner.show();
+    this.userservice.onsaveUserData(this.table_name, this.userAccountFrm.value, 'onsaveTraderData')
+      .subscribe(
+        response => {
+          this.response = response;
+          //the details 
+          if (this.response.success) {
+            this.onSearchApplicantName(1);
+            this.addPopupVisible = false;
+            this.toastr.success(this.response.message, 'Response');
+
+          } else {
+            this.toastr.error(this.response.message, 'Alert');
+          }
+          this.spinner.hide();
+        },
+        error => {
+          this.toastr.error('Error Occurred', 'Alert');
+          this.spinner.hide();
+        });
+  }
+
+   onSearchApplicantName(is_local_agent) {
+      this.isRegistrantDetailsWinshow = true;
+      if (is_local_agent == 1) {
+        this.is_local_agent = is_local_agent;
+        this.trader_title = 'applicant details';
+      }
+      else {
+        this.is_local_agent = is_local_agent;
+        this.trader_title = 'import/export_applicant';
+      }
+      let me = this;
+      this.traderAccountsDetailsData.store = new CustomStore({
+        load: function (loadOptions: any) {
+          var params = '?';
+          params += 'skip=' + loadOptions.skip;
+          params += '&take=' + loadOptions.take;//searchValue
+          var headers = new HttpHeaders({
+            "Accept": "application/json",
+            "Authorization": "Bearer " + me.authService.getAccessToken(),
+          });
+  
+          me.configData = {
+            headers: headers,
+            params: { skip: loadOptions.skip, take: loadOptions.take, searchValue: loadOptions.filter, is_local_agent: is_local_agent }
+          };
+          return me.httpClient.get(AppSettings.base_url + '/api/import-export/getTraderInformationDetails', me.configData)
+            .toPromise()
+            .then((data: any) => {
+              return {
+                data: data.data,
+                totalCount: data.totalCount
+              }
+            })
+            .catch(error => { throw 'Data Loading Error' });
+  
+        }
+      });
+  
+    }
 
 }

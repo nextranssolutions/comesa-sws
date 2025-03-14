@@ -9,6 +9,10 @@ Route::middleware(['XssSanitizer','clear_cache_config','firewall.all'])->prefix(
     Route::get('funcFetchPublicDetailsCounter', [ConfigurationsController::class, 'funcFetchPublicDetailsCounter']);
 	Route::get('getUserNavigationItems', [ConfigurationsController::class, 'getUserNavigationItems']);
     Route::get('onLoadConfigurationData', [ConfigurationsController::class, 'onLoadConfigurationData']);
+    Route::get('onLoadUserOrganisationData', [ConfigurationsController::class, 'onLoadUserOrganisationData']);
+    Route::get('onLoadDocumentRequriementrecords', [ConfigurationsController::class, 'onLoadDocumentRequriementrecords']);
+    
+    
     Route::get('onLoadNewConfigurationData', [ConfigurationsController::class, 'onLoadNewConfigurationData']);
     
     Route::get('onLoadTranslationManagement', [ConfigurationsController::class, 'onLoadTranslationManagement']);
@@ -17,7 +21,10 @@ Route::middleware(['XssSanitizer','clear_cache_config','firewall.all'])->prefix(
     Route::post('onEnableConfigurationsDetails', [ConfigurationsController::class, 'onEnableConfigurationsDetails']);
     Route::post('onSavingLanguageTranslationManagement', [ConfigurationsController::class, 'onSavingLanguageTranslationManagement']);
     Route::post('onsaveConfigData', [ConfigurationsController::class, 'onsaveConfigData']);
-	Route::post('onDeleteConfigData', [ConfigurationsController::class, 'onDeleteConfigData']);
+    Route::post('onSaveDocumentRequirements', [ConfigurationsController::class, 'onSaveDocumentRequirements']);
+	
+    
+    Route::post('onDeleteConfigData', [ConfigurationsController::class, 'onDeleteConfigData']);
     Route::post('onDeleteWorkflowsDetails', [ConfigurationsController::class, 'onDeleteConfigData']);
     Route::post('onDeleteConfigurationsDetails', [ConfigurationsController::class, 'onDeleteConfigurationsDetails']);
 
@@ -28,6 +35,10 @@ Route::middleware(['XssSanitizer','clear_cache_config','firewall.all'])->prefix(
     Route::get('getUniformSectionApplicationProcess', [ConfigurationsController::class, 'getUniformSectionApplicationProcess']);
     Route::get('getApplicantUniformApplicationProces', [ConfigurationsController::class, 'getApplicantUniformApplicationProces']);
 
+    Route::get('getPermitUniformApplicationProces', [ConfigurationsController::class, 'getPermitUniformApplicationProces']);
+    Route::get('getTransactionPermitTypeData', [ConfigurationsController::class, 'getTransactionPermitTypeData']);
+    
+    
     //fetInforamtion get.....
     //save information save....
     //delete onDelete....  

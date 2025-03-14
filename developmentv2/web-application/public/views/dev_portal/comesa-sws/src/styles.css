@@ -274,6 +274,10 @@ input[type=email] {
   margin-top: 1px !important;
 }
 
+label {
+  margin-top: 5px;
+}
+
 div .ng-wizard-theme-arrows .ng-wizard-toolbar {
   /* padding: 10px; */
   margin-bottom: 10px !important;
@@ -6699,7 +6703,7 @@ dx-selectbox .col-lg-1,
     border: 2px solid #ccc;
     padding: 30px;
     position: relative;
-    height: 800px;
+    height: 1000px;
     overflow-y: scroll;
   }
 

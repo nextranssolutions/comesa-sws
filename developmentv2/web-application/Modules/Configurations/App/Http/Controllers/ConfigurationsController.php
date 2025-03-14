@@ -49,8 +49,72 @@ class ConfigurationsController extends Controller
         return response()->json($res, 200);
     }
 
+    
+    public function onSaveDocumentRequirements(Request $req)
+    {
+        try {
+            $resp = "";
+            $user_id = $req->user_id;
 
+            $data = $req->all();
+            $table_name = $req->table_name;
+            $record_id = $req->id;
+            $document_extensions_id = $req->document_extensions_id;
 
+            $data = array('regulatory_subfunction_id'=>$req->regulatory_subfunction_id,
+                            'regulatory_function_id'=>$req->regulatory_function_id,
+                            'organisation_id'=>$req->organisation_id,
+                            'name'=>$req->name,
+                            'is_enabled'=>$req->is_enabled,
+                            'document_type_id'=>$req->document_type_id,
+                            'description'=>$req->description,
+                            'code'=>$req->code
+                      );
+
+            if (validateIsNumeric($record_id)) {
+                $where = array('id' => $record_id);
+                if (recordExists($table_name, $where)) {
+
+                    $data['dola'] = Carbon::now();
+                    $data['altered_by'] = $user_id;
+
+                    $previous_data = getPreviousRecords($table_name, $where);
+
+                    $resp = updateRecord($table_name, $previous_data['results'], $where, $data, $user_id);
+                }
+            } else {
+                unset($data['id']);
+                $data['created_by'] = $user_id;
+                $data['created_on'] = Carbon::now();
+                $resp = insertRecord($table_name, $data, $user_id);
+            }
+            if($resp['success']){
+                $documentrequirements_defination_id = $resp['record_id'];
+                $document_extensions = array();
+                if(is_array($document_extensions_id)){
+                    DB::table('dms_documentrequirements_extensions')->where('documentrequirements_defination_id',$documentrequirements_defination_id)->delete();
+                    foreach($document_extensions_id as $document_extension_id){
+                            $document_extensionsdata = array('document_extension_id'=>$document_extension_id, 
+                                            'documentrequirements_defination_id'=>$documentrequirements_defination_id, 
+                                            'created_by'=>$user_id, 
+                                            'created_on'=>Carbon::now(),
+                                            'altered_by'=>$user_id, 
+                                            'dola'=>Carbon::now());
+                           $user_resp = insertRecord('dms_documentrequirements_extensions', $document_extensionsdata);
+        
+                    }
+                }
+            }
+            $res = getGenericResponsewithRercId($resp);
+
+        } catch (\Exception $exception) {
+            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        } catch (\Throwable $throwable) {
+            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        }
+        return response()->json($res, 200);
+    }
+    
     public function onsaveConfigData(Request $req)
     {
         try {
@@ -98,12 +162,79 @@ class ConfigurationsController extends Controller
         }
         return response()->json($res, 200);
     }
- 
+    
+    public function onLoadUserOrganisationData(Request $req)
+    {
+        try {
+            $requestData = $req->all();
+            $user_id = $req->user_id;
+            $table_name = base64_decode($req->table_name);
+            
+            $sql = DB::table($table_name . ' as t1')
+                            ->leftJoin('par_countries as t2', 't1.country_id', 't2.id')
+                            ->leftJoin('par_regions as t3', 't1.region_id', 't3.id')
+                            ->select('t1.*', 't2.name as country_name', 't3.name as region_name');
+            $data = $sql->get();
+         
+
+            $res = array('success' => true, 'data' => $data);
+
+        } catch (\Exception $exception) {
+            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        } catch (\Throwable $throwable) {
+            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        }
+
+        return response()->json($res, 200);
+    }
+
+    public function onLoadDocumentRequriementrecords(Request $req)
+    {
+        try {
+            $requestData = $req->all();
+            $filter = $req->filter;
+            $user_id = $req->user_id;
+            $sql = DB::table('dms_documentrequirements_defination as t1')
+                        ->leftJoin('par_regulatory_functions as t2', 't1.regulatory_function_id', 't2.id')
+                        ->leftJoin('par_regulatory_subfunctions as t3', 't1.regulatory_subfunction_id', 't3.id')
+                        ->leftJoin('tra_organisation_information as t4', 't1.organisation_id', 't4.id')
+                        ->select('t1.*', 't2.name as regulatory_function', 't3.name as regulatory_subfunction', 't4.name as organisation_name');
+
+           $data_record = $sql->get();
+           $data = array();
+            foreach($data_record as $rec){
+                //get record and add some more informaiton 
+                $documentrequirements_defination_id = $rec->id;
+                $qry = DB::table('dms_documentrequirements_extensions')
+						->where('documentrequirements_defination_id', $documentrequirements_defination_id)
+						->select('document_extension_id');
+					$document_extensions = $qry->get();
+					if($document_extensions->count() >0){
+						$document_extensions = convertStdClassObjToArray($document_extensions);
+						$document_extensions_id = convertAssArrayToSimpleArray($document_extensions, 'document_extension_id');
+						$rec->document_extensions_id = $document_extensions_id;
+					}
+                    $data[] = (array)$rec;
+            }
+            
+            $res = array('success' => true, 'data' => $data);
+
+        } catch (\Exception $exception) {
+            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        } catch (\Throwable $throwable) {
+            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        }
+
+        return response()->json($res, 200);
+    }
     public function onLoadConfigurationData(Request $req)
     {
         try {
             $requestData = $req->all();
             $filter = $req->filter;
+            $user_id = $req->user_id;
+            unset($requestData['user_id']);
+
             //Decryption 
             // $table_name_data=decrypt_data($req->table_name);
             // $table_name = base64_decode($table_name_data);
@@ -626,7 +757,66 @@ class ConfigurationsController extends Controller
             }
         return response()->json($res);
     } 
-    
+    public function getPermitUniformApplicationProces(Request $req)
+    {
+        try {
+            $app_data = array();
+            $regulatory_subfunction_id = $req->regulatory_subfunction_id;
+            $regulatory_function_id = $req->regulatory_function_id;
+            $current_stage_id = $req->current_stage_id;
+            $transactionpermit_type_id = $req->transactionpermit_type_id;
+
+            $data = DB::table('wf_workflows as t1')
+                ->join('wf_workflow_stages as t2', 't2.workflow_id', 't1.id')
+                ->leftJoin('wf_workflow_interfaces as t3', 't3.id', 't2.interface_id')
+                ->select(
+                    't1.*',
+                    't2.id as workflowprocess_stage_id',
+                    't2.name as workflowprocess_stage',
+                    't3.routerlink as router_link'
+                )
+                ->where('t2.id', $current_stage_id)
+                ->first();
+                    
+            if ($data) {
+                $app_data['process_infor'] = $data;
+                $app_data['transactionpermit_type_id'] = $transactionpermit_type_id;
+                $form_fields = getApplicationGeneralFormsFields($req);
+               
+                $app_data['application_form'] = $form_fields;
+                switch ($regulatory_function_id) {
+                    case 1: // Import Export Permit Application
+                        $app_data['applicant_details'] = getApplicationDataEntryFormsFields($req, 20);
+                        $app_data['permit_products_details'] = getApplicationDataEntryFormsFields($req, 21);
+                        
+                        break;
+                    case 2: // Business operations
+                        $app_data['personnel_information'] = getApplicationDataEntryFormsFields($req, 1);
+                        $app_data['business_operations'] = getApplicationDataEntryFormsFields($req, 2);
+                        $app_data['storelocations'] = getApplicationDataEntryFormsFields($req, 4);
+                        break;
+                    case 3:
+                        // Additional cases can be handled here
+                        break;
+                    case 4:
+                        // Additional cases can be handled here
+                        break;
+                    default:
+                        // Handle other cases
+                        break;
+                }
+                $res = array('success' => true, 'data' => $app_data);
+            } else {
+                $res = array('success' => false, 'message' => 'The specified Module Not Mapped');
+            }
+        } catch (\Exception $exception) {
+            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        } catch (\Throwable $throwable) {
+            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        }
+
+        return response()->json($res);
+    }
     public function getUniformSectionApplicationProcess(Request $req)
     {
         try {
@@ -639,7 +829,7 @@ class ConfigurationsController extends Controller
             // Qualify ambiguous columns with table aliases
             $filter = array('t1.regulatory_subfunction_id' => $regulatory_subfunction_id);
             if (validateIsNumeric($applicationsubmission_type_id)) {
-               // $filter['t2.applicationsubmission_type_id'] = $applicationsubmission_type_id;
+            //    $filter['t1.applicationsubmission_type_id'] = $applicationsubmission_type_id;
             }
             if (!validateIsNumeric($regulatory_function_id)) {
                 $submodule_data = getTableData('par_regulatory_subfunctions', array('id' => $regulatory_subfunction_id));
@@ -652,7 +842,6 @@ class ConfigurationsController extends Controller
             $data = DB::table('wf_workflows as t1')
                 ->join('wf_workflow_stages as t2', 't2.workflow_id', 't1.id')
                 ->leftJoin('wf_workflow_interfaces as t3', 't3.id', 't2.interface_id')
-
                 ->join('tra_transactionpermit_types as t4', 't1.id', 't4.workflow_id')
                 ->select(
                     't1.*',
@@ -669,12 +858,11 @@ class ConfigurationsController extends Controller
                 $app_data['transactionpermit_type_id'] = $transactionpermit_type_id;
                 $app_data['applicationsubmission_type_id'] = $applicationsubmission_type_id;
                 $form_fields = getApplicationGeneralFormsFields($req);
-
+               
                 $app_data['application_form'] = $form_fields;
                 switch ($regulatory_function_id) {
                     case 1: // Import Export Permit Application
                         $app_data['applicant_details'] = getApplicationDataEntryFormsFields($req, 20);
-                        //$app_data['application_general_details'] = getApplicationDataEntryFormsFields($req, 19);
                         $app_data['permit_products_details'] = getApplicationDataEntryFormsFields($req, 21);
                         
                         break;
@@ -736,6 +924,8 @@ class ConfigurationsController extends Controller
                 ->where($filter)
                 ->where('t2.stage_status_id', 1) // Qualified column
                 ->first();
+            // print_r($data);
+            // exit();
             // Process application data
             if ($data) {
                 $app_data['process_infor'] = $data;
@@ -775,4 +965,35 @@ class ConfigurationsController extends Controller
 
         return response()->json($res);
     }
+
+    public function getTransactionPermitTypeData(Request $req)
+    {
+        $regulatory_subfunction_id = $req->regulatory_subfunction_id;
+    
+        try {
+            $qry = DB::table('tra_transactionpermit_types as t1')
+                ->leftJoin('par_regulatory_subfunctions as t2', 't1.regulatory_subfunction_id', 't2.id')
+                ->select('t1.*');
+    
+            // Ensure filtering is applied
+            if (validateIsNumeric($regulatory_subfunction_id)) {
+                $qry->where('t1.regulatory_subfunction_id', $regulatory_subfunction_id);
+            }
+    
+            $data = $qry->get();
+    
+            $res = [
+                'success' => true,
+                'data' => $data
+            ];
+        } catch (\Exception $exception) {
+            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        } catch (\Throwable $throwable) {
+            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        }
+    
+        return response()->json($res);
+    }
+    
+    
 }
