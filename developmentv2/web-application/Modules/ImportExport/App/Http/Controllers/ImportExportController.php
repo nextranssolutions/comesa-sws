@@ -187,10 +187,11 @@ class ImportExportController extends Controller
                 $app_data['workflowprocess_id'] = $workflowprocess_id;
                 
                 //check the process
-                $app_data['application_status_id'] = getInitialWorkflowStatusId($workflowprocess_id);
+                $app_data['appworkflow_status_id'] = getInitialWorkflowStatusId($workflowprocess_id);
+                
 
                 $resp = insertRecord('wb_importexport_applications', $app_data, $user_id);
-
+                print_r($resp);
                 if ($resp['success']) {
                     $tra_app_data = $app_data;
                     
@@ -200,6 +201,7 @@ class ImportExportController extends Controller
                     $tra_app_data['applicant_id'] = $applicant_id;
                     $tra_app_data['permit_typecategory_id'] = $permit_typecategory_id;
                     $tra_app_data['transactionpermit_type_id'] = $transactionpermit_type_id;
+                    
 
                     $response = insertRecord('txn_importexport_applications', $tra_app_data, $user_id);
                     
@@ -371,7 +373,7 @@ class ImportExportController extends Controller
                 $app_data['applicationapplicant_option_id'] = $applicationapplicant_option_id;
                 $app_data['date_added'] = Carbon::now();
                 $app_data['application_code'] = $application_code;
-                $app_data['application_status_id'] = getInitialApplicantWorkflowStatusId($workflowprocess_id);
+                $app_data['appworkflow_status_id'] = getInitialApplicantWorkflowStatusId($workflowprocess_id);
 
                 $resp = insertRecord('wb_importexport_applications', $app_data, $user_id);
                 
@@ -1104,13 +1106,7 @@ class ImportExportController extends Controller
                
                 ->orderByDesc('t1.id')
                 ->get();
-                    /*
- ->when(
-                    $search_value,
-                    fn($query) =>
-                    $query->where('t1.name', 'LIKE', "%{$search_value}%")
-                )
-                    */
+				
             $totalCount = $data->count();
 
 
@@ -1157,7 +1153,6 @@ class ImportExportController extends Controller
                 ->get();
 
             $totalCount = $data->count();
-
 
             }
             
@@ -1415,8 +1410,10 @@ class ImportExportController extends Controller
             $filter = $req->filter;
             $table_name = 'txn_importexport_applications';
             $appworkflow_status_id = $req->appworkflow_status_id;
-            $workflow_status_id = $req->workflow_status_id;
+
+            $regulatory_subfunction_id = $req->regulatory_subfunction_id;
             $appworkflowstatus_category_id = $req->appworkflowstatus_category_id;
+
             $permit_product_data = array();
             $sectionSelection = $req->sectionSelection;
             unset($requestData['table_name']);
@@ -1426,14 +1423,11 @@ class ImportExportController extends Controller
                 ->leftJoin('par_port_type as t3', 't3.id', 't1.port_type_id')
                 ->leftJoin('tra_permitsenderreceiver_data as t4', 't4.id', 't1.importer_exporter_id')
                 ->leftJoin('par_entryexit_port as t5', 't1.port_of_entryexit_id', 't5.id')
-                ->leftJoin('wf_workflowstageprocess_actions as t7', function ($join) use ($process_id) {
-                    $join->on('t1.appworkflow_status_id', '=', 't7.workflow_status_id');
-                    if (validateIsNumeric($process_id)) {
-                        $join->on('t7.process_id', '=', DB::raw($process_id));
-                    }
-                    $join->on('t7.is_default_action', '=', DB::raw(True));
+                ->leftJoin('tra_applicationprocess_submissions as t6', 't1.application_code', '=', 't6.application_code')
+                ->leftJoin('wb_workflowstageprocess_actions as t7', function ($join) {
+                    $join->on('t6.current_stage_id', '=', 't7.workflow_stage_id');
+                    $join->on('t7.is_default_action', '=', DB::raw(1)); 
                 })
-
                 ->leftJoin('wf_statuses_actions as t8', 't7.statuses_action_id', 't8.id')
                 ->leftJoin('wf_workflow_statuses as t9', 't1.appworkflow_status_id', 't9.id')
                 ->leftJoin('par_permit_typecategories as t11', 't1.permit_typecategory_id', 't11.id')
@@ -1455,82 +1449,26 @@ class ImportExportController extends Controller
                 ->leftJoin('par_application_options as t28', 't1.applicationapplicant_option_id', 't28.id')
                 ->leftJoin('wf_processes as t29', 't1.workflowprocess_id', 't29.id')
                 
-                ->select('t1.*','t19.*', 't19.name as applicant_name', 't18.name as customs_office', 't17.name as declaration',
+                ->select('t1.*','t19.*','t6.current_stage_id', 't19.name as applicant_name', 't18.name as customs_office', 't17.name as declaration',
                 't15.name as invoice_type', 't14.name as final_destination_country', 't5.name as port_of_entry', 't13.name as mode_of_transport', 
                 't12.name as currency_name', 't2.name as permit_type', 't8.name as action_name', 't11.name as permit_typecategory',
                 't8.iconCls as iconCls', 't8.action as action', 't3.name as port_type', 't1.id', 't4.name as importer_exporter_name','t21.name as regulatory_function',
                 't22.name as regulatory_subfunction_id', 't9.name as status_name','t23.name as zone','t24.name as port_type','t9.name as workflow_status',
                 't25.name as applicationsubmission_type','t26.name as transactionpermit_type','t27.name as organisation','t28.name as application_option','t29.name as workflowprocess');
 
-            if ($workflow_status_id != '') {
-                $workflow_status = explode(',', $workflow_status_id);
-                $sql->whereIn('appworkflow_status_id', $workflow_status);
-            }
             if (validateIsNumeric($appworkflowstatus_category_id)) {
                 $sql->where(array('t9.appworkflowstatus_category_id' => $appworkflowstatus_category_id));
             }
-            if (validateIsNumeric($appworkflow_status_id)) {
-                $sql->where('appworkflow_status_id', $appworkflow_status_id);
+            if (validateIsNumeric($regulatory_subfunction_id)) {
+                $sql->where('regulatory_subfunction_id', $regulatory_subfunction_id);
             }
-
-            $actionColumnData = returnContextMisMenuActions($process_id);
-            //check the usres 
-    
-            $data = $sql->get();
+            $actionColumnData = returnContextMisMenuActions();
+            $data = $sql->where('t6.isdone',0)->get();
             foreach ($data as $rec) {
-                $application_data[] = array(
-                    'id' => $rec->id,
-                    'action_name' => $rec->action_name,
-                    'iconCls' => $rec->iconCls,
-                    'regulatory_function_id' => $rec->regulatory_function_id,
-                    'regulatory_subfunction_id' => $rec->regulatory_subfunction_id,
-                    'permit_typecategory_id' => $rec->permit_typecategory_id,
-                    'permit_type' => $rec->permit_type,
-                    'applicant_name' => $rec->applicant_name,
-                    'status_name' => $rec->status_name,
-                    'port_type' => $rec->port_type,
-                    'port_type_id' => $rec->port_type_id,
-                    'port_of_entry' => $rec->port_of_entry,
-                    'port_of_entryexit_id' => $rec->port_of_entryexit_id,
-                    'customs_office_id' => $rec->customs_office_id,
-                    'invoice_type' => $rec->invoice_type,
-                    'invoice_type_id' => $rec->invoice_type_id,
-                    'transactionpermit_type_id'=> $rec->transactionpermit_type_id,
-                    'final_destination_country_id' => $rec->final_destination_country_id,
-                    'final_destination_country' => $rec->final_destination_country,
-                    'invoice_number' => $rec->invoice_number,
-                    'invoice_date' => formatDaterpt($rec->invoice_date),
-                    'importer_exporter_name' => $rec->importer_exporter_name,
-                    'action' => $rec->action,
-                    'currency_name' => $rec->currency_name,
-                    'declaration' => $rec->declaration,
-                    'declaration_statuses_id' => $rec->declaration_statuses_id,
-                    'currency_oftransaction_id' => $rec->currency_oftransaction_id,
-                    'mode_of_transport_id' => $rec->mode_of_transport_id,
-                    'mode_of_transport' => $rec->mode_of_transport,
-                    'total_invoice_value' => $rec->total_invoice_value,
-                    'date_of_application' => formatDaterpt($rec->date_of_application),
-                    'expected_date_of_shipment' => $rec->expected_date_of_shipment,
-                    'created_on' => $rec->created_on,
-                    'workflowprocess_id' => $rec->workflowprocess_id,
-                    'application_code' => $rec->application_code,
-                    'reference_no' => $rec->reference_no,
-                    'applicationapplicant_option_id' => $rec->applicationapplicant_option_id, 
-                    'applicant_id' => $rec->applicant_id,
-                    'country_id' => $rec->country_id,
-                    'region_id' => $rec->region_id,
-                    'district_id'=>$rec->district_id,
-                    'appworkflow_status_id' =>$rec->appworkflow_status_id,
-                    'email_address' => $rec->email_address,
-                    'physical_address' => $rec->physical_address,
-                    'postal_address' => $rec->postal_address,
-                    'telephone_no' => $rec->telephone_no,
-                    'mobile_no' => $rec->telephone_no,
-                    'created_by' => $rec->created_by,
-                    'contextMenu' => returnActionColumn($rec->appworkflow_status_id, $actionColumnData)
-                );
+                $contextMenu = returnActionColumn($rec->current_stage_id, $actionColumnData);
+                $rec->contextMenu = $contextMenu;
+                $application_data[] = (array)$rec;
             }
-
             $res = array('success' => true, 'data' => $application_data);
         } catch (\Exception $exception) {
             $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
@@ -1543,19 +1481,14 @@ class ImportExportController extends Controller
     public function getImportExpApplicantPermitsLoading(Request $req)
     {
         try {
-            $workflowprocess_id = 1;
-            $user_id = $req->user_id;
-
             $requestData = $req->all();
             $filter = $req->filter;
             $table_name = 'wb_importexport_applications';
-            $appworkflow_status_id = $req->appworkflow_status_id;
+            $regulatory_function_id = $req->regulatory_function_id;
             $regulatory_subfunction_id = $req->regulatory_subfunction_id;
-             $workflow_status_id = $req->workflow_status_id;
+            $workflow_status_id = $req->workflow_status_id;
             $appworkflowstage_category_id = $req->appworkflowstage_category_id;
-            unset($requestData['table_name']);
-
-
+            
             $sql = DB::table($table_name . ' as t1')
                 ->leftJoin('par_regulatory_subfunctions as t2', 't2.id', 't1.regulatory_subfunction_id')
                 ->leftJoin('par_port_type as t3', 't3.id', 't1.port_type_id')
@@ -1564,15 +1497,11 @@ class ImportExportController extends Controller
                 ->leftJoin('wb_applicationprocess_submissions as t6', 't1.application_code', '=', 't6.application_code')
                 ->leftJoin('wb_workflowstageprocess_actions as t7', function ($join) {
                     $join->on('t6.current_stage_id', '=', 't7.workflow_stage_id');
-                    $join->on('t7.isdone', '=', DB::raw(0)); 
-                    
+                    $join->on('t7.is_default_action', '=', DB::raw(1)); 
                 })
-                
-               
                 ->leftJoin('wf_statuses_actions as t8', 't7.statuses_action_id', 't8.id')
                 ->leftJoin('wf_workflow_statuses as t9', 't1.appworkflow_status_id', 't9.id')
                 ->leftJoin('par_application_statuses as t10', 't1.application_status_id', 't10.id')
-               
                 ->leftJoin('par_currencies as t12', 't1.currency_oftransaction_id', 't12.id')
                 ->leftJoin('par_mode_oftransport as t13', 't1.mode_of_transport_id', 't13.id')
                 ->leftJoin('par_countries as t14', 't1.final_destination_country_id', 't14.id')
@@ -1583,81 +1512,31 @@ class ImportExportController extends Controller
                 
                 ->select('t18.*','t2.name as regulatory_subfunction','t19.name as applicationapplicant_option','t1.created_on as date_added','t6.current_stage_id as workflow_stage_id','t15.name as invoice_type', 't18.name as applicant_name', 't1.id as application_id', 't1.*','t17.name as declaration', 't15.name as invoice_type', 't14.name as final_destination_country', 't5.name as port_of_entry', 't13.name as mode_of_transport', 't12.name as currency_name', 't2.name as permit_typecategory', 't10.name as application_status', 't8.name as action_name', 't8.iconCls as iconCls', 't8.action as action', 't2.name as permit_name', 't3.name as port_type', 't1.id', 't4.name as importer_exporter_name');
 
-               
             if ($workflow_status_id != '') {
                 $workflow_status = explode(',', $workflow_status_id);
                 $sql->whereIn('appworkflow_status_id', $workflow_status);
             }
+	
             if (validateIsNumeric($appworkflowstage_category_id)) {
                 $sql->where(array('t9.appworkflowstage_category_id' => $appworkflowstage_category_id));
             }
-            if (validateIsNumeric($appworkflow_status_id)) {
-                $sql->where('appworkflow_status_id', $appworkflow_status_id);
-            }
+           
             if (validateIsNumeric($regulatory_subfunction_id)) {
                 $sql->where('t1.regulatory_subfunction_id', $regulatory_subfunction_id);
             }
-            
 
-            $actionColumnData = returnContextMenuActions($workflowprocess_id);
+            
+            $actionColumnData = returnContextMenuActions();
             //check the usres 
 
-            $data = $sql->get();
-
+            $data = $sql->where('isdone',0)->get();
+	
+         
             foreach ($data as $rec) {
-                $application_data[] = array(
-                    'id' => $rec->application_id,
-                    'action_name' => $rec->action_name,
-                    'iconCls' => $rec->iconCls,
-                    'application_status' => $rec->application_status,
-                    'permit_typecategory_id' => $rec->permit_typecategory_id,
-                    'permit_name' => $rec->permit_name,
-                    'applicationapplicant_option' =>$rec->applicationapplicant_option,
-                    'applicant_name' => $rec->applicant_name,
-                    'port_type' => $rec->port_type,
-                    'port_type_id' => $rec->port_type_id,
-                    'port_of_entry' => $rec->port_of_entry,
-                    'port_of_entryexit_id' => $rec->port_of_entryexit_id,
-                    'customs_office_id' => $rec->customs_office_id,
-                    'invoice_type' => $rec->invoice_type,
-                    'invoice_type_id' => $rec->invoice_type_id,
-                    'regulatory_subfunction' =>$rec->regulatory_subfunction,
-                    'final_destination_country_id' => $rec->final_destination_country_id,
-                    'final_destination_country' => $rec->final_destination_country,
-                    'invoice_number' => $rec->invoice_number,
-                    'invoice_date' => formatDaterpt($rec->invoice_date),
-                    'importer_exporter_name' => $rec->importer_exporter_name,
-                    'action' => $rec->action,
-                    'currency_name' => $rec->currency_name,
-                    'date_added' => $rec->date_added,
-                    'declaration' => $rec->declaration,
-                    'declaration_statuses_id' => $rec->declaration_statuses_id,
-                    'currency_oftransaction_id' => $rec->currency_oftransaction_id,
-                    'mode_of_transport_id' => $rec->mode_of_transport_id,
-                    'mode_of_transport' => $rec->mode_of_transport,
-                    'total_invoice_value' => $rec->total_invoice_value,
-                    'date_of_application' => formatDaterpt($rec->date_of_application),
-                    'expected_date_of_shipment' => $rec->expected_date_of_shipment,
-                    'tracking_no' => $rec->tracking_no,
-                    'application_status_id' =>$rec->application_status_id,
-                    'created_on' => $rec->created_on,
-                    'workflowprocess_id' => $rec->workflowprocess_id,
-                    'application_code' => $rec->application_code,
-                    'reference_no' => $rec->reference_no,
-                    'applicationapplicant_option_id' => $rec->applicationapplicant_option_id, 
-                    'applicant_id' => $rec->applicant_id,
-                    'country_id' => $rec->country_id,
-                    'region_id' => $rec->region_id,
-                    'district_id'=>$rec->district_id,
-                    'appworkflow_status_id' =>$rec->appworkflow_status_id,
-                    'email_address' => $rec->email_address,
-                    'physical_address' => $rec->physical_address,
-                    'postal_address' => $rec->postal_address,
-                    'telephone_no' => $rec->telephone_no,
-                    'mobile_no' => $rec->telephone_no,
-                    'created_by' => $rec->created_by,
-                    'contextMenu' => returnActionColumn($rec->appworkflow_status_id, $actionColumnData)
-                );
+				
+				$contextMenu = returnActionColumn($rec->workflow_stage_id, $actionColumnData);
+				$rec->contextMenu = $contextMenu;
+                $application_data[] = (array)$rec;
             }
 
             $res = array('success' => true, 'data' => $application_data);

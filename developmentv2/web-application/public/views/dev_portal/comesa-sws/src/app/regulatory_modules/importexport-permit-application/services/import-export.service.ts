@@ -27,20 +27,7 @@ export class ImportExportService {
     this.email_address = user.email_address;
 
   }
-  // onSavePermitApplication(application_id, permitData, tracking_no, action_url, uploadData = '') {
-
-  //   let data_header = {
-  //     // params: { application_id: application_id, tracking_no: tracking_no, 'trader_id': this.trader_id, 'trader_email': this.email_address },
-
-  //     headers: { 'Accept': 'application/json', "Authorization": "Bearer " + this.authService.getAccessToken() }
-  //   };
-
-  //   return this.httpClient.post(this.baseUrl + '/' + action_url, permitData, data_header)
-  //     .pipe(map(data => {
-  //       return data;
-  //     }));
-  // }
-
+	
   onSavePermitApplication(permitData, registrant_details, action_url) {
     var headers = new HttpHeaders({
       "Accept": "application/json",
@@ -104,16 +91,12 @@ export class ImportExportService {
     this.applicant_details = data;
   }
 
-  onPermitApplicationLoading(action_url, filter_params, regulatory_subfunction_id) {
+  onPermitApplicationLoading(action_url, filter_params) {
 
     var headers = new HttpHeaders({
       "Accept": "application/json",
       "Authorization": 'Bearer ' + this.authService.getAccessToken(),
     });
-
-    // filter_params.trader_id = this.trader_id;
-    // filter_params.mistrader_id = this.mistrader_id;
-    regulatory_subfunction_id = regulatory_subfunction_id;
 
     this.config = {
       params: filter_params,
@@ -126,23 +109,7 @@ export class ImportExportService {
     }));
   }
 
-  // onPermitApplicationLoading(filter_params, action_url) {
-  //   var headers = new HttpHeaders({
-  //     "Accept": "application/json",
-  //     "Authorization": "Bearer " + this.authService.getAccessToken(),
-  //     "Content-Type": "application/json"
-  //   });
-
-  //   return this.HttpClient.get(this.baseUrl + '/' + action_url, filter_params)
-  //     .pipe(map(data => {
-  //       return <any>data;
-  //     }));
-  // }
-
-
-
-
-
+ 
   onAddManufacturingSite(table_name: string, data: any, action_url: string) {
     // Add table_name directly into the data object
     let requestData = {

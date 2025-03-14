@@ -958,47 +958,6 @@ public function getRegulatoryFunctionGuidelines(Request $req)
         return response()->json($res);
     }
 
-    public function onDeletePortalWorkflowsDetails(Request $req)
-    {
-        try {
-            $record_id = $req->record_id;
-            $table_name = $req->table_name;
-            $title = $req->title;
-            $user_id = $req->user_id;
-            $data = array();
-            //get the records 
-            $resp = false;
-            if (validateIsNumeric($req->id)) {
-                $record_id = $req->id;
-            }
-
-            $where_state = array('id' => $record_id);
-            // print_r($where_state);
-            $records = DB::table($table_name)
-                ->where($where_state)
-                ->get();
-            if (count($records) > 0) {
-                $previous_data = getPreviousRecords($table_name, $where_state);
-                $resp = deleteRecordNoTransaction($table_name, $previous_data['results'], $where_state, $user_id);
-
-            }
-
-
-            if ($resp) {
-                $res = array('success' => true, 'message' => $title . ' deleted successfully');
-            } else {
-                $res = array('success' => false, 'message' => $title . ' delete failed, contact the system admin if this persists');
-            }
-        } catch (\Exception $exception) {
-            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
-        } catch (\Throwable $throwable) {
-            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
-        }
-
-        return response()->json($res);
-    }
-
-
     // public function onDeletePortalWorkflowsDetails(Request $req)
     // {
     //     try {
@@ -1006,75 +965,116 @@ public function getRegulatoryFunctionGuidelines(Request $req)
     //         $table_name = $req->table_name;
     //         $title = $req->title;
     //         $user_id = $req->user_id;
-    //         if ($req->has(['table_name',])) {
-    //             return response()->json([
-    //                 'success' => false,
-    //                 'message' => 'One or more required parameters are missing.',
-    //             ]);
-    //         }
-
-    //         print_r($req->table_name);
-    //         // Validate inputs
-    //         if (!$record_id || !$table_name || !$title || !$user_id) {
-    //             return response()->json([
-    //                 'success' => false,
-    //                 'message' => 'Missing required parameters: record_id, table_name, title, or user_id.',
-    //             ]);
-    //         }
-
-    //         // Check if 'id' is provided in the request
+    //         $data = array();
+    //         //get the records 
+    //         $resp = false;
     //         if (validateIsNumeric($req->id)) {
     //             $record_id = $req->id;
     //         }
 
-    //         // Define the where condition
-    //         $where_state = ['id' => $record_id];
-
-    //         // Fetch the record to confirm existence
+    //         $where_state = array('id' => $record_id);
+    //         // print_r($where_state);
     //         $records = DB::table($table_name)
     //             ->where($where_state)
     //             ->get();
+    //         if (count($records) > 0) {
+    //             $previous_data = getPreviousRecords($table_name, $where_state);
+    //             $resp = deleteRecordNoTransaction($table_name, $previous_data['results'], $where_state, $user_id);
 
-    //         if ($records->isEmpty()) {
-    //             return response()->json([
-    //                 'success' => false,
-    //                 'message' => "Record not found in the table: $table_name.",
-    //             ]);
     //         }
 
-    //         // Get previous record data
-    //         $previous_data = getPreviousRecords($table_name, $where_state, );
-
-    //         // Attempt to delete the record
-    //         $resp = deleteRecordNoTransaction($table_name, $previous_data['results'], $where_state, $user_id);
 
     //         if ($resp) {
-    //             return response()->json([
-    //                 'success' => true,
-    //                 'message' => "$title deleted successfully.",
-    //             ]);
+    //             $res = array('success' => true, 'message' => $title . ' deleted successfully');
     //         } else {
-    //             return response()->json([
-    //                 'success' => false,
-    //                 'message' => "$title deletion failed. Contact the system admin if this persists.",
-    //             ]);
+    //             $res = array('success' => false, 'message' => $title . ' delete failed, contact the system admin if this persists');
     //         }
     //     } catch (\Exception $exception) {
-    //         return response()->json(sys_error_handler(
-    //             $exception->getMessage(),
-    //             2,
-    //             debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1),
-    //             explode('\\', __CLASS__)
-    //         ));
+    //         $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
     //     } catch (\Throwable $throwable) {
-    //         return response()->json(sys_error_handler(
-    //             $throwable->getMessage(),
-    //             2,
-    //             debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1),
-    //             explode('\\', __CLASS__)
-    //         ));
+    //         $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
     //     }
+
+    //     return response()->json($res);
     // }
+
+
+    public function onDeletePortalWorkflowsDetails(Request $req)
+    {
+        try {
+            $record_id = $req->record_id;
+            $table_name = $req->table_name;
+            $title = $req->title;
+            $user_id = $req->user_id;
+            if ($req->has(['table_name',])) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'One or more required parameters are missing.',
+                ]);
+            }
+
+            print_r($req->table_name);
+            // Validate inputs
+            if (!$record_id || !$table_name || !$title || !$user_id) {
+                return response()->json([
+                    'success' => false,
+                    'message' => 'Missing required parameters: record_id, table_name, title, or user_id.',
+                ]);
+            }
+
+            // Check if 'id' is provided in the request
+            if (validateIsNumeric($req->id)) {
+                $record_id = $req->id;
+            }
+
+            // Define the where condition
+            $where_state = ['id' => $record_id];
+
+            // Fetch the record to confirm existence
+            $records = DB::table($table_name)
+                ->where($where_state)
+                ->get();
+
+            if ($records->isEmpty()) {
+                return response()->json([
+                    'success' => false,
+                    'message' => "Record not found in the table: $table_name.",
+                ]);
+            }
+
+            // Get previous record data
+            $previous_data = getPreviousRecords($table_name, $where_state, );
+
+            // Attempt to delete the record
+            $resp = deleteRecordNoTransaction($table_name, $previous_data['results'], $where_state, $user_id);
+
+            if ($resp) {
+                return response()->json([
+                    'success' => true,
+                    'message' => "$title deleted successfully.",
+                ]);
+            } else {
+                return response()->json([
+                    'success' => false,
+                    'message' => "$title deletion failed. Contact the system admin if this persists.",
+                ]);
+            }
+        } catch (\Exception $exception) {
+            return response()->json(sys_error_handler(
+                $exception->getMessage(),
+                2,
+                debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1),
+                explode('\\', __CLASS__)
+            ));
+        } catch (\Throwable $throwable) {
+            return response()->json(sys_error_handler(
+                $throwable->getMessage(),
+                2,
+                debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1),
+                explode('\\', __CLASS__)
+            ));
+        }
+    }
 
     public function onLoadworkflowStageData(Request $req)
     {
