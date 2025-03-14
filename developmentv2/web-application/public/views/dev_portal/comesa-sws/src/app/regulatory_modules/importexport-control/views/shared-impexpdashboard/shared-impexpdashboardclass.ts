@@ -546,6 +546,7 @@ export class SharedImpExpdashboardClass {
     this.regulatory_subfunction_id = app_data.regulatory_subfunction_id;
     this.transactionpermit_type_id = app_data.transactionpermit_type_id;
     this.current_stage_id = app_data.current_stage_id;
+    this.oga_application_code = app_data.oga_application_code;
     let appprocess_data = {current_stage_id:this.current_stage_id,oga_application_code:this.oga_application_code,transactionpermit_type_id:this.transactionpermit_type_id,regulatory_subfunction_id:this.regulatory_subfunction_id }
     this.spinner.show();
     this.configService.getPermitUniformApplicationProces(appprocess_data, 'getPermitUniformApplicationProces')

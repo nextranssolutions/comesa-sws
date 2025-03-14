@@ -7,7 +7,8 @@
             <ul class="nav nav-list">
                 <li class="link-bggreen">
                     <a (click)="onInitiatenewImportExpApplications()" href="javascript:void(0)"><span class=""> <i
-                                class="menu-icon fa fa-plus"></i> &nbsp; {{'initiate_personal_use_product_permit_application'
+                                class="menu-icon fa fa-plus"></i> &nbsp;
+                            {{'initiate_personal_use_product_permit_application'
                             |translate}}</span>
                     </a> <b class="arrow"></b>
                 </li>
@@ -60,11 +61,11 @@
         <dxo-export [enabled]="true" fileName="ImportExport" [allowExportSelectedData]="true"></dxo-export>
 
         <dxo-selection mode="single"></dxo-selection>
-        <dxi-column [width]=200 caption="{{'actions' | translate}}" name="command-editing" [allowFiltering]="false"
+        <dxi-column [width]=150 caption="{{'actions' | translate }}" name="command-editing" [allowFiltering]="false"
             [allowSorting]="false" cellTemplate="cellTemplateSingle">
             <div *dxTemplate="let d of 'cellTemplateSingle'">
                 <dx-button text="{{d.data.action_name}}" (click)="singleApplicationActionColClick(d.data)"
-                    type="success" icon="{{d.data.iconCls}}">
+                    type="default" icon="{{d.data.iconCls}}">
                 </dx-button>
             </div>
         </dxi-column>
@@ -89,7 +90,7 @@
         <dxi-column dataField="currency_name" caption="{{'currency_of_transaction' | translate}}"></dxi-column>
         <dxi-column dataField="importer_exporter_name" caption="{{'importer_exporter_name' | translate}}"></dxi-column>
         <dxi-column dataField="status_name" caption="{{'status_name' | translate}}"></dxi-column>
-        
+
         <dxo-grouping #expand [autoExpandAll]="true"></dxo-grouping>
     </dx-data-grid>
 

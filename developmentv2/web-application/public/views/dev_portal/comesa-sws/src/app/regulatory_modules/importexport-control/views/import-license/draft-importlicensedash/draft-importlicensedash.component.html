@@ -60,22 +60,22 @@
         <dxo-export [enabled]="true" fileName="ImportExport" [allowExportSelectedData]="true"></dxo-export>
 
         <dxo-selection mode="single"></dxo-selection>
-        <dxi-column [width]=200 caption="{{'actions' | translate}}" name="command-editing" [allowFiltering]="false"
+        <dxi-column [width]=150 caption="{{'actions' | translate }}" name="command-editing" [allowFiltering]="false"
             [allowSorting]="false" cellTemplate="cellTemplateSingle">
             <div *dxTemplate="let d of 'cellTemplateSingle'">
                 <dx-button text="{{d.data.action_name}}" (click)="singleApplicationActionColClick(d.data)"
-                    type="success" icon="{{d.data.iconCls}}">
+                    type="default" icon="{{d.data.iconCls}}">
                 </dx-button>
             </div>
         </dxi-column>
         <dxi-column caption="{{'more_actions' | translate}}" [width]=100 name="command-editing" [allowFiltering]="false"
-        [allowSorting]="false" cellTemplate="cellTemplate">
-        <div *dxTemplate="let d of 'cellTemplate'">
-            <dx-menu [items]="d.data.contextMenu" displayExpr="text"
-                (onItemClick)="applicationActionColClick($event,d)">
-            </dx-menu>
-        </div>
-    </dxi-column>
+            [allowSorting]="false" cellTemplate="cellTemplate">
+            <div *dxTemplate="let d of 'cellTemplate'">
+                <dx-menu [items]="d.data.contextMenu" displayExpr="text"
+                    (onItemClick)="applicationActionColClick($event,d)">
+                </dx-menu>
+            </div>
+        </dxi-column>
 
         <dxi-column dataField="reference_no" caption="{{'application_reference' | translate}}"></dxi-column>
         <dxi-column [width]=90 [groupIndex]="0" dataField="permit_type"
@@ -89,7 +89,7 @@
         <dxi-column dataField="currency_name" caption="{{'currency_of_transaction' | translate}}"></dxi-column>
         <dxi-column dataField="importer_exporter_name" caption="{{'importer_exporter_name' | translate}}"></dxi-column>
         <dxi-column dataField="status_name" caption="{{'status_name' | translate}}"></dxi-column>
-        
+
         <dxo-grouping #expand [autoExpandAll]="true"></dxo-grouping>
     </dx-data-grid>
 
