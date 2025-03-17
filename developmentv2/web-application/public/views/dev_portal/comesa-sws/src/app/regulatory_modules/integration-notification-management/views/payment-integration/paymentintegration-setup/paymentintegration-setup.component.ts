@@ -47,7 +47,7 @@ table_name: string = 'tra_payment_integration';
       icon: 'menu',
       items: [
         //  { text: "View", action: 'view_record', icon: 'fa fa-eye' },
-        { text: "Edit Permit Type", action: 'edit_record', icon: 'fa fa-edit' },
+        { text: "Edit Payment Integration", action: 'edit_record', icon: 'fa fa-edit' },
         { text: "Delete", action: 'delete_record', icon: 'fa fa-trash' },
         { text: "Enable/Disable", action: 'enable_record', icon: 'fa fa-check' }
       ]
@@ -115,24 +115,24 @@ table_name: string = 'tra_payment_integration';
 
   }
 
-  fetchPaymentIntegrationDetails() {
-
+fetchPaymentIntegrationDetails() {
+    this.spinnerShow('Loading...........');
     var data_submit = {
       'table_name': this.table_name
     }
-    this.admnistrationService.onLoadTransactionPaymentIntegration(data_submit)
+    this.configService.onLoadConfigurationData(data_submit)
       .subscribe(
         data => {
           this.data_record = data;
           if (this.data_record.success) {
+            // this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
             this.PaymentIntegrationDetails = this.data_record.data;
           }
-
+          this.spinnerHide();
         },
         error => {
-
+          this.spinnerHide();
         });
-
   }
 
   fetchPayRemittanceData() {
@@ -222,6 +222,7 @@ table_name: string = 'tra_payment_integration';
 
           if (this.response.success) {
             this.fetchPaymentIntegrationDetails();
+            this.PaymentIntegrationPopupVisible = false;
             this.toastr.success(this.response.message, 'Response');
             this.spinnerHide();
           } else {
@@ -272,6 +273,7 @@ iniateEnableDisableRecord() {
         this.response = response;
         if (this.response.success) {
           this.fetchPaymentIntegrationDetails();
+          
           this.enablePopupVisible = false;
           this.toastr.success(this.response.message, 'Response');
           this.deletePopupVisible = false;
@@ -290,6 +292,7 @@ iniateEnableDisableRecord() {
 
 funcEditDetails(data) {
   this.createNewDataFrm.patchValue(data.data);
+  this.PaymentIntegrationPopupVisible = true;
 }
 funcDeleteDetails(data) {
   this.createNewDataFrm.patchValue(data.data);

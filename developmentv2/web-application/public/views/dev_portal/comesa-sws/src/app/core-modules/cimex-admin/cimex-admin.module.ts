@@ -182,6 +182,7 @@ import { GeneralSystemFormsComponent } from './views/configurations/forms/genera
 import { RegulatoryprocessDocdefinationComponent } from './views/document-checklistsmng/dms/regulatoryprocess-docdefination/regulatoryprocess-docdefination.component';
 
 import { PermitTermsconditionsComponent } from './views/system-administration/system-guidelines/permit-termsconditions/permit-termsconditions.component';
+import { AppWorkflowstatusesComponent } from './views/workflow-management/workflows/app-workflowstatuses/app-workflowstatuses.component';
 
 @NgModule({
   declarations: [AppdashboardComponent,
@@ -232,6 +233,7 @@ import { PermitTermsconditionsComponent } from './views/system-administration/sy
     ApplicantWorkflowsetupComponent,
     ApplicantSystemprocessesComponent,
     PermitTermsconditionsComponent,
+    AppWorkflowstatusesComponent,
    
 
 
@@ -443,6 +445,7 @@ import { PermitTermsconditionsComponent } from './views/system-administration/sy
     SyserrorLogsComponent,
     AppFormsComponent,
     GeneralSystemFormsComponent,
+    AppWorkflowstatusesComponent,
    
    
     TransactionCurrencyComponent,

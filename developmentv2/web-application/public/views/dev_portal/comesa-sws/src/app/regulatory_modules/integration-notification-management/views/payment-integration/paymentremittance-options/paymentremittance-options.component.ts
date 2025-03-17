@@ -30,9 +30,8 @@ table_name: string = 'par_paymentremittance_options';
   loading = false;
 
   payRemittanceDetails: any;
-  restrictionProhibitionPopupVisible: boolean = false;
   createNewDataFrm: FormGroup;
-  payRemittancePopupVisible: boolean;
+  payRemittancePopupVisible: boolean = false;
   loadingVisible: boolean;
   spinnerMessage: string;
   regStatusOptions = [
@@ -46,7 +45,7 @@ table_name: string = 'par_paymentremittance_options';
       icon: 'menu',
       items: [
         //  { text: "View", action: 'view_record', icon: 'fa fa-eye' },
-        { text: "Edit Permit Type", action: 'edit_record', icon: 'fa fa-edit' },
+        { text: "Edit Payment Remittance Optionss", action: 'edit_record', icon: 'fa fa-edit' },
         { text: "Delete", action: 'delete_record', icon: 'fa fa-trash' },
         { text: "Enable/Disable", action: 'enable_record', icon: 'fa fa-check' }
       ]
@@ -86,7 +85,7 @@ table_name: string = 'par_paymentremittance_options';
 
   onAddNewRecord() {
     this.createNewDataFrm.reset();
-    this.restrictionProhibitionPopupVisible = true;
+    this.payRemittancePopupVisible = true;
   }
 
   onAdvanceProductRegistrySearch(e) {
@@ -108,8 +107,8 @@ table_name: string = 'par_paymentremittance_options';
 
   }
 
-  fetchpayRemittanceDetails() {
-
+fetchpayRemittanceDetails() {
+    this.spinnerShow('Loading...........');
     var data_submit = {
       'table_name': this.table_name
     }
@@ -118,14 +117,14 @@ table_name: string = 'par_paymentremittance_options';
         data => {
           this.data_record = data;
           if (this.data_record.success) {
+            // this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
             this.payRemittanceDetails = this.data_record.data;
           }
-
+          this.spinnerHide();
         },
         error => {
-
+          this.spinnerHide();
         });
-
   }
 
   
@@ -180,6 +179,7 @@ table_name: string = 'par_paymentremittance_options';
 
           if (this.response.success) {
             this.fetchpayRemittanceDetails();
+            this.payRemittancePopupVisible = false;
             this.toastr.success(this.response.message, 'Response');
             this.spinnerHide();
           } else {
@@ -230,6 +230,7 @@ iniateEnableDisableRecord() {
         this.response = response;
         if (this.response.success) {
           this.fetchpayRemittanceDetails();
+          
           this.enablePopupVisible = false;
           this.toastr.success(this.response.message, 'Response');
           this.deletePopupVisible = false;
@@ -248,6 +249,7 @@ iniateEnableDisableRecord() {
 
 funcEditDetails(data) {
   this.createNewDataFrm.patchValue(data.data);
+  this.payRemittancePopupVisible = true;
 }
 funcDeleteDetails(data) {
   this.createNewDataFrm.patchValue(data.data);

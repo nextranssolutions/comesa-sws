@@ -71,7 +71,7 @@
             <dx-select-box [dataSource]="permitTypeData" formControlName="product_type_id" valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
           </div>
       
-          <div *ngIf="table_name == 'par_permit_typecategories'" class="col-lg-6">
+          <div class="col-lg-6">
             <label>{{ 'code' | translate }}</label>
             <dx-text-box formControlName="code" [showClearButton]="true"></dx-text-box>
           </div>

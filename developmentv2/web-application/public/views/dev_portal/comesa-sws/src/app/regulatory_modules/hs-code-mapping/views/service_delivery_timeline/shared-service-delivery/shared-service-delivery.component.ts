@@ -148,43 +148,7 @@ export class SharedServiceDeliveryComponent {
           this.spinnerHide();
         });
   }
-  onFuncSaveNewConfigData() {
-
-    const formData = new FormData();
-    const invalid = [];
-    const controls = this.createNewDataFrm.controls;
-    for (const name in controls) {
-      if (controls[name].invalid) {
-        this.toastr.error('Fill In All Mandatory fields with (*), missing value on ' + name.replace('_id', ''), 'Alert');
-        return;
-      }
-    }
-    if (this.createNewDataFrm.invalid) {
-      return;
-    }
-    this.spinnerShow('saving ' + this.parameter_name);
-    this.configService.onSaveConfigurationDetailsDetails(this.table_name, this.createNewDataFrm.value, 'onsaveConfigData')
-      .subscribe(
-        response => {
-          this.response = response;
-          //the details 
-          if (this.response.success) {
-            this.fetchNewConfigurations();
-            this.onAddNewConfiVisible = false;
-            this.toastr.success(this.response.message, 'Response');
-
-          } else {
-            this.toastr.error(this.response.message, 'Alert');
-          }
-          this.spinnerHide();
-        },
-        error => {
-          this.toastr.error('Error Occurred', 'Alert');
-          this.spinnerHide();
-        });
-  }
-
-
+ 
   fetchNewConfigData() {
 
     var data_submit = {
@@ -320,6 +284,44 @@ export class SharedServiceDeliveryComponent {
         });
 
   }
+
+
+  onFuncSaveNewConfigData() {
+
+    const formData = new FormData();
+    const invalid = [];
+    const controls = this.createNewDataFrm.controls;
+    for (const name in controls) {
+      if (controls[name].invalid) {
+        this.toastr.error('Fill In All Mandatory fields with (*), missing value on ' + name.replace('_id', ''), 'Alert');
+        return;
+      }
+    }
+    if (this.createNewDataFrm.invalid) {
+      return;
+    }
+    this.spinnerShow('saving ' + this.parameter_name);
+    this.configService.onSaveConfigurationDetailsDetails(this.table_name, this.createNewDataFrm.value, 'onsaveConfigData')
+      .subscribe(
+        response => {
+          this.response = response;
+          //the details 
+          if (this.response.success) {
+            this.fetchNewConfigurations();
+            this.onAddNewConfiVisible = false;
+            this.toastr.success(this.response.message, 'Response');
+
+          } else {
+            this.toastr.error(this.response.message, 'Alert');
+          }
+          this.spinnerHide();
+        },
+        error => {
+          this.toastr.error('Error Occurred', 'Alert');
+          this.spinnerHide();
+        });
+  }
+
 
 
   funcpopWidth(percentage_width) {

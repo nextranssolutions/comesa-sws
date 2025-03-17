@@ -752,7 +752,7 @@ class UtilityHelper
     public static function getInitialApplicantWorkflowStatusId($workflowprocess_id) {
         if (validateIsNumeric($workflowprocess_id)) {
             $record = DB::table('wb_workflow_transitions as t1')
-                ->join('wb_workflow_stages as t2', 't1.prevworkflow_stage_id', 't2.id')
+                ->join('wb_workflowprocesses_stages as t2', 't1.prevworkflow_stage_id', 't2.id')
                 ->leftJoin('wb_workflow_definition as t3', 't1.workflow_id', '=', 't3.id')
                 ->select('t1.*', 't1.workflow_status_id as appworkflow_status_id')
                 ->where(['t3.workflowprocess_id' => $workflowprocess_id, 't2.stage_status_id' => 1])
@@ -800,7 +800,7 @@ class UtilityHelper
     {
         $res = '';
         $rec = DB::table('wb_workflow_transitions as t1')
-            ->leftJoin('wb_workflow_stages as t2', 't1.prevworkflow_stage_id', '=', 't2.id')
+            ->leftJoin('wb_workflowprocesses_stages as t2', 't1.prevworkflow_stage_id', '=', 't2.id')
             ->leftJoin('wb_workflow_definition as t3', 't1.workflow_id', '=', 't3.id')
             ->select('t3.workflowprocess_id', 't1.prevworkflow_stage_id', 'nextworkflow_stage_id', 'workflow_status_id')
             ->where(array('t3.workflowprocess_id' => $workflowprocess_id, 't2.stage_status_id' => 1))
@@ -822,7 +822,6 @@ class UtilityHelper
             );
             $submission_data['created_on'] = Carbon::now();
             $res = insertRecord('wb_applicationprocess_submissions', $submission_data);
-
         }
 
         return $res;

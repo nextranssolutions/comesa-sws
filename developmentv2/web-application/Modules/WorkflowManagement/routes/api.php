@@ -26,6 +26,9 @@ Route::middleware(['XssSanitizer','clear_cache_config','firewall.all'])->prefix(
     Route::get('getUserNavigationItems', [WorkflowManagementController::class, 'getUserNavigationItems']);
     Route::get('getAllNavigationItems', [WorkflowManagementController::class, 'getAllNavigationItems']);
     Route::get('getApplicantNavigationItems', [WorkflowManagementController::class, 'getApplicantNavigationItems']);
+    Route::get('onLoadworkflowProcessStageData', [WorkflowManagementController::class, 'onLoadworkflowProcessStageData']);
+    Route::get('onLoadWorkflowProcessStatusActions', [WorkflowManagementController::class, 'onLoadWorkflowProcessStatusActions']);
+    
     
     Route::get('getWorkflowConfigs', [WorkflowManagementController::class, 'getWorkflowConfigs']);
     Route::get('getAppNavigationMenus', [WorkflowManagementController::class, 'getAppNavigationMenus']);
