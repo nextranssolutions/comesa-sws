@@ -749,8 +749,8 @@
             </div>
             <div class="col-lg-4">
                 <label for="unitName">{{ 'stage' | translate }}</label>
-                <dx-select-box [dataSource]="workflowStageData" formControlName="stage_id" [showClearButton]="true"
-                    valueExpr="id" [searchEnabled]="true" displayExpr="name"> </dx-select-box>
+                <dx-select-box [dataSource]="workflowStageData" formControlName="workflow_stage_id" [showClearButton]="true"
+                    valueExpr="id" [searchEnabled]="true" displayExpr="name" [readOnly]="true"> </dx-select-box>
             </div>
             <div class="col-lg-4">
                 <label for="unitName">{{ 'order_no' | translate }}</label>

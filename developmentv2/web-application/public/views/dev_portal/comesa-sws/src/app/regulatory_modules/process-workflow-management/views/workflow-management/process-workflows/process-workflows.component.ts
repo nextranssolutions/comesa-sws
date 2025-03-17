@@ -309,7 +309,7 @@ ngOnInit() {
     is_checklist_tied: new FormControl('', Validators.compose([])),
     is_paymentrequest_submission: new FormControl('', Validators.compose([])),
     workflow_stage_id:new FormControl('', Validators.compose([])),
-    workflow_id:new FormControl('', Validators.compose([])),
+    // workflow_id:new FormControl('', Validators.compose([])),
   });
 
   this.workflowStageProcessActionsFrm = new FormGroup({
@@ -320,20 +320,16 @@ ngOnInit() {
     order_no: new FormControl('', Validators.compose([])),
     is_enabled: new FormControl('', Validators.compose([])),
     workflow_stage_id:new FormControl('', Validators.compose([])),
-    workflow_id:new FormControl('', Validators.compose([])),
+    // workflow_id:new FormControl('', Validators.compose([])),
     statuses_action_id: new FormControl('', Validators.compose([])),
     
   });
 
  
   this.fetchWorkflowItemsDetails();
-  // this.onloadworkflowData();
   this.onLoadregulatoryFunctionsData();
-  // this.onLoadregulatorySubFunctionsData(this.regulatory_function_id);
   this.onLoadproductTypeData();
   this.onLoadworkflowStageStatusesData();
-  // this.fetchWorkflowStagesDetails(this.workflow_id);
-  // this.fetchWorkflowTransitionsDetails(this.workflow_id);
   this.onLoadworkflowStatusData();
   this.onloadworkflowAllStageData();
   this.onLoadWorkflowSubmissionTransitonActionsData();
@@ -342,13 +338,13 @@ ngOnInit() {
   this.onLoadStageStatusData();
   this.onLoadProcessTypesData();
   this.onLoadProcessCategoryData();
-  this.onLoadStageData();
   this.onLoadApplicationStatusData();
   this.onLoadappWorkflowStatusData();
   this.onLoadOrganisationData();
   this.onLoadProcessData();
   this.onLoadStatusActionsData();
-  this.onLoadWorkflowStagesData() 
+  this.onLoadWorkflowStagesData();
+  this.onLoadStageData();
 
 
 }
@@ -494,11 +490,11 @@ fetchWorkflowStagesDetails(workflow_id) {
 
 }
 
-fetchWorkflowStageProcessActions(workflow_id) {
+fetchWorkflowStageProcessActions(workflow_stage_id) {
   this.spinnerShow('Loading Workflow Stages Details');
   var data_submit = {
     'table_name': 'wf_workflowstageprocess_actions',
-    workflow_id: workflow_id
+    workflow_stage_id: workflow_stage_id
   }
   this.workflowService.getWorkflowConfigs(data_submit)
   .subscribe(
@@ -530,11 +526,11 @@ fetchWorkflowStagesInfo(workflow_id) {
     this.spinnerHide();
 }
 
-fetchWorkflowStageActionsDetails(workflow_id) {
+fetchWorkflowStageActionsDetails(workflow_stage_id) {
   this.spinnerShow('Loading Workflow Stages Details');
   var data_submit = {
     'table_name': 'wf_workflow_actions',
-    workflow_id: workflow_id
+    workflow_stage_id: workflow_stage_id
   }
   this.workflowService.getWorkflowConfigs(data_submit)
   .subscribe(
@@ -833,7 +829,7 @@ onLoadworkflowInterfaceData() {
 
 onLoadStageCategoryData() {
   var data_submit = {
-    'table_name': 'wf_stage_categories',
+    'table_name': 'par_appworkflowstage_categories',
     // process_id: process_id
   }
   this.workflowService.getWorkflowConfigs(data_submit)
@@ -910,6 +906,7 @@ onLoadStageData() {
   var data_submit = {
     'table_name': 'wf_workflow_stages',
     // process_id: process_id
+   
   }
   this.workflowService.getWorkflowConfigs(data_submit)
     .subscribe(
@@ -1074,9 +1071,11 @@ onFuncSaveWorkflowStageData() {
           this.workflowStagesVisible = false;
 
           this.workflow_stage_id = this.response.record_id;
-          this.workflowStagesFrm.get('id')?.setValue(this.workflow_id);
-          this.fetchWorkflowStageActionsDetails(this.workflow_id);
-          this.fetchWorkflowStageProcessActions(this.workflow_id);
+          console.log(this.workflow_stage_id);
+          this.workflowStagesFrm.get('id')?.setValue(this.workflow_stage_id);
+          this.fetchWorkflowStageActionsDetails(this.workflow_stage_id);
+          this.fetchWorkflowStageProcessActions(this.workflow_stage_id);
+          
           this.toastr.success(this.response.message, 'Response');
           this.spinnerHide();
         } else {
@@ -1159,7 +1158,7 @@ onFuncSaveWorlflowStageActionData() {
   this.action_url = 'onsaveWorkflowConfigData';
 
   this.spinner.show();
-  this.workflowStageActionsItemsFrm.get('workflow_id')?.setValue(this.workflow_id);
+  this.workflowStageActionsItemsFrm.get('workflow_stage_id')?.setValue(this.workflow_stage_id);
   this.workflowService.onSaveWorkflowDetailsDetails('wf_workflow_actions', this.workflowStageActionsItemsFrm.value, this.action_url)
     .subscribe(
       response => {
@@ -1167,7 +1166,7 @@ onFuncSaveWorlflowStageActionData() {
         //the details 
         if (this.response.success) {
 
-          this.fetchWorkflowStageActionsDetails(this.workflow_id);
+          this.fetchWorkflowStageActionsDetails(this.workflow_stage_id);
           this.workflowStageDetailsVisible = false;
           this.toastr.success(this.response.message, 'Response');
           this.spinnerHide();
@@ -1203,7 +1202,7 @@ onFuncSaveWorkflowStageProcessActionsData() {
   this.action_url = 'onsaveWorkflowConfigData';
 
   this.spinner.show();
-  this.workflowStageProcessActionsFrm.get('workflow_id')?.setValue(this.workflow_id);
+  this.workflowStageProcessActionsFrm.get('workflow_stage_id')?.setValue(this.workflow_stage_id);
   this.workflowService.onSaveWorkflowDetailsDetails('wf_workflowstageprocess_actions', this.workflowStageProcessActionsFrm.value, this.action_url)
     .subscribe(
       response => {
@@ -1211,7 +1210,7 @@ onFuncSaveWorkflowStageProcessActionsData() {
         //the details 
         if (this.response.success) {
 
-          this.fetchWorkflowStageProcessActions(this.workflow_id);
+          this.fetchWorkflowStageProcessActions(this.workflow_stage_id);
           this.workflowStageProcessActionsVisible = false;
           this.toastr.success(this.response.message, 'Response');
           this.spinnerHide();
@@ -1436,9 +1435,9 @@ this.workflowStagesFrm.patchValue(data.data);
 
 // this.workflowStagesFrm.get('table_name')?.setValue('wf_workflow_stages');
 // this.workflowStagesFrm.get('workflow_id')?.setValue(this.workflow_id);
-
-this.fetchWorkflowStageActionsDetails(data.data.workflow_id);
-this.fetchWorkflowStageProcessActions(data.data.workflow_id);
+this.workflow_stage_id = data.data.id;
+this.fetchWorkflowStageActionsDetails(this.workflow_stage_id);
+this.fetchWorkflowStageProcessActions(this.workflow_stage_id);
 }
 
 funcStageDetailsOnClick(e, data) {

@@ -962,6 +962,23 @@ class UserManagementController extends Controller
                    
                         initiateInitialProcessSubmission($table_name, $application_code, $process_id, $user_information_id);
 
+                        // $appuser_id = $user_resp['record_id'];
+                        // $group_id = 2;
+                        // $usergroup_data = [
+                        //     'group_id' => $group_id,
+                        //     'user_id' => $user_information_id,
+                        // ];
+                        
+                        // $usergroup_resp = insertRecord('tra_user_group', $usergroup_data);
+                        // if (!$usergroup_resp['success']) {
+                        //     DB::rollBack();
+                        //     return response()->json([
+                        //         'success' => false,
+                        //         'message' => 'Error occurred: ' . $usergroup_resp['message'],
+                        //     ], 200);
+                        // }
+
+
                         $template_id = 1;
                         $subject = 'Account Creation Notification';
                         // $account_type_name = DB::table('sys_account_types')
@@ -1106,7 +1123,7 @@ class UserManagementController extends Controller
             $organisation_id = $user_information->organisation_id;
             
             $sql = DB::table($table_name . ' as t1')
-                ->leftJoin('wf_workflow_statuses as t2', 't2.id', 't1.appworkflow_status_id')
+                ->leftJoin('wf_appworkflow_statuses as t2', 't2.id', 't1.appworkflow_status_id')
                 ->leftJoin('sys_account_types as t3', 't3.id', 't1.account_type_id')
                 ->leftJoin('usr_usersaccount_roles as t4', 't4.id', 't1.account_roles_id')
                 ->leftJoin('usr_identification_type as t5', 't5.id', 't1.identification_type_id')
@@ -1746,7 +1763,7 @@ class UserManagementController extends Controller
 
 
             $records = DB::table('usr_users_information as t1')
-                ->join('wf_workflow_statuses as t2', 't1.appworkflow_status_id', '=', 't2.id')
+                ->join('wf_appworkflow_statuses as t2', 't1.appworkflow_status_id', '=', 't2.id')
                 ->select(DB::raw("t1.appworkflow_status_id, t2.name as user_statusname, count(t1.id) as statuses_counter"));
             if (validateIsNumeric($account_type_id)) {
                 $account_types = getTableData('sys_account_types', array('id' => $account_type_id));

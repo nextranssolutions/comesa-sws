@@ -1429,7 +1429,7 @@ class ImportExportController extends Controller
                     $join->on('t7.is_default_action', '=', DB::raw(1)); 
                 })
                 ->leftJoin('wf_statuses_actions as t8', 't7.statuses_action_id', 't8.id')
-                ->leftJoin('wf_workflow_statuses as t9', 't1.appworkflow_status_id', 't9.id')
+                ->leftJoin('wf_appworkflow_statuses as t9', 't1.appworkflow_status_id', 't9.id')
                 ->leftJoin('par_permit_typecategories as t11', 't1.permit_typecategory_id', 't11.id')
                 ->leftJoin('par_currencies as t12', 't1.currency_oftransaction_id', 't12.id')
                 ->leftJoin('par_mode_oftransport as t13', 't1.mode_of_transport_id', 't13.id')
