@@ -87,7 +87,7 @@ export class SharedDocumentchecklistingComponent {
     ) {
       this.createNewDataFrm = new FormGroup({
         id: new FormControl('', Validators.compose([])),
-        name: new FormControl('', Validators.compose([Validators.required])),
+        name: new FormControl('', Validators.compose([])),
         description: new FormControl('', Validators.compose([])),
         code: new FormControl('', Validators.compose([])),
         checklist_type_id: new FormControl(false, Validators.compose([])),
@@ -103,7 +103,7 @@ export class SharedDocumentchecklistingComponent {
         email_template: new FormControl('', Validators.compose([])),
         marks_allocated: new FormControl('', Validators.compose([])),
         is_enabled: new FormControl('', Validators.compose([])),
-        organisation_id: new FormControl('', Validators.compose([Validators.required])),
+        organisation_id: new FormControl('', Validators.compose([])),
   
       });
   

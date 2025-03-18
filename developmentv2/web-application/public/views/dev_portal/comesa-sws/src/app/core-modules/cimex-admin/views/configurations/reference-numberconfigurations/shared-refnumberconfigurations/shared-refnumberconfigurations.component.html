@@ -26,7 +26,7 @@
   </dxi-column>
 
   <dxi-column  dataField="name" caption="{{ 'name' | translate }}"></dxi-column>
-  <dxi-column  dataField="description" caption="{{ 'description' | translate }}"></dxi-column>
+  
 
   <dxi-column *ngIf="table_name == 'par_refnumbers_formats'" dataField="reference_type_id"
       caption="{{ 'reference_type' | translate }}">
@@ -68,6 +68,9 @@
 
   <dxi-column *ngIf="table_name == 'par_refnumbers_formats'" dataField="ref_format" caption="{{ 'reference_format' | translate }}">
   </dxi-column>
+
+  <dxi-column  dataField="description" caption="{{ 'description' | translate }}"></dxi-column>
+  <dxi-column  dataField="code" caption="{{ 'code' | translate }}"></dxi-column>
 
   <dxi-column dataField="is_enabled" caption="{{ 'is_enabled' | translate }}" [dataType]="'boolean'" [width]="100">
       <dxo-editing [allowUpdating]="true" [allowDeleting]="true" [allowAdding]="true"></dxo-editing>

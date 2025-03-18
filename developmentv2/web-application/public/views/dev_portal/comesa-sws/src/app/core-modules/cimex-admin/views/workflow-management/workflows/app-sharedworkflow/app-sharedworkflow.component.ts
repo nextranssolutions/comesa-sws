@@ -12,6 +12,7 @@ import { WokflowManagementService } from 'src/app/core-services/workflow-managem
 import { TranslateService } from '@ngx-translate/core';
 import { ReportsService } from 'src/app/core-services/reports/reports.service';
 import { DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
+import { ConfigurationsService } from 'src/app/core-services/configurations/configurations.service';
 
 @Component({
   selector: 'app-app-sharedworkflow',
@@ -53,12 +54,15 @@ export class AppSharedworkflowComponent {
   createdResponsePopupVisible = false;
   editedResponsePopupVisible = false;
   deletedResponsePopupVisible = false;
+  enabledisable_tracer: string;
+  enabledisable_tracerdescription: string;
   hideAnimation: any;
   showAnimation: any;
   record_id: number;
   addPopupVisible = false;
   spinnerMessage: string;
   deletePopupVisible = false;
+  enablePopupVisible = false;
   data_record: any;
   config_record: string;
   Countries: any;
@@ -95,7 +99,7 @@ export class AppSharedworkflowComponent {
     public translate: TranslateService,
     public workflowService: WokflowManagementService,
     public utilityService: UtilityService, 
-    
+    public configService: ConfigurationsService,
     public reportingAnalytics: ReportsService,
   ) {
 
@@ -625,6 +629,31 @@ onRegulatoryFunctionChange($event) {
         },
         error => {
           this.toastr.error('Error Occurred', 'Alert');
+          this.spinnerHide();
+        });
+  }
+
+  iniateEnableDisableRecord() {
+
+    this.spinnerShow('Saving_details');
+    this.configService.onEnableConfigurationsDetails(this.workflowItemsFrm.value, this.table_name, this.parameter_name)
+      .subscribe(
+        response => {
+          this.spinner.hide();
+          this.response = response;
+          if (this.response.success) {
+            this.fetchWorkflowItemsDetails();
+            this.enablePopupVisible = false;
+            this.toastr.success(this.response.message, 'Response');
+            this.deletePopupVisible = false;
+          }
+          else {
+            this.toastr.success(this.response.message, 'Response');
+          }
+          this.spinnerHide();
+        },
+        error => {
+          this.loading = false;
           this.spinnerHide();
         });
   }

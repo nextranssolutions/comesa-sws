@@ -41,7 +41,10 @@ export class RegulatoryprocessDocdefinationComponent {
   loadingVisible: boolean;
   spinnerMessage: string;
   response: any;
-  regStatusOptions: any;
+  regStatusOptions = [
+    { value: true, text: 'Yes' },
+    { value: false, text: 'No' },
+  ];
 
   loading = false;
   dmsSitesData: any;
@@ -89,7 +92,6 @@ export class RegulatoryprocessDocdefinationComponent {
 
   ngOnInit() {
     this.fetchregulatoryProcessDocdefinationData();
-    this.onLoadregStatusOptions();
     this.onloadregulatoryFunctionIdData();
 
   }
@@ -209,26 +211,6 @@ export class RegulatoryprocessDocdefinationComponent {
           ;
           if (this.data_record.success) {
             this.regulatoryFunctionIdData = this.data_record.data;
-          }
-
-        },
-        error => {
-
-        });
-
-  }
-  onLoadregStatusOptions() {
-
-    var data_submit = {
-      'table_name': 'par_confirmations'
-    }
-    this.configService.onLoadConfigurationData(data_submit)
-      .subscribe(
-        data => {
-          this.data_record = data;
-          ;
-          if (this.data_record.success) {
-            this.regStatusOptions = this.data_record.data;
           }
 
         },
