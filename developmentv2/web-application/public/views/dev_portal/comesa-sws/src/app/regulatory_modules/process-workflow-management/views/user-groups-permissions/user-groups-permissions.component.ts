@@ -80,7 +80,7 @@ resetcolumns = 'dashboard_type_id,resetcolumns,routerLink,has_partnerstate_defin
   userTitleData: any;
   countryData: any;
   orgnisationDepData: any;
- 
+  group_id: number;
 
  
 
@@ -158,7 +158,9 @@ resetcolumns = 'dashboard_type_id,resetcolumns,routerLink,has_partnerstate_defin
 
     this.addUserDataFrm = new FormGroup({
       id: new FormControl('', Validators.compose([])),
+      group_id: new FormControl('', Validators.compose([])),
       user_id: new FormControl('', Validators.compose([Validators.required])),
+     
 
     });
    // this.resetcolumns = 'resetcolumns,account_type_id,routerLink,has_partnerstate_defination';
@@ -213,37 +215,43 @@ checkScreenSize(): void {
 }
 onSearchSpecificUser() {
   
-      this.UserPopupVisible = true;
-      var me = this;
+  this.UserPopupVisible = true;
+  
+  };
+
+// onSearchSpecificUser() {
+  
+//       this.UserPopupVisible = true;
+//       var me = this;
   
   
-      this.specificUserData.store = new CustomStore({
-        load: function (loadOptions: any) {
-          // console.log(loadOptions)
-          var params = '?';
-          params += 'skip=' + loadOptions.skip;
-          params += '&take=' + loadOptions.take;//searchValue
-          var headers = new HttpHeaders({
-            "Accept": "application/json",
-            "Authorization": "Bearer " + me.authService.getAccessToken(),
-          });
+//       this.specificUserData.store = new CustomStore({
+//         load: function (loadOptions: any) {
+//           // console.log(loadOptions)
+//           var params = '?';
+//           params += 'skip=' + loadOptions.skip;
+//           params += '&take=' + loadOptions.take;//searchValue
+//           var headers = new HttpHeaders({
+//             "Accept": "application/json",
+//             "Authorization": "Bearer " + me.authService.getAccessToken(),
+//           });
   
-          me.configData = {
-            headers: headers,
-            params: { skip: loadOptions.skip, take: loadOptions.take, searchValue: loadOptions.filter }
-          };
-          return me.httpClient.get(AppSettings.base_url + '/api/sysadministration/onGetSpecificHscode', me.configData)
-            .toPromise()
-            .then((data: any) => {
-              return {
-                data: data.data,
-                totalCount: data.totalCount
-              }
-            })
-            .catch(error => { throw 'Data Loading Error' });
-        }
-      });
-    }
+//           me.configData = {
+//             headers: headers,
+//             params: { skip: loadOptions.skip, take: loadOptions.take, searchValue: loadOptions.filter }
+//           };
+//           return me.httpClient.get(AppSettings.base_url + '/api/sysadministration/onGetSpecificHscode', me.configData)
+//             .toPromise()
+//             .then((data: any) => {
+//               return {
+//                 data: data.data,
+//                 totalCount: data.totalCount
+//               }
+//             })
+//             .catch(error => { throw 'Data Loading Error' });
+//         }
+//       });
+// }
 
     fetchSpecificUserData() {
       this.spinnerShow('Loading User Permissions Details');
@@ -264,14 +272,14 @@ onSearchSpecificUser() {
     }
 
     onSelectSpecificUser(selectedUser: any) {
-      console.log("Selected User Data: ", selectedUser); 
+ 
       
-      if (selectedUser && selectedUser.specific_hs_code) {
-        this.selectedUser = selectedUser.specific_hs_code;
+      if (selectedUser && selectedUser.id) {
+        this.selectedUser = selectedUser.id;
     
         
         this.addUserDataFrm.patchValue({
-          hs_code_specific_int: this.selectedUser
+          user_id: this.selectedUser
         });
     
           this.UserPopupVisible = false;
@@ -444,6 +452,8 @@ onSavingUserWorkflowPermissions(e) {
   }
 
 }
+
+
 
 onNextNavigationItems(nextStep){
   this.selectedTabIndex = this.tabNames.indexOf(nextStep);
@@ -677,7 +687,7 @@ onFuncSaveRecordData() {
 }
 
 onFuncUserData() {
-
+ 
   const formData = new FormData();
   const invalid = [];
   const controls = this.addUserDataFrm.controls;
@@ -693,21 +703,23 @@ onFuncUserData() {
   this.addUserDataFrm.get('resetcolumns')?.setValue(this.resetcolumns);
 
   this.spinnerShow('Saving '+this.parameter_name);
-  
-  this.admnistrationService.onSaveSystemAdministrationDetails('tra_user_group', this.addUserDataFrm.value, 'onsaveSysAdminData')
+  this.group_id = this.user_group_id;
+  // console.log(this.group_id);
+  this.addUserDataFrm.get('group_id')?.setValue(this.user_group_id);
+  this.admnistrationService.onSaveSystemAdministrationDetails('tra_user_group', this.addUserDataFrm.value, 'onsaveSysAdminUserData')
     .subscribe(
       response => {
         this.response = response;
         //the details 
         if (this.response.success) {
 
-            this.fetchUserData(this.user_group_id);
+            this.fetchUserData(this.group_id);
             this.isUserVisible = false;
-            this.user_group_id = this.response.record_id;
+            // this.user_group_id = this.response.record_id;
             
             // this.createNewDataFrm.get('id')?.setValue(this.user_group_id);
             // this.fetchAppNavigationMenus(this.user_group_id, this.account_type_id);
-            this.selectedTabIndex = 1;
+           
             this.toastr.success(this.response.message, 'Response');
             this.spinnerHide();
 
@@ -814,17 +826,39 @@ fetchWorkflowPermissionData(user_group_id) {
     }
   );
 }
-fetchUserData(user_group_id) {
-  this.spinnerShow('Loading User Permissions Details');
-  this.admnistrationService.getAppUserGroupUsers(user_group_id)
-  .subscribe(
-    data => {
-      this.data_record = data;
-      if (this.data_record.success) {
-        this.usersDetails = this.data_record.data;
-      }
-    });
-    this.spinnerHide();
+// fetchUserData(user_group_id) {
+//   this.spinnerShow('Loading User Permissions Details');
+//   this.admnistrationService.getAppUserGroupUsers(user_group_id)
+//   .subscribe(
+//     data => {
+//       this.data_record = data;
+//       if (this.data_record.success) {
+//         this.usersDetails = this.data_record.data;
+//       }
+//     });
+//     this.spinnerHide();
+
+// }
+
+fetchUserData(group_id) {
+  var data_submit = {
+    'table_name': 'tra_user_group',
+    group_id: group_id
+  }
+  this.admnistrationService.onLoadSystemAdministrationData(data_submit)
+    .subscribe(
+      data => {
+        this.data_record = data;
+
+        if (this.data_record.success) {
+          this.usersData = this.data_record.data;
+        }
+
+      },
+      error => {
+
+      });
+
 
 }
 

@@ -19,6 +19,9 @@ Route::middleware(['XssSanitizer','clear_cache_config','firewall.all'])->prefix(
     Route::get('getAppPermitChecklist', [SysAdministrationController::class, 'getAppPermitChecklist']);
     Route::get('getAppPermitRequiredDocuments', [SysAdministrationController::class, 'getAppPermitRequiredDocuments']);
     Route::post('onsaveSysAdminData', [SysAdministrationController::class, 'onSaveSystemAdministrationDetails']);
+    Route::post('onsaveSysAdminUserData', [SysAdministrationController::class, 'onSaveSystemAdministrationUserDetails']);
+
+    
 	Route::post('onDeleteSystemAdministrationDetails', [SysAdministrationController::class, 'onDeleteSystemAdministrationDetails']);
     Route::post('onDeleteConfigData', [SysAdministrationController::class, 'onDeleteConfigData']);
     

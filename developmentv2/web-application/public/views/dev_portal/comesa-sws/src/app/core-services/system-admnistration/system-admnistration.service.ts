@@ -231,6 +231,8 @@ export class ServiceAdmnistrationService {
       }));
   }
 
+  
+
 
 
   onDeleteSystemAdministrationDetails(dataForm, table_name, title) {
