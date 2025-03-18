@@ -22,10 +22,10 @@ export class SharedconfigurationsComponent {
   @Input() table_name: string;
   @Input() parameter_name: string;
   @Input() resetcolumns: string;
-  countriesinfoData: any[] = [];
+  locationinfoData: any[] = [];
   institutionData: any[] = [];
   regionsData: any[] = [];
-  institutionTypesData: any[] = [];
+  regionData: any[] = [];
   institutionDepartmentData: any[] = [];
   regulatoryFunctionData: any;
   regulatorySubFunctionData: any;
@@ -52,6 +52,7 @@ export class SharedconfigurationsComponent {
   data_record: any;
   config_record: string;
   Countries: any;
+  organisationDetails: any;
   actionsMenuItems = [
     {
       text: "Action",
@@ -98,12 +99,17 @@ export class SharedconfigurationsComponent {
       title: new FormControl('', Validators.compose([])),
       description: new FormControl('', Validators.compose([])),
       code: new FormControl('', Validators.compose([])),
+      physical_address: new FormControl('', Validators.compose([])),
+      email_address: new FormControl('', Validators.compose([])),
+      ministry_name: new FormControl('', Validators.compose([])),
+      telephone_number: new FormControl('', Validators.compose([])),
       is_member_state: new FormControl('', Validators.compose([])),
       iso_acyronym: new FormControl('', Validators.compose([])),
       is_tracer_item: new FormControl(false, Validators.compose([])),
       country_id: new FormControl(false, Validators.compose([])),
       routerLink: new FormControl(false, Validators.compose([])),
-      institution_id: new FormControl(false, Validators.compose([])),
+      region_id: new FormControl(false, Validators.compose([])),
+      organisation_id: new FormControl(false, Validators.compose([])),
       regulatory_function_id: new FormControl(false, Validators.compose([])),
       institution_type_id: new FormControl(false, Validators.compose([])),
       resetcolumns: new FormControl('', Validators.compose([])),
@@ -129,7 +135,7 @@ export class SharedconfigurationsComponent {
     this.createNewDataFrm.get('resetcolumns')?.setValue(this.resetcolumns);
     this.fetchConfigurationItemsDetails();
     this.fetchConfigurationCountriesDetails();
-    this.fetchInstitutionTypesDetails();
+    this.fetchRegionData();
     this.fetchInstitutionData();
     this.fetchRegionsData();
     this.onLoadregulatoryFunctionData();
@@ -141,6 +147,7 @@ export class SharedconfigurationsComponent {
     this.fetchBankDetails();
     this.fetchCurrencyDetails();
     this.fetchProductTypesDetails();
+    this.fetchorganisationDetails();
     this.scrollToTop();
   }
  
@@ -182,7 +189,7 @@ export class SharedconfigurationsComponent {
 
   fetchInstitutionData() {
     var data_submit = {
-      'table_name': 'par_institutions',
+      'table_name': 'tra_organisation_information',
       'is_enabled': 1,
     }
     this.configService.onLoadConfigurationData(data_submit)
@@ -197,10 +204,10 @@ export class SharedconfigurationsComponent {
       )
   }
 
-  fetchInstitutionTypesDetails() {
+  fetchRegionData() {
 
     var data_submit = {
-      'table_name': 'par_institutions_types',
+      'table_name': 'par_regions',
       'is_enabled': true,
     }
     this.configService.onLoadConfigurationData(data_submit)
@@ -209,7 +216,27 @@ export class SharedconfigurationsComponent {
           this.data_record = data;
           if (this.data_record.success) {
             // this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
-            this.institutionTypesData = this.data_record.data;
+            this.regionData = this.data_record.data;
+          }
+        },
+        error => {
+
+        });
+  }
+
+  fetchorganisationDetails() {
+
+    var data_submit = {
+      'table_name': 'tra_organisation_information',
+      'is_enabled': true,
+    }
+    this.configService.onLoadConfigurationData(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            // this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
+            this.organisationDetails = this.data_record.data;
           }
         },
         error => {
@@ -451,7 +478,7 @@ export class SharedconfigurationsComponent {
           this.data_record = data;
           if (this.data_record.success) {
             // this.decryptedPayload=this.encryptionService.OnDecryptData(this.data_record.data);
-            this.countriesinfoData = this.data_record.data;
+            this.locationinfoData = this.data_record.data;
           }
           this.spinnerHide();
         },
@@ -459,6 +486,8 @@ export class SharedconfigurationsComponent {
           this.spinnerHide();
         });
   }
+
+
   fetchDocRequirementsDetails() {
 
     var data_submit = {
