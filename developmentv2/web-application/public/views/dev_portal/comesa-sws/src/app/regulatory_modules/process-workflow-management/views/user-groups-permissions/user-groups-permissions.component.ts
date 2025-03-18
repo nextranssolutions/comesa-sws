@@ -1,10 +1,14 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, HostListener, OnInit, ViewContainerRef } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
 import { DxTabPanelTypes } from 'devextreme-angular/ui/tab-panel';
+import CustomStore from 'devextreme/data/custom_store';
 import { ToastrService } from 'ngx-toastr';
+import { AppSettings } from 'src/app/app-settings';
 import { AppmenuService, Change } from 'src/app/core-services/appmenu.service';
+import { AuthenticationService } from 'src/app/core-services/authentication/authentication.service';
 import { ReportsService } from 'src/app/core-services/reports/reports.service';
 import { ServiceAdmnistrationService } from 'src/app/core-services/system-admnistration/system-admnistration.service';
 import { UtilityService } from 'src/app/core-services/utilities/utility.service';
@@ -68,6 +72,20 @@ resetcolumns = 'dashboard_type_id,resetcolumns,routerLink,has_partnerstate_defin
   updateUsrPermissNewDataFrm:FormGroup;
   AppRegulatoryFunction: any;
   usersDetails: any;
+  selectedUser: string;
+  ammendReadOnly: boolean;
+  UserPopupVisible: boolean = false;
+  specificUserData: any;
+  configData: any;
+  userTitleData: any;
+  countryData: any;
+  orgnisationDepData: any;
+ 
+
+ 
+
+
+
   actionsMenuItems = [
     {
       text: "Action",
@@ -112,11 +130,14 @@ resetcolumns = 'dashboard_type_id,resetcolumns,routerLink,has_partnerstate_defin
     public toastr: ToastrService,
     public viewRef: ViewContainerRef,
     public utilityService: UtilityService,
-     
+    public authService: AuthenticationService,
+    public httpClient: HttpClient,
+    
     private admnistrationService: ServiceAdmnistrationService,
     private userGroupsService: AppmenuService,
     private workflowService:WokflowManagementService,
-    private reportingAnalytics: ReportsService
+    private reportingAnalytics: ReportsService,
+    
   ) {
 
     this.createNewDataFrm = new FormGroup({
@@ -130,6 +151,7 @@ resetcolumns = 'dashboard_type_id,resetcolumns,routerLink,has_partnerstate_defin
       dashboard_type_id: new FormControl(this.resetcolumns, Validators.compose([])),
       has_partnerstate_defination: new FormControl(this.resetcolumns, Validators.compose([])),
       // institution_type_id: new FormControl(this.resetcolumns, Validators.compose([])),
+      organisation_id: new FormControl('', Validators.compose([Validators.required])),
       is_super_admin: new FormControl('', Validators.compose([]))
 
     });
@@ -154,6 +176,11 @@ ngOnInit() {
   this.onLoadWorkflowData();
   this.onloadOrganisationData();
   this.onLoadUsersData();
+  this.fetchSpecificUserData();
+  this.onloadUserTitleData();
+  this.onloadCountryData();
+  this.onloadOrgnisationDepData();
+
 
   //for the action menu
 
@@ -184,6 +211,75 @@ checkScreenSize(): void {
     this.tabsPosition = 'top';
   }
 }
+onSearchSpecificUser() {
+  
+      this.UserPopupVisible = true;
+      var me = this;
+  
+  
+      this.specificUserData.store = new CustomStore({
+        load: function (loadOptions: any) {
+          // console.log(loadOptions)
+          var params = '?';
+          params += 'skip=' + loadOptions.skip;
+          params += '&take=' + loadOptions.take;//searchValue
+          var headers = new HttpHeaders({
+            "Accept": "application/json",
+            "Authorization": "Bearer " + me.authService.getAccessToken(),
+          });
+  
+          me.configData = {
+            headers: headers,
+            params: { skip: loadOptions.skip, take: loadOptions.take, searchValue: loadOptions.filter }
+          };
+          return me.httpClient.get(AppSettings.base_url + '/api/sysadministration/onGetSpecificHscode', me.configData)
+            .toPromise()
+            .then((data: any) => {
+              return {
+                data: data.data,
+                totalCount: data.totalCount
+              }
+            })
+            .catch(error => { throw 'Data Loading Error' });
+        }
+      });
+    }
+
+    fetchSpecificUserData() {
+      this.spinnerShow('Loading User Permissions Details');
+  
+      var data_submit = {
+        table_name: 'usr_users_information',
+        
+      }
+      this.admnistrationService.onLoadSystemAdministrationData(data_submit,)
+        .subscribe(
+          data => {
+            this.data_record = data;
+            if (this.data_record.success) {
+              this.specificUserData = this.data_record.data;
+            }
+          });
+      this.spinnerHide();
+    }
+
+    onSelectSpecificUser(selectedUser: any) {
+      console.log("Selected User Data: ", selectedUser); 
+      
+      if (selectedUser && selectedUser.specific_hs_code) {
+        this.selectedUser = selectedUser.specific_hs_code;
+    
+        
+        this.addUserDataFrm.patchValue({
+          hs_code_specific_int: this.selectedUser
+        });
+    
+          this.UserPopupVisible = false;
+      } else {
+          console.error("Invalid User selection.");
+      }
+    }
+      
 
 onAccountTypeSelection($event){
   if ($event.selectedItem) {
@@ -367,11 +463,61 @@ onloaddashboardTypeData() {
           this.dashboardTypeData = this.data_record.data;
         }
       },
-      error => {
-        
+      error => {     
       });
-
 }
+onloadUserTitleData() {
+
+  var data_submit = {
+    'table_name': 'usr_users_title'
+  }
+  this.admnistrationService.onLoadSystemAdministrationData(data_submit)
+    .subscribe(
+      data => {
+        this.data_record = data;
+        
+        if (this.data_record.success) {
+          this.userTitleData = this.data_record.data;
+        }
+      },
+      error => {     
+      });
+}
+onloadCountryData() {
+
+  var data_submit = {
+    'table_name': 'par_countries'
+  }
+  this.admnistrationService.onLoadSystemAdministrationData(data_submit)
+    .subscribe(
+      data => {
+        this.data_record = data;
+        
+        if (this.data_record.success) {
+          this.countryData = this.data_record.data;
+        }
+      },
+      error => {     
+      });
+}
+onloadOrgnisationDepData() {
+
+  var data_submit = {
+    'table_name': 'par_organisation_departments'
+  }
+  this.admnistrationService.onLoadSystemAdministrationData(data_submit)
+    .subscribe(
+      data => {
+        this.data_record = data;
+        
+        if (this.data_record.success) {
+          this.orgnisationDepData = this.data_record.data;
+        }
+      },
+      error => {     
+      });
+}
+
 onloadOrganisationData() {
 
   var data_submit = {
