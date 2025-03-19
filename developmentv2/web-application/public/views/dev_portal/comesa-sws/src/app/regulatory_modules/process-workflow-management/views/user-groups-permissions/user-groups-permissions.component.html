@@ -305,6 +305,7 @@
                 </div>
 
             </dxi-item>
+
             <dxi-item title="{{'users'| translate}}" icon="group">
                 <dx-button text="{{ 'map_users' | translate }}" type="default" icon="fa fa-save"
                 [elementAttr]="{ id: 'elementId', class: '' }" (onClick)="hasReadpermissions=false;onAddUserData()">
@@ -331,11 +332,11 @@
                       <dx-menu (onItemClick)="funcActionColClick($event,data)" [items]="actionsMenuItems"></dx-menu>
                     </div>
                   </dxi-column>
-                  <dxi-column  dataField="user_id"
-                    caption="{{ 'user' | translate }}">
-                  </dxi-column>
-                  <!-- <dxi-column dataField="name" caption="{{ 'name' | translate }}"></dxi-column> -->
-
+                  
+                  <dxi-column  dataField="first_name" caption="{{ 'first_name' | translate }}"></dxi-column>
+                  <dxi-column  dataField="email_address"caption="{{ 'email_address' | translate }}"></dxi-column>
+                  <dxi-column  dataField="created_on"caption="{{ 'date_added' | translate }}"></dxi-column>
+                   
 
                 </dx-data-grid>
                 <div class="col-lg-12 row">
@@ -362,15 +363,6 @@ title="{{ 'users_mapping' | translate }}" [dragEnabled]="false" [hideOnOutsideCl
     <form role="form" enctype="multipart/form-data" role="form" [formGroup]="addUserDataFrm"
       (ngSubmit)="onFuncUserData()">
 
-    
-
-        <!-- <div class="col-lg-6">
-          <label>{{ 'user' | translate }}</label>
-          <dx-select-box formControlName="user_id" [showClearButton]="true" [dataSource]="usersData"
-            valueExpr="id" [searchEnabled]="true" displayExpr="created_by">
-          </dx-select-box>
-        </div>
-         -->
             <div class="row">
 
                 <div class="col-lg-10">
