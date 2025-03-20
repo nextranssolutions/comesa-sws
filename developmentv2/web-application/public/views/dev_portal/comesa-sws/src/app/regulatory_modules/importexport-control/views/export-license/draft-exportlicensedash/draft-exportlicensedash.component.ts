@@ -10,6 +10,6 @@ export class DraftExportlicensedashComponent extends SharedImpExpdashboardClass{
  
 
  ngOnInit() {
-  this.regulatory_subfunction_id = 2;
+  
 }
 }

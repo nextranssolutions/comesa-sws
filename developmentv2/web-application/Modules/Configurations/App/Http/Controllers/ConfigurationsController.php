@@ -782,13 +782,12 @@ class ConfigurationsController extends Controller
                 $app_data['process_infor'] = $data;
                 $app_data['transactionpermit_type_id'] = $transactionpermit_type_id;
                 $form_fields = getApplicationGeneralFormsFields($req);
-               
+            
                 $app_data['application_form'] = $form_fields;
                 switch ($regulatory_function_id) {
                     case 1: // Import Export Permit Application
                         $app_data['applicant_details'] = getApplicationDataEntryFormsFields($req, 20);
                         $app_data['permit_products_details'] = getApplicationDataEntryFormsFields($req, 21);
-                        
                         break;
                     case 2: // Business operations
                         $app_data['personnel_information'] = getApplicationDataEntryFormsFields($req, 1);

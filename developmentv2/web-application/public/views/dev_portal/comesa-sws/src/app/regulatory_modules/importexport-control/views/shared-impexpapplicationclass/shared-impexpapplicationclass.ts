@@ -136,7 +136,7 @@ export class SharedImpexpApplicationClass {
     let me = this;
     this.applicant_id = user.applicant_id;
     this.application_details = localStorage.getItem('application_details');
-
+    
     this.nav_data = localStorage.getItem('nav_data');
     this.application_details = JSON.parse(this.application_details);
     this.nav_data = JSON.parse(this.nav_data);
@@ -184,9 +184,10 @@ export class SharedImpexpApplicationClass {
     }
 
     if (this.application_details) {
+      this.regulatory_function_id = this.application_details.regulatory_function_id;
       this.regulatory_subfunction_id = this.application_details.regulatory_subfunction_id;
       this.process_title = this.application_details.process_title;
-      this.application_id = this.application_details.application_id;
+      this.applicant_id = this.application_details.applicant_id;
       this.tracking_no = this.application_details.tracking_no;
       this.status_name = this.application_details.status_name;
       this.permit_name = this.application_details.permit_name;
@@ -329,9 +330,6 @@ export class SharedImpexpApplicationClass {
     const transactionpermit_type_id = localStorage.getItem('transactionpermit_type_id')
       ? Number(localStorage.getItem('transactionpermit_type_id'))
       : null;
-
-    console.log('Retrieved transactionpermit_type_id:', transactionpermit_type_id);
-
     const applicant_id = Number(this.applicantDetailsForm.get('id')?.value) || null;
 
     this.nav_data = localStorage.getItem('nav_data');
