@@ -645,8 +645,7 @@ export class PermitApplicationsComponent {
    }
    application_data: any;
    funcApplicationPreveditDetails(app_data) { 
-    let data = app_data;
-    console.log(data);
+   
     this.regulatory_subfunction_id = app_data.regulatory_subfunction_id;
     this.applicationsubmission_type_id = app_data.applicationsubmission_type_id;
     // this.application_code = app_data.application_code;

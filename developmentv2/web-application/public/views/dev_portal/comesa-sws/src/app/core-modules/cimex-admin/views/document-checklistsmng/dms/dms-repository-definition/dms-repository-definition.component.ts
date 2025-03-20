@@ -40,7 +40,10 @@ export class DmsRepositoryDefinitionComponent {
   loadingVisible: boolean;
   spinnerMessage: string;
   response: any;
-  regStatusOptions:any;
+  regStatusOptions = [
+    { value: true, text: 'Yes' },
+    { value: false, text: 'No' },
+  ];
 
   loading = false;
 
@@ -90,7 +93,6 @@ export class DmsRepositoryDefinitionComponent {
 
   ngOnInit() {
     this.fetchNewConfigData();
-    this.onLoadregStatusOptions();
     this.onloadregulatoryFunctionIdData();
 
   }
@@ -190,26 +192,7 @@ export class DmsRepositoryDefinitionComponent {
         });
 
   }
-  onLoadregStatusOptions() {
-
-    var data_submit = {
-      'table_name': 'par_confirmations'
-    }
-    this.configService.onLoadConfigurationData(data_submit)
-      .subscribe(
-        data => {
-          this.data_record = data;
-          ;
-          if (this.data_record.success) {
-            this.regStatusOptions = this.data_record.data;
-          }
-
-        },
-        error => {
-
-        });
-
-  }
+  
 
   fetchNewConfigData() {
 

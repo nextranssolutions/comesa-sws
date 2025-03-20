@@ -1407,7 +1407,7 @@ class ImportExportController extends Controller
                 ->leftJoin('tra_permitsenderreceiver_data as t4', 't4.id', 't1.importer_exporter_id')
                 ->leftJoin('par_entryexit_port as t5', 't1.port_of_entryexit_id', 't5.id')
                 ->leftJoin('tra_applicationprocess_submissions as t6', 't1.application_code', '=', 't6.application_code')
-                ->leftJoin('wb_workflowstageprocess_actions as t7', function ($join) {
+                ->leftJoin('wf_workflowstageprocess_actions as t7', function ($join) {
                     $join->on('t6.current_stage_id', '=', 't7.workflow_stage_id');
                     $join->on('t7.is_default_action', '=', DB::raw(1));
                 })

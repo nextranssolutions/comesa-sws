@@ -63,7 +63,7 @@ class SysAdministrationController extends Controller
             $user_name = $req->user_name;
 
             $data = $req->all();
-
+           
             $table_name = $req->table_name;
             $resetcolumns = $req->resetcolumns;
             $record_id = $req->id;
@@ -89,6 +89,64 @@ class SysAdministrationController extends Controller
             } else {
                 unset($data['id']);
                 $data['created_by'] = $user_id;
+                $data['created_on'] = Carbon::now();
+                $resp = insertRecord($table_name, $data, $user_name);
+            }
+
+            if ($resp['success']) {
+
+                $res = array(
+                    'success' => true,
+                    'record_id' => $resp['record_id'],
+                    'message' => 'Saved Successfully'
+                );
+            } else {
+                $res = array(
+                    'success' => false,
+                    'message' => $resp['message']
+                );
+            }
+        } catch (\Exception $exception) {
+            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        } catch (\Throwable $throwable) {
+            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        }
+        return response()->json($res, 200);
+    }
+    public function onSaveSystemAdministrationUserDetails(Request $req)
+    {
+        try {
+            $resp = "";
+            $user_id = $req->user_id;
+            $user_name = $req->user_name;
+
+            $data = $req->all();
+           
+            $table_name = $req->table_name;
+            $resetcolumns = $req->resetcolumns;
+            $record_id = $req->id;
+            unset($data['user_id']);
+            unset($data['user_name']);
+            unset($data['table_name']);
+            unset($data['resetcolumns']);
+            if ($resetcolumns != '') {
+                $restcolumn_array = explode(',', $resetcolumns);
+                $data = unsetArrayData($data, $restcolumn_array);
+            }
+            if (validateIsNumeric($record_id)) {
+                $where = array('id' => $record_id);
+                if (recordExists($table_name, $where)) {
+
+                    $data['dola'] = Carbon::now();
+                    $data['altered_by'] = $user_id;
+
+                    $previous_data = getPreviousRecords($table_name, $where);
+
+                    $resp = updateRecord($table_name, $previous_data['results'], $where, $data, $user_name);
+                }
+            } else {
+                unset($data['id']);
+                $data['user_id'] = $user_id;
                 $data['created_on'] = Carbon::now();
                 $resp = insertRecord($table_name, $data, $user_name);
             }
@@ -861,6 +919,43 @@ class SysAdministrationController extends Controller
         return response()->json($res, 200);
     }
 
+    public function onLoadSystemGroupsUsers(Request $req)
+    {
+        try {
+            $requestData = $req->all();
+            $filter = $req->filter;
+            $table_name = $req->table_name;
+            $table_name = base64_decode($table_name);
+
+            $sectionSelection = $req->sectionSelection;
+            unset($requestData['table_name']);
+
+            $check_exempt = DB::table('tra_exemptedpublic_tables')
+                ->where(array('table_name' => $table_name))
+                ->count();
+            $sql = DB::table($table_name . ' as t1');
+
+            if ($check_exempt > 0 || $table_name == null || $table_name == '') {
+                $res = array('success' => false, 'message' => 'Table has been blocked for access');
+                return response()->json($res);
+            }
+            if (!empty($requestData)) {
+                $sql->where($requestData);
+            }
+
+            $data = $sql->get();
+
+            $res = array('success' => true, 'data' => $data);
+        } catch (\Exception $exception) {
+            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        } catch (\Throwable $throwable) {
+            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        }
+
+        return response()->json($res, 200);
+    }
+
+
 
     public function onDeleteSystemAdministrationDetails(Request $req)
     {
@@ -1103,6 +1198,7 @@ class SysAdministrationController extends Controller
         }
         return response()->json($res, 200);
     }
+ 
     public function getAppUserGroupWorkflowPermission(Request $req)
     {
         try {
@@ -1260,6 +1356,43 @@ public function getAppHscodes(Request $req)
 
     return response()->json($res, 200);
 }
+
+public function getUserDetails(Request $req)
+{
+    try {
+        $groupId = $req->input('group_id');
+        if (!$groupId) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Group ID is required.'
+            ], 400);
+        }
+
+        $users = DB::table('tra_user_group as t1')
+        ->join('usr_users_information as t2', 't1.user_id', '=', 't2.id')
+        ->where('t1.group_id', '=', $groupId)
+        ->select(
+            't2.id',             
+            't2.first_name',
+            't2.email_address',
+            't2.created_on',
+            't2.is_enabled'
+        )
+        ->get();
+
+        $res = ['success' => true, 'data' => $users];
+    } catch (\Exception $exception) {
+        $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+    } catch (\Throwable $throwable) {
+        $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+    }
+
+    return response()->json($res, 200);
+
+    return response()->json($res, 200);
+}
+
+
 public function onGetStartHsCode(Request $req)
 {
     try {
@@ -1469,6 +1602,91 @@ public function onGetSpecificHsCode(Request $req)
     }
 }
 
+public function onGetUserDetails(Request $req)
+{
+    try {
+        $table_name = 'usr_users_information';
+        $take = 50; // Default take value
+        $skip = 0; // Default skip value
+        $searchValue = $req->searchValue ?? '';
+        $chapters_keywordsearch = $req->chapters_keywordsearch;
+
+        // Process search value
+        $search_value = '';
+        if (!empty($searchValue) && $searchValue !== 'undefined') {
+            $searchValueArray = explode(',', $searchValue);
+            $search_value = $searchValueArray[2] ?? '';
+        }
+
+        // Initialize query with necessary joins and select statements
+        $query = DB::table("{$table_name} as t1")
+            ->leftJoin('usr_users_title as t2', 't1.user_title_id', '=', 't2.id')
+            ->leftJoin('usr_identification_type as t3', 't1.identification_type_id', '=', 't3.id')
+            ->leftJoin('par_countries as t4', 't1.country_of_origin_id', '=', 't4.id')
+            ->leftJoin('tra_organisation_information as t5', 't1.organisation_id', '=', 't5.id')
+            ->leftJoin('sys_account_types as t6', 't1.account_type_id', '=', 't6.id')
+            ->leftJoin('usr_usersaccount_roles as t7', 't1.account_roles_id', '=', 't7.id')
+            
+            
+            
+            ->select(
+                't1.id',
+                't1.chapters_defination_id',
+                't3.name as hscodechapters',
+                
+            );
+
+        // Apply keyword search filter before fetching data
+        if (!empty($chapters_keywordsearch)) {
+            $query->where(function ($q) use ($chapters_keywordsearch) {
+                $q->where('t1.user_title_id', 'like', "%{$chapters_keywordsearch}%")
+                    ->orWhere('t1.identification_type_id', 'like', "%{$chapters_keywordsearch}%")
+                    ->orWhere('t1.country_of_origin_id', 'like', "%{$chapters_keywordsearch}%")
+                    ->orWhere('t1.organisation_id', 'like', "%{$chapters_keywordsearch}%")
+                    ->orWhere('t1.account_type_id', 'like', "%{$chapters_keywordsearch}%")
+                    ->orWhere('t1.account_roles_id', 'like', "%{$chapters_keywordsearch}%");
+            });
+        }
+
+
+        // Fetch total count before pagination
+        $totalCount = $query->count();
+
+        // Apply pagination
+        $data = $query->orderByDesc('t1.id')->take($take)->skip($skip)->get();
+
+        // Transform data efficiently
+        $productregistry_data = $data->map(function ($rec) {
+            return [
+                'id' => $rec->id,
+                'start_hs_code' => $rec->start_hs_code,
+                'user_title_id' => $rec->user_title_id,   
+                'identification_type_id' => $rec->identification_type_id,
+                'country_of_origin_id' => $rec->country_of_origin_id,            
+                'organisation_id' => $rec->organisation_id,
+                'account_type_id' => $rec->account_type_id,
+                'account_roles_id' => $rec->account_roles_id,
+                
+                // 'hscodechapters' => trim("{$rec->chapterscode} {$rec->hscodechapters}"),
+               
+                
+                
+            ];
+        });
+
+        return response()->json([
+            'success' => true,
+            'data' => $productregistry_data,
+            'totalCount' => $totalCount
+        ]);
+    } catch (\Throwable $e) {
+        return response()->json([
+            'success' => false,
+            'message' => $e->getMessage()
+        ]);
+    }
+}
+
     public function getAppPermitSignatoriesData(Request $req)
     {
         try {
@@ -1527,6 +1745,8 @@ public function onGetSpecificHsCode(Request $req)
 
         return response()->json($res, 200);
     }
+
+    
 
     public function getAppPermitSpecialConditions(Request $req)
     {

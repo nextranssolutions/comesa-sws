@@ -15,7 +15,7 @@ export class GuidelinesoptionsComponent {
     this.resetcolumns = 'is_super_admin,institution_type_id,resetcolumns,account_type_id,routerLink,has_partnerstate_defination';
     
     this.table_name = 'par_guidelinesoptions';
-    this.parameter_name = "guidelinesoptions";
+    this.parameter_name = "guidelines_options";
   }
 
   ngOnInit() {

@@ -203,12 +203,17 @@
          
         </div> 
        </div>
-      <dx-data-grid class="table row-border hover " (onCellPrepared)="onCellPrepared($event)" [showRowLines]="true"
-        [allowColumnResizing]="true" [columnHidingEnabled]="false" [wordWrapEnabled]="true"
-        [dataSource]="dtImportExpApplicationData" [showBorders]="true" keyExpr="id">
+       <div class="grid-container">
+        <dx-data-grid class="table row-border hover " (onCellPrepared)="onCellPrepared($event)" [showRowLines]="true"
+            [allowColumnResizing]="true" [columnHidingEnabled]="false" [wordWrapEnabled]="true"
+            [dataSource]="dtImportExpApplicationData" [showBorders]="true" keyExpr="id" [width]="'100%'"
+            [columnAutoWidth]="false" [columnMinWidth]="150"
+            [scrolling]="{ mode: 'standard', useNative: true, showScrollbar: 'always' }" [height]="'1000px'">
+        
         <dxo-filter-row [visible]="true"></dxo-filter-row>
         <dxo-load-panel [enabled]="true">
         </dxo-load-panel>
+    
         <dxo-paging [enabled]="true">
         </dxo-paging>
         <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[10, 20]" [showNavigationButtons]="true"
@@ -277,10 +282,11 @@
         <dxi-column dataField="oga_application_code" caption="{{'oga_application_code' | translate}}"*ngIf="columnVisibility.oga_application_code"></dxi-column>
         <dxi-column dataField="application_code" caption="{{'application_code' | translate}}"*ngIf="columnVisibility.application_code"></dxi-column>
         <dxo-grouping #expand [autoExpandAll]="true"></dxo-grouping>
-     </dx-data-grid>
+        </dx-data-grid>
+      </div>
+     </div>
     </div>
-    </div>
-    </section>
+   </section>
 
 <!-- </div> -->
 

@@ -69,8 +69,8 @@
 
     </dx-data-grid>
 
-    <dx-popup [visible]="RestrctionPopupVisible" [width]="funcpopWidth(65)" [height]="funcpopHeight(55)"
-    [showTitle]="true" [title]="'HS Codes'" (onHidden)="RestrctionPopupVisible = false">
+    <dx-popup [visible]="restrictionProhibitionPopupVisible" [width]="funcpopWidth(65)" [height]="funcpopHeight(55)"
+    [showTitle]="true" [title]="'restriction_prohibition'" (onHidden)="restrictionProhibitionPopupVisible = false">
 
 
     <form (ngSubmit)="onUpdateRestrictions()" [formGroup]="createNewDataFrm" formControlName="description">
@@ -141,7 +141,7 @@
 
 
     <div class="col-lg-12 row">
-        <dx-button text="{{ 'save'   + 'hs_code' | translate }}" type="default" icon="fa fa-save"
+        <dx-button text="{{ 'save'   + ' restriction_prohibition' | translate }}" type="default" icon="fa fa-save"
             [elementAttr]="{ id: 'elementId', class: 'pull-left' }" (onClick)="onFuncSaveRecordData()">
         </dx-button>
     </div>

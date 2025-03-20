@@ -41,18 +41,18 @@
 
     <dxi-column *ngIf="table_name == 'tra_importexport_proceduredetails'" dataField="hscodechapters_defination_id"
         caption="{{ 'hscode_chapters_defination' | translate }}">
-        <dxo-lookup [dataSource]="hscodeChapterDefinationData" displayExpr="name" valueExpr="id">
+        <dxo-lookup [dataSource]="hscodeChapterDefinationData" displayExpr="hscode" valueExpr="id">
         </dxo-lookup>
     </dxi-column>
     <dxi-column *ngIf="table_name == 'tra_importexport_proceduredetails'" dataField="hscodesheading_defination_id"
         caption="{{ 'hscodes_heading_defination' | translate }}">
-        <dxo-lookup [dataSource]="hscodesheadingDefinationData" displayExpr="name" valueExpr="id">
+        <dxo-lookup [dataSource]="hscodesheadingDefinationData" displayExpr="hscode" valueExpr="id">
         </dxo-lookup>
     </dxi-column>
 
     <dxi-column *ngIf="table_name == 'tra_importexport_proceduredetails'" dataField="hscodessubheading_defination_id"
         caption="{{ 'hscodes_subheading_defination_' | translate }}">
-        <dxo-lookup [dataSource]="hscodesSubheadingDefinationData" displayExpr="name" valueExpr="id">
+        <dxo-lookup [dataSource]="hscodesSubheadingDefinationData" displayExpr="hscode" valueExpr="id">
         </dxo-lookup>
     </dxi-column>
     <dxi-column *ngIf="table_name == 'tra_importexport_proceduredetails'" dataField="operation_type_id"

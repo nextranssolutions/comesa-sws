@@ -66,8 +66,8 @@
 
     </dx-data-grid>
 
-    <dx-popup [visible]="EmailConfigPopupVisible" [width]="funcpopWidth(65)" [height]="funcpopHeight(55)"
-    [showTitle]="true" [title]="'HS Codes'" (onHidden)="EmailConfigPopupVisible = false">
+    <dx-popup [visible]="NewRecordPopupVisible" [width]="funcpopWidth(65)" [height]="funcpopHeight(55)"
+    [showTitle]="true" [title]="'notification_schedule_configurations'" (onHidden)="NewRecordPopupVisible = false">
 
 
     <form (ngSubmit)="onUpdateRestrictions()" [formGroup]="createNewDataFrm" formControlName="description">
@@ -99,8 +99,8 @@
 
             <div class="col-lg-6">
                 <label>{{ 'custom_expression' | translate }}</label>
-                <dx-text-area formControlName="custom_expression">
-                </dx-text-area>
+                <dx-text-box formControlName="custom_expression">
+                </dx-text-box>
             </div>
 
             <div class="col-lg-6">
@@ -111,14 +111,14 @@
 
             <div class="col-lg-6">
                 <label>{{ 'description' | translate }}</label>
-                <dx-text-area formControlName="description">
-                </dx-text-area>
+                <dx-text-box formControlName="description">
+                </dx-text-box>
             </div>
 
             <div class="col-lg-6">
                 <label>{{ 'code' | translate }}</label>
-                <dx-text-area formControlName="code">
-                </dx-text-area>
+                <dx-text-box formControlName="code">
+                </dx-text-box>
             </div>
 
             <div class="col-lg-6">
@@ -131,7 +131,7 @@
 
 
     <div class="col-lg-12 row">
-        <dx-button text="{{ 'save'   + 'hs_code' | translate }}" type="default" icon="fa fa-save"
+        <dx-button text="{{ 'save'   + ' notification_schedule_configuration' | translate }}" type="default" icon="fa fa-save"
             [elementAttr]="{ id: 'elementId', class: 'pull-left' }" (onClick)="onFuncSaveRecordData()">
         </dx-button>
     </div>
