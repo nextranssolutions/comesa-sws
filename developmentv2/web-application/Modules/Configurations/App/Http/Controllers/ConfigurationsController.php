@@ -891,8 +891,6 @@ class ConfigurationsController extends Controller
                 ->where($filter)
                 ->where('t2.stage_status_id', 1) // Qualified column
                 ->first();
-            // print_r($data);
-            // exit();
             // Process application data
             if ($data) {
                 $app_data['process_infor'] = $data;

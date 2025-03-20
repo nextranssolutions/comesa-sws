@@ -66,6 +66,7 @@ export class SinglePermitproductdetailsComponent {
     proforma_currency_id: number;
     countries: any;
     loadingVisible: boolean;
+    checkifproductcategory: boolean;
     manufacturersData: any = {};
     isManufacturerSitePopupVisible: boolean = false;
     isproductManufacturerModalShow: boolean;
@@ -1453,28 +1454,16 @@ export class SinglePermitproductdetailsComponent {
   
     }
   
-    // funcSelectProductCategory(data) {
-    //   let data_resp = data.data;
-    //   this.permitProductsFrm.patchValue({ regulated_product_category: data_resp.regulated_product_category, regulated_product_category_id: data_resp.regulated_product_category_id, });
-  
-    //   this.isProductCategoryPopupVisible = false;
-    // }
   
     funcSelectProductCategory(data) {
-      let data_resp = data.data;
-  
-      // Prioritize values in order: hscodessubheading -> hscodesheading -> hscodechapters
-      let selectedCategory = data_resp.hscodessubheading ||
-        data_resp.hscodesheading ||
-        data_resp.hscodechapters || '';
-  
-      // Patch the form with selected values
-      this.permitProductsFrm.patchValue({
-        regulated_product_category: selectedCategory,
-        regulated_product_category_id: data_resp.regulated_product_category_id
-      });
-  
-      // Close the popup
+      if (this.checkifproductcategory) {
+        this.permitProductsFrm.get('regulated_productcategory_id')?.setValue(data.data.id);
+        this.permitProductsFrm.get('regulated_product_category')?.setValue(data.data.name);
+      } else {
+        this.permitProductsFrm.get('custom_office_id')?.setValue(data.data.id);
+        this.permitProductsFrm.get('regulated_productcategory_id')?.setValue(data.data.name);
+      }
+      this.checkifproductcategory = false;
       this.isProductCategoryPopupVisible = false;
     }
   
@@ -1669,5 +1658,6 @@ export class SinglePermitproductdetailsComponent {
       this.show_advancesearch = e.value;
   
     }
+
   
 }

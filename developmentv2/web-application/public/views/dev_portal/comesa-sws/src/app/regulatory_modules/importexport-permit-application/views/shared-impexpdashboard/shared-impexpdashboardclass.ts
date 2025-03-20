@@ -55,14 +55,14 @@ export class SharedImpExpdashboardClass {
   data_record: any;
   guidelines_title: string;
   regulatory_subfunction_id: any;
+  application_code: any;
   appworkflowstage_category_id:any;
-  applicant_id: any
+  applicant_id: any;
   permit_type_id: 1;
   application_title: string;
   sectionItem: any;
   app_typeItem: any;
   application_details: any;
-  regulatory_subfunction_idsel: number;
   isPermitInitialisation: boolean;
   confirmDataParam: any;
   has_nonregisteredproducts: boolean = false;
@@ -107,7 +107,8 @@ export class SharedImpExpdashboardClass {
     
 
     this.reloadPermitApplicationsApplications(regulatory_subfunction_id, appworkflowstage_category_id, applicant_id);
-
+    this.applicant_id = localStorage.getItem('id');
+    console.log(this.applicant_id);
     //navigation items and get the sub_function_id 
 
 
@@ -181,28 +182,31 @@ export class SharedImpExpdashboardClass {
 
 
   reloadPermitApplicationsApplications(regulatory_subfunction_id, appworkflowstage_category_id,applicant_id) {
-    this.spinnerShow('Loading...........');
+    this.spinnerShow('Loading  ...........');
 
-    let data_submit = {
+    var data_submit = {
       'table_name': this.table_name,
       'regulatory_subfunction_id': regulatory_subfunction_id,
       'appworkflowstage_category_id': appworkflowstage_category_id,
-      'applicant_id':applicant_id
-    };
-
+      'applicant_id': applicant_id,
+      
+    }
     this.appService.onPermitApplicationLoading('getImportExpApplicantPermitsLoading', data_submit)
       .subscribe(
         data => {
           this.data_record = data;
+
           if (this.data_record.success) {
             this.dtImportExpApplicationData = this.data_record.data;
+
           }
           this.spinnerHide();
         },
         error => {
+
           this.spinnerHide();
-        }
-      );
+        });
+
   }
 
 
@@ -523,33 +527,35 @@ export class SharedImpExpdashboardClass {
 
   }
   application_data: any;
+
+
+ 
   funcApplicationPreveditDetails(app_data) { 
-    let data = app_data;
-    console.log(data);
     this.regulatory_subfunction_id = app_data.regulatory_subfunction_id;
     this.applicationsubmission_type_id = app_data.applicationsubmission_type_id;
+    this.application_code = app_data.application_code;
 
     this.spinnerShow('Loading...........');
 
-    this.configService.getSectionUniformApplication(this.regulatory_subfunction_id, this.applicationsubmission_type_id)
+    this.configService.getSectionUniformApplication(this.regulatory_subfunction_id, this.applicationsubmission_type_id, this.application_code)
       .subscribe(
         data => {
-
           if (data.success) {
             this.processData = data.data.process_infor;
+            console.log(this.processData);
             this.application_data = data.data;
-            
+
             this.router_link = this.processData.router_link;
             this.productsapp_details = this.processData;
+            
             let merged_appdata = Object.assign({}, this.application_data, app_data);
-            console.log(merged_appdata);
-            localStorage.setItem('applicant_details', JSON.stringify(merged_appdata));
 
+            localStorage.setItem('application_details', JSON.stringify(merged_appdata));
+           
             this.app_route = ['./importexport-permit-application/' + this.router_link];
 
             this.router.navigate(this.app_route);
             this.scrollToTop();
-
           }
           else {
             this.toastr.error(this.processData.message, 'Alert!');

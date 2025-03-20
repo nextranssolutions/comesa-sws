@@ -331,14 +331,14 @@ export class ConfigurationsService {
         return <any>data;
       }));
   } 
-  getSectionUniformApplication(regulatory_subfunction_id,applicationsubmission_type_id=0) {
+  getSectionUniformApplication(regulatory_subfunction_id, application_code, applicationsubmission_type_id=0) {
     
     var headers = new Headers({
       "Accept": "application/json",
       "Authorization": "Bearer " + this.authService.getAccessToken(),
     });
     this.config = {
-      params: { regulatory_subfunction_id:regulatory_subfunction_id, applicationsubmission_type_id:applicationsubmission_type_id},
+      params: { application_code:application_code, regulatory_subfunction_id:regulatory_subfunction_id, applicationsubmission_type_id:applicationsubmission_type_id},
       headers: headers
     };
     return this.HttpClient.get(this.baseUrl + '/getUniformSectionApplicationProcess', this.config)
@@ -346,6 +346,11 @@ export class ConfigurationsService {
         return <any>data;
       }));
   } 
+
+
+  
+
+
 
   getApplicantSectionUniformApplication(regulatory_subfunction_id,applicationsubmission_type_id=0) {
     

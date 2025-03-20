@@ -21,6 +21,7 @@ export class PermitApplicationsComponent {
    @ViewChild(DxDataGridComponent) dataGrid: DxDataGridComponent;
    is_popupguidelines: boolean;
    productsapp_details: any;
+   application_code: any;
    dtImportExpApplicationData: any = [];
    expanded: boolean = false;
    app_route: any;
@@ -50,6 +51,7 @@ export class PermitApplicationsComponent {
    data_record: any;
    guidelines_title: string;
    regulatory_subfunction_id: number;
+   applicationsubmission_type_id: number;
    transactionpermit_type_id: number;
    application_title: string;
    sectionItem: any;
@@ -642,41 +644,44 @@ export class PermitApplicationsComponent {
      this.utilityService.funcApplicationRestoreArchiceCall(this.viewRef, data, 'txn_importexport_applications', this.reloadPermitApplicationsApplications)
    }
    application_data: any;
-   funcApplicationPreveditDetails(app_data) {
-     this.regulatory_subfunction_id = app_data.regulatory_subfunction_id;
- 
-     this.spinner.show();
- 
-     this.configService.getSectionUniformApplication(this.regulatory_subfunction_id)
-       .subscribe(
-         data => {
-           this.spinner.hide();
-           if (data.success) {
-             this.processData = data.data.process_infor;
-             this.application_data = data.data;
- 
-             this.router_link = this.processData.router_link;
-             this.productsapp_details = this.processData;
-             let merged_appdata = Object.assign({}, this.application_data, app_data);
- 
-             localStorage.setItem('application_details', JSON.stringify(merged_appdata));
+   funcApplicationPreveditDetails(app_data) { 
+    let data = app_data;
+    console.log(data);
+    this.regulatory_subfunction_id = app_data.regulatory_subfunction_id;
+    this.applicationsubmission_type_id = app_data.applicationsubmission_type_id;
+    // this.application_code = app_data.application_code;
+    let apppreview_data = {regulatory_subfunction_id:this.regulatory_subfunction_id,applicationsubmission_type_id:this.applicationsubmission_type_id,application_code:this.application_code}
+    this.spinnerShow('Loading...........');
+
+    this.configService.getSectionUniformApplication(apppreview_data, 'getUniformSectionApplicationProcess')
+      .subscribe(
+        data => {
+
+          if (data.success) {
+            this.processData = data.data.process_infor;
+            this.application_data = data.data;
             
-             this.app_route = ['./importexport-control/' + this.router_link];
- 
-             this.router.navigate(this.app_route);
-             this.scrollToTop();
- 
-           }
-           else {
-             this.toastr.error(this.processData.message, 'Alert!');
- 
-           }
- 
- 
-         });
-     return false;
-   }
- 
+            this.router_link = this.processData.router_link;
+            this.productsapp_details = this.processData;
+            let merged_appdata = Object.assign({}, this.application_data, app_data);
+            console.log(merged_appdata);
+            localStorage.setItem('applicant_details', JSON.stringify(merged_appdata));
+
+            this.app_route = ['./importexport-permit-application/' + this.router_link];
+
+            this.router.navigate(this.app_route);
+            this.scrollToTop();
+
+          }
+          else {
+            this.toastr.error(this.processData.message, 'Alert!');
+            this.spinnerHide();
+          }
+
+
+        });
+    return false;
+  }
    funcApplicationRejection(app_data) {
  
      //this.spinner.show();
