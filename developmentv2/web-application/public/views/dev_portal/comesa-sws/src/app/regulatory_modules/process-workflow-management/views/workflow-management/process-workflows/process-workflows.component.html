@@ -313,6 +313,40 @@
     </div>
 
 </dx-popup>
+<dx-popup [visible]="deleteWorkflowStageActionPopupVisible" [width]="funcpopWidth(30)" [height]="funcpopHeight(25)" [showTitle]="true"
+    title="{{ 'delete_confirmation_of '+'workflow_stage' | translate }}" (onHidden)="deleteWorkflowStageActionPopupVisible = false">
+
+    <div>
+        <p class="confirmation-text">
+            {{ 'are_you_sure_you_want_to_delete' | translate }}
+            "<strong>{{config_record}}</strong>"?
+        </p>
+        <div class="button-container">
+            <dx-button text="{{ 'yes' | translate }}" type="danger" (onClick)="onDeleteWorkflowStageActionDetails()">
+            </dx-button>
+            <dx-button text="{{ 'no' | translate }}" (onClick)="deleteWorkflowStageActionPopupVisible = false">
+            </dx-button>
+        </div>
+    </div>
+
+</dx-popup>
+<dx-popup [visible]="deleteWorkflowStageProcessActionPopupVisible" [width]="funcpopWidth(30)" [height]="funcpopHeight(25)" [showTitle]="true"
+    title="{{ 'delete_confirmation_of '+'workflow_stage' | translate }}" (onHidden)="deleteWorkflowStageProcessActionPopupVisible = false">
+
+    <div>
+        <p class="confirmation-text">
+            {{ 'are_you_sure_you_want_to_delete' | translate }}
+            "<strong>{{config_record}}</strong>"?
+        </p>
+        <div class="button-container">
+            <dx-button text="{{ 'yes' | translate }}" type="danger" (onClick)="onDeleteWorkflowStageProcessActionDetails()">
+            </dx-button>
+            <dx-button text="{{ 'no' | translate }}" (onClick)="deleteWorkflowStageProcessActionPopupVisible = false">
+            </dx-button>
+        </div>
+    </div>
+
+</dx-popup>
 
 <dx-popup [visible]="deleteWorkflowTransitionPopupVisible" [width]="funcpopWidth(30)" [height]="funcpopHeight(25)" [showTitle]="true"
     title="{{ 'delete_confirmation_of '+'workflow_transition' | translate }}" (onHidden)="deleteWorkflowTransitionPopupVisible = false">
@@ -641,7 +675,7 @@
 
                 </dxi-column>
 
-                <dxi-column dataField="stage_id" caption="{{ 'stage' | translate }}">
+                <dxi-column dataField="workflow_stage_id" caption="{{ 'stage' | translate }}">
                     <dxo-lookup [dataSource]="workflowStageData" displayExpr="name" valueExpr="id">
                     </dxo-lookup>
                 </dxi-column>
@@ -665,7 +699,8 @@
                     <dxo-lookup [dataSource]="is_paymentrequest_submission" displayExpr="name" valueExpr="id">
                     </dxo-lookup>
                 </dxi-column>
-               
+                <dxi-column [width]="50" dataField="is_enabled" caption="{{ 'enabled_disabledoption' | translate }}">
+                </dxi-column>
 
 
                 <dxi-column dataField="description" caption="{{ 'description' | translate }}">
@@ -700,8 +735,8 @@
                 <dxi-column [width]="100" caption="{{ 'action' | translate }}" name="command-editing"
                     [allowFiltering]="false" [allowSorting]="false" cellTemplate="cellTemplate">
                     <div *dxTemplate="let data of 'cellTemplate'">
-                        <dx-menu (onItemClick)="funcStageDetailsOnClick($event,data)"
-                            [items]="workflowStageDetailsMenuItems"></dx-menu>
+                        <dx-menu (onItemClick)="funcStageProcessActionClick($event,data)"
+                            [items]="workflowStageActionsMenuItems"></dx-menu>
                     </div>
                 </dxi-column>
                 <dxi-column dataField="name" caption="{{ 'name' | translate }}">
@@ -722,16 +757,7 @@
 
             </dx-data-grid>
 
-            <div class="col-lg-12 row">
-                <div class="div_contentfooter">
-                <div class="col-lg-3">
-                    <dx-button text="{{ 'previous_workflow_submission_stage_actions' | translate }}" type="default" icon="fa fa-arrow-right"
-                        (onClick)="onNextNavigationItems('Workflows')">
-                    </dx-button>
-                </div>
-            </div>
-            </div>
-        </dxi-item>
+           </dxi-item>
     </dx-tab-panel>
 
 </dx-popup>
@@ -749,8 +775,8 @@
             </div>
             <div class="col-lg-4">
                 <label for="unitName">{{ 'stage' | translate }}</label>
-                <dx-select-box [dataSource]="workflowStageData" formControlName="stage_id" [showClearButton]="true"
-                    valueExpr="id" [searchEnabled]="true" displayExpr="name"> </dx-select-box>
+                <dx-select-box [dataSource]="workflowStageData" formControlName="workflow_stage_id" [showClearButton]="true"
+                    valueExpr="id" [searchEnabled]="true" displayExpr="name" [readOnly]="true"> </dx-select-box>
             </div>
             <div class="col-lg-4">
                 <label for="unitName">{{ 'order_no' | translate }}</label>
@@ -785,7 +811,12 @@
                     formControlName="is_paymentrequest_submission" [showClearButton]="true" valueExpr="value"
                     [searchEnabled]="true" displayExpr="text"> </dx-select-box>
             </div>
-
+            <div class="col-lg-4">
+                <label>{{ "is_enabled" | translate }}</label>
+                <dx-select-box [searchEnabled]="true" formControlName="is_enabled" [dataSource]="regStatusOptions"
+                  valueExpr="value" displayExpr="text">
+                </dx-select-box>
+              </div>
            
             <div class="col-lg-12">
 
@@ -827,6 +858,19 @@
                     [showClearButton]="true" valueExpr="id" [searchEnabled]="true" displayExpr="name">
                 </dx-select-box>
             </div>
+            <div class="col-lg-4">
+
+                <label>{{ 'code' | translate }}</label>
+                <dx-text-box formControlName="code" [showClearButton]="true">
+
+                </dx-text-box>
+            </div>
+            <div class="col-lg-4">
+                <label>{{ "is_enabled" | translate }}</label>
+                <dx-select-box [searchEnabled]="true" formControlName="is_enabled" [dataSource]="regStatusOptions"
+                  valueExpr="value" displayExpr="text">
+                </dx-select-box>
+              </div>
            
             <div class="col-lg-12">
 
@@ -836,13 +880,7 @@
                 </dx-text-area>
             </div>
 
-            <div class="col-lg-3">
 
-                <label>{{ 'code' | translate }}</label>
-                <dx-text-box formControlName="code" [showClearButton]="true">
-
-                </dx-text-box>
-            </div>
 
 
         </div>
@@ -888,6 +926,40 @@
       <dx-button text="{{ 'yes' | translate }}" type="danger" (onClick)="iniateEnableDisableWorkflowStage()">
       </dx-button>
       <dx-button text="{{ 'no' | translate }}" (onClick)="enableWorkflowStageVisible = false">
+      </dx-button>
+    </div>
+  </div>
+
+</dx-popup>
+<dx-popup [visible]="enableWorkflowStageActionVisible" [width]="funcpopWidth(30)" [height]="funcpopHeight(25)" [showTitle]="true"
+  title="{{ enabledisable_workflowstage | translate }}" (onHidden)="enableWorkflowStageActionVisible = false">
+
+  <div>
+    <p class="confirmation-text">
+      {{ enabledisable_workflowstage_description | translate }}
+      "<strong>{{config_record}}</strong>"?
+    </p>
+    <div class="button-container">
+      <dx-button text="{{ 'yes' | translate }}" type="danger" (onClick)="iniateEnableDisableWorkflowStageAction()">
+      </dx-button>
+      <dx-button text="{{ 'no' | translate }}" (onClick)="enableWorkflowStageActionVisible = false">
+      </dx-button>
+    </div>
+  </div>
+
+</dx-popup>
+<dx-popup [visible]="enableWorkflowStageProcessActionVisible" [width]="funcpopWidth(30)" [height]="funcpopHeight(25)" [showTitle]="true"
+  title="{{ enabledisable_workflowstage | translate }}" (onHidden)="enableWorkflowStageProcessActionVisible = false">
+
+  <div>
+    <p class="confirmation-text">
+      {{ enabledisable_workflowstage_description | translate }}
+      "<strong>{{config_record}}</strong>"?
+    </p>
+    <div class="button-container">
+      <dx-button text="{{ 'yes' | translate }}" type="danger" (onClick)="iniateEnableDisableWorkflowStageProcessAction()">
+      </dx-button>
+      <dx-button text="{{ 'no' | translate }}" (onClick)="enableWorkflowStageProcessActionVisible = false">
       </dx-button>
     </div>
   </div>

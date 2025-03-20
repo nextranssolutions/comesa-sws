@@ -1,12 +1,27 @@
-<div class="page-header">
-    <h3>
-        {{ parameter_name | translate }}
-        <small>
+<div class="main-content-inner">
+    <div class="breadcrumbs ace-save-state" id="breadcrumbs">
+      <ul class="breadcrumb">
+        <li>
+          <i class="ace-icon fa fa-home home-icon"></i>
+          <a href="#"><a routerLink="/admin-cimex/app-dashboard">{{ 'home' | translate }}</a></a>
+        </li>
+        <!-- <li class="active">{{ parameter_name | translate }}</li> -->
+      </ul>
+  
+    </div>
+  
+  
+    <div class="page-content">
+  
+      <div class="page-header">
+        <h1>
+          {{ parameter_name | translate }}
+          <small>
             <i class="ace-icon fa fa-angle-double-right"></i>
-        </small>
-    </h3>
- </div><!-- /.page-header -->
-
+            overview &amp; stats
+          </small>
+        </h1>
+      </div>
 
 <dx-button text="{{ 'add_new' | translate }} {{ parameter_name | translate }}" type="default" icon="fa fa-save"
     [elementAttr]="{ id: 'elementId', class: 'pull-right' }" (onClick)="hasReadpermissions=false;onAddWorkFlowItem()">
@@ -144,6 +159,8 @@
     <dxo-paging [pageSize]="100"></dxo-paging>
 
 </dx-data-grid>
+</div>
+</div>
 
 
 <dx-popup class="popup" [width]="funcpopWidth(65)" [height]="funcpopHeight(75)" [showTitle]="true"
@@ -364,6 +381,24 @@
             </dx-button>
         </div>
     </div>
+
+</dx-popup>
+
+<dx-popup [visible]="enablePopupVisible" [width]="funcpopWidth(30)" [height]="funcpopHeight(25)" [showTitle]="true"
+title="{{ enabledisable_tracer | translate }}" (onHidden)="enablePopupVisible = false">
+
+<div>
+  <p class="confirmation-text">
+    {{ enabledisable_tracerdescription | translate }}
+    "<strong>{{config_record}}</strong>"?
+  </p>
+  <div class="button-container">
+    <dx-button text="{{ 'yes' | translate }}" type="danger" (onClick)="iniateEnableDisableRecord()">
+    </dx-button>
+    <dx-button text="{{ 'no' | translate }}" (onClick)="enablePopupVisible = false">
+    </dx-button>
+  </div>
+</div>
 
 </dx-popup>
 

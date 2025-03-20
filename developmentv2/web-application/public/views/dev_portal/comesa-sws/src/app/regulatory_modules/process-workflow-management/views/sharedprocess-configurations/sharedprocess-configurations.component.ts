@@ -514,6 +514,7 @@ export class SharedprocessConfigurationsComponent {
   
   
     onAddNewProduct() {
+      this.createNewDataFrm.reset();
       this.isnewproduct = true;
   
     }

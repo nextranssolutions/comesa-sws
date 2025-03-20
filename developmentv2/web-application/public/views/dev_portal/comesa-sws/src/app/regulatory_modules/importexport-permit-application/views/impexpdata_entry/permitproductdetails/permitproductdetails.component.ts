@@ -138,6 +138,7 @@ export class PermitproductdetailsComponent implements OnInit {
   common_name_title: string = 'Common Name';
   productSubCategoryData: any;
   application_status_id: any;
+  checkifproductcategory: boolean;
   weightUnitData: any;
   document_type_id: number = 25;
   @Output() premitProductIdEvent = new EventEmitter();
@@ -1393,6 +1394,7 @@ export class PermitproductdetailsComponent implements OnInit {
 
   onsearchProductCategory() {
     this.isProductCategoryPopupVisible = true;
+    this.checkifproductcategory = true;
     const me = this;
 
     this.productCategoryData.store = new CustomStore({
@@ -1507,30 +1509,20 @@ export class PermitproductdetailsComponent implements OnInit {
 
   }
 
-  // funcSelectProductCategory(data) {
-  //   let data_resp = data.data;
-  //   this.permitProductsFrm.patchValue({ regulated_product_category: data_resp.regulated_product_category, regulated_product_category_id: data_resp.regulated_product_category_id, });
-
-  //   this.isProductCategoryPopupVisible = false;
-  // }
-
   funcSelectProductCategory(data) {
-    let data_resp = data.data;
-
-    // Prioritize values in order: hscodessubheading -> hscodesheading -> hscodechapters
-    let selectedCategory = data_resp.hscodessubheading ||
-      data_resp.hscodesheading ||
-      data_resp.hscodechapters || '';
-
-    // Patch the form with selected values
-    this.permitProductsFrm.patchValue({
-      regulated_product_category: selectedCategory,
-      regulated_product_category_id: data_resp.regulated_product_category_id
-    });
-
-    // Close the popup
+    if (this.checkifproductcategory) {
+      this.permitProductsFrm.get('regulated_productcategory_id')?.setValue(data.data.id);
+      this.permitProductsFrm.get('regulated_product_category')?.setValue(data.data.name);
+    } else {
+      this.permitProductsFrm.get('custom_office_id')?.setValue(data.data.id);
+      this.permitProductsFrm.get('regulated_productcategory_id')?.setValue(data.data.name);
+    }
+    this.issenderreceiverSearchWinVisible = false;
     this.isProductCategoryPopupVisible = false;
   }
+
+
+ 
 
   onManufacturerPreparing(e) {
     this.functDataGridToolbar(e, this.funcAddManufacturerSite, 'Manufacturers');

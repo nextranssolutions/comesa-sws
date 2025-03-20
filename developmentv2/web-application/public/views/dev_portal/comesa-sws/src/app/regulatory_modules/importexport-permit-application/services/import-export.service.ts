@@ -72,7 +72,8 @@ export class ImportExportService {
       .pipe(map(data => {
         return <any>data;
       }));
-  } getApplicationDetail() {
+  }
+   getApplicationDetail() {
     return this.application_details;
    
   }
@@ -108,6 +109,8 @@ export class ImportExportService {
       return <any>data;
     }));
   }
+
+ 
 
  
   onAddManufacturingSite(table_name: string, data: any, action_url: string) {

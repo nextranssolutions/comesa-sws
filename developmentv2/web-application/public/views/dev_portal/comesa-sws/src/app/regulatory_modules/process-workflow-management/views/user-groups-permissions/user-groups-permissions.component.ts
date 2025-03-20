@@ -1,10 +1,14 @@
+import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Component, HostListener, OnInit, ViewContainerRef } from '@angular/core';
 import { FormControl, FormGroup, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
 import { DxTabPanelTypes } from 'devextreme-angular/ui/tab-panel';
+import CustomStore from 'devextreme/data/custom_store';
 import { ToastrService } from 'ngx-toastr';
+import { AppSettings } from 'src/app/app-settings';
 import { AppmenuService, Change } from 'src/app/core-services/appmenu.service';
+import { AuthenticationService } from 'src/app/core-services/authentication/authentication.service';
 import { ReportsService } from 'src/app/core-services/reports/reports.service';
 import { ServiceAdmnistrationService } from 'src/app/core-services/system-admnistration/system-admnistration.service';
 import { UtilityService } from 'src/app/core-services/utilities/utility.service';
@@ -20,6 +24,7 @@ resetcolumns = 'dashboard_type_id,resetcolumns,routerLink,has_partnerstate_defin
   workflowPermissionData:any;
   table_name:string = 'usr_users_groups';
   parameter_name:string = "User Group & Permissions Management";
+  users: string = "user_in_the_group"
   iconPosition:any='top';
   regStatusOptions = [
     { value: true, text: 'Yes' },
@@ -59,6 +64,7 @@ resetcolumns = 'dashboard_type_id,resetcolumns,routerLink,has_partnerstate_defin
   record_id:number;
   addPopupVisible = false;
   deletePopupVisible = false;
+  deleteUserPopupVisible = false;
   data_record: any;
   config_record:string;
   isLoading:boolean;
@@ -68,6 +74,21 @@ resetcolumns = 'dashboard_type_id,resetcolumns,routerLink,has_partnerstate_defin
   updateUsrPermissNewDataFrm:FormGroup;
   AppRegulatoryFunction: any;
   usersDetails: any;
+  selectedUser: string;
+  ammendReadOnly: boolean;
+  UserPopupVisible: boolean = false;
+ 
+  specificUserData: any;
+  configData: any;
+  userTitleData: any;
+  countryData: any;
+  orgnisationDepData: any;
+  group_id: number;
+
+ 
+
+
+
   actionsMenuItems = [
     {
       text: "Action",
@@ -76,6 +97,16 @@ resetcolumns = 'dashboard_type_id,resetcolumns,routerLink,has_partnerstate_defin
       //  { text: "View", action: 'view_record', icon: 'fa fa-eye' },
         { text: "Edit Permission", action: 'edit_record', icon: 'fa fa-edit' },
         { text: "Delete", action: 'delete_record', icon: 'fa fa-trash' }
+      ]
+    }
+  ];
+  userMenuItems = [
+    {
+      text: "Action",
+      icon: 'menu',
+      items: [
+     
+        { text: "Delete", action: 'delete_user', icon: 'fa fa-trash' }
       ]
     }
   ];
@@ -112,11 +143,14 @@ resetcolumns = 'dashboard_type_id,resetcolumns,routerLink,has_partnerstate_defin
     public toastr: ToastrService,
     public viewRef: ViewContainerRef,
     public utilityService: UtilityService,
-     
+    public authService: AuthenticationService,
+    public httpClient: HttpClient,
+    
     private admnistrationService: ServiceAdmnistrationService,
     private userGroupsService: AppmenuService,
     private workflowService:WokflowManagementService,
-    private reportingAnalytics: ReportsService
+    private reportingAnalytics: ReportsService,
+    
   ) {
 
     this.createNewDataFrm = new FormGroup({
@@ -130,13 +164,19 @@ resetcolumns = 'dashboard_type_id,resetcolumns,routerLink,has_partnerstate_defin
       dashboard_type_id: new FormControl(this.resetcolumns, Validators.compose([])),
       has_partnerstate_defination: new FormControl(this.resetcolumns, Validators.compose([])),
       // institution_type_id: new FormControl(this.resetcolumns, Validators.compose([])),
+      organisation_id: new FormControl('', Validators.compose([Validators.required])),
       is_super_admin: new FormControl('', Validators.compose([]))
 
     });
 
     this.addUserDataFrm = new FormGroup({
       id: new FormControl('', Validators.compose([])),
-      user_id: new FormControl('', Validators.compose([Validators.required])),
+      group_id: new FormControl('', Validators.compose([])),
+      user_id: new FormControl('', Validators.compose([])),
+      first_name: new FormControl('', Validators.compose([])),
+      email_address: new FormControl('', Validators.compose([])),
+      created_on: new FormControl('', Validators.compose([])),
+      is_enabled: new FormControl('', Validators.compose([])),
 
     });
    // this.resetcolumns = 'resetcolumns,account_type_id,routerLink,has_partnerstate_defination';
@@ -154,6 +194,11 @@ ngOnInit() {
   this.onLoadWorkflowData();
   this.onloadOrganisationData();
   this.onLoadUsersData();
+  this.fetchSpecificUserData();
+  this.onloadUserTitleData();
+  this.onloadCountryData();
+  this.onloadOrgnisationDepData();
+
 
   //for the action menu
 
@@ -184,6 +229,49 @@ checkScreenSize(): void {
     this.tabsPosition = 'top';
   }
 }
+onSearchSpecificUser() {
+  
+  this.UserPopupVisible = true;
+  
+  };
+
+
+
+    fetchSpecificUserData() {
+      this.spinnerShow('Loading User Permissions Details');
+  
+      var data_submit = {
+        table_name: 'usr_users_information',
+        
+      }
+      this.admnistrationService.onLoadSystemAdministrationData(data_submit,)
+        .subscribe(
+          data => {
+            this.data_record = data;
+            if (this.data_record.success) {
+              this.specificUserData = this.data_record.data;
+            }
+          });
+      this.spinnerHide();
+    }
+
+    onSelectSpecificUser(selectedUser: any) {
+ 
+      
+      if (selectedUser && selectedUser.id) {
+        this.selectedUser = selectedUser.id;
+    
+        
+        this.addUserDataFrm.patchValue({
+          user_id: this.selectedUser
+        });
+    
+          this.UserPopupVisible = false;
+      } else {
+          console.error("Invalid User selection.");
+      }
+    }
+      
 
 onAccountTypeSelection($event){
   if ($event.selectedItem) {
@@ -349,6 +437,8 @@ onSavingUserWorkflowPermissions(e) {
 
 }
 
+
+
 onNextNavigationItems(nextStep){
   this.selectedTabIndex = this.tabNames.indexOf(nextStep);
 }
@@ -367,11 +457,61 @@ onloaddashboardTypeData() {
           this.dashboardTypeData = this.data_record.data;
         }
       },
-      error => {
-        
+      error => {     
       });
-
 }
+onloadUserTitleData() {
+
+  var data_submit = {
+    'table_name': 'usr_users_title'
+  }
+  this.admnistrationService.onLoadSystemAdministrationData(data_submit)
+    .subscribe(
+      data => {
+        this.data_record = data;
+        
+        if (this.data_record.success) {
+          this.userTitleData = this.data_record.data;
+        }
+      },
+      error => {     
+      });
+}
+onloadCountryData() {
+
+  var data_submit = {
+    'table_name': 'par_countries'
+  }
+  this.admnistrationService.onLoadSystemAdministrationData(data_submit)
+    .subscribe(
+      data => {
+        this.data_record = data;
+        
+        if (this.data_record.success) {
+          this.countryData = this.data_record.data;
+        }
+      },
+      error => {     
+      });
+}
+onloadOrgnisationDepData() {
+
+  var data_submit = {
+    'table_name': 'par_organisation_departments'
+  }
+  this.admnistrationService.onLoadSystemAdministrationData(data_submit)
+    .subscribe(
+      data => {
+        this.data_record = data;
+        
+        if (this.data_record.success) {
+          this.orgnisationDepData = this.data_record.data;
+        }
+      },
+      error => {     
+      });
+}
+
 onloadOrganisationData() {
 
   var data_submit = {
@@ -459,28 +599,6 @@ fetchSysAdminDetails(account_type_id) {
       });
 
 }
-// fetchUsersDetails(account_type_id) {
-
-//   var data_submit = {
-//     'table_name': 'tra_user_group',
-//     account_type_id:account_type_id
-//   }
-//   this.admnistrationService.onLoadSystemAdministrationData(data_submit)
-//     .subscribe(
-//       data => {
-//         this.data_record = data;
-//         if (this.data_record.success) {
-//           this.usersData = this.data_record.data;
-//         }
-
-//       },
-//       error => {
-        
-//       });
-
-// }
-
-
 
 onFuncSaveRecordData() {
 
@@ -531,7 +649,7 @@ onFuncSaveRecordData() {
 }
 
 onFuncUserData() {
-
+ 
   const formData = new FormData();
   const invalid = [];
   const controls = this.addUserDataFrm.controls;
@@ -547,21 +665,23 @@ onFuncUserData() {
   this.addUserDataFrm.get('resetcolumns')?.setValue(this.resetcolumns);
 
   this.spinnerShow('Saving '+this.parameter_name);
-  
-  this.admnistrationService.onSaveSystemAdministrationDetails('tra_user_group', this.addUserDataFrm.value, 'onsaveSysAdminData')
+  this.group_id = this.user_group_id;
+ 
+  this.addUserDataFrm.get('group_id')?.setValue(this.user_group_id);
+  this.admnistrationService.onSaveSystemAdministrationDetails('tra_user_group', this.addUserDataFrm.value, 'onsaveSysAdminUserData')
     .subscribe(
       response => {
         this.response = response;
         //the details 
         if (this.response.success) {
 
-            this.fetchUserData(this.user_group_id);
+            this.fetchUserData(this.group_id);
             this.isUserVisible = false;
-            this.user_group_id = this.response.record_id;
+            // this.user_group_id = this.response.record_id;
             
             // this.createNewDataFrm.get('id')?.setValue(this.user_group_id);
             // this.fetchAppNavigationMenus(this.user_group_id, this.account_type_id);
-            this.selectedTabIndex = 1;
+           
             this.toastr.success(this.response.message, 'Response');
             this.spinnerHide();
 
@@ -668,19 +788,46 @@ fetchWorkflowPermissionData(user_group_id) {
     }
   );
 }
-fetchUserData(user_group_id) {
-  this.spinnerShow('Loading User Permissions Details');
-  this.admnistrationService.getAppUserGroupUsers(user_group_id)
-  .subscribe(
-    data => {
-      this.data_record = data;
-      if (this.data_record.success) {
-        this.usersDetails = this.data_record.data;
-      }
-    });
-    this.spinnerHide();
 
+fetchUserData(group_id) {
+  this.spinnerShow('Loading User Permissions Details');
+
+  var data_submit = {
+    table_name: 'tra_user_group',
+    group_id: group_id
+  }
+  // this.admnistrationService.onLoadSystemAdministrationData(data_submit,'onLoadSystemGroupsUsers')c
+  this.admnistrationService.onLoadDataUrl(data_submit, 'getUserDetails')
+    .subscribe(
+      data => {
+        this.data_record = data;
+        if (this.data_record.success) {
+          this.usersData = this.data_record.data;
+        }
+      });
+  this.spinnerHide();
 }
+
+
+// fetchUserData(group_id) {
+//   var data_submit = {
+//     'table_name': 'tra_user_group',
+//     group_id: group_id
+//   }
+//   this.admnistrationService.onLoadDataUrl(data_submit,)
+//     .subscribe(
+//       data => {
+//         this.data_record = data;
+
+//         if (this.data_record.success) {
+//           this.usersData = this.data_record.data;
+//         }
+
+//       },
+//       error => {
+
+//       });
+// }
 
 onLoadUsersData() {
 
@@ -709,6 +856,13 @@ funcDeleteDetails(data) {
   this.config_record = data.data.name;
   this.deletePopupVisible = true;
 }
+funcDeleteUserDetails(data) {
+  this.addUserDataFrm.patchValue(data.data);
+  this.config_record = data.data.name;
+  this.deleteUserPopupVisible = true;
+}
+
+
 
 funcActionColClick(e, data) {
   var action_btn = e.itemData;
@@ -721,6 +875,12 @@ funcActionColClick(e, data) {
   } else if (action_btn.action === 'user_permissions') {
     this.funcEditPermissionDetails(data);
   }
+}
+funcUserActionColClick(e, data) {
+  var action_btn = e.itemData;
+  if (action_btn.action === 'delete_user') {
+    this.funcDeleteUserDetails(data);
+  } 
 }
 onCellPrepared(e) {
   this.utilityService.onCellCountriesPrepared(e);
@@ -883,6 +1043,34 @@ onDeleteSystemAdministrationDetails() {
         if (this.response.success) {
           this.fetchSysAdminDetails(this.account_type_id);
           this.deletePopupVisible = false;
+          this.toastr.success(this.response.message, 'Response');
+        }
+        else {
+
+          this.toastr.error(this.response.message, 'Response');
+
+        }
+
+      },
+      error => {
+        this.loading = false;
+      });
+
+}
+
+onDeleteUserDetails() {
+  this.group_id = this.user_group_id;
+ 
+  this.addUserDataFrm.get('group_id')?.setValue(this.user_group_id);
+  
+  this.admnistrationService.onDeleteSystemAdministrationDetails(this.addUserDataFrm.value, "tra_user_group", this.users)
+    .subscribe(
+      response => {
+        
+        this.response  = response;
+        if (this.response.success) {
+          this.fetchUserData(this.group_id);
+          this.deleteUserPopupVisible = false;
           this.toastr.success(this.response.message, 'Response');
         }
         else {

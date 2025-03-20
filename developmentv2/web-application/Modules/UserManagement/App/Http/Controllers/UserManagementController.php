@@ -962,6 +962,23 @@ class UserManagementController extends Controller
                    
                         initiateInitialProcessSubmission($table_name, $application_code, $process_id, $user_information_id);
 
+                        // $appuser_id = $user_resp['record_id'];
+                        // $group_id = 2;
+                        // $usergroup_data = [
+                        //     'group_id' => $group_id,
+                        //     'user_id' => $user_information_id,
+                        // ];
+                        
+                        // $usergroup_resp = insertRecord('tra_user_group', $usergroup_data);
+                        // if (!$usergroup_resp['success']) {
+                        //     DB::rollBack();
+                        //     return response()->json([
+                        //         'success' => false,
+                        //         'message' => 'Error occurred: ' . $usergroup_resp['message'],
+                        //     ], 200);
+                        // }
+
+
                         $template_id = 1;
                         $subject = 'Account Creation Notification';
                         // $account_type_name = DB::table('sys_account_types')

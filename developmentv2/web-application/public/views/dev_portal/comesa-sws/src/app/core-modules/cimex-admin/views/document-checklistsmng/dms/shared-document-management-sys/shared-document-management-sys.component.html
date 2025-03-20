@@ -157,6 +157,7 @@
     <!-- <dxi-column *ngIf="table_name == 'par_permit_typecategories'" dataField="code"
     caption="{{ 'code' | translate }}">
     </dxi-column> -->
+    <dxi-column dataField="description" caption="{{ 'description' | translate }}"></dxi-column>
     <dxi-column dataField="is_enabled" caption="{{ 'is_enabled' | translate }}" [dataType]="'boolean'" [width]="100">
         <dxo-editing [allowUpdating]="true" [allowDeleting]="true" [allowAdding]="true"></dxo-editing>
     </dxi-column>
@@ -185,12 +186,7 @@
             <label>{{ 'name' | translate }}</label>
             <dx-text-box formControlName="name" [showClearButton]="true"></dx-text-box>
           </div>
-        
-          <div class="col-lg-6">
-            <label>{{ 'description' | translate }}</label>
-            <dx-text-box formControlName="description" [showClearButton]="true"></dx-text-box>
-          </div>
-  
+         
           <!-- <div *ngIf="table_name == 'dms_sites_repository_defination'" class="col-lg-6">
               <label>{{ 'Site Id' | translate }}</label>
               <dx-text-box formControlName="site_id" [showClearButton]="true"></dx-text-box>
@@ -264,6 +260,10 @@
               <dx-select-box [dataSource]="statusData" formControlName="product_type_id" valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
             </div>
          -->
+           <div class="col-lg-6">
+          <label>{{ 'description' | translate }}</label>
+          <dx-text-box formControlName="description" [showClearButton]="true"></dx-text-box>
+           </div>
             
             <div class="col-lg-6">
               <label>{{ "is_enabled" | translate }}</label>

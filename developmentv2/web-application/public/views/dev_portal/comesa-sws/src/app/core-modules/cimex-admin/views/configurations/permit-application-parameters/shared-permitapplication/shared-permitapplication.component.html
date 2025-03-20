@@ -69,7 +69,13 @@
           <div *ngIf="table_name == 'par_storage_conditions'" class="col-lg-6">
             <label>{{ 'product_type' | translate }}</label>
             <dx-select-box [dataSource]="productTypeData" formControlName="product_type_id" valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
-          </div>    
+          </div>   
+          
+          <div class="col-lg-6">
+            <label>{{ 'code' | translate }}</label>
+            <dx-text-box formControlName="code" [showClearButton]="true"></dx-text-box>
+          </div>
+
           <div class="col-lg-6">
             <label>{{ "is_enabled" | translate }}</label>
             <dx-select-box [searchEnabled]="true" formControlName="is_enabled" [dataSource]="regStatusOptions" valueExpr="value" displayExpr="text"></dx-select-box>

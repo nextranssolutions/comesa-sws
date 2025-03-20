@@ -305,13 +305,14 @@
                 </div>
 
             </dxi-item>
+
             <dxi-item title="{{'users'| translate}}" icon="group">
                 <dx-button text="{{ 'map_users' | translate }}" type="default" icon="fa fa-save"
                 [elementAttr]="{ id: 'elementId', class: '' }" (onClick)="hasReadpermissions=false;onAddUserData()">
                 </dx-button>
                 <dx-data-grid [allowColumnReordering]="true" (onCellPrepared)="onCellPrepared($event)"
                      class="table row-border hover"
-                    [wordWrapEnabled]="true" [dataSource]="usersDetails" [remoteOperations]="true"
+                    [wordWrapEnabled]="true" [dataSource]="usersData" [remoteOperations]="true"
                     [showBorders]="true" [allowColumnResizing]="true" [columnHidingEnabled]="false" keyExpr="id" (onToolbarPreparing)="onAdvanceProductRegistrySearch($event)">
 
                     <dxo-export [enabled]="true" [fileName]="'records' | translate" [formats]="['pdf', 'xlsx']"
@@ -328,16 +329,14 @@
                   <dxi-column [width]="100" caption="{{ 'action' | translate }}" name="command-editing" [allowFiltering]="false"
                     [allowSorting]="false" cellTemplate="cellTemplate">
                     <div *dxTemplate="let data of 'cellTemplate'">
-                      <dx-menu (onItemClick)="funcActionColClick($event,data)" [items]="actionsMenuItems"></dx-menu>
+                      <dx-menu (onItemClick)="funcUserActionColClick($event,data)" [items]="userMenuItems"></dx-menu>
                     </div>
                   </dxi-column>
-                  <dxi-column  dataField="user_id"
-                    caption="{{ 'user' | translate }}">
-                    <dxo-lookup [dataSource]="usersData" displayExpr="name" valueExpr="id">
-                    </dxo-lookup>
-                  </dxi-column>
-                  <!-- <dxi-column dataField="name" caption="{{ 'name' | translate }}"></dxi-column> -->
-
+                  
+                  <dxi-column  dataField="first_name" caption="{{ 'first_name' | translate }}"></dxi-column>
+                  <dxi-column  dataField="email_address"caption="{{ 'email_address' | translate }}"></dxi-column>
+                  <!-- <dxi-column  dataField="created_on"caption="{{ 'date_added' | translate }}"></dxi-column> -->
+                   
 
                 </dx-data-grid>
                 <div class="col-lg-12 row">
@@ -364,38 +363,24 @@ title="{{ 'users_mapping' | translate }}" [dragEnabled]="false" [hideOnOutsideCl
     <form role="form" enctype="multipart/form-data" role="form" [formGroup]="addUserDataFrm"
       (ngSubmit)="onFuncUserData()">
 
-      <div class="row">
+            <div class="row">
 
-        <div class="col-lg-6">
-          <label>{{ 'user' | translate }}</label>
-          <dx-select-box formControlName="user_id" [showClearButton]="true" [dataSource]="usersData"
-            valueExpr="id" [searchEnabled]="true" displayExpr="created_by">
-          </dx-select-box>
-        </div>
-        <!-- <div class="col-lg-12">
-          <label>{{ 'name' | translate }}</label>
-          <dx-text-box formControlName="name" [showClearButton]="true">
+                <div class="col-lg-10">
+                    <label>{{ 'user' | translate }}</label>
+                    <dx-text-box formControlName="user_id" [placeholder]="'user' | translate" [value]="selectedUser" >
+                    </dx-text-box>
+               </div>                          
+               
+                <div class="col-lg-2 pt-5">
+                    <dx-button [elementAttr]="{ class: 'btn btn-primary' }"
+                        [disabled]="ammendReadOnly" style="margin-top:25px !important;"
+                        text="{{ 'select_user' | translate }}" type="default"
+                        (onClick)="onSearchSpecificUser()">
+                    </dx-button>
+                </div>
+            </div>
+    
 
-          </dx-text-box>
-        </div>
-        <div class="col-lg-12">
-
-          <label>{{ 'description' | translate }}</label>
-          <dx-text-area formControlName="description">
-
-          </dx-text-area>
-        </div>
-
-        <div class="col-lg-12">
-
-          <label>{{ 'code' | translate }}</label>
-          <dx-text-box formControlName="code" [showClearButton]="true">
-
-          </dx-text-box>
-        </div> -->
-        <!-- Change to Account type id column -->
-
-      </div>
     </form>
     <div class="col-lg-8 pull-right">
 
@@ -427,6 +412,86 @@ title="{{ 'users_mapping' | translate }}" [dragEnabled]="false" [hideOnOutsideCl
         </div>
     </div>
 
+</dx-popup>
+<dx-popup [visible]="deleteUserPopupVisible" [width]="funcpopWidth(30)" [height]="funcpopHeight(25)" [showTitle]="true"
+    title="{{ 'delete_confirmation_of '+users | translate }}" (onHidden)="deleteUserPopupVisible = false">
+
+    <div>
+        <p class="confirmation-text">
+            {{ 'are_you_sure_you_want_to_delete' | translate }}
+            "<strong>{{config_record}}</strong>"?
+        </p>
+        <div class="button-container">
+            <dx-button text="{{ 'yes' | translate }}" type="default" (onClick)="onDeleteUserDetails()">
+            </dx-button>
+            <dx-button text="{{ 'no' | translate }}" (onClick)="deleteUserPopupVisible = false">
+            </dx-button>
+        </div>
+    </div>
+
+</dx-popup>
+
+<dx-popup class="popup" [width]="funcpopWidth(80)" [height]="600" [showTitle]="true"
+title="{{'user_details' | translate}}" [dragEnabled]="false" [hideOnOutsideClick]="false"
+[(visible)]="UserPopupVisible">
+
+<div *dxTemplate="let data of 'content'">
+    <dx-scroll-view>
+        
+        <dx-data-grid class="table row-border hover" [allowColumnResizing]="true" [wordWrapEnabled]="true"
+        [columnHidingEnabled]="true" [dataSource]="specificUserData" [remoteOperations]="true"
+        [showBorders]="true" itemsExpr="children" keyExpr="id" parentIdExpr="parent_id"
+        (onToolbarPreparing)="onAdvanceProductRegistrySearch($event)" [selectedRowKeys]="[1, 29, 42]">
+        
+        <dxo-export [enabled]="true" fileName="Data" [allowExportSelectedData]="true"></dxo-export>
+        <dxo-search-panel [visible]="true"></dxo-search-panel>
+        <dxo-header-filter [visible]="true"></dxo-header-filter>
+        <dxo-filter-row [visible]="show_advancesearch"></dxo-filter-row>
+        
+        <dxo-paging [enabled]="true">
+            <dxo-pager [showInfo]="true" infoText="Page #{0}. Total: {1} ({2} items)" [showPageSizeSelector]="true"
+                [allowedPageSizes]="[50, 100]">
+            </dxo-pager>
+        </dxo-paging>
+            <dxi-column [width]="150" caption="{{'action' | translate}}" name="command-editing"
+                [allowFiltering]="false" [allowSorting]="false" cellTemplate="cellTemplate">
+                <div *dxTemplate="let data of 'cellTemplate'">
+
+                    <dx-button text="{{'select_user' | translate}}" 
+                        type="success" icon="edit" [elementAttr]="{ class: 'btn btn-primary' }" (onClick)="onSelectSpecificUser(data.data)">
+                    </dx-button>
+                </div>
+            </dxi-column>
+            <dxi-column dataField="user_title_id" caption="{{'user_title' | translate}}">
+                <dxo-lookup [dataSource]="userTitleData" displayExpr="name" valueExpr="id">
+                </dxo-lookup>
+            </dxi-column>
+            <dxi-column dataField="country_of_origin_id" caption="{{'country_of_origin' | translate}}">
+                <dxo-lookup [dataSource]="countryData" displayExpr="name" valueExpr="id">
+                </dxo-lookup>
+            </dxi-column>
+            <dxi-column dataField="organisation_id" caption="{{'competent_authoriry' | translate}}">
+                <dxo-lookup [dataSource]="organisationData" displayExpr="name" valueExpr="id">
+                </dxo-lookup>
+            </dxi-column>
+            <dxi-column dataField="organisation_department_id" caption="{{'competent_authority_department' | translate}}">
+                <dxo-lookup [dataSource]="orgnisationDepData" displayExpr="name" valueExpr="id">
+                </dxo-lookup>
+            </dxi-column>
+            <dxi-column dataField="email_address" caption="{{'email_address' | translate}}">
+            </dxi-column>
+            <dxi-column dataField="first_name" caption="{{'first_name' | translate}}"></dxi-column>
+            <dxi-column dataField="surname" caption="{{'surname' | translate}}"></dxi-column>
+            <dxi-column dataField="account_type_id" caption="{{'account_type' | translate}}">
+                <dxo-lookup [dataSource]="AccountTypesData" displayExpr="name" valueExpr="id">
+                </dxo-lookup>
+            </dxi-column>
+            
+
+            <dxo-paging [pageSize]="50"></dxo-paging>
+        </dx-data-grid>
+    </dx-scroll-view>
+</div>
 </dx-popup>
 
 

@@ -3,8 +3,8 @@
 </dx-button>
 
 <dx-data-grid (onCellPrepared)="onCellPrepared($event)" class="col-lg-12 table row-border hover"
-  (onExporting)="onExporting($event)" [wordWrapEnabled]="true" [dataSource]="NewConfigData"
-  [remoteOperations]="true" [showBorders]="true" [allowColumnResizing]="true" [columnHidingEnabled]="true" keyExpr="id"
+  (onExporting)="onExporting($event)" [wordWrapEnabled]="true" [dataSource]="NewConfigData" [remoteOperations]="true"
+  [showBorders]="true" [allowColumnResizing]="true" [columnHidingEnabled]="true" keyExpr="id"
   (onToolbarPreparing)="onAdvanceProductRegistrySearch($event)">
 
   <dxo-export [enabled]="true" [fileName]="'records' | translate" [formats]="['pdf', 'xlsx']"
@@ -29,15 +29,14 @@
   <dxi-column dataField="description" caption="{{ 'description' | translate }}"></dxi-column>
 
   <dxi-column *ngIf="table_name == 'par_permit_typecategories'" dataField="product_type_id"
-      caption="{{ 'product_type' | translate }}">
-      <dxo-lookup [dataSource]="permitTypeData" displayExpr="name" valueExpr="id">
-      </dxo-lookup>
+    caption="{{ 'product_type' | translate }}">
+    <dxo-lookup [dataSource]="permitTypeData" displayExpr="name" valueExpr="id">
+    </dxo-lookup>
   </dxi-column>
-  <dxi-column *ngIf="table_name == 'par_permit_typecategories'" dataField="code"
-  caption="{{ 'code' | translate }}">
+  <dxi-column *ngIf="table_name == 'par_permit_typecategories'" dataField="code" caption="{{ 'code' | translate }}">
   </dxi-column>
   <dxi-column dataField="is_enabled" caption="{{ 'is_enabled' | translate }}" [dataType]="'boolean'" [width]="100">
-      <dxo-editing [allowUpdating]="true" [allowDeleting]="true" [allowAdding]="true"></dxo-editing>
+    <dxo-editing [allowUpdating]="true" [allowDeleting]="true" [allowAdding]="true"></dxo-editing>
   </dxi-column>
 
 </dx-data-grid>
@@ -47,41 +46,44 @@
   [showIndicator]="true" [showPane]="true" [shading]="true" [message]="spinnerMessage" [hideOnOutsideClick]="false">
 </dx-load-panel>
 
-<dx-popup class="popup" [width]="funcpopWidth(75)" [height]="440" [showTitle]="true" 
+<dx-popup class="popup" [width]="funcpopWidth(75)" [height]="440" [showTitle]="true"
   title="{{ 'add_new' | translate }} {{parameter_name | translate }}" [dragEnabled]="false" [hideOnOutsideClick]="true"
   [(visible)]="onAddNewConfiVisible">
 
   <div *dxTemplate="let data of 'content'">
     <dx-scroll-view>
 
-      <form role="form" enctype="multipart/form-data" [formGroup]="createNewDataFrm" (ngSubmit)="onFuncSaveNewConfigData()">
+      <form role="form" enctype="multipart/form-data" [formGroup]="createNewDataFrm"
+        (ngSubmit)="onFuncSaveNewConfigData()">
         <div class="col-lg-6">
           <label>{{ 'name' | translate }}</label>
           <dx-text-box formControlName="name" [showClearButton]="true"></dx-text-box>
         </div>
-      
+
         <div class="col-lg-6">
           <label>{{ 'description' | translate }}</label>
           <dx-text-box formControlName="description" [showClearButton]="true"></dx-text-box>
         </div>
-      
+
         <div class="row">
           <div *ngIf="table_name == 'par_permit_typecategories'" class="col-lg-6">
             <label>{{ 'product_type' | translate }}</label>
-            <dx-select-box [dataSource]="permitTypeData" formControlName="product_type_id" valueExpr="id" [searchEnabled]="true" displayExpr="name"></dx-select-box>
+            <dx-select-box [dataSource]="permitTypeData" formControlName="product_type_id" valueExpr="id"
+              [searchEnabled]="true" displayExpr="name"></dx-select-box>
           </div>
-      
+
           <div class="col-lg-6">
             <label>{{ 'code' | translate }}</label>
             <dx-text-box formControlName="code" [showClearButton]="true"></dx-text-box>
           </div>
-      
+
           <div class="col-lg-6">
             <label>{{ "is_enabled" | translate }}</label>
-            <dx-select-box [searchEnabled]="true" formControlName="is_enabled" [dataSource]="regStatusOptions" valueExpr="value" displayExpr="text"></dx-select-box>
+            <dx-select-box [searchEnabled]="true" formControlName="is_enabled" [dataSource]="regStatusOptions"
+              valueExpr="value" displayExpr="text"></dx-select-box>
           </div>
         </div>
-      
+
         <div class="row">
           <div class="col-lg-4 pull-right">
             <dx-button text="{{ 'save' | translate }} {{ parameter_name | translate }}" type="default" icon="fa fa-save"
@@ -89,7 +91,7 @@
             </dx-button>
           </div>
         </div>
-      </form>      
+      </form>
     </dx-scroll-view>
   </div>
 </dx-popup>
@@ -130,36 +132,3 @@
   </div>
 
 </dx-popup>
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-

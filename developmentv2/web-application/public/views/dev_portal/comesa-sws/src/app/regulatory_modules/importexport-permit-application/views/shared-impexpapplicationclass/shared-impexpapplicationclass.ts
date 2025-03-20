@@ -287,7 +287,7 @@ export class SharedImpexpApplicationClass {
 
       this.application_code = this.application_details.application_code;
       this.applicationGeneraldetailsfrm.patchValue(this.application_details);
- 
+     
     }
 
 
@@ -485,10 +485,10 @@ export class SharedImpexpApplicationClass {
             this.permit_product_id = this.app_resp.record_id;
             this.isPermitVisaLicProductsAddPopupVisible = false;
             this.toastr.success(this.app_resp.message, 'Response');
-            this.isSaved = true;
+           
           } else {
             this.toastr.error(this.app_resp.message, 'Alert');
-            this.isSaved = false;
+           
           }
         },
         error => {
@@ -543,17 +543,17 @@ export class SharedImpexpApplicationClass {
 
             this.applicationGeneraldetailsfrm.patchValue({ permit_id: this.permit_id })
             this.toastr.success(this.product_resp.message, 'Response');
-            this.isSaved = true; 
+            
 
           } else {
             this.toastr.error(this.product_resp.message, 'Alert');
-            this.isSaved = false;
+            
           }
           this.spinnerHide();
         },
         error => {
           this.loading = false;
-          this.isSaved = false;
+         
           this.spinnerHide();
         });
   }
@@ -786,7 +786,10 @@ export class SharedImpexpApplicationClass {
   }
 
   onNextStep() {
-    if (!this.isSaved) {
+    const application_id = this.applicationGeneraldetailsfrm.get('id')?.value;
+    console.log(application_id);
+
+    if (!application_id || application_id < 0) {
       this.toastr.error('Kindly save before proceeding to the next step.', 'Validation Error');
       return;
     }

@@ -63,7 +63,7 @@ class SysAdministrationController extends Controller
             $user_name = $req->user_name;
 
             $data = $req->all();
-
+           
             $table_name = $req->table_name;
             $resetcolumns = $req->resetcolumns;
             $record_id = $req->id;
@@ -89,6 +89,64 @@ class SysAdministrationController extends Controller
             } else {
                 unset($data['id']);
                 $data['created_by'] = $user_id;
+                $data['created_on'] = Carbon::now();
+                $resp = insertRecord($table_name, $data, $user_name);
+            }
+
+            if ($resp['success']) {
+
+                $res = array(
+                    'success' => true,
+                    'record_id' => $resp['record_id'],
+                    'message' => 'Saved Successfully'
+                );
+            } else {
+                $res = array(
+                    'success' => false,
+                    'message' => $resp['message']
+                );
+            }
+        } catch (\Exception $exception) {
+            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        } catch (\Throwable $throwable) {
+            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        }
+        return response()->json($res, 200);
+    }
+    public function onSaveSystemAdministrationUserDetails(Request $req)
+    {
+        try {
+            $resp = "";
+            $user_id = $req->user_id;
+            $user_name = $req->user_name;
+
+            $data = $req->all();
+           
+            $table_name = $req->table_name;
+            $resetcolumns = $req->resetcolumns;
+            $record_id = $req->id;
+            unset($data['user_id']);
+            unset($data['user_name']);
+            unset($data['table_name']);
+            unset($data['resetcolumns']);
+            if ($resetcolumns != '') {
+                $restcolumn_array = explode(',', $resetcolumns);
+                $data = unsetArrayData($data, $restcolumn_array);
+            }
+            if (validateIsNumeric($record_id)) {
+                $where = array('id' => $record_id);
+                if (recordExists($table_name, $where)) {
+
+                    $data['dola'] = Carbon::now();
+                    $data['altered_by'] = $user_id;
+
+                    $previous_data = getPreviousRecords($table_name, $where);
+
+                    $resp = updateRecord($table_name, $previous_data['results'], $where, $data, $user_name);
+                }
+            } else {
+                unset($data['id']);
+                $data['user_id'] = $user_id;
                 $data['created_on'] = Carbon::now();
                 $resp = insertRecord($table_name, $data, $user_name);
             }
@@ -861,6 +919,43 @@ class SysAdministrationController extends Controller
         return response()->json($res, 200);
     }
 
+    public function onLoadSystemGroupsUsers(Request $req)
+    {
+        try {
+            $requestData = $req->all();
+            $filter = $req->filter;
+            $table_name = $req->table_name;
+            $table_name = base64_decode($table_name);
+
+            $sectionSelection = $req->sectionSelection;
+            unset($requestData['table_name']);
+
+            $check_exempt = DB::table('tra_exemptedpublic_tables')
+                ->where(array('table_name' => $table_name))
+                ->count();
+            $sql = DB::table($table_name . ' as t1');
+
+            if ($check_exempt > 0 || $table_name == null || $table_name == '') {
+                $res = array('success' => false, 'message' => 'Table has been blocked for access');
+                return response()->json($res);
+            }
+            if (!empty($requestData)) {
+                $sql->where($requestData);
+            }
+
+            $data = $sql->get();
+
+            $res = array('success' => true, 'data' => $data);
+        } catch (\Exception $exception) {
+            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        } catch (\Throwable $throwable) {
+            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        }
+
+        return response()->json($res, 200);
+    }
+
+
 
     public function onDeleteSystemAdministrationDetails(Request $req)
     {
@@ -935,6 +1030,8 @@ class SysAdministrationController extends Controller
 
         return response()->json($res);
     }
+
+
 
     public function getAppUserGroupNavigationMenus(Request $req)
     {
@@ -1103,6 +1200,7 @@ class SysAdministrationController extends Controller
         }
         return response()->json($res, 200);
     }
+ 
     public function getAppUserGroupWorkflowPermission(Request $req)
     {
         try {
@@ -1260,6 +1358,43 @@ public function getAppHscodes(Request $req)
 
     return response()->json($res, 200);
 }
+
+public function getUserDetails(Request $req)
+{
+    try {
+        $groupId = $req->input('group_id');
+        if (!$groupId) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Group ID is required.'
+            ], 400);
+        }
+
+        $users = DB::table('tra_user_group as t1')
+        ->join('usr_users_information as t2', 't1.user_id', '=', 't2.id')
+        ->where('t1.group_id', '=', $groupId)
+        ->select(
+            't2.id',             
+            't2.first_name',
+            't2.email_address',
+            't2.created_on',
+            't2.is_enabled'
+        )
+        ->get();
+
+        $res = ['success' => true, 'data' => $users];
+    } catch (\Exception $exception) {
+        $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+    } catch (\Throwable $throwable) {
+        $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+    }
+
+    return response()->json($res, 200);
+
+    return response()->json($res, 200);
+}
+
+
 public function onGetStartHsCode(Request $req)
 {
     try {

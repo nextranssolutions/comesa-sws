@@ -453,8 +453,6 @@ const routes: Routes = [{
     path: 'app-location-parameters',
     component: LocationParametersComponent
   },
-
-
   {
     path: 'app-app-workflowstatuses',
     component: AppWorkflowstatusesComponent
