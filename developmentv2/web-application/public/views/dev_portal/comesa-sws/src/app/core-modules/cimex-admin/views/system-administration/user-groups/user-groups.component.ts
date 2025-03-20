@@ -34,6 +34,7 @@ export class UserGroupsComponent implements OnInit {
   editColumnName: any;
   changes: Array<any>;
   workflowData:any;
+  specificUserData: any;
   workflowStageData:any;
   navigationTypesData:any;
   regulatoryFunctionData: any;
@@ -47,6 +48,7 @@ export class UserGroupsComponent implements OnInit {
   response: any;
   showTabPanel: boolean = false;
   tabPanelPopupVisible: boolean = false;
+  UserPopupVisible: boolean = false;
   showWizard = false; // Add this variable to control the visibility of the wizard
   AccountTypesData:any;
   allAccountTypesData:any;
@@ -56,8 +58,10 @@ export class UserGroupsComponent implements OnInit {
   hideAnimation: any;
   showAnimation: any;
   record_id:number;
-
+  group_id: number;
+  addUserDataFrm: FormGroup;
   addPopupVisible = false;
+  isUserVisible: boolean = false;
   deletePopupVisible = false;
   data_record: any;
   config_record:string;
@@ -86,8 +90,8 @@ export class UserGroupsComponent implements OnInit {
   stylingModes: DxTabPanelTypes.TabsStyle[] = ['primary', 'secondary'];
   stylingMode: DxTabPanelTypes.TabsStyle = this.stylingModes[0];
   screenWidth: any;
-
-  
+  selectedUser: string;
+  ammendReadOnly: boolean; 
   loadingVisible: boolean;
   spinnerMessage: string;
   updateuserPermissionfrm: any;
@@ -95,7 +99,12 @@ export class UserGroupsComponent implements OnInit {
   userAccessLevels: any[] = [];
   dashboardTypeData:any;
   accountTypesData:any;
+  usersData: any;
   instutitionTypesData:any;
+  userTitleData: any;
+  countryData: any;
+  organisationData:any;
+  orgnisationDepData: any;
   partnerStateOptions = [
     { value: true, text: 'True' },
     { value: false, text: 'False' },
@@ -132,6 +141,16 @@ export class UserGroupsComponent implements OnInit {
       is_super_admin: new FormControl('', Validators.compose([])),
 
     });
+
+    this.addUserDataFrm = new FormGroup({
+      id: new FormControl('', Validators.compose([])),
+      group_id: new FormControl('', Validators.compose([])),
+      user_id: new FormControl('', Validators.compose([])),
+      first_name: new FormControl('', Validators.compose([])),
+      email_address: new FormControl('', Validators.compose([])),
+      created_on: new FormControl('', Validators.compose([])),
+      is_enabled: new FormControl('', Validators.compose([])),
+    });
    // this.resetcolumns = 'resetcolumns,account_type_id,routerLink,has_partnerstate_defination';
     
   }
@@ -139,12 +158,17 @@ ngOnInit() {
   // other initializations
   this.fetchSysAdminDetails();
   this.fetchPermissionsDetails();
+  this.fetchSpecificUserData();
   this.onLoadnavigationTypesData();
   this.onLoadregulatoryFunctionData();
+  this.fetchUserData(this.group_id);
   this.spinnerShow('Loading '+this.parameter_name);
   this.spinnerHide();
   this.checkScreenSize();
   this.onLoadWorkflowData();
+  this.onloadUserTitleData();
+  this.onloadCountryData();
+  this.onloadOrganisationData()
 
 
   //for the action menu
@@ -182,6 +206,30 @@ onAccountTypeSelection($event){
     // this.onloadinstutitionTypesData(data.id)
   }
 }
+
+onSearchSpecificUser() {
+  
+  this.UserPopupVisible = true;
+  
+  };
+
+  onSelectSpecificUser(selectedUser: any) {
+ 
+      
+    if (selectedUser && selectedUser.id) {
+      this.selectedUser = selectedUser.id;
+  
+      
+      this.addUserDataFrm.patchValue({
+        user_id: this.selectedUser
+      });
+  
+        this.UserPopupVisible = false;
+    } else {
+        console.error("Invalid User selection.");
+    }
+  }
+
 funcUserRolesTabClick(e){
   //add logic
   let tab_index = e.itemIndex;
@@ -405,6 +453,82 @@ onLoadWorkflowData(){
 
 }
 
+onloadUserTitleData() {
+
+  var data_submit = {
+    'table_name': 'usr_users_title'
+  }
+  this.admnistrationService.onLoadSystemAdministrationData(data_submit)
+    .subscribe(
+      data => {
+        this.data_record = data;
+        
+        if (this.data_record.success) {
+          this.userTitleData = this.data_record.data;
+        }
+      },
+      error => {     
+      });
+}
+
+onloadCountryData() {
+
+  var data_submit = {
+    'table_name': 'par_countries'
+  }
+  this.admnistrationService.onLoadSystemAdministrationData(data_submit)
+    .subscribe(
+      data => {
+        this.data_record = data;
+        
+        if (this.data_record.success) {
+          this.countryData = this.data_record.data;
+        }
+      },
+      error => {     
+      });
+}
+
+
+onloadOrganisationData() {
+
+  var data_submit = {
+    'table_name': 'tra_organisation_information'
+  }
+  this.admnistrationService.onLoadSystemAdministrationData(data_submit)
+    .subscribe(
+      data => {
+        this.data_record = data;
+        
+        if (this.data_record.success) {
+          this.organisationData = this.data_record.data;
+        }
+      },
+      error => {
+        
+      });
+
+}
+
+onloadOrgnisationDepData() {
+
+  var data_submit = {
+    'table_name': 'par_organisation_departments'
+  }
+  this.admnistrationService.onLoadSystemAdministrationData(data_submit)
+    .subscribe(
+      data => {
+        this.data_record = data;
+        
+        if (this.data_record.success) {
+          this.orgnisationDepData = this.data_record.data;
+        }
+      },
+      error => {     
+      });
+}
+
+
 spinnerShow(spinnerMessage){
   this.loadingVisible = true;
   this.spinnerMessage = spinnerMessage;
@@ -432,7 +556,42 @@ fetchSysAdminDetails() {
 
 }
 
+fetchUserData(group_id) {
+  this.spinnerShow('Loading User Permissions Details');
 
+  var data_submit = {
+    table_name: 'tra_user_group',
+    group_id: group_id
+  }
+  this.admnistrationService.onLoadDataUrl(data_submit, 'getUserDetails')
+    .subscribe(
+      data => {
+        this.data_record = data;
+        if (this.data_record.success) {
+          this.usersData = this.data_record.data;
+        }
+      });
+  this.spinnerHide();
+}
+
+
+fetchSpecificUserData() {
+  this.spinnerShow('Loading User Permissions Details');
+
+  var data_submit = {
+    table_name: 'usr_users_information',
+    
+  }
+  this.admnistrationService.onLoadSystemAdministrationData(data_submit,)
+    .subscribe(
+      data => {
+        this.data_record = data;
+        if (this.data_record.success) {
+          this.specificUserData = this.data_record.data;
+        }
+      });
+  this.spinnerHide();
+}
 
 onFuncSaveRecordData() {
 
@@ -466,6 +625,54 @@ onFuncSaveRecordData() {
             this.createNewDataFrm.get('id')?.setValue(this.user_group_id);
             this.fetchAppNavigationMenus(this.user_group_id, this.account_type_id);
             this.selectedTabIndex = 1;
+            this.toastr.success(this.response.message, 'Response');
+            this.spinnerHide();
+
+        } else {
+          this.toastr.error(this.response.message, 'Alert');
+        }
+        // 
+        this.spinnerHide();
+      },
+      error => {
+        this.toastr.error('Error Occurred', 'Alert');
+        // 
+        this.spinnerHide();
+      });
+}
+
+onFuncUserData() {
+ 
+  const formData = new FormData();
+  const invalid = [];
+  const controls = this.addUserDataFrm.controls;
+  for (const name in controls) {
+    if (controls[name].invalid) {
+      this.toastr.error('Fill In All Mandatory fields with (*), missing value on ' + name.replace('_id', ''), 'Alert');
+      return;
+    }
+  }
+  if (this.addUserDataFrm.invalid) {
+    return;
+  }
+  this.addUserDataFrm.get('resetcolumns')?.setValue(this.resetcolumns);
+
+  this.spinnerShow('Saving '+this.parameter_name);
+  this.group_id = this.user_group_id;
+  this.addUserDataFrm.get('group_id')?.setValue(this.user_group_id);
+  this.admnistrationService.onSaveSystemAdministrationDetails('tra_user_group', this.addUserDataFrm.value, 'onsaveSysAdminUserData')
+    .subscribe(
+      response => {
+        this.response = response; 
+        if (this.response.success) {
+
+            this.fetchUserData(this.group_id);
+            this.isUserVisible = false;
+            // this.user_group_id = this.response.record_id;
+            
+            // this.createNewDataFrm.get('id')?.setValue(this.user_group_id);
+            // this.fetchAppNavigationMenus(this.user_group_id, this.account_type_id);
+           
             this.toastr.success(this.response.message, 'Response');
             this.spinnerHide();
 
@@ -519,6 +726,11 @@ onAddNewRecord() {
   this.tabPanelPopupVisible = true;
   this.AppNavigationMenus = []; 
 
+}
+
+onAddUserData() {
+  this.addUserDataFrm.reset();
+  this.isUserVisible = true;
 }
 fetchAppNavigationMenus(user_group_id, account_type_id) {
   this.spinnerShow('Loading User Permissions Details');
