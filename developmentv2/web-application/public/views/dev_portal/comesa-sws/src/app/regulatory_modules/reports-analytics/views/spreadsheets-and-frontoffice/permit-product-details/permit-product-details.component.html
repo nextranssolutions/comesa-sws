@@ -378,7 +378,7 @@
     <div *dxTemplate="let data of 'content'">
         <dx-scroll-view>
             <dx-data-grid class="table row-border hover" [allowColumnResizing]="true" [wordWrapEnabled]="true"
-                [columnHidingEnabled]="true" (onToolbarPreparing)="onManufacturerPreparing($event)"
+                [columnHidingEnabled]="true" 
                 [dataSource]="manufacturersData" [remoteOperations]='true' keyExpr="id">
                 <dxo-filter-row [visible]="false"></dxo-filter-row>
                 <dxo-search-panel [visible]="true">

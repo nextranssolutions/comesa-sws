@@ -24,6 +24,7 @@ resetcolumns = 'dashboard_type_id,resetcolumns,routerLink,has_partnerstate_defin
   workflowPermissionData:any;
   table_name:string = 'usr_users_groups';
   parameter_name:string = "User Group & Permissions Management";
+  users: string = "user_in_the_group"
   iconPosition:any='top';
   regStatusOptions = [
     { value: true, text: 'Yes' },
@@ -63,6 +64,7 @@ resetcolumns = 'dashboard_type_id,resetcolumns,routerLink,has_partnerstate_defin
   record_id:number;
   addPopupVisible = false;
   deletePopupVisible = false;
+  deleteUserPopupVisible = false;
   data_record: any;
   config_record:string;
   isLoading:boolean;
@@ -95,6 +97,16 @@ resetcolumns = 'dashboard_type_id,resetcolumns,routerLink,has_partnerstate_defin
       //  { text: "View", action: 'view_record', icon: 'fa fa-eye' },
         { text: "Edit Permission", action: 'edit_record', icon: 'fa fa-edit' },
         { text: "Delete", action: 'delete_record', icon: 'fa fa-trash' }
+      ]
+    }
+  ];
+  userMenuItems = [
+    {
+      text: "Action",
+      icon: 'menu',
+      items: [
+     
+        { text: "Delete", action: 'delete_user', icon: 'fa fa-trash' }
       ]
     }
   ];
@@ -844,6 +856,13 @@ funcDeleteDetails(data) {
   this.config_record = data.data.name;
   this.deletePopupVisible = true;
 }
+funcDeleteUserDetails(data) {
+  this.addUserDataFrm.patchValue(data.data);
+  this.config_record = data.data.name;
+  this.deleteUserPopupVisible = true;
+}
+
+
 
 funcActionColClick(e, data) {
   var action_btn = e.itemData;
@@ -856,6 +875,12 @@ funcActionColClick(e, data) {
   } else if (action_btn.action === 'user_permissions') {
     this.funcEditPermissionDetails(data);
   }
+}
+funcUserActionColClick(e, data) {
+  var action_btn = e.itemData;
+  if (action_btn.action === 'delete_user') {
+    this.funcDeleteUserDetails(data);
+  } 
 }
 onCellPrepared(e) {
   this.utilityService.onCellCountriesPrepared(e);
@@ -1018,6 +1043,34 @@ onDeleteSystemAdministrationDetails() {
         if (this.response.success) {
           this.fetchSysAdminDetails(this.account_type_id);
           this.deletePopupVisible = false;
+          this.toastr.success(this.response.message, 'Response');
+        }
+        else {
+
+          this.toastr.error(this.response.message, 'Response');
+
+        }
+
+      },
+      error => {
+        this.loading = false;
+      });
+
+}
+
+onDeleteUserDetails() {
+  this.group_id = this.user_group_id;
+ 
+  this.addUserDataFrm.get('group_id')?.setValue(this.user_group_id);
+  
+  this.admnistrationService.onDeleteSystemAdministrationDetails(this.addUserDataFrm.value, "tra_user_group", this.users)
+    .subscribe(
+      response => {
+        
+        this.response  = response;
+        if (this.response.success) {
+          this.fetchUserData(this.group_id);
+          this.deleteUserPopupVisible = false;
           this.toastr.success(this.response.message, 'Response');
         }
         else {

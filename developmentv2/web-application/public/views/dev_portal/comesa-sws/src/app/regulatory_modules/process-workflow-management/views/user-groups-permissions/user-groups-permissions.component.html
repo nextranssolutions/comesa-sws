@@ -329,13 +329,13 @@
                   <dxi-column [width]="100" caption="{{ 'action' | translate }}" name="command-editing" [allowFiltering]="false"
                     [allowSorting]="false" cellTemplate="cellTemplate">
                     <div *dxTemplate="let data of 'cellTemplate'">
-                      <dx-menu (onItemClick)="funcActionColClick($event,data)" [items]="actionsMenuItems"></dx-menu>
+                      <dx-menu (onItemClick)="funcUserActionColClick($event,data)" [items]="userMenuItems"></dx-menu>
                     </div>
                   </dxi-column>
                   
                   <dxi-column  dataField="first_name" caption="{{ 'first_name' | translate }}"></dxi-column>
                   <dxi-column  dataField="email_address"caption="{{ 'email_address' | translate }}"></dxi-column>
-                  <dxi-column  dataField="created_on"caption="{{ 'date_added' | translate }}"></dxi-column>
+                  <!-- <dxi-column  dataField="created_on"caption="{{ 'date_added' | translate }}"></dxi-column> -->
                    
 
                 </dx-data-grid>
@@ -408,6 +408,23 @@ title="{{ 'users_mapping' | translate }}" [dragEnabled]="false" [hideOnOutsideCl
             <dx-button text="{{ 'yes' | translate }}" type="default" (onClick)="onDeleteSystemAdministrationDetails()">
             </dx-button>
             <dx-button text="{{ 'no' | translate }}" (onClick)="deletePopupVisible = false">
+            </dx-button>
+        </div>
+    </div>
+
+</dx-popup>
+<dx-popup [visible]="deleteUserPopupVisible" [width]="funcpopWidth(30)" [height]="funcpopHeight(25)" [showTitle]="true"
+    title="{{ 'delete_confirmation_of '+users | translate }}" (onHidden)="deleteUserPopupVisible = false">
+
+    <div>
+        <p class="confirmation-text">
+            {{ 'are_you_sure_you_want_to_delete' | translate }}
+            "<strong>{{config_record}}</strong>"?
+        </p>
+        <div class="button-container">
+            <dx-button text="{{ 'yes' | translate }}" type="default" (onClick)="onDeleteUserDetails()">
+            </dx-button>
+            <dx-button text="{{ 'no' | translate }}" (onClick)="deleteUserPopupVisible = false">
             </dx-button>
         </div>
     </div>
