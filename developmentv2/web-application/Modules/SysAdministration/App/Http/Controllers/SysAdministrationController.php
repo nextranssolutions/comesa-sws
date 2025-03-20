@@ -919,6 +919,43 @@ class SysAdministrationController extends Controller
         return response()->json($res, 200);
     }
 
+    public function onLoadSystemGroupsUsers(Request $req)
+    {
+        try {
+            $requestData = $req->all();
+            $filter = $req->filter;
+            $table_name = $req->table_name;
+            $table_name = base64_decode($table_name);
+
+            $sectionSelection = $req->sectionSelection;
+            unset($requestData['table_name']);
+
+            $check_exempt = DB::table('tra_exemptedpublic_tables')
+                ->where(array('table_name' => $table_name))
+                ->count();
+            $sql = DB::table($table_name . ' as t1');
+
+            if ($check_exempt > 0 || $table_name == null || $table_name == '') {
+                $res = array('success' => false, 'message' => 'Table has been blocked for access');
+                return response()->json($res);
+            }
+            if (!empty($requestData)) {
+                $sql->where($requestData);
+            }
+
+            $data = $sql->get();
+
+            $res = array('success' => true, 'data' => $data);
+        } catch (\Exception $exception) {
+            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        } catch (\Throwable $throwable) {
+            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        }
+
+        return response()->json($res, 200);
+    }
+
+
 
     public function onDeleteSystemAdministrationDetails(Request $req)
     {

@@ -22,6 +22,10 @@ import { NgWizardConfig, NgWizardModule, THEME } from 'ng-wizard';
 import { CimexAdminModule } from 'src/app/core-modules/cimex-admin/cimex-admin.module';
 import { SafePipeModule } from 'src/app/safe-pipe/safe-pipe.module';
 import { httpTranslateLoader } from '../revenue-management/revenue-management.module';
+import { InitiateImportappreportComponent } from './views/spreadsheets-and-frontoffice/initiate-importappreport/initiate-importappreport.component';
+import { PermitGeneralDetailsreportComponent } from './views/permit-general-detailsreport/permit-general-detailsreport.component';
+import { ApplicantDetailsreportComponent } from './views/applicant-detailsreport/applicant-detailsreport.component';
+import { SharedappdocumentsuploadReportComponent } from './views/sharedappdocumentsupload-report/sharedappdocumentsupload-report.component';
 
 const ngWizardConfig: NgWizardConfig = {
   theme: THEME.default
@@ -38,7 +42,12 @@ const ngWizardConfig: NgWizardConfig = {
     PermitProductDetailsComponent,
     PermitsPerOrigincountryComponent,
     ProductHscodeAnalysisComponent,
-  ],
+    InitiateImportappreportComponent,
+    PermitGeneralDetailsreportComponent,
+    ApplicantDetailsreportComponent,
+    SharedappdocumentsuploadReportComponent,
+    
+    ],
   imports: [
     CommonModule,
     ReportsAnalyticsRoutingModule,NgHttpLoaderModule,DxButtonModule, DxProgressBarModule,

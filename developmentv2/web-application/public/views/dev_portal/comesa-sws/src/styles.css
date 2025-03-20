@@ -6718,3 +6718,8 @@ dx-selectbox .col-lg-1,
     max-width: none; /* Removes width restrictions */
 }
 
+.grid-container {
+  width: 100%; /* Ensures the container does not exceed the screen width */
+  overflow-x: auto; /* Enables horizontal scrolling only for the grid */
+}
+

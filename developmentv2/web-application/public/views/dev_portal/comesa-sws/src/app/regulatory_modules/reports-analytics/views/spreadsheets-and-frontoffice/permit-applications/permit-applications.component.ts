@@ -643,6 +643,7 @@ export class PermitApplicationsComponent {
    }
    application_data: any;
    funcApplicationPreveditDetails(app_data) {
+    // console.log(app_data);
      this.regulatory_subfunction_id = app_data.regulatory_subfunction_id;
  
      this.spinner.show();
@@ -652,16 +653,18 @@ export class PermitApplicationsComponent {
          data => {
            this.spinner.hide();
            if (data.success) {
+            // console.log(data);
              this.processData = data.data.process_infor;
              this.application_data = data.data;
  
              this.router_link = this.processData.router_link;
              this.productsapp_details = this.processData;
+            
              let merged_appdata = Object.assign({}, this.application_data, app_data);
  
              localStorage.setItem('application_details', JSON.stringify(merged_appdata));
             
-             this.app_route = ['./importexport-control/' + this.router_link];
+             this.app_route = ['./reports-analytics/' + this.router_link];
  
              this.router.navigate(this.app_route);
              this.scrollToTop();

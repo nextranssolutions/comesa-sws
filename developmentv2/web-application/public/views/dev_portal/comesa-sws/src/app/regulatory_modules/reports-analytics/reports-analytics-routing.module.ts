@@ -6,6 +6,7 @@ import { ReportsAnalyticsLayoutComponent } from './views/layout/reports-analytic
 import { ApplicationReportsSpreadsheetsComponent } from './views/application-reports-spreadsheets/application-reports-spreadsheets.component';
 import { PermitApplicationsComponent } from './views/spreadsheets-and-frontoffice/permit-applications/permit-applications.component';
 import { PermitProductDetailsComponent } from './views/spreadsheets-and-frontoffice/permit-product-details/permit-product-details.component';
+import { InitiateImportappreportComponent } from './views/spreadsheets-and-frontoffice/initiate-importappreport/initiate-importappreport.component';
 
 const routes: Routes = [{
   path: '',
@@ -26,6 +27,10 @@ const routes: Routes = [{
             {
               path: 'app-permit-product-details',
               component: PermitProductDetailsComponent
+            },
+            {
+              path: 'initiate-importapp',
+              component: InitiateImportappreportComponent
             }
           ]
 }];

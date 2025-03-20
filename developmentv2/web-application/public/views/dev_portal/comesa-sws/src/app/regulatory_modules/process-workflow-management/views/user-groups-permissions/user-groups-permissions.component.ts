@@ -845,7 +845,7 @@ fetchUserData(group_id) {
     'table_name': 'tra_user_group',
     group_id: group_id
   }
-  this.admnistrationService.onLoadSystemAdministrationData(data_submit)
+  this.admnistrationService.onLoadSystemAdministrationData(data_submit,'onLoadSystemGroupsUsers')
     .subscribe(
       data => {
         this.data_record = data;

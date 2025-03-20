@@ -91,15 +91,16 @@ export class ServiceAdmnistrationService {
         return <any>data;
       }));
   }
+//onLoadSysatemGroupsUsers
 
-  onLoadSystemAdministrationData(data) {
+  onLoadSystemAdministrationData(data, action_url = 'onLoadSystemAdministrationData') {
     data.table_name = btoa(data.table_name);
     this.system = {
       params: data,
       headers: { 'Accept': 'application/json' }
     };
 
-    return this.HttpClient.get(this.baseUrl + '/onLoadSystemAdministrationData', this.system)
+    return this.HttpClient.get(this.baseUrl + '/'+action_url, this.system)
       .pipe(map(data => {
         return <any>data;
       }));
