@@ -457,6 +457,7 @@ const routes: Routes = [{
     path: 'app-app-workflowstatuses',
     component: AppWorkflowstatusesComponent
   },
+  
   {
     path: 'systemmanual-configuration',
     component: SystemmanualConfigurationComponent

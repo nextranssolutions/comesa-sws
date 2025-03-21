@@ -1,5 +1,5 @@
 
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient, HttpHeaders, HttpParams } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { AppSettings } from 'src/app/app-settings';
 import { map } from 'rxjs/operators';
@@ -315,21 +315,39 @@ export class ConfigurationsService {
       }));
   } 
 
-  getPermitUniformApplicationProces(app_data, action_url) {
+  // getPermitUniformApplicationProces(app_data, action_url) {
     
-    var headers = new Headers({
-      "Accept": "application/json",
-      "Authorization": "Bearer " + this.authService.getAccessToken(),
+  //   var headers = new Headers({
+  //     "Accept": "application/json",
+  //     "Authorization": "Bearer " + this.authService.getAccessToken(),
+  //   });
+  //   this.config = {
+  //     params: app_data,
+  //     headers: headers
+  //   };
+  //   return this.HttpClient.get(this.baseUrl + '/' + action_url, this.config)
+  //     .pipe(map(data => {
+  //       return <any>data;
+  //     }));
+  // } 
+  getPermitUniformApplicationProces(app_data: any, action_url: string): Observable<any> {
+    const headers = new HttpHeaders({
+      'Accept': 'application/json',
+      'Authorization': `Bearer ${this.authService.getAccessToken()}`
     });
-    this.config = {
-      params: app_data,
-      headers: headers
-    };
-    return this.HttpClient.get(this.baseUrl + '/' + action_url, this.config)
-      .pipe(map(data => {
-        return <any>data;
-      }));
-  } 
+
+    let params = new HttpParams();
+    for (const key in app_data) {
+      if (app_data.hasOwnProperty(key) && app_data[key] !== null) {
+        params = params.set(key, app_data[key]);
+      }
+    }
+
+    return this.http.get(`${this.baseUrl}/${action_url}`, { headers, params })
+      .pipe(
+        map(response => response as any)
+      );
+  }
   getApplicantUniformApplicationProces(regulatory_subfunction_id, status_id, permit_type_id= 0 ) {
     
     var headers = new Headers({
