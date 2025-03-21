@@ -178,9 +178,10 @@ export class SharedImpexpApplicationClass {
         me.applicantDetailsForm.addControl(field_name, new FormControl('', Validators.compose([])));
       }
     }
-    if (this.applicant_details) {
 
-      this.applicantDetailsForm.patchValue(this.applicant_details);
+    if (this.applicant_details) {
+      // this.applicantDetailsForm.patchValue(this.applicant_details);
+      this.applicantDetailsForm.patchValue(this.application_details);
     }
 
     if (this.application_details) {
@@ -376,13 +377,21 @@ export class SharedImpexpApplicationClass {
 
   // Function to handle the next step
   onNextStep() {
-    // if (!this.isSaved) {
-    //   this.toastr.error('Kindly save before proceeding to the next step.', 'Validation Error');
-    //   return;
-    // }
-    this.ngWizardService.next(); // Move to the next step only if saved
+    const isEditing = !!this.applicationGeneraldetailsfrm.get('id')?.value; // Check if editing
+  
+    // Mark all fields as touched to trigger validation messages
+    Object.values(this.applicationGeneraldetailsfrm.controls).forEach(control => {
+      control.markAsTouched();
+    });
+  
+    // Block navigation if not editing and form is invalid
+    if (!isEditing && this.applicationGeneraldetailsfrm.invalid) {
+      this.toastr.error('Please fill in all mandatory fields before proceeding.', 'Validation Error');
+      return;
+    }
+  
+    this.ngWizardService.next(); // Allow navigation
   }
-
 
   onPermitsApplicationPrint() {
 
