@@ -98,13 +98,13 @@
                             <label>{{ 'account_type?' | translate }}</label>
                             <dx-select-box (onSelectionChanged)="onAccountTypeSelection($event)"
                                 formControlName="account_type_id" [showClearButton]="true"
-                                [dataSource]="allAccountTypesData" valueExpr="id" displayExpr="name">
+                                [dataSource]="allAccountTypesData" valueExpr="id" displayExpr="name" >
                             </dx-select-box>
                         </div>
                       
                         <div class="col-lg-6">
                             <label>{{ 'name' | translate }}</label>
-                            <dx-text-box formControlName="name" [showClearButton]="true">
+                            <dx-text-box formControlName="name" [showClearButton]="true" >
 
                             </dx-text-box>
                         </div>
@@ -112,7 +112,7 @@
                             <label>{{ 'organisation' | translate }}</label>
                             <dx-select-box 
                                 formControlName="organisation_id" [showClearButton]="true"
-                                [dataSource]="organisationData" valueExpr="id" displayExpr="name">
+                                [dataSource]="organisationData" valueExpr="id" displayExpr="name" >
                             </dx-select-box>
                         </div>
                         <div class="col-lg-12">
@@ -307,7 +307,7 @@
             </dxi-item>
 
             <dxi-item title="{{'users'| translate}}" icon="group">
-                <dx-button text="{{ 'map_users' | translate }}" type="default" icon="fa fa-save"
+                <dx-button text="{{ 'add_users_to_user_group' | translate }}" type="default" icon="fa fa-save"
                 [elementAttr]="{ id: 'elementId', class: '' }" (onClick)="hasReadpermissions=false;onAddUserData()">
                 </dx-button>
                 <dx-data-grid [allowColumnReordering]="true" (onCellPrepared)="onCellPrepared($event)"
