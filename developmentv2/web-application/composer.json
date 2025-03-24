@@ -20,6 +20,7 @@
         "phpoffice/phpspreadsheet": "^1.7",
         "propaganistas/laravel-disposable-email": "^2.3",
         "spatie/laravel-activitylog": "^4.7",
+        "stichoza/google-translate-php": "^5.2",
         "tymon/jwt-auth": "^2.0"
     },
     "require-dev": {
