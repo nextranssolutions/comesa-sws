@@ -16,7 +16,7 @@ export class RequestForadditionalInformationComponent extends SharedImpExpdashbo
     let appworkflowstage_category_id = this.nav_data.appworkflowstage_category_id;
     let applicant_id = this.nav_data.applicant_id;
 
-    this.reloadPermitApplicationsApplications(applicant_id, regulatory_subfunction_id, appworkflowstage_category_id);
+    this.reloadPermitApplicationsApplications(regulatory_subfunction_id, appworkflowstage_category_id);
     
   }
 }

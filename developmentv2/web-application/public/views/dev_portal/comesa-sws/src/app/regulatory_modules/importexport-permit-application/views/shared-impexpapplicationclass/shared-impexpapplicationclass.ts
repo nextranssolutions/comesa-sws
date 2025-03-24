@@ -517,8 +517,10 @@ export class SharedImpexpApplicationClass {
     
     
     let applicant_id = this.applicantDetailsForm.get('id')?.value;
+    let user_id = localStorage.getItem('id');
     let applicationapplicant_option_id = this.applicantDetailsForm.get('applicationapplicant_option_id')?.value;
     this.applicationGeneraldetailsfrm.value['applicant_id'] = applicant_id;
+    this.applicationGeneraldetailsfrm.value['user_id'] = user_id;
     this.applicationGeneraldetailsfrm.value['applicationapplicant_option_id'] = applicationapplicant_option_id;
 
     this.applicationGeneraldetailsfrm.value['applicationsubmission_type_id'] = this.applicationsubmission_type_id;
@@ -553,7 +555,7 @@ export class SharedImpexpApplicationClass {
         },
         error => {
           this.loading = false;
-         
+          
           this.spinnerHide();
         });
   }
@@ -792,13 +794,15 @@ export class SharedImpexpApplicationClass {
     if (!application_id || application_id < 0) {
       this.toastr.error('Kindly save before proceeding to the next step.', 'Validation Error');
       return;
+    }else{
+      this.ngWizardService.next(); // Move to the next step only if saved
     }
-    this.ngWizardService.next(); // Move to the next step only if saved
+    
   }
 
   onextStep() {
     const applicant_id = this.applicantDetailsForm.get('id')?.value;
-  
+    console.log(applicant_id);
     if (!applicant_id || applicant_id < 0) {
       this.toastr.error('Kindly select an applicant before proceeding to the next step.', 'Validation Error');
       return;

@@ -56,7 +56,7 @@ export class SharedImpExpdashboardClass {
   guidelines_title: string;
   regulatory_subfunction_id: any;
   application_code: any;
-  appworkflowstage_category_id:any;
+  appworkflowstage_category_id: any;
   applicant_id: any;
   permit_type_id: 1;
   application_title: string;
@@ -79,7 +79,7 @@ export class SharedImpExpdashboardClass {
   onApplicationSubmissionFrm: FormGroup;
   importExportPermitTypesData: any;
   processingData: any;
-  
+
   constructor(public utilityService: UtilityService, public publicService: PublicDashboardService, public translate: TranslateService, public viewRef: ViewContainerRef, public spinner: SpinnerVisibilityService, public toastr: ToastrService, public router: Router, public configService: ConfigurationsService, public appService: ImportExportService) { // this.onLoadApplicationCounterDetails();
 
     //get the navigation process  inform //navigation items and get the sub_function_id 
@@ -104,11 +104,10 @@ export class SharedImpExpdashboardClass {
     let appworkflowstage_category_id = this.nav_data.appworkflowstage_category_id;
     let applicant_id = this.nav_data.applicant_id;
 
-    
 
-    this.reloadPermitApplicationsApplications(regulatory_subfunction_id, appworkflowstage_category_id, applicant_id);
-    this.applicant_id = localStorage.getItem('id');
-    console.log(this.applicant_id);
+
+    this.reloadPermitApplicationsApplications(regulatory_subfunction_id, appworkflowstage_category_id);
+
     //navigation items and get the sub_function_id 
 
 
@@ -121,7 +120,7 @@ export class SharedImpExpdashboardClass {
       behavior: 'smooth' // Smooth scrolling for better UX
     });
   }
- 
+
 
   onInitiatenewImportExpApplications(regulatory_subfunction_id, applicationsubmission_type_id) {
     this.nav_data = localStorage.getItem('nav_data');
@@ -181,15 +180,17 @@ export class SharedImpExpdashboardClass {
   }
 
 
-  reloadPermitApplicationsApplications(regulatory_subfunction_id, appworkflowstage_category_id,applicant_id) {
+  reloadPermitApplicationsApplications(regulatory_subfunction_id, appworkflowstage_category_id) {
     this.spinnerShow('Loading  ...........');
-
+    const storedTraderData = localStorage.getItem('trader_data');
+    const traderData = storedTraderData ? JSON.parse(storedTraderData) : null;
+    this.applicant_id = traderData ? traderData.id : null;
     var data_submit = {
       'table_name': this.table_name,
       'regulatory_subfunction_id': regulatory_subfunction_id,
       'appworkflowstage_category_id': appworkflowstage_category_id,
-      'applicant_id': applicant_id,
-      
+      'applicant_id': this.applicant_id,
+
     }
     this.appService.onPermitApplicationLoading('getImportExpApplicantPermitsLoading', data_submit)
       .subscribe(
@@ -453,7 +454,7 @@ export class SharedImpExpdashboardClass {
       //   this.funcInitiateLicenseApplication(data);
 
     }
-     else if (action_btn.action == 'inspection_booking' || action_btn.action == 'inspection_booking') {
+    else if (action_btn.action == 'inspection_booking' || action_btn.action == 'inspection_booking') {
 
       //this.funcInitiateInspectionBooking(data);
 
@@ -529,11 +530,13 @@ export class SharedImpExpdashboardClass {
   application_data: any;
 
 
- 
-  funcApplicationPreveditDetails(app_data) { 
+
+  funcApplicationPreveditDetails(app_data) {
+
     this.regulatory_subfunction_id = app_data.regulatory_subfunction_id;
     this.applicationsubmission_type_id = app_data.applicationsubmission_type_id;
     this.application_code = app_data.application_code;
+
 
     this.spinnerShow('Loading...........');
 
@@ -547,11 +550,11 @@ export class SharedImpExpdashboardClass {
 
             this.router_link = this.processData.router_link;
             this.productsapp_details = this.processData;
-            
+
             let merged_appdata = Object.assign({}, this.application_data, app_data);
 
             localStorage.setItem('application_details', JSON.stringify(merged_appdata));
-           
+
             this.app_route = ['./importexport-permit-application/' + this.router_link];
 
             this.router.navigate(this.app_route);
@@ -583,7 +586,7 @@ export class SharedImpExpdashboardClass {
     this.FilterDetailsFrm.reset();
     this.FilterDetailsFrm.reset();
 
-    this.reloadPermitApplicationsApplications(this.regulatory_subfunction_id, this.appworkflowstage_category_id, this.applicant_id);
+    this.reloadPermitApplicationsApplications(this.regulatory_subfunction_id, this.appworkflowstage_category_id);
 
 
   }
