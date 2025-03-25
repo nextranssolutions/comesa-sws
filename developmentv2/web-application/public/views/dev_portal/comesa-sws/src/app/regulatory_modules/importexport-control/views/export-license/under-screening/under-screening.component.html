@@ -5,12 +5,12 @@
     <div class="col-xs-12">
         <div class="sidebar h-sidebar navbar-collapse ace-save-state">
             <ul class="nav nav-list">
-                <li class="link-bggreen">
+                <!-- <li class="link-bggreen">
                     <a (click)="onInitiatenewImportExpApplications()" href="javascript:void(0)"><span class=""> <i
-                                class="menu-icon fa fa-plus"></i> &nbsp; {{'initiate_import_permit_application'
+                                class="menu-icon fa fa-plus"></i> &nbsp; {{'initiate_export_permit_application'
                             |translate}}</span>
                     </a> <b class="arrow"></b>
-                </li>
+                </li> -->
                 <li class="link-bgorange">
                     <a href="javascript:void(0)"><span class=""> <i class="menu-icon fa fa-money"></i> &nbsp;
                             {{'fees_and_charges' | translate}}</span></a>
@@ -61,14 +61,14 @@
 
         <dxo-selection mode="single"></dxo-selection>
         <dxi-column [width]=150 caption="{{'actions' | translate }}" name="command-editing" [allowFiltering]="false"
-            [allowSorting]="false" cellTemplate="cellTemplateSingle">
-            <div *dxTemplate="let d of 'cellTemplateSingle'">
-                <dx-button text="{{d.data.action_name}}" (click)="singleApplicationActionColClick(d.data)"
-                    type="default" icon="{{d.data.iconCls}}">
-                </dx-button>
-            </div>
-        </dxi-column>
-        <dxi-column caption="{{'more_actions' | translate}}" [width]=100 name="command-editing" [allowFiltering]="false"
+        [allowSorting]="false" cellTemplate="cellTemplateSingle">
+        <div *dxTemplate="let d of 'cellTemplateSingle'">
+            <dx-button text="{{d.data.action_name}}" (click)="singleApplicationActionColClick(d.data)"
+                type="default" icon="{{d.data.iconCls}}">
+            </dx-button>
+        </div>
+    </dxi-column>
+        <dxi-column caption="{{'more_actions' | translate}}" [width]=150 name="command-editing" [allowFiltering]="false"
             [allowSorting]="false" cellTemplate="cellTemplate">
             <div *dxTemplate="let d of 'cellTemplate'">
                 <dx-menu [items]="d.data.contextMenu" displayExpr="text"
@@ -89,7 +89,7 @@
         <dxi-column dataField="currency_name" caption="{{'currency_of_transaction' | translate}}"></dxi-column>
         <dxi-column dataField="importer_exporter_name" caption="{{'importer_exporter_name' | translate}}"></dxi-column>
         <dxi-column dataField="status_name" caption="{{'status_name' | translate}}"></dxi-column>
-
+        
         <dxo-grouping #expand [autoExpandAll]="true"></dxo-grouping>
     </dx-data-grid>
 
@@ -172,14 +172,14 @@
 </dx-popup>
 
 <dx-popup class="popup" [width]="funcpopWidth(45)" [height]="funcpopHeight(45)" [showTitle]="true"
-    title="{{'import_permit_application' | translate}}" [dragEnabled]="false" [hideOnOutsideClick]="false"
+    title="{{'export_permit_application' | translate}}" [dragEnabled]="false" [hideOnOutsideClick]="false"
     [(visible)]="isPermitInitialisation">
     <div *dxTemplate="let data of 'content'">
         <dx-scroll-view>
             <form enctype="multipart/form-data" style="margin:0.5px" class="row div-whiteback " role="form"
                 [formGroup]="applicationSelectionfrm" (ngSubmit)="onApplicationSelection()">
                 <div class="col-lg-12">
-                    <h6>{{'import_permit_selection_description' | translate}}</h6>
+                    <h6>{{'export_permit_selection_description' | translate}}</h6>
                 </div>
                 <div class="col-lg-12">
                     <label>{{'permit_type' | translate}}</label>
@@ -201,11 +201,12 @@
 </dx-popup>
 
 
-<dx-popup class="popup" [width]="funcpopWidth(85)" [height]="funcpopHeight(85)" [showTitle]="true" title="preview_permit_application"
-    [dragEnabled]="false" [hideOnOutsideClick]="false" [(visible)]="win_previewpermitapp">
+<dx-popup class="popup" [width]=450 [height]=150 [showTitle]="true" title="Invoice Printing and Submission"
+    [dragEnabled]="false" [hideOnOutsideClick]="false" [(visible)]="win_submitinvoicepayments">
     <div *dxTemplate="let data of 'content'">
         <dx-scroll-view>
-            <app-preview-importapp></app-preview-importapp>
+
+
         </dx-scroll-view>
     </div>
 </dx-popup>
