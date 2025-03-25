@@ -37,6 +37,11 @@ import { LetterofapprovalPersonalproductsComponent } from './views/personal-usep
 import { RejectedpermitsPersonalproductsComponent } from './views/personal-useproducts-license/rejectedpermits-personalproducts/rejectedpermits-personalproducts.component';
 import { InitiatePersonalproductsPermitComponent } from './views/personal-useproducts-license/initiate-personalproducts-permit/initiate-personalproducts-permit.component';
 import { SinglePersonaluseproductsPermitApplicationComponent } from './views/personal-useproducts-license/single-personaluseproducts-permit-application/single-personaluseproducts-permit-application.component';
+import { RequestadditionalInfoExportapplicationPermitsComponent } from './views/export-license/requestadditional-info-exportapplication-permits/requestadditional-info-exportapplication-permits.component';
+import { RejectedExportapplicationPermitsComponent } from './views/export-license/rejected-exportapplication-permits/rejected-exportapplication-permits.component';
+import { ApprovedExportapplicationPermitsComponent } from './views/export-license/approved-exportapplication-permits/approved-exportapplication-permits.component';
+import { UnderProcessingExportPermitapplicationsComponent } from './views/export-license/under-processing-export-permitapplications/under-processing-export-permitapplications.component';
+import { AwaitingPaymentRemittanceExportpermitsComponent } from './views/export-license/awaiting-payment-remittance-exportpermits/awaiting-payment-remittance-exportpermits.component';
 
 
 const ngWizardConfig: NgWizardConfig = {
@@ -49,9 +54,9 @@ const ngWizardConfig: NgWizardConfig = {
     ImportexportLayoutComponent, DraftImportlicensedashComponent,
     PermitproductdetailsComponent, PermitgeneraldetailsComponent,ApprovedPermitsComponent,SingleProductPermitComponent,
     AwaitingPaymentRemittanceComponent,RejectedPermitsComponent,RequestForadditionalInformationComponent,SinglePermitproductdetailsComponent,
-    UnderProcessingComponent,InitiateExportappComponent,DraftExportlicencedashboardComponent,InitiatePersonalproductsPermitComponent,SinglePersonaluseproductsPermitApplicationComponent,
+    UnderProcessingComponent,AwaitingPaymentRemittanceExportpermitsComponent,InitiateExportappComponent,DraftExportlicencedashboardComponent,InitiatePersonalproductsPermitComponent,SinglePersonaluseproductsPermitApplicationComponent,
     ApplicantDetailsComponent,SingleProductExportpermitComponent,RejectedpermitsPersonalproductsComponent,LetterofapprovalPersonalproductsComponent,DraftPersonalproductsLicencedashboardComponent,
-    ImportexportHeaderComponent,InitiateImportappComponent, DashboardComponent],
+    ImportexportHeaderComponent,UnderProcessingExportPermitapplicationsComponent,ApprovedExportapplicationPermitsComponent,InitiateImportappComponent,RejectedExportapplicationPermitsComponent, DashboardComponent,RequestadditionalInfoExportapplicationPermitsComponent,],
   imports: [
     CommonModule, ImportexportapplicationRoutingModule,
     SharedModuleModule,

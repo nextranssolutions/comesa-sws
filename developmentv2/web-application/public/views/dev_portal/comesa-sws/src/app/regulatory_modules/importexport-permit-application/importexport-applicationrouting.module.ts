@@ -20,6 +20,11 @@ import { LetterofapprovalPersonalproductsComponent } from './views/personal-usep
 import { RejectedpermitsPersonalproductsComponent } from './views/personal-useproducts-license/rejectedpermits-personalproducts/rejectedpermits-personalproducts.component';
 import { InitiatePersonalproductsPermitComponent } from './views/personal-useproducts-license/initiate-personalproducts-permit/initiate-personalproducts-permit.component';
 import { SinglePersonaluseproductsPermitApplicationComponent } from './views/personal-useproducts-license/single-personaluseproducts-permit-application/single-personaluseproducts-permit-application.component';
+import { RequestadditionalInfoExportapplicationPermitsComponent } from './views/export-license/requestadditional-info-exportapplication-permits/requestadditional-info-exportapplication-permits.component';
+import { RejectedExportapplicationPermitsComponent } from './views/export-license/rejected-exportapplication-permits/rejected-exportapplication-permits.component';
+import { ApprovedExportapplicationPermitsComponent } from './views/export-license/approved-exportapplication-permits/approved-exportapplication-permits.component';
+import { UnderProcessingExportPermitapplicationsComponent } from './views/export-license/under-processing-export-permitapplications/under-processing-export-permitapplications.component';
+import { AwaitingPaymentRemittanceExportpermitsComponent } from './views/export-license/awaiting-payment-remittance-exportpermits/awaiting-payment-remittance-exportpermits.component';
 
 const routes: Routes = [{
   path: '',
@@ -58,20 +63,36 @@ const routes: Routes = [{
     path: 'initiate-importapp',
     component: InitiateImportappComponent
   },{
-    path: 'underprocessing-importapp',
+    path: 'underprocessing-import-permits',
     component: UnderProcessingComponent
   },{
-    path: 'request-additional-info',
+    path: 'awaitingpayment-remittance-exportpermits',
+    component: AwaitingPaymentRemittanceExportpermitsComponent
+  },{
+    path: 'request-additional-info-impoertpermit-application',
     component: RequestForadditionalInformationComponent
   },{
-    path: 'rejected-importapp',
+    path: 'request-additional-info-exportpermit-application',
+    component: RequestadditionalInfoExportapplicationPermitsComponent
+  },{
+    path: 'rejected-export-permits',
+    component: RejectedExportapplicationPermitsComponent
+  }
+  ,{
+    path: 'rejected-import-permits',
     component: RejectedPermitsComponent
   },{
     path: 'awaitingpayment-remittance',
     component: AwaitingPaymentRemittanceComponent
   },{
-    path: 'approved-permits',
+    path: 'approved-import-permits',
     component: ApprovedPermitsComponent
+  },{
+    path: 'under-processing-exportpermits',
+    component: UnderProcessingExportPermitapplicationsComponent
+  },{
+    path: 'approved-export-permits',
+    component: ApprovedExportapplicationPermitsComponent
   },{
     path: 'single-productapplication-permits',
     component: SingleProductPermitComponent
