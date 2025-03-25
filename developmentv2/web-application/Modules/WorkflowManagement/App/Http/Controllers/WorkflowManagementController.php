@@ -1103,11 +1103,11 @@ public function getRegulatoryFunctionGuidelines(Request $req)
     {
         try {
 
-            $process_id = $req->process_id;
+            $workflowprocess_id = $req->workflowprocess_id;
             $records = Db::table('wb_workflow_definition as t1')
                 ->join('wb_workflow_transitions  as t2', 't1.id', 't2.workflow_id')
                 ->select('t2.*')
-                // ->where(array('t1.process_id' => $process_id))
+                ->where(array('t1.workflowprocess_id' => $workflowprocess_id))
                 ->get();
             $res = array('success' => true, 'data' => $records);
 
@@ -1125,6 +1125,26 @@ public function getRegulatoryFunctionGuidelines(Request $req)
 
             $workflow_action_id = $req->workflow_action_id;
             $record = Db::table('wf_workflow_transitions as t1')
+                ->select('t1.*')
+                ->where(array('t1.workflow_action_id' => $workflow_action_id))
+                ->first();
+            $res = array('success' => true, 'data' => $record);
+
+        } catch (\Exception $exception) {
+            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        } catch (\Throwable $throwable) {
+            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        }
+
+        return response()->json($res);
+    }
+
+    public function onLoadApplicantWorkflowTransitionData(Request $req)
+    {
+        try {
+
+            $workflow_action_id = $req->workflow_action_id;
+            $record = Db::table('wb_workflow_transitions as t1')
                 ->select('t1.*')
                 ->where(array('t1.workflow_action_id' => $workflow_action_id))
                 ->first();
@@ -1183,6 +1203,8 @@ public function getRegulatoryFunctionGuidelines(Request $req)
             $workflow_status_id = $req->workflow_status_id;
             if (!validateIsNumeric($workflow_status_id)) {
                 $app_statusrecord = getInitialApplicantWorkflowStatusId($workflowprocess_id);
+                // print_r($app_statusrecord);
+                // exit();
                 if (!$app_statusrecord) {
 
                     return response()->json([
@@ -1195,10 +1217,12 @@ public function getRegulatoryFunctionGuidelines(Request $req)
             }
             $records = Db::table('wb_workflow_definition as t1')
                 ->join('wb_workflow_transitions  as t2', 't1.id', 't2.workflow_id')
-                ->join('wf_workflowsubmission_actions as t3', 't2.workflow_action_id', 't3.id')
+                ->join('wb_submissionworkflowprocess_actions as t3', 't2.workflow_action_id', 't3.id')
                 ->select('t3.*')
                 ->where(array('t2.workflow_status_id' => $workflow_status_id, 't1.workflowprocess_id' => $workflowprocess_id))
                 ->get();
+                // print_r($records);
+                // exit();
 
             $res = array('success' => true, 'data' => $records);
 
@@ -1278,6 +1302,126 @@ public function getRegulatoryFunctionGuidelines(Request $req)
                 'isdone' => 0
             );
             $record = DB::table('tra_applicationprocess_submissions')->where($where_transition)->get();
+            if ($record->count() > 0) {
+                if (recordExists($submission_table_name, $where_transition)) {
+
+                    $data['dola'] = Carbon::now();
+                    $data['altered_by'] = $user_id;
+
+                    $previous_data = getPreviousRecords($submission_table_name, $where_transition);
+
+                    $resp = updateRecord($submission_table_name, $previous_data['results'], $where_transition, $data, $user_id);
+                }
+            } else {
+                $transition_data['created_on'] = Carbon::now();
+                $transition_data['created_by'] = $user_id;
+
+                $resp = insertRecord($submission_table_name, $transition_data, $user_id);
+
+            }
+            if ($resp['success']) {
+                $where = array('application_code' => $application_code);
+                $data = array('appworkflow_status_id' => $nextworkflow_status_id, 'submission_remarks' => $remarks);
+
+                DB::table($apptable_name)->where($where)->update($data);
+                //then close the previous submissions 
+                funcUpdateCurrentSubmission($application_code, $prevworkflow_stage_id, $user_id);
+
+                //then have the workflow_actions
+                //provide the action_types 
+                $this->funcWorkflowActionProcesses($application_code, $req, $workflow_actionstype_id, $user_id);
+
+                $res = array(
+                    'success' => true,
+                    'message' => 'Application Submitted Successfully'
+                );
+
+            } else {
+                $res = array(
+                    'success' => false,
+                    'error' => $resp,
+                    'message' => 'Error Occurred Application submission failed'
+                );
+            }
+            //update the application statuses
+
+        } catch (\Exception $exception) {
+            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        } catch (\Throwable $throwable) {
+            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        }
+
+        return response()->json($res);
+    }
+
+
+    public function onApplicationApplicantProcessSubmission(Request $req)
+    {
+        try {
+            //{"":4,"remarks":"Details","process_id":9,"":4,"":6,"":7,"":1,"":"","":10326,"":1,"":1}
+            $table_name = $req->table_name;
+            $user_id = $req->user_id;
+            $app_reference_no = $req->app_reference_no;
+            $workflowprocess_id = $req->workflowprocess_id;
+            $workflow_id = $req->workflow_id;
+            $prevworkflow_stage_id = $req->prevworkflow_stage_id;
+            $nextworkflow_stage_id = $req->nextworkflow_stage_id;
+            $workflow_status_id = $req->workflow_status_id;
+            $user_to_id = $req->user_to_id;
+            $application_code = $req->application_code;
+            $remarks = $req->remarks;
+            $transition_id = $req->id;
+            $workflowstatus_action_id = $req->workflowstatus_action_id;
+            //nextworkflow_status_id
+            $submission_table_name = 'wb_applicationprocess_submissions';
+
+            $transition_details = getTableData('wb_workflow_transitions', array('id' => $transition_id));
+            $nextworkflow_status_id = $transition_details->nextworkflow_status_id;
+            if (validateIsNumeric($workflowprocess_id)) {
+                $process_data = getTableData('wb_workflowprocesses', array('id' => $workflowprocess_id));
+                $apptable_name = $process_data->table_name;
+            } else {
+                $process_data = getTableData('wb_workflow_definition', array('id' => $workflow_id));
+                $workflowprocess_id = $process_data->workflowprocess_id;
+                $process_data = getTableData('wb_workflowprocesses', array('id' => $workflowprocess_id));
+                $apptable_name = $process_data->table_name;
+            }
+
+            $submission_actions = getTableData('wb_submissionworkflowprocess_actions', array('id' => $workflowstatus_action_id));
+            $workflow_actionstype_id = $submission_actions->workflow_actionstype_id;
+
+            $app_details = getTableData($apptable_name, array('app_reference_no' => $app_reference_no));
+            $app_reference_no = $app_details->app_reference_no;
+
+
+
+
+            //check if there is an exiting record  nextworkflow_status_id app_reference_no
+            $transition_data = array(
+                'application_code' => $application_code,
+                'current_stage_id' => $nextworkflow_stage_id,
+                'previous_stage_id' => $prevworkflow_stage_id,
+                'appworkflow_status_id' => $nextworkflow_status_id,
+                'previous_user_id' => $user_id,
+                'current_user_id' => $user_to_id,
+                'isdone' => 0,
+                'isread' => 0,
+                'remarks' => $remarks,
+                'date_received' => Carbon::now(),
+                'workflowprocess_id' => $workflowprocess_id,
+                'app_reference_no' => $app_reference_no,
+                'workflowstatus_action_id' => $workflowstatus_action_id
+            );
+            $where_transition = array(
+                'application_code' => $application_code,
+                'current_stage_id' => $nextworkflow_stage_id,
+                'previous_stage_id' => $prevworkflow_stage_id,
+                'previous_user_id' => $user_id,
+                'date_received' => Carbon::now(),
+                'appworkflow_status_id' => $nextworkflow_status_id,
+                'isdone' => 0
+            );
+            $record = DB::table('wb_applicationprocess_submissions')->where($where_transition)->get();
             if ($record->count() > 0) {
                 if (recordExists($submission_table_name, $where_transition)) {
 

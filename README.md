@@ -1,2 +1,2 @@
 # comesa-sws
-Comesa Region Import &amp; Export System
+Comesa Import &amp; Export System

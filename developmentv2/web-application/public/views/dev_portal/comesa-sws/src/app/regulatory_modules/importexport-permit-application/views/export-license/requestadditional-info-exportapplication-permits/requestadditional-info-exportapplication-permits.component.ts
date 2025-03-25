@@ -1,13 +1,14 @@
 import { Component } from '@angular/core';
 import { SharedImpExpdashboardClass } from '../../shared-impexpdashboard/shared-impexpdashboardclass';
 
+
 @Component({
-  selector: 'app-request-foradditional-information',
-  
-  templateUrl: './request-foradditional-information.component.html',
-  styleUrl: './request-foradditional-information.component.css'
+  selector: 'app-requestadditional-info-exportapplication-permits',
+ 
+  templateUrl: './requestadditional-info-exportapplication-permits.component.html',
+  styleUrl: './requestadditional-info-exportapplication-permits.component.css'
 })
-export class RequestForadditionalInformationComponent extends SharedImpExpdashboardClass {
+export class RequestadditionalInfoExportapplicationPermitsComponent extends SharedImpExpdashboardClass {
   ngOnInit(): void {
     this.onLoadconfirmDataParam();
     this.nav_data = localStorage.getItem('nav_data');
@@ -17,6 +18,5 @@ export class RequestForadditionalInformationComponent extends SharedImpExpdashbo
     let applicant_id = this.nav_data.applicant_id;
 
     this.reloadPermitApplicationsApplications(regulatory_subfunction_id, appworkflowstage_category_id);
-    
   }
 }
