@@ -43,6 +43,7 @@ export class SharedImpExpdashboardClass {
   printiframeUrl: string;
   isPreviewApplicationDetails: boolean = false;
   frmPreviewAppDetails: FormGroup;
+  applicantDetailsForm: FormGroup;
   applicationGeneraldetailsfrm: FormGroup;
   regulated_productstype_id: number;
   applicationSelectionfrm: FormGroup;
@@ -359,9 +360,13 @@ export class SharedImpExpdashboardClass {
   }
   funcProductPreviewDetails(data) {
     this.isPreviewApplicationDetails = true;
-    this.frmPreviewAppDetails.patchValue(data);
+    this.applicantDetailsForm.patchValue(data);
+    this.applicationGeneraldetailsfrm.patchValue(data);
     this.onLoadPermitProductsData(data.application_code);
   }
+
+
+
   onLoadPermitProductsData(application_code) {
     this.spinnerShow(' ');
     this.appService.getPermitsOtherDetails({ 'application_code': application_code }, 'getPermitProductsDetails')

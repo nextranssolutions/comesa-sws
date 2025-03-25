@@ -254,17 +254,6 @@ export class SharedImpexpApplicationClass {
     
 
 
-    if (this.applicant_details) {
-      this.id = this.applicant_details.regulatory_subfunction_id;
-
-      this.regulatory_subfunction_id = this.applicant_details.regulatory_subfunction_id;
-      
-      
-
-      this.applicantDetailsForm.patchValue(this.applicant_details);
- 
-    }
-
     if (this.permit_product_details) {
 
       this.regulatory_subfunction_id = this.permit_product_details.regulatory_subfunction_id;
@@ -272,6 +261,13 @@ export class SharedImpexpApplicationClass {
 
       this.permitProductsFrm.patchValue(this.permit_product_details);
  
+    }
+
+    if (this.applicant_details) {
+      // this.applicantDetailsForm.patchValue(this.applicant_details);
+      this.applicationapplicant_option_id = this.application_details.applicationapplicant_option_id;
+      console.log(this.applicationapplicant_option_id);
+      this.applicantDetailsForm.patchValue(this.application_details);
     }
 
 
