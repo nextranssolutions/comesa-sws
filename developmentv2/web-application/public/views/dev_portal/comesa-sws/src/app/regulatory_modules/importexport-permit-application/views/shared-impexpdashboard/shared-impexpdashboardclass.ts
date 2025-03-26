@@ -358,11 +358,41 @@ export class SharedImpExpdashboardClass {
   refreshDataGrid() {
     this.dataGrid.instance.refresh();
   }
-  funcProductPreviewDetails(data) {
+
+
+  funcProductPreviewDetails(app_data) {
     this.isPreviewApplicationDetails = true;
-    this.applicantDetailsForm.patchValue(data);
-    this.applicationGeneraldetailsfrm.patchValue(data);
-    this.onLoadPermitProductsData(data.application_code);
+    this.regulatory_subfunction_id = app_data.regulatory_subfunction_id;
+    this.applicationsubmission_type_id = app_data.applicationsubmission_type_id;
+    this.application_code = app_data.application_code;
+   
+
+    this.spinnerShow('Loading...........');
+
+    this.configService.getSectionUniformApplication(this.regulatory_subfunction_id, this.applicationsubmission_type_id, this.application_code)
+      .subscribe(
+        data => {
+          if (data.success) {
+            this.processData = data.data.process_infor;
+          
+            this.application_data = data.data;
+
+            this.productsapp_details = this.processData;
+
+            let merged_appdata = Object.assign({}, this.application_data, app_data);
+
+            localStorage.setItem('application_details', JSON.stringify(merged_appdata));
+            this.onLoadPermitProductsData(this.application_code);
+            this.scrollToTop();
+          }
+          else {
+            this.toastr.error(this.processData.message, 'Alert!');
+            this.spinnerHide();
+          }
+
+
+        });
+    return false;
   }
 
 
