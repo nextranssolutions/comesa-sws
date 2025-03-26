@@ -1362,19 +1362,9 @@ public function getAppHscodes(Request $req)
 public function getUserDetails(Request $req)
 {
     try {
-<<<<<<< HEAD
-            $users = array();
-            $requestData = $req->all();
-            $table_name = $req->table_name;
-            $table_name = 'tra_user_group';
-            unset($requestData['table_name']);
-
-
-=======
         $users = [];
         $requestData = $req->all();
         $table_name = 'tra_user_group';
->>>>>>> 347395c42e01f54698fa60e1aed87ea0288ec056
         $groupId = $req->input('group_id');
         $organisationId = $req->input('organisation_id');
 
@@ -1387,35 +1377,6 @@ public function getUserDetails(Request $req)
             ], 400);
         }
 
-<<<<<<< HEAD
-        $sql = DB::table($table_name . ' as t1')
-        ->join('usr_users_information as t2', 't1.user_id', '=', 't2.id')
-        ->where('t1.group_id', '=', $groupId)
-        ->select(
-            't2.id',             
-            't2.first_name',
-            't2.email_address',
-            't2.created_on',
-            't2.is_enabled'
-        );
-        
-        $data = $sql->get();
-
-        foreach ($data as $rec) {
-
-            $users[] = array(
-                'id' => $rec->id,
-               'first_name' => aes_decrypt($rec->first_name),
-               'email_address' => aes_decrypt($rec->email_address),
-               'is_enabled' => $rec->is_enabled,
-               
-
-
-            );
-
-        }
-
-=======
         if (!$organisationId) {
             return response()->json([
                 'success' => false,
@@ -1454,7 +1415,6 @@ public function getUserDetails(Request $req)
         }
 
         return response()->json(['success' => true, 'data' => $users]);
->>>>>>> 347395c42e01f54698fa60e1aed87ea0288ec056
 
     } catch (\Exception $exception) {
         return response()->json(sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__)), 500);
