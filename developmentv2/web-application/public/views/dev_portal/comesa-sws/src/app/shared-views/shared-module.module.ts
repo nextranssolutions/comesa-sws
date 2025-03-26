@@ -12,11 +12,14 @@ import { SharedToppanelComponent } from './shared-toppanel/shared-toppanel.compo
 import { SharedapplicationdocumentuploadsComponent } from './sharedutilities/sharedapplicationdocumentuploads/sharedapplicationdocumentuploads.component';
 import { SharedappProcesssubmissionComponent } from './sharedutilities/sharedapp-processsubmission/sharedapp-processsubmission.component';
 import { SharedevaluationChecklistComponent } from './sharedutilities/sharedevaluation-checklist/sharedevaluation-checklist.component';
+import { SharedappApplicantprocesssubmissionComponent } from './sharedutilities/sharedapp-applicantprocesssubmission/sharedapp-applicantprocesssubmission.component';
 
 
 @NgModule({
   declarations: [SharedFooterComponent, SharedNavigationComponent, SharedToppanelComponent,
-    SharedapplicationdocumentuploadsComponent,SharedappProcesssubmissionComponent,SharedevaluationChecklistComponent
+    SharedapplicationdocumentuploadsComponent,SharedappProcesssubmissionComponent,
+    SharedappApplicantprocesssubmissionComponent,
+    SharedevaluationChecklistComponent
   ],
   imports: [
     CommonModule,
@@ -56,7 +59,7 @@ import { SharedevaluationChecklistComponent } from './sharedutilities/sharedeval
     })
   ],
   exports:[SharedFooterComponent, SharedNavigationComponent, SharedToppanelComponent,
-    SharedapplicationdocumentuploadsComponent,SharedappProcesssubmissionComponent,
+    SharedapplicationdocumentuploadsComponent,SharedappProcesssubmissionComponent,SharedappApplicantprocesssubmissionComponent,
     SharedevaluationChecklistComponent
   ]
 })

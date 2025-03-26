@@ -136,7 +136,7 @@ export class SharedImpexpApplicationClass {
     let me = this;
     this.applicant_id = user.applicant_id;
     this.application_details = localStorage.getItem('application_details');
-
+    
     this.nav_data = localStorage.getItem('nav_data');
     this.application_details = JSON.parse(this.application_details);
     this.nav_data = JSON.parse(this.nav_data);
@@ -178,15 +178,17 @@ export class SharedImpexpApplicationClass {
         me.applicantDetailsForm.addControl(field_name, new FormControl('', Validators.compose([])));
       }
     }
-    if (this.applicant_details) {
 
-      this.applicantDetailsForm.patchValue(this.applicant_details);
+    if (this.applicant_details) {
+      // this.applicantDetailsForm.patchValue(this.applicant_details);
+      this.applicantDetailsForm.patchValue(this.application_details);
     }
 
     if (this.application_details) {
+      this.regulatory_function_id = this.application_details.regulatory_function_id;
       this.regulatory_subfunction_id = this.application_details.regulatory_subfunction_id;
       this.process_title = this.application_details.process_title;
-      this.application_id = this.application_details.application_id;
+      this.applicant_id = this.application_details.applicant_id;
       this.tracking_no = this.application_details.tracking_no;
       this.status_name = this.application_details.status_name;
       this.permit_name = this.application_details.permit_name;
@@ -329,9 +331,6 @@ export class SharedImpexpApplicationClass {
     const transactionpermit_type_id = localStorage.getItem('transactionpermit_type_id')
       ? Number(localStorage.getItem('transactionpermit_type_id'))
       : null;
-
-    console.log('Retrieved transactionpermit_type_id:', transactionpermit_type_id);
-
     const applicant_id = Number(this.applicantDetailsForm.get('id')?.value) || null;
 
     this.nav_data = localStorage.getItem('nav_data');
@@ -378,13 +377,21 @@ export class SharedImpexpApplicationClass {
 
   // Function to handle the next step
   onNextStep() {
-    // if (!this.isSaved) {
-    //   this.toastr.error('Kindly save before proceeding to the next step.', 'Validation Error');
-    //   return;
-    // }
-    this.ngWizardService.next(); // Move to the next step only if saved
+    const isEditing = !!this.applicationGeneraldetailsfrm.get('id')?.value; // Check if editing
+  
+    // Mark all fields as touched to trigger validation messages
+    Object.values(this.applicationGeneraldetailsfrm.controls).forEach(control => {
+      control.markAsTouched();
+    });
+  
+    // Block navigation if not editing and form is invalid
+    if (!isEditing && this.applicationGeneraldetailsfrm.invalid) {
+      this.toastr.error('Please fill in all mandatory fields before proceeding.', 'Validation Error');
+      return;
+    }
+  
+    this.ngWizardService.next(); // Allow navigation
   }
-
 
   onPermitsApplicationPrint() {
 

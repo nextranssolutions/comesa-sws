@@ -1,18 +1,18 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { ApprovedPermitsComponent } from './approved-permits.component';
+import { UnderScreeningComponent } from './under-screening.component';
 
-describe('ApprovedPermitsComponent', () => {
-  let component: ApprovedPermitsComponent;
-  let fixture: ComponentFixture<ApprovedPermitsComponent>;
+describe('UnderScreeningComponent', () => {
+  let component: UnderScreeningComponent;
+  let fixture: ComponentFixture<UnderScreeningComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [ApprovedPermitsComponent]
+      imports: [UnderScreeningComponent]
     })
     .compileComponents();
     
-    fixture = TestBed.createComponent(ApprovedPermitsComponent);
+    fixture = TestBed.createComponent(UnderScreeningComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

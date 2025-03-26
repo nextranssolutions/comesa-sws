@@ -15,6 +15,9 @@ import { DraftExportlicensedashComponent } from './views/export-license/draft-ex
 import { InitiateExportappComponent } from './views/export-license/initiate-exportapp/initiate-exportapp.component';
 import { PersonaluseproductsDashComponent } from './views/permit-personaluse-products/personaluseproducts-dash/personaluseproducts-dash.component';
 import { InitiatePermitsforPersonaluseproductsComponent } from './views/permit-personaluse-products/initiate-permitsfor-personaluseproducts/initiate-permitsfor-personaluseproducts.component';
+import { AwaitingreviewApprovalComponent } from './views/import-license/awaitingreview-approval/awaitingreview-approval.component';
+import { UnderScreeningComponent } from './views/export-license/under-screening/under-screening.component';
+import { AwaitingReviewApprovalComponent } from './views/export-license/awaiting-review-approval/awaiting-review-approval.component';
 
 const routes: Routes = [{
   path: '',
@@ -33,7 +36,10 @@ const routes: Routes = [{
     path: 'underprocessing-importapp',
     component: UnderprocessingImportlicencedashComponent
   }, {
-    path: 'request-additional-info',
+    path: 'awaitingreview-approval',
+    component: AwaitingreviewApprovalComponent
+  }, {
+    path: 'request-additional-info-import',
     component: RequestAdditionalInfoComponent
   }, {
     path: 'rejected-importapp',
@@ -50,7 +56,13 @@ const routes: Routes = [{
   }, {
     path: 'initiate-exportapp',
     component: InitiateExportappComponent
-  },  {
+  },  { 
+    path: 'under-screening-exportapp',
+    component: UnderScreeningComponent
+  }, { 
+    path: 'awaitingreview-approval-exportapp',
+    component: AwaitingReviewApprovalComponent
+  }, {
     path: 'personaluseproducts-dash',
     component: PersonaluseproductsDashComponent
   }, {

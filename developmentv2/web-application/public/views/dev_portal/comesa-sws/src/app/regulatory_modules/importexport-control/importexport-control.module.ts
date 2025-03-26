@@ -32,6 +32,10 @@ import { DraftExportlicensedashComponent } from './views/export-license/draft-ex
 import { InitiateExportappComponent } from './views/export-license/initiate-exportapp/initiate-exportapp.component';
 import { PersonaluseproductsDashComponent } from './views/permit-personaluse-products/personaluseproducts-dash/personaluseproducts-dash.component';
 import { InitiatePermitsforPersonaluseproductsComponent } from './views/permit-personaluse-products/initiate-permitsfor-personaluseproducts/initiate-permitsfor-personaluseproducts.component';
+import { PreviewImportappComponent } from './views/import-license/preview-importapp/preview-importapp.component';
+import { AwaitingreviewApprovalComponent } from './views/import-license/awaitingreview-approval/awaitingreview-approval.component';
+import { AwaitingReviewApprovalComponent } from './views/export-license/awaiting-review-approval/awaiting-review-approval.component';
+import { UnderScreeningComponent } from './views/export-license/under-screening/under-screening.component';
 
 const ngWizardConfig: NgWizardConfig = {
   theme: THEME.default
@@ -44,7 +48,8 @@ const ngWizardConfig: NgWizardConfig = {
     RejectedPermitsComponent,RequestAdditionalInfoComponent,PersonaluseproductsDashComponent,InitiatePermitsforPersonaluseproductsComponent,
     PermitproductdetailsComponent, PermitgeneraldetailsComponent,ApplicantdetailsComponent,
     ImportexportHeaderComponent,InitiateImportappComponent,DraftExportlicensedashComponent,
-    UnderprocessingImportlicencedashComponent,InitiateExportappComponent,
+    UnderprocessingImportlicencedashComponent,InitiateExportappComponent,PreviewImportappComponent,
+    AwaitingreviewApprovalComponent,AwaitingReviewApprovalComponent,UnderScreeningComponent
   ],
   imports: [
     CommonModule, ImportexportRoutingModule,

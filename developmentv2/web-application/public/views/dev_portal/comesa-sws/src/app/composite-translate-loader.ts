@@ -22,4 +22,15 @@ export class CompositeTranslateLoader implements TranslateLoader {
         })
       );
   }
+
+  translateInput(text: string, targetLang: string): Promise<string> {
+    return new Promise((resolve, reject) => {
+      const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=auto&tl=${targetLang}&dt=t&q=${encodeURIComponent(text)}`;
+      fetch(url)
+        .then(response => response.json())
+        .then(data => resolve(data[0][0][0]))
+        .catch(error => reject(error));
+    });
+  }
+  
 }

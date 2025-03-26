@@ -79,9 +79,9 @@ export class ServiceAdmnistrationService {
 
   onLoadDataUrl(data, action_url) {
     data.table_name = btoa(data.table_name);
-    // data.table_name = this.encryptionService.OnEncryptData(data.table_name)
-    // const loggedInUserId = localStorage.getItem('id');
-    // data.user_id = loggedInUserId;
+    data.table_name = this.encryptionService.OnEncryptData(data.table_name)
+    const loggedInUserId = localStorage.getItem('id');
+    data.user_id = loggedInUserId;
     this.system = {
       params: data,
       headers: { 'Accept': 'application/json' }

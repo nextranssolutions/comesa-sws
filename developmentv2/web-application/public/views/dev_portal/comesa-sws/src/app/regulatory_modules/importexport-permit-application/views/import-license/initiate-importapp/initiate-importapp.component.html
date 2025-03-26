@@ -117,7 +117,7 @@
                     icon="fa fa-angle-double-left" [elementAttr]="{ id: 'elementId', }" (onClick)="previousStep()">
                 </dx-button>
                 <dx-button text="{{'document_submission' | translate}}" iconPosition="right" type="success"
-                    icon="fa fa-angle-double-right" [elementAttr]="{ id: 'elementId', }" (onClick)="onNextStep()">
+                    icon="fa fa-angle-double-right" [elementAttr]="{ id: 'elementId', }" (onClick)="nextTab()">
                 </dx-button>
 
             </div>
@@ -202,8 +202,8 @@
     <dx-scroll-view>
         <div class="row">
 
-            <app-sharedapp-processsubmission [appworkflow_status_id]="appworkflow_status_id"
-                [application_code]="application_code" [process_id]="process_id"></app-sharedapp-processsubmission>
+            <app-sharedapp-applicantprocesssubmission [appworkflow_status_id]="appworkflow_status_id"
+                [application_code]="application_code" [workflowprocess_id]="workflowprocess_id"></app-sharedapp-applicantprocesssubmission>
         </div>
     </dx-scroll-view>
 </dx-popup>
