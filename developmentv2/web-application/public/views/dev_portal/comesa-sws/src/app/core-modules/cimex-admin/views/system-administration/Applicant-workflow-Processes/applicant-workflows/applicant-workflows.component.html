@@ -514,8 +514,8 @@ title="{{ 'delete_confirmation_of '+'workflow_transition' | translate }}" (onHid
                 <dxi-column [width]="100" caption="{{ 'action' | translate }}" name="command-editing"
                     [allowFiltering]="false" [allowSorting]="false" cellTemplate="cellTemplate">
                     <div *dxTemplate="let data of 'cellTemplate'">
-                        <dx-menu (onItemClick)="funcStageActionClick($event,data)"
-                            [items]="workflowStageActionsMenuItems"></dx-menu>
+                        <dx-menu (onItemClick)="funcStageSubmissionActionClick($event,data)"
+                            [items]="workflowStageDetailsMenuItems"></dx-menu>
                     </div>
                 </dxi-column>
                 <dxi-column dataField="name" caption="{{ 'name' | translate }}">

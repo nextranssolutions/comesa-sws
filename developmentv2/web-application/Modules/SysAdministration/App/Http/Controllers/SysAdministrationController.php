@@ -1359,7 +1359,6 @@ public function getAppHscodes(Request $req)
 
     return response()->json($res, 200);
 }
-
 public function getUserDetails(Request $req)
 {
     try {
@@ -1423,6 +1422,40 @@ public function getUserDetails(Request $req)
         return response()->json(sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__)), 500);
     }
 }
+// public function getUserDetails(Request $req)
+// {
+//     try {
+//         $groupId = $req->input('group_id');
+//         if (!$groupId) {
+//             return response()->json([
+//                 'success' => false,
+//                 'message' => 'Group ID is required.'
+//             ], 400);
+//         }
+
+//         $users = DB::table('tra_user_group as t1')
+//         ->join('usr_users_information as t2', 't1.user_id', '=', 't2.id')
+//         ->where('t1.group_id', '=', $groupId)
+//         ->select(
+//             't2.id',             
+//             't2.first_name',
+//             't2.email_address',
+//             't2.created_on',
+//             't2.is_enabled'
+//         )
+//         ->get();
+
+//         $res = ['success' => true, 'data' => $users];
+//     } catch (\Exception $exception) {
+//         $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+//     } catch (\Throwable $throwable) {
+//         $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+//     }
+
+//     return response()->json($res, 200);
+
+//     return response()->json($res, 200);
+// }
 
 
 

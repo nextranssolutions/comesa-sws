@@ -39,6 +39,8 @@ export class PermitApplicationsComponent {
    printiframeUrl: string;
    isPreviewApplicationDetails: boolean = false;
    frmPreviewAppDetails: FormGroup;
+   filtersFrm: FormGroup;
+   filteredGridData: any[] = [];
    regulated_productstype_id: number;
    permitTypesData: any;
    applicationSelectionfrm: FormGroup;
@@ -89,6 +91,16 @@ export class PermitApplicationsComponent {
    permit_type_id: number;
    application_type_id: any;
    table_name: string;
+   actionsMenuItems = [
+    {
+      text: "Action",
+      icon: 'menu',
+      items: [
+         { text: "Preview Application", action: 'view_record', icon: 'fa fa-eye' },
+        
+      ]
+    }
+  ];
  
    constructor(public utilityService: UtilityService, public viewRef: ViewContainerRef,
      public spinner: SpinnerVisibilityService,
@@ -118,6 +130,10 @@ export class PermitApplicationsComponent {
      this.onApplicationSubmissionFrm = new FormGroup({
        paying_currency_id: new FormControl('', Validators.compose([])),
        submission_comments: new FormControl('', Validators.compose([]))
+     });
+     this.filtersFrm = new FormGroup({
+       received_from: new FormControl(null),
+       received_to: new FormControl(null)
      });
      this.table_name = 'txn_importexport_applications';
  
@@ -430,6 +446,32 @@ export class PermitApplicationsComponent {
          });
  
    }
+
+   onFuncSaveFiltersData(){
+    if (this.filtersFrm.invalid) {
+      return;
+    }
+    
+    const filters = this.filtersFrm.value;
+    console.log(filters)
+    let filteredData = this.dtImportExpApplicationData; // Assuming originalData holds unfiltered grid data
+  // console.log(filteredData)
+    if (filters.received_from) {
+      filteredData = filteredData.filter(item => 
+        new Date(item.date_of_application) >= new Date(filters.received_from)
+      );
+      console.log(filteredData)
+    }
+  
+    if (filters.received_to) {
+      filteredData = filteredData.filter(item => 
+        new Date(item.date_of_application) <= new Date(filters.received_to)
+      );
+    }
+  
+    this.filteredGridData = filteredData;
+    // console.log("filtered data",this.filteredGridData )
+   }
    funcRequestforPermitAlteration() {
      this.app_route = ['./import-export/importexport-approvedappsel'];
      this.router.navigate(this.app_route);
@@ -556,96 +598,100 @@ export class PermitApplicationsComponent {
    applicationActionColClick(e, data) {
  
      var action_btn = e.itemData;
-     this.funcActionsProcess(action_btn, data.data);
+     if(action_btn.action === 'view_record'){
+      console.log(this.funcApplicationPreveditDetails(data.data));
+     }
+     
  
    }
  
-   singleApplicationActionColClick(data) {
+  //  singleApplicationActionColClick(data) {
  
-     this.funcActionsProcess(data, data);
+  //    this.funcActionsProcess(data, data);
  
-   }
+  //  }
  
-   funcActionsProcess(action_btn, data) {
+  //  funcActionsProcess(action_btn, data) {
  
-     if (action_btn.action === 'edit') {
-       this.funcApplicationPreveditDetails(data);
-       // this.funcApplicationPreveditDetails(data);
+  //    if (action_btn.action === 'edit') {
+  //      this.funcApplicationPreveditDetails(data);
+  //      // this.funcApplicationPreveditDetails(data);
  
-     }
-     else if (action_btn.action === 'preview') {
-       this.funcProductPreviewDetails(data);
-     }
-     else if (action_btn.action == 'print_applications') {
-       this.funcPrintApplicationDetails(data);
-     }
-     else if (action_btn.action == 'archive') {
-       this.funcArchivePermitApplication(data);
-     } else if (action_btn.action == 'delete_application') {
-       this.funcDeletePermitApplication(data);
-     }
-     else if (action_btn.action == 'pre_rejection') {
-       this.funcApplicationRejection(data);
-     }
-     else if (action_btn.action == 'query_response') {
+  //    }
+  //    else if (action_btn.action === 'preview') {
+  //      this.funcProductPreviewDetails(data);
+  //    }
+  //    else if (action_btn.action == 'print_applications') {
+  //      this.funcPrintApplicationDetails(data);
+  //    }
+  //    else if (action_btn.action == 'archive') {
+  //      this.funcArchivePermitApplication(data);
+  //    } else if (action_btn.action == 'delete_application') {
+  //      this.funcDeletePermitApplication(data);
+  //    }
+  //    else if (action_btn.action == 'pre_rejection') {
+  //      this.funcApplicationRejection(data);
+  //    }
+  //    else if (action_btn.action == 'query_response') {
  
-       this.funcApplicationPreveditDetails(data);
+  //      this.funcApplicationPreveditDetails(data);
  
-     }
-     else if (action_btn.action == 'processing_details') {
+  //    }
+  //    else if (action_btn.action == 'processing_details') {
  
-       this.onLoadApplicationProcessingData(data);
+  //      this.onLoadApplicationProcessingData(data);
  
-     }
-     else if (action_btn.action == 'print_invoice') {
+  //    }
+  //    else if (action_btn.action == 'print_invoice') {
  
-       this.funcPrintApplicationInvoice(data);
+  //      this.funcPrintApplicationInvoice(data);
  
-     }
-     else if (action_btn.action == 'print_receipt') {
+  //    }
+  //    else if (action_btn.action == 'print_receipt') {
  
-       this.funcPrintApplicationReceipts(data);
+  //      this.funcPrintApplicationReceipts(data);
  
-     }
-     else if (action_btn.action == 'print_rejectionletter') {
+  //    }
+  //    else if (action_btn.action == 'print_rejectionletter') {
  
-       this.funcPrintLetterofRejection(data);
+  //      this.funcPrintLetterofRejection(data);
  
-     }
+  //    }
  
-     else if (action_btn.action == 'reg_certificate' || action_btn.action == 'reg_certificate') {
+  //    else if (action_btn.action == 'reg_certificate' || action_btn.action == 'reg_certificate') {
  
-       this.funcgenenerateImportExportPermit(data);
+  //      this.funcgenenerateImportExportPermit(data);
  
-     }
-     else if (action_btn.action == 'approval_permit' || action_btn.action == 'print_permit') {
+  //    }
+  //    else if (action_btn.action == 'approval_permit' || action_btn.action == 'print_permit') {
  
-       this.funcgenenerateImportExportPermit(data);
+  //      this.funcgenenerateImportExportPermit(data);
  
-     } else if (action_btn.action == 'initiate_license_application' || action_btn.action == 'initiate_license_application') {
+  //    } else if (action_btn.action == 'initiate_license_application' || action_btn.action == 'initiate_license_application') {
  
        
-     }
-     else if (action_btn.action == 'uploadsub_paymentdetails' || action_btn.action == 'uploadsub_paymentdetails') {
+  //    }
+  //    else if (action_btn.action == 'uploadsub_paymentdetails' || action_btn.action == 'uploadsub_paymentdetails') {
  
-       // this.funcUploadPaymentDetails(data);
+  //      // this.funcUploadPaymentDetails(data);
  
-     } else if (action_btn.action == 'inspection_booking' || action_btn.action == 'inspection_booking') {
+  //    } else if (action_btn.action == 'inspection_booking' || action_btn.action == 'inspection_booking') {
  
-       this.funcInitiateInspectionBooking(data);
+  //      this.funcInitiateInspectionBooking(data);
  
-     }
-     else if (action_btn == 'restorearchived') {
-       this.funcProductRestoreArchiveApplication(data.data);
-     }
+  //    }
+  //    else if (action_btn == 'restorearchived') {
+  //      this.funcProductRestoreArchiveApplication(data.data);
+  //    }
  
  
-   } funcProductRestoreArchiveApplication(data) {
+  //  } 
+   funcProductRestoreArchiveApplication(data) {
      this.utilityService.funcApplicationRestoreArchiceCall(this.viewRef, data, 'txn_importexport_applications', this.reloadPermitApplicationsApplications)
    }
    application_data: any;
    funcApplicationPreveditDetails(app_data) { 
-   
+   console.log(app_data);
     this.regulatory_subfunction_id = app_data.regulatory_subfunction_id;
     this.applicationsubmission_type_id = app_data.applicationsubmission_type_id;
     // this.application_code = app_data.application_code;

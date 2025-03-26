@@ -275,7 +275,7 @@ export class SharedDmsComponent {
   fetchDocumentTypeIdData() {
 
     var data_submit = {
-      'table_name': 'par_document_types'
+      'table_name': 'dms_document_types'
     }
     this.configService.onLoadConfigurationData(data_submit)
         .subscribe(

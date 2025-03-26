@@ -48,74 +48,44 @@
             [canEnter]="isValidTypeBoolean">
             <div class="div_maincontent">
                 <div class="scrollable-content">
-                    <app-applicant-detailsreport [userApplicantAccountFrm]="userApplicantAccountFrm"
-                        [applicantDetailsForm]="applicantDetailsForm"></app-applicant-detailsreport>
+                    <app-applicantdetails [userApplicantAccountFrm]="userApplicantAccountFrm"
+                        [applicantDetailsForm]="applicantDetailsForm"></app-applicantdetails>
                 </div>
             </div>
 
-            <div class="div_contentfooter pull-right">
-
-                <dx-button text="{{'dashboard' | translate}}" type="success" icon="fa fa-eraser"
-                    (onClick)="onApplicationDashboard()">
-                </dx-button>
-                <dx-button text="{{'permit_general_information' | translate}}" iconPosition="right" type="success"
-                    icon="fa fa-angle-double-right" (onClick)="nextStep()">
-                </dx-button>
-            </div>
-        </ng-wizard-step>
-
-        <ng-wizard-step [title]="'step_two' | translate" [description]="'permit_general_information' | translate"
-            [canEnter]="isValidTypeBoolean">
-
+           
             <div class="div_maincontent">
                 <div class="scrollable-content">
                     <!-- Your content goes here -->
                     <div>
-                        <app-permit-general-detailsreport [applicationGeneraldetailsfrm]="applicationGeneraldetailsfrm"
-                            [permitReceiverSenderFrm]="permitReceiverSenderFrm"></app-permit-general-detailsreport>
+                        <app-permitgeneraldetails [applicationGeneraldetailsfrm]="applicationGeneraldetailsfrm"
+                            [permitReceiverSenderFrm]="permitReceiverSenderFrm"></app-permitgeneraldetails>
                     </div>
                     <!-- Add more content to see the scroll effect -->
                 </div>
             </div>
 
-
-            <div class="pull-right div_contentfooter">
-
-                <dx-button text="{{'applicant_details' | translate}}" type="success" icon="fa fa-angle-double-left"
-                    (onClick)="previousStep()">
-                </dx-button>
-
-                <dx-button text="{{'save_application' | translate}}" iconPosition="left" type="default"
-                    icon="fa fa-save" (onClick)="onSaveImportExportApplication()" icon="fa fa-angle-double-right" [disabled]="isDisabled">
-                </dx-button>
-
-                <dx-button text="{{'permit_product_details' | translate}}" iconPosition="right" type="success"
-                    icon="fa fa-angle-double-right" (onClick)="onNextStep()">
-                </dx-button>
-            </div>
-
-        </ng-wizard-step>
-
-        <ng-wizard-step [title]="'step_three' | translate" [description]="'permit_product_details'| translate"
-            [canEnter]="isValidTypeBoolean">
             <div class="container_div div_maincontent">
 
 
                 <div class="scrollable-content">
                     <!-- Your content goes here -->
                     <div>
-                        <app-permit-product-details-report [oga_application_code]="oga_application_code"
-                            [permitProductsFrm]="permitProductsFrm"></app-permit-product-details-report>
+                        <app-permitproductdetails [oga_application_code]="oga_application_code"
+                            [permitProductsFrm]="permitProductsFrm"></app-permitproductdetails>
                     </div>
 
                 </div>
             </div>
-            <div class="div_footer button-container pull-right div_contentfooter">
-                <dx-button text="{{'permit_general_information' | translate}}" iconPosition="left" type="danger"
-                    icon="fa fa-angle-double-left" class="pull-right" (onClick)="previousStep()">
+
+
+             <div class="div_contentfooter pull-right">
+
+                <dx-button text="{{'dashboard' | translate}}" type="success" icon="fa fa-eraser"
+                    (onClick)="onApplicationDashboard()">
                 </dx-button>
-                <dx-button text="{{'document_requirement_submission' | translate}}" iconPosition="right" type="success"
-                    icon="fa fa-angle-double-right" class="pull-right" (onClick)="nextStep()">
+                <dx-button text="{{'screening_checklist' | translate}}" iconPosition="right" type="success"
+                    icon="fa fa-angle-double-right" (onClick)="nextStep()">
                 </dx-button>
             </div>
         </ng-wizard-step>
@@ -126,8 +96,8 @@
             <div class="container_div div_maincontent">
                 <div class="scrollable-content">
 
-                    <app-sharedappdocumentsupload-report [oga_application_code]="oga_application_code"
-                        [process_id]="process_id"></app-sharedappdocumentsupload-report>
+                    <app-sharedapplicationdocumentuploads [oga_application_code]="oga_application_code"
+                        [process_id]="process_id"></app-sharedapplicationdocumentuploads>
                 </div>
             </div>
             <div class="div_footer button-container pull-right div_contentfooter">
