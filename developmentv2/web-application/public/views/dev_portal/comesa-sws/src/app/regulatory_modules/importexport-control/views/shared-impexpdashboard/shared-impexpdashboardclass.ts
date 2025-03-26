@@ -76,6 +76,7 @@ export class SharedImpExpdashboardClass {
   spinnerMessage: string;
   tracking_no: string;
   oga_application_code: any;
+  win_previewpermitapp: boolean;
 
   constructor(public utilityService: UtilityService, public viewRef: ViewContainerRef,
     public spinner: SpinnerVisibilityService,
@@ -586,6 +587,7 @@ export class SharedImpExpdashboardClass {
 
 
 funcProductPreviewDetails(app_data) {
+  this.win_previewpermitapp = true;
   this.regulatory_function_id = app_data.regulatory_function_id;
   this.regulatory_subfunction_id = app_data.regulatory_subfunction_id;
   this.transactionpermit_type_id = app_data.transactionpermit_type_id;
@@ -608,7 +610,7 @@ funcProductPreviewDetails(app_data) {
 
           localStorage.setItem('application_details', JSON.stringify(merged_appdata));
          
-          this.app_route = ['./importexport-control/' + this.router_link];
+          // this.app_route = ['./importexport-control/' + this.router_link];
 
           this.router.navigate(this.app_route);
           this.scrollToTop();

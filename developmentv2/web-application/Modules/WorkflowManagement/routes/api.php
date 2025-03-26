@@ -38,8 +38,10 @@ Route::middleware(['XssSanitizer','clear_cache_config','firewall.all'])->prefix(
     Route::get('onLoadworkflowStageData', [WorkflowManagementController::class, 'onLoadworkflowStageData']);
     Route::get('onLoadWorkflowData', [WorkflowManagementController::class, 'onLoadWorkflowData']);
     Route::get('onLoadWorkflowTransitionData', [WorkflowManagementController::class, 'onLoadWorkflowTransitionData']);
+    Route::get('onLoadApplicantWorkflowTransitionData', [WorkflowManagementController::class, 'onLoadApplicantWorkflowTransitionData']);
     Route::get('onLoadWorkflowStatusActions', [WorkflowManagementController::class, 'onLoadWorkflowStatusActions']);
     Route::post('onApplicationProcessSubmission', [WorkflowManagementController::class, 'onApplicationProcessSubmission']);
+    Route::post('onApplicationApplicantProcessSubmission', [WorkflowManagementController::class, 'onApplicationApplicantProcessSubmission']);
     Route::post('onSaveImageInformation', [WorkflowManagementController::class, 'onSaveImageInformation']);
     Route::get('getRegultoryFunctionUserAccess', [WorkflowManagementController::class, 'getRegultoryFunctionUserAccess']);
     Route::get('getAppWorkflowStages', [WorkflowManagementController::class, 'getAppWorkflowStages']);

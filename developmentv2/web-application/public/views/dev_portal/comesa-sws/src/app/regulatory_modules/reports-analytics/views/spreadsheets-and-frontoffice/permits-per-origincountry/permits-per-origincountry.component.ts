@@ -6,5 +6,11 @@ import { Component } from '@angular/core';
   styleUrl: './permits-per-origincountry.component.css'
 })
 export class PermitsPerOrigincountryComponent {
-
+  table_name:string;
+  parameter_name:string;
+  constructor(
+  ) {
+    this.table_name = 'par_nationalities';
+    this.parameter_name = "permits_per_country_of_origin";
+  }
 }

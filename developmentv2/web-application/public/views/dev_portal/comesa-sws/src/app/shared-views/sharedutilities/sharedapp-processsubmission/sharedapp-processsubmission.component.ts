@@ -44,6 +44,7 @@ export class SharedappProcesssubmissionComponent {
       id: new FormControl('', Validators.compose([])),
       remarks: new FormControl('', Validators.compose([])),
       process_id: new FormControl('', Validators.compose([])),
+      workflowprocess_id: new FormControl('', Validators.compose([])),
       workflow_id: new FormControl('', Validators.compose([])),
       prevworkflow_stage_id: new FormControl('', Validators.compose([])),
       nextworkflow_stage_id: new FormControl('', Validators.compose([Validators.required])),
@@ -60,6 +61,7 @@ export class SharedappProcesssubmissionComponent {
 
     this.appProcessSubmissionFrm.get('application_code')?.setValue(this.application_code);
     this.appProcessSubmissionFrm.get('process_id')?.setValue(this.process_id);
+    this.appProcessSubmissionFrm.get('workflowprocess_id')?.setValue(this.workflowprocess_id);
     this.appProcessSubmissionFrm.get('app_reference_no')?.setValue(this.app_reference_no);
     this.appProcessSubmissionFrm.get('appworkflow_status_id')?.setValue(this.appworkflow_status_id);
 
@@ -67,10 +69,7 @@ export class SharedappProcesssubmissionComponent {
     this.onLoadworkflowStatusData()
     this.onLoadprocessData();
     this.onLoadworkflowStageData(this.process_id);
-    this.onLoadworkflowProcessesStageData(this.workflowprocess_id);
     this.onLoadWorkflowStatusActions();
-    this.onLoadworkflowprocessData();
-    this.onLoadWorkflowStatusProcessActions();
   }
   scrollToTop(): void {
     window.scrollTo({
@@ -87,6 +86,7 @@ export class SharedappProcesssubmissionComponent {
     // }
     
     }
+      
     if (changes['appworkflow_status_id']) {
       // if(this.application_code >0){
         this.onLoadWorkflowStatusActions();
@@ -114,24 +114,7 @@ export class SharedappProcesssubmissionComponent {
   }
 
 
-  onLoadworkflowProcessesStageData(workflowprocess_id) {
-    var data_submit = {
-      'table_name': 'wb_workflowprocesses_stages',
-      'workflowprocess_id': workflowprocess_id
-    }
-    this.workflowService.getWorkflowConfigsUrl(data_submit, 'onLoadworkflowStageData')
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            this.workflowStageData = this.data_record.data;
-          }
-        },
-        error => {
-          
-        });
-
-  }
+  
 
   onWorkflowStatusActionSelect($event) {
 
@@ -205,25 +188,10 @@ export class SharedappProcesssubmissionComponent {
         });
   }
 
-  onLoadWorkflowStatusProcessActions(){
-    var data_submit = {
-      'table_name': 'wb_applicationprocess_submissions',
-      'workflow_status_id': this.appworkflow_status_id,
-      'workflowprocess_id': this.workflowprocess_id
-    }
-    this.workflowService.getWorkflowConfigsUrl(data_submit, 'onLoadWorkflowStatusActions')
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            this.workflowStatusActionsData = this.data_record.data;
-          }
-        },
-        error => {
-          
-        });
-  }
 
+ 
+
+ 
   onLoadprocessData() {
     var data_submit = {
       'table_name': 'wf_processes'
@@ -243,23 +211,8 @@ export class SharedappProcesssubmissionComponent {
   }
 
 
-  onLoadworkflowprocessData() {
-    var data_submit = {
-      'table_name': 'wb_workflowprocesses'
-    }
-    this.workflowService.getWorkflowConfigs(data_submit)
-      .subscribe(
-        data => {
-          this.data_record = data;
-          if (this.data_record.success) {
-            this.processData = this.data_record.data;
-          }
-        },
-        error => {
-          
-        });
 
-  }
+ 
   onLoadworkflowStatusData() {
     var data_submit = {
       'table_name': 'wf_appworkflow_statuses'

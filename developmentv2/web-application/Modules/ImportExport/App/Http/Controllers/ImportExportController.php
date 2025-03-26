@@ -1472,7 +1472,7 @@ class ImportExportController extends Controller
                 $sql->whereIn('appworkflow_status_id', $workflow_status);
             }
             if (validateIsNumeric($appworkflowstage_category_id)) {
-                $sql->where(array('t9.appworkflowstage_category_id' => $appworkflowstage_category_id));
+                $sql->where(array('appworkflowstage_category_id' => $appworkflowstage_category_id));
             }
 
             if (validateIsNumeric($regulatory_subfunction_id)) {

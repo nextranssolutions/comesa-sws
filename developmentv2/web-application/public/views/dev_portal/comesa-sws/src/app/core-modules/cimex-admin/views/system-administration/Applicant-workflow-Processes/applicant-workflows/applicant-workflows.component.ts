@@ -44,7 +44,7 @@ export class ApplicantWorkflowsComponent {
   workflowStageProcessActionsFrm: FormGroup;
   workflowStageProcessActionsVisible: boolean;
   workflowStagesProcessActionsData: any;
-
+  statusApplicantActionsData: any;
   deletePopupVisible = false;
   workflowDetailsVisible = false;
   workflowStageDetailsVisible = false;
@@ -55,7 +55,7 @@ export class ApplicantWorkflowsComponent {
   workflowprocess_id: number;
   config_record: string;
   statusActionsData: any;
-
+  workflowStageApplicantData: any;
   // tabPanelPopupVisible: boolean = false;
   selectedTabIndex = 0;
   selectedTabsIndex = 0;
@@ -193,7 +193,7 @@ export class ApplicantWorkflowsComponent {
       text: "Action",
       icon: 'menu',
       items: [
-        { text: "Edit workflow Stage details", action: 'edit_record', icon: 'fa fa-edit' },
+        { text: "Edit", action: 'edit_record', icon: 'fa fa-edit' },
         { text: "Delete", action: 'delete_record', icon: 'fa fa-trash' },
         { text: "Enable/Disable", action: 'enable_record', icon: 'fa fa-check' },
       ]
@@ -275,7 +275,6 @@ export class ApplicantWorkflowsComponent {
       description: new FormControl('', Validators.compose([])),
       code: new FormControl('', Validators.compose([])),
       order_no: new FormControl('', Validators.compose([])),
-      stage_id: new FormControl('', Validators.compose([])),
       is_status_tied: new FormControl('', Validators.compose([])),
       application_status_id: new FormControl('', Validators.compose([])),
       is_checklist_tied: new FormControl('', Validators.compose([])),
@@ -310,17 +309,17 @@ export class ApplicantWorkflowsComponent {
     });
   }
   ngOnInit() {
-
+    this.onLoadStageApplicantData();
+    this.onLoadApplicationStatusData(this.workflowprocess_id);
     this.fetchapplicationStatusesData();
     this.onLoadapplicationSubmissionTypeData();
-
     this.fetchWorkflowItemsDetails();
+    this.onLoadApplicantStatusActionsData();
     // this.onloadworkflowData();
     this.onLoadregulatoryFunctionsData();
     // this.onLoadregulatorySubFunctionsData(this.regulatory_function_id);
     this.onLoadproductTypeData();
     this.onLoadworkflowStageStatusesData();
-
     this.onLoadworkflowStatusData();
     this.onloadworkflowAllStageData();
     this.onLoadWorkflowSubmissionTransitonActionsData();
@@ -694,10 +693,10 @@ export class ApplicantWorkflowsComponent {
         });
 
   }
-  onLoadApplicationStatusData() {
+  onLoadApplicationStatusData(workflowprocess_id) {
     var data_submit = {
-      'table_name': 'par_application_statuses',
-      // process_id: process_id
+      'table_name': 'wb_application_statuses',
+      workflowprocess_id: workflowprocess_id
     }
     this.workflowService.getWorkflowConfigs(data_submit)
       .subscribe(
@@ -856,6 +855,27 @@ export class ApplicantWorkflowsComponent {
         });
 
   }
+
+  onLoadStageApplicantData() {
+    var data_submit = {
+      'table_name': 'wb_workflowprocesses_stages',
+      // workflowprocess_id: this.workflowprocess_id
+    }
+    this.workflowService.getWorkflowConfigs(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.workflowStageApplicantData = this.data_record.data;
+          }
+        },
+        error => {
+
+        });
+
+  }
+
+  
   onFuncSaveWorlflowData() {
 
 
@@ -989,6 +1009,19 @@ export class ApplicantWorkflowsComponent {
       this.funcEnableDisableStageRecord(data);
     }
   }
+
+  funcStageSubmissionActionClick(e, data) {
+    var action_btn = e.itemData;
+    if (action_btn.action === 'edit_record') {
+      this.funcEditStageSubmissionActionDetails(data);
+    } else if (action_btn.action === 'delete_record') {
+      this.funcDeleteWorkflowStageDetails(data);
+    } else if (action_btn.action === 'enable_record') {
+      this.funcEnableDisableStageRecord(data);
+    }
+  }
+
+  
   funcActionColClick(e, data) {
     var action_btn = e.itemData;
     if (action_btn.action === 'edit_record') {
@@ -1014,6 +1047,35 @@ export class ApplicantWorkflowsComponent {
 
     this.fetchWorkflowSubmissionActionsDetails(data.data.workflowprocess_id);
     this.fetchWorkflowStageProcessActions(data.data.workflowprocess_id);
+
+
+  }
+  funcEditStageSubmissionActionDetails(data) {
+    this.workflowSubmissionActionsItemsFrm.reset();
+    this.workflowSubmissionActionDetailsVisible = true
+    this.workflowSubmissionActionsItemsFrm.patchValue(data.data);
+
+    this.workflowSubmissionActionsItemsFrm.get('table_name')?.setValue('wb_submissionworkflowprocess_actions');
+    this.workflowSubmissionActionsItemsFrm.get('workflowprocess_id')?.setValue(this.workflowprocess_id);
+
+    // this.fetchWorkflowSubmissionActionsDetails(data.data.workflowprocess_id);
+    // this.fetchWorkflowStageProcessActions(data.data.workflowprocess_id);
+
+
+  }
+
+  
+
+  funcEditStageProcessActionDetails(data) {
+    this.workflowStageProcessActionsFrm.reset();
+    this.workflowStageProcessActionsVisible = true
+    this.workflowStageProcessActionsFrm.patchValue(data.data);
+
+    this.workflowStageProcessActionsFrm.get('table_name')?.setValue('wb_workflowstageprocess_actions');
+    this.workflowStageProcessActionsFrm.get('workflowprocess_id')?.setValue(this.workflowprocess_id);
+
+    // this.fetchWorkflowSubmissionActionsDetails(data.data.workflowprocess_id);
+    // this.fetchWorkflowStageProcessActions(data.data.workflowprocess_id);
 
 
   }
@@ -1216,6 +1278,26 @@ export class ApplicantWorkflowsComponent {
         });
 
   }
+
+  onLoadApplicantStatusActionsData() {
+    var data_submit = {
+      'table_name': 'wb_workflowstageprocess_actions',
+
+    }
+    this.workflowService.getWorkflowConfigs(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.statusApplicantActionsData = this.data_record.data;
+          }
+        },
+        error => {
+
+        });
+
+  }
+  
   fetchWorkflowStageProcessActions(workflowprocess_id) {
     this.spinnerShow('Loading Workflow Stages Details');
     var data_submit = {
@@ -1281,7 +1363,7 @@ export class ApplicantWorkflowsComponent {
   funcStageDetailsOnClick(e, data) {
     var action_btn = e.itemData;
     if (action_btn.action === 'edit_record') {
-      this.funcEditStageDetails(data);
+      this.funcEditStageProcessActionDetails(data);
     } else if (action_btn.action === 'delete_record') {
       this.funcDeleteWorkflowStageDetails(data);
     } else if (action_btn.action === 'enable_record') {
