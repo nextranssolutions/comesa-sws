@@ -1358,10 +1358,16 @@ public function getAppHscodes(Request $req)
 
     return response()->json($res, 200);
 }
-
 public function getUserDetails(Request $req)
 {
     try {
+            $users = array();
+            $requestData = $req->all();
+            $table_name = $req->table_name;
+            $table_name = 'tra_user_group';
+            unset($requestData['table_name']);
+
+
         $groupId = $req->input('group_id');
         if (!$groupId) {
             return response()->json([
@@ -1370,7 +1376,7 @@ public function getUserDetails(Request $req)
             ], 400);
         }
 
-        $users = DB::table('tra_user_group as t1')
+        $sql = DB::table($table_name . ' as t1')
         ->join('usr_users_information as t2', 't1.user_id', '=', 't2.id')
         ->where('t1.group_id', '=', $groupId)
         ->select(
@@ -1379,8 +1385,24 @@ public function getUserDetails(Request $req)
             't2.email_address',
             't2.created_on',
             't2.is_enabled'
-        )
-        ->get();
+        );
+        
+        $data = $sql->get();
+
+        foreach ($data as $rec) {
+
+            $users[] = array(
+                'id' => $rec->id,
+               'first_name' => aes_decrypt($rec->first_name),
+               'email_address' => aes_decrypt($rec->email_address),
+               'is_enabled' => $rec->is_enabled,
+               
+
+
+            );
+
+        }
+
 
         $res = ['success' => true, 'data' => $users];
     } catch (\Exception $exception) {
@@ -1393,6 +1415,40 @@ public function getUserDetails(Request $req)
 
     return response()->json($res, 200);
 }
+// public function getUserDetails(Request $req)
+// {
+//     try {
+//         $groupId = $req->input('group_id');
+//         if (!$groupId) {
+//             return response()->json([
+//                 'success' => false,
+//                 'message' => 'Group ID is required.'
+//             ], 400);
+//         }
+
+//         $users = DB::table('tra_user_group as t1')
+//         ->join('usr_users_information as t2', 't1.user_id', '=', 't2.id')
+//         ->where('t1.group_id', '=', $groupId)
+//         ->select(
+//             't2.id',             
+//             't2.first_name',
+//             't2.email_address',
+//             't2.created_on',
+//             't2.is_enabled'
+//         )
+//         ->get();
+
+//         $res = ['success' => true, 'data' => $users];
+//     } catch (\Exception $exception) {
+//         $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+//     } catch (\Throwable $throwable) {
+//         $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+//     }
+
+//     return response()->json($res, 200);
+
+//     return response()->json($res, 200);
+// }
 
 
 public function onGetStartHsCode(Request $req)

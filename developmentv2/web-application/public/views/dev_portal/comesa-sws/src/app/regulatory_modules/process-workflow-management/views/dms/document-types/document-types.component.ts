@@ -72,8 +72,8 @@ export class DocumentTypesComponent {
     public configService: ConfigurationsService,
   ) {
 
-    this.table_name = 'par_document_types';
-    this.parameter_name = "Document Types";
+    this.table_name = 'dms_document_types';
+    this.parameter_name = "document_types";
     this.createNewDataFrm = new FormGroup({
       id: new FormControl('', Validators.compose([])),
       name: new FormControl('', Validators.compose([Validators.required])),

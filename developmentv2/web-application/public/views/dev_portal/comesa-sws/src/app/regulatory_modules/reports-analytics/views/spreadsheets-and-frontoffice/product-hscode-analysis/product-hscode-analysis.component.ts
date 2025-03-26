@@ -6,5 +6,11 @@ import { Component } from '@angular/core';
   styleUrl: './product-hscode-analysis.component.css'
 })
 export class ProductHscodeAnalysisComponent {
-
+  table_name:string;
+  parameter_name:string;
+  constructor(
+  ) {
+    this.table_name = 'par_nationalities';
+    this.parameter_name = "product_hscode_analysis";
+  }
 }
