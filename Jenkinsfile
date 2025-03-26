@@ -51,7 +51,7 @@ pipeline {
                         # Adjust permissions
                         chmod -R 775 $WORKSPACE/developmentv2/web-application/storage
                         chmod -R 775 $WORKSPACE/developmentv2/web-application/bootstrap
-                        rsync -av --exclude 'public/' "$WORKSPACE/developmentv2/web-application/" /var/www/cimex/developmentv2/web-application/
+                        rsync -av --exclude 'web-application/public/' "$WORKSPACE/developmentv2/" /var/www/cimex/developmentv2/
                         cd /var/www/cimex/developmentv2/web-application
                         php artisan optimize
                         echo "✅Deployment Successful for Backend"
