@@ -15,7 +15,7 @@ import { EncryptionService } from 'src/app/core-services/encryption/encryption.s
 })
 export class AppmenuComponent {
   nav_data: any;
-  dashboard_title: string = "Admin Dashboard";
+  dashboard_title: string = "admin_dashboard";
   navigation_type_id: number = 2;
   isLoggedIn: any;
   isDropdownOpen: boolean = false;

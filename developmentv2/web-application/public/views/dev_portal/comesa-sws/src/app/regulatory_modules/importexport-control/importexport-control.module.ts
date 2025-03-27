@@ -36,6 +36,7 @@ import { PreviewImportappComponent } from './views/import-license/preview-import
 import { AwaitingreviewApprovalComponent } from './views/import-license/awaitingreview-approval/awaitingreview-approval.component';
 import { AwaitingReviewApprovalComponent } from './views/export-license/awaiting-review-approval/awaiting-review-approval.component';
 import { UnderScreeningComponent } from './views/export-license/under-screening/under-screening.component';
+import { RequestforadditionalInfoComponent } from './views/export-license/requestforadditional-info/requestforadditional-info.component';
 
 const ngWizardConfig: NgWizardConfig = {
   theme: THEME.default
@@ -49,7 +50,8 @@ const ngWizardConfig: NgWizardConfig = {
     PermitproductdetailsComponent, PermitgeneraldetailsComponent,ApplicantdetailsComponent,
     ImportexportHeaderComponent,InitiateImportappComponent,DraftExportlicensedashComponent,
     UnderprocessingImportlicencedashComponent,InitiateExportappComponent,PreviewImportappComponent,
-    AwaitingreviewApprovalComponent,AwaitingReviewApprovalComponent,UnderScreeningComponent
+    AwaitingreviewApprovalComponent,AwaitingReviewApprovalComponent,UnderScreeningComponent,
+    RequestforadditionalInfoComponent
   ],
   imports: [
     CommonModule, ImportexportRoutingModule,

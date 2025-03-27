@@ -237,7 +237,7 @@ export class PermitproductdetailsComponent implements OnInit {
 
     this.onLoadConfirmationData()
     this.onLoadcommonNameData();
-    this.onLoaddosageForms();
+    // this.onLoaddosageForms();
 
     this.onLoadPermitProductsData(this.application_code);
     this.onLoadUnitOfMeasureData();

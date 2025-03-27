@@ -220,7 +220,7 @@ export class PermitProductDetailsComponent {
     //check the product types definations 
     this.is_rawpackagingproduct_type = false;
     this.productnametitle = "Product Name";
-    this.onLoaddosageForms();
+    // this.onLoaddosageForms();
     if (this.producttype_defination_id == 2) {
       this.is_rawpackagingproduct_type = true;
       this.productnametitle = "Item Name";

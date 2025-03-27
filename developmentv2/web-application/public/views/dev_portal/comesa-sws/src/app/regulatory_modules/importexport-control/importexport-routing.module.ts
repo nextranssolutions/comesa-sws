@@ -18,6 +18,7 @@ import { InitiatePermitsforPersonaluseproductsComponent } from './views/permit-p
 import { AwaitingreviewApprovalComponent } from './views/import-license/awaitingreview-approval/awaitingreview-approval.component';
 import { UnderScreeningComponent } from './views/export-license/under-screening/under-screening.component';
 import { AwaitingReviewApprovalComponent } from './views/export-license/awaiting-review-approval/awaiting-review-approval.component';
+import { RequestforadditionalInfoComponent } from './views/export-license/requestforadditional-info/requestforadditional-info.component';
 
 const routes: Routes = [{
   path: '',
@@ -33,13 +34,13 @@ const routes: Routes = [{
     path: 'initiate-importapp',
     component: InitiateImportappComponent
   }, {
-    path: 'underprocessing-importapp',
+    path: 'underprocessing-import-permits',
     component: UnderprocessingImportlicencedashComponent
   }, {
     path: 'awaitingreview-approval',
     component: AwaitingreviewApprovalComponent
   }, {
-    path: 'request-additional-info-import',
+    path: 'request-additional-info-impoertpermit-application',
     component: RequestAdditionalInfoComponent
   }, {
     path: 'rejected-importapp',
@@ -63,13 +64,16 @@ const routes: Routes = [{
     path: 'awaitingreview-approval-exportapp',
     component: AwaitingReviewApprovalComponent
   }, {
+    path: 'request-additional-info-exportpermit-application',
+    component: RequestforadditionalInfoComponent
+  }, {
     path: 'personaluseproducts-dash',
     component: PersonaluseproductsDashComponent
   }, {
     path: 'initiate-permitsfor-personaluseproducts',
     component: InitiatePermitsforPersonaluseproductsComponent
   }, 
-  ]  
+  ]   
 }] 
 
 @NgModule({
