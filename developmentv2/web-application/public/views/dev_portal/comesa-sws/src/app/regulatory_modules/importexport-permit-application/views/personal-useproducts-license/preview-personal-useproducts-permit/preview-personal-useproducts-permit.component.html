@@ -41,7 +41,6 @@
 </div>
 <div class="col-lg-12 div-hero">
 
-
     <ng-wizard [config]="config" (stepChanged)="stepChanged($event)">
 
         <ng-wizard-step [title]="'step_one' | translate" [description]="'applicant_details' | translate"
@@ -59,7 +58,7 @@
                     [elementAttr]="{  class: 'pull-left' }" (onClick)="onApplicationDashboard()">
                 </dx-button>
                 <dx-button text="{{'permit_general_information' | translate}}" iconPosition="right" type="success"
-                    icon="fa fa-angle-double-right" [elementAttr]="{ id: 'elementId' }" (onClick)="onextStep()">
+                    icon="fa fa-angle-double-right" [elementAttr]="{ id: 'elementId' }" (onClick)="nextStep()">
                 </dx-button>
             </div>
         </ng-wizard-step>
@@ -86,10 +85,6 @@
                     icon="fa fa-angle-double-left" [elementAttr]="{ id: 'elementId', }" (onClick)="previousStep()">
                 </dx-button>
 
-                <dx-button text="{{'save_general_permit_information' | translate}}" iconPosition="left" type="default"
-                    icon="fa fa-save" (onClick)="onSaveImportExportApplication()" icon="fa fa-angle-double-left"
-                    [elementAttr]="{ id: 'elementId', }">
-                </dx-button>
 
                 <dx-button text="{{'permit_product_information' | translate}}" iconPosition="right" type="success"
                     icon="fa fa-angle-double-right" [elementAttr]="{ id: 'elementId' }" (onClick)="nextStep()">
@@ -105,9 +100,9 @@
                 <div class="scrollable-content">
                     <!-- Your content goes here -->
                     <div>
-                        <app-permitproductdetails [productGeneraldetailsfrm]="productGeneraldetailsfrm"
-                            [application_code]="application_code"
-                            [permitProductsFrm]="permitProductsFrm"></app-permitproductdetails>
+                        <app-single-personaluseproducts-permit-application [productGeneraldetailsfrm]="productGeneraldetailsfrm"
+                            [permitProductsData]="permitProductsData" [application_code]="application_code"
+                            [permitProductsFrm]="permitProductsFrm"></app-single-personaluseproducts-permit-application>
                     </div>
 
                 </div>
@@ -116,6 +111,7 @@
                 <dx-button text="{{'general_permit_information' | translate}}" iconPosition="left" type="danger"
                     icon="fa fa-angle-double-left" [elementAttr]="{ id: 'elementId', }" (onClick)="previousStep()">
                 </dx-button>
+              
                 <dx-button text="{{'document_submission' | translate}}" iconPosition="right" type="success"
                     icon="fa fa-angle-double-right" [elementAttr]="{ id: 'elementId', }" (onClick)="nextTab()">
                 </dx-button>
@@ -128,15 +124,7 @@
             [canEnter]="isValidTypeBoolean">
             <div class="container_div">
                 <div class="scrollable-content">
-                    <!-- Your content goes here -->
-                    <!-- <app-appresumable-documents [prodclass_category_id]="prodclass_category_id"
-                        [query_ref_id]="query_ref_id" [product_type_id]="product_type_id"
-                        [regulatory_function_id]="regulatory_function_id" [status_id]="status_id"
-                        [regulatory_subfunction_id]="regulatory_subfunction_id"
-                        [application_code]="application_code"></app-appresumable-documents> -->
-
-                    <!-- Add more content to see the scroll effect -->
-
+                   
                     <app-sharedapplicationdocumentuploads [application_code]="application_code"
                         [process_id]="process_id"></app-sharedapplicationdocumentuploads>
 
@@ -191,7 +179,7 @@
 
             </div>
         </ng-wizard-step>
-
+       
     </ng-wizard>
 
 </div>
@@ -203,7 +191,7 @@
         <div class="row">
 
             <app-sharedapp-applicantprocesssubmission [appworkflow_status_id]="appworkflow_status_id"
-            [application_code]="application_code" [workflowprocess_id]="workflowprocess_id"></app-sharedapp-applicantprocesssubmission>
+                [application_code]="application_code" [workflowprocess_id]="workflowprocess_id"></app-sharedapp-applicantprocesssubmission>
         </div>
     </dx-scroll-view>
 </dx-popup>

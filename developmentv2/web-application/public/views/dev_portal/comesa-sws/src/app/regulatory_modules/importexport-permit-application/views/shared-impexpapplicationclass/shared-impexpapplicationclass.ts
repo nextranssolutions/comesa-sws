@@ -201,6 +201,7 @@ export class SharedImpexpApplicationClass {
     this.application_details = JSON.parse(this.application_details);
    
     this.form_fielddata = this.application_details.application_form;
+    console.log(this.form_fielddata);
     this.products_fielddata = this.application_details.permit_products_details;
     this.applicants_fielddata = this.application_details.applicant_details;
 
@@ -783,18 +784,19 @@ export class SharedImpexpApplicationClass {
     this.ngWizardService.next();
   }
 
-  onNextStep() {
-    const application_id = this.applicationGeneraldetailsfrm.get('id')?.value;
-    console.log(application_id);
 
-    if (!application_id || application_id < 0) {
-      this.toastr.error('Kindly save before proceeding to the next step.', 'Validation Error');
-      return;
-    }else{
-      this.ngWizardService.next(); // Move to the next step only if saved
-    }
-    
-  }
+
+  // onNextStep() {
+  //   const application_id = this.applicationGeneraldetailsfrm.get('id')?.value;
+  //   console.log(application_id);
+  //   if (!application_id || application_id < 0) {
+  //     this.toastr.error('Kindly save before proceeding to the next step.', 'Validation Error');
+  //     return;
+  //   }
+  
+  //   this.permitProductsFrm.patchValue({ application_id });
+  //   this.ngWizardService.next();
+  // }
 
   onextStep() {
     const applicant_id = this.applicantDetailsForm.get('id')?.value;

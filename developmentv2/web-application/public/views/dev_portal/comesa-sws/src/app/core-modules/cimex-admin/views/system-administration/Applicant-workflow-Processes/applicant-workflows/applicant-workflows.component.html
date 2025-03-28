@@ -628,8 +628,8 @@ title="{{ 'delete_confirmation_of '+'workflow_transition' | translate }}" (onHid
                 <dx-text-box formControlName="name" [showClearButton]="true"> </dx-text-box>
             </div>
             <div class="col-lg-4">
-                <label for="unitName">{{ 'stage' | translate }}</label>
-                <dx-select-box [dataSource]="workflowStageData" formControlName="stage_id" [showClearButton]="true"
+                <label for="stage">{{ 'stage' | translate }}</label>
+                <dx-select-box [dataSource]="workflowStageApplicantData" formControlName="workflow_stage_id" [showClearButton]="true"
                     valueExpr="id" [searchEnabled]="true" displayExpr="name"> </dx-select-box>
             </div>
             <div class="col-lg-4">

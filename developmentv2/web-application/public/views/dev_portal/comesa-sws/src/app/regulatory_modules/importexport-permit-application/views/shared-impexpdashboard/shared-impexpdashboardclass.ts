@@ -41,7 +41,7 @@ export class SharedImpExpdashboardClass {
   navigation_items: any;
   isPrintReportVisible: boolean = false;
   printiframeUrl: string;
-  isPreviewApplicationDetails: boolean = false;
+  isPreviewApplicationDetails: boolean;
   frmPreviewAppDetails: FormGroup;
   applicantDetailsForm: FormGroup;
   applicationGeneraldetailsfrm: FormGroup;
@@ -101,15 +101,7 @@ export class SharedImpExpdashboardClass {
     this.onLoadimportExportPermitTypesData();
     this.nav_data = localStorage.getItem('nav_data');
     this.nav_data = JSON.parse(this.nav_data);
-    let regulatory_subfunction_id = this.nav_data.regulatory_subfunction_id;
-    let appworkflowstage_category_id = this.nav_data.appworkflowstage_category_id;
-    let applicant_id = this.nav_data.applicant_id;
-
-
-
-    this.reloadPermitApplicationsApplications(regulatory_subfunction_id, appworkflowstage_category_id);
-
-    //navigation items and get the sub_function_id 
+   
 
 
   }
@@ -358,13 +350,39 @@ export class SharedImpExpdashboardClass {
   refreshDataGrid() {
     this.dataGrid.instance.refresh();
   }
-  funcProductPreviewDetails(data) {
-    this.isPreviewApplicationDetails = true;
-    this.applicantDetailsForm.patchValue(data);
-    this.applicationGeneraldetailsfrm.patchValue(data);
-    this.onLoadPermitProductsData(data.application_code);
-  }
 
+
+
+  funcProductPreviewDetails(app_data) {
+    this.isPreviewApplicationDetails = true;
+    this.regulatory_subfunction_id = app_data.regulatory_subfunction_id;
+    this.applicationsubmission_type_id = app_data.applicationsubmission_type_id;
+    this.application_code = app_data.application_code;
+
+    // this.spinnerShow('Loading...........');
+
+    this.configService.getSectionUniformApplication(this.regulatory_subfunction_id, this.applicationsubmission_type_id, this.application_code)
+      .subscribe(
+        data => {
+          if (data.success) {
+            this.processData = data.data.process_infor;
+            
+            this.application_data = data.data;
+            this.productsapp_details = this.processData;
+
+            let merged_appdata = Object.assign({}, this.application_data, app_data);
+            localStorage.setItem('application_details', JSON.stringify(merged_appdata));
+            this.scrollToTop();
+          }
+          else {
+            this.toastr.error(this.processData.message, 'Alert!');
+            // this.spinnerHide();
+          }
+
+
+        });
+    return false;
+  }
 
 
   onLoadPermitProductsData(application_code) {
@@ -406,6 +424,8 @@ export class SharedImpExpdashboardClass {
     }
     else if (action_btn.action === 'preview') {
       this.funcProductPreviewDetails(data);
+    }else if (action_btn.action === 'proceed_with_application') {
+      this.funcApplicationPreveditDetails(data);
     }
     else if (action_btn.action == 'print_applications') {
       this.funcPrintApplicationDetails(data);

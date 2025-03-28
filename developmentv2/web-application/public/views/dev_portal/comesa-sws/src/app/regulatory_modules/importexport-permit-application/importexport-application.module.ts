@@ -42,6 +42,9 @@ import { RejectedExportapplicationPermitsComponent } from './views/export-licens
 import { ApprovedExportapplicationPermitsComponent } from './views/export-license/approved-exportapplication-permits/approved-exportapplication-permits.component';
 import { UnderProcessingExportPermitapplicationsComponent } from './views/export-license/under-processing-export-permitapplications/under-processing-export-permitapplications.component';
 import { AwaitingPaymentRemittanceExportpermitsComponent } from './views/export-license/awaiting-payment-remittance-exportpermits/awaiting-payment-remittance-exportpermits.component';
+import { PreviewImportapplicationComponent } from './views/import-license/preview-importapplication/preview-importapplication.component';
+import { PreviewExportapplicationComponent } from './views/export-license/preview-exportapplication/preview-exportapplication.component';
+import { PreviewPersonalUseproductsPermitComponent } from './views/personal-useproducts-license/preview-personal-useproducts-permit/preview-personal-useproducts-permit.component';
 
 
 const ngWizardConfig: NgWizardConfig = {
@@ -56,7 +59,7 @@ const ngWizardConfig: NgWizardConfig = {
     AwaitingPaymentRemittanceComponent,RejectedPermitsComponent,RequestForadditionalInformationComponent,SinglePermitproductdetailsComponent,
     UnderProcessingComponent,AwaitingPaymentRemittanceExportpermitsComponent,InitiateExportappComponent,DraftExportlicencedashboardComponent,InitiatePersonalproductsPermitComponent,SinglePersonaluseproductsPermitApplicationComponent,
     ApplicantDetailsComponent,SingleProductExportpermitComponent,RejectedpermitsPersonalproductsComponent,LetterofapprovalPersonalproductsComponent,DraftPersonalproductsLicencedashboardComponent,
-    ImportexportHeaderComponent,UnderProcessingExportPermitapplicationsComponent,ApprovedExportapplicationPermitsComponent,InitiateImportappComponent,RejectedExportapplicationPermitsComponent, DashboardComponent,RequestadditionalInfoExportapplicationPermitsComponent,],
+    ImportexportHeaderComponent,PreviewPersonalUseproductsPermitComponent,PreviewImportapplicationComponent,PreviewExportapplicationComponent,UnderProcessingExportPermitapplicationsComponent,ApprovedExportapplicationPermitsComponent,InitiateImportappComponent,RejectedExportapplicationPermitsComponent, DashboardComponent,RequestadditionalInfoExportapplicationPermitsComponent,],
   imports: [
     CommonModule, ImportexportapplicationRoutingModule,
     SharedModuleModule,
