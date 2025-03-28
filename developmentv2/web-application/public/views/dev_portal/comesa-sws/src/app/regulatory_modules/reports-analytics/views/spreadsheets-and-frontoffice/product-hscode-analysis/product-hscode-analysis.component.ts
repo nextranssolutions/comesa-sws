@@ -10,7 +10,7 @@ export class ProductHscodeAnalysisComponent {
   parameter_name:string;
   constructor(
   ) {
-    this.table_name = 'par_nationalities';
+    this.table_name = 'tra_transactionpermit_hs_codes';
     this.parameter_name = "product_hscode_analysis";
   }
 }

@@ -5,13 +5,14 @@ import { ToastrService } from 'ngx-toastr';
 import { AppSettings } from 'src/app/app-settings';
 import { UtilityService } from 'src/app/core-services/utilities/utility.service';
 
-import { FormControl, FormGroup, Validators } from '@angular/forms';
+import { FormBuilder, FormControl, FormGroup, Validators } from '@angular/forms';
 import { AuthenticationService } from 'src/app/core-services/authentication/authentication.service';
 import { ConfigurationsService } from 'src/app/core-services/configurations/configurations.service';
 import { DxDataGridTypes } from 'devextreme-angular/ui/data-grid';
 import { ReportsService } from 'src/app/core-services/reports/reports.service';
 import { DxTabPanelTypes } from 'devextreme-angular/ui/tab-panel';
 import { EncryptionService } from 'src/app/core-services/encryption/encryption.service';
+import { ImportExportService } from 'src/app/regulatory_modules/importexport-control/services/import-export.service';
 
 @Component({
   selector: 'app-shared-permit-details',
@@ -48,16 +49,24 @@ export class SharedPermitDetailsComponent {
   organisationDetails: any;
   locationinfoData: any[] = [];
   operationType: any;
-  hsCodeData: any;
+  dtImportExpApplicationData: any[] = [];
+  country: any;
+  approvedProducts: any;
+  requestedProducts: any;
+  approvedPermitsVisible: boolean;
+  filterInformation: FormGroup;
+  treeBoxValue: number[] = [];
+  operationTypeData: any;
+
   actionsMenuItems = [
     {
       text: "Action",
       icon: 'menu',
       items: [
-        //  { text: "View", action: 'view_record', icon: 'fa fa-eye' },
-        { text: "Edit", action: 'edit_record', icon: 'fa fa-edit' },
-        { text: "Delete", action: 'delete_record', icon: 'fa fa-trash' },
-        { text: "Enable/Disable", action: 'enable_record', icon: 'fa fa-check' },
+         { text: "Preview", action: 'view_record', icon: 'fa fa-eye' },
+        // { text: "Edit", action: 'edit_record', icon: 'fa fa-edit' },
+        // { text: "Delete", action: 'delete_record', icon: 'fa fa-trash' },
+        // { text: "Enable/Disable", action: 'enable_record', icon: 'fa fa-check' },
       ]
     }
   ];
@@ -83,7 +92,9 @@ export class SharedPermitDetailsComponent {
     public configService: ConfigurationsService,
     public utilityService: UtilityService,
     private reportingAnalytics: ReportsService,
-    public encryptionService: EncryptionService
+    public encryptionService: EncryptionService,
+    public appService: ImportExportService,
+    private formBuilder: FormBuilder,
   ) {
 
     this.createNewDataFrm = new FormGroup({
@@ -93,6 +104,10 @@ export class SharedPermitDetailsComponent {
       code: new FormControl('', Validators.compose([])),
       is_enabled: new FormControl('', Validators.compose([])),
     });
+    this.filterInformation = this.formBuilder.group({
+      operation_type_id: new FormControl('', Validators.compose([])),
+      
+    });
 
 
   }
@@ -101,7 +116,8 @@ export class SharedPermitDetailsComponent {
     this.createNewDataFrm.get('resetcolumns')?.setValue(this.resetcolumns);
     this.fetchConfigurationItemsDetails();
     this.fetchConfigurationCountriesDetails();
-    this.fetchorganisationDetails();
+    this.fetchOrganisationDetails();
+    this.onLoadOperationTypeDetails();
     this.scrollToTop();
   }
  
@@ -118,6 +134,90 @@ export class SharedPermitDetailsComponent {
       behavior: 'smooth' // Smooth scrolling for better UX
     });
   }
+
+  onCellClick(e: any) {
+    // console.log(e.data);
+    
+    if (e.column && e.column.dataField === 'number_of_products_approved') {
+      this.country = e.data.name; // Assuming 'country' field exists in your data
+      this.approvedProducts = e.data.number_of_products_approved;
+      
+      // console.log(`Country: ${this.country}, Approved Products: ${this.approvedProducts}`);
+  
+
+      this.viewApprovedProducts(this.country , this.approvedProducts);
+    }
+    else if(e.column && e.column.dataField === 'number_of_products_request'){
+      this.country = e.data.name; 
+      this.requestedProducts = e.data.number_of_products_request;
+      
+      // console.log(`Country: ${this.country}, Approved Products: ${this.requestedProducts}`);
+  
+   
+      this.viewApprovedProducts(this.country , this.approvedProducts);
+    }
+  }
+  
+  viewApprovedProducts(country: string, approvedProducts: number) {
+    // alert(`Approved Products in ${this.country}: ${this.approvedProducts}`);
+    this.approvedPermitsVisible = true;
+  }
+
+
+
+
+  onCellAppStatusPrepared(e: any) {
+    // console.log(e);
+    if (e.rowType === "data" && e.column.dataField === "number_of_products_approved") {
+      let approvedPermits = e.data.number_of_products_approved;  // Ensure the value is retrieved correctly
+      
+      
+      if (e.cellElement) {  // Ensure cellElement exists
+        if (approvedPermits >= 1) {
+          e.cellElement.style.color = "white";
+          e.cellElement.style.backgroundColor = "#08a541";
+        } else {
+          e.cellElement.style.color = "white";
+          e.cellElement.style.backgroundColor = "#ffffff";
+        }
+      }
+  
+    }
+    else if(e.rowType === "data" && e.column.dataField === "number_of_products_request"){
+      let requestedPermits = e.data.number_of_products_request;  // Ensure the value is retrieved correctly
+      
+      if (e.cellElement) {  // Ensure cellElement exists
+        if (requestedPermits >= 1) {
+          e.cellElement.style.color = "white";
+          e.cellElement.style.backgroundColor = "#ccc";
+        } else {
+          e.cellElement.style.color = "white";
+          e.cellElement.style.backgroundColor = "#ffffff";
+        }
+      }
+    }
+  }
+  
+
+  reloadPermitApplicationsApplications(regulatory_subfunction_id,appworkflowstage_category_id) {
+    this.spinnerShow('Loading...........');
+    let filter_params = {
+      regulatory_subfunction_id: regulatory_subfunction_id,
+      appworkflowstage_category_id: appworkflowstage_category_id
+    };
+    
+    this.appService.onPermitApplicationLoading(filter_params, 'getImportExpPermitApplicationLoading')
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            this.dtImportExpApplicationData = this.data_record.data;
+          }
+          this.spinnerHide();
+        },
+      );
+  }
+  
 
   fetchConfigurationItemsDetails() {
     this.spinnerShow('Loading...........');
@@ -139,13 +239,33 @@ export class SharedPermitDetailsComponent {
         });
   }
 
+  onFuncFiltersData($event){
+    let filter_data = this.filterInformation.value;
+
+    this.fetchOperationTypeDetails(filter_data);
+   
+  }
+  onDropDownBoxValueChanged(e: any): void {
+    
+      this.treeBoxValue = e.value;
+    }
+
+    onTreeViewSelectionChanged(e: any): void {
+      this.treeBoxValue = e.component.getSelectedNodeKeys();
+    }
+  
+    onTreeViewReady(e: any): void {
+      e.component.selectItem(this.treeBoxValue);
+    }
+  
+  
+
 
   fetchConfigurationCountriesDetails() {
 
     var data_submit = {
       'table_name': 'par_countries',
-      'is_member_state': 1,
-      'is_enabled': 1,
+
     }
     this.configService.onLoadConfigurationData(data_submit)
       .subscribe(
@@ -161,10 +281,51 @@ export class SharedPermitDetailsComponent {
 
         });
   }
+  
+  fetchOperationTypeDetails(filter_data: any) {
+
+    var data_submit = {
+      'table_name': 'par_operation_type',
+      filter_data: filter_data
+    }
+    this.configService.onLoadConfigurationData(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            
+            this.operationType = this.data_record.data;
+          }
+
+        },
+        error => {
+
+        });
+  }
+  onLoadOperationTypeDetails() {
+
+    var data_submit = {
+      'table_name': 'par_operation_type',
+     
+    }
+    this.configService.onLoadConfigurationData(data_submit)
+      .subscribe(
+        data => {
+          this.data_record = data;
+          if (this.data_record.success) {
+            
+            this.operationTypeData = this.data_record.data;
+          }
+
+        },
+        error => {
+
+        });
+  }
 
 
 
-  fetchorganisationDetails() {
+  fetchOrganisationDetails() {
 
     var data_submit = {
       'table_name': 'tra_organisation_information',
@@ -277,10 +438,24 @@ export class SharedPermitDetailsComponent {
     this.deletePopupVisible = true;
   }
 
+  applicationActionColClick(e, data) {
+ 
+    var action_btn = e.itemData;
+    if(action_btn.action === 'view_record'){
+     console.log(this.funcApplicationPreveditDetails(data.data));
+    }
+    
+
+  }
+
+  funcApplicationPreveditDetails(app_data){
+    
+  }
+
   funcActionColClick(e, data) {
     var action_btn = e.itemData;
-    if (action_btn.action === 'edit_record') {
-      this.funcEditDetails(data);
+    if (action_btn.action === 'view_record') {
+      this.funcApplicationPreveditDetails(data.data);
     } else if (action_btn.action === 'delete_record') {
       this.funcDeleteDetails(data);
     } else if (action_btn.action === 'enable_record') {
