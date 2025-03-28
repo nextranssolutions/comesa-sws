@@ -41,7 +41,7 @@ export class SharedImpExpdashboardClass {
   navigation_items: any;
   isPrintReportVisible: boolean = false;
   printiframeUrl: string;
-  isPreviewApplicationDetails: boolean = false;
+  isPreviewApplicationDetails: boolean;
   frmPreviewAppDetails: FormGroup;
   applicantDetailsForm: FormGroup;
   applicationGeneraldetailsfrm: FormGroup;
@@ -352,41 +352,37 @@ export class SharedImpExpdashboardClass {
   }
 
 
+
   funcProductPreviewDetails(app_data) {
     this.isPreviewApplicationDetails = true;
     this.regulatory_subfunction_id = app_data.regulatory_subfunction_id;
     this.applicationsubmission_type_id = app_data.applicationsubmission_type_id;
     this.application_code = app_data.application_code;
-   
 
-    this.spinnerShow('Loading...........');
+    // this.spinnerShow('Loading...........');
 
     this.configService.getSectionUniformApplication(this.regulatory_subfunction_id, this.applicationsubmission_type_id, this.application_code)
       .subscribe(
         data => {
           if (data.success) {
             this.processData = data.data.process_infor;
-          
+            
             this.application_data = data.data;
-
             this.productsapp_details = this.processData;
 
             let merged_appdata = Object.assign({}, this.application_data, app_data);
-
             localStorage.setItem('application_details', JSON.stringify(merged_appdata));
-            this.onLoadPermitProductsData(this.application_code);
             this.scrollToTop();
           }
           else {
             this.toastr.error(this.processData.message, 'Alert!');
-            this.spinnerHide();
+            // this.spinnerHide();
           }
 
 
         });
     return false;
   }
-
 
 
   onLoadPermitProductsData(application_code) {
@@ -428,6 +424,8 @@ export class SharedImpExpdashboardClass {
     }
     else if (action_btn.action === 'preview') {
       this.funcProductPreviewDetails(data);
+    }else if (action_btn.action === 'proceed_with_application') {
+      this.funcApplicationPreveditDetails(data);
     }
     else if (action_btn.action == 'print_applications') {
       this.funcPrintApplicationDetails(data);
