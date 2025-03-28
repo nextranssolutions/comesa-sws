@@ -10,7 +10,7 @@ export class PermitsPerOrigincountryComponent {
   parameter_name:string;
   constructor(
   ) {
-    this.table_name = 'par_nationalities';
+    this.table_name = 'tra_permits_per_country';
     this.parameter_name = "permits_per_country_of_origin";
   }
 }

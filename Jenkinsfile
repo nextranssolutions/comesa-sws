@@ -22,7 +22,8 @@ pipeline {
                 }
             }
         }
-
+                stage('Run Backend and Frontend in Parallel') {
+            parallel {
         stage('PRODUCTION OF BACKEND') {
                         when {
                 expression { return env.BUILD_BACKEND == "true" }
@@ -66,7 +67,7 @@ pipeline {
                         sh '''#!/bin/bash
                         ###### PRODUCTION OF ANGULAR SIDE ####################
                         cd $WORKSPACE/developmentv2/web-application/public/views/dev_portal/comesa-sws/src/app
-                        npm install
+                        npm install --legacy-peer-deps
                         sed -i \'1s/development/production/\' app-settings.ts
                         cd ../../
 
@@ -153,12 +154,14 @@ pipeline {
 
                         ## DELETE EXTRA FILES #####
                         cd $WORKSPACE/developmentv2/web-application/public/views/
-                        #rm -rf dev_portal ppm_mobileapplication
+                        rm -rf dev_portal ppm_mobileapplication
                         find "$WORKSPACE" -mindepth 1 -maxdepth 1 ! -name "developmentv2" -exec rm -rf {} +
                         rsync -av --delete $WORKSPACE/developmentv2/web-application/public/ /var/www/cimex/developmentv2/web-application/public/
                         echo "✅Deployment Successful for Angular"
                         '''
                     }
                 }
+            }
+        }
     }
   }

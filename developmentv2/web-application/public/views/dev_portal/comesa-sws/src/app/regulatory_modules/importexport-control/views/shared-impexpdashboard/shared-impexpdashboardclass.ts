@@ -774,6 +774,7 @@ funcProductPreviewDetails(app_data) {
   }
 
   onCellAppStatusPrepared(e: any) {
+
     if (e.rowType === "data" && e.column.dataField === "appworkflow_status_id") {
       let statusId = e.data.appworkflow_status_id;  // Ensure the value is retrieved correctly
   

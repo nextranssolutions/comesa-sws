@@ -368,6 +368,7 @@
         <dxi-column dataField="oga_application_code" caption="{{'oga_application_code' | translate}}"*ngIf="columnVisibility.oga_application_code"></dxi-column>
         <dxi-column dataField="application_code" caption="{{'application_code' | translate}}"*ngIf="columnVisibility.application_code"></dxi-column>
         <dxo-grouping #expand [autoExpandAll]="true"></dxo-grouping>
+        <dxo-paging [pageSize]="10"></dxo-paging>
         </dx-data-grid>
       </div>
      </div>

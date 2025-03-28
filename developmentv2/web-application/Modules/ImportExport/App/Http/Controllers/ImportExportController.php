@@ -495,6 +495,142 @@ class ImportExportController extends Controller
         return response()->json($res);
     }
 
+    // public function onSavePermitProductsDetails(Request $req)
+    // {
+    //     try {
+    //         $resp = "";
+    //         $user_id = $this->user_id;
+    //         $unit_price = $req->unit_price;
+    //         $currency_id = $req->currency_id;
+    //         $packaging_unit_id = $req->packaging_unit_id;
+    //         $quantity = $req->quantity;
+    //         $product_id = $req->product_id;
+    //         $oga_application_code = $req->oga_application_code;
+    //         $record_id = $req->id;
+    //         $device_type_id = $req->device_type_id;
+    //         // $permitprod_recommendation_id = $req->permitprod_recommendation_id;
+
+    //         $regulatory_subfunction_id = $req->regulatory_subfunction_id;
+
+    //         $batch_number = $req->batch_number;
+    //         $expiry_date = $req->expiry_date;
+    //         $manufacturing_date = $req->manufacturing_date;
+    //         $error_message = 'Error occurred, data not saved successfully';
+    //         //check uniform currency 
+    //         $record = DB::table('tra_permit_products')
+    //             ->where(array('oga_application_code' => $oga_application_code))
+    //             ->whereNotIn('currency_id', [$currency_id])
+    //             ->get();
+
+    //         // print_r($record);
+    //         if (!count($record) > 0) {
+    //             $table_name = 'tra_permit_products';
+
+    //             $data = array(
+    //                 'unit_price' => $unit_price,
+
+    //                 'section_id' => $req->section_id,
+    //                 'productphysical_description' => $req->productphysical_description,
+    //                 'packaging_unit_id' => $packaging_unit_id,
+
+    //                 'product_name' => $req->product_name,
+    //                 'brand_name' => $req->brand_name,
+    //                 'quantity' => $quantity,
+    //                 'regulated_productcategory_id' => $req->regulated_productcategory_id,
+    //                 'manufacturer_id' => $req->manufacturer_id,
+    //                 'country_of_origin_id' => $req->country_of_origin_id,
+    //                 'unit_of_measure_id' => $req->unit_of_measure_id,
+    //                 'product_value' => $req->product_value,
+    //                 'currency_id' => $currency_id,
+    //                 'weight_unit_id' => $req->weight_unit_id,
+    //                 'product_packaging' => $req->product_packaging,
+    //                 'permit_product_purposes_id' => $req->permit_product_purposes_id,
+    //                 'consignment_id' => $req->consignment_id,
+    //                 'batch_number' => $batch_number,
+    //                 'manufacturing_date' => $manufacturing_date,
+    //                 'expiry_date' => $expiry_date,
+    //                 'storage_condition_id' => $req->storage_condition_id,
+
+    //                 'common_name_id' => $req->common_name_id,
+    //                 'classification_id' => $req->classification_id,
+    //                 'product_category_id' => $req->product_category_id,
+    //                 'product_subcategory_id' => $req->product_subcategory_id,
+    //                 'product_strength' => $req->product_strength,
+    //                 'weights_units_id' => $req->weights_units_id,
+    //                 'total_weight' => $req->total_weight,
+    //                 'device_type_id' => $device_type_id,
+    //                 'product_id' => $product_id,
+    //                 'prodclass_category_id' => $req->prodclass_category_id,
+    //                 'unitpack_size' => $req->unitpack_size,
+    //                 'unitpack_unit_id' => $req->unitpack_unit_id,
+    //                 'oga_application_code' => $req->oga_application_code,
+    //                 'dosage_form_id' => $req->dosage_form_id
+    //             );
+
+    //             // if (validateIsNumeric($permitprod_recommendation_id)) {
+
+    //             //     $data['permitprod_recommendation_id'] = $req->permitprod_recommendation_id;
+    //             //     $data['permitprod_recommendation'] = $req->permitprod_recommendation;
+    //             // }
+
+    //             if (validateIsNumeric($record_id)) {
+    //                 $where = array('id' => $record_id);
+    //                 if (recordExists($table_name, $where)) {
+
+    //                     $data['dola'] = Carbon::now();
+    //                     $data['altered_by'] = $user_id;
+
+    //                     $previous_data = getPreviousRecords($table_name, $where);
+    //                     $previous_data = $previous_data['results'];
+
+    //                     $resp = updateRecord($table_name, $previous_data, $where, $data, $user_id);
+    //                 }
+    //             } else {
+
+    //                 //insert 
+    //                 // $data['permitprod_recommendation_id'] = 1;
+    //                 $data['created_by'] = $user_id;
+    //                 $data['created_on'] = Carbon::now();
+    //                 $resp = insertRecord($table_name, $data, $user_id);
+
+    //                 $record_id = $resp['record_id'];
+    //             }
+    //             if ($resp['success']) {
+    //                 $res = array(
+    //                     'success' => true,
+    //                     'record_id' => $record_id,
+    //                     'oga_application_code' => $oga_application_code,
+    //                     'message' => 'Saved Successfully'
+    //                 );
+    //             } else {
+    //                 $res = array(
+    //                     'success' => false,
+    //                     'message1' => $resp['message'],
+    //                     'message' => $error_message
+    //                 );
+    //             }
+    //         } else {
+    //             $res = array(
+    //                 'success' => false,
+    //                 'message' => 'Mis-match product permits currency, confirm the previous currency and make sure currencies match'
+    //             );
+    //         }
+    //     } catch (\Exception $exception) {
+    //         $res = array(
+    //             'success' => false,
+    //             'resp' => $resp,
+    //             'message' => $exception->getMessage()
+    //         );
+    //     } catch (\Throwable $throwable) {
+    //         $res = array(
+    //             'success' => false,
+    //             'message' => $throwable->getMessage()
+    //         );
+    //     }
+
+    //     return response()->json($res);
+    // }
+
     public function onSavePermitProductsDetails(Request $req)
     {
         try {
@@ -517,10 +653,13 @@ class ImportExportController extends Controller
             $manufacturing_date = $req->manufacturing_date;
             $error_message = 'Error occurred, data not saved successfully';
             //check uniform currency 
-            $record = DB::table('tra_permit_products')
-                ->where(array('oga_application_code' => $oga_application_code))
-                ->whereNotIn('currency_id', [$currency_id])
-                ->get();
+            $record = DB::table('tra_permit_products as t1')
+            ->join('tra_permits_per_country as t2', 't1.country_of_origin_id', '=', 't2.id')
+            ->select(DB::raw('count(t2.id) as number_of_products_request, t2.name as country'))
+            ->where('t1.oga_application_code', $oga_application_code)
+            ->whereNotIn('t1.currency_id', [$currency_id])
+            ->groupBy('t2.id', 't2.name') // Ensure t2.name is included in GROUP BY
+            ->get();
 
             // print_r($record);
             if (!count($record) > 0) {
