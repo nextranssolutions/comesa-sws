@@ -81,7 +81,7 @@
     </form>  -->
 
     <form role="form" enctype="multipart/form-data" [formGroup]="filtersFrm"
-    (ngSubmit)="onFuncSaveFiltersData()">
+    (ngSubmit)="onFuncFiltersData()">
     <div class="row">
         <!-- Received Dates Section -->
         <div class="col-lg-5">
@@ -119,7 +119,7 @@
         <div class="col-lg-2 d-flex align-items-end">
             <dx-button text="{{ 'filter_applications' | translate }}" type="default"
                 icon="fa fa-filter" [elementAttr]="{ id: 'elementId', class: 'pull-right' }"
-                (onClick)="onFuncSaveFiltersData()">
+                (onClick)="onFuncFiltersData()">
             </dx-button>
         </div>
     </div>
@@ -278,6 +278,79 @@
                 <dx-check-box [value]="true" [elementAttr]="{ 'aria-label': 'Checked' }" [(ngModel)]="columnVisibility.application_code"></dx-check-box>
             <div class="dx-field-label">{{ 'application_code' | translate }}</div>
             </div>
+            <div class="dx-field">
+                <dx-check-box [value]="true" [elementAttr]="{ 'aria-label': 'Checked' }" [(ngModel)]="columnVisibility.brand_name"></dx-check-box>
+            <div class="dx-field-label">{{ 'brand_name' | translate }}</div>
+            </div>
+            <div class="dx-field">
+                <dx-check-box [value]="true" [elementAttr]="{ 'aria-label': 'Checked' }" [(ngModel)]="columnVisibility.product_description"></dx-check-box>
+            <div class="dx-field-label">{{ 'product_description' | translate }}</div>
+            </div>
+            <div class="dx-field">
+                <dx-check-box [value]="true" [elementAttr]="{ 'aria-label': 'Checked' }" [(ngModel)]="columnVisibility.regulated_productcategory"></dx-check-box>
+            <div class="dx-field-label">{{ 'regulated_productcategory' | translate }}</div>
+            </div>
+            <div class="dx-field">
+                <dx-check-box [value]="true" [elementAttr]="{ 'aria-label': 'Checked' }" [(ngModel)]="columnVisibility.manufacturer"></dx-check-box>
+            <div class="dx-field-label">{{ 'manufacturer' | translate }}</div>
+            </div>
+            <div class="dx-field">
+                <dx-check-box [value]="true" [elementAttr]="{ 'aria-label': 'Checked' }" [(ngModel)]="columnVisibility.unit_of_measure"></dx-check-box>
+            <div class="dx-field-label">{{ 'unit_of_measure' | translate }}</div>
+            </div>
+            <div class="dx-field">
+                <dx-check-box [value]="true" [elementAttr]="{ 'aria-label': 'Checked' }" [(ngModel)]="columnVisibility.quantity"></dx-check-box>
+            <div class="dx-field-label">{{ 'quantity' | translate }}</div>
+            </div>
+            <div class="dx-field">
+                <dx-check-box [value]="true" [elementAttr]="{ 'aria-label': 'Checked' }" [(ngModel)]="columnVisibility.product_value"></dx-check-box>
+            <div class="dx-field-label">{{ 'product_value' | translate }}</div>
+            </div>
+            <div class="dx-field">
+                <dx-check-box [value]="true" [elementAttr]="{ 'aria-label': 'Checked' }" [(ngModel)]="columnVisibility.batch_number"></dx-check-box>
+            <div class="dx-field-label">{{ 'batch_number' | translate }}</div>
+            </div>
+            <div class="dx-field">
+                <dx-check-box [value]="true" [elementAttr]="{ 'aria-label': 'Checked' }" [(ngModel)]="columnVisibility.manufacturing_date"></dx-check-box>
+            <div class="dx-field-label">{{ 'manufacturing_date' | translate }}</div>
+            </div>
+            <div class="dx-field">
+                <dx-check-box [value]="true" [elementAttr]="{ 'aria-label': 'Checked' }" [(ngModel)]="columnVisibility.expiry_date"></dx-check-box>
+            <div class="dx-field-label">{{ 'expiry_date' | translate }}</div>
+            </div>
+            <div class="dx-field">
+                <dx-check-box [value]="true" [elementAttr]="{ 'aria-label': 'Checked' }" [(ngModel)]="columnVisibility.weight_unit"></dx-check-box>
+            <div class="dx-field-label">{{ 'weight_unit' | translate }}</div>
+            </div>
+            <div class="dx-field">
+                <dx-check-box [value]="true" [elementAttr]="{ 'aria-label': 'Checked' }" [(ngModel)]="columnVisibility.permit_product_statuses"></dx-check-box>
+            <div class="dx-field-label">{{ 'permit_product_statuses' | translate }}</div>
+            </div>
+            <div class="dx-field">
+                <dx-check-box [value]="true" [elementAttr]="{ 'aria-label': 'Checked' }" [(ngModel)]="columnVisibility.product_packaging"></dx-check-box>
+            <div class="dx-field-label">{{ 'product_packaging' | translate }}</div>
+            </div>
+            <div class="dx-field">
+                <dx-check-box [value]="true" [elementAttr]="{ 'aria-label': 'Checked' }" [(ngModel)]="columnVisibility.country_of_origin"></dx-check-box>
+            <div class="dx-field-label">{{ 'country_of_origin' | translate }}</div>
+            </div>
+            <div class="dx-field">
+                <dx-check-box [value]="true" [elementAttr]="{ 'aria-label': 'Checked' }" [(ngModel)]="columnVisibility.permit_product_purposes"></dx-check-box>
+            <div class="dx-field-label">{{ 'permit_product_purposes' | translate }}</div>
+            </div>
+            <div class="dx-field">
+                <dx-check-box [value]="true" [elementAttr]="{ 'aria-label': 'Checked' }" [(ngModel)]="columnVisibility.total_weight"></dx-check-box>
+            <div class="dx-field-label">{{ 'total_weight' | translate }}</div>
+            </div>
+            <div class="dx-field">
+                <dx-check-box [value]="true" [elementAttr]="{ 'aria-label': 'Checked' }" [(ngModel)]="columnVisibility.consignment"></dx-check-box>
+            <div class="dx-field-label">{{ 'consignment' | translate }}</div>
+            </div>
+            <div class="dx-field">
+                <dx-check-box [value]="true" [elementAttr]="{ 'aria-label': 'Checked' }" [(ngModel)]="columnVisibility.storage_condition"></dx-check-box>
+            <div class="dx-field-label">{{ 'storage_condition' | translate }}</div>
+            </div>
+
             
 
         <!-- </div> -->
@@ -367,6 +440,26 @@
         <dxi-column dataField="organisation" caption="{{'competent_authority' | translate}}"*ngIf="columnVisibility.organisation"></dxi-column>
         <dxi-column dataField="oga_application_code" caption="{{'oga_application_code' | translate}}"*ngIf="columnVisibility.oga_application_code"></dxi-column>
         <dxi-column dataField="application_code" caption="{{'application_code' | translate}}"*ngIf="columnVisibility.application_code"></dxi-column>
+
+        <dxi-column dataField="brand_name" caption="{{'brand_name' | translate}}"*ngIf="columnVisibility.brand_name"></dxi-column>
+        <dxi-column dataField="product_description" caption="{{'product_description' | translate}}"*ngIf="columnVisibility.product_description"></dxi-column>
+        <dxi-column dataField="regulated_productcategory_id" caption="{{'regulated_productcategory' | translate}}"*ngIf="columnVisibility.regulated_productcategory"></dxi-column>
+        <dxi-column dataField="manufacturer_id" caption="{{'manufacturer' | translate}}"*ngIf="columnVisibility.manufacturer"></dxi-column>
+        <dxi-column dataField="unit_of_measure_id" caption="{{'unit_of_measure' | translate}}"*ngIf="columnVisibility.unit_of_measure"></dxi-column>
+        <dxi-column dataField="quantity" caption="{{'quantity' | translate}}"*ngIf="columnVisibility.quantity"></dxi-column>
+        <dxi-column dataField="product_value" caption="{{'product_value' | translate}}"*ngIf="columnVisibility.product_value"></dxi-column>
+        <dxi-column dataField="batch_number" caption="{{'batch_number' | translate}}"*ngIf="columnVisibility.batch_number"></dxi-column>
+        <dxi-column dataField="manufacturing_date" caption="{{'manufacturing_date' | translate}}"*ngIf="columnVisibility.manufacturing_date"></dxi-column>
+        <dxi-column dataField="expiry_date" caption="{{'expiry_date' | translate}}"*ngIf="columnVisibility.expiry_date"></dxi-column>
+        <dxi-column dataField="weight_unit_id" caption="{{'weight_unit' | translate}}"*ngIf="columnVisibility.weight_unit"></dxi-column>
+        <dxi-column dataField="permit_product_statuses_id" caption="{{'permit_product_statuses' | translate}}"*ngIf="columnVisibility.permit_product_statuses"></dxi-column>
+        <dxi-column dataField="product_packaging" caption="{{'product_packaging' | translate}}"*ngIf="columnVisibility.product_packaging"></dxi-column>
+        <dxi-column dataField="country_of_origin_id" caption="{{'country_of_origin' | translate}}"*ngIf="columnVisibility.country_of_origin"></dxi-column>
+        <dxi-column dataField="permit_product_purposes_id" caption="{{'permit_product_purposes' | translate}}"*ngIf="columnVisibility.permit_product_purposes"></dxi-column>
+        <dxi-column dataField="total_weight" caption="{{'total_weight' | translate}}"*ngIf="columnVisibility.total_weight"></dxi-column>
+        <dxi-column dataField="consignment_id" caption="{{'consignment' | translate}}"*ngIf="columnVisibility.consignment"></dxi-column>
+        <dxi-column dataField="storage_condition_id" caption="{{'storage_condition' | translate}}"*ngIf="columnVisibility.storage_condition"></dxi-column>
+
         <dxo-grouping #expand [autoExpandAll]="true"></dxo-grouping>
         <dxo-paging [pageSize]="10"></dxo-paging>
         </dx-data-grid>

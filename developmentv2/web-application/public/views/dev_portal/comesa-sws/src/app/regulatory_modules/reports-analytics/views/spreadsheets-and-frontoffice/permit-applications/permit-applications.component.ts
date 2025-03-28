@@ -132,8 +132,8 @@ export class PermitApplicationsComponent {
        submission_comments: new FormControl('', Validators.compose([]))
      });
      this.filtersFrm = new FormGroup({
-       received_from: new FormControl(null),
-       received_to: new FormControl(null)
+       received_from: new FormControl('', Validators.compose([Validators.required])),
+       received_to: new FormControl('', Validators.compose([Validators.required])),
      });
      this.table_name = 'txn_importexport_applications';
  
@@ -447,31 +447,53 @@ export class PermitApplicationsComponent {
  
    }
 
-   onFuncSaveFiltersData(){
+
+
+  onFuncFiltersData() {
+  
+    const controls = this.filtersFrm.controls;
+    for (const name in controls) {
+      if (controls[name].invalid) {
+        this.toastr.error('Fill In All Mandatory fields with (*), missing value on ' + name.replace('_id', ''), 'Alert');
+        return;
+      }
+    }
     if (this.filtersFrm.invalid) {
       return;
     }
-    
+  
     const filters = this.filtersFrm.value;
-    console.log(filters)
-    let filteredData = this.dtImportExpApplicationData; // Assuming originalData holds unfiltered grid data
-  // console.log(filteredData)
-    if (filters.received_from) {
-      filteredData = filteredData.filter(item => 
-        new Date(item.date_of_application) >= new Date(filters.received_from)
-      );
-      console.log(filteredData)
+    console.log(filters);
+  
+    let filteredData = this.dtImportExpApplicationData; // Original data
+  
+    const received_from = new Date(filters.received_from);
+    const received_to = new Date(filters.received_to);
+  
+    if (isNaN(received_from.getTime()) || isNaN(received_to.getTime())) {
+      console.error("Invalid date range provided.");
+      return;
     }
   
-    if (filters.received_to) {
-      filteredData = filteredData.filter(item => 
-        new Date(item.date_of_application) <= new Date(filters.received_to)
-      );
-    }
+    // Convert to ISO format for consistent comparison
+    const startDate = received_from.toISOString().split("T")[0];
+    const endDate = received_to.toISOString().split("T")[0];
   
-    this.filteredGridData = filteredData;
-    // console.log("filtered data",this.filteredGridData )
-   }
+    console.log("Filtering from:", startDate, "to:", endDate);
+  
+    const matchedData = filteredData.filter((item) => {
+      const itemDate = new Date(item.date_of_application).toISOString().split("T")[0];
+      return itemDate >= startDate && itemDate <= endDate;
+    });
+  
+    console.log(matchedData);
+    this.dtImportExpApplicationData = matchedData;
+    // this.reloadPermitApplicationsApplications();
+  }
+  
+
+
+
    funcRequestforPermitAlteration() {
      this.app_route = ['./import-export/importexport-approvedappsel'];
      this.router.navigate(this.app_route);
@@ -739,11 +761,12 @@ export class PermitApplicationsComponent {
     this.current_stage_id = app_data.current_stage_id;
     this.oga_application_code = app_data.oga_application_code;
     let appprocess_data = {current_stage_id:this.current_stage_id,oga_application_code:this.oga_application_code,transactionpermit_type_id:this.transactionpermit_type_id,regulatory_subfunction_id:this.regulatory_subfunction_id,regulatory_function_id:this.regulatory_function_id }
-    this.spinner.show();
+    // this.spinner.show();
+    this.spinnerShow('Loading...........');
     this.configService.getPermitUniformApplicationProces(appprocess_data, 'getPermitUniformApplicationProces')
       .subscribe(
         data => {
-          this.spinner.hide();
+          // this.spinner.hide();
           if (data.success) {
             this.processData = data.data.process_infor;
             console.log(this.processData)
@@ -757,6 +780,7 @@ export class PermitApplicationsComponent {
 
             this.router.navigate(this.app_route);
             this.scrollToTop();
+            this.spinnerHide();
           }
           else {
             this.toastr.error(data.message || "An error occurred", 'Alert!');

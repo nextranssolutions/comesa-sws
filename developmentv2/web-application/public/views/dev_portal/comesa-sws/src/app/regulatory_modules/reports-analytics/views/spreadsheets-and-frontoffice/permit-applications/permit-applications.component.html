@@ -46,42 +46,10 @@
 <!-- <div class="col-lg-12 div-backwhite no-padding"> -->
 
 
-    <!-- <form role="form" enctype="multipart/form-data" [formGroup]="filtersFrm"
-    (ngSubmit)="onFuncSaveFiltersData()">
-      <div class="row">
-        <div class="col-lg-2">
-            <label>{{ 'received_from' | translate }}</label>
-            <dx-date-box formControlName="received_from" [showClearButton]="true">
-            </dx-date-box>
-        </div>
-        <div class="col-lg-2">
-            <label>{{ 'received_to' | translate }}</label>
-            <dx-date-box formControlName="received_to" [showClearButton]="true"> 
-            </dx-date-box>
-        </div>
-       
-       
-        <div class="col-lg-2">
-            <label>{{ 'approved_from' | translate }}</label>
-            <dx-date-box formControlName="approved_from" [showClearButton]="true">
-            </dx-date-box>
-        </div>
-        <div class="col-lg-2">
-            <label>{{ 'approved_to' | translate }}</label>
-            <dx-date-box formControlName="approved_to" [showClearButton]="true"> 
-            </dx-date-box>
-        </div>
-        <div class="col-lg-2">
-        <dx-button text="{{ 'filter' | translate }}" type="default"
-             icon="fa fa-save" [elementAttr]="{ id: 'elementId', class: 'pull-right' }"
-              (onClick)="onFuncSaveFiltersData()">
-        </dx-button>
-        </div>
-      </div>
-    </form>  -->
+   
 
     <form role="form" enctype="multipart/form-data" [formGroup]="filtersFrm"
-    (ngSubmit)="onFuncSaveFiltersData()">
+    (ngSubmit)="onFuncFiltersData()">
     <div class="row">
         <!-- Received Dates Section -->
         <div class="col-lg-5">
@@ -119,7 +87,7 @@
         <div class="col-lg-2 d-flex align-items-end">
             <dx-button text="{{ 'filter_applications' | translate }}" type="default"
                 icon="fa fa-filter" [elementAttr]="{ id: 'elementId', class: 'pull-right' }"
-                (onClick)="onFuncSaveFiltersData()">
+                (onClick)="onFuncFiltersData()">
             </dx-button>
         </div>
     </div>
@@ -298,11 +266,10 @@
         <dxo-load-panel [enabled]="true">
         </dxo-load-panel>
     
-        <dxo-paging [enabled]="true">
+        <dxo-paging [enabled]="true" [pageSize]="100">
+            <dxo-pager [showInfo]="true" infoText="Page #{0}. Total: {1} ({2} items)" [showPageSizeSelector]="true"
+                [allowedPageSizes]="[50,100]"></dxo-pager>
         </dxo-paging>
-        <dxo-pager [showPageSizeSelector]="true" [allowedPageSizes]="[10, 20]" [showNavigationButtons]="true"
-            [showInfo]="true" infoText="Page #{0}. Total: {1} ({2} items)">
-        </dxo-pager>
         <dxo-search-panel [visible]="true">
         </dxo-search-panel>
         <dxo-export [enabled]="true" fileName="ImportExport" [allowExportSelectedData]="true"></dxo-export>
@@ -368,6 +335,9 @@
         <dxi-column dataField="oga_application_code" caption="{{'oga_application_code' | translate}}"*ngIf="columnVisibility.oga_application_code"></dxi-column>
         <dxi-column dataField="application_code" caption="{{'application_code' | translate}}"*ngIf="columnVisibility.application_code"></dxi-column>
         <dxo-grouping #expand [autoExpandAll]="true"></dxo-grouping>
+        <dxo-selection mode="multiple"></dxo-selection>
+        <dxo-group-panel [visible]="true"></dxo-group-panel>
+        <dxo-paging [pageSize]="10"></dxo-paging>
         </dx-data-grid>
       </div>
      </div>

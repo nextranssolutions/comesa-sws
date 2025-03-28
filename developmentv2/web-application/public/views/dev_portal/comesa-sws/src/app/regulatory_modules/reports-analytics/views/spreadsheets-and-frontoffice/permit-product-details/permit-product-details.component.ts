@@ -132,8 +132,8 @@ export class PermitProductDetailsComponent {
        submission_comments: new FormControl('', Validators.compose([]))
      });
      this.filtersFrm = new FormGroup({
-      received_from: new FormControl(null),
-      received_to: new FormControl(null)
+      received_from: new FormControl('', Validators.compose([Validators.required])),
+      received_to: new FormControl('', Validators.compose([Validators.required])),
     });
      this.table_name = 'txn_importexport_applications';
  
@@ -183,6 +183,25 @@ export class PermitProductDetailsComponent {
     organisation: true,
     oga_application_code: true,
     application_code: true,
+
+    brand_name: true,
+    product_description: true,
+    regulated_productcategory: true,
+    manufacturer: true,
+    unit_of_measure: true,
+    quantity: true,
+    product_value: true,
+    batch_number: true,
+    manufacturing_date: true,
+    expiry_date: true,
+    weight_unit: true,
+    permit_product_statuses: true,
+    product_packaging: true,
+    country_of_origin: true,
+    permit_product_purposes: true,
+    total_weight: true,
+    consignment: true,
+    storage_condition: true,
    
   };
 
@@ -447,32 +466,48 @@ export class PermitProductDetailsComponent {
  
    }
 
-   onFuncSaveFiltersData(){
-
- 
+   onFuncFiltersData() {
+  
+    const controls = this.filtersFrm.controls;
+    for (const name in controls) {
+      if (controls[name].invalid) {
+        this.toastr.error('Fill In All Mandatory fields with (*), missing value on ' + name.replace('_id', ''), 'Alert');
+        return;
+      }
+    }
     if (this.filtersFrm.invalid) {
       return;
     }
-    
+  
     const filters = this.filtersFrm.value;
-    console.log(filters)
-    let filteredData = this.dtImportExpApplicationData; // Assuming originalData holds unfiltered grid data
-  // console.log(filteredData)
-    if (filters.received_from) {
-      filteredData = filteredData.filter(item => 
-        new Date(item.date_of_application) >= new Date(filters.received_from)
-      );
+    console.log(filters);
+  
+    let filteredData = this.dtImportExpApplicationData; // Original data
+  
+    const received_from = new Date(filters.received_from);
+    const received_to = new Date(filters.received_to);
+  
+    if (isNaN(received_from.getTime()) || isNaN(received_to.getTime())) {
+      console.error("Invalid date range provided.");
+      return;
     }
   
-    if (filters.received_to) {
-      filteredData = filteredData.filter(item => 
-        new Date(item.date_of_application) <= new Date(filters.received_to)
-      );
-    }
+    // Convert to ISO format for consistent comparison
+    const startDate = received_from.toISOString().split("T")[0];
+    const endDate = received_to.toISOString().split("T")[0];
   
-    this.filteredGridData = filteredData;
-    console.log("filtered data",this.filteredGridData )
-   }
+    console.log("Filtering from:", startDate, "to:", endDate);
+  
+    const matchedData = filteredData.filter((item) => {
+      const itemDate = new Date(item.date_of_application).toISOString().split("T")[0];
+      return itemDate >= startDate && itemDate <= endDate;
+    });
+  
+    console.log(matchedData);
+    this.dtImportExpApplicationData = matchedData;
+    // this.reloadPermitApplicationsApplications();
+  }
+  
    
    funcRequestforPermitAlteration() {
      this.app_route = ['./import-export/importexport-approvedappsel'];
@@ -692,43 +727,47 @@ export class PermitProductDetailsComponent {
      this.utilityService.funcApplicationRestoreArchiceCall(this.viewRef, data, 'txn_importexport_applications', this.reloadPermitApplicationsApplications)
    }
    application_data: any;
-   funcApplicationPreveditDetails(app_data) { 
-   console.log(app_data);
+   current_stage_id:number;
+   funcApplicationPreveditDetails(app_data) {
+    
     this.regulatory_subfunction_id = app_data.regulatory_subfunction_id;
-    this.applicationsubmission_type_id = app_data.applicationsubmission_type_id;
-    // this.application_code = app_data.application_code;
-    let apppreview_data = {regulatory_subfunction_id:this.regulatory_subfunction_id,applicationsubmission_type_id:this.applicationsubmission_type_id,application_code:this.application_code}
-    this.spinnerShow('Loading...........');
-
-    this.configService.getSectionUniformApplication(apppreview_data, 'getUniformSectionApplicationProcess')
+    this.regulatory_function_id = app_data.regulatory_function_id;
+    this.transactionpermit_type_id = app_data.transactionpermit_type_id;
+    this.current_stage_id = app_data.current_stage_id;
+    this.oga_application_code = app_data.oga_application_code;
+    let appprocess_data = {current_stage_id:this.current_stage_id,oga_application_code:this.oga_application_code,transactionpermit_type_id:this.transactionpermit_type_id,regulatory_subfunction_id:this.regulatory_subfunction_id,regulatory_function_id:this.regulatory_function_id }
+    this.spinner.show();
+    this.configService.getPermitUniformApplicationProces(appprocess_data, 'getPermitUniformApplicationProces')
       .subscribe(
         data => {
-
+          this.spinner.hide();
           if (data.success) {
             this.processData = data.data.process_infor;
+            console.log(this.processData)
             this.application_data = data.data;
-            
+
             this.router_link = this.processData.router_link;
             this.productsapp_details = this.processData;
             let merged_appdata = Object.assign({}, this.application_data, app_data);
-            console.log(merged_appdata);
-            localStorage.setItem('applicant_details', JSON.stringify(merged_appdata));
-
-            this.app_route = ['./importexport-permit-application/' + this.router_link];
+            localStorage.setItem('application_details', JSON.stringify(merged_appdata));
+            this.app_route = ['./reports-analytics/' + this.router_link];
 
             this.router.navigate(this.app_route);
             this.scrollToTop();
-
           }
           else {
-            this.toastr.error(this.processData.message, 'Alert!');
-            this.spinnerHide();
+            this.toastr.error(data.message || "An error occurred", 'Alert!');
           }
+        },
+        error => {
+          this.spinner.hide();
+          this.toastr.error("Failed to fetch application details", "Error");
+          console.error("API Error:", error);
+        }
+      );
 
-
-        });
     return false;
-  }
+}
    funcApplicationRejection(app_data) {
  
      //this.spinner.show();
