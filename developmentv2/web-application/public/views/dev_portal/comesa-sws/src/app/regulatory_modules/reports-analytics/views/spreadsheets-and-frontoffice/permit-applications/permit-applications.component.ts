@@ -690,43 +690,89 @@ export class PermitApplicationsComponent {
      this.utilityService.funcApplicationRestoreArchiceCall(this.viewRef, data, 'txn_importexport_applications', this.reloadPermitApplicationsApplications)
    }
    application_data: any;
-   funcApplicationPreveditDetails(app_data) { 
-   console.log(app_data);
-    this.regulatory_subfunction_id = app_data.regulatory_subfunction_id;
-    this.applicationsubmission_type_id = app_data.applicationsubmission_type_id;
-    // this.application_code = app_data.application_code;
-    let apppreview_data = {regulatory_subfunction_id:this.regulatory_subfunction_id,applicationsubmission_type_id:this.applicationsubmission_type_id,application_code:this.application_code}
-    this.spinnerShow('Loading...........');
 
-    this.configService.getSectionUniformApplication(apppreview_data, 'getUniformSectionApplicationProcess')
+  //  funcApplicationPreveditDetails(app_data) { 
+  //  console.log(app_data);
+  //   this.regulatory_subfunction_id = app_data.regulatory_subfunction_id;
+  //   this.applicationsubmission_type_id = app_data.applicationsubmission_type_id;
+  //   // this.application_code = app_data.application_code;
+  //   let apppreview_data = {regulatory_subfunction_id:this.regulatory_subfunction_id,applicationsubmission_type_id:this.applicationsubmission_type_id,application_code:this.application_code}
+  //   this.spinnerShow('Loading...........');
+
+  //   this.configService.getSectionUniformApplication(apppreview_data, 'getUniformSectionApplicationProcess')
+  //     .subscribe(
+  //       data => {
+
+  //         if (data.success) {
+  //           this.processData = data.data.process_infor;
+  //           this.application_data = data.data;
+            
+  //           this.router_link = this.processData.router_link;
+  //           this.productsapp_details = this.processData;
+  //           let merged_appdata = Object.assign({}, this.application_data, app_data);
+  //           console.log(merged_appdata);
+  //           localStorage.setItem('applicant_details', JSON.stringify(merged_appdata));
+
+  //           this.app_route = ['./importexport-permit-application/' + this.router_link];
+
+  //           this.router.navigate(this.app_route);
+  //           this.scrollToTop();
+
+  //         }
+  //         else {
+  //           this.toastr.error(this.processData.message, 'Alert!');
+  //           this.spinnerHide();
+  //         }
+
+
+  //       });
+  //   return false;
+  // }
+
+  current_stage_id:number;
+
+  funcApplicationPreveditDetails(app_data) {
+    
+    this.regulatory_subfunction_id = app_data.regulatory_subfunction_id;
+    this.regulatory_function_id = app_data.regulatory_function_id;
+    this.transactionpermit_type_id = app_data.transactionpermit_type_id;
+    this.current_stage_id = app_data.current_stage_id;
+    this.oga_application_code = app_data.oga_application_code;
+    let appprocess_data = {current_stage_id:this.current_stage_id,oga_application_code:this.oga_application_code,transactionpermit_type_id:this.transactionpermit_type_id,regulatory_subfunction_id:this.regulatory_subfunction_id,regulatory_function_id:this.regulatory_function_id }
+    this.spinner.show();
+    this.configService.getPermitUniformApplicationProces(appprocess_data, 'getPermitUniformApplicationProces')
       .subscribe(
         data => {
-
+          this.spinner.hide();
           if (data.success) {
             this.processData = data.data.process_infor;
+            console.log(this.processData)
             this.application_data = data.data;
-            
+
             this.router_link = this.processData.router_link;
             this.productsapp_details = this.processData;
             let merged_appdata = Object.assign({}, this.application_data, app_data);
-            console.log(merged_appdata);
-            localStorage.setItem('applicant_details', JSON.stringify(merged_appdata));
-
-            this.app_route = ['./importexport-permit-application/' + this.router_link];
+            localStorage.setItem('application_details', JSON.stringify(merged_appdata));
+            this.app_route = ['./reports-analytics/' + this.router_link];
 
             this.router.navigate(this.app_route);
             this.scrollToTop();
-
           }
           else {
-            this.toastr.error(this.processData.message, 'Alert!');
-            this.spinnerHide();
+            this.toastr.error(data.message || "An error occurred", 'Alert!');
           }
+        },
+        error => {
+          this.spinner.hide();
+          this.toastr.error("Failed to fetch application details", "Error");
+          console.error("API Error:", error);
+        }
+      );
 
-
-        });
     return false;
-  }
+}
+
+
    funcApplicationRejection(app_data) {
  
      //this.spinner.show();

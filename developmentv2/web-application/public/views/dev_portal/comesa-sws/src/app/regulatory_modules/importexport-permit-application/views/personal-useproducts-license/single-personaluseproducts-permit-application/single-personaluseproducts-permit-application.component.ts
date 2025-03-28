@@ -346,6 +346,7 @@ export class SinglePersonaluseproductsPermitApplicationComponent {
       onLoadCountryData() {
         var data = {
           table_name: 'par_countries',
+          is_enabled: true
         };
     
         this.config.onLoadConfigurationData(data)

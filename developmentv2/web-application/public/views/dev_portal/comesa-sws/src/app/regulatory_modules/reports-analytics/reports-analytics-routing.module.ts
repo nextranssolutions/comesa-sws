@@ -10,6 +10,7 @@ import { InitiateImportappreportComponent } from './views/spreadsheets-and-front
 import { ApplicantPermitSpreadsheetComponent } from './views/spreadsheets-and-frontoffice/applicant-permit-spreadsheet/applicant-permit-spreadsheet.component';
 import { ProductHscodeAnalysisComponent } from './views/spreadsheets-and-frontoffice/product-hscode-analysis/product-hscode-analysis.component';
 import { PermitsPerOrigincountryComponent } from './views/spreadsheets-and-frontoffice/permits-per-origincountry/permits-per-origincountry.component';
+import { PermitsPerOrganisationComponent } from './views/spreadsheets-and-frontoffice/permits-per-organisation/permits-per-organisation.component';
 
 const routes: Routes = [{
   path: '',
@@ -46,6 +47,10 @@ const routes: Routes = [{
             {
               path: 'app-permits-per-origincountry',
               component: PermitsPerOrigincountryComponent
+            },
+            {
+              path: 'app-permits-per-organisation',
+              component: PermitsPerOrganisationComponent
             },
           
           ]
