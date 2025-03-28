@@ -154,7 +154,7 @@ pipeline {
 
                         ## DELETE EXTRA FILES #####
                         cd $WORKSPACE/developmentv2/web-application/public/views/
-                        #rm -rf dev_portal ppm_mobileapplication
+                        rm -rf dev_portal ppm_mobileapplication
                         find "$WORKSPACE" -mindepth 1 -maxdepth 1 ! -name "developmentv2" -exec rm -rf {} +
                         rsync -av --delete $WORKSPACE/developmentv2/web-application/public/ /var/www/cimex/developmentv2/web-application/public/
                         echo "✅Deployment Successful for Angular"
