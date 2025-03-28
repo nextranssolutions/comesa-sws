@@ -27,7 +27,7 @@ export class SharedImpExpdashboardClass {
   loadingVisible = false;
   isprodnextdisable = false;
   win_submitinvoicepayments = false;
-  
+
   productsapp_details: any;
   dtImportExpApplicationData: any[] = [];
   applicationSelectionfrm: FormGroup;
@@ -62,7 +62,7 @@ export class SharedImpExpdashboardClass {
   permit_type_id: number;
   application_type_id: any;
   application_id: number;
-  
+
   // Strings
   app_route: any;
   app_routing: any;
@@ -114,8 +114,7 @@ export class SharedImpExpdashboardClass {
     this.nav_data = JSON.parse(this.nav_data);
     let regulatory_subfunction_id = this.nav_data.regulatory_subfunction_id;
     let appworkflowstage_category_id = this.nav_data.appworkflowstage_category_id;
-
-    this.reloadPermitApplicationsApplications(regulatory_subfunction_id,appworkflowstage_category_id);
+    this.reloadPermitApplicationsApplications(regulatory_subfunction_id, appworkflowstage_category_id);
     this.onLoadPermitTypesData(regulatory_subfunction_id);
     this.onLoadWorkflowStatusData();
     this.onLoadApplicationStatusData();
@@ -129,14 +128,14 @@ export class SharedImpExpdashboardClass {
     });
   }
 
-  onInitiatenewImportExpApplications(){
+  onInitiatenewImportExpApplications() {
     this.nav_data = localStorage.getItem('nav_data');
     this.nav_data = JSON.parse(this.nav_data);
     let regulatory_subfunction_id = this.nav_data.regulatory_function_id;
-      
+
     this.onClickSubModuleAppSelection(regulatory_subfunction_id, 'New Import Application')
-    this.isPermitInitialisation = true; 
-}
+    this.isPermitInitialisation = true;
+  }
 
   onClickSubModuleAppSelection(regulatory_subfunction_id, subfunction_name) {
 
@@ -144,7 +143,7 @@ export class SharedImpExpdashboardClass {
       this.isPermitInitialisation = true;
       this.applicationSelectionfrm.get('regulatory_subfunction_id')?.setValue(regulatory_subfunction_id);
 
-    }  else {
+    } else {
 
       this.application_details = { regulatory_function_id: this.regulatory_function_id, process_title: subfunction_name, regulatory_subfunction_id: regulatory_subfunction_id };
       this.appService.setApplicationDetail(this.application_details);
@@ -159,8 +158,8 @@ export class SharedImpExpdashboardClass {
 
   onApplicationSelection() {
     if (this.applicationSelectionfrm.invalid) {
-        this.toastr.error('Fill in all the Mandatory Fields', 'Alert!');
-        return;
+      this.toastr.error('Fill in all the Mandatory Fields', 'Alert!');
+      return;
     }
 
     this.spinnerShow('loading...');
@@ -175,32 +174,32 @@ export class SharedImpExpdashboardClass {
     localStorage.setItem('transactionpermit_type_id', JSON.stringify(this.transactionpermit_type_id));
 
     this.configService.getSectionUniformApplicationProces(this.regulatory_subfunction_id, this.transactionpermit_type_id)
-        .subscribe(
-            data => {
-                if (data.success) {
-                    this.processData = data.data.process_infor;
+      .subscribe(
+        data => {
+          if (data.success) {
+            this.processData = data.data.process_infor;
 
-                    this.router_link = this.processData.router_link;
-                    this.productsapp_details = this.processData;
+            this.router_link = this.processData.router_link;
+            this.productsapp_details = this.processData;
 
-                    this.appService.setApplicationDetail(data.data);
-                    localStorage.setItem('application_details', JSON.stringify(data.data));
-                    this.app_route = ['./importexport-control/' + this.router_link];
-                    this.router.navigate(this.app_route);
-                    this.scrollToTop();
-                } else {
-                    this.toastr.error(this.processData.message, 'Alert!');
-                }
-                this.spinnerHide();
-            },
-            error => {
-                this.toastr.error('An error occurred while processing', 'Error');
-                this.spinnerHide();
-            }
-        );
+            this.appService.setApplicationDetail(data.data);
+            localStorage.setItem('application_details', JSON.stringify(data.data));
+            this.app_route = ['./importexport-control/' + this.router_link];
+            this.router.navigate(this.app_route);
+            this.scrollToTop();
+          } else {
+            this.toastr.error(this.processData.message, 'Alert!');
+          }
+          this.spinnerHide();
+        },
+        error => {
+          this.toastr.error('An error occurred while processing', 'Error');
+          this.spinnerHide();
+        }
+      );
 
     return false;
-}
+  }
 
 
   funcpopWidth(percentage_width) {
@@ -212,13 +211,13 @@ export class SharedImpExpdashboardClass {
   }
 
 
-  reloadPermitApplicationsApplications(regulatory_subfunction_id,appworkflowstage_category_id) {
-    this.spinnerShow('Loading...........');
+  reloadPermitApplicationsApplications(regulatory_subfunction_id, appworkflowstage_category_id) {
+    // this.spinnerShow('Loading...........');
     let filter_params = {
       regulatory_subfunction_id: regulatory_subfunction_id,
       appworkflowstage_category_id: appworkflowstage_category_id
     };
-    
+
     this.appService.onPermitApplicationLoading(filter_params, 'getImportExpPermitApplicationLoading')
       .subscribe(
         data => {
@@ -226,19 +225,19 @@ export class SharedImpExpdashboardClass {
           if (this.data_record.success) {
             this.dtImportExpApplicationData = this.data_record.data;
           }
-          this.spinnerHide();
+          // this.spinnerHide();
         },
       );
   }
 
   onLoadPermitTypesData(regulatory_subfunction_id) {
-    
+
     let data_submit = {
       table_name: 'tra_transactionpermit_types',
       regulatory_subfunction_id: regulatory_subfunction_id,
     };
 
-    this.spinnerShow('Loading...........');
+    // this.spinnerShow('Loading...........');
     this.configService.onPermitApplicationLoading(data_submit, 'getTransactionPermitTypeData')
       .subscribe(
         data => {
@@ -247,7 +246,7 @@ export class SharedImpExpdashboardClass {
           if (this.data_record.success) {
             this.permitTypesData = this.data_record.data;
           }
-          this.spinnerHide();
+          // this.spinnerHide();
         },
       );
   }
@@ -450,7 +449,7 @@ export class SharedImpExpdashboardClass {
   refreshDataGrid() {
     this.dataGrid.instance.refresh();
   }
-  
+
   applicationActionColClick(e, data) {
 
     var action_btn = e.itemData;
@@ -522,7 +521,7 @@ export class SharedImpExpdashboardClass {
 
     } else if (action_btn.action == 'initiate_license_application' || action_btn.action == 'initiate_license_application') {
 
-      
+
     }
     else if (action_btn.action == 'uploadsub_paymentdetails' || action_btn.action == 'uploadsub_paymentdetails') {
 
@@ -542,16 +541,16 @@ export class SharedImpExpdashboardClass {
     this.utilityService.funcApplicationRestoreArchiceCall(this.viewRef, data, 'txn_importexport_applications', this.reloadPermitApplicationsApplications)
   }
   application_data: any;
-  current_stage_id:number;
+  current_stage_id: number;
 
   funcApplicationPreveditDetails(app_data) {
-    
+
     this.regulatory_subfunction_id = app_data.regulatory_subfunction_id;
     this.regulatory_function_id = app_data.regulatory_function_id;
     this.transactionpermit_type_id = app_data.transactionpermit_type_id;
     this.current_stage_id = app_data.current_stage_id;
     this.oga_application_code = app_data.oga_application_code;
-    let appprocess_data = {current_stage_id:this.current_stage_id,oga_application_code:this.oga_application_code,transactionpermit_type_id:this.transactionpermit_type_id,regulatory_subfunction_id:this.regulatory_subfunction_id,regulatory_function_id:this.regulatory_function_id }
+    let appprocess_data = { current_stage_id: this.current_stage_id, oga_application_code: this.oga_application_code, transactionpermit_type_id: this.transactionpermit_type_id, regulatory_subfunction_id: this.regulatory_subfunction_id, regulatory_function_id: this.regulatory_function_id }
     this.spinner.show();
     this.configService.getPermitUniformApplicationProces(appprocess_data, 'getPermitUniformApplicationProces')
       .subscribe(
@@ -565,7 +564,7 @@ export class SharedImpExpdashboardClass {
             this.productsapp_details = this.processData;
             let merged_appdata = Object.assign({}, this.application_data, app_data);
             localStorage.setItem('application_details', JSON.stringify(merged_appdata));
-           
+
             this.app_route = ['./importexport-control/' + this.router_link];
 
             this.router.navigate(this.app_route);
@@ -583,51 +582,51 @@ export class SharedImpExpdashboardClass {
       );
 
     return false;
-}
+  }
 
 
-funcProductPreviewDetails(app_data) {
-  this.win_previewpermitapp = true;
-  this.regulatory_function_id = app_data.regulatory_function_id;
-  this.regulatory_subfunction_id = app_data.regulatory_subfunction_id;
-  this.transactionpermit_type_id = app_data.transactionpermit_type_id;
-  this.current_stage_id = app_data.current_stage_id;
-  this.oga_application_code = app_data.oga_application_code;
-  let appprocess_data = {current_stage_id:this.current_stage_id,oga_application_code:this.oga_application_code,transactionpermit_type_id:this.transactionpermit_type_id, regulatory_function_id:this.regulatory_function_id,regulatory_subfunction_id:this.regulatory_subfunction_id }
-  this.spinner.show();
-  this.configService.getPermitUniformApplicationProces(appprocess_data, 'getPermitUniformApplicationProces')
-    .subscribe(
-      data => {
-        this.spinner.hide();
-        if (data.success) {
-          this.processData = data.data.process_infor;
-          this.application_data = data.data;
+  funcProductPreviewDetails(app_data) {
+    this.win_previewpermitapp = true;
+    this.regulatory_function_id = app_data.regulatory_function_id;
+    this.regulatory_subfunction_id = app_data.regulatory_subfunction_id;
+    this.transactionpermit_type_id = app_data.transactionpermit_type_id;
+    this.current_stage_id = app_data.current_stage_id;
+    this.oga_application_code = app_data.oga_application_code;
+    let appprocess_data = { current_stage_id: this.current_stage_id, oga_application_code: this.oga_application_code, transactionpermit_type_id: this.transactionpermit_type_id, regulatory_function_id: this.regulatory_function_id, regulatory_subfunction_id: this.regulatory_subfunction_id }
+    this.spinner.show();
+    this.configService.getPermitUniformApplicationProces(appprocess_data, 'getPermitUniformApplicationProces')
+      .subscribe(
+        data => {
+          this.spinner.hide();
+          if (data.success) {
+            this.processData = data.data.process_infor;
+            this.application_data = data.data;
 
-          this.router_link = this.processData.router_link;
-          this.productsapp_details = this.processData;
-          
-          let merged_appdata = Object.assign({}, this.application_data, app_data);
+            this.router_link = this.processData.router_link;
+            this.productsapp_details = this.processData;
 
-          localStorage.setItem('application_details', JSON.stringify(merged_appdata));
-         
-          // this.app_route = ['./importexport-control/' + this.router_link];
+            let merged_appdata = Object.assign({}, this.application_data, app_data);
 
-          this.router.navigate(this.app_route);
-          this.scrollToTop();
+            localStorage.setItem('application_details', JSON.stringify(merged_appdata));
+
+            // this.app_route = ['./importexport-control/' + this.router_link];
+
+            this.router.navigate(this.app_route);
+            this.scrollToTop();
+          }
+          else {
+            this.toastr.error(data.message || "An error occurred", 'Alert!');
+          }
+        },
+        error => {
+          this.spinner.hide();
+          this.toastr.error("Failed to fetch application details", "Error");
+          console.error("API Error:", error);
         }
-        else {
-          this.toastr.error(data.message || "An error occurred", 'Alert!');
-        }
-      },
-      error => {
-        this.spinner.hide();
-        this.toastr.error("Failed to fetch application details", "Error");
-        console.error("API Error:", error);
-      }
-    );
+      );
 
-  return false;
-}
+    return false;
+  }
 
 
   funcApplicationRejection(app_data) {
@@ -716,7 +715,7 @@ funcProductPreviewDetails(app_data) {
     this.FilterDetailsFrm.reset();
     this.FilterDetailsFrm.reset();
 
-    this.reloadPermitApplicationsApplications(this.regulatory_subfunction_id,this.appworkflowstage_category_id);
+    this.reloadPermitApplicationsApplications(this.regulatory_subfunction_id, this.appworkflowstage_category_id);
   }
   funcInitiateInspectionBooking(app_data) {
     /*
@@ -764,7 +763,7 @@ funcProductPreviewDetails(app_data) {
     */
 
   }
-  
+
   // onCellPrepared(e) {
   //   this.utilityService.onCellPrepared(e);
   // }
@@ -777,7 +776,7 @@ funcProductPreviewDetails(app_data) {
 
     if (e.rowType === "data" && e.column.dataField === "appworkflow_status_id") {
       let statusId = e.data.appworkflow_status_id;  // Ensure the value is retrieved correctly
-  
+
       switch (statusId) {
         case 1:  // Draft
           e.cellElement.style.color = "white";
@@ -796,7 +795,7 @@ funcProductPreviewDetails(app_data) {
       }
     }
   }
-  
-  
+
+
 
 }

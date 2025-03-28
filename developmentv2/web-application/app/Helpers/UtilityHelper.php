@@ -745,8 +745,11 @@ class UtilityHelper
                             ->select('t1.*', 't1.workflow_status_id as appworkflow_status_id')
                             ->where(array('t3.process_id'=>$workflowprocess_id, 't2.stage_status_id'=>1))
                             ->first();
+                           
+                            return $record ->appworkflow_status_id;
         }
-        return $record ->appworkflow_status_id;
+        return null;
+        
     }
 
     public static function getInitialApplicantWorkflowStatusId($workflowprocess_id) {

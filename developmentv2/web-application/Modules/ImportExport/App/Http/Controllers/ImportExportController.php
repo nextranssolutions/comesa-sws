@@ -1314,13 +1314,17 @@ class ImportExportController extends Controller
                     ->leftJoin('par_unit_of_measure as t4', 't1.unit_of_measure_id', '=', 't4.id')
                     ->leftJoin('par_currencies as t5', 't1.currency_id', '=', 't5.id')
                     ->leftJoin('par_storage_conditions as t6', 't1.storage_condition_id', '=', 't6.id')
+                    ->leftJoin('par_si_units as t7', 't1.weight_unit_id', 't7.id')
+                    ->leftJoin('par_countries as t8', 't1.country_of_origin_id', 't8.id')
                     ->select(
                         't1.id',
                         't1.*',
                         't3.name as manufacturer_name',
                         't4.name as unit_of_measure',
                         't5.name as currency_name',
-                        't6.name as storage_conditions'
+                        't6.name as storage_conditions',
+                        't7.name as weight_unit',
+                        't8.name as country_of_origin'
                     )
                     ->where('t1.application_code', $application_code)
                     ->orderByDesc('t1.id')
@@ -1527,111 +1531,226 @@ class ImportExportController extends Controller
     }
 
 
+    // public function getImportExpPermitApplicationLoading(Request $req)
+    // {
+    //     try {
+    //         $process_id = $req->process_id;
+    //         $user_id = $req->user_id;
+
+    //         $requestData = $req->all();
+    //         $regulatory_subfunction_id = $req->regulatory_subfunction_id;
+    //         $table_name = 'txn_importexport_applications';
+    //         $appworkflow_status_id = $req->appworkflow_status_id;
+    //         $workflow_status_id = $req->workflow_status_id;
+    //         $application_data = array();
+    //         $appworkflowstage_category_id = $req->appworkflowstage_category_id;
+    //         unset($requestData['table_name']);
+
+    //         $sql = DB::table($table_name . ' as t1')
+    //             ->leftJoin('tra_transactionpermit_types as t2', 't2.id', 't1.transactionpermit_type_id')
+    //             ->leftJoin('par_port_type as t3', 't3.id', 't1.port_type_id')
+    //             ->leftJoin('tra_permitsenderreceiver_data as t4', 't4.id', 't1.importer_exporter_id')
+    //             ->leftJoin('par_entryexit_port as t5', 't1.port_of_entryexit_id', 't5.id')
+    //             ->leftJoin('tra_applicationprocess_submissions as t6', 't1.application_code', '=', 't6.application_code')
+    //             ->leftJoin('wf_workflowstageprocess_actions as t7', function ($join) {
+    //                 $join->on('t6.current_stage_id', '=', 't7.workflow_stage_id');
+    //                 $join->on('t7.is_default_action', '=', DB::raw(1));
+    //             })
+    //             ->leftJoin('wf_statuses_actions as t8', 't7.statuses_action_id', 't8.id')
+    //             ->leftJoin('wf_appworkflow_statuses as t9', 't1.appworkflow_status_id', 't9.id')
+    //             ->leftJoin('par_permit_typecategories as t11', 't1.permit_typecategory_id', 't11.id')
+    //             ->leftJoin('par_currencies as t12', 't1.currency_oftransaction_id', 't12.id')
+    //             ->leftJoin('par_mode_oftransport as t13', 't1.mode_of_transport_id', 't13.id')
+    //             ->leftJoin('par_countries as t14', 't1.final_destination_country_id', 't14.id')
+    //             ->leftJoin('par_invoice_types as t15', 't1.invoice_type_id', 't15.id')
+    //             ->leftJoin('par_confirmations as t17', 't1.declaration_statuses_id', 't17.id')
+    //             ->leftJoin('tra_customoffice_info as t18', 't1.customs_office_id', 't18.id')
+    //             ->leftJoin('tra_trader_account as t19', 't1.applicant_id', 't19.id')
+    //             ->leftJoin('par_regions as t20', 't19.region_id', 't20.id')
+    //             ->leftJoin('par_regulatory_functions as t21', 't1.regulatory_function_id', 't21.id')
+    //             ->leftJoin('par_regulatory_subfunctions as t22', 't1.regulatory_subfunction_id', 't22.id')
+    //             ->leftJoin('par_zones as t23', 't1.zone_id', 't23.id')
+    //             ->leftJoin('par_port_type as t24', 't1.port_type_id', 't24.id')
+    //             ->leftJoin('par_applicationsubmission_type as t25', 't1.applicationsubmission_type_id', 't25.id')
+    //             ->leftJoin('tra_transactionpermit_types as t26', 't1.transactionpermit_type_id', 't26.id')
+    //             ->leftJoin('tra_organisation_information as t27', 't1.organisation_id', 't27.id')
+    //             ->leftJoin('par_application_options as t28', 't1.applicationapplicant_option_id', 't28.id')
+    //             ->leftJoin('wf_processes as t29', 't1.workflowprocess_id', 't29.id')
+
+    //             ->select(
+    //                 't1.*',
+    //                 't19.*',
+    //                 't6.current_stage_id',
+    //                 't19.name as applicant_name',
+    //                 't18.name as customs_office',
+    //                 't17.name as declaration',
+    //                 't15.name as invoice_type',
+    //                 't14.name as final_destination_country',
+    //                 't5.name as port_of_entry',
+    //                 't13.name as mode_of_transport',
+    //                 't12.name as currency_name',
+    //                 't2.name as permit_type',
+    //                 't8.name as action_name',
+    //                 't11.name as permit_typecategory',
+    //                 't8.iconCls as iconCls',
+    //                 't8.action as action',
+    //                 't3.name as port_type',
+    //                 't1.id',
+    //                 't4.name as importer_exporter_name',
+    //                 't21.name as regulatory_function',
+    //                 't22.name as regulatory_subfunction',
+    //                 't9.name as status_name',
+    //                 't23.name as zone',
+    //                 't24.name as port_type',
+    //                 't9.name as workflow_status',
+    //                 't25.name as applicationsubmission_type',
+    //                 't26.name as transactionpermit_type',
+    //                 't27.name as organisation',
+    //                 't28.name as application_option',
+    //                 't29.name as workflowprocess'
+    //             );
+
+    //         if ($workflow_status_id != '') {
+    //             $workflow_status = explode(',', $workflow_status_id);
+    //             $sql->whereIn('appworkflow_status_id', $workflow_status);
+    //         }
+    //         if (validateIsNumeric($appworkflowstage_category_id)) {
+    //             $sql->where(array('appworkflowstage_category_id' => $appworkflowstage_category_id));
+    //         }
+
+    //         if (validateIsNumeric($regulatory_subfunction_id)) {
+    //             $sql->where('t1.regulatory_subfunction_id', $regulatory_subfunction_id);
+    //         }
+    //         $actionColumnData = returnContextMisMenuActions();
+    //         $data = $sql->where('t6.isdone', 0)->get();
+    //         foreach ($data as $rec) {
+    //             $contextMenu = returnActionColumn($rec->current_stage_id, $actionColumnData);
+    //             $rec->contextMenu = $contextMenu;
+    //             $application_data[] = (array)$rec;
+    //         }
+    //         $res = array('success' => true, 'data' => $application_data);
+    //     } catch (\Exception $exception) {
+    //         $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+    //     } catch (\Throwable $throwable) {
+    //         $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+    //     }
+    //     return response()->json($res, 200);
+    // }
+
     public function getImportExpPermitApplicationLoading(Request $req)
-    {
-        try {
-            $process_id = $req->process_id;
-            $user_id = $req->user_id;
+{
+    try {
+        $process_id = $req->process_id;
+        $user_id = $req->user_id;
+        $requestData = $req->all();
+        $regulatory_subfunction_id = $req->regulatory_subfunction_id;
+        $table_name = 'txn_importexport_applications';
+        $appworkflow_status_id = $req->appworkflow_status_id;
+        $workflow_status_id = $req->workflow_status_id;
+        $application_data = array();
+        $appworkflowstage_category_id = $req->appworkflowstage_category_id;
+        unset($requestData['table_name']);
 
-            $requestData = $req->all();
-            $regulatory_subfunction_id = $req->regulatory_subfunction_id;
-            $table_name = 'txn_importexport_applications';
-            $appworkflow_status_id = $req->appworkflow_status_id;
-            $workflow_status_id = $req->workflow_status_id;
-            $application_data = array();
-            $appworkflowstage_category_id = $req->appworkflowstage_category_id;
-            unset($requestData['table_name']);
+        $sql = DB::table($table_name . ' as t1')
+            ->leftJoin('tra_transactionpermit_types as t2', 't2.id', 't1.transactionpermit_type_id')
+            ->leftJoin('par_port_type as t3', 't3.id', 't1.port_type_id')
+            ->leftJoin('tra_permitsenderreceiver_data as t4', 't4.id', 't1.importer_exporter_id')
+            ->leftJoin('par_entryexit_port as t5', 't1.port_of_entryexit_id', 't5.id')
+            ->leftJoin('tra_applicationprocess_submissions as t6', 't1.application_code', '=', 't6.application_code')
+            ->leftJoin('wf_workflowstageprocess_actions as t7', function ($join) {
+                $join->on('t6.current_stage_id', '=', 't7.workflow_stage_id');
+                $join->on('t7.is_default_action', '=', DB::raw(1));
+            })
+            ->leftJoin('wf_statuses_actions as t8', 't7.statuses_action_id', 't8.id')
+            ->leftJoin('wf_appworkflow_statuses as t9', 't1.appworkflow_status_id', 't9.id')
+            ->leftJoin('par_permit_typecategories as t11', 't1.permit_typecategory_id', 't11.id')
+            ->leftJoin('par_currencies as t12', 't1.currency_oftransaction_id', 't12.id')
+            ->leftJoin('par_mode_oftransport as t13', 't1.mode_of_transport_id', 't13.id')
+            ->leftJoin('par_countries as t14', 't1.final_destination_country_id', 't14.id')
+            ->leftJoin('par_invoice_types as t15', 't1.invoice_type_id', 't15.id')
+            ->leftJoin('par_confirmations as t17', 't1.declaration_statuses_id', 't17.id')
+            ->leftJoin('tra_customoffice_info as t18', 't1.customs_office_id', 't18.id')
+            ->leftJoin('tra_trader_account as t19', 't1.applicant_id', 't19.id')
+            ->leftJoin('par_regions as t20', 't19.region_id', 't20.id')
+            ->leftJoin('par_regulatory_functions as t21', 't1.regulatory_function_id', 't21.id')
+            ->leftJoin('par_regulatory_subfunctions as t22', 't1.regulatory_subfunction_id', 't22.id')
+            ->leftJoin('par_zones as t23', 't1.zone_id', 't23.id')
+            ->leftJoin('par_port_type as t24', 't1.port_type_id', 't24.id')
+            ->leftJoin('par_applicationsubmission_type as t25', 't1.applicationsubmission_type_id', 't25.id')
+            ->leftJoin('tra_transactionpermit_types as t26', 't1.transactionpermit_type_id', 't26.id')
+            ->leftJoin('tra_organisation_information as t27', 't1.organisation_id', 't27.id')
+            ->leftJoin('par_application_options as t28', 't1.applicationapplicant_option_id', 't28.id')
+            ->leftJoin('wf_processes as t29', 't1.workflowprocess_id', 't29.id')
+            ->leftJoin('wf_workflow_stages as t30', 't6.current_stage_id', '=', 't30.id') // Workflow stages
+            ->select(
+                't1.*',
+                't19.*',
+                't6.current_stage_id',
+                't19.name as applicant_name',
+                't18.name as customs_office',
+                't17.name as declaration',
+                't15.name as invoice_type',
+                't14.name as final_destination_country',
+                't5.name as port_of_entry',
+                't13.name as mode_of_transport',
+                't12.name as currency_name',
+                't2.name as permit_type',
+                't8.name as action_name',
+                't11.name as permit_typecategory',
+                't8.iconCls as iconCls',
+                't8.action as action',
+                't3.name as port_type',
+                't1.id',
+                't4.name as importer_exporter_name',
+                't21.name as regulatory_function',
+                't22.name as regulatory_subfunction',
+                't9.name as status_name',
+                't23.name as zone',
+                't24.name as port_type',
+                't9.name as workflow_status',
+                't25.name as applicationsubmission_type',
+                't26.name as transactionpermit_type',
+                't27.name as organisation',
+                't28.name as application_option',
+                't29.name as workflowprocess',
+                't30.appworkflowstage_category_id' // Include appworkflowstage_category_id
+            );
 
-            $sql = DB::table($table_name . ' as t1')
-                ->leftJoin('tra_transactionpermit_types as t2', 't2.id', 't1.transactionpermit_type_id')
-                ->leftJoin('par_port_type as t3', 't3.id', 't1.port_type_id')
-                ->leftJoin('tra_permitsenderreceiver_data as t4', 't4.id', 't1.importer_exporter_id')
-                ->leftJoin('par_entryexit_port as t5', 't1.port_of_entryexit_id', 't5.id')
-                ->leftJoin('tra_applicationprocess_submissions as t6', 't1.application_code', '=', 't6.application_code')
-                ->leftJoin('wf_workflowstageprocess_actions as t7', function ($join) {
-                    $join->on('t6.current_stage_id', '=', 't7.workflow_stage_id');
-                    $join->on('t7.is_default_action', '=', DB::raw(1));
-                })
-                ->leftJoin('wf_statuses_actions as t8', 't7.statuses_action_id', 't8.id')
-                ->leftJoin('wf_appworkflow_statuses as t9', 't1.appworkflow_status_id', 't9.id')
-                ->leftJoin('par_permit_typecategories as t11', 't1.permit_typecategory_id', 't11.id')
-                ->leftJoin('par_currencies as t12', 't1.currency_oftransaction_id', 't12.id')
-                ->leftJoin('par_mode_oftransport as t13', 't1.mode_of_transport_id', 't13.id')
-                ->leftJoin('par_countries as t14', 't1.final_destination_country_id', 't14.id')
-                ->leftJoin('par_invoice_types as t15', 't1.invoice_type_id', 't15.id')
-                ->leftJoin('par_confirmations as t17', 't1.declaration_statuses_id', 't17.id')
-                ->leftJoin('tra_customoffice_info as t18', 't1.customs_office_id', 't18.id')
-                ->leftJoin('tra_trader_account as t19', 't1.applicant_id', 't19.id')
-                ->leftJoin('par_regions as t20', 't19.region_id', 't20.id')
-                ->leftJoin('par_regulatory_functions as t21', 't1.regulatory_function_id', 't21.id')
-                ->leftJoin('par_regulatory_subfunctions as t22', 't1.regulatory_subfunction_id', 't22.id')
-                ->leftJoin('par_zones as t23', 't1.zone_id', 't23.id')
-                ->leftJoin('par_port_type as t24', 't1.port_type_id', 't24.id')
-                ->leftJoin('par_applicationsubmission_type as t25', 't1.applicationsubmission_type_id', 't25.id')
-                ->leftJoin('tra_transactionpermit_types as t26', 't1.transactionpermit_type_id', 't26.id')
-                ->leftJoin('tra_organisation_information as t27', 't1.organisation_id', 't27.id')
-                ->leftJoin('par_application_options as t28', 't1.applicationapplicant_option_id', 't28.id')
-                ->leftJoin('wf_processes as t29', 't1.workflowprocess_id', 't29.id')
-
-                ->select(
-                    't1.*',
-                    't19.*',
-                    't6.current_stage_id',
-                    't19.name as applicant_name',
-                    't18.name as customs_office',
-                    't17.name as declaration',
-                    't15.name as invoice_type',
-                    't14.name as final_destination_country',
-                    't5.name as port_of_entry',
-                    't13.name as mode_of_transport',
-                    't12.name as currency_name',
-                    't2.name as permit_type',
-                    't8.name as action_name',
-                    't11.name as permit_typecategory',
-                    't8.iconCls as iconCls',
-                    't8.action as action',
-                    't3.name as port_type',
-                    't1.id',
-                    't4.name as importer_exporter_name',
-                    't21.name as regulatory_function',
-                    't22.name as regulatory_subfunction',
-                    't9.name as status_name',
-                    't23.name as zone',
-                    't24.name as port_type',
-                    't9.name as workflow_status',
-                    't25.name as applicationsubmission_type',
-                    't26.name as transactionpermit_type',
-                    't27.name as organisation',
-                    't28.name as application_option',
-                    't29.name as workflowprocess'
-                );
-
-            if ($workflow_status_id != '') {
-                $workflow_status = explode(',', $workflow_status_id);
-                $sql->whereIn('appworkflow_status_id', $workflow_status);
-            }
-            if (validateIsNumeric($appworkflowstage_category_id)) {
-                $sql->where(array('appworkflowstage_category_id' => $appworkflowstage_category_id));
-            }
-
-            if (validateIsNumeric($regulatory_subfunction_id)) {
-                $sql->where('t1.regulatory_subfunction_id', $regulatory_subfunction_id);
-            }
-            $actionColumnData = returnContextMisMenuActions();
-            $data = $sql->where('t6.isdone', 0)->get();
-            foreach ($data as $rec) {
-                $contextMenu = returnActionColumn($rec->current_stage_id, $actionColumnData);
-                $rec->contextMenu = $contextMenu;
-                $application_data[] = (array)$rec;
-            }
-            $res = array('success' => true, 'data' => $application_data);
-        } catch (\Exception $exception) {
-            $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
-        } catch (\Throwable $throwable) {
-            $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+        // Filter by workflow status
+        if (!empty($workflow_status_id)) {
+            $workflow_status = explode(',', $workflow_status_id);
+            $sql->whereIn('t1.appworkflow_status_id', $workflow_status);
         }
-        return response()->json($res, 200);
+
+        // Filter by workflow stage category ID
+        if (validateIsNumeric($appworkflowstage_category_id)) {
+            $sql->where('t9.appworkflowstage_category_id', $appworkflowstage_category_id);
+        }
+
+        // Filter by regulatory subfunction ID
+        if (validateIsNumeric($regulatory_subfunction_id)) {
+            $sql->where('t1.regulatory_subfunction_id', $regulatory_subfunction_id);
+        }
+
+        $actionColumnData = returnContextMisMenuActions();
+        $data = $sql->where('t6.isdone', 0)->get();
+
+        foreach ($data as $rec) {
+            $contextMenu = returnActionColumn($rec->current_stage_id, $actionColumnData);
+            $rec->contextMenu = $contextMenu;
+            $application_data[] = (array)$rec;
+        }
+
+        $res = array('success' => true, 'data' => $application_data);
+    } catch (\Exception $exception) {
+        $res = sys_error_handler($exception->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
+    } catch (\Throwable $throwable) {
+        $res = sys_error_handler($throwable->getMessage(), 2, debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1), explode('\\', __CLASS__));
     }
+
+    return response()->json($res, 200);
+}
+
 
     public function getImportExpApplicantPermitsLoading(Request $req)
     {

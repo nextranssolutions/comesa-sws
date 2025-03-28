@@ -7,5 +7,7 @@ import { SharedImpExpdashboardClass } from '../../shared-impexpdashboard/shared-
   styleUrl: './draft-importlicensedash.component.css'
 })
 export class DraftImportlicensedashComponent extends SharedImpExpdashboardClass {
-  
+  ngOnInit(): void {
+
+  }
 }

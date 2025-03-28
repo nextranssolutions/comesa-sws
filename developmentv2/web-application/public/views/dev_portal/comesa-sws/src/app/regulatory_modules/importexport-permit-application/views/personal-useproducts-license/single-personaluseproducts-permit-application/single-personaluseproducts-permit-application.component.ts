@@ -232,7 +232,7 @@ export class SinglePersonaluseproductsPermitApplicationComponent {
     
         this.onLoadConfirmationData()
         this.onLoadcommonNameData();
-        this.onLoaddosageForms();
+        // this.onLoaddosageForms();
     
         this.onLoadPermitProductsData();
         this.onLoadUnitOfMeasureData();
