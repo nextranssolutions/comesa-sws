@@ -1175,13 +1175,17 @@ class ImportExportController extends Controller
                     ->leftJoin('par_unit_of_measure as t4', 't1.unit_of_measure_id', '=', 't4.id')
                     ->leftJoin('par_currencies as t5', 't1.currency_id', '=', 't5.id')
                     ->leftJoin('par_storage_conditions as t6', 't1.storage_condition_id', '=', 't6.id')
+                    ->leftJoin('par_si_units as t7', 't1.weight_unit_id', 't7.id')
+                    ->leftJoin('par_countries as t8', 't1.country_of_origin_id', 't8.id')
                     ->select(
                         't1.id',
                         't1.*',
                         't3.name as manufacturer_name',
                         't4.name as unit_of_measure',
                         't5.name as currency_name',
-                        't6.name as storage_conditions'
+                        't6.name as storage_conditions',
+                        't7.name as weight_unit',
+                        't8.name as country_of_origin'
                     )
                     ->where('t1.application_code', $application_code)
                     ->orderByDesc('t1.id')
