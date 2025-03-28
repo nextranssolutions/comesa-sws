@@ -7,6 +7,9 @@ import { ApplicationReportsSpreadsheetsComponent } from './views/application-rep
 import { PermitApplicationsComponent } from './views/spreadsheets-and-frontoffice/permit-applications/permit-applications.component';
 import { PermitProductDetailsComponent } from './views/spreadsheets-and-frontoffice/permit-product-details/permit-product-details.component';
 import { InitiateImportappreportComponent } from './views/spreadsheets-and-frontoffice/initiate-importappreport/initiate-importappreport.component';
+import { ApplicantPermitSpreadsheetComponent } from './views/spreadsheets-and-frontoffice/applicant-permit-spreadsheet/applicant-permit-spreadsheet.component';
+import { ProductHscodeAnalysisComponent } from './views/spreadsheets-and-frontoffice/product-hscode-analysis/product-hscode-analysis.component';
+import { PermitsPerOrigincountryComponent } from './views/spreadsheets-and-frontoffice/permits-per-origincountry/permits-per-origincountry.component';
 
 const routes: Routes = [{
   path: '',
@@ -31,7 +34,20 @@ const routes: Routes = [{
             {
               path: 'initiate-importapp',
               component: InitiateImportappreportComponent
-            }
+            },
+            {
+              path: 'app-applicant-permit-spreadsheet',
+              component: ApplicantPermitSpreadsheetComponent
+            },
+            {
+              path: 'app-product-hscode-analysis',
+              component: ProductHscodeAnalysisComponent
+            },
+            {
+              path: 'app-permits-per-origincountry',
+              component: PermitsPerOrigincountryComponent
+            },
+          
           ]
 }];
 

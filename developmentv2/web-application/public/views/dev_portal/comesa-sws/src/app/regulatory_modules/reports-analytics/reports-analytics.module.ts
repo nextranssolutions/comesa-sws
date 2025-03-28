@@ -26,6 +26,9 @@ import { InitiateImportappreportComponent } from './views/spreadsheets-and-front
 import { PermitGeneralDetailsreportComponent } from './views/permit-general-detailsreport/permit-general-detailsreport.component';
 import { ApplicantDetailsreportComponent } from './views/applicant-detailsreport/applicant-detailsreport.component';
 import { SharedappdocumentsuploadReportComponent } from './views/sharedappdocumentsupload-report/sharedappdocumentsupload-report.component';
+import { ApplicantPermitSpreadsheetComponent } from './views/spreadsheets-and-frontoffice/applicant-permit-spreadsheet/applicant-permit-spreadsheet.component';
+import { PermitProductDetailsReportComponent } from './views/spreadsheets-and-frontoffice/permit-product-details-report/permit-product-details-report.component';
+import { SharedPermitDetailsComponent } from './views/spreadsheets-and-frontoffice/shared-permit-details/shared-permit-details.component';
 
 const ngWizardConfig: NgWizardConfig = {
   theme: THEME.default
@@ -46,6 +49,9 @@ const ngWizardConfig: NgWizardConfig = {
     PermitGeneralDetailsreportComponent,
     ApplicantDetailsreportComponent,
     SharedappdocumentsuploadReportComponent,
+    ApplicantPermitSpreadsheetComponent,
+    PermitProductDetailsReportComponent,
+    SharedPermitDetailsComponent,
     
     ],
   imports: [

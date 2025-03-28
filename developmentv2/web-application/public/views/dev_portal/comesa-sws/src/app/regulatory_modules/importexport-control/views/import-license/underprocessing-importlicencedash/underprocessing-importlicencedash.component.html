@@ -80,15 +80,15 @@
         <dxi-column dataField="reference_no" caption="{{'application_reference' | translate}}"></dxi-column>
         <dxi-column [width]=90 [groupIndex]="0" dataField="permit_type"
             caption="{{'permit_type' | translate}}"></dxi-column>
-        <dxi-column [width]=100 dataField="date_of_application"
-            caption="{{'date_of_application' | translate}}"></dxi-column>
-
+            <dxi-column dataField="process_name" caption="{{'process' | translate}}"></dxi-column>
+        <dxi-column dataField="importer_exporter_name" caption="{{'importer_exporter_name' | translate}}"></dxi-column>
         <dxi-column [width]=100 dataField="invoice_number" caption="{{'invoice_number' | translate}}"></dxi-column>
         <dxi-column dataField="invoice_date" caption="{{'invoice_date' | translate}}"></dxi-column>
         <dxi-column dataField="total_invoice_value" caption="{{'total_invoice_value' | translate}}"></dxi-column>
         <dxi-column dataField="currency_name" caption="{{'currency_of_transaction' | translate}}"></dxi-column>
-        <dxi-column dataField="importer_exporter_name" caption="{{'importer_exporter_name' | translate}}"></dxi-column>
-        <dxi-column dataField="status_name" caption="{{'status_name' | translate}}"></dxi-column>
+        <dxi-column dataField="workflow_stage" caption="{{'workflow_stage' | translate}}"></dxi-column>
+        <dxi-column dataField="status_name" caption="{{'application_status' | translate}}"></dxi-column>
+        <dxi-column [width]=100 dataField="date_of_application" caption="{{'date_of_application' | translate}}"></dxi-column>
 
         <dxo-grouping #expand [autoExpandAll]="true"></dxo-grouping>
     </dx-data-grid>

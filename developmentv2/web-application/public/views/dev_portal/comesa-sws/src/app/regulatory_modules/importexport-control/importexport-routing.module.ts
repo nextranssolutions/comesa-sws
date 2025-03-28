@@ -19,6 +19,15 @@ import { AwaitingreviewApprovalComponent } from './views/import-license/awaiting
 import { UnderScreeningComponent } from './views/export-license/under-screening/under-screening.component';
 import { AwaitingReviewApprovalComponent } from './views/export-license/awaiting-review-approval/awaiting-review-approval.component';
 import { RequestforadditionalInfoComponent } from './views/export-license/requestforadditional-info/requestforadditional-info.component';
+import { PUnderScreeningComponent } from './views/permit-personaluse-products/p-under-screening/p-under-screening.component';
+import { PAwaitingReviewApprovalComponent } from './views/permit-personaluse-products/p-awaiting-review-approval/p-awaiting-review-approval.component';
+import { PIssuedComponent } from './views/permit-personaluse-products/p-issued/p-issued.component';
+import { BillingandpaymentRemittanceExportComponent } from './views/export-license/billingandpayment-remittance-export/billingandpayment-remittance-export.component';
+import { AwaitingpermitReleaseExportComponent } from './views/export-license/awaitingpermit-release-export/awaitingpermit-release-export.component';
+import { ReleasepermitExportComponent } from './views/export-license/releasepermit-export/releasepermit-export.component';
+import { ReleasePermitImportComponent } from './views/import-license/release-permit-import/release-permit-import.component';
+import { AwaitingpermitReleaseImportComponent } from './views/import-license/awaitingpermit-release-import/awaitingpermit-release-import.component';
+import { BillingPaymentRemittanceImportComponent } from './views/import-license/billing-payment-remittance-import/billing-payment-remittance-import.component';
 
 const routes: Routes = [{
   path: '',
@@ -42,6 +51,15 @@ const routes: Routes = [{
   }, {
     path: 'request-additional-info-impoertpermit-application',
     component: RequestAdditionalInfoComponent
+  }, {
+    path: 'billing-payment-remittance-import',
+    component: BillingPaymentRemittanceImportComponent
+  }, {
+    path: 'awaitingpermit-release-import',
+    component: AwaitingpermitReleaseImportComponent
+  }, {
+    path: 'release-permit-import',
+    component: ReleasePermitImportComponent
   }, {
     path: 'rejected-importapp',
     component: RejectedPermitsComponent
@@ -67,12 +85,30 @@ const routes: Routes = [{
     path: 'request-additional-info-exportpermit-application',
     component: RequestforadditionalInfoComponent
   }, {
+    path: 'billing-payment-remittance-export',
+    component: BillingandpaymentRemittanceExportComponent
+  }, {
+    path: 'awaitingpermit-release-export',
+    component: AwaitingpermitReleaseExportComponent
+  }, {
+    path: 'release-permit-export',
+    component: ReleasepermitExportComponent
+  },  {
     path: 'personaluseproducts-dash',
     component: PersonaluseproductsDashComponent
   }, {
     path: 'initiate-permitsfor-personaluseproducts',
     component: InitiatePermitsforPersonaluseproductsComponent
-  }, 
+  }, { 
+    path: 'under-screening-personaluse',
+    component: PUnderScreeningComponent
+  }, { 
+    path: 'awaitingreview-approval-personaluseapp',
+    component: PAwaitingReviewApprovalComponent
+  },  { 
+    path: 'issued-personaluseapp',
+    component: PIssuedComponent
+  },
   ]   
 }] 
 

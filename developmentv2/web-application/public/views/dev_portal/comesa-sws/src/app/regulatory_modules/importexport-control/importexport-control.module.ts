@@ -37,6 +37,14 @@ import { AwaitingreviewApprovalComponent } from './views/import-license/awaiting
 import { AwaitingReviewApprovalComponent } from './views/export-license/awaiting-review-approval/awaiting-review-approval.component';
 import { UnderScreeningComponent } from './views/export-license/under-screening/under-screening.component';
 import { RequestforadditionalInfoComponent } from './views/export-license/requestforadditional-info/requestforadditional-info.component';
+import { PUnderScreeningComponent } from './views/permit-personaluse-products/p-under-screening/p-under-screening.component';
+import { PIssuedComponent } from './views/permit-personaluse-products/p-issued/p-issued.component';
+import { PAwaitingReviewApprovalComponent } from './views/permit-personaluse-products/p-awaiting-review-approval/p-awaiting-review-approval.component';
+import { AwaitingpermitReleaseExportComponent } from './views/export-license/awaitingpermit-release-export/awaitingpermit-release-export.component';
+import { ReleasepermitExportComponent } from './views/export-license/releasepermit-export/releasepermit-export.component';
+import { ReleasePermitImportComponent } from './views/import-license/release-permit-import/release-permit-import.component';
+import { AwaitingpermitReleaseImportComponent } from './views/import-license/awaitingpermit-release-import/awaitingpermit-release-import.component';
+import { BillingPaymentRemittanceImportComponent } from './views/import-license/billing-payment-remittance-import/billing-payment-remittance-import.component';
 
 const ngWizardConfig: NgWizardConfig = {
   theme: THEME.default
@@ -51,7 +59,9 @@ const ngWizardConfig: NgWizardConfig = {
     ImportexportHeaderComponent,InitiateImportappComponent,DraftExportlicensedashComponent,
     UnderprocessingImportlicencedashComponent,InitiateExportappComponent,PreviewImportappComponent,
     AwaitingreviewApprovalComponent,AwaitingReviewApprovalComponent,UnderScreeningComponent,
-    RequestforadditionalInfoComponent
+    RequestforadditionalInfoComponent,PUnderScreeningComponent,PIssuedComponent,PAwaitingReviewApprovalComponent,
+    AwaitingpermitReleaseExportComponent,AwaitingpermitReleaseExportComponent,ReleasepermitExportComponent,
+    BillingPaymentRemittanceImportComponent,AwaitingpermitReleaseImportComponent,ReleasePermitImportComponent
   ],
   imports: [
     CommonModule, ImportexportRoutingModule,
