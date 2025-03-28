@@ -22,7 +22,8 @@ pipeline {
                 }
             }
         }
-
+                stage('Run Backend and Frontend in Parallel') {
+            parallel {
         stage('PRODUCTION OF BACKEND') {
                         when {
                 expression { return env.BUILD_BACKEND == "true" }
@@ -160,5 +161,7 @@ pipeline {
                         '''
                     }
                 }
+            }
+        }
     }
   }
